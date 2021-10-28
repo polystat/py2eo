@@ -2,7 +2,7 @@ import java.io.{File, FileReader, FileWriter}
 import java.math.BigInteger
 
 import Common.HashStack
-import Expression.{CallIndex, CollectionKind, DictCons, Ident, NoneLiteral}
+import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, NoneLiteral}
 import Python3Parser.{And_exprContext, And_testContext, ArglistContext, ArgumentContext, Arith_exprContext, AtomContext, Atom_exprContext, AugAssignContext, AugassignContext, ClassdefContext, CompAsyncContext, CompClassDefContext, CompDecoratedContext, CompForContext, CompFuncDefContext, CompIfContext, CompTryContext, CompWhileContext, CompWithContext, Comp_forContext, Comp_opContext, DecoratorsContext, Dict_elt_double_starContext, Dotted_nameContext, ExprContext, Expr_star_exprContext, Expr_stmtContext, ExprlistContext, FactorContext, FactorPowerContext, File_inputContext, FlowBreakContext, FlowContinueContext, FlowRaiseContext, FlowReturnContext, FlowYieldContext, FuncdefContext, ImportFromContext, ImportNameContext, Import_stmtContext, JustAssignContext, NotComparisonContext, NotNotContext, Not_testContext, Or_testContext, PowerContext, RhsTestlistContext, RhsassignContext, Shift_exprContext, Simple_stmtContext, SmallAssertContext, SmallDelContext, SmallExprContext, SmallFlowContext, SmallGlobalContext, SmallImportContext, SmallNonLocalContext, SmallPassContext, Small_stmtContext, StarNotTestContext, Star_exprContext, StmtCompoundContext, StmtContext, StmtSimpleContext, SubIndexContext, SubSliceContext, Subscript_Context, SuiteBlockStmtsContext, SuiteContext, SuiteSimpleStmtContext, TermContext, TestContext, TestLambdefContext, TestNotStarContext, TestOrTestContext, Test_star_exprContext, TestlistContext, Testlist_compContext, Testlist_star_exprContext, TfpargContext, TrailerCallContext, TrailerFieldContext, TrailerSubContext, TypedargslistContext, Typedargslist_noposContext, UnaryContext, Xor_exprContext, Yield_stmtContext}
 import org.antlr.v4.runtime.{ANTLRInputStream, Token}
 
@@ -727,8 +727,8 @@ object PrintEOTest extends App {
 }
 
 object ExplicitHeapTest extends App {
-//  val name = "testExplicitHeap"
-  val name = "trivial"
+  val name = "testExplicitHeap"
+//  val name = "trivial"
   val y = Parse.parse(name)
 
   val textractAllCalls = SimplePass.procExprInStatement(
@@ -739,9 +739,12 @@ object ExplicitHeapTest extends App {
 
   val hacked = Suite(List(
     ImportAllSymbols(List("closureRuntime")),
-    Assign(List(Ident("theTestPtr"), CallIndex(true, Ident("mkNew"), List((None, NoneLiteral()))))),
+    Assign(List(Ident("hiddenHeap"), CollectionCons(CollectionKind.List, List()))),
+    Assign(List(Ident("theTestPtr"), CallIndex(true, Ident("mkNew"),
+      List((None, Ident("hiddenHeap")), (None, NoneLiteral()))))),
     z._1,
-    Assign(List(CallIndex(true, Ident("tmpFun"), List((None, DictCons(List()))))))
+    Assign(List(CallIndex(true, Ident("tmpFun"),
+      List((None, Ident("hiddenHeap")), (None, DictCons(List()))))))
   ))
 
   Parse.toFile(hacked, "afterExplicitStackHeap", name)

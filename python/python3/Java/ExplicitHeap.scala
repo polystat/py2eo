@@ -1,4 +1,4 @@
-import Expression.{CallIndex, CollectionCons, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
+import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
 import SimplePass.{EAfterPass, Names}
 
 import scala.collection.immutable.HashMap
@@ -34,22 +34,29 @@ object ExplicitHeap {
           // todo: not completely correct, because a variable with value None is not the same as a variable without a value,
           // they behave differently when accessed
           val pushLocals = (locals.map(name => Assign(List(Ident(name + "Ptr"),
-                CallIndex(true, Ident("mkNew"), List((None, if (isArg(name)) Ident(name) else NoneLiteral())))
+                CallIndex(true, Ident("mkNew"), List((None, Ident("heap")), (None, if (isArg(name)) Ident(name) else NoneLiteral())))
             ))))
           val (body1, ns1) = SimplePass.procStatementGeneral(procSt(scope, isArg, vars)(_, _))(body, ns)
-          val f1 = FuncDef("tmpFun", ("closure", ArgKind.Positional, None) :: args, otherPositional, otherKeyword,
-            Suite((pushLocals :+ body1)), decorators)
+          val defaultReturn = Return(CollectionCons(CollectionKind.Tuple, List(Ident("heap"), NoneLiteral())))
+          val f1 = FuncDef("tmpFun",
+            ("heap", ArgKind.Positional, None) ::
+              ("closure", ArgKind.Positional, None) ::
+              args,
+            otherPositional, otherKeyword, Suite((pushLocals :+ body1 :+ defaultReturn)), decorators)
           val mkNewClosure = Assign(List(Ident("newClosure"),
             DictCons(upperVars.filter(x => x._2 != VarScope.Global).
               map(z => Left((StringLiteral("\"" + z._1 + "\""), Ident(z._1 + "Ptr")))).toList)))
-          val mkFun = Assign(List(accessHeap(Ident(name + "Ptr")), CollectionCons(Expression.CollectionKind.Tuple, List(Ident("newClosure"), Ident("tmpFun")))))
+          val mkFun = Assign(List(accessHeap((Ident(name + "Ptr"))), CollectionCons(Expression.CollectionKind.Tuple, List(Ident("newClosure"), Ident("tmpFun")))))
           (Suite(List(f1, mkNewClosure, mkFun)), ns1, false)
 
         case NonLocal(l) => (WithoutArgs(StatementsWithoutArgs.Pass), ns, false)
 
         case Return(x) =>
           val (Assign(List(x1)), ns1) = procIdentInSt(Assign(List(x)), ns)
-          (Suite(List(Assign(List(Ident("retval"), x1)), Return(Ident("retval")))), ns1, false)
+          (Suite(List(
+            Assign(List(Ident("retval"), x1)),
+            Return(CollectionCons(Expression.CollectionKind.Tuple, List(Ident("heap"), Ident("retval"))))
+          )), ns1, false)
 
 //        case Assign(List(Ident(lhs), CallIndex(true, Ident(whomName), args))) =>
 //          (Assign(List(Ident(lhs), CallIndex(true, index(Ident(whomName), 1), (None, index(Ident(whomName), 0)) :: args))), ns, true)
@@ -61,7 +68,9 @@ object ExplicitHeap {
           val whom1 = Ident("tmpCall")
           (Suite(List(
             Assign(List(whom1, whom)),
-            Assign(List(dst, CallIndex(true, index(whom1, 1), (None, index(whom1, 0)) :: args)))
+            Assign(List(Ident("tmpResult"), CallIndex(true, index(whom1, 1), ((None, Ident("heap")) :: (None, index(whom1, 0)) :: args)))),
+            Assign(List(dst, index(Ident("tmpResult"), 1))),
+            Assign(List(Ident("heap"), index(Ident("tmpResult"), 0)))
           )), ns1, false)
 
         case Assign(_) =>
