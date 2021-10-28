@@ -89,9 +89,9 @@ object SimpleAnalysis {
     foldSE[H]((h, e) => e match {
       case Ident(name) => if (h.contains(name)) h else {
 //        if (!BuiltinFunctions.fs.contains(name))  // todo: this should be the builtin module's global namespace
-//          h.+((name, VarScope.Global))
+          h.+((name, VarScope.Global))
 //        else
-        h
+//        h
       }
       case _ => h
     }, dontVisitOtherBlocks)(h3, body)
