@@ -678,21 +678,18 @@ object MapExpressions {
 object Parse {
   import org.antlr.v4.runtime.CommonTokenStream
 
-  val paths = List(".") // , "/home/dours/CurrentProjectCache/cpython/Lib")
-
   def toFile(t : Statement, dir : String, test : String) = {
     val output = new FileWriter(dir + "/" + test + ".py")
     output.write(PrintPython.printSt(t, ""))
     output.close()
   }
 
-  def parse(fileName : String) : (Statement, SimplePass.Names) = {
+  def parse(path : String, fileName : String) : (Statement, SimplePass.Names) = {
     val test = fileName
     def output(t : Statement, dir : String) = toFile(t, dir, test)
 
-    println(s"parsing $fileName")
-    val Some(path) = paths.find(p => new File(p + "/" + test + ".py").canRead)
     val fullName = path + "/" + test + ".py"
+    println(s"parsing $fullName")
     val input = new FileReader(fullName)
 
     val inputStream = new ANTLRInputStream(input);
@@ -703,13 +700,13 @@ object Parse {
     val e = parser.file_input()
 
     val t = MapStatements.mapFile(fileName == "builtins", e)
-    output(t, "afterParser")
+    output(t, path + "afterParser")
 
     val t1 = SimplePass.procStatement((a, b) => (a, b))(t, new SimplePass.Names())
-    output(t1._1, "afterEmptyProcStatement")
+    output(t1._1, path + "afterEmptyProcStatement")
 
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
-    output(tsimplifyIf._1, "afterSimplifyIf")
+    output(tsimplifyIf._1, path + "afterSimplifyIf")
 
     tsimplifyIf
   }
@@ -719,7 +716,7 @@ object Parse {
 object ExplicitHeapTest extends App {
   val name = "testExplicitHeap"
 //  val name = "trivial"
-  val y = Parse.parse(name)
+  val y = Parse.parse(".", name)
 
   val textractAllCalls = SimplePass.procExprInStatement(
     SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
