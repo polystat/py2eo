@@ -55,7 +55,7 @@ object SimplePass {
       case Suite(l) => {
         val xl = l.foldLeft((List[Statement](), ns))((acc, st) => {
           val xst = pst(st, acc._2)
-          (acc._1 :+ xst._1, acc._2)
+          (acc._1 :+ xst._1, xst._2)
         })
         (Suite(xl._1), xl._2)
       }
