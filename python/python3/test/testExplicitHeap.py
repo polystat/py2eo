@@ -1,12 +1,16 @@
 
-#def myPrint(x):
-#    print(x)
+# prints the following numbers if correct:
+# 21
+# 17
+# 20
+# 16
 
 def theTest():
 
     def f(x):
         def g(y):
             def h(z):
+                nonlocal y
                 return x + y + z
             return h
         return g
@@ -22,4 +26,4 @@ def theTest():
     myPrint(h28(10))
     myPrint(h24(10))
 
-#theTest()
+theTest()

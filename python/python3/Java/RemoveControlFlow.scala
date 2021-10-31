@@ -1,13 +1,18 @@
 import Expression.{CallIndex, Ident, NoneLiteral}
 import SimplePass.Names
 
+import scala.collection.immutable.HashMap
+
 object RemoveControlFlow {
 
   def inner(headLabel : String, afterLabel : String, breakTarget : String, s : Statement, ns : Names) :
         (List[(String, Statement)], Boolean, Names) = {
 //    def st2Fun(headLabel : String, afterLabel : String, x : Statement) =
 //      FuncDef(headLabel, List(), None, None, Suite(List(x, Return(CallIndex(true, Ident(afterLabel), List())))), new Decorators(List()))
-    def goto(label : String) = Return(CallIndex(true, Ident(label), List()))
+    def goto(label : String) = Suite(List(
+      Assign(List(Ident("cfResult"), CallIndex(true, Ident(label), List()))),
+      Return(Ident("cfResult"))
+    ))
     def mkPhi(labels : List[String]) = {}
     s match {
       case IfSimple(cond, yes, no) =>
@@ -40,19 +45,23 @@ object RemoveControlFlow {
       case WithoutArgs(StatementsWithoutArgs.Break) => (List((headLabel, goto(breakTarget))), false, ns)
       case WithoutArgs(StatementsWithoutArgs.Continue) | Raise(_, _) | ClassDef(_, _, _, _) => ???
 
-      case FuncDef(name, args, None, None, body, _) =>
-        val vars = SimpleAnalysis.classifyFunctionVariables(args, body, false).toList
+      case FuncDef(name, args, None, None, body, _, accessibleIdents) =>
+        val vars = accessibleIdents.toList
         val nonlocals = NonLocal(vars.filter(z => z._2 == VarScope.Local || z._2 == VarScope.NonLocal).map(_._1))
         // todo: this is not at all correct, because an access to a local variable with value None may lead to
         // a dynamic type error, while an access to a variable before assignment leads to exception
         // UnboundLocalError: local variable 'x' referenced before assignment
         // I'm not sure that this behaviour can be represented with a py2py pass
-        val locals = vars.filter(z => z._2 == VarScope.Local).map(z => Assign(List(Ident(z._1), NoneLiteral())))
+        val locals = vars.
+          filter(z => z._2 == VarScope.Local && !args.exists(y => y._1 == z._1)).
+          map(z => Assign(List(Ident(z._1), NoneLiteral())))
         val (List(headLabelInner, afterLabelInner), ns1) = ns(List("bb_start", "bb_finish"))
         val (body1, b, ns2) = inner(headLabelInner, afterLabelInner, "", body, ns1)
-        val body2 = body1.map(z => FuncDef(z._1, List(), None, None, Suite(List((nonlocals), z._2)), new Decorators(List())))
-        val finish = FuncDef(afterLabelInner, List(), None, None, Return(NoneLiteral()), Decorators(List()))
-        val ans = FuncDef(name, args, None, None, Suite(locals ++ body2 :+ finish :+ Return(CallIndex(true, Ident(headLabelInner), List()))), Decorators(List()))
+        val body2 = body1.map(z => FuncDef(z._1, List(), None, None, Suite(List((nonlocals), z._2)), new Decorators(List()), HashMap()))
+        val finish = FuncDef(afterLabelInner, List(), None, None, Return(NoneLiteral()), Decorators(List()), HashMap())
+        val ans = FuncDef(name, args, None, None, Suite(
+          locals ++ body2 :+ finish :+ goto(headLabelInner)
+        ), Decorators(List()), HashMap())
         (List((headLabel, Suite(List(ans, goto(afterLabel))))), b, ns2)
 
         // todo: a hack: just throw away all the import statements
@@ -66,7 +75,7 @@ object RemoveControlFlow {
   def removeControlFlow(s : Statement, ns : Names) : (Statement, Names) = {
     SimpleAnalysis.checkIsSimplified(s)
     val (List((_, s1)), _, ns1) = inner("", "", "",
-      FuncDef("outer", List(), None, None, s, Decorators(List())), ns)
+      SimpleAnalysis.computeAccessibleIdents(FuncDef("outer", List(), None, None, s, Decorators(List()), HashMap())), ns)
     (s1, ns1)
   }
 

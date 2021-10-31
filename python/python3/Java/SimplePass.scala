@@ -74,9 +74,9 @@ object SimplePass {
       case ClassDef(name, bases, body, decorators) =>
         val xbody = pst(body, ns)
         (new ClassDef(name, bases, xbody._1, decorators), xbody._2)
-      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators) =>
+      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents) =>
         val xbody = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, xbody._1, decorators), xbody._2)
+        (FuncDef(name, args, otherPositional, otherKeyword, xbody._1, decorators, accessibleIdents), xbody._2)
       case NonLocal(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) | Del(_) => nochange
     }
   }
@@ -182,7 +182,7 @@ object SimplePass {
           case Right(value) =>  Suite(List(value._1, Return(value._2)))
         }
         // todo: all the keyword args must be supported in the "lambda" as well
-        val f = FuncDef(funname, args.map(x => (x, ArgKind.Positional, None)), None, None, finalBody, Decorators(List()))
+        val f = FuncDef(funname, args.map(x => (x, ArgKind.Positional, None)), None, None, finalBody, Decorators(List()), HashMap())
         (Right((f, Ident(funname))), ns2)
 
       case Cond(cond, yes, no) if !lhs => forceAllIfNecessary(f)(List(cond, yes, no).map(x => (false, x)), ns) match {
@@ -302,9 +302,9 @@ object SimplePass {
           case Left((args, ns)) => (new ClassDef(name, args, body1, cd.decorators), ns)
           case Right((args, ns)) =>(Suite(args.map(_._1) :+ new ClassDef(name, args.map(_._2), body1, cd.decorators)), ns)
         }
-      case fd@FuncDef(name, args, otherPositional, otherKeyword, body, Decorators(List())) =>
+      case fd@FuncDef(name, args, otherPositional, otherKeyword, body, Decorators(List()), accessibleIdents) =>
         val (body1, ns1) = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, body1, fd.decorators), ns1)
+        (FuncDef(name, args, otherPositional, otherKeyword, body1, fd.decorators, accessibleIdents), ns1)
 
       case Assert(_) => alreadyDone("assert")
       case If(_, _) => alreadyDone("ifelseif")

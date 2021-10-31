@@ -85,8 +85,7 @@ object PrintEO {
         List("while.",
           Ident + printExpr(visibility)(cond),
         ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
-      case FuncDef(name, args, None, None, body, Decorators(List())) =>
-        val h = SimpleAnalysis.classifyFunctionVariables(args, body, false)
+      case FuncDef(name, args, None, None, body, Decorators(List()), h) =>
         val locals = h.filter(z => z._2 == VarScope.Local).keys
         val args1 = args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(", ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
@@ -96,8 +95,8 @@ object PrintEO {
   }
 
   def printSt(moduleName : String, st : Statement) : String = {
-    val h = SimpleAnalysis.classifyFunctionVariables(List(), st, false)
-    val locals = h.filter(z => z._2 == VarScope.Local).keys
+//    val h = SimpleAnalysis.classifyFunctionVariables(List(), st, false)
+//    val locals = h.filter(z => z._2 == VarScope.Local).keys
     (
       List(
         "+package org.eolang",
@@ -109,7 +108,7 @@ object PrintEO {
         Ident + "memory > bogusForceDataize",
         Ident + "seq > @"
       ) ++
-      ident(ident(printSt(new EOVisibility().stepInto("bogusForceDataize" :: locals.toList))(st)))
+      ident(ident(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))
     ).mkString("\n") + "\n"
   }
 
