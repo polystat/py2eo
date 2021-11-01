@@ -7,7 +7,7 @@ import org.junit.Test
 class Tests {
 
 //  val testsPrefix = "python/python3/test/"
-  val testsPrefix = "test/"
+  val testsPrefix = "./test/"
 
   @Test def printEO(): Unit = {
     val name = "trivial"
