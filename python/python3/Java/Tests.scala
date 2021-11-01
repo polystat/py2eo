@@ -7,12 +7,11 @@ import org.junit.Test
 class Tests {
 
 //  val testsPrefix = "python/python3/test/"
-  val testsPrefix = ".\\test\\"
+  val testsPrefix = "test/"
 
   @Test def printEO(): Unit = {
     val name = "trivial"
-    println(System.getProperty("user.dir"))
-    val z = Parse.parse(testsPrefix, name)
+    val z = Parse.parse(System.getProperty("user.dir") + "/" + testsPrefix, name)
     val output = new FileWriter(name + ".eo")
     output.write(PrintEO.printSt(name, z._1))
     output.close()
