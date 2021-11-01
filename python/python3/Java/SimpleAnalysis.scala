@@ -35,11 +35,12 @@ object SimpleAnalysis {
     case Suite(l) => (l, List())
     case AugAssign(op, lhs, rhs) => (List(), List(lhs, rhs))
     case Assign(l) => (List(), l)
+    case CreateConst(name, value) => (List(), List(value))
     case Return(x) => (List(), List(x))
     case Assert(x) => (List(), List(x))
     case Raise(e, None) => (List(), e.toList)
     case ClassDef(name, bases, body, decorators) => (List(body), bases ++ decorators.l)
-    case FuncDef(name, args, _, _, body, decorators) => (List(body), decorators.l)
+    case FuncDef(name, args, _, _, body, decorators, _) => (List(body), decorators.l)
     case NonLocal(_) | WithoutArgs(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => (List(), List())
   }
 
@@ -60,48 +61,68 @@ object SimpleAnalysis {
     }
   }
 
-  def classifyFunctionVariables(args : List[(String, ArgKind.T, Option[T])], body : Statement, visitChildren : Boolean)
+  private def classifyVariablesAssignedInFunctionBody(args : List[(String, ArgKind.T, Option[T])], body : Statement)
   : HashMap[String, VarScope.T] = {
     def dontVisitOtherBlocks(s : Statement) : Boolean = s match {
-      case FuncDef(_, _, _, _, _, _) | ClassDef(_, _, _, _) => visitChildren
+      case FuncDef(_, _, _, _, _, _, _) | ClassDef(_, _, _, _) => false
       case _ => true
     }
     type H = HashMap[String, VarScope.T]
-    val h1 = args.foldLeft(HashMap[String, VarScope.T]())((h, name) => h.+((name._1, VarScope.Local)))
     val h2 = foldSS[H]((h, st) => st match {
       case (NonLocal(l)) => (l.foldLeft(h)((h, name) => h.+((name, VarScope.NonLocal))), false)
       case (Global(l))  => (l.foldLeft(h)((h, name) => h.+((name, VarScope.Global))), false)
       case _ => (h, dontVisitOtherBlocks(st))
-    })(h1, body)
+    })(HashMap[String, VarScope.T](), body)
 
     val h3 = foldSS[H]((h, st) => {
       def add(name : String) : H = if (h.contains(name)) h else h.+((name, VarScope.Local))
       st match {
         case ClassDef(name, bases, body, _) => (add(name), false)
-        case FuncDef(name, args, body, _, _, _) => (add(name), false)
+        case FuncDef(name, args, body, _, _, _, _) => (add(name), false)
         case Assign(List(CollectionCons(_, _), _)) => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(l) if l.size > 2 => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(List(Ident(name), _)) => (add(name), true)
+        case CreateConst(name, _) => (add(name), true)
         case _ => (h, true)
       }
     })(h2, body)
 
-    foldSE[H]((h, e) => e match {
-      case Ident(name) => if (h.contains(name)) h else {
-//        if (!BuiltinFunctions.fs.contains(name))  // todo: this should be the builtin module's global namespace
-          h.+((name, VarScope.Global))
-//        else
-//        h
-      }
-      case _ => h
-    }, dontVisitOtherBlocks)(h3, body)
+    args.foldLeft(h3)((h, name) => h.+((name._1, VarScope.Arg)))
 
+//    foldSE[H]((h, e) => e match {
+//      case Ident(name) => if (h.contains(name)) h else {
+////        if (!BuiltinFunctions.fs.contains(name))  // todo: this should be the builtin module's global namespace
+//          h.+((name, VarScope.Global))
+////        else
+////        h
+//      }
+//      case _ => h
+//    }, dontVisitOtherBlocks)(h3, body)
+//
+  }
+
+  private def computeAccessibleIdentsF(upperVars : HashMap[String, VarScope.T], f : FuncDef) : FuncDef = {
+    val v = classifyVariablesAssignedInFunctionBody(f.args, f.body)
+    val vUpper = upperVars.map(x => if (x._2 == VarScope.Local || x._2 == VarScope.Arg) (x._1, VarScope.ImplicitNonLocal) else x)
+    val merged = v.foldLeft(vUpper)((acc, z) => acc.+(z))
+    val (body, _) = SimplePass.procStatementGeneral((s, ns) => s match {
+      case f : FuncDef => (computeAccessibleIdentsF(merged, f), ns, false)
+      case _ => (s, ns, true)
+    })(f.body, new SimplePass.Names())
+    FuncDef(f.name, f.args, f.otherPositional, f.otherKeyword, body, f.decorators, merged)
+  }
+
+  def computeAccessibleIdents(s : Statement) : Statement = {
+    SimplePass.procStatementGeneral((s, ns) => s match {
+      case f : FuncDef => (computeAccessibleIdentsF(HashMap(), f), ns, false)
+      case _ => (s, ns, true)
+    })(s, new SimplePass.Names())._1
   }
 
   private def assertStatementIsSimplified(acc : Unit, s : Statement) : (Unit, Boolean) = s match {
     case Del(Ident(_)) | IfSimple(_, _, _) | Try(_, List((None, _)), _, _) | While(_, _, _) |
        Suite(_) | AugAssign(_, _, _) | Assign(List(_)) | Assign(List(Ident(_), _)) | Return(_) |
-       Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | FuncDef(_, _, _, _, _, Decorators(List())) |
+       Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | FuncDef(_, _, _, _, _, Decorators(List()), _) |
        NonLocal(_) | WithoutArgs(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => (acc, true)
   }
 

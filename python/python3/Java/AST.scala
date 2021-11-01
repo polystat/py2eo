@@ -236,7 +236,7 @@ object StatementsWithoutArgs extends Enumeration {
 
 object VarScope extends Enumeration {
   type T = Value
-  val Local, NonLocal, Global /*, Dynamic dynamic vars don't exist in python! only dynamic attributes do */  = Value
+  val Local, NonLocal, ImplicitNonLocal, Arg, Global /*, Dynamic dynamic vars don't exist in python! only dynamic attributes do */  = Value
 }
 
 object ArgKind extends Enumeration {
@@ -255,6 +255,7 @@ case class For(what : ET, in : ET, body : Statement, eelse : Statement) extends 
 case class Suite(l : List[Statement]) extends Statement
 case class AugAssign(op : AugOps.T, lhs : ET, rhs : ET) extends Statement
 case class Assign(l : List[ET]) extends Statement
+case class CreateConst(name : String, value : ET) extends Statement
 case class WithoutArgs(s : StatementsWithoutArgs.T) extends Statement
 object WithoutArgs {
   val pass = WithoutArgs(StatementsWithoutArgs.Pass)
@@ -267,11 +268,11 @@ case class Raise(e : Option[ET], from : Option[ET]) extends Statement
 case class Del(l : ET) extends Statement
 case class Decorators(l : List[ET])
 case class FuncDef(name : String, args : List[(String, ArgKind.T, Option[ET])], otherPositional : Option[String],
-                   otherKeyword : Option[String], body : Statement, decorators: Decorators) extends Statement {
-  lazy val variablesClassification = SimpleAnalysis.classifyFunctionVariables(args, body, false)
+         otherKeyword : Option[String], body : Statement, decorators: Decorators, accessibleIdents : HashMap[String, VarScope.T]) extends Statement {
+//  lazy val variablesClassification = SimpleAnalysis.classifyFunctionVariables(args, body, false)
 }
 class ClassDef(name : String, bases0 : List[ET], body : Statement, decorators: Decorators)
-  extends FuncDef(name, List(), None, None, body, decorators) {
+  extends FuncDef(name, List(), None, None, body, decorators, HashMap()) {
     val bases = bases0
 }
 object ClassDef{
@@ -345,7 +346,7 @@ object MapStatements {
 
   def mapFuncDef(s : FuncdefContext, decorators: Decorators) = {
     val z = mapTypedargslist(s.parameters().typedargslist())
-    FuncDef(s.NAME().getText, z._1, z._2, z._3, mapNullableSuite(s.suite()), decorators)
+    FuncDef(s.NAME().getText, z._1, z._2, z._3, mapNullableSuite(s.suite()), decorators, HashMap())
   }
 
   def mapClassDef(s : ClassdefContext, decorators: Decorators) = new ClassDef(
@@ -713,26 +714,3 @@ object Parse {
 
 }
 
-object ExplicitHeapTest extends App {
-  val name = "testExplicitHeap"
-//  val name = "trivial"
-  val y = Parse.parse(".", name)
-
-  val textractAllCalls = SimplePass.procExprInStatement(
-    SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-  Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
-
-  val z = ExplicitHeap.explicitStackHeap(textractAllCalls._1, textractAllCalls._2)
-
-  val hacked = Suite(List(
-    ImportAllSymbols(List("closureRuntime")),
-    Assign(List(Ident("hiddenHeap"), CollectionCons(CollectionKind.List, List()))),
-    Assign(List(Ident("theTestPtr"), CallIndex(true, Ident("mkNew"),
-      List((None, Ident("hiddenHeap")), (None, NoneLiteral()))))),
-    z._1,
-    Assign(List(CallIndex(true, Ident("tmpFun"),
-      List((None, Ident("hiddenHeap")), (None, DictCons(List()))))))
-  ))
-
-  Parse.toFile(hacked, "afterExplicitStackHeap", name)
-}

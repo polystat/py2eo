@@ -127,6 +127,7 @@ object PrintPython {
 
       case AugAssign(op, lhs, rhs) => shift + printExpr(lhs) + " " + AugOps.toString(op) + " " + printExpr(rhs)
       case Assign(l) => shift + l.map(printExpr).mkString(" = ")
+      case CreateConst(name, value) => printSt(Assign(List(Ident(name), value)), shift)
       case WithoutArgs(s) => shift + StatementsWithoutArgs.toString(s)
       case Return(x) =>shift + "return " + printExpr(x)
       case Assert(x) => shift + "assert " + printExpr(x)
@@ -138,7 +139,7 @@ object PrintPython {
         printDecorators(decorators) +
         shift + "class " + name + "(" + bases.map(printExpr).mkString(", ") + "):\n" +
           printSt(body, shiftIncr)
-      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators) =>
+      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, _) =>
         val positionalOnly = args.filter(_._2 == ArgKind.Positional)
         val posOrKeyword = args.filter(_._2 == ArgKind.PosOrKeyword)
         val keywordOnly = args.filter(_._2 == ArgKind.Keyword)

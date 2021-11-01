@@ -8,6 +8,8 @@ object SimplePass {
 
     def this() = this(HashMap())
 
+    def last(s : String) : String = s + (used(s) - 1)
+
     def apply(s : String) : (String, Names) = {
       if (used.contains(s)) (s + used(s), Names(used.+((s, used(s) + 1))))
       else (s + "0", Names(used.+((s, 1))))
@@ -55,7 +57,7 @@ object SimplePass {
       case Suite(l) => {
         val xl = l.foldLeft((List[Statement](), ns))((acc, st) => {
           val xst = pst(st, acc._2)
-          (acc._1 :+ xst._1, acc._2)
+          (acc._1 :+ xst._1, xst._2)
         })
         (Suite(xl._1), xl._2)
       }
@@ -70,13 +72,13 @@ object SimplePass {
         (Try(xtry._1, excepts.map(_._1).zip(xex._1), xelse._1, xfinally._1), xfinally._2)
 
       case AugAssign(op, lhs, rhs) => nochange
-      case Return(_) | Assert(_) | Raise(_, _) | Assign(_) | WithoutArgs(_) => nochange
+      case Return(_) | Assert(_) | Raise(_, _) | Assign(_) | WithoutArgs(_) | CreateConst(_, _) => nochange
       case ClassDef(name, bases, body, decorators) =>
         val xbody = pst(body, ns)
         (new ClassDef(name, bases, xbody._1, decorators), xbody._2)
-      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators) =>
+      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents) =>
         val xbody = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, xbody._1, decorators), xbody._2)
+        (FuncDef(name, args, otherPositional, otherKeyword, xbody._1, decorators, accessibleIdents), xbody._2)
       case NonLocal(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) | Del(_) => nochange
     }
   }
@@ -182,7 +184,7 @@ object SimplePass {
           case Right(value) =>  Suite(List(value._1, Return(value._2)))
         }
         // todo: all the keyword args must be supported in the "lambda" as well
-        val f = FuncDef(funname, args.map(x => (x, ArgKind.Positional, None)), None, None, finalBody, Decorators(List()))
+        val f = FuncDef(funname, args.map(x => (x, ArgKind.Positional, None)), None, None, finalBody, Decorators(List()), HashMap())
         (Right((f, Ident(funname))), ns2)
 
       case Cond(cond, yes, no) if !lhs => forceAllIfNecessary(f)(List(cond, yes, no).map(x => (false, x)), ns) match {
@@ -302,9 +304,9 @@ object SimplePass {
           case Left((args, ns)) => (new ClassDef(name, args, body1, cd.decorators), ns)
           case Right((args, ns)) =>(Suite(args.map(_._1) :+ new ClassDef(name, args.map(_._2), body1, cd.decorators)), ns)
         }
-      case fd@FuncDef(name, args, otherPositional, otherKeyword, body, Decorators(List())) =>
+      case fd@FuncDef(name, args, otherPositional, otherKeyword, body, Decorators(List()), accessibleIdents) =>
         val (body1, ns1) = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, body1, fd.decorators), ns1)
+        (FuncDef(name, args, otherPositional, otherKeyword, body1, fd.decorators, accessibleIdents), ns1)
 
       case Assert(_) => alreadyDone("assert")
       case If(_, _) => alreadyDone("ifelseif")
