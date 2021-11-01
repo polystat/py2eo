@@ -1,3 +1,5 @@
+import java.io.FileWriter
+
 import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident}
 import org.junit.Assert._
 import org.junit.Test
