@@ -1,5 +1,3 @@
-import java.io.FileWriter
-
 import Expression.{CallIndex, Ident}
 import org.junit.Assert._
 import org.junit.Test
@@ -8,16 +6,6 @@ class Tests {
 
 //  val testsPrefix = "python/python3/test/"
   val testsPrefix = System.getProperty("user.dir") + "/test/"
-
-  @Test def printEO(): Unit = {
-    val name = "trivial"
-    val z = Parse.parse(testsPrefix, name)
-    val output = new FileWriter(testsPrefix + name + ".eo")
-    output.write(PrintEO.printSt(testsPrefix + name, z._1))
-    output.close()
-    import scala.sys.process._
-    assertTrue(0 == (s"diff \"$testsPrefix/trivial.eo.golden\" \"$testsPrefix/trivial.eo\"".!))
-  }
 
   @Test def removeControlFlow(): Unit = {
     val name = "trivialWithBreak"
