@@ -1,13 +1,25 @@
-import java.io.FileWriter
+import java.io.{File, FileWriter}
+import java.nio.file.Files
 
 import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident}
 import org.junit.Assert._
-import org.junit.Test
+import org.junit.{Before, Test}
 
+// run these tests with py2eo/python/python3 as a currend directory
 class Tests {
 
-  val testsPrefix = "python/python3/test/"
-//  val testsPrefix = "test/"
+  private val testsPrefix = System.getProperty("user.dir") + "/test/"
+  val intermediateDirs = List(
+    "afterEmptyProcStatement", "afterExplicitStackHeap", "afterExtractAllCalls", "afterImmutabilization",
+    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "genEO"
+  )
+
+  @Before def initialize(): Unit = {
+    for (dir <- intermediateDirs) {
+      val f = new File(testsPrefix + dir + "/")
+      if (!f.isDirectory) assertTrue(f.mkdir())
+    }
+  }
 
 //  @Test def printEO(): Unit = {
 //    val name = "trivial"
