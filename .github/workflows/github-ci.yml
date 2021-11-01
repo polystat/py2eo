@@ -15,3 +15,17 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn clean compile
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Build with Maven
+        run: mkdir afterEmptyExpr  afterEmptyProcStatement  afterExplicitStackHeap  afterExtractAllCalls  afterIsIsNotExpr  afterNoStarInRHS  afterParser  afterRemoveControlFlow  afterSimplifyAssert  afterSimplifyAssignmentList  afterSimplifyAssignTargetList  afterSimplifyDecorators  afterSimplifyDel  afterSimplifyExcepts  afterSimplifyFor  afterSimplifyIf  afterSimplifyRaiseFrom  afterSimplifyWith
+        run: mvn clean test
