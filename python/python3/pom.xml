@@ -12,10 +12,56 @@
 	<properties>
 		<!-- location of java sources -->
 		<src.dir>Java</src.dir>
+		<scala.version>2.13.6</scala.version>
+		<scala.binary.version>2.13</scala.binary.version>
 	</properties>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>scala-tools.org</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<build>
 		<sourceDirectory>${src.dir}</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>com.google.code.sbt-compiler-maven-plugin</groupId>
+				<artifactId>sbt-compiler-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<executions>
+					<execution>
+						<id>default-sbt-compile</id>
+						<goals>
+							<goal>compile</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.scalatest</groupId>
+				<artifactId>scalatest-maven-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<jUnitClasses>Tests</jUnitClasses>
+				</configuration>
+				<executions>
+					<execution>
+						<id>test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.antlr</groupId>
 				<artifactId>antlr4-maven-plugin</artifactId>
@@ -59,4 +105,38 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.version}</version>
+
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-compiler</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scalactic</groupId>
+			<artifactId>scalactic_2.13</artifactId>
+			<version>3.2.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scalatest</groupId>
+			<artifactId>scalatest_2.13</artifactId>
+			<version>3.2.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scalatestplus</groupId>
+			<artifactId>junit-4-13_2.13</artifactId>
+			<version>3.2.5.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.scalatestplus</groupId>
+			<artifactId>scalatestplus-junit_2.13</artifactId>
+			<version>1.0.0-M2</version>
+		</dependency>
+	</dependencies>
 </project>
