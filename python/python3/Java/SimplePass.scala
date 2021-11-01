@@ -8,6 +8,8 @@ object SimplePass {
 
     def this() = this(HashMap())
 
+    def last(s : String) : String = s + (used(s) - 1)
+
     def apply(s : String) : (String, Names) = {
       if (used.contains(s)) (s + used(s), Names(used.+((s, used(s) + 1))))
       else (s + "0", Names(used.+((s, 1))))
@@ -70,7 +72,7 @@ object SimplePass {
         (Try(xtry._1, excepts.map(_._1).zip(xex._1), xelse._1, xfinally._1), xfinally._2)
 
       case AugAssign(op, lhs, rhs) => nochange
-      case Return(_) | Assert(_) | Raise(_, _) | Assign(_) | WithoutArgs(_) => nochange
+      case Return(_) | Assert(_) | Raise(_, _) | Assign(_) | WithoutArgs(_) | CreateConst(_, _) => nochange
       case ClassDef(name, bases, body, decorators) =>
         val xbody = pst(body, ns)
         (new ClassDef(name, bases, xbody._1, decorators), xbody._2)

@@ -1,6 +1,6 @@
 import Expression._
 
-import scala.collection.immutable.HashMap
+import scala.collection.immutable.{HashMap, HashSet}
 
 object PrintEO {
 
@@ -33,17 +33,20 @@ object PrintEO {
   }
 
   // supports explicit access to parent fields with ^. prefixes
-  class EOVisibility(h0 : HashMap[String, String]) {
-    def this() = this(HashMap())
+  class EOVisibility(builtinNames : HashSet[String], h0 : HashMap[String, String]) {
+    def this() = this(HashSet(), HashMap())
     val h = h0
-    def apply(name : String) = h(name)
+    def apply(name : String) = if (builtinNames.contains(name)) name else h(name)
     def stepInto(locals : List[String]) = new EOVisibility(
+      builtinNames,
       locals.foldLeft(h.map(z => (z._1, "^." + z._2)))((acc, name) => acc.+((name, name))))
   }
 
   def printExpr(visibility : EOVisibility)(value : T) : String = {
     def e = printExpr(visibility)(_)
     value match {
+      case CollectionCons(kind, l) => "(* " + l.map(e).mkString(" ") + ")"
+      case NoneLiteral() => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
       case IntLiteral(value) => value.toString()
       case FloatLiteral(value) => value.toString
       case StringLiteral(value) => "\"" + value + "\""
@@ -56,6 +59,8 @@ object PrintEO {
       case LazyLOr(l, r) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x) => "(" + e(x) + "." + unop(op) + ")"
       case Expression.Ident(name) => "(" + visibility(name) + ")"
+      case CallIndex(false, Expression.Ident("closure"), List((_, StringLiteral(fname)))) =>
+        e(Field(Expression.Ident("closure"), fname.substring(1, fname.length - 1)))
       case CallIndex(isCall, whom, args) if !isCall && args.size == 1 =>
         "(" + e(whom) + ".get " + e(args(0)._2) + ")"
       case Field(whose, name) => "(" + e(whose) + "." + name + ")"
@@ -86,24 +91,28 @@ object PrintEO {
           Ident + printExpr(visibility)(cond),
         ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
       case FuncDef(name, args, None, None, body, Decorators(List()), h) =>
-        val locals = h.filter(z => z._2 == VarScope.Local).keys
-        val args1 = args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(", ")
+        val locals = h.filter(z => z._2 == VarScope.Local || z._2 == VarScope.Arg).keys
+        val args1 = args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
         List(s"[$args1] > $name") ++
           ident(locals.map(name => s"memory > $name").toList ++ List("seq > @") ++ ident(body1))
     }
   }
 
+  val standardTestPreface = List(
+    "+package org.eolang",
+    "+alias org.eolang.txt.sprintf",
+    "+alias org.eolang.io.stdout",
+    "+junit",
+    "",
+  )
+
   def printSt(moduleName : String, st : Statement) : String = {
 //    val h = SimpleAnalysis.classifyFunctionVariables(List(), st, false)
 //    val locals = h.filter(z => z._2 == VarScope.Local).keys
     (
+      standardTestPreface ++
       List(
-        "+package org.eolang",
-        "+alias org.eolang.txt.sprintf",
-        "+alias org.eolang.io.stdout",
-        "+junit",
-        "",
         "[] > " + moduleName,
         Ident + "memory > bogusForceDataize",
         Ident + "seq > @"

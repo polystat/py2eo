@@ -255,6 +255,7 @@ case class For(what : ET, in : ET, body : Statement, eelse : Statement) extends 
 case class Suite(l : List[Statement]) extends Statement
 case class AugAssign(op : AugOps.T, lhs : ET, rhs : ET) extends Statement
 case class Assign(l : List[ET]) extends Statement
+case class CreateConst(name : String, value : ET) extends Statement
 case class WithoutArgs(s : StatementsWithoutArgs.T) extends Statement
 object WithoutArgs {
   val pass = WithoutArgs(StatementsWithoutArgs.Pass)
@@ -713,29 +714,3 @@ object Parse {
 
 }
 
-object ExplicitHeapTest extends App {
-  val name = "trivial"
-  val y = Parse.parse("./", name)
-
-  val textractAllCalls = SimplePass.procExprInStatement(
-    SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-  Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
-
-  val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-  val Suite(theFun :: _) = x._1
-  Parse.toFile(theFun, "afterRemoveControlFlow", name)
-
-  val z = ExplicitHeap.explicitStackHeap(theFun, x._2)
-
-  val hacked = Suite(List(
-    ImportAllSymbols(List("closureRuntime")),
-    Assign(List(Ident("hiddenHeap"), CollectionCons(CollectionKind.List, List()))),
-    Assign(List(Ident("theTestPtr"), CallIndex(true, Ident("mkNew"),
-      List((None, Ident("hiddenHeap")), (None, NoneLiteral()))))),
-    z._1,
-    Assign(List(CallIndex(true, Ident("tmpFun"),
-      List((None, Ident("hiddenHeap")), (None, DictCons(List()))))))
-  ))
-
-  Parse.toFile(hacked, "afterExplicitStackHeap", name)
-}

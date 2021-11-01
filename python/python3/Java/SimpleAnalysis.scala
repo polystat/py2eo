@@ -35,6 +35,7 @@ object SimpleAnalysis {
     case Suite(l) => (l, List())
     case AugAssign(op, lhs, rhs) => (List(), List(lhs, rhs))
     case Assign(l) => (List(), l)
+    case CreateConst(name, value) => (List(), List(value))
     case Return(x) => (List(), List(x))
     case Assert(x) => (List(), List(x))
     case Raise(e, None) => (List(), e.toList)
@@ -81,6 +82,7 @@ object SimpleAnalysis {
         case Assign(List(CollectionCons(_, _), _)) => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(l) if l.size > 2 => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(List(Ident(name), _)) => (add(name), true)
+        case CreateConst(name, _) => (add(name), true)
         case _ => (h, true)
       }
     })(h2, body)

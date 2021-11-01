@@ -9,10 +9,8 @@ object RemoveControlFlow {
         (List[(String, Statement)], Boolean, Names) = {
 //    def st2Fun(headLabel : String, afterLabel : String, x : Statement) =
 //      FuncDef(headLabel, List(), None, None, Suite(List(x, Return(CallIndex(true, Ident(afterLabel), List())))), new Decorators(List()))
-    def goto(label : String) = Suite(List(
-      Assign(List(Ident("cfResult"), CallIndex(true, Ident(label), List()))),
-      Return(Ident("cfResult"))
-    ))
+    def goto(label : String) =
+      Return(CallIndex(true, Ident(label), List()))
     def mkPhi(labels : List[String]) = {}
     s match {
       case IfSimple(cond, yes, no) =>
