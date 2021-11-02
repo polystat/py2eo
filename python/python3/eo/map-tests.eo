@@ -40,3 +40,42 @@
   eq. > @
     FALSE
     (((immutablemap (* 1 2 3) (* 'a' 'b' 'c')).remove 2).find 2).valid
+
+[] > map-find-alt
+  eq. > @
+    option
+      TRUE
+      2
+    (immutablemap (* 'a' 'b' 'c') (* 1 2 3)).find 'b'
+
+[] > map-find-non-existing-alt
+  eq. > @
+    FALSE
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).find 't').valid
+
+[] > map-add-alt
+  eq. > @
+    option
+      TRUE
+      6
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).add 't' 6).find 't'
+
+[] > map-add-existing-alt
+  eq. > @
+    option
+      TRUE
+      6
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).add 'b' 6).find 'b'
+
+[] > map-remove-alt
+  eq. > @
+    option
+      TRUE
+      3
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).remove 'b').find 'c'
+
+[] > map-remove-and-find-alt
+  eq. > @
+    FALSE
+    (((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).remove 'b').find 'b').valid
+
