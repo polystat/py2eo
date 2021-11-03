@@ -1,0 +1,35 @@
++package sandbox.hse
++alias indexof sandbox.hse.indexof
++alias remove sandbox.hse.remove
++rt jvm org.eolang:eo-runtime:1.0-SNAPSHOT
+
+# Optional value
+[valid value] > option
+
+# Immutable map
+[keys values] > immutablemap
+
+  [key] > indexof
+    ^.keys.indexof key > @
+
+  [key] > find
+    ^.indexof key > position
+    if. > @
+      position.eq -1
+      option FALSE 0
+      option TRUE (^.values.get position)
+
+  [key] > remove
+    ^.indexof key > position
+    if. > @
+      position.eq -1
+      0
+      immutablemap > @
+        ^.keys.remove position
+        ^.values.remove position
+
+  [key value] > add
+    ^.remove key > tempmap
+    immutablemap > @
+      tempmap.keys.append key
+      tempmap.values.append value
