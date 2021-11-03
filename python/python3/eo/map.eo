@@ -21,9 +21,12 @@
 
   [key] > remove
     ^.indexof key > position
-    immutablemap > @
-      keys.remove position
-      values.remove position
+    if. > @
+      position.eq -1
+      0
+      immutablemap > @
+        ^.keys.remove position
+        ^.values.remove position
 
   [key value] > add
     ^.remove key > tempmap
