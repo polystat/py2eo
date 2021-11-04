@@ -50,7 +50,7 @@ object PrintEO {
       case IntLiteral(value) => value.toString()
       case FloatLiteral(value) => value.toString
       case StringLiteral(value) => "\"" + value + "\""
-      case BoolLiteral(value) => if (value) "true" else "false"
+      case BoolLiteral(value) => if (value) "TRUE" else "FALSE"
       //    case NoneLiteral() =>
       case Binop(op, l, r) =>  "(" + e(l) + "." + binop(op) + " " + e(r) + ")"
       case SimpleComparison(op, l, r) => "(" + e(l) + "." + compop(op) + " " + e(r) + ")"
