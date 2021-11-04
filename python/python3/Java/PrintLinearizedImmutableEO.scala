@@ -60,7 +60,7 @@ object PrintLinearizedImmutableEO {
           "  mapi. > @",
           "    heap",
           "    [x i]",
-          "      (^.ptr.eq i).if (^.newValue) x > @",
+          "      (ptr.eq i).if (newValue) x > @",
         )) ++
         ident(printBody(new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
       ).mkString("\n") + "\n"
