@@ -7,17 +7,19 @@ object PrintLinearizedImmutableEO {
 
   import PrintEO.{EOVisibility, printExpr, Text, ident}
 
-  def isRetIf(st : Statement) = st match {
+  def isRetIfRet(st : Statement) = st match {
     case Return(_) | IfSimple(_, Return(_), Return(_)) => true
     case _ => false
   }
 
+  // remove all the code after return: this is needed if the previous pass generates something like return; return;
+  def rmUnreachableTail(l : List[Statement]) : List[Statement] = l.foldLeft(List[Statement]())((acc, st) =>
+    if (acc.nonEmpty && isRetIfRet(acc.last)) acc else acc :+ st
+  )
+
   def printBody(visibility : EOVisibility)(st : Suite) : Text = {
-    if (st.l.count(isRetIf) != (if (isRetIf(st.l.last)) 1 else 0)) {
-      println("oblom for " + st)
-      assert(false)
-    }
-    st.l.flatMap {
+    val l = rmUnreachableTail(st.l)
+    l.flatMap {
       case Assign(List(CallIndex(true, Expression.Ident("print"), List((None, n))))) =>
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
       case CreateConst(name, DictCons(l)) =>
