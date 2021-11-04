@@ -55,7 +55,10 @@ object RemoveControlFlow {
           map(z => Assign(List(Ident(z._1), NoneLiteral())))
         val (List(headLabelInner, afterLabelInner), ns1) = ns(List("bb_start", "bb_finish"))
         val (body1, b, ns2) = inner(headLabelInner, afterLabelInner, "", body, ns1)
-        val body2 = body1.map(z => FuncDef(z._1, List(), None, None, Suite(List((nonlocals), z._2)), new Decorators(List()), HashMap()))
+        val body2 = body1.map(z => FuncDef(z._1, List(), None, None,
+          (if (nonlocals.l.nonEmpty) Suite(List(nonlocals, z._2)) else z._2),
+          Decorators(List()), HashMap())
+        )
         val finish = FuncDef(afterLabelInner, List(), None, None, Return(NoneLiteral()), Decorators(List()), HashMap())
         val ans = FuncDef(name, args, None, None, Suite(
           locals ++ body2 :+ finish :+ goto(headLabelInner)
