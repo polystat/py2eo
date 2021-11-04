@@ -59,8 +59,9 @@ object PrintEO {
       case LazyLOr(l, r) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x) => "(" + e(x) + "." + unop(op) + ")"
       case Expression.Ident(name) => "(" + visibility(name) + ")"
-      case CallIndex(false, Expression.Ident("closure"), List((_, StringLiteral(fname)))) =>
-        e(Field(Expression.Ident("closure"), fname.substring(1, fname.length - 1)))
+      case CallIndex(false, from, List((_, StringLiteral(fname))))
+        if fname == "\"callme\"" || (from match { case Expression.Ident("closure") => true case _ => false}) =>
+          e(Field(from, fname.substring(1, fname.length - 1)))
       case CallIndex(isCall, whom, args) if !isCall && args.size == 1 =>
         "(" + e(whom) + ".get " + e(args(0)._2) + ")"
       case Field(whose, name) => "(" + e(whose) + "." + name + ")"
