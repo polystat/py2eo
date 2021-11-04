@@ -20,16 +20,6 @@ class Tests {
     }
   }
 
-//  @Test def printEO(): Unit = {
-//    val name = "trivial"
-//    val z = Parse.parse(testsPrefix, name)
-//    val output = new FileWriter(name + ".eo")
-//    output.write(PrintEO.printSt(name, z._1))
-//    output.close()
-//    import scala.sys.process._
-//    assertTrue(0 == (s"diff \"$testsPrefix/trivial.eo.golden\" \"$testsPrefix/trivial.eo\"".!))
-//  }
-
   @Test def removeControlFlow(): Unit = {
     for (name <- List("x", "trivial", "trivialWithBreak")) {
       val y = Parse.parse(testsPrefix, name)
