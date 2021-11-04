@@ -83,7 +83,12 @@ class Tests {
 
     val hacked4EO = Suite(List(l.head))
     val output = new FileWriter(testsPrefix + "genEO/" + name + ".eo")
-    output.write(PrintLinearizedImmutableEO.printSt(name, hacked4EO))
+    val eoText = PrintLinearizedImmutableEO.printSt(name, hacked4EO)
+    output.write(eoText +
+      "  * > emptyHeap\n" +
+      "  [] > emptyClosure\n" +
+      s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
+    )
     output.close()
   }
 
