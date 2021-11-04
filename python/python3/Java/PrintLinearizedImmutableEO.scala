@@ -54,8 +54,8 @@ object PrintLinearizedImmutableEO {
         ident(List(
           "[heap] > nextFreePtr",
           "  heap.length > @",
-          "[heap] > append2heap",
-          "  heap.append > @",
+          "[heap newValue] > append2heap",
+          "  heap.append newValue > @",
           "[heap ptr newValue] > immArrChangeValue",
           "  mapi. > @",
           "    heap",
