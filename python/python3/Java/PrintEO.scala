@@ -39,7 +39,7 @@ object PrintEO {
     def apply(name : String) = if (builtinNames.contains(name)) name else h(name)
     def stepInto(locals : List[String]) = new EOVisibility(
       builtinNames,
-      locals.foldLeft(h.map(z => (z._1, "^." + z._2)))((acc, name) => acc.+((name, name))))
+      locals.foldLeft(h.map(z => (z._1, /*"^." +*/ z._2)))((acc, name) => acc.+((name, name))))
   }
 
   def printExpr(visibility : EOVisibility)(value : T) : String = {
