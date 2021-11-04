@@ -8,7 +8,6 @@ def testFib1():
         i = i + 1
         f0 = f1
         f1 = f2
-    print(f0)
+    return 55 == f0
 
-testFib1()
 

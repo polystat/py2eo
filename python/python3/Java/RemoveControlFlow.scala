@@ -73,10 +73,16 @@ object RemoveControlFlow {
     }
   }
 
+  // this pass currently only works for files with a single function, which is the test function
   def removeControlFlow(s : Statement, ns : Names) : (Statement, Names) = {
     SimpleAnalysis.checkIsSimplified(s)
+    val Suite(l) = s
+    val List(f@FuncDef(_, _, _, _, _, _, _)) = l.filter({
+      case ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => false
+      case _ => true
+    })
     val (List((_, s1)), _, ns1) = inner("", "", "",
-      SimpleAnalysis.computeAccessibleIdents(FuncDef("outer", List(), None, None, s, Decorators(List()), HashMap())), ns)
+      SimpleAnalysis.computeAccessibleIdents(f), ns)
     (s1, ns1)
   }
 

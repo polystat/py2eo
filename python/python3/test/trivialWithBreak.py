@@ -10,6 +10,5 @@ def testFib1():
         f1 = f2
         if i == 9: break
     print(f0)
-
-testFib1()
+    return (34 == f0)
 
