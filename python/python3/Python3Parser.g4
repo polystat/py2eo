@@ -81,8 +81,8 @@ small_stmt: expr_stmt # SmallExpr
     | assert_stmt     # SmallAssert
     ;
 expr_stmt: testlist_star_expr expr_stmt_right;
-expr_stmt_right : annassign  # AnnAssign
-    | augassign (yield_expr|testlist) # AugAssign
+expr_stmt_right : annassign  # AnnAssignLabel
+    | augassign (yield_expr|testlist) # AugAssignLabel
     | ('=' l+=rhsassign)* # JustAssign
     ;
 rhsassign :
