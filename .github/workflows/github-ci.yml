@@ -27,15 +27,4 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Build with Maven
-        run: mvn clean test -B
-      - name: Archive EO listings
-        uses: actions/upload-artifact@v2
-        with:
-            name: EOOutput
-            path: python/python3/test/genEO/
-            if-no-files-found: error
-            
-  runEO:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
+        run: mvn clean test -B -PrunEO
