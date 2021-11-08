@@ -12,6 +12,7 @@ object ExplicitHeap {
             s : Statement, ns : Names) : (Statement, Names, Boolean) = {
 //      println(s"procSt($s)")
       def accessHeap(e : Expression.T, ns : Names) = CallIndex(false, Ident(ns.last(constHeap)), List((None, e)))
+      def callme(arr : Expression.T) = CallIndex(false, arr, List((None, StringLiteral("\"callme\""))))
       def index(arr : Expression.T, ind : Int) = CallIndex(false, arr, List((None, IntLiteral(ind))))
 
       def ptr4ident(name : String) : Expression.T = {
@@ -33,8 +34,8 @@ object ExplicitHeap {
       def procCall(c : CallIndex, ns : Names) : CallIndex = {
         val Ident(whomName) = c.whom
         val whom = accessHeap(ptr4ident(whomName), ns)
-        CallIndex(true, index(whom, 1),
-          ((None, Ident(ns.last(constHeap))) :: (None, index(whom, 0)) :: c.args))
+        CallIndex(true, callme(whom),
+          ((None, Ident(ns.last(constHeap))) :: (None, whom) :: c.args))
       }
 //      def procIdentInSt = SimplePass.procExprInStatement(procIdentStep)(_, _)
       s match {
@@ -71,10 +72,12 @@ object ExplicitHeap {
               args,
             otherPositional, otherKeyword, Suite(body2), decorators, HashMap())
           val mkNewClosure = CreateConst(newClosure,
-            DictCons(vars.filter(x => x._2 != VarScope.Global && x._2 != VarScope.Local && x._2 != VarScope.Arg).
-              map(z => Left((StringLiteral("\"" + z._1 + "\""), Ident(z._1 + "Ptr")))).toList)
+            DictCons(Left((StringLiteral("\"callme\""), Ident(tmpFun))) ::
+              vars.filter(x => x._2 != VarScope.Global && x._2 != VarScope.Local && x._2 != VarScope.Arg).
+              map(z => Left((StringLiteral("\"" + z._1 + "\""), Ident(z._1 + "Ptr")))).toList
+            )
           )
-          val newFun = CollectionCons(Expression.CollectionKind.Tuple, List(Ident(newClosure), Ident(tmpFun)))
+          val newFun = Ident(newClosure)
           val mkFun = (CreateConst(newHeap, CallIndex(true, Ident("immArrChangeValue"),
             List((None, Ident(ns.last(constHeap))), (None, ptr4ident(name)), (None, newFun)))))
           (Suite(List(f1, mkNewClosure, mkFun)), ns2, false)

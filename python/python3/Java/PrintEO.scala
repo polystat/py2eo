@@ -39,7 +39,7 @@ object PrintEO {
     def apply(name : String) = if (builtinNames.contains(name)) name else h(name)
     def stepInto(locals : List[String]) = new EOVisibility(
       builtinNames,
-      locals.foldLeft(h.map(z => (z._1, "^." + z._2)))((acc, name) => acc.+((name, name))))
+      locals.foldLeft(h.map(z => (z._1, /*"^." +*/ z._2)))((acc, name) => acc.+((name, name))))
   }
 
   def printExpr(visibility : EOVisibility)(value : T) : String = {
@@ -50,7 +50,7 @@ object PrintEO {
       case IntLiteral(value) => value.toString()
       case FloatLiteral(value) => value.toString
       case StringLiteral(value) => "\"" + value + "\""
-      case BoolLiteral(value) => if (value) "true" else "false"
+      case BoolLiteral(value) => if (value) "TRUE" else "FALSE"
       //    case NoneLiteral() =>
       case Binop(op, l, r) =>  "(" + e(l) + "." + binop(op) + " " + e(r) + ")"
       case SimpleComparison(op, l, r) => "(" + e(l) + "." + compop(op) + " " + e(r) + ")"
@@ -59,8 +59,9 @@ object PrintEO {
       case LazyLOr(l, r) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x) => "(" + e(x) + "." + unop(op) + ")"
       case Expression.Ident(name) => "(" + visibility(name) + ")"
-      case CallIndex(false, Expression.Ident("closure"), List((_, StringLiteral(fname)))) =>
-        e(Field(Expression.Ident("closure"), fname.substring(1, fname.length - 1)))
+      case CallIndex(false, from, List((_, StringLiteral(fname))))
+        if fname == "\"callme\"" || (from match { case Expression.Ident("closure") => true case _ => false}) =>
+          e(Field(from, fname.substring(1, fname.length - 1)))
       case CallIndex(isCall, whom, args) if !isCall && args.size == 1 =>
         "(" + e(whom) + ".get " + e(args(0)._2) + ")"
       case Field(whose, name) => "(" + e(whose) + "." + name + ")"
