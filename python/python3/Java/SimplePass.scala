@@ -6,7 +6,8 @@ object SimplePass {
 
   case class Names(used : HashMap[String, Int]) {
 
-    def this() = this(HashMap())
+    // the names mentioned here are incompatible with EO (see issue #416 in github.com/cqfn/eo)
+    def this() = this(HashMap("x" -> 1, "i" -> 1, "msg" -> 1, "txt" -> 1))
 
     def last(s : String) : String = s + (used(s) - 1)
 

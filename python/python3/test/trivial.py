@@ -2,10 +2,10 @@
 def testFib1():
     f0 = 0
     f1 = 1
-    i = 0
-    while (i < 10):
+    ii = 0
+    while (ii < 10):
         f2 = f0 + f1
-        i = i + 1
+        ii = ii + 1
         f0 = f1
         f1 = f2
     return 55 == f0
