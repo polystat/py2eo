@@ -7,17 +7,19 @@ object PrintLinearizedImmutableEO {
 
   import PrintEO.{EOVisibility, printExpr, Text, ident}
 
-  def isRetIf(st : Statement) = st match {
+  def isRetIfRet(st : Statement) = st match {
     case Return(_) | IfSimple(_, Return(_), Return(_)) => true
     case _ => false
   }
 
-  def printBody(visibility : EOVisibility)(st : Suite) : Text = {
-    if (st.l.count(isRetIf) != (if (isRetIf(st.l.last)) 1 else 0)) {
-      println("oblom for " + st)
-      assert(false)
-    }
-    st.l.flatMap {
+  // remove all the code after return: this is needed if the previous pass generates something like return; return;
+  def rmUnreachableTail(l : List[Statement]) : List[Statement] = l.foldLeft(List[Statement]())((acc, st) =>
+    if (acc.nonEmpty && isRetIfRet(acc.last)) acc else acc :+ st
+  )
+
+  def printBody(currentFunName : String, visibility : EOVisibility)(st : Suite) : Text = {
+    val l = rmUnreachableTail(st.l)
+    l.flatMap {
       case Assign(List(CallIndex(true, Expression.Ident("print"), List((None, n))))) =>
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
       case CreateConst(name, DictCons(l)) =>
@@ -30,14 +32,25 @@ object PrintLinearizedImmutableEO {
           case Return(x) => x
           case IfSimple(cond, Return(yes), Return(no)) => Cond(cond, yes, no)
         }
-        List(printExpr(visibility)(expr) + " > @")
+        /*
+        val printers = List(
+          s"debugMagic.printDataized \"In $currentFunName .i = \" (newClosure4.i)",
+          s"debugMagic.printDataized \"In $currentFunName iPtr = \" iPtr"
+        )
+        val all = List(
+          "debugMagic",
+          "seq"
+        ) ++ ident(printers) :+
+          printExpr(visibility)(expr) + " > @"
+        "(heap.get ((closure).bb_body0)) > newClosure4" :: "seq. > @" :: ident(all)*/
+        List(s"debugMagic.seq (debugMagic.printDataized \"leaving fun\" \"$currentFunName\") (" + printExpr(visibility)(expr) + ") > @")
       case FuncDef(name, args, None, None, body, Decorators(List()), accessibleIdents) =>
         val locals = accessibleIdents.filter(z => z._2 == VarScope.Local || z._2 == VarScope.Arg).keys
         val args1 = args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(" ")
         val st@Suite(_) = body
-        val body1 = printBody(visibility.stepInto(locals.toList))(st)
+        val body1 = printBody(name, visibility.stepInto(locals.toList))(st)
         List(s"[$args1] > $name") ++ ident(body1)
-      case s@Suite(l) => printBody(visibility)(s)
+      case s@Suite(l) => printBody(currentFunName, visibility)(s)
       case WithoutArgs(StatementsWithoutArgs.Pass) => List()
     }
   }
@@ -52,15 +65,15 @@ object PrintLinearizedImmutableEO {
         ident(List(
           "[heap] > nextFreePtr",
           "  heap.length > @",
-          "[heap] > append2heap",
-          "  heap.append > @",
+          "[heap newValue] > append2heap",
+          "  heap.append newValue > @",
           "[heap ptr newValue] > immArrChangeValue",
           "  mapi. > @",
           "    heap",
           "    [x i]",
-          "      (^.ptr.eq i).if (^.newValue) x > @",
+          "      (ptr.eq i).if (newValue) x > @",
         )) ++
-        ident(printBody(new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
+        ident(printBody("top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
       ).mkString("\n") + "\n"
   }
 
