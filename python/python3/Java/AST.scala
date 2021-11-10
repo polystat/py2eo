@@ -1,4 +1,8 @@
-import Expression.{CallIndex, CollectionKind, Ident}
+import java.io.{File, FileReader, FileWriter}
+import java.math.BigInteger
+
+import Common.HashStack
+import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, NoneLiteral}
 import Python3Parser._
 import org.antlr.v4.runtime.{ANTLRInputStream, Token}
 
