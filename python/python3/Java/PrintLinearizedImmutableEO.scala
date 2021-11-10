@@ -24,9 +24,9 @@ object PrintLinearizedImmutableEO {
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
       case CreateConst(name, DictCons(l)) =>
         val visibility1 = visibility.stepInto(List())
-        s"[] > $name" :: ident(l.map{ case Left((StringLiteral(name), value)) =>
+        s"[] > $name!" :: ident(l.map{ case Left((StringLiteral(name), value)) =>
           printExpr(visibility1)(value) + " > " + name.substring(1, name.length - 1) })
-      case CreateConst(name, value) => List(printExpr(visibility)(value) + " > " + name)
+      case CreateConst(name, value) => List(printExpr(visibility)(value) + " > " + name + "!")
       case one@(Return(_) | IfSimple(_, Return(_), Return(_))) =>
         val expr = one match {
           case Return(x) => x
@@ -43,7 +43,10 @@ object PrintLinearizedImmutableEO {
         ) ++ ident(printers) :+
           printExpr(visibility)(expr) + " > @"
         "(heap.get ((closure).bb_body0)) > newClosure4" :: "seq. > @" :: ident(all)*/
-        List(s"debugMagic.seq (debugMagic.printDataized \"leaving fun\" \"$currentFunName\") (" + printExpr(visibility)(expr) + ") > @")
+        List(
+//          s"debugMagic.seq (debugMagic.printDataized \"leaving fun\" \"$currentFunName\") (" +
+            "(" + printExpr(visibility)(expr) +
+            ") > @!")
       case FuncDef(name, args, None, None, body, Decorators(List()), accessibleIdents) =>
         val locals = accessibleIdents.filter(z => z._2 == VarScope.Local || z._2 == VarScope.Arg).keys
         val args1 = args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(" ")
@@ -68,10 +71,10 @@ object PrintLinearizedImmutableEO {
           "[heap newValue] > append2heap",
           "  heap.append newValue > @",
           "[heap ptr newValue] > immArrChangeValue",
-          "  mapi. > @",
+          "  mapi. > @!",
           "    heap",
           "    [x i]",
-          "      (ptr.eq i).if (newValue) x > @",
+          "      (ptr.eq i).if (newValue) x > @!",
         )) ++
         ident(printBody("top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
       ).mkString("\n") + "\n"
