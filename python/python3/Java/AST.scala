@@ -3,7 +3,7 @@ import java.math.BigInteger
 
 import Common.HashStack
 import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, NoneLiteral}
-import Python3Parser.{And_exprContext, And_testContext, ArglistContext, ArgumentContext, Arith_exprContext, AtomContext, Atom_exprContext, AugAssignContext, AugassignContext, ClassdefContext, CompAsyncContext, CompClassDefContext, CompDecoratedContext, CompForContext, CompFuncDefContext, CompIfContext, CompTryContext, CompWhileContext, CompWithContext, Comp_forContext, Comp_opContext, DecoratorsContext, Dict_elt_double_starContext, Dotted_nameContext, ExprContext, Expr_star_exprContext, Expr_stmtContext, ExprlistContext, FactorContext, FactorPowerContext, File_inputContext, FlowBreakContext, FlowContinueContext, FlowRaiseContext, FlowReturnContext, FlowYieldContext, FuncdefContext, ImportFromContext, ImportNameContext, Import_stmtContext, JustAssignContext, NotComparisonContext, NotNotContext, Not_testContext, Or_testContext, PowerContext, RhsTestlistContext, RhsassignContext, Shift_exprContext, Simple_stmtContext, SmallAssertContext, SmallDelContext, SmallExprContext, SmallFlowContext, SmallGlobalContext, SmallImportContext, SmallNonLocalContext, SmallPassContext, Small_stmtContext, StarNotTestContext, Star_exprContext, StmtCompoundContext, StmtContext, StmtSimpleContext, SubIndexContext, SubSliceContext, Subscript_Context, SuiteBlockStmtsContext, SuiteContext, SuiteSimpleStmtContext, TermContext, TestContext, TestLambdefContext, TestNotStarContext, TestOrTestContext, Test_star_exprContext, TestlistContext, Testlist_compContext, Testlist_star_exprContext, TfpargContext, TrailerCallContext, TrailerFieldContext, TrailerSubContext, TypedargslistContext, Typedargslist_noposContext, UnaryContext, Xor_exprContext, Yield_stmtContext}
+import Python3Parser._
 import org.antlr.v4.runtime.{ANTLRInputStream, Token}
 
 import collection.JavaConverters._
@@ -405,7 +405,7 @@ object MapStatements {
     case s : SmallExprContext => {
       val lhs = mapTestlistStarExpr(CollectionKind.Tuple, s.expr_stmt().testlist_star_expr())
       s.expr_stmt().expr_stmt_right() match {
-        case r : AugAssignContext =>
+        case r : AugAssignLabelContext =>
           val op = AugOps.ofContext(r.augassign())
           AugAssign(op, lhs, mapTestList(r.testlist()))
         case a : JustAssignContext =>
