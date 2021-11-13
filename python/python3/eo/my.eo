@@ -19,7 +19,6 @@
       11
       89
 
-
 [] > affine
   [a b x result] > f
     write. > @
@@ -49,8 +48,9 @@
     result.eq 11
 
 [] > poly
-  [a x result] > f
+  [a x] > f
     memory > i
+    memory > result
     seq > @
       result.write 0
       i.write 0
@@ -58,16 +58,13 @@
         (i.less) (a.length)
         [unused]
           seq > @
-            (^.result.write) (((^.a.get) (^.i)).add ((^.result.mul) (^.x)))
-            (^.i.write (^.i.add 1))
-  memory > result
+            (result.write) (((a.get) (i)).add ((result.mul) (x)))
+            (i.write (i.add 1))
+      result
   and. > @
-    f (* 1 2 3) 0 result
-    result.eq 3
-    f (* 1 2 3) 1 result
-    result.eq 6
-    f (* 1 2 3) 2 result
-    result.eq 11
+    (f (* 1 2 3) 0).eq 3
+    (f (* 1 2 3) 1).eq 6
+    (f (* 1 2 3) 2).eq 11
 
 [] > bubbleSorter
   [a] > sort
@@ -81,23 +78,23 @@
           memory > j
           memory > t
           seq > @
-            minpos.write (^.i)
-            j.write ((^.i.add) 1)
+            minpos.write (i)
+            j.write ((i.add) 1)
             while.
-              (j.less) (^.a.length)
+              (j.less) (a.length)
               [unused]
                 seq > @
                   if. > @
-                    ((^.^.a.get) (^.j)).less ((^.^.a.get) (^.minpos))
-                    (^.minpos.write) (^.j)
-                    ^.j
-                  stdout (sprintf "j = %d\n" (^.j))
-                  (^.j.write) ((^.j.add) 1)
-            t.write (^.a.get (^.i))
-            ((^.a.get) (^.i)).write ((^.a.get) minpos)
-            ((^.a.get) minpos).write t
-            (^.i.write) ((^.i.add) 1)
-            stdout (sprintf "i = %d\n" (^.i))
+                    ((a.get) (j)).less ((a.get) (minpos))
+                    (minpos.write) (j)
+                    j
+                  stdout (sprintf "j = %d\n" (j))
+                  (j.write) ((j.add) 1)
+            t.write (a.get (i))
+            ((a.get) (i)).write ((a.get) minpos)
+            ((a.get) minpos).write t
+            (i.write) ((i.add) 1)
+            stdout (sprintf "i = %d\n" (i))
   [elements...] > mkArr
   (mkArr memory memory memory).elements > arr
   seq > @
@@ -114,7 +111,7 @@
     memory > first
     memory > second
     [y] > eq
-      (^.first.eq y.first).and (^.second.eq y.second) > @
+      (first.eq y.first).and (second.eq y.second) > @
     seq > @
       first.write a
       second.write b
@@ -128,24 +125,23 @@
 
 [] > ifelseifA
   memory > notWritten
-  false.if notWritten true > @
+  FALSE.if notWritten TRUE > @
 
 [] > ifelseifB
   * > anArray
-  false.if (anArray.get 0) true > @
+  FALSE.if (anArray.get 0) TRUE > @
 
 [] > ifelseifC
   [first] > pair
 
   [] > none
-    ^.pair false > @
+    pair TRUE > @
 
   seq > @
     if.
-      false
+      FALSE
       11.cantget
-      none
-
+      none.first
 
 [] > bogus
   memory > a
@@ -165,27 +161,46 @@
         [accum elt] > reduce
           accum > @
 
+[] > arr2d
+  (* 1 2 3) > a0
+  (* 4 5 6) > a1
+  (* a0 a1) > a01
+  (* memory) > heap
+  seq > @
+    (heap.get 0).write a01
+    (((heap.get 0).get 1).get 1).eq 5
+
+[] > memory-array-memory
+  memory > m
+  (* memory memory) > a0
+  (* memory memory) > a1
+  seq > @
+    m.write a1
+    (m.get 1).write 123
+    m.write a0
+    m.write a1
+    (m.get 1).eq 123
+
 [] > trivialMapTester
 
   [first second] > pair
     [y] > eq
-      (^.first.eq y.first).and (^.second.eq y.second) > @
+      (first.eq y.first).and (second.eq y.second) > @
 
   [key] > tElt
     memory > valid
     memory > value
     [x] > set
       seq > @
-        ^.value.write x
-        ^.valid.write true
+        value.write x
+        valid.write TRUE
     [] > clear
-      ^.valid.write false > @
+      valid.write FALSE > @
 
   [] > none
     [z] > eq
       z.first.not > @
-    ^.pair false 0 > @
-
+    pair FALSE 0 > @
 
   [] > trivialMap
     memory > a
@@ -195,38 +210,37 @@
       memory > found
       seq > @
         i.write 0
-        found.write false
+        found.write FALSE
         while.
-          (i.less (^.a.length)).and (found.not)
+          (i.less (a.length)).and (found.not)
           [unused]
             if.
-              (^.^.a.get i).key.eq (^.name)
-              found.write true
+              (a.get i).key.eq (name)
+              found.write TRUE
               i.write (i.add 1)
 
-
     [name1] > get
-      ^.findElt name1 > found
+      findElt name1 > found
       memory > bogus
       seq > @
         bogus.write found
         stdout (sprintf "found = %b, i = %d\n" (found.found) (found.i))
         if.
           found.found
-          ((^.a.get (found.i)).valid.if (^.^.pair true (^.a.get (found.i)).value) (^.^.none))
-          (^.^.none)
+          ((a.get (found.i)).valid.if (pair TRUE (a.get (found.i)).value) (none))
+          (none)
 
     [name value] > set
-      ^.findElt name > found
-      ^.^.tElt name > newElt
+      findElt name > found
+      tElt name > newElt
       if. > @
         found.found
-        (^.a.get found.i).set value
+        (a.get found.i).set value
         seq
           stdout (sprintf "ONE! %s %s\n" name value)
           newElt.set value
           stdout "TWO!\n"
-          ^.a.write (^.a.append newElt)
+          a.write (a.append newElt)
           stdout "THREE!\n"
 
   and. > @
