@@ -47,7 +47,7 @@ class Tests {
     val Suite(List(theFun, Return(_))) = x._1
 //    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
 
-    val z = ExplicitHeap.explicitStackHeap(theFun, x._2)
+    val z = ExplicitImmutableHeap.explicitHeap(theFun, x._2)
     val Suite(l) = z._1
     val FuncDef(mainName, _, _, _, _, _, _) = l.head
 

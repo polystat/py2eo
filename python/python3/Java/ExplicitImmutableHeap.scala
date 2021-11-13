@@ -3,11 +3,11 @@ import SimplePass.{EAfterPass, Names}
 
 import scala.collection.immutable.HashMap
 
-object ExplicitHeap {
+object ExplicitImmutableHeap {
 
   val constHeap = "constHeap"
   
-  def explicitStackHeap(st : Statement, ns : Names)  = {
+  def explicitHeap(st : Statement, ns : Names)  = {
     def procSt(scope : String => VarScope.T)(
             s : Statement, ns : Names) : (Statement, Names, Boolean) = {
 //      println(s"procSt($s)")
