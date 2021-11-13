@@ -3,14 +3,16 @@ import java.nio.file.Files
 import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, IntLiteral}
 import org.junit.Assert._
 import org.junit.{Before, Test}
+import java.nio.file.Files.copy
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
 
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
   val intermediateDirs = List(
-    "afterEmptyProcStatement", "afterExplicitStackHeap", "afterExtractAllCalls", "afterImmutabilization",
-    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "genEO"
+    "afterEmptyProcStatement", "afterExtractAllCalls", "afterImmutabilization",
+    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "genEO", "afterHeapify"
   )
 
   @Before def initialize(): Unit = {
@@ -81,4 +83,35 @@ class Tests {
     output.close()
   }
 
+  @Test def heapify() : Unit = {
+    val name = "trivial"
+    val y = Parse.parse(testsPrefix, name)
+
+    val textractAllCalls = SimplePass.procExprInStatement(
+      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+
+    val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
+    val Suite(List(theFun, Return(_))) = x._1
+
+    val z = ExplicitMutableHeap.explicitHeap(theFun, x._2)
+    val FuncDef(mainName, _, _, _, _, _, _) = z._1
+
+    val hacked = Suite(List(
+      ImportAllSymbols(List("heapifyRuntime")),
+      z._1,
+      Assert(ExplicitMutableHeap.heapGet(CallIndex(true, Ident(mainName), List())))
+    ))
+
+    Parse.toFile(hacked, testsPrefix + "afterHeapify", name)
+
+    val stdout = new StringBuilder()
+    val stderr = new StringBuilder()
+    import scala.sys.process._
+    assertTrue(0 == (s"cp \"$testsPrefix/heapifyRuntime.py\" \"$testsPrefix/afterHeapify/\"".!))
+    assertTrue(0 == (s"python3 \"$testsPrefix/afterHeapify/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    println(stdout)
+
+  }
+
 }
+
