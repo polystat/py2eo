@@ -9,7 +9,8 @@ class CHeap:
     self.a.append(value)
     return ptr
 
-theHeap = CHeap()
+valuesHeap = CHeap()
+indirHeap  = CHeap()
 
 #ptr = theHeap.mkNew(11)
 #print(theHeap.get(ptr))
