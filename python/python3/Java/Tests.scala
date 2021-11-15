@@ -1,8 +1,9 @@
 import java.io.{File, FileWriter}
 import java.nio.file.Files
-import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, IntLiteral}
+import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
 import org.junit.Assert._
 import org.junit.{Before, Test}
+
 import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 
@@ -94,14 +95,17 @@ class Tests {
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_))) = x._1
+    val FuncDef(mainName, _, _, _, _, _, _) = theFun
 
     val z = ExplicitMutableHeap.explicitHeap(theFun, x._2)
-    val FuncDef(mainName, _, _, _, _, _, _) = z._1
 
     val hacked = Suite(List(
       ImportAllSymbols(List("heapifyRuntime")),
+      Assign(List(Ident(mainName), ExplicitMutableHeap.newValue(NoneLiteral()))),
       z._1,
-      Assert(ExplicitMutableHeap.heapGet(CallIndex(true, Ident(mainName), List())))
+      Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns"),
+        ExplicitMutableHeap.index(ExplicitMutableHeap.valueGet(ExplicitMutableHeap.ptrGet(Ident(mainName))),
+          StringLiteral("\"callme\""))), List((None, NoneLiteral()))))
     ))
 
     Parse.toFile(hacked, testsPrefix + "afterHeapify", name)
