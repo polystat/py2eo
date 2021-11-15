@@ -6,10 +6,9 @@ import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, N
 import Python3Parser._
 import org.antlr.v4.runtime.{ANTLRInputStream, Token}
 
-import collection.JavaConverters._
+import java.io.{FileReader, FileWriter}
+import scala.collection.JavaConverters._
 import scala.collection.immutable.HashMap
-import scala.reflect.internal.util.FileUtils
-import scala.sys.process.ProcessLogger
 
 object Expression {
 

@@ -1,8 +1,8 @@
-import java.io.{File, FileWriter}
-import java.nio.file.Files
-import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, IntLiteral}
+import Expression._
 import org.junit.Assert._
 import org.junit.{Before, Test}
+
+import java.io.{File, FileWriter}
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
@@ -66,7 +66,8 @@ class Tests {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     import scala.sys.process._
-    assertTrue(0 == (s"cp \"$testsPrefix/closureRuntime.py\" \"$testsPrefix/afterImmutabilization/\"".!))
+    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"), java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"))
+//    /assertTrue(0 == (s"cp \"$testsPrefix/closureRuntime.py\" \"$testsPrefix/afterImmutabilization/\"".!))
     assertTrue(0 == (s"python3 \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
