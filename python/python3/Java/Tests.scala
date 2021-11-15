@@ -25,7 +25,9 @@ class Tests {
   @Test def removeControlFlow(): Unit = {
     for (name <- List("x", "trivial", "trivialWithBreak")) {
       val y = Parse.parse(testsPrefix, name)
-      val z = RemoveControlFlow.removeControlFlow(y._1, y._2)
+      val textractAllCalls = SimplePass.procExprInStatement(
+        SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
       val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _), Return(_))) = z._1
       val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name), List())))))
       Parse.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
