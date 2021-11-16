@@ -3,6 +3,7 @@ import org.junit.Assert._
 import org.junit.{Before, Test}
 
 import java.io.{File, FileWriter}
+import java.nio.file.FileAlreadyExistsException
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
@@ -66,7 +67,14 @@ class Tests {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     import scala.sys.process._
-    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"), java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"))
+
+    val closureRuntime = java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py")
+    try {
+      java.nio.file.Files.copy(closureRuntime, java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"))
+    }catch {
+      case e: FileAlreadyExistsException => println(e.getMessage)
+    }
+
 //    /assertTrue(0 == (s"cp \"$testsPrefix/closureRuntime.py\" \"$testsPrefix/afterImmutabilization/\"".!))
     assertTrue(0 == (s"python3 \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
@@ -80,6 +88,10 @@ class Tests {
       s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
     )
     output.close()
+  }
+
+  @Test def cPythonTest(): Unit = {
+    println("My test started")
   }
 
 }
