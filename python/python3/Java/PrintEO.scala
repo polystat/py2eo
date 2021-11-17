@@ -36,7 +36,9 @@ object PrintEO {
   class EOVisibility(builtinNames : HashSet[String], h0 : HashMap[String, String]) {
     def this() = this(HashSet(), HashMap())
     val h = h0
-    def apply(name : String) = if (builtinNames.contains(name)) name else h(name)
+    // todo: this code is basically disabled, remove EOVisibility later
+//    def apply(name : String) = if (builtinNames.contains(name)) name else h(name)
+    def apply(name : String) = name
     def stepInto(locals : List[String]) = new EOVisibility(
       builtinNames,
       locals.foldLeft(h.map(z => (z._1, /*"^." +*/ z._2)))((acc, name) => acc.+((name, name))))
