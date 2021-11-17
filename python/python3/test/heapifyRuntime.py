@@ -4,6 +4,9 @@ class CHeap:
   def get(self, index):
     return self.a[index]
 
+  def set(self, index, value):
+    self.a[index] = value
+
   def new(self, value):
     ptr = len(self.a)
     self.a.append(value)
