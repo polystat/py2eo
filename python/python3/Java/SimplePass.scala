@@ -276,12 +276,18 @@ object SimplePass {
           (acc._1 :+ st1, ns1)
         })
         (Suite(l1), ns1)
+
       case Assign(List(l, r)) =>
         val rp = procExpr(f)(false, r, ns)
         val lp = procExpr(f)(true, l, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(str ++ stl :+ Assign(List(el, er))), lp._2)
+
+      case CreateConst(name, r) =>
+        val rp = procExpr(f)(false, r, ns)
+        val (str, er) = procEA(rp._1)
+        (Suite(str :+ CreateConst(name, er)), rp._2)
 
       case Assign(List(e)) => forceAllIfNecessary(f)(List((false, e)), ns) match {
         case Left((l, ns)) => (Assign(l), ns)
