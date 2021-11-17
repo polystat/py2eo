@@ -1,3 +1,4 @@
+
 import java.io.{File, FileWriter}
 import java.nio.file.Files
 import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
@@ -6,6 +7,7 @@ import org.junit.{Before, Test}
 
 import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import scala.collection.immutable.HashMap
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
@@ -101,11 +103,11 @@ class Tests {
 
     val hacked = Suite(List(
       ImportAllSymbols(List("heapifyRuntime")),
-      Assign(List(Ident(mainName), ExplicitMutableHeap.newValue(NoneLiteral()))),
+      Assign(List(Ident(mainName), ExplicitMutableHeap.newPtr(IntLiteral(0)))),
       z._1,
       Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns"),
         ExplicitMutableHeap.index(ExplicitMutableHeap.valueGet(ExplicitMutableHeap.ptrGet(Ident(mainName))),
-          StringLiteral("\"callme\""))), List((None, NoneLiteral()))))
+          ExplicitMutableHeap.callme)), List((None, NoneLiteral()))))
     ))
 
     Parse.toFile(hacked, testsPrefix + "afterHeapify", name)
@@ -116,6 +118,12 @@ class Tests {
     assertTrue(0 == (s"cp \"$testsPrefix/heapifyRuntime.py\" \"$testsPrefix/afterHeapify/\"".!))
     assertTrue(0 == (s"python3 \"$testsPrefix/afterHeapify/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
+
+    val output = new FileWriter(testsPrefix + "genEO/" + name + ".eo")
+    val eoText = PrintLinearizedMutableEO.printTest(name, z._1)
+    output.write(eoText.mkString("\n") + "\n")
+    output.close()
+
 
   }
 
