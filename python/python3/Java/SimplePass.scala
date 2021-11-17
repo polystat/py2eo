@@ -331,6 +331,11 @@ object SimplePass {
     case _ => (s, ns)
   }
 
+  def unSuite(s : Statement, ns : Names) : (Statement, Names) = s match {
+    case Suite(l) => (Suite(l.flatMap{ case Suite(l) => l case s => List(s) }), ns)
+    case _ => (s, ns)
+  }
+
   // translate an expression to something like a three register code in order to extract each function call with
   // possible side effects to a separate statement, i.e., a set of locals assignments, where op with side effects
   // may happen only in a root node of an rhs syntax tree
