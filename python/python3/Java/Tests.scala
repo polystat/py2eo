@@ -84,21 +84,7 @@ class Tests {
 
   @Test def simplifyInheritance(): Unit = {
     val output = new FileWriter(testsPrefix + "afterSimplifyInheritance/inheritanceTest.py")
-    output.write(
-      "def findattr(obj, name):\n" +
-      "  for pred in obj.__mro__:\n" +
-      "    if name in pred.__dict__.keys():\n" +
-      "      return pred\n" +
-      "  raise TypeError\n" +
-      "\n" +
-      "\n" +
-      "def EOgetattr(obj, name):\n" +
-      "  return getattr(findattr(obj, name), name)\n" +
-      "\n" +
-      "def EOsetattr(obj, name, val):\n" +
-      "  setattr(findattr(obj, name), name, val)\n" +
-      "\n" +
-      "\n")
+    output.write("from C3 import eo_getattr, eo_setattr\n\n\n")
 
     val res = Parse.parse(testsPrefix, "inheritance")
     output.write(PrintPython.printSt(res._1, ""))
