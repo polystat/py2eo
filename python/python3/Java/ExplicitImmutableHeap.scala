@@ -3,11 +3,11 @@ import SimplePass.{EAfterPass, Names}
 
 import scala.collection.immutable.HashMap
 
-object ExplicitHeap {
+object ExplicitImmutableHeap {
 
   val constHeap = "constHeap"
   
-  def explicitStackHeap(st : Statement, ns : Names)  = {
+  def explicitHeap(st : Statement, ns : Names)  = {
     def procSt(scope : String => VarScope.T)(
             s : Statement, ns : Names) : (Statement, Names, Boolean) = {
 //      println(s"procSt($s)")
@@ -39,7 +39,7 @@ object ExplicitHeap {
       }
 //      def procIdentInSt = SimplePass.procExprInStatement(procIdentStep)(_, _)
       s match {
-        case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, vars) =>
+        case FuncDef(name, args, None, None, body, Decorators(List()), vars) =>
           def scope(name : String) = if (vars.contains(name)) vars(name) else VarScope.Global
           val locals = vars.filter(z => z._2 == VarScope.Local || z._2 == VarScope.Arg).keys.toList
           // todo: not completely correct, because a variable with value None is not the same as a variable without a value,
@@ -70,7 +70,7 @@ object ExplicitHeap {
             ("heap", ArgKind.Positional, None) ::
               ("closure", ArgKind.Positional, None) ::
               args,
-            otherPositional, otherKeyword, Suite(body2), decorators, HashMap())
+            None, None, Suite(body2), Decorators(List()), HashMap())
           val mkNewClosure = CreateConst(newClosure,
             DictCons(Left((StringLiteral("\"callme\""), Ident(tmpFun))) ::
               vars.filter(x => x._2 != VarScope.Global && x._2 != VarScope.Local && x._2 != VarScope.Arg).
