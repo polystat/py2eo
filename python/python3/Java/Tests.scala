@@ -74,7 +74,8 @@ class Tests {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     import scala.sys.process._
-    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"), java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"))
+    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"),
+      java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"), REPLACE_EXISTING)
 //    /assertTrue(0 == (s"cp \"$testsPrefix/closureRuntime.py\" \"$testsPrefix/afterImmutabilization/\"".!))
     assertTrue(0 == (s"python3 \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
