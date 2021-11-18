@@ -27,7 +27,7 @@ class Tests {
   }
 
   @Test def removeControlFlow(): Unit = {
-    for (name <- List("x", "trivial", "trivialWithBreak")) {
+    for (name <- List("x", "trivial", "trivialWithBreak", "inheritance")) {
       val y = Parse.parse(testsPrefix, name)
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
