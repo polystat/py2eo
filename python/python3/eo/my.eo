@@ -248,3 +248,41 @@
       trivialMap.a
       *
     none.eq (trivialMap.get "a")
+
+[] > dataizable-list
+  (* memory memory) > empty-list
+  [index l] > getNode
+    if. > @
+      index.eq 0
+      l
+      getNode (index.sub 1) (l.get 1)
+  [h l] > push-back
+    l.get 0 > len!
+    seq > @
+      if.
+        len.is-empty
+        seq
+          len.write 1
+          (l.get 1).write (* h memory)
+        seq
+          ((getNode len l).get 1).write (* h memory)
+          len.write (len.add 1)
+  [index l] > get
+    (getNode index (l.get 1)).get 0 > @
+
+  empty-list > l
+  seq > @
+    push-back 11 l
+    stdout (sprintf "%d\n" (get 0 l))
+    push-back 22 l
+    stdout (sprintf "%d\n" (get 0 l))
+    stdout (sprintf "%d\n" (get 1 l))
+    push-back 33 l
+    stdout "\n =================================================================================================== \n"
+    stdout (sprintf "%d\n" (get 0 l))
+    stdout (sprintf "%d\n" (get 1 l))
+    stdout (sprintf "%d\n" (get 2 l))
+    and.
+      (get 2 l).eq 33
+      (get 1 l).eq 22
+      (get 0 l).eq 11
