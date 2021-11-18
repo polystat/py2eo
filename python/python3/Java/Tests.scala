@@ -99,7 +99,6 @@ class Tests {
     output.write(PrintPython.printSt(res._1, ""))
     output.close()
   }
-}
 
   @Test def heapify() : Unit = {
     val name = "trivial"
