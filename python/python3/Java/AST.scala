@@ -708,7 +708,10 @@ object Parse {
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     output(tsimplifyIf._1, path + "afterSimplifyIf")
 
-    tsimplifyIf
+    val tsimplifyInheritance = SimplePass.procExprInStatement(SimplePass.simplifyInheritance)(tsimplifyIf._1, tsimplifyIf._2)
+    output(tsimplifyInheritance._1, path + "afterSimplifyInheritance")
+
+    tsimplifyInheritance
   }
 
 }
