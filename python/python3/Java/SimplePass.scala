@@ -353,9 +353,9 @@ object SimplePass {
   }
 
   def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
-    case (false, Field(obj, name), ns) => (Left(CallIndex(true, Ident("EOgetattr"), List((None, obj), (None, StringLiteral("\"" + name + "\""))))), ns)
-    case (false, CallIndex(_, Ident("getattr"), args), ns) => (Left(CallIndex(true, Ident("EOgetattr"), args)), ns)
-    case (false, CallIndex(_, Ident("setattr"), args), ns) => (Left(CallIndex(true, Ident("EOsetattr"), args)), ns)
+    case (false, Field(obj, name), ns) => (Left(CallIndex(true, Ident("eo_getattr"), List((None, obj), (None, StringLiteral("\"" + name + "\""))))), ns)
+    case (false, CallIndex(_, Ident("getattr"), args), ns) => (Left(CallIndex(true, Ident("eo_getattr"), args)), ns)
+    case (false, CallIndex(_, Ident("setattr"), args), ns) => (Left(CallIndex(true, Ident("eo_setattr"), args)), ns)
     case (_, e, ns) => (Left(e), ns)
   })
 }
