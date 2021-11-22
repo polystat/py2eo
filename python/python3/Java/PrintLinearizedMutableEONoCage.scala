@@ -4,12 +4,13 @@ import PrintLinearizedImmutableEO.rmUnreachableTail
 
 import scala.collection.immutable.HashMap
 
-object PrintLinearizedMutableEO {
+object PrintLinearizedMutableEONoCage {
 
   val bogusVisibility = new EOVisibility()
 
   val headers = List(
     "+package org.eolang",
+    "+alias cage org.eolang.gray.cage",
     "+alias stdout org.eolang.io.stdout",
     "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
