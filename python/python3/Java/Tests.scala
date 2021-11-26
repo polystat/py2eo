@@ -29,7 +29,7 @@ class Tests {
   }
 
   @Test def removeControlFlow(): Unit = {
-    for (name <- List("x", "trivial", "trivialWithBreak")) {
+    for (name <- List("x", "trivial", "trivialWithBreak", "cPythonTest")) {
       val y = Parse.parse(testsPrefix, name)
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -131,7 +131,7 @@ class Tests {
   }
 
   @Test def useCage() : Unit = {
-    val name = "trivial"
+    val name = "x"
     val y = Parse.parse(testsPrefix, name)
 
     val textractAllCalls = SimplePass.procExprInStatement(
@@ -140,8 +140,11 @@ class Tests {
     val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_))) = z._1
     val FuncDef(mainName, _, _, _, body, _, _) = theFun
-    val hacked = Suite(List(theFun, Assert((CallIndex(true, Ident(mainName), List())))))
 
+    val theFunC = ClosureWithCage.closurize(theFun)
+    val hacked = Suite(List(theFunC, Assert((CallIndex(true,
+      ClosureWithCage.index(Ident(mainName), "callme"),
+      List((None, Ident(mainName))))))))
     Parse.toFile(hacked, testsPrefix + "afterUseCage", name)
 
     val stdout = new StringBuilder()
@@ -151,8 +154,8 @@ class Tests {
     println(stdout)
 
     val eoHacked = Suite(List(
-      theFun,
-      Assign(List(CallIndex(true, Ident(mainName), List())))
+      theFunC,
+      Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName), "callme"), List())))
     ))
 
     val output = new FileWriter(testsPrefix + "genCageEO/" + name + ".eo")

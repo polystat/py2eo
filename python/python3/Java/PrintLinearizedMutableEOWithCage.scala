@@ -14,9 +14,11 @@ object PrintLinearizedMutableEOWithCage {
     val l = rmUnreachableTail(l0)
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     def isFun(f : Statement) = f match { case f : FuncDef => true case _ => false }
-    val memories = f.accessibleIdents.filter(x => x._2 == VarScope.Local).
+    val funs = l.filter(isFun)
+    val funNames = funs.map{ case f : FuncDef => f.name }.toSet
+    val memories = f.accessibleIdents.filter(x => x._2 == VarScope.Local && !funNames.contains(x._1)).
       map(x => s"cage > ${x._1}").toList
-    val innerFuns = l.filter(isFun).flatMap{case f : FuncDef => (printFun(f.name + "Fun", f))}
+    val innerFuns = funs.flatMap{case f : FuncDef => (printFun(f.name, f))}
     def others(l : List[Statement]) : Text = l.flatMap{
       case NonLocal(l) => List()
       case Assign(List(Ident(name), DictCons(l))) =>
@@ -36,7 +38,8 @@ object PrintLinearizedMutableEOWithCage {
     }
     val args1 = f.args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(" ")
     s"[$args1] > ${newName}" :: ident(
-      memories ++ innerFuns ++ ("seq > @" :: ident(others(l)))
+      memories ++ innerFuns ++
+        ("seq > @" :: ident(s"stdout \"$newName\\n\"" :: others(l.filterNot(isFun))))
     )
   }
 
