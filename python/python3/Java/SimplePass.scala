@@ -331,9 +331,15 @@ object SimplePass {
     case _ => (s, ns)
   }
 
-  def unSuite(s : Statement, ns : Names) : (Statement, Names) = s match {
-    case Suite(l) => (Suite(l.flatMap{ case Suite(l) => l case s => List(s) }), ns)
-    case _ => (s, ns)
+  def unSuite(s : Statement, ns : Names) : (Statement, Names) = {
+    def inner(s : Statement) : Statement = s match {
+      case Suite(l) =>
+        val l1 = l.flatMap{ case Suite(l) => l case s => List(s) }
+        (if (!l1.exists{ case Suite(l) => true case _ => false }) Suite(l1) else inner(Suite(l1)))
+      case _ => s
+    }
+//    println(s"$s \n -> $s1")
+    (inner(s), ns)
   }
 
   // translate an expression to something like a three register code in order to extract each function call with
