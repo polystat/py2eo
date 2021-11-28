@@ -1,4 +1,4 @@
-import scala.collection.immutable.{HashMap, HashSet}
+import scala.collection.immutable.HashMap
 
 object SimpleAnalysis {
 
