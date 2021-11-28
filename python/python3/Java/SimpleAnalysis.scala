@@ -17,7 +17,8 @@ object SimpleAnalysis {
     case CallIndex(isCall, whom, args) => whom :: args.map(_._2)
     case Field(whose, name) => List(whose)
     case Cond(cond, yes, no) => List(cond, yes, no)
-    case _ => List()
+    case x : UnsupportedExpr => x.children
+    case IntLiteral(_) | FloatLiteral(_) | StringLiteral(_) | BoolLiteral(_) | NoneLiteral() | Ident(_) => List()
   }
 
   def foldEE[A](f0 : (A, T) => A)(acc0 : A, e : T) : A = {
@@ -26,28 +27,33 @@ object SimpleAnalysis {
     childrenE(e).foldLeft(acc)(f)
   }
 
-  def childrenS(s : Statement) : (List[Statement], List[T]) = s match {
-    case Del(Ident(name)) => (List(), List(Ident(name)))
-    case If(conditioned, eelse) => (eelse :: conditioned.map(_._2), conditioned.map(_._1))
-    case IfSimple(cond, yes, no) => (List(yes, no), List(cond))
-    case Try(ttry, excepts, eelse, ffinally) => ((ttry :: excepts.map(_._2)) :+ eelse :+ ffinally, excepts.flatMap(p => p._1.map(_._1).toList))
-    case While(cond, body, eelse) => (List(body, eelse), List(cond))
-    case Suite(l) => (l, List())
-    case AugAssign(op, lhs, rhs) => (List(), List(lhs, rhs))
-    case Assign(l) => (List(), l)
-    case CreateConst(name, value) => (List(), List(value))
-    case Return(x) => (List(), List(x))
-    case Assert(x) => (List(), List(x))
-    case Raise(e, None) => (List(), e.toList)
-    case ClassDef(name, bases, body, decorators) => (List(body), bases ++ decorators.l)
-    case FuncDef(name, args, _, _, body, decorators, _) => (List(body), decorators.l)
-    case NonLocal(_) | WithoutArgs(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => (List(), List())
+  def childrenS(s : Statement) : (List[Statement], List[(Boolean, T)]) = {
+    def isRhs(e : T) = (false, e)
+    s match {
+      case Del(Ident(name)) => (List(), List((false, Ident(name))))
+      case If(conditioned, eelse) => (eelse :: conditioned.map(_._2), conditioned.map(x => (false, x._1)))
+      case IfSimple(cond, yes, no) => (List(yes, no), List((false, cond)))
+      case Try(ttry, excepts, eelse, ffinally) =>
+        ((ttry :: excepts.map(_._2)) :+ eelse :+ ffinally, excepts.flatMap(p => p._1.map(x => (false, x._1)).toList))
+      case While(cond, body, eelse) => (List(body, eelse), List(isRhs(cond)))
+      case Suite(l) => (l, List())
+      case AugAssign(op, lhs, rhs) => (List(), List((true, lhs), (false, rhs)))
+      case Assign(l) => (List(), (false, l.head) :: l.tail.map(isRhs))
+      case CreateConst(name, value) => (List(), List(isRhs(value)))
+      case Return(x) => (List(), List(isRhs(x)))
+      case Assert(x) => (List(), List(isRhs(x)))
+      case Raise(e, None) => (List(), e.toList.map(isRhs))
+      case ClassDef(name, bases, body, decorators) => (List(body), (bases ++ decorators.l).map(isRhs))
+      case FuncDef(name, args, _, _, body, decorators, _) => (List(body), decorators.l.map(isRhs))
+      case NonLocal(_) | WithoutArgs(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => (List(), List())
+      case x : Unsupported => (x.sts, x.es)
+    }
   }
 
   def foldSE[A](f : (A, T) => A, mayVisit : Statement => Boolean)(acc0 : A, s : Statement) : A = {
     if (mayVisit(s)) {
       val (ls, le) = childrenS(s)
-      val acc = le.foldLeft(acc0)(foldEE(f))
+      val acc = le.map(_._2).foldLeft(acc0)(foldEE(f))
       ls.foldLeft(acc)(foldSE(f, mayVisit))
     } else acc0
   }

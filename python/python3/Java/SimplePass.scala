@@ -27,10 +27,11 @@ object SimplePass {
 
   def procStatementGeneral(f : (Statement, Names) => (Statement, Names, Boolean))(s0 : Statement, ns0 : Names) : (Statement, Names) = {
     def pst = procStatementGeneral(f)(_, _)
-    def pstl[T](extract : T => Statement, l : List[T], ns : Names) = l.foldLeft((List[Statement](), ns))((acc, st) => {
-      val xst = pst(extract(st), acc._2)
-      (acc._1 :+ xst._1, xst._2)
-    })
+    def pstl[T](extract : T => Statement, l : List[T], ns : Names) =
+      l.foldLeft((List[Statement](), ns))((acc, st) => {
+        val xst = pst(extract(st), acc._2)
+        (acc._1 :+ xst._1, xst._2)
+      })
 
     val (s, ns, visitChildren) = f(s0, ns0)
 
@@ -38,11 +39,10 @@ object SimplePass {
 
     if (!visitChildren) nochange else
     s match {
-      case If(conditioned, eelse) => {
+      case If(conditioned, eelse) =>
         val xconditioned = pstl[(T, Statement)](_._2, conditioned, ns)
         val xelse = pst(eelse, xconditioned._2)
         (If(conditioned.map(_._1).zip(xconditioned._1), xelse._1), xelse._2)
-      }
       case IfSimple(cond, yes, no) =>
         val xyes = pst(yes, ns)
         val xno  = pst(no, xyes._2)
@@ -55,13 +55,13 @@ object SimplePass {
         val xbody = pst(body, ns)
         val xelse = pst(eelse, xbody._2)
         (For(what, in, xbody._1, xelse._1), xelse._2)
-      case Suite(l) => {
-        val xl = l.foldLeft((List[Statement](), ns))((acc, st) => {
-          val xst = pst(st, acc._2)
-          (acc._1 :+ xst._1, xst._2)
-        })
+      case Suite(l) =>
+        val xl = pstl[Statement](x => x, l, ns)
         (Suite(xl._1), xl._2)
-      }
+      case u : Unsupported =>
+        val xl = pstl[Statement](x => x, u.sts, ns)
+        (new Unsupported(u.original, u.es, xl._1), xl._2)
+
       case With(cm, target, body) =>
         val xbody = pst(body, ns)
         (With(cm, target, xbody._1), xbody._2)
@@ -161,6 +161,8 @@ object SimplePass {
         reconstruct(false, cons, l, ns)
       case CallIndex(isCall, whom, args) if isCall && !lhs =>
         reconstruct(false, { case (h :: t) => CallIndex(isCall, h, args.map(_._1).zip(t)) }, whom :: args.map(_._2), ns)
+      case u : UnsupportedExpr =>
+        reconstruct(lhs, es => new UnsupportedExpr(u.original, es), u.children, ns)
       case LazyLAnd(l, r) if !lhs => // l and r <=> r if l else false
         pe(Cond(l, r, BoolLiteral(false)), ns)
       case LazyLOr(l, r) if !lhs => // l or r <=> true if l else r
@@ -222,6 +224,11 @@ object SimplePass {
 
   def procExprInStatement(f : (Boolean, T, Names) => (EAfterPass, Names))(s : Statement, ns : Names) : (Statement, Names) = {
     def pst = procExprInStatement(f)(_, _)
+    def pstl(l : List[Statement], ns : Names) =
+      l.foldLeft((List[Statement](), ns))((acc, st) => {
+        val (st1, ns1) = pst(st, acc._2)
+        (acc._1 :+ st1, ns1)
+      })
 
     def procEA(x : EAfterPass) : (List[Statement], T) = x match {
       case Left(value) => (List[Statement](), value)
@@ -271,11 +278,17 @@ object SimplePass {
         }
 
       case Suite(l) =>
-        val (l1, ns1) = l.foldLeft((List[Statement](), ns))((acc, st) => {
-          val (st1, ns1) = pst(st, acc._2)
-          (acc._1 :+ st1, ns1)
-        })
+        val (l1, ns1) = pstl(l, ns)
         (Suite(l1), ns1)
+
+      case u : Unsupported =>
+        val (sts, ns1) = pstl(u.sts, ns)
+        forceAllIfNecessary(f)(u.es, ns1) match {
+          case Right((l, ns2)) =>
+            (Suite(l.map(_._1) :+ new Unsupported(u.original, u.es.zip(l).map(x => (x._1._1, x._2._2)), sts)), ns2)
+          case Left((l, ns2)) =>
+            (new Unsupported(u.original, u.es.zip(l).map(x => (x._1._1, x._2)), sts), ns2)
+        }
 
       case Assign(List(l, r)) =>
         val rp = procExpr(f)(false, r, ns)

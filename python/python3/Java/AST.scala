@@ -145,6 +145,11 @@ object Expression {
   case class Field(whose : T, name : String) extends T
   case class Cond(cond : T, yes : T, no : T) extends T
   case class AnonFun(args : List[String], body : T) extends T
+  class UnsupportedExpr(original0 : T, children0 : List[T]) extends T {
+    val original = original0
+    val children = children0
+    def this(original : T) = this(original, SimpleAnalysis.childrenE(original))
+  }
 
   sealed trait Comprehension
   case class IfComprehension(cond : T) extends Comprehension
@@ -285,6 +290,13 @@ case class ImportSymbol(from : List[String], what : String, as : String) extends
 case class With(cm : ET, target : Option[ET], body : Statement) extends Statement
 case class Try(ttry : Statement, excepts : List[(Option[(ET, Option[String])], Statement)],
                eelse : Statement, ffinally : Statement) extends Statement
+class Unsupported(original0 : Statement, es0 : List[(Boolean, Expression.T)], sts0 : List[Statement]) extends Statement {
+  val original = original0
+  val es = es0
+  val sts = sts0
+  def this(original : Statement) =
+    this(original, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1)
+}
 
 object MapStatements {
 
