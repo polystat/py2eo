@@ -48,8 +48,7 @@ object ClosureWithCage {
         val (yes1) = closurizeInner(scope, yes)
         val (no1) = closurizeInner(scope, no)
         (IfSimple(pe(false, cond), yes1, no1))
-      case NonLocal(l) => (WithoutArgs(StatementsWithoutArgs.Pass))
-      case WithoutArgs(s) => (st)
+      case WithoutArgs(_) | NonLocal(_) => (st)
 
       case Suite(l) => Suite(l.map(closurizeInner(scope, _)))
     }
