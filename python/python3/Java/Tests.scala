@@ -3,6 +3,7 @@ import org.junit.Assert._
 import org.junit.{Before, Test}
 
 import java.io.{File, FileWriter}
+import java.nio.file.{FileAlreadyExistsException, NoSuchFileException}
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
@@ -10,8 +11,8 @@ class Tests {
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
   val intermediateDirs = List(
     "afterEmptyProcStatement", "afterExplicitStackHeap", "afterExtractAllCalls", "afterImmutabilization",
-    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "genEO"
-  )
+    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "genEO", "cPythonTests",
+      "inheritance_tests")
 
   @Before def initialize(): Unit = {
     for (dir <- intermediateDirs) {
@@ -21,31 +22,35 @@ class Tests {
   }
 
   @Test def removeControlFlow(): Unit = {
-    for (name <- List("x", "trivial", "trivialWithBreak")) {
+    for (name <- List("x", "trivial", "trivialWithBreak", "cPythonTest")) { /// <------------
       val y = Parse.parse(testsPrefix, name)
       val z = RemoveControlFlow.removeControlFlow(y._1, y._2)
       val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _), Return(_))) = z._1
-      val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name), List())))))
+      val zHacked = Suite(List(theFun, Assert(CallIndex(true, Ident(theFun.name), List()))))
       Parse.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
-      val stdout = new StringBuilder()
-      val stderr = new StringBuilder()
-      import scala.sys.process._
-      assertTrue(0 == (s"python3 \"$testsPrefix/afterRemoveControlFlow/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-      println(stdout)
+
+
+      mainAsserter(name, "afterRemoveControlFlow")
+
+      //      val stdout = new StringBuilder()
+      //      val stderr = new StringBuilder()
+      //      import scala.sys.process._
+      //      assertTrue(0 == (s"python3 \"$testsPrefix/afterRemoveControlFlow/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      //      println(stdout)
     }
   }
 
-  @Test def immutabilize() : Unit = {
+  @Test def immutabilize(): Unit = {
     val name = "trivial"
     val y = Parse.parse(testsPrefix, name)
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-//    Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
+    //    Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_))) = x._1
-//    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
+    //    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
 
     val z = ExplicitHeap.explicitStackHeap(theFun, x._2)
     val Suite(l) = z._1
@@ -55,9 +60,9 @@ class Tests {
       ImportAllSymbols(List("closureRuntime")),
       Suite(l.init),
       Assert(CallIndex(false,
-          (CallIndex(true, Ident(mainName),
-            List((None, CollectionCons(CollectionKind.List, List())), (None, DictCons(List()))))),
-          List((None, IntLiteral(1))))
+        (CallIndex(true, Ident(mainName),
+          List((None, CollectionCons(CollectionKind.List, List())), (None, DictCons(List()))))),
+        List((None, IntLiteral(1))))
       )
     ))
 
@@ -66,8 +71,14 @@ class Tests {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     import scala.sys.process._
-    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"), java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"))
-//    /assertTrue(0 == (s"cp \"$testsPrefix/closureRuntime.py\" \"$testsPrefix/afterImmutabilization/\"".!))
+
+    val closureRuntime = java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py")
+    try {
+      java.nio.file.Files.copy(closureRuntime, java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"))
+    } catch {
+      case e: FileAlreadyExistsException => println(e.getMessage)
+    }
+
     assertTrue(0 == (s"python3 \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
@@ -80,6 +91,47 @@ class Tests {
       s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
     )
     output.close()
+  }
+
+  @Test def cPythonTest(): Unit = {
+    val name = "cPythonTest"
+    val y = Parse.parse(testsPrefix, name)
+
+    val z = RemoveControlFlow.removeControlFlow(y._1, y._2)
+    val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _), Return(_))) = z._1
+    val zHacked = Suite(List(theFun, Assert(CallIndex(isCall = true, Ident(theFun.name), List()))))
+    Parse.toFile(zHacked, testsPrefix + "cPythonTests", name)
+
+    mainAsserter(name, "cPythonTests")
+  }
+
+  @Test def classesInheritanceTest(): Unit = {
+    val name = "inheritance_test"
+    val y = Parse.parse(testsPrefix, name)
+
+    val z = RemoveControlFlow.removeControlFlow(y._1, y._2)
+    val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _), Return(_))) = z._1
+    val zHacked = Suite(List(theFun, Assert(CallIndex(isCall = true, Ident(theFun.name), List()))))
+    Parse.toFile(zHacked, testsPrefix + "inheritance_tests", name)
+
+    mainAsserter(name, "inheritance_tests")
+  }
+
+  def mainAsserter(name: String, pathPart: String): Unit = {
+    val stdout = new StringBuilder()
+    val stderr = new StringBuilder()
+    import scala.sys.process._
+
+    val closureRuntime = java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py")
+    try {
+      java.nio.file.Files.copy(closureRuntime, java.nio.file.Paths.get(testsPrefix + s"/$pathPart/closureRuntime.py"))
+    } catch {
+      case e: FileAlreadyExistsException => println(e.getMessage)
+      case e: NoSuchFileException => println(e.getMessage)
+    }
+
+    assertTrue(0 == (s"python3 \"$testsPrefix/$pathPart/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    println(stdout)
   }
 
 }
