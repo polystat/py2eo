@@ -111,8 +111,9 @@ object PrintEO {
           Ident + printExpr(visibility)(cond),
         ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
       case FuncDef(name, args, None, None, body, Decorators(List()), h) =>
+        println(s"for fun $name h is $h")
         val locals = h.filter(z => z._2 == VarScope.Local).keys
-        val args1 = args.map{ case (argname, ArgKind.Positional, None) => "x" + argname }.mkString(" ")
+        val args1 = args.map{ case (argname, _, None) => "x" + argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
         List(s"x$name.write") ++
           ident(s"[$args1]" ::

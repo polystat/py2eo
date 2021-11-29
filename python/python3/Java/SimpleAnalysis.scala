@@ -108,7 +108,7 @@ object SimpleAnalysis {
         case Assign(List(CollectionCons(_, _), _)) => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(l) if l.size > 2 => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(List(Ident(name), _)) => (add(name), true)
-        case u : Unsupported => (u.declareVars.foldLeft(h)(add0), false)
+        case u : Unsupported => (u.declareVars.foldLeft(h)(add0), true)
         case CreateConst(name, _) => (add(name), true)
         case _ => (h, true)
       }

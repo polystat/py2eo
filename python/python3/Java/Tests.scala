@@ -17,7 +17,7 @@ class Tests {
   val intermediateDirs = List(
     "afterEmptyProcStatement", "afterExtractAllCalls", "afterImmutabilization",
     "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterHeapify",
-    "afterUseCage",
+    "afterUseCage", "afterMkUnsupported",
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
 
@@ -169,6 +169,7 @@ class Tests {
       val y = Parse.parse(testsPrefix, name)
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(unsupportedSt._1, unsupportedSt._2)
+      Parse.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
       val output = new FileWriter(testsPrefix + "genUnsupportedEO/" + name + ".eo")
       val eoText = PrintEO.printSt(name, SimpleAnalysis.computeAccessibleIdents(unsupportedExpr._1))

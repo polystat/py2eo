@@ -365,9 +365,10 @@ object SimplePass {
     case Assign(l)  => new Unsupported(s, l.init.flatMap{ case Ident(s) => List(s) case _ => List()})
     case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents)
       if decorators.l.nonEmpty || otherKeyword.nonEmpty || otherPositional.nonEmpty ||
-        args.exists(x => x._3.nonEmpty || x._2 != ArgKind.Positional) =>
-      val body1 = new Unsupported(body, List())
-      FuncDef(name, args.map(a => (a._1, ArgKind.Positional, None)), None, None, body1, new Decorators(List()), accessibleIdents)
+        args.exists(x => x._3.nonEmpty || x._2 == ArgKind.Keyword) =>
+        println(s"$name is unsupported ($s)")
+        val body1 = new Unsupported(body, List())
+        FuncDef(name, args.map(a => (a._1, ArgKind.Positional, None)), None, None, body1, new Decorators(List()), accessibleIdents)
     case For(_, _, _, _) | AugAssign(_, _, _) | WithoutArgs(StatementsWithoutArgs.Continue) | Yield(_) |
       Assert(_) | Raise(_, _) | Del(_) | Global(_) | With(_, _, _) | Try(_, _, _, _) |
       ImportAllSymbols(_) | Return(_) => new Unsupported(s, List())

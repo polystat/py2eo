@@ -20,6 +20,7 @@ object PrintPython {
     def sqr(s : String) : String = brak(s, "[", "]")
     e match {
       case NoneLiteral() => "None"
+      case UnsupportedExpr(t, value) => "None"
       case IntLiteral(value) => value.toString(10)
       case FloatLiteral(value) => value.toString
       case ImagLiteral(value) => value.toString + "j"
