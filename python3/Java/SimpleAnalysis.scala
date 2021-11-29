@@ -120,10 +120,13 @@ object SimpleAnalysis {
   }
 
   private def assertStatementIsSimplified(acc : Unit, s : Statement) : (Unit, Boolean) = s match {
-    case Del(Ident(_)) | IfSimple(_, _, _) | Try(_, List((None, _)), _, _) | While(_, _, _) |
-       Suite(_) | AugAssign(_, _, _) | Assign(List(_)) | Assign(List(Ident(_), _)) | Return(_) |
-       Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | FuncDef(_, _, _, _, _, Decorators(List()), _) |
-       NonLocal(_) | WithoutArgs(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => (acc, true)
+    case
+//      Del(Ident(_)) | Try(_, List((None, _)), _, _) | AugAssign(_, _, _) |
+//      Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | Global(_) |
+      IfSimple(_, _, _) | While(_, _, _) |
+       Suite(_) | Assign(List(_)) | Assign(List(Ident(_), _)) | Return(_) |
+       FuncDef(_, _, _, _, _, Decorators(List()), _) |
+       NonLocal(_) | WithoutArgs(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => (acc, true)
   }
 
   private def assertExpressionIsSimplified(acc : Unit, e : T) : Unit = e match {

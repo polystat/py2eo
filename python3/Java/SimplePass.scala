@@ -144,7 +144,8 @@ object SimplePass {
 
     e match {
       case Binop(op, l, r) if !lhs => reconstruct(false, { case List(l, r) => Binop(op, l, r)}, List(l, r), ns)
-      case SimpleComparison(op, l, r) if !lhs => reconstruct(false, { case List(l, r) => SimpleComparison(op, l, r)}, List(l, r), ns)
+      case SimpleComparison(op, l, r) if !lhs =>
+        reconstruct(false, { case List(l, r) => SimpleComparison(op, l, r)}, List(l, r), ns)
       case FreakingComparison(ops, l) if !lhs && ops.size == 1 =>
         reconstruct(false, { case List(l, r) => SimpleComparison(ops.head, l, r)}, List(l.head, l.last), ns)
       case Unop(op, x) if !lhs => reconstruct(false, { case List(x) => Unop(op, x) }, List(x), ns)
@@ -228,7 +229,8 @@ object SimplePass {
     }
 
     s match {
-      case Raise(None, None) | WithoutArgs(_) | NonLocal(_) | Global(_) | ImportModule(_, _) | ImportSymbol(_, _, _) | ImportAllSymbols(_) => (s, ns)
+      case Raise(None, None) | WithoutArgs(_) | NonLocal(_) | Global(_) | ImportModule(_, _) |
+           ImportSymbol(_, _, _) | ImportAllSymbols(_) => (s, ns)
       case Del(Ident(_)) => (s, ns)
       case IfSimple(cond, yes, no) =>
         val (yes1, ns1) = pst(yes, ns)
@@ -274,12 +276,18 @@ object SimplePass {
           (acc._1 :+ st1, ns1)
         })
         (Suite(l1), ns1)
+
       case Assign(List(l, r)) =>
         val rp = procExpr(f)(false, r, ns)
         val lp = procExpr(f)(true, l, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(str ++ stl :+ Assign(List(el, er))), lp._2)
+
+      case CreateConst(name, r) =>
+        val rp = procExpr(f)(false, r, ns)
+        val (str, er) = procEA(rp._1)
+        (Suite(str :+ CreateConst(name, er)), rp._2)
 
       case Assign(List(e)) => forceAllIfNecessary(f)(List((false, e)), ns) match {
         case Left((l, ns)) => (Assign(l), ns)
@@ -320,6 +328,11 @@ object SimplePass {
     case If((cond, yes) :: t, eelse) =>
       val (newElse, ns1) = simplifyIf(If(t, eelse), ns)
       (IfSimple(cond, yes, newElse), ns1)
+    case _ => (s, ns)
+  }
+
+  def unSuite(s : Statement, ns : Names) : (Statement, Names) = s match {
+    case Suite(l) => (Suite(l.flatMap{ case Suite(l) => l case s => List(s) }), ns)
     case _ => (s, ns)
   }
 

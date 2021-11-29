@@ -46,15 +46,14 @@ object RemoveControlFlow {
       case FuncDef(name, args, None, None, body, _, accessibleIdents) =>
         val vars = accessibleIdents.toList
         val nonlocals = NonLocal(vars.filter(z => z._2 == VarScope.Local || z._2 == VarScope.NonLocal).map(_._1))
+        val (List(headLabelInner, afterLabelInner), ns1) = ns(List("bb_start", "bb_finish"))
+        val (body1, b, ns2) = inner(headLabelInner, afterLabelInner, "", body, ns1)
         // todo: this is not at all correct, because an access to a local variable with value None may lead to
         // a dynamic type error, while an access to a variable before assignment leads to exception
         // UnboundLocalError: local variable 'x' referenced before assignment
         // I'm not sure that this behaviour can be represented with a py2py pass
-        val locals = vars.
-          filter(z => z._2 == VarScope.Local && !args.exists(y => y._1 == z._1)).
+        val locals = (vars.filter(z => z._2 == VarScope.Local) ++ body1 :+ (afterLabelInner, ())).
           map(z => Assign(List(Ident(z._1), NoneLiteral())))
-        val (List(headLabelInner, afterLabelInner), ns1) = ns(List("bb_start", "bb_finish"))
-        val (body1, b, ns2) = inner(headLabelInner, afterLabelInner, "", body, ns1)
         val body2 = body1.map(z => FuncDef(z._1, List(), None, None,
           (if (nonlocals.l.nonEmpty) Suite(List(nonlocals, z._2)) else z._2),
           Decorators(List()), HashMap())
