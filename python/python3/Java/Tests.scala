@@ -18,7 +18,7 @@ class Tests {
     "afterEmptyProcStatement", "afterExtractAllCalls", "afterImmutabilization",
     "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterHeapify",
     "afterUseCage",
-    "genImmutableEO", "genHeapifiedEO", "genCageEO",
+    "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
 
   @Before def initialize(): Unit = {
@@ -164,6 +164,19 @@ class Tests {
     output.close()
   }
 
+  @Test def useUnsupported() : Unit = {
+    for (name <- List("x", "trivial", "twoFuns", "test_typing")) {
+      val y = Parse.parse(testsPrefix, name)
+      val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
+      val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(unsupportedSt._1, unsupportedSt._2)
+
+      val output = new FileWriter(testsPrefix + "genUnsupportedEO/" + name + ".eo")
+      val eoText = PrintEO.printSt(name, SimpleAnalysis.computeAccessibleIdents(unsupportedExpr._1))
+      output.write(eoText.mkString("\n") + "\n")
+      output.close()
+
+    }
+  }
 
 }
 

@@ -4,6 +4,16 @@ object SimpleAnalysis {
 
   import Expression._
 
+  def childrenComprehension(c : Comprehension) = c match {
+    case IfComprehension(cond) => List(cond)
+    case ForComprehension(what, in) => List(what, in)
+  }
+
+  def childrenDictEltDoubleStar(x : DictEltDoubleStar) = x match {
+    case Right(value) => List(value)
+    case Left((a, b)) => List(a, b)
+  }
+
   def childrenE(e : T) : List[T] = e match {
     case Binop(op, l, r) =>List(l, r)
     case SimpleComparison(op, l, r) => List(l, r)
@@ -12,13 +22,19 @@ object SimpleAnalysis {
     case FreakingComparison(ops, l) => l
     case Unop(op, x) => List(x)
     case Star(e) => List(e)
+    case DoubleStar(e) => List(e)
     case CollectionCons(wasList, l) => l
+    case DictCons(l) => l.flatMap(childrenDictEltDoubleStar)
     case Slice(from, to, by) => from.toList ++ to.toList ++ by.toList
     case CallIndex(isCall, whom, args) => whom :: args.map(_._2)
     case Field(whose, name) => List(whose)
     case Cond(cond, yes, no) => List(cond, yes, no)
     case x : UnsupportedExpr => x.children
-    case IntLiteral(_) | FloatLiteral(_) | StringLiteral(_) | BoolLiteral(_) | NoneLiteral() | Ident(_) => List()
+    case IntLiteral(_) | FloatLiteral(_) | StringLiteral(_) | BoolLiteral(_) | NoneLiteral() | ImagLiteral(_) |
+         Ident(_) => List()
+    case CollectionComprehension(kind, base, l) => base :: l.flatMap(childrenComprehension)
+    case DictComprehension(base, l) =>
+      childrenDictEltDoubleStar(base) ++ l.flatMap(childrenComprehension)
   }
 
   def foldEE[A](f0 : (A, T) => A)(acc0 : A, e : T) : A = {
@@ -30,7 +46,10 @@ object SimpleAnalysis {
   def childrenS(s : Statement) : (List[Statement], List[(Boolean, T)]) = {
     def isRhs(e : T) = (false, e)
     s match {
-      case Del(Ident(name)) => (List(), List((false, Ident(name))))
+      case Yield(l) => (List(), l.map(x => (false, x)).toList)
+      case With(cm, target, body) => (List(body), (false, cm) :: target.map(x => (true, x)).toList)
+      case For(what, in, body, eelse) => (List(body, eelse), List((false, what), (false, in)))
+      case Del(e) => (List(), List((false, e)))
       case If(conditioned, eelse) => (eelse :: conditioned.map(_._2), conditioned.map(x => (false, x._1)))
       case IfSimple(cond, yes, no) => (List(yes, no), List((false, cond)))
       case Try(ttry, excepts, eelse, ffinally) =>
@@ -81,13 +100,15 @@ object SimpleAnalysis {
     })(HashMap[String, VarScope.T](), body)
 
     val h3 = foldSS[H]((h, st) => {
-      def add(name : String) : H = if (h.contains(name)) h else h.+((name, VarScope.Local))
+      def add0(h : H, name : String) : H = if (h.contains(name)) h else h.+((name, VarScope.Local))
+      def add(name : String) = add0(h, name)
       st match {
         case ClassDef(name, bases, body, _) => (add(name), false)
         case FuncDef(name, args, body, _, _, _, _) => (add(name), false)
         case Assign(List(CollectionCons(_, _), _)) => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(l) if l.size > 2 => throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(List(Ident(name), _)) => (add(name), true)
+        case u : Unsupported => (u.declareVars.foldLeft(h)(add0), false)
         case CreateConst(name, _) => (add(name), true)
         case _ => (h, true)
       }
