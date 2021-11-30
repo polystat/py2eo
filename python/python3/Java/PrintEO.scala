@@ -111,7 +111,6 @@ object PrintEO {
           Ident + printExpr(visibility)(cond),
         ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
       case FuncDef(name, args, None, None, body, Decorators(List()), h) =>
-        println(s"for fun $name h is $h")
         val locals = h.filter(z => z._2 == VarScope.Local).keys
         val args1 = args.map{ case (argname, _, None) => "x" + argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
@@ -129,15 +128,18 @@ object PrintEO {
     "",
   )
 
-  def printSt(moduleName : String, st : Statement) : Text = {
+  def printSt(moduleName : String, st : Statement, hackPreface : Text) : Text = {
 //    val h = SimpleAnalysis.classifyFunctionVariables(List(), st, false)
 //    val locals = h.filter(z => z._2 == VarScope.Local).keys
     (
-      standardTestPreface ++
+      standardTestPreface ++ hackPreface ++
       List(
         "[] > " + moduleName,
         Ident + "[args...] > unsupported",
+        Ident + "[args...] > xunsupported",
         Ident + "memory > bogusForceDataize",
+        Ident + "memory > xbogusForceDataize",
+        Ident + "memory > xhack",
         Ident + "seq > @"
       ) ++
       ident(ident(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))

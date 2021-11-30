@@ -9,6 +9,7 @@ import java.io.{File, FileWriter}
 import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import scala.collection.immutable.HashMap
+import scala.collection.{immutable, mutable}
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
@@ -165,14 +166,34 @@ class Tests {
   }
 
   @Test def useUnsupported() : Unit = {
-    for (name <- List("x", "trivial", "twoFuns", "test_typing")) {
+    for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
       val y = Parse.parse(testsPrefix, name)
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(unsupportedSt._1, unsupportedSt._2)
       Parse.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
+      val hacked = SimpleAnalysis.computeAccessibleIdents(
+        FuncDef("hack", List(), None, None, unsupportedExpr._1, new Decorators(List()), HashMap()))
+
+      def findGlobals(l : Set[String], f : FuncDef) : Set[String] = {
+        SimpleAnalysis.foldSE[Set[String]](
+          (l, e) => {e match {
+//            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
+            case Ident(name) if !f.accessibleIdents.contains(name) => l.+(name)
+            case _ => l
+          }},
+          { case _ : FuncDef => false case _ => true }
+        )(l, f.body)
+      }
+
+      val globals = SimpleAnalysis.foldSS[Set[String]]((l, st) => {
+        (st match { case f : FuncDef => findGlobals(l, f)  case _ => l }, true)
+      })(immutable.HashSet(), hacked)
+
+      println(s"globals = $globals")
+
       val output = new FileWriter(testsPrefix + "genUnsupportedEO/" + name + ".eo")
-      val eoText = PrintEO.printSt(name, SimpleAnalysis.computeAccessibleIdents(unsupportedExpr._1))
+      val eoText = PrintEO.printSt(name, hacked, globals.map(name => s"[args...] > x$name").toList)
       output.write(eoText.mkString("\n") + "\n")
       output.close()
 

@@ -366,7 +366,6 @@ object SimplePass {
     case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents)
       if decorators.l.nonEmpty || otherKeyword.nonEmpty || otherPositional.nonEmpty ||
         args.exists(x => x._3.nonEmpty || x._2 == ArgKind.Keyword) =>
-        println(s"$name is unsupported ($s)")
         val body1 = new Unsupported(body, List())
         FuncDef(name, args.map(a => (a._1, ArgKind.Positional, None)), None, None, body1, new Decorators(List()), accessibleIdents)
     case For(_, _, _, _) | AugAssign(_, _, _) | WithoutArgs(StatementsWithoutArgs.Continue) | Yield(_) |
