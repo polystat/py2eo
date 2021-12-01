@@ -358,4 +358,11 @@ object SimplePass {
     case (false, CallIndex(_, Ident("setattr"), args), ns) => (Left(CallIndex(true, Ident("eo_setattr"), args)), ns)
     case (_, e, ns) => (Left(e), ns)
   })
+
+  def explicitBases(s : Statement, ns : Names) : (Statement, Names) = s match {
+    case ClassDef(name, bases0, body, decorators) =>
+      val (newBody, ns1) = explicitBases(body, ns)
+      (ClassDef(name, List(), Suite(List(Assign(List(Ident("eo_bases"), CollectionCons(CollectionKind.List, bases0))), newBody)), decorators), ns1)
+    case _ => (s, ns)
+  }
 }

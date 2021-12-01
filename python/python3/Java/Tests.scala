@@ -16,7 +16,7 @@ class Tests {
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
   val intermediateDirs = List(
     "afterEmptyProcStatement", "afterExplicitStackHeap", "afterExtractAllCalls", "afterImmutabilization",
-    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterSimplifyInheritance", "genEO", "afterHeapify"
+    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterExplicitBases", "afterSimplifyInheritance", "genEO", "afterHeapify"
   )
 
   @Before def initialize(): Unit = {
