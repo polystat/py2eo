@@ -1,66 +1,35 @@
 from collections import defaultdict
 
 
-def merge(sequences):
-    sequences = [list(x) for x in sequences]
-    result = []
-
-    while True:
-        sequences = [x for x in sequences if x]
-        if not sequences:
-            return result
-
-        for seq in sequences:
-            head = seq[0]
-            if not any(head in s[1:] for s in sequences):
+def merge(seqs):
+    res = []
+    i = 0
+    while 1:
+        nonemptyseqs = [seq for seq in seqs if seq]
+        if not nonemptyseqs:
+            return res
+        i += 1
+        for seq in nonemptyseqs:  # find merge candidates among seq heads
+            cand = seq[0]
+            nothead = [s for s in nonemptyseqs if cand in s[1:]]
+            if nothead:
+                cand = None  # reject candidate
+            else:
                 break
-        else:
-            raise TypeError
-
-        result.append(head)
-        for seq in sequences:
-            if seq[0] == head:
+        if not cand:
+            raise "Inconsistent hierarchy"
+        res.append(cand)
+        for seq in nonemptyseqs:  # remove cand
+            if seq[0] == cand:
                 del seq[0]
 
 
-def class_graph(obj):
-    graph = {}
-    _add_to_graph(obj, graph, lambda cls: cls.__bases__)
-    return graph
-
-
-def _add_to_graph(obj, graph, bases_func):
-    if obj not in graph:
-        graph[obj] = bases_func(obj)
-        for x in graph[obj]:
-            _add_to_graph(x, graph, bases_func)
-
-
-def _linearize(head, graph, results):
-    if head in results:
-        return results[head]
-
-    res = merge(
-        [[head]] +
-        [_linearize(x, graph, results) for x in graph[head]] +
-        ([graph[head]])
-    )
-
-    results[head] = res
-    return res
-
-
-def linearize(obj):
-    results = {}
-    graph = defaultdict(list, class_graph(obj))
-
-    for head in sorted(graph, key=lambda k: len(graph[k])):
-        _linearize(head, graph, results)
-    return results
+def mro(c):
+    return merge([[c]] + map(mro, getattr(c, "__bases__")) + [list(getattr(c, "__bases__"))])
 
 
 def findattr(obj, name):
-    for pred in linearize(obj):
+    for pred in mro(obj):
         if name in pred.__dict__.keys():
             return pred
     raise TypeError
