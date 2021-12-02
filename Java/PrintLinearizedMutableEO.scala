@@ -12,7 +12,6 @@ object PrintLinearizedMutableEO {
     "+package org.eolang",
     "+alias stdout org.eolang.io.stdout",
     "+alias sprintf org.eolang.txt.sprintf",
-    "+junit",
     ""
   )
 
