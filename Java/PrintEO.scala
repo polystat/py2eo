@@ -106,7 +106,6 @@ object PrintEO {
     "+package org.eolang",
     "+alias org.eolang.txt.sprintf",
     "+alias org.eolang.io.stdout",
-    "+junit",
     "",
   )
 
