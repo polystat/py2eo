@@ -13,7 +13,7 @@ object PrintLinearizedMutableEONoCage {
     "+alias cage org.eolang.gray.cage",
     "+alias stdout org.eolang.io.stdout",
     "+alias sprintf org.eolang.txt.sprintf",
-    "+junit",
+//    "+junit",
     ""
   )
 
