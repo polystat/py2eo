@@ -17,17 +17,20 @@ object PrintLinearizedMutableEOWithCage {
     val funs = l.filter(isFun)
     val funNames = funs.map{ case f : FuncDef => f.name }.toSet
     val memories = f.accessibleIdents.filter(x => x._2 == VarScope.Local && !funNames.contains(x._1)).
-      map(x => s"cage > ${x._1}").toList
+      map(x => s"cage > x${x._1}").toList
     val innerFuns = funs.flatMap{case f : FuncDef => (printFun(f.name, f))}
     def others(l : List[Statement]) : Text = l.flatMap{
       case NonLocal(l) => List()
       case Assign(List(Ident(name), DictCons(l))) =>
         "write." ::
-          ident(name :: "[]" :: ident(l.map{ case Left((StringLiteral(name), value)) =>
-            printExpr(bogusVisibility)(value) + " > " + name.substring(1, name.length - 1) }))
+          ident("x" + name :: "[]" :: ident(l.map{ case Left((StringLiteral(name), value)) =>
+            printExpr(bogusVisibility)(value) + " > x" + name.substring(1, name.length - 1) }))
       case f : FuncDef => List(s"${f.name}.write ${f.name}Fun")
       case Assign(List(Ident(lhsName), rhs)) =>
-        List(s"$lhsName.write ${printExpr(bogusVisibility)(rhs)}")
+        List(
+          s"forceData.write ${printExpr(bogusVisibility)(rhs)}",
+          s"x$lhsName.write forceData"
+        )
       case Assign(List(e)) => List(printExpr(bogusVisibility)(e))
       case Return(e) => List(printExpr(bogusVisibility)(e))
       case IfSimple(cond, Return(yes), Return(no)) =>
@@ -37,9 +40,11 @@ object PrintLinearizedMutableEOWithCage {
       case Suite(l) => others(l)
     }
     val args1 = f.args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(" ")
-    s"[$args1] > ${newName}" :: ident(
-      memories ++ innerFuns ++
-        ("seq > @" :: ident(s"stdout \"$newName\\n\"" :: others(l.filterNot(isFun))))
+    s"[$args1] > x${newName}" :: ident(
+      "memory > forceData" :: memories ++ innerFuns ++
+        ("seq > @" :: ident(
+//          s"stdout \"$newName\\n\"" ::
+            others(l.filterNot(isFun))))
     )
   }
 
