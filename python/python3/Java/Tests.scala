@@ -132,37 +132,38 @@ class Tests {
   }
 
   @Test def useCage() : Unit = {
-    val name = "x"
-    val y = Parse.parse(testsPrefix, name)
+    for (name <- List("x", "trivial")) {
+      val y = Parse.parse(testsPrefix, name)
 
-    val textractAllCalls = SimplePass.procExprInStatement(
-      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+      val textractAllCalls = SimplePass.procExprInStatement(
+        SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
-    val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-    val Suite(List(theFun, Return(_))) = z._1
-    val FuncDef(mainName, _, _, _, body, _, _) = theFun
+      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
+      val Suite(List(theFun, Return(_))) = z._1
+      val FuncDef(mainName, _, _, _, body, _, _) = theFun
 
-    val theFunC = ClosureWithCage.closurize(theFun)
-    val hacked = Suite(List(theFunC, Assert((CallIndex(true,
-      ClosureWithCage.index(Ident(mainName), "callme"),
-      List((None, Ident(mainName))))))))
-    Parse.toFile(hacked, testsPrefix + "afterUseCage", name)
+      val theFunC = ClosureWithCage.closurize(theFun)
+      val hacked = Suite(List(theFunC, Assert((CallIndex(true,
+        ClosureWithCage.index(Ident(mainName), "callme"),
+        List((None, Ident(mainName))))))))
+      Parse.toFile(hacked, testsPrefix + "afterUseCage", name)
 
-    val stdout = new StringBuilder()
-    val stderr = new StringBuilder()
-    import scala.sys.process._
-    assertTrue(0 == (s"python3 \"$testsPrefix/afterUseCage/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-    println(stdout)
+      val stdout = new StringBuilder()
+      val stderr = new StringBuilder()
+      import scala.sys.process._
+      assertTrue(0 == (s"python3 \"$testsPrefix/afterUseCage/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      println(stdout)
 
-    val eoHacked = Suite(List(
-      theFunC,
-      Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName), "callme"), List())))
-    ))
+      val eoHacked = Suite(List(
+        theFunC,
+        Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName), "callme"), List())))
+      ))
 
-    val output = new FileWriter(testsPrefix + "genCageEO/" + name + ".eo")
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(name, eoHacked)
-    output.write(eoText.mkString("\n") + "\n")
-    output.close()
+      val output = new FileWriter(testsPrefix + "genCageEO/" + name + ".eo")
+      val eoText = PrintLinearizedMutableEOWithCage.printTest(name, eoHacked)
+      output.write(eoText.mkString("\n") + "\n")
+      output.close()
+    }
   }
 
   @Test def useUnsupported() : Unit = {
