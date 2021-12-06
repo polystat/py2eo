@@ -17,12 +17,21 @@
                 <artifactId>eo-maven-plugin</artifactId>
                 <version>${eolang.version}</version>
                 <executions>
-                    <execution>
+					<execution>
+						<id>compile</id>
                         <goals>
                             <goal>register</goal>
                             <goal>assemble</goal>
                             <goal>transpile</goal>
                         </goals>
+						<configuration>
+						  <scope>test</scope>
+						  <sourcesDir>${project.basedir}/src/test/eo</sourcesDir>
+						  <targetDir>${project.basedir}/target/eo-test</targetDir>
+						  <addSourcesRoot>false</addSourcesRoot>
+						  <addTestSourcesRoot>true</addTestSourcesRoot>
+						  <generatedDir>${project.basedir}/target/generated-test-sources</generatedDir>
+						</configuration>
                     </execution>
                 </executions>
             </plugin>
