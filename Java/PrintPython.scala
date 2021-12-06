@@ -20,8 +20,10 @@ object PrintPython {
     def sqr(s : String) : String = brak(s, "[", "]")
     e match {
       case NoneLiteral() => "None"
+      case UnsupportedExpr(t, value) => "None"
       case IntLiteral(value) => value.toString(10)
       case FloatLiteral(value) => value.toString
+      case ImagLiteral(value) => value.toString + "j"
       case StringLiteral(value) => value
       case BoolLiteral(b) => if (b) "True" else "False"
       case Binop(op, l, r) => brak(printExpr(l) + " " + Binops.toString(op) + " " + printExpr(r))
@@ -77,7 +79,11 @@ object PrintPython {
     def printDecorators(decorators: Decorators) =
       decorators.l.map(z => shift + "@" + printExpr(z) + "\n").mkString("")
     s match {
+      case u : Unsupported => shift + "assert(false)"
+
       case Del(e) => shift + "del " + printExpr(e)
+      case Yield(Some(e)) => shift + "yield " + printExpr(e)
+      case Yield(None) => shift + "yield"
 
       case With(cm, target, body) =>
         shift + "with " + printExpr(cm) + (target match {
@@ -132,6 +138,7 @@ object PrintPython {
       case Return(x) =>shift + "return " + printExpr(x)
       case Assert(x) => shift + "assert " + printExpr(x)
       case Raise(Some(x), Some(from)) => shift + "raise " + printExpr(x) + " from " + printExpr(from)
+      case Raise(Some(x), None) => shift + "raise " + printExpr(x)
       case Raise(None, None) => shift + "raise"
       case NonLocal(l) => shift + "nonlocal " + l.mkString(", ")
       case Global(l) => shift + "global " + l.mkString(", ")

@@ -119,6 +119,7 @@ object Expression {
 
   case class IntLiteral(value : BigInt) extends T
   case class FloatLiteral(value : Double) extends T
+  case class ImagLiteral(value : Double) extends T
   case class StringLiteral(value : String) extends T
   case class BoolLiteral(value : Boolean) extends T
   case class NoneLiteral() extends T
@@ -145,6 +146,14 @@ object Expression {
   case class Field(whose : T, name : String) extends T
   case class Cond(cond : T, yes : T, no : T) extends T
   case class AnonFun(args : List[String], body : T) extends T
+  class UnsupportedExpr(original0 : T, children0 : List[T]) extends T {
+    val original = original0
+    val children = children0
+    def this(original : T) = this(original, SimpleAnalysis.childrenE(original))
+  }
+  object UnsupportedExpr {
+    def unapply(e : UnsupportedExpr) = Some((e.original, e.children))
+  }
 
   sealed trait Comprehension
   case class IfComprehension(cond : T) extends Comprehension
@@ -285,6 +294,15 @@ case class ImportSymbol(from : List[String], what : String, as : String) extends
 case class With(cm : ET, target : Option[ET], body : Statement) extends Statement
 case class Try(ttry : Statement, excepts : List[(Option[(ET, Option[String])], Statement)],
                eelse : Statement, ffinally : Statement) extends Statement
+class Unsupported(original0 : Statement, declareVars0 : List[String],
+                  es0 : List[(Boolean, Expression.T)], sts0 : List[Statement]) extends Statement {
+  val original = original0
+  val declareVars = declareVars0
+  val es = es0
+  val sts = sts0
+  def this(original : Statement, declareVars : List[String]) =
+    this(original, declareVars, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1)
+}
 
 object MapStatements {
 
@@ -348,9 +366,11 @@ object MapStatements {
     FuncDef(s.NAME().getText, z._1, z._2, z._3, mapNullableSuite(s.suite()), decorators, HashMap())
   }
 
-  def mapClassDef(s : ClassdefContext, decorators: Decorators) = new ClassDef(
-    s.NAME().getText, mapArglistNullable(s.arglist()).map{case (None, e) => e}, mapNullableSuite(s.suite()), decorators
-  )
+  def mapClassDef(s : ClassdefContext, decorators: Decorators) = {
+    new ClassDef(
+      s.NAME().getText, mapArglistNullable(s.arglist()).map{case (None, e) => e}, mapNullableSuite(s.suite()), decorators
+    )
+  }
 
   val pass = WithoutArgs(StatementsWithoutArgs.Pass)
 
@@ -410,6 +430,10 @@ object MapStatements {
         case a : JustAssignContext =>
           val rhss = asScala(a.l).map(mapRhsAssign).toList
           Assign(lhs :: rhss)
+        case x : AnnAssignLabelContext =>
+          val es = asScala(x.annassign().test()).toList.map(x => (false, mapTest(x)))
+          new Unsupported(Suite(List()), es(0)._2 match { case Ident(name) => List(name) case _ => List() },
+            es, List())
       }
     }
     case s : SmallDelContext => Del(mapExprList(s.del_stmt().exprlist()))
@@ -452,23 +476,24 @@ object MapStatements {
 
 object MapExpressions {
 
-  def string2num(x : String) : Either[BigInt, Double] = {
-    if (x.exists(c => c == '.' || c == '+' || c == '-')) Right(x.toDouble) else {
+  def string2num(x : String) : Expression.T = {
+    if (x.last == 'j') Expression.ImagLiteral(x.init.toDouble) else
+    if (x.exists(c => c == '.' || c == '+' || c == '-')) Expression.FloatLiteral(x.toDouble) else {
       val int =
-      if (x.length >= 2 && x.substring(0, 2) == "0x")
-        x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
-          acc * 16 + (
-            if (ch >= '0' && ch <= '9') (ch.toInt - '0'.toInt) else if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt else if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt else
-              throw new NumberFormatException()
-            )
-        })
-      else if (x.length >= 2 && x.substring(0, 2) == "0o")
-        x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
-          acc * 8 + (if (ch >= '0' && ch <= '7') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
-        )
-      else
-        BigInt(x)
-      Left(int)
+        if (x.length >= 2 && x.substring(0, 2) == "0x")
+          x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
+            acc * 16 + (
+              if (ch >= '0' && ch <= '9') (ch.toInt - '0'.toInt) else if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt else if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt else
+                throw new NumberFormatException()
+              )
+          })
+        else if (x.length >= 2 && x.substring(0, 2) == "0o")
+          x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
+            acc * 8 + (if (ch >= '0' && ch <= '7') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+          )
+        else
+          BigInt(x)
+      Expression.IntLiteral(int)
     }
   }
 
@@ -498,10 +523,7 @@ object MapExpressions {
           DictCons(asScala(a.dictorsetmaker().dict_elt_double_star()).toList.map(mapDictEltDoubleStar))
       }
     } else
-    if (a.NUMBER() != null) string2num(a.NUMBER().getText) match {
-      case Left(value) => IntLiteral(value)
-      case Right(value) => FloatLiteral(value)
-    } else
+    if (a.NUMBER() != null) string2num(a.NUMBER().getText) else
     if (a.NAME() != null) Ident(a.NAME().getText) else
     if (a.TRUE() != null) BoolLiteral(true) else
     if (a.FALSE() != null) BoolLiteral(false) else
@@ -601,8 +623,12 @@ object MapExpressions {
       val Ident(keyword) = mapTest(e.test(0))
       (Some(keyword), mapTest(e.test(1)))
     } else {
-      assert(e.comp_for() == null)
-      (None, mapTest(e.test(0)))
+      val a = mapTest(e.test(0))
+      if (e.comp_for() != null) {
+        println(e.start.getLine)
+        ???
+      }
+      (None, a)
     }
   }
   def mapArglistNullable(l : ArglistContext) = {
