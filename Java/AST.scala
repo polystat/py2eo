@@ -279,13 +279,11 @@ case class FuncDef(name : String, args : List[(String, ArgKind.T, Option[ET])], 
          otherKeyword : Option[String], body : Statement, decorators: Decorators, accessibleIdents : HashMap[String, VarScope.T]) extends Statement {
 //  lazy val variablesClassification = SimpleAnalysis.classifyFunctionVariables(args, body, false)
 }
-class ClassDef(name : String, bases0 : List[ET], body : Statement, decorators: Decorators)
-  extends FuncDef(name, List(), None, None, body, decorators, HashMap()) {
-    val bases = bases0
+
+case class ClassDef(name : String, bases0 : List[ET], body : Statement, decorators: Decorators) extends Statement {
+  val bases = bases0
 }
-object ClassDef{
-  def unapply(arg: ClassDef) = Some((arg.name, arg.bases, arg.body, arg.decorators))
-}
+
 case class NonLocal(l : List[String]) extends Statement
 case class Global(l : List[String]) extends Statement
 case class ImportModule(what : List[String], as : String) extends Statement
@@ -734,7 +732,13 @@ object Parse {
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     output(tsimplifyIf._1, path + "afterSimplifyIf")
 
-    tsimplifyIf
+    val texplicitBases = SimplePass.procStatement(SimplePass.explicitBases)(tsimplifyIf._1, tsimplifyIf._2)
+    output(texplicitBases._1, path + "afterExplicitBases")
+
+    val tsimplifyInheritance = SimplePass.procExprInStatement(SimplePass.simplifyInheritance)(texplicitBases._1, texplicitBases._2)
+    output(tsimplifyInheritance._1, path + "afterSimplifyInheritance")
+
+    tsimplifyInheritance
   }
 
 }
