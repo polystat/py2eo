@@ -124,7 +124,8 @@ object PrintEO {
     "+package org.eolang",
     "+alias org.eolang.txt.sprintf",
     "+alias org.eolang.io.stdout",
-    "",
+    "+junit",
+	""
   )
 
   def printSt(moduleName : String, st : Statement, hackPreface : Text) : Text = {
