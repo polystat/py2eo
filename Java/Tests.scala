@@ -3,7 +3,7 @@ import java.io.{File, FileWriter}
 import java.nio.file.Files
 import Expression._
 import org.junit.Assert._
-import org.junit.{Before, Test}
+import org.junit.{Before, Ignore, Test}
 
 import java.io.{File, FileWriter}
 import java.nio.file.Files.copy
@@ -45,7 +45,7 @@ class Tests {
       println(stdout)
     }
   }
-
+	@Ignore
   @Test def immutabilize() : Unit = {
     val name = "trivial"
     val y = Parse.parse(testsPrefix, name)
