@@ -175,6 +175,7 @@ class Tests {
     }
   }
 
+  @Ignore
   @Test def useUnsupported() : Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
       val y = Parse.parse(testsPrefix, name)
