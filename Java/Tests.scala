@@ -1,6 +1,6 @@
 
 import java.io.{File, FileWriter}
-import java.nio.file.Files
+import java.nio.file.{FileAlreadyExistsException, Files, NoSuchFileException}
 import Expression._
 import org.junit.Assert._
 import org.junit.{Before, Ignore, Test}
@@ -199,6 +199,36 @@ class Tests {
       output.close()
 
     }
+  }
+
+
+  @Test def classesInheritanceTest(): Unit = {
+    val name = "inheritance_test"
+    val y = Parse.parse(testsPrefix, name)
+
+    val z = RemoveControlFlow.removeControlFlow(y._1, y._2)
+    val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _), Return(_))) = z._1
+    val zHacked = Suite(List(theFun, Assert(CallIndex(isCall = true, Ident(theFun.name), List()))))
+    Parse.toFile(zHacked, testsPrefix + "inheritance_tests", name)
+
+    mainAsserter(name, "inheritance_tests")
+  }
+
+  def mainAsserter(name: String, pathPart: String): Unit = {
+    val stdout = new StringBuilder()
+    val stderr = new StringBuilder()
+    import scala.sys.process._
+
+    val closureRuntime = java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py")
+    try {
+      java.nio.file.Files.copy(closureRuntime, java.nio.file.Paths.get(testsPrefix + s"/$pathPart/closureRuntime.py"))
+    } catch {
+      case e: FileAlreadyExistsException => println(e.getMessage)
+      case e: NoSuchFileException => println(e.getMessage)
+    }
+
+    assertTrue(0 == (s"python3 \"$testsPrefix/$pathPart/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    println(stdout)
   }
 
 }
