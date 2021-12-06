@@ -14,9 +14,8 @@ The python3 module is also buildable in IDEA with the followin configuration at 
 ## Project structure
 
 - py2eo - root maven project
-   - python3 - maven project of translator from Python3 to EO
       - test - maven project for run generated EO code via `eo-maven-plugin`, also contains Python files for tests
       - Java - directory with sources
          - Tests.scala - main tests file
 
-For run EO code you need copy `.eo` files to `python3/test/src/main/eo` and run `cd ./python3/test && mvn clean test`
+For run EO code you need copy `.eo` files to `test/genCageEO` and run `cd ./test && mvn clean test`
