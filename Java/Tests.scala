@@ -45,7 +45,7 @@ class Tests {
       println(stdout)
     }
   }
-	@Ignore
+	
   @Test def immutabilize() : Unit = {
     val name = "trivial"
     val y = Parse.parse(testsPrefix, name)
