@@ -18,7 +18,7 @@ class Tests {
   val intermediateDirs = List(
     "afterEmptyProcStatement", "afterExtractAllCalls", "afterImmutabilization",
     "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterHeapify",
-    "afterUseCage", "afterMkUnsupported",
+    "afterUseCage", "afterMkUnsupported", "afterExplicitBases", "afterSimplifyInheritance",
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
 
