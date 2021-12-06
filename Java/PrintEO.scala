@@ -51,7 +51,12 @@ object PrintEO {
       case NoneLiteral() => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
       case IntLiteral(value) => value.toString()
       case FloatLiteral(value) => value.toString
-      case StringLiteral(value) => "\"" + value + "\""
+      case StringLiteral(value0) =>
+        val value = value0.replace("\"\"", "")
+        if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
+        if (value.head == '\'' && value.last == '\'')
+          "\"" + value + "\""
+        else value
       case BoolLiteral(value) => if (value) "TRUE" else "FALSE"
       //    case NoneLiteral() =>
       case Binop(op, l, r) =>  "(" + e(l) + "." + binop(op) + " " + e(r) + ")"
@@ -60,13 +65,16 @@ object PrintEO {
       case LazyLAnd(l, r) =>  "(" + e(l) + ".and " + e(r) + ")"
       case LazyLOr(l, r) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x) => "(" + e(x) + "." + unop(op) + ")"
-      case Expression.Ident(name) => "(" + visibility(name) + ")"
+      case Expression.Ident(name) => "(x" + visibility(name) + ")"
       case CallIndex(false, from, List((_, StringLiteral(fname))))
         if fname == "\"callme\"" || (from match { case Expression.Ident("closure") => true case _ => false}) =>
           e(Field(from, fname.substring(1, fname.length - 1)))
+      case u : UnsupportedExpr =>
+        val e1 = CallIndex(true, Expression.Ident("unsupported"), u.children.map(e => (None, e)))
+        e(e1)
       case CallIndex(isCall, whom, args) if !isCall && args.size == 1 =>
         "(" + e(whom) + ".get " + e(args(0)._2) + ")"
-      case Field(whose, name) => "(" + e(whose) + "." + name + ")"
+      case Field(whose, name) => "(" + e(whose) + ".x" + name + ")"
       case Cond(cond, yes, no) => "(" + e(cond) + ".if " + e(yes) + " " + e(no) + ")"
       case CallIndex(true, whom, args)  =>
         "((" + e(whom) + ")" + args.map{case (None, ee) => " (" + e(ee) + ")"}.mkString("") + ")"
@@ -80,25 +88,35 @@ object PrintEO {
 
     st match {
       case ImportModule(_, _) | ImportAllSymbols(_) => List() // todo: a quick hack
+      case WithoutArgs(StatementsWithoutArgs.Pass) => List()
       case IfSimple(cond, yes, no) =>
         List(printExpr(visibility)(cond) + ".if") ++ ident(s(yes)) ++ ident(s(no))
       // todo: a hackish printer for single integers only!
       case Assign(List(CallIndex(true, Expression.Ident("print"), List((None, n))))) =>
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
-      case Assign(List(c@CallIndex(true, whom, args))) => s(Assign(List(Expression.Ident("bogusForceDataize"), c)))
-      case Assign(List(Expression.Ident(lname), erhs)) =>  List(visibility(lname) + ".write " + printExpr(visibility)(erhs))
+      case Assign(List(e@UnsupportedExpr(t, value))) => List(printExpr(visibility)(e))
+      case Assign(List(c@CallIndex(true, whom, args))) =>
+        s(Assign(List(Expression.Ident("bogusForceDataize"), c)))
+      case Assign(List(Expression.Ident(lname), erhs)) =>
+        List("x" + visibility(lname) + ".write " + printExpr(visibility)(erhs))
+      case Assign(List(_)) => List("unsupported")
       case Suite(List(st)) => s(st)
       case Suite(l) => List("seq") ++ ident(l.flatMap(s))
+      case u : Unsupported =>
+        val e1 = CallIndex(true, Expression.Ident("unsupported"), u.es.map(e => (None, e._2)))
+        val head = printExpr(visibility)(e1)
+        List(head) ++ ident(u.sts.flatMap(s))
       case While(cond, body, WithoutArgs(StatementsWithoutArgs.Pass)) =>
         List("while.",
           Ident + printExpr(visibility)(cond),
         ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
       case FuncDef(name, args, None, None, body, Decorators(List()), h) =>
-        val locals = h.filter(z => z._2 == VarScope.Local || z._2 == VarScope.Arg).keys
-        val args1 = args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(" ")
+        val locals = h.filter(z => z._2 == VarScope.Local).keys
+        val args1 = args.map{ case (argname, _, None) => "x" + argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
-        List(s"[$args1] > $name") ++
-          ident(locals.map(name => s"memory > $name").toList ++ List("seq > @") ++ ident(body1))
+        List(s"x$name.write") ++
+          ident(s"[$args1]" ::
+            ident(locals.map(name => s"memory > x$name").toList ++ List("seq > @") ++ ident(body1)))
     }
   }
 
@@ -106,22 +124,25 @@ object PrintEO {
     "+package org.eolang",
     "+alias org.eolang.txt.sprintf",
     "+alias org.eolang.io.stdout",
-    "+junit",
     "",
   )
 
-  def printSt(moduleName : String, st : Statement) : String = {
+  def printSt(moduleName : String, st : Statement, hackPreface : Text) : Text = {
 //    val h = SimpleAnalysis.classifyFunctionVariables(List(), st, false)
 //    val locals = h.filter(z => z._2 == VarScope.Local).keys
     (
-      standardTestPreface ++
+      standardTestPreface ++ hackPreface ++
       List(
         "[] > " + moduleName,
+        Ident + "[args...] > unsupported",
+        Ident + "[args...] > xunsupported",
         Ident + "memory > bogusForceDataize",
+        Ident + "memory > xbogusForceDataize",
+        Ident + "memory > xhack",
         Ident + "seq > @"
       ) ++
       ident(ident(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))
-    ).mkString("\n") + "\n"
+    )
   }
 
 }
