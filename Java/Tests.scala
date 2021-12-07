@@ -10,6 +10,7 @@ import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import scala.collection.immutable.HashMap
 import scala.collection.{immutable, mutable}
+import scala.sys.process.ProcessLogger
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
@@ -201,7 +202,7 @@ class Tests {
     }
   }
 
-
+  @Ignore
   @Test def classesInheritanceTest(): Unit = {
     val name = "inheritance_test"
     val y = Parse.parse(testsPrefix, name)
@@ -209,7 +210,7 @@ class Tests {
     val z = RemoveControlFlow.removeControlFlow(y._1, y._2)
     val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _), Return(_))) = z._1
     val zHacked = Suite(List(theFun, Assert(CallIndex(isCall = true, Ident(theFun.name), List()))))
-    Parse.toFile(zHacked, testsPrefix + "inheritance_tests", name)
+    Parse.toFile(zHacked, testsPrefix, name)
 
     mainAsserter(name, "inheritance_tests")
   }
@@ -231,5 +232,26 @@ class Tests {
     println(stdout)
   }
 
+
+  @Test def simpleConstructionTest(): Unit = {
+    for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
+      val testHolder = new File(testsPrefix + "simple tests\\" + subfolder)
+      if (testHolder.exists && testHolder.isDirectory) {
+        for (file <- testHolder.listFiles.filter(_.isFile).toList){
+          print(testHolder.getPath + "\\" + file.getName.replace(".py","") + "\n")
+          val y = Parse.parse(testHolder.getPath, file.getName.replace(".py",""))
+        }
+      }
+    }
+
+//    val name = "test1"
+//    Parse.parse(testsPrefix, name)
+//
+//    val stdout = new StringBuilder()
+//    val stderr = new StringBuilder()
+//    import scala.sys.process._
+//    assertTrue(0 == (s"python3 \"$testsPrefix/afterParser/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+//    println(stdout)
+  }
 }
 
