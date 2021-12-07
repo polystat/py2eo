@@ -15,6 +15,12 @@ The python3 module is also buildable in IDEA with the followin configuration at 
 
 - py2eo - root maven project
     - test - maven project for run generated EO code via `eo-maven-plugin`, also contains Python files for tests
+        - afterParser - result of working AST.java with .py files. In the output will be available identical files with 
     - Java - directory with sources
        - Tests.scala - main tests file
+       - AST.scala - python parser
+       - SimpleAnalysis.java - processor for python constructions
+       - PrintPython.java - 
+       - common.skala - 
+       - ClosureWithCage.java - 
 
