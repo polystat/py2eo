@@ -16,9 +16,6 @@ class Tests {
 
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
   val intermediateDirs = List(
-    "afterEmptyProcStatement", "afterExtractAllCalls", "afterImmutabilization",
-    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterHeapify",
-    "afterUseCage", "afterMkUnsupported", "afterExplicitBases", "afterSimplifyInheritance",
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
 

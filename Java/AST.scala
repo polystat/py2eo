@@ -702,8 +702,10 @@ object MapExpressions {
 object Parse {
   import org.antlr.v4.runtime.CommonTokenStream
 
-  def toFile(t : Statement, dir : String, test : String) = {
-    val output = new FileWriter(dir + "/" + test + ".py")
+  def toFile(t : Statement, dirName : String, test : String) = {
+    val dir = new File(dirName)
+    if (!dir.exists()) dir.mkdir()
+    val output = new FileWriter(dirName + "/" + test + ".py")
     output.write(PrintPython.printSt(t, ""))
     output.close()
   }
