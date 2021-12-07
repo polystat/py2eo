@@ -239,14 +239,28 @@ class Tests {
     println(stdout)
   }
 
+  def getListOfFiles(dir: String):List[File] = {
+    val d = new File(dir)
+    if (d.exists && d.isDirectory) {
+      d.listFiles.filter(_.isFile).toList
+    } else {
+      List[File]()
+    }
+  }
 
   @Test def simpleConstructionTest(): Unit = {
     for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
-      val testHolder = new File(testsPrefix + "simple tests\\" + subfolder)
+      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${File.separator}" + subfolder)
       if (testHolder.exists && testHolder.isDirectory) {
         for (file <- testHolder.listFiles.filter(_.isFile).toList){
-          print(testHolder.getPath + "\\" + file.getName.replace(".py","") + "\n")
-          val y = Parse.parse(testHolder.getPath, file.getName.replace(".py",""))
+          val fileName = file.getName.replace(".py","")
+          print(testHolder.getPath + fileName + "\n")
+          Parse.parse(testHolder.getPath , fileName)
+          val stdout = new StringBuilder()
+          val stderr = new StringBuilder()
+          import scala.sys.process._
+          assertTrue(0 == (s"python3 \"$testsPrefix${File.separator}afterParser${File.separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+          println(stdout)
         }
       }
     }
