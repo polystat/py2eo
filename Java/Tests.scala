@@ -254,12 +254,12 @@ class Tests {
       if (testHolder.exists && testHolder.isDirectory) {
         for (file <- testHolder.listFiles.filter(_.isFile).toList){
           val fileName = file.getName.replace(".py","")
-          print(testHolder.getPath + fileName + "\n")
-          Parse.parse(testHolder.getPath , fileName)
+          print(testHolder.getPath + File.separator + fileName + "\n")
+          Parse.parse(testHolder.getPath + File.separator, fileName)
           val stdout = new StringBuilder()
           val stderr = new StringBuilder()
           import scala.sys.process._
-          assertTrue(0 == (s"python3 \"$testsPrefix${File.separator}afterParser${File.separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+          assertTrue(0 == (s"python3 \"${testHolder.getPath}${File.separator}afterParser${File.separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
           println(stdout)
         }
       }
