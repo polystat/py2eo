@@ -17,9 +17,6 @@ class Tests {
 
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
   val intermediateDirs = List(
-    "afterEmptyProcStatement", "afterExtractAllCalls", "afterImmutabilization",
-    "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterHeapify",
-    "afterUseCage", "afterMkUnsupported",
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
 
@@ -91,6 +88,15 @@ class Tests {
       "  [] > emptyClosure\n" +
       s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
     )
+    output.close()
+  }
+
+  @Test def simplifyInheritance(): Unit = {
+    val output = new FileWriter(testsPrefix + "afterSimplifyInheritance/inheritanceTest.py")
+    output.write("from C3 import eo_getattr, eo_setattr\n\n\n")
+
+    val res = Parse.parse(testsPrefix, "inheritance")
+    output.write(PrintPython.printSt(res._1, ""))
     output.close()
   }
 
@@ -167,6 +173,7 @@ class Tests {
     }
   }
 
+  @Ignore
   @Test def useUnsupported() : Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
       val y = Parse.parse(testsPrefix, name)
