@@ -24,7 +24,7 @@ class Tests {
     val stderr = new StringBuilder()
     assertTrue(0 == (s"python --version" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     val pattern = "Python (\\d+)".r
-    val Some(match1) = pattern.findFirstMatchIn(stderr.toString())
+    val Some(match1) = pattern.findFirstMatchIn(if (stderr.toString() == "") stdout.toString() else stderr.toString())
     if (match1.group(1) == "2") "python3" else "python"
   }
 
