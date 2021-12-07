@@ -1,16 +1,13 @@
 
-import java.io.{File, FileWriter}
-import java.nio.file.{FileAlreadyExistsException, Files, NoSuchFileException}
 import Expression._
 import org.junit.Assert._
 import org.junit.{Before, Ignore, Test}
 
 import java.io.{File, FileWriter}
-import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.{FileAlreadyExistsException, NoSuchFileException}
+import scala.collection.immutable
 import scala.collection.immutable.HashMap
-import scala.collection.{immutable, mutable}
-import scala.sys.process.ProcessLogger
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
@@ -19,6 +16,7 @@ class Tests {
   val intermediateDirs = List(
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
+  val separator: String = File.separator
 
   @Before def initialize(): Unit = {
     for (dir <- intermediateDirs) {
@@ -39,7 +37,7 @@ class Tests {
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
       import scala.sys.process._
-      assertTrue(0 == (s"python3 \"$testsPrefix/afterRemoveControlFlow/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      assertTrue(0 == (s"python3 \"$testsPrefix${separator}afterRemoveControlFlow${separator}$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
       println(stdout)
     }
   }
@@ -63,7 +61,7 @@ class Tests {
     val hacked = Suite(List(
       ImportAllSymbols(List("closureRuntime")),
       Suite(l.init),
-      Assert(CallIndex(false,
+      Assert(CallIndex(isCall = false,
           (CallIndex(true, Ident(mainName),
             List((None, CollectionCons(CollectionKind.List, List())), (None, DictCons(List()))))),
           List((None, IntLiteral(1))))
@@ -75,13 +73,13 @@ class Tests {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     import scala.sys.process._
-    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"),
-      java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"), REPLACE_EXISTING)
-    assertTrue(0 == (s"python3 \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + s"${separator}closureRuntime.py"),
+      java.nio.file.Paths.get(testsPrefix + s"${separator}afterImmutabilization${separator}closureRuntime.py"), REPLACE_EXISTING)
+    assertTrue(0 == (s"python3 \"$testsPrefix${separator}afterImmutabilization${separator}$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
     val hacked4EO = Suite(List(l.head))
-    val output = new FileWriter(testsPrefix + "genImmutableEO/" + name + ".eo")
+    val output = new FileWriter(testsPrefix + s"genImmutableEO${separator}" + name + ".eo")
     val eoText = PrintLinearizedImmutableEO.printSt(name, hacked4EO)
     output.write(eoText +
       "  * > emptyHeap\n" +
@@ -92,7 +90,7 @@ class Tests {
   }
 
   @Test def simplifyInheritance(): Unit = {
-    val output = new FileWriter(testsPrefix + "afterSimplifyInheritance/inheritanceTest.py")
+    val output = new FileWriter(testsPrefix + s"afterSimplifyInheritance${separator}inheritanceTest.py")
     output.write("from C3 import eo_getattr, eo_setattr\n\n\n")
 
     val res = Parse.parse(testsPrefix, "inheritance")
@@ -117,7 +115,7 @@ class Tests {
       ImportAllSymbols(List("heapifyRuntime")),
       Assign(List(Ident(mainName), ExplicitMutableHeap.newPtr(IntLiteral(0)))),
       z._1,
-      Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns"),
+      Assert(CallIndex(isCall = true, ExplicitMutableHeap.index(Ident("allFuns"),
         ExplicitMutableHeap.index(ExplicitMutableHeap.valueGet(ExplicitMutableHeap.ptrGet(Ident(mainName))),
           ExplicitMutableHeap.callme)), List((None, NoneLiteral()))))
     ))
@@ -127,12 +125,12 @@ class Tests {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     import scala.sys.process._
-    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/heapifyRuntime.py"),
-      java.nio.file.Paths.get(testsPrefix + "/afterHeapify/heapifyRuntime.py"), REPLACE_EXISTING)
-    assertTrue(0 == (s"python3 \"$testsPrefix/afterHeapify/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + s"${separator}heapifyRuntime.py"),
+      java.nio.file.Paths.get(testsPrefix + s"${separator}afterHeapify${separator}heapifyRuntime.py"), REPLACE_EXISTING)
+    assertTrue(0 == (s"python3 \"$testsPrefix${separator}afterHeapify${separator}$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
-    val output = new FileWriter(testsPrefix + "genHeapifiedEO/" + name + ".eo")
+    val output = new FileWriter(testsPrefix + s"genHeapifiedEO${separator}" + name + ".eo")
     val eoText = PrintLinearizedMutableEONoCage.printTest(name, z._1)
     output.write(eoText.mkString("\n") + "\n")
     output.close()
@@ -150,20 +148,20 @@ class Tests {
       val FuncDef(mainName, _, _, _, body, _, _) = theFun
 
       val theFunC = ClosureWithCage.closurize(theFun)
-      val hacked = Suite(List(theFunC, Assert((CallIndex(true,
+      val hacked = Suite(List(theFunC, Assert(CallIndex(isCall = true,
         ClosureWithCage.index(Ident(mainName), "callme"),
-        List((None, Ident(mainName))))))))
+        List((None, Ident(mainName)))))))
       Parse.toFile(hacked, testsPrefix + "afterUseCage", name)
 
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
       import scala.sys.process._
-      assertTrue(0 == (s"python3 \"$testsPrefix/afterUseCage/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      assertTrue(0 == (s"python3 \"$testsPrefix${separator}afterUseCage${separator}$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
       println(stdout)
 
       val eoHacked = Suite(List(
         theFunC,
-        Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName), "callme"), List())))
+        Assign(List(CallIndex(isCall = true, ClosureWithCage.index(Ident(mainName), "callme"), List())))
       ))
 
       val output = new FileWriter(testsPrefix + "genCageEO/" + name + ".eo")
@@ -201,7 +199,7 @@ class Tests {
 
       println(s"globals = $globals")
 
-      val output = new FileWriter(testsPrefix + "genUnsupportedEO/" + name + ".eo")
+      val output = new FileWriter(testsPrefix + s"genUnsupportedEO${separator}" + name + ".eo")
       val eoText = PrintEO.printSt(name, hacked, globals.map(name => s"[args...] > x$name").toList)
       output.write(eoText.mkString("\n") + "\n")
       output.close()
@@ -227,15 +225,15 @@ class Tests {
     val stderr = new StringBuilder()
     import scala.sys.process._
 
-    val closureRuntime = java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py")
+    val closureRuntime = java.nio.file.Paths.get(testsPrefix + s"${separator}closureRuntime.py")
     try {
-      java.nio.file.Files.copy(closureRuntime, java.nio.file.Paths.get(testsPrefix + s"/$pathPart/closureRuntime.py"))
+      java.nio.file.Files.copy(closureRuntime, java.nio.file.Paths.get(testsPrefix + s"${separator}$pathPart${separator}closureRuntime.py"))
     } catch {
       case e: FileAlreadyExistsException => println(e.getMessage)
       case e: NoSuchFileException => println(e.getMessage)
     }
 
-    assertTrue(0 == (s"python3 \"$testsPrefix/$pathPart/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    assertTrue(0 == (s"python3 \"$testsPrefix${separator}$pathPart${separator}$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
   }
 
@@ -264,15 +262,6 @@ class Tests {
         }
       }
     }
-
-//    val name = "test1"
-//    Parse.parse(testsPrefix, name)
-//
-//    val stdout = new StringBuilder()
-//    val stderr = new StringBuilder()
-//    import scala.sys.process._
-//    assertTrue(0 == (s"python3 \"$testsPrefix/afterParser/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-//    println(stdout)
   }
 }
 
