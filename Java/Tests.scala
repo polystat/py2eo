@@ -10,14 +10,23 @@ import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import scala.collection.immutable.HashMap
 import scala.collection.{immutable, mutable}
+import scala.sys.process._
 
-// run these tests with py2eo/python/python3 as a currend directory
 class Tests {
 
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
   val intermediateDirs = List(
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
+
+  val python = {
+    val stdout = new StringBuilder()
+    val stderr = new StringBuilder()
+    assertTrue(0 == (s"python --version" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    val pattern = "Python (\\d+)".r
+    val Some(match1) = pattern.findFirstMatchIn(stderr.toString())
+    if (match1.group(1) == "2") "python3" else "python"
+  }
 
   @Before def initialize(): Unit = {
     for (dir <- intermediateDirs) {
@@ -37,8 +46,7 @@ class Tests {
       Parse.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
-      import scala.sys.process._
-      assertTrue(0 == (s"python3 \"$testsPrefix/afterRemoveControlFlow/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      assertTrue(0 == (s"$python \"$testsPrefix/afterRemoveControlFlow/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
       println(stdout)
     }
   }
@@ -73,10 +81,9 @@ class Tests {
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
-    import scala.sys.process._
     java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"),
       java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"), REPLACE_EXISTING)
-    assertTrue(0 == (s"python3 \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    assertTrue(0 == (s"$python \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
     val hacked4EO = Suite(List(l.head))
@@ -125,10 +132,9 @@ class Tests {
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
-    import scala.sys.process._
     java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/heapifyRuntime.py"),
       java.nio.file.Paths.get(testsPrefix + "/afterHeapify/heapifyRuntime.py"), REPLACE_EXISTING)
-    assertTrue(0 == (s"python3 \"$testsPrefix/afterHeapify/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    assertTrue(0 == (s"$python \"$testsPrefix/afterHeapify/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
     val output = new FileWriter(testsPrefix + "genHeapifiedEO/" + name + ".eo")
@@ -156,8 +162,7 @@ class Tests {
 
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
-      import scala.sys.process._
-      assertTrue(0 == (s"python3 \"$testsPrefix/afterUseCage/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      assertTrue(0 == (s"$python \"$testsPrefix/afterUseCage/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
       println(stdout)
 
       val eoHacked = Suite(List(
