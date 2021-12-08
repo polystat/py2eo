@@ -15,6 +15,7 @@ object SimpleAnalysis {
   }
 
   def childrenE(e : T) : List[T] = e match {
+    case AnonFun(args, body, ann) => List(body)
     case Binop(op, l, r, _) =>List(l, r)
     case SimpleComparison(op, l, r, _) => List(l, r)
     case LazyLAnd(l, r, _) => List(l, r)
@@ -47,6 +48,7 @@ object SimpleAnalysis {
     def isRhs(e : T) = (false, e)
     s match {
       case Yield(l, _) => (List(), l.map(x => (false, x)).toList)
+      case YieldFrom(e, ann) => (List(), List((false, e)))
       case With(cm, target, body, _) => (List(body), (false, cm) :: target.map(x => (true, x)).toList)
       case For(what, in, body, eelse, _) => (List(body, eelse), List((false, what), (false, in)))
       case Del(e, _) => (List(), List((false, e)))
@@ -61,7 +63,7 @@ object SimpleAnalysis {
       case CreateConst(name, value, _) => (List(), List(isRhs(value)))
       case Return(x, _) => (List(), List(isRhs(x)))
       case Assert(x, _) => (List(), List(isRhs(x)))
-      case Raise(e, None, _) => (List(), e.toList.map(isRhs))
+      case Raise(e, from, _) => (List(), (e.toList ++ from.toList).map(isRhs))
       case ClassDef(name, bases, body, decorators, _) => (List(body), (bases ++ decorators.l).map(isRhs))
       case FuncDef(name, args, _, _, body, decorators, _, _) => (List(body), decorators.l.map(isRhs))
       case NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | Global(_, _) | ImportModule(_, _, _)
