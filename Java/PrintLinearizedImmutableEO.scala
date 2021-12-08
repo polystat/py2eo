@@ -8,7 +8,7 @@ object PrintLinearizedImmutableEO {
   import PrintEO.{EOVisibility, printExpr, Text, ident}
 
   def isRetIfRet(st : Statement) = st match {
-    case Return(_) | IfSimple(_, Return(_), Return(_)) => true
+    case Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _) => true
     case _ => false
   }
 
@@ -20,17 +20,17 @@ object PrintLinearizedImmutableEO {
   def printBody(currentFunName : String, visibility : EOVisibility)(st : Suite) : Text = {
     val l = rmUnreachableTail(st.l)
     l.flatMap {
-      case Assign(List(CallIndex(true, Expression.Ident("print"), List((None, n))))) =>
+      case Assign(List(CallIndex(true, Expression.Ident("print", _), List((None, n)), _)), _) =>
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
-      case CreateConst(name, DictCons(l)) =>
+      case CreateConst(name, DictCons(l, _), ann) =>
         val visibility1 = visibility.stepInto(List())
-        s"[] > $name!" :: ident(l.map{ case Left((StringLiteral(name), value)) =>
+        s"[] > $name!" :: ident(l.map{ case Left((StringLiteral(name, ann.pos), value)) =>
           printExpr(visibility1)(value) + " > " + name.substring(1, name.length - 1) })
-      case CreateConst(name, value) => List(printExpr(visibility)(value) + " > " + name + "!")
-      case one@(Return(_) | IfSimple(_, Return(_), Return(_))) =>
+      case CreateConst(name, value, _) => List(printExpr(visibility)(value) + " > " + name + "!")
+      case one@(Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _)) =>
         val expr = one match {
-          case Return(x) => x
-          case IfSimple(cond, Return(yes), Return(no)) => Cond(cond, yes, no)
+          case Return(x, _) => x
+          case IfSimple(cond, Return(yes, _), Return(no, _), ann) => Cond(cond, yes, no, ann.pos)
         }
         /*
         val printers = List(
@@ -47,19 +47,19 @@ object PrintLinearizedImmutableEO {
 //          s"debugMagic.seq (debugMagic.printDataized \"leaving fun\" \"$currentFunName\") (" +
             "(" + printExpr(visibility)(expr) +
             ") > @!")
-      case FuncDef(name, args, None, None, body, Decorators(List()), accessibleIdents) =>
-        val locals = accessibleIdents.filter(z => z._2 == VarScope.Local || z._2 == VarScope.Arg).keys
-        val args1 = args.map{ case (argname, ArgKind.Positional, None) => argname }.mkString(" ")
-        val st@Suite(_) = body
+      case FuncDef(name, args, None, None, body, Decorators(List()), accessibleIdents, ann) =>
+        val locals = accessibleIdents.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.Arg).keys
+        val args1 = args.map{ case (argname, ArgKind.Positional, None, _) => argname }.mkString(" ")
+        val st@Suite(_, _) = body
         val body1 = printBody(name, visibility.stepInto(locals.toList))(st)
         List(s"[$args1] > $name") ++ ident(body1)
-      case s@Suite(l) => printBody(currentFunName, visibility)(s)
-      case WithoutArgs(StatementsWithoutArgs.Pass) => List()
+      case s@Suite(l, _) => printBody(currentFunName, visibility)(s)
+      case Pass(_) => List()
     }
   }
 
   def printSt(moduleName : String, body : Statement) : String = {
-    val st@Suite(_) = SimpleAnalysis.computeAccessibleIdents(body)
+    val st@Suite(_, _) = SimpleAnalysis.computeAccessibleIdents(body)
     (
       standardTestPreface ++
         List(
