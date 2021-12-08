@@ -16,11 +16,11 @@ case class Position(line : Int, char : Int) {
 case class GeneralAnnotation(start : Option[Position], stop : Option[Position]) {
   def this(c : ParserRuleContext) = {
     this(
-      if (c != null) Some(Position(c.start.getLine, c.start.getStartIndex)) else None,
-      if (c != null) Some(Position(c.stop.getLine, c.stop.getStopIndex)) else None
+      if (c != null) Some(GeneralAnnotation.token2StartPos(c.start)) else None,
+      if (c != null) Some(GeneralAnnotation.token2StopPos(c.stop)) else None
     )
   }
-  def this(t : Token) = this(Some(Position(t.getLine, t.getStartIndex)), Some(Position(t.getLine, t.getStopIndex)))
+  def this(t : Token) = this(Some(GeneralAnnotation.token2StartPos(t)), Some(GeneralAnnotation.token2StopPos(t)))
   def this() = this(None, None)
   override def toString = {
     def s(o : Option[Position]) = o match { case None => "???" case Some(x) => x.toString }
@@ -28,6 +28,10 @@ case class GeneralAnnotation(start : Option[Position], stop : Option[Position]) 
   }
   def rangeTo(to : GeneralAnnotation) = GeneralAnnotation(start, to.stop)
   val pos = this // maybe some other annotations will be added later, so lets have an explicit method to copy position
+}
+object GeneralAnnotation{
+  private def token2StartPos(t : Token) = Position(t.getLine, t.getCharPositionInLine)
+  private def token2StopPos(t : Token) = Position(t.getLine, t.getStopIndex - t.getStartIndex + t.getCharPositionInLine)
 }
 
 object Expression {
