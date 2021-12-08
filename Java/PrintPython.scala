@@ -90,36 +90,36 @@ object PrintPython {
         shift + "with " + printExpr(cm) + (target match {
           case Some(value) => " as " + printExpr(value)
           case None => ""
-        }) + ":\n" + posComment +
+        }) + ":" + posComment + "\n" +
         printSt(body, shiftIncr)
 
       case If(conditioned, eelse, ann) =>
         def oneCase(keyword : String, p : (T, Statement)) =
-          shift + keyword + " (" + printExpr(p._1) + "):\n" + " # " + p._2.ann.toString +
+          shift + keyword + " (" + printExpr(p._1) + "):" + " # " + p._2.ann.toString + "\n" +
           printSt(p._2, shiftIncr)
 
         val (iif :: elifs) = conditioned
         (oneCase("if", iif) :: elifs.map(oneCase("elif", _))).mkString("\n") + "\n" + (
-            shift + "else:\n" + " # " + eelse.ann.toString +
+            shift + "else:" + " # " + eelse.ann.toString + "\n" +
             printSt(eelse, shiftIncr)
         )
 
       case IfSimple(cond, yes, no, ann) => printSt(If(List((cond, yes)), no, ann.pos), shift)
 
       case While(cond, body, eelse, ann) =>
-        shift + "while (" + printExpr(cond) + "):\n" + posComment +
+        shift + "while (" + printExpr(cond) + "):" + posComment + "\n" +
           printSt(body, shiftIncr) + "\n" +
         shift + "else:\n" +
           printSt(eelse, shiftIncr)
 
       case For(what, in, body, eelse, ann) =>
-        shift + "for " + printExpr(what) + " in " + printExpr(in) + ":\n" + posComment +
+        shift + "for " + printExpr(what) + " in " + printExpr(in) + ":" + posComment + "\n" +
           printSt(body, shiftIncr) + "\n" +
         shift + "else:\n" +
           printSt(eelse, shiftIncr)
 
       case Try(ttry, excepts, eelse, ffinally, ann) =>
-        shift + "try:\n" + posComment +
+        shift + "try:" + posComment + "\n" +
           printSt(ttry, shiftIncr) + "\n" +
         excepts.map(x =>
           shift + "except " + option2string(x._1.map(y => printExpr(y._1) + option2string(y._2.map(z => " as " + z)))) + ":\n" +
@@ -147,7 +147,7 @@ object PrintPython {
       case Global(l, ann) => shift + "global " + l.mkString(", ") + posComment
       case ClassDef(name, bases, body, decorators, ann) =>
         printDecorators(decorators) +
-        shift + "class " + name + "(" + bases.map(printExpr).mkString(", ") + "):\n" + posComment +
+        shift + "class " + name + "(" + bases.map(printExpr).mkString(", ") + "):" + posComment + "\n" +
           printSt(body, shiftIncr)
       case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, _, ann) =>
         val positionalOnly = args.filter(_._2 == ArgKind.Positional)
@@ -162,7 +162,7 @@ object PrintPython {
           }) ++
           keywordOnly.map(_._1) ++ otherKeyword.toList.map("**" + _)
         printDecorators(decorators) +
-        shift + "def " + name + "(" + argstring.mkString(", ") + "):\n" + posComment +
+        shift + "def " + name + "(" + argstring.mkString(", ") + "):" + posComment + "\n" +
         printSt(body, shiftIncr)
       case ImportModule(what, as, ann) => shift + s"import ${what.mkString(".")} as $as" + posComment
       case ImportSymbol(from, what, as, ann) => shift + s"from ${from.mkString(".")} import $what as $as" + posComment
