@@ -47,36 +47,36 @@ object PrintEO {
   def printExpr(visibility : EOVisibility)(value : T) : String = {
     def e = printExpr(visibility)(_)
     value match {
-      case CollectionCons(kind, l) => "(* " + l.map(e).mkString(" ") + ")"
-      case NoneLiteral() => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
-      case IntLiteral(value) => value.toString()
-      case FloatLiteral(value) => value.toString
-      case StringLiteral(value0) =>
+      case CollectionCons(kind, l, _) => "(* " + l.map(e).mkString(" ") + ")"
+      case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
+      case IntLiteral(value, _) => value.toString()
+      case FloatLiteral(value, _) => value.toString
+      case StringLiteral(value0, _) =>
         val value = value0.replace("\"\"", "")
         if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'')
           "\"" + value + "\""
         else value
-      case BoolLiteral(value) => if (value) "TRUE" else "FALSE"
-      //    case NoneLiteral() =>
-      case Binop(op, l, r) =>  "(" + e(l) + "." + binop(op) + " " + e(r) + ")"
-      case SimpleComparison(op, l, r) => "(" + e(l) + "." + compop(op) + " " + e(r) + ")"
-      case FreakingComparison(List(op), List(l, r)) => "(" + e(l) + "." + compop(op) + " " + e(r) + ")"
-      case LazyLAnd(l, r) =>  "(" + e(l) + ".and " + e(r) + ")"
-      case LazyLOr(l, r) =>  "(" + e(l) + ".or " + e(r) + ")"
-      case Unop(op, x) => "(" + e(x) + "." + unop(op) + ")"
-      case Expression.Ident(name) => "(x" + visibility(name) + ")"
-      case CallIndex(false, from, List((_, StringLiteral(fname))))
-        if fname == "\"callme\"" || (from match { case Expression.Ident("closure") => true case _ => false}) =>
-          e(Field(from, fname.substring(1, fname.length - 1)))
+      case BoolLiteral(value, _) => if (value) "TRUE" else "FALSE"
+      //    case NoneLiteral(, _) =>
+      case Binop(op, l, r, _) =>  "(" + e(l) + "." + binop(op) + " " + e(r) + ")"
+      case SimpleComparison(op, l, r, _) => "(" + e(l) + "." + compop(op) + " " + e(r) + ")"
+      case FreakingComparison(List(op), List(l, r), _) => "(" + e(l) + "." + compop(op) + " " + e(r) + ")"
+      case LazyLAnd(l, r, _) =>  "(" + e(l) + ".and " + e(r) + ")"
+      case LazyLOr(l, r, _) =>  "(" + e(l) + ".or " + e(r) + ")"
+      case Unop(op, x, _) => "(" + e(x) + "." + unop(op) + ")"
+      case Expression.Ident(name, _) => "(x" + visibility(name) + ")"
+      case CallIndex(false, from, List((_, StringLiteral(fname, _))), _)
+        if fname == "\"callme\"" || (from match { case Expression.Ident("closure", _) => true case _ => false}) =>
+          e(Field(from, fname.substring(1, fname.length - 1), from.ann.pos))
       case u : UnsupportedExpr =>
-        val e1 = CallIndex(true, Expression.Ident("unsupported"), u.children.map(e => (None, e)))
+        val e1 = CallIndex(true, Expression.Ident("unsupported", u.ann.pos), u.children.map(e => (None, e)), u.ann.pos)
         e(e1)
-      case CallIndex(isCall, whom, args) if !isCall && args.size == 1 =>
+      case CallIndex(isCall, whom, args, _) if !isCall && args.size == 1 =>
         "(" + e(whom) + ".get " + e(args(0)._2) + ")"
-      case Field(whose, name) => "(" + e(whose) + ".x" + name + ")"
-      case Cond(cond, yes, no) => "(" + e(cond) + ".if " + e(yes) + " " + e(no) + ")"
-      case CallIndex(true, whom, args)  =>
+      case Field(whose, name, _) => "(" + e(whose) + ".x" + name + ")"
+      case Cond(cond, yes, no, _) => "(" + e(cond) + ".if " + e(yes) + " " + e(no) + ")"
+      case CallIndex(true, whom, args, _)  =>
         "((" + e(whom) + ")" + args.map{case (None, ee) => " (" + e(ee) + ")"}.mkString("") + ")"
     }
   }
@@ -87,32 +87,32 @@ object PrintEO {
     def s = printSt(visibility)(_)
 
     st match {
-      case ImportModule(_, _) | ImportAllSymbols(_) => List() // todo: a quick hack
-      case WithoutArgs(StatementsWithoutArgs.Pass) => List()
-      case IfSimple(cond, yes, no) =>
+      case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List() // todo: a quick hack
+      case Pass(_) => List()
+      case IfSimple(cond, yes, no, _) =>
         List(printExpr(visibility)(cond) + ".if") ++ ident(s(yes)) ++ ident(s(no))
       // todo: a hackish printer for single integers only!
-      case Assign(List(CallIndex(true, Expression.Ident("print"), List((None, n))))) =>
+      case Assign(List(CallIndex(true, Expression.Ident("print", _), List((None, n)), _)), _) =>
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
-      case Assign(List(e@UnsupportedExpr(t, value))) => List(printExpr(visibility)(e))
-      case Assign(List(c@CallIndex(true, whom, args))) =>
-        s(Assign(List(Expression.Ident("bogusForceDataize"), c)))
-      case Assign(List(Expression.Ident(lname), erhs)) =>
+      case Assign(List(e@UnsupportedExpr(t, value)), _) => List(printExpr(visibility)(e))
+      case Assign(List(c@CallIndex(true, whom, args, _)), ann) =>
+        s(Assign(List(Expression.Ident("bogusForceDataize", new GeneralAnnotation()), c), ann.pos))
+      case Assign(List(Expression.Ident(lname, _), erhs), _) =>
         List("x" + visibility(lname) + ".write " + printExpr(visibility)(erhs))
-      case Assign(List(_)) => List("unsupported")
-      case Suite(List(st)) => s(st)
-      case Suite(l) => List("seq") ++ ident(l.flatMap(s))
+      case Assign(List(_), _) => List("unsupported")
+      case Suite(List(st), _) => s(st)
+      case Suite(l, _) => List("seq") ++ ident(l.flatMap(s))
       case u : Unsupported =>
-        val e1 = CallIndex(true, Expression.Ident("unsupported"), u.es.map(e => (None, e._2)))
+        val e1 = CallIndex(true, Expression.Ident("unsupported", new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(visibility)(e1)
         List(head) ++ ident(u.sts.flatMap(s))
-      case While(cond, body, WithoutArgs(StatementsWithoutArgs.Pass)) =>
+      case While(cond, body, Pass(_), _) =>
         List("while.",
           Ident + printExpr(visibility)(cond),
         ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
-      case FuncDef(name, args, None, None, body, Decorators(List()), h) =>
-        val locals = h.filter(z => z._2 == VarScope.Local).keys
-        val args1 = args.map{ case (argname, _, None) => "x" + argname }.mkString(" ")
+      case FuncDef(name, args, None, None, body, Decorators(List()), h, _) =>
+        val locals = h.filter(z => z._2._1 == VarScope.Local).keys
+        val args1 = args.map{ case (argname, _, None, _) => "x" + argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
         List(s"x$name.write") ++
           ident(s"[$args1]" ::
