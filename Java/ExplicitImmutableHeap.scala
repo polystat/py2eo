@@ -20,10 +20,10 @@ object ExplicitImmutableHeap {
 
       def ptr4ident(name : Ident) : Expression.T = {
         val s = scope(name.name)
-        if (s == VarScope.Local || s == VarScope.Arg) (Ident(name + "Ptr", name.ann.pos)) else
-          if (s == VarScope.NonLocal || s == VarScope.ImplicitNonLocal)
+        if (s._1 == VarScope.Local || s._1 == VarScope.Arg) (Ident(name.name + "Ptr", name.ann.pos)) else
+          if (s._1 == VarScope.NonLocal || s._1 == VarScope.ImplicitNonLocal)
             (CallIndex(false, Ident("closure", name.ann.pos),
-              List((None, StringLiteral("\"" + name + "\"", name.ann.pos))), name.ann.pos)) else
+              List((None, StringLiteral("\"" + name.name + "\"", name.ann.pos))), name.ann.pos)) else
             Ident(name.name, name.ann.pos)
       }
 
@@ -57,7 +57,7 @@ object ExplicitImmutableHeap {
             val (newHeap, ns1) = ns(constHeap)
             (
               acc._1 :+
-              CreateConst(name + "Ptr", CallIndex(true, Ident("nextFreePtr", pos), List((None, heap)), pos), pos) :+
+              CreateConst(name._1 + "Ptr", CallIndex(true, Ident("nextFreePtr", pos), List((None, heap)), pos), pos) :+
               CreateConst(newHeap, CallIndex(true, Ident("append2heap", pos),
                 List((None, heap), (None, if (scope(name._1)._1 == VarScope.Arg) Ident(name._1, pos) else NoneLiteral(pos))), pos), pos),
               ns1

@@ -15,7 +15,10 @@ case class Position(line : Int, char : Int) {
 // annotates all the AST nodes
 case class GeneralAnnotation(start : Option[Position], stop : Option[Position]) {
   def this(c : ParserRuleContext) = {
-    this(Some(Position(c.start.getLine, c.start.getStartIndex)), Some(Position(c.stop.getLine, c.stop.getStopIndex)))
+    this(
+      if (c != null) Some(Position(c.start.getLine, c.start.getStartIndex)) else None,
+      if (c != null) Some(Position(c.stop.getLine, c.stop.getStopIndex)) else None
+    )
   }
   def this(t : Token) = this(Some(Position(t.getLine, t.getStartIndex)), Some(Position(t.getLine, t.getStopIndex)))
   def this() = this(None, None)
