@@ -19,6 +19,10 @@ class Tests {
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
 
+  def debugPrinter(moduleName : String)(s : Statement, dirSuffix : String) : Unit = {
+    PrintPython.toFile(s, testsPrefix + "/" + dirSuffix, moduleName)
+  }
+
   val python = {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
@@ -37,14 +41,14 @@ class Tests {
 
   @Test def removeControlFlow(): Unit = {
     for (name <- List("x", "trivial", "trivialWithBreak")) {
-      val y = Parse.parse(testsPrefix, name)
+      val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
       val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
       val thePos = theFun.ann.pos
       val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name, thePos), List(), thePos)), thePos)), thePos)
-      Parse.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
+      PrintPython.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
       assertTrue(0 == (s"$python \"$testsPrefix/afterRemoveControlFlow/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
@@ -54,7 +58,7 @@ class Tests {
 	
   @Test def immutabilize() : Unit = {
     val name = "trivial"
-    val y = Parse.parse(testsPrefix, name)
+    val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -80,7 +84,7 @@ class Tests {
       )
     ), pos)
 
-    Parse.toFile(hacked, testsPrefix + "afterImmutabilization", name)
+    PrintPython.toFile(hacked, testsPrefix + "afterImmutabilization", name)
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
@@ -104,14 +108,15 @@ class Tests {
     val output = new FileWriter(testsPrefix + "afterSimplifyInheritance/inheritanceTest.py")
     output.write("from C3 import eo_getattr, eo_setattr\n\n\n")
 
-    val res = Parse.parse(testsPrefix, "inheritance")
+    val name = "inheritance"
+    val res = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
     output.write(PrintPython.printSt(res._1, ""))
     output.close()
   }
 
   @Test def heapify() : Unit = {
     val name = "trivial"
-    val y = Parse.parse(testsPrefix, name)
+    val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -132,7 +137,7 @@ class Tests {
           IntLiteral(0, pos))), List((None, NoneLiteral(pos))), pos), pos)
     ), pos)
 
-    Parse.toFile(hacked, testsPrefix + "afterHeapify", name)
+    PrintPython.toFile(hacked, testsPrefix + "afterHeapify", name)
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
@@ -149,7 +154,7 @@ class Tests {
 
   @Test def useCage() : Unit = {
     for (name <- List("x", "trivial")) {
-      val y = Parse.parse(testsPrefix, name)
+      val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
 
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -162,7 +167,7 @@ class Tests {
       val hacked = Suite(List(theFunC, Assert((CallIndex(true,
         ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
         List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
-      Parse.toFile(hacked, testsPrefix + "afterUseCage", name)
+      PrintPython.toFile(hacked, testsPrefix + "afterUseCage", name)
 
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
@@ -184,10 +189,10 @@ class Tests {
   @Ignore
   @Test def useUnsupported() : Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
-      val y = Parse.parse(testsPrefix, name)
+      val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(unsupportedSt._1, unsupportedSt._2)
-      Parse.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
+      PrintPython.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
       val hacked = SimpleAnalysis.computeAccessibleIdents(
         FuncDef("hack", List(), None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), unsupportedExpr._1.ann.pos))

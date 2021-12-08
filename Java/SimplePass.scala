@@ -475,4 +475,23 @@ object SimplePass {
     case _ => (s, ns)
 
   }
+
+  def allTheGeneralPasses(debugPrinter : (Statement, String) => Unit, s : Statement, ns : Names) : (Statement, SimplePass.Names) = {
+    val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)
+    debugPrinter(t1._1, "afterEmptyProcStatement")
+
+    val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
+    debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
+
+    val texplicitBases = SimplePass.procStatement(SimplePass.explicitBases)(tsimplifyIf._1, tsimplifyIf._2)
+    debugPrinter(texplicitBases._1, "afterExplicitBases")
+
+    val tsimplifyInheritance = SimplePass.procExprInStatement(SimplePass.simplifyInheritance)(texplicitBases._1, texplicitBases._2)
+    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
+
+    tsimplifyInheritance
+  }
+
+
+
 }

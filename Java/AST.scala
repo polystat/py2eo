@@ -735,17 +735,10 @@ object MapExpressions {
 object Parse {
   import org.antlr.v4.runtime.CommonTokenStream
 
-  def toFile(t : Statement, dirName : String, test : String) = {
-    val dir = new File(dirName)
-    if (!dir.exists()) dir.mkdir()
-    val output = new FileWriter(dirName + "/" + test + ".py")
-    output.write(PrintPython.printSt(t, ""))
-    output.close()
-  }
-
-  def parse(path : String, fileName : String) : (Statement, SimplePass.Names) = {
+  def parse(path : String, fileName : String) : (Statement) = {
     val test = fileName
-    def output(t : Statement, dir : String) = toFile(t, dir, test)
+
+    def output(t: Statement, dir: String) = PrintPython.toFile(t, dir, test)
 
     val fullName = path + "/" + test + ".py"
     println(s"parsing $fullName")
@@ -760,20 +753,7 @@ object Parse {
 
     val t = MapStatements.mapFile(fileName == "builtins", e)
     output(t, path + "afterParser")
-
-    val t1 = SimplePass.procStatement((a, b) => (a, b))(t, new SimplePass.Names())
-    output(t1._1, path + "afterEmptyProcStatement")
-
-    val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
-    output(tsimplifyIf._1, path + "afterSimplifyIf")
-
-    val texplicitBases = SimplePass.procStatement(SimplePass.explicitBases)(tsimplifyIf._1, tsimplifyIf._2)
-    output(texplicitBases._1, path + "afterExplicitBases")
-
-    val tsimplifyInheritance = SimplePass.procExprInStatement(SimplePass.simplifyInheritance)(texplicitBases._1, texplicitBases._2)
-    output(tsimplifyInheritance._1, path + "afterSimplifyInheritance")
-
-    tsimplifyInheritance
+    t
   }
 
 }
