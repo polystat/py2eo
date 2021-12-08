@@ -1,5 +1,7 @@
 import Expression._
 
+import java.io.{File, FileWriter}
+
 
 object PrintPython {
 
@@ -170,4 +172,11 @@ object PrintPython {
     }
   }
 
+  def toFile(t : Statement, dirName : String, moduleName : String) = {
+    val dir = new File(dirName)
+    if (!dir.exists()) dir.mkdir()
+    val output = new FileWriter(dirName + "/" + moduleName + ".py")
+    output.write(PrintPython.printSt(t, ""))
+    output.close()
+  }
 }
