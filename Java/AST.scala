@@ -287,6 +287,7 @@ case class Break(ann : GeneralAnnotation) extends Statement
 case class Continue(ann : GeneralAnnotation) extends Statement
 case class Return(x : ET, ann : GeneralAnnotation) extends Statement
 case class Yield(l : Option[ET], ann : GeneralAnnotation) extends Statement
+case class YieldFrom(e : ET, ann : GeneralAnnotation) extends Statement
 case class Assert(x : ET, ann : GeneralAnnotation) extends Statement
 case class Raise(e : Option[ET], from : Option[ET], ann : GeneralAnnotation) extends Statement
 case class Del(l : ET, ann : GeneralAnnotation) extends Statement
@@ -336,11 +337,15 @@ object MapStatements {
       Suite(l, new GeneralAnnotation(s))
 
     case s : ImportFromContext =>
-      val symbols = asScala(s.import_from().import_as_names().l).toList
       val from = mapDottedName(s.import_from().dotted_name())
-      Suite(symbols.map(x => ImportSymbol(from, x.what.getText,
-        if (x.aswhat != null) x.aswhat.getText else x.what.getText, new GeneralAnnotation(x)
-      )), new GeneralAnnotation(s))
+      if (s.import_from().import_as_names() == null)
+        ImportAllSymbols(from, new GeneralAnnotation(s))
+      else {
+        val symbols = asScala(s.import_from().import_as_names().l).toList
+        Suite(symbols.map(x => ImportSymbol(from, x.what.getText,
+          if (x.aswhat != null) x.aswhat.getText else x.what.getText, new GeneralAnnotation(x)
+        )), new GeneralAnnotation(s))
+      }
   }
 
   def mapNullableSuite(s : SuiteContext) : Statement = if (s == null) Pass(new GeneralAnnotation(s)) else
@@ -362,11 +367,14 @@ object MapStatements {
 
   def mapTfparg(kind : ArgKind.T, c : TfpargContext) : (String, ArgKind.T, Option[ET], GeneralAnnotation) =
     (c.tfpdef().NAME().getText, kind, Option(c.test()).map(mapTest), new GeneralAnnotation(c)) // todo: default value is ignored
-  def mapTypedargslistNopos(c : Typedargslist_noposContext) =
+  def mapTypedargslistNopos(c : Typedargslist_noposContext) = {
     (asScala(c.l).toList.map(x => (mapTfparg(ArgKind.Keyword, x))),
-      Some(c.tfptuple().tfpdef().NAME().getText),
+      // todo: the next line may be wrong, it may break the method with which python forces all args to be keyword only (4.8.3 in tutorial)
+      if (c.tfptuple().tfpdef() == null) None else Some(c.tfptuple().tfpdef().NAME().getText),
       Option(c.tfpdict()).map(_.tfpdef().NAME().getText)
     )
+  }
+
   def mapTypedargslist(c : TypedargslistContext) = {
     if (c == null) (List(), None, None) else {
       val tail =
@@ -384,7 +392,7 @@ object MapStatements {
   }
 
   def mapClassDef(s : ClassdefContext, decorators: Decorators) = {
-    new ClassDef(
+    ClassDef(
       s.NAME().getText, mapArglistNullable(s.arglist()).map{case (None, e) => e},
         mapNullableSuite(s.suite()), decorators, new GeneralAnnotation(s)
     )
@@ -468,13 +476,14 @@ object MapStatements {
           mapTestList(r.return_stmt().testlist()), new GeneralAnnotation(r))
       case r : FlowRaiseContext =>
         val tests = asScala(r.raise_stmt().test()).toList.map(mapTest)
-        assert(tests.size <= 1)
         Raise(tests.headOption, tests.lift(1), new GeneralAnnotation(r))
       case y : FlowYieldContext =>
         val y1 = y.yield_stmt().yield_expr()
         if (y1.yield_arg() == null) Yield(None, new GeneralAnnotation(y)) else {
-          assert(y1.yield_arg().FROM() == null)
-          Yield(Some(mapTestList(y1.yield_arg().testlist())), new GeneralAnnotation(y))
+          if (y1.yield_arg().FROM() == null)
+            Yield(Some(mapTestList(y1.yield_arg().testlist())), new GeneralAnnotation(y))
+          else
+            YieldFrom(mapTest(y1.yield_arg().test()), new GeneralAnnotation(y))
         }
     }
     case s : SmallImportContext => mapImportModule(s.import_stmt())
@@ -502,7 +511,9 @@ object MapExpressions {
 
   def string2num(x : String, c : ParserRuleContext) : Expression.T = {
     if (x.last == 'j') Expression.ImagLiteral(x.init.toDouble, new GeneralAnnotation(c)) else
-    if (x.exists(c => c == '.' || c == '+' || c == '-')) Expression.FloatLiteral(x.toDouble, new GeneralAnnotation(c)) else {
+    if (x.exists(c => (c == 'e' && !x.startsWith("0x")) || c == '.' || c == '+' || c == '-'))
+      Expression.FloatLiteral(x.toDouble, new GeneralAnnotation(c))
+    else {
       val int =
         if (x.length >= 2 && x.substring(0, 2) == "0x")
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
@@ -656,10 +667,11 @@ object MapExpressions {
     } else {
       val a = mapTest(e.test(0))
       if (e.comp_for() != null) {
-        println(e.start.getLine)
-        ???
-      }
-      (None, a)
+        val comp = mapCompFor(e.comp_for())
+        (None, // todo: I represent this arg comprehension as a star of a list, but it may be a star of a tuple or a set as well
+          Star(CollectionComprehension(CollectionKind.List, a, comp, new GeneralAnnotation(e)), new GeneralAnnotation(e)))
+      } else
+        (None, a)
     }
   }
   def mapArglistNullable(l : ArglistContext) = {

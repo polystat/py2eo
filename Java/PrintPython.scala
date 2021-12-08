@@ -87,6 +87,7 @@ object PrintPython {
       case Del(e, ann) => shift + "del " + printExpr(e) + posComment
       case Yield(Some(e), ann) => shift + "yield " + printExpr(e) + posComment
       case Yield(None, ann) => shift + "yield" + posComment
+      case YieldFrom(e, ann) => shift + "yield " + printExpr(e) + posComment
 
       case With(cm, target, body, ann) =>
         shift + "with " + printExpr(cm) + (target match {
