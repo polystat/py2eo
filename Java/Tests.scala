@@ -11,7 +11,6 @@ import scala.collection.immutable.HashMap
 
 // run these tests with py2eo/python/python3 as a currend directory
 class Tests {
-
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
   val intermediateDirs = List(
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
@@ -237,27 +236,18 @@ class Tests {
     println(stdout)
   }
 
-  def getListOfFiles(dir: String):List[File] = {
-    val d = new File(dir)
-    if (d.exists && d.isDirectory) {
-      d.listFiles.filter(_.isFile).toList
-    } else {
-      List[File]()
-    }
-  }
-
   @Test def simpleConstructionTest(): Unit = {
     for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
-      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${File.separator}" + subfolder)
+      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
       if (testHolder.exists && testHolder.isDirectory) {
         for (file <- testHolder.listFiles.filter(_.isFile).toList){
           val fileName = file.getName.replace(".py","")
-          print(testHolder.getPath + File.separator + fileName + "\n")
+          print(testHolder.getPath + File.separator + fileName + " - \n")
           Parse.parse(testHolder.getPath + File.separator, fileName)
           val stdout = new StringBuilder()
           val stderr = new StringBuilder()
           import scala.sys.process._
-          assertTrue(0 == (s"python3 \"${testHolder.getPath}${File.separator}afterParser${File.separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+          assertTrue(0 == (s"python3 \"${testHolder.getPath}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
           println(stdout)
         }
       }
