@@ -742,7 +742,13 @@ object Parse {
 
     val fullName = path + "/" + test + ".py"
     println(s"parsing $fullName")
-    val input = new FileReader(fullName)
+    parse(new File(fullName))
+  }
+
+  def parse(file : File) : Statement = {
+    assert(file.getName.endsWith(".py"))
+
+    val input = new FileReader(file)
 
     val inputStream = new ANTLRInputStream(input);
     val lexer = new Python3Lexer(inputStream);
@@ -751,8 +757,8 @@ object Parse {
 
     val e = parser.file_input()
 
-    val t = MapStatements.mapFile(fileName == "builtins", e)
-    output(t, path + "afterParser")
+    val t = MapStatements.mapFile(file.getName == "builtins", e)
+    PrintPython.toFile(t, file.getParentFile.getPath + "/afterParser", file.getName.substring(0, file.getName.length - 3))
     t
   }
 
