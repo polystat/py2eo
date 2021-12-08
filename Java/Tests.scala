@@ -41,8 +41,9 @@ class Tests {
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-      val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _), Return(_))) = z._1
-      val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name), List())))))
+      val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
+      val thePos = theFun.ann.pos
+      val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name, thePos), List(), thePos)), thePos)), thePos)
       Parse.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
@@ -60,22 +61,24 @@ class Tests {
 //    Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-    val Suite(List(theFun, Return(_))) = x._1
+    val Suite(List(theFun, Return(_, _)), _) = x._1
 //    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
 
     val z = ExplicitImmutableHeap.explicitHeap(theFun, x._2)
-    val Suite(l) = z._1
-    val FuncDef(mainName, _, _, _, _, _, _) = l.head
+    val Suite(l, _) = z._1
+    val FuncDef(mainName, _, _, _, _, _, _, ann) = l.head
 
+    val pos = ann.pos
     val hacked = Suite(List(
-      ImportAllSymbols(List("closureRuntime")),
-      Suite(l.init),
+      ImportAllSymbols(List("closureRuntime"), pos),
+      Suite(l.init, pos),
       Assert(CallIndex(false,
-          (CallIndex(true, Ident(mainName),
-            List((None, CollectionCons(CollectionKind.List, List())), (None, DictCons(List()))))),
-          List((None, IntLiteral(1))))
+          (CallIndex(true, Ident(mainName, pos),
+            List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos)),
+          List((None, IntLiteral(1, pos))), pos),
+        pos
       )
-    ))
+    ), pos)
 
     Parse.toFile(hacked, testsPrefix + "afterImmutabilization", name)
 
@@ -86,7 +89,7 @@ class Tests {
     assertTrue(0 == (s"$python \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
-    val hacked4EO = Suite(List(l.head))
+    val hacked4EO = Suite(List(l.head), pos)
     val output = new FileWriter(testsPrefix + "genImmutableEO/" + name + ".eo")
     val eoText = PrintLinearizedImmutableEO.printSt(name, hacked4EO)
     output.write(eoText +
@@ -114,19 +117,20 @@ class Tests {
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-    val Suite(List(theFun, Return(_))) = x._1
-    val FuncDef(mainName, _, _, _, _, _, _) = theFun
+    val Suite(List(theFun, Return(_, _)), _) = x._1
+    val FuncDef(mainName, _, _, _, _, _, _, ann) = theFun
 
     val z = ExplicitMutableHeap.explicitHeap(theFun, x._2)
 
+    val pos = ann.pos
     val hacked = Suite(List(
-      ImportAllSymbols(List("heapifyRuntime")),
-      Assign(List(Ident(mainName), ExplicitMutableHeap.newPtr(IntLiteral(0)))),
+      ImportAllSymbols(List("heapifyRuntime"), pos),
+      Assign(List(Ident(mainName, pos), ExplicitMutableHeap.newPtr(IntLiteral(0, pos))), pos),
       z._1,
-      Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns"),
-        ExplicitMutableHeap.index(ExplicitMutableHeap.valueGet(ExplicitMutableHeap.ptrGet(Ident(mainName))),
-          ExplicitMutableHeap.callme)), List((None, NoneLiteral()))))
-    ))
+      Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns", pos),
+        ExplicitMutableHeap.index(ExplicitMutableHeap.valueGet(ExplicitMutableHeap.ptrGet(Ident(mainName, pos))),
+          IntLiteral(0, pos))), List((None, NoneLiteral(pos))), pos), pos)
+    ), pos)
 
     Parse.toFile(hacked, testsPrefix + "afterHeapify", name)
 
@@ -151,13 +155,13 @@ class Tests {
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-      val Suite(List(theFun, Return(_))) = z._1
-      val FuncDef(mainName, _, _, _, body, _, _) = theFun
+      val Suite(List(theFun, Return(_, _)), _) = z._1
+      val FuncDef(mainName, _, _, _, body, _, _, ann) = theFun
 
       val theFunC = ClosureWithCage.closurize(theFun)
       val hacked = Suite(List(theFunC, Assert((CallIndex(true,
-        ClosureWithCage.index(Ident(mainName), "callme"),
-        List((None, Ident(mainName))))))))
+        ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
+        List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
       Parse.toFile(hacked, testsPrefix + "afterUseCage", name)
 
       val stdout = new StringBuilder()
@@ -167,8 +171,8 @@ class Tests {
 
       val eoHacked = Suite(List(
         theFunC,
-        Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName), "callme"), List())))
-      ))
+        Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"), List(), ann.pos)), ann.pos)
+      ), ann.pos)
 
       val output = new FileWriter(testsPrefix + "genCageEO/" + name + ".eo")
       val eoText = PrintLinearizedMutableEOWithCage.printTest(name, eoHacked)
@@ -186,13 +190,13 @@ class Tests {
       Parse.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
       val hacked = SimpleAnalysis.computeAccessibleIdents(
-        FuncDef("hack", List(), None, None, unsupportedExpr._1, new Decorators(List()), HashMap()))
+        FuncDef("hack", List(), None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), unsupportedExpr._1.ann.pos))
 
       def findGlobals(l : Set[String], f : FuncDef) : Set[String] = {
         SimpleAnalysis.foldSE[Set[String]](
           (l, e) => {e match {
 //            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
-            case Ident(name) if !f.accessibleIdents.contains(name) => l.+(name)
+            case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
             case _ => l
           }},
           { case _ : FuncDef => false case _ => true }
