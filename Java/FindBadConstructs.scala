@@ -14,7 +14,7 @@ object FindBadConstructs extends App {
     val y = Parse.parse(file)
     SimpleAnalysis.foldSE[Unit]((_, e) => e match {
       case CallIndex(true, Ident("eval", _), ((_, StringLiteral(_, _)) :: _), ann) => ()
-      case CallIndex(true, Ident("eval", ann), ((_, StringLiteral(_, _)) :: _), _) =>
+      case CallIndex(true, Ident("eval", ann), _, _) =>
         println(s"bad eval ${file.getName}:$ann")
       case _ => ()
     }, _ => true)((), y)
