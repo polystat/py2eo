@@ -51,10 +51,10 @@ object SimplePass {
         val xbody = pst(body, ns)
         val xelse = pst(eelse, xbody._2)
         (While(cond, xbody._1, xelse._1, ann.pos), xelse._2)
-      case For(what, in, body, eelse, ann) =>
+      case For(what, in, body, eelse, isAsync, ann) =>
         val xbody = pst(body, ns)
         val xelse = pst(eelse, xbody._2)
-        (For(what, in, xbody._1, xelse._1, ann.pos), xelse._2)
+        (For(what, in, xbody._1, xelse._1, isAsync, ann.pos), xelse._2)
       case Suite(l, ann) =>
         val xl = pstl[Statement](x => x, l, ns)
         (Suite(xl._1, ann.pos), xl._2)
@@ -62,9 +62,9 @@ object SimplePass {
         val xl = pstl[Statement](x => x, u.sts, ns)
         (new Unsupported(u.original, u.declareVars, u.es, xl._1, u.ann.pos), xl._2)
 
-      case With(cm, target, body, ann) =>
+      case With(cm, target, body, isAsync, ann) =>
         val xbody = pst(body, ns)
-        (With(cm, target, xbody._1, ann.pos), xbody._2)
+        (With(cm, target, xbody._1, isAsync, ann.pos), xbody._2)
       case Try(ttry, excepts, eelse, ffinally, ann) =>
         val xtry = pst(ttry, ns)
         val xex = pstl[(Option[(T, Option[String])], Statement)](_._2, excepts, xtry._2)
@@ -78,11 +78,11 @@ object SimplePass {
       case ClassDef(name, bases, body, decorators, ann) =>
         val xbody = pst(body, ns)
         (new ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
-      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents, ann) =>
+      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents, isAsync, ann) =>
         val xbody = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, xbody._1, decorators, accessibleIdents, ann.pos), xbody._2)
-      case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) | Del(_, _) |
-        Yield(_, _) => nochange
+        (FuncDef(name, args, otherPositional, otherKeyword, xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
+      case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) | Del(_, _)
+         => nochange
     }
   }
 
@@ -199,7 +199,8 @@ object SimplePass {
             Suite(List(value._1, Return(value._2, value._2.ann.pos)), GeneralAnnotation(value._1.ann.start, value._2.ann.stop))
         }
         // todo: all the keyword args must be supported in the "lambda" as well
-        val f = FuncDef(funname, args.map(x => (x.name, ArgKind.Positional, None, x.ann.pos)), None, None, finalBody, Decorators(List()), HashMap(), ann.pos)
+        val f = FuncDef(funname, args.map(x => (x.name, ArgKind.Positional, None, x.ann.pos)),
+          None, None, finalBody, Decorators(List()), HashMap(), false, ann.pos)
         (Right((f, Ident(funname, ann.pos))), ns2)
 
       case Cond(cond, yes, no, ann) if !lhs => forceAllIfNecessary(f)(List(cond, yes, no).map(x => (false, x)), ns) match {
@@ -237,12 +238,13 @@ object SimplePass {
       case CollectionComprehension(kind, base, l, ann) =>
         val l1 = base :: l.map{
           case IfComprehension(cond) => CallIndex(true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
-          case ForComprehension(what, in) => CallIndex(true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
+          case ForComprehension(what, in, _) => CallIndex(true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
         }
         reconstruct(lhs, { case (base :: l2) => {
           val l3 = l.zip(l2).map{
             case (IfComprehension(cond), CallIndex(_, _, List((_, x)), ann)) => IfComprehension(x)
-            case (ForComprehension(what, in), CallIndex(_, _, List((_, a), (_, b)), ann)) => ForComprehension(a, b)
+            case (ForComprehension(what, in, isAsync), CallIndex(_, _, List((_, a), (_, b)), ann)) =>
+              ForComprehension(a, b, isAsync)
           }
           CollectionComprehension(kind, base, l3, ann.pos)
         }}, l1, ns)
@@ -361,14 +363,15 @@ object SimplePass {
       }
       case cd@ClassDef(name, bases, body, Decorators(List()), ann) =>
         val (body1, ns1) = pst(body, ns)
-        forceAllIfNecessary(f)(bases.map(x => (false, x)), ns1) match {
-          case Left((args, ns)) => (ClassDef(name, args, body1, cd.decorators, ann.pos), ns)
+        forceAllIfNecessary(f)(bases.map(x => (false, x._2)), ns1) match {
+          case Left((args, ns)) => (ClassDef(name, bases.zip(args).map(x => (x._1._1, x._2)), body1, cd.decorators, ann.pos), ns)
           case Right((args, ns)) =>
-            (Suite(args.map(_._1) :+ ClassDef(name, args.map(_._2), body1, cd.decorators, body1.ann.pos), ann.pos), ns)
+            (Suite(args.map(_._1) :+ ClassDef(name, bases.zip(args).map(x => (x._1._1, x._2._2)),
+              body1, cd.decorators, body1.ann.pos), ann.pos), ns)
         }
-      case fd@FuncDef(name, args, otherPositional, otherKeyword, body, Decorators(List()), accessibleIdents, ann) =>
+      case fd@FuncDef(name, args, otherPositional, otherKeyword, body, Decorators(List()), accessibleIdents, isAsync, ann) =>
         val (body1, ns1) = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, body1, fd.decorators, accessibleIdents, ann.pos), ns1)
+        (FuncDef(name, args, otherPositional, otherKeyword, body1, fd.decorators, accessibleIdents, isAsync, ann.pos), ns1)
 
       case Assert(_, _) => alreadyDone("assert")
       case If(_, _, _) => alreadyDone("ifelseif")
@@ -388,14 +391,14 @@ object SimplePass {
     case Assign(List(_), _) => s
     case Assign(List(Ident(_, _), _), _) => s
     case Assign(l, ann)  => new Unsupported(s, l.init.flatMap{ case Ident(s, _) => List(s) case _ => List()}, ann.pos)
-    case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents, ann)
-      if decorators.l.nonEmpty || otherKeyword.nonEmpty || otherPositional.nonEmpty ||
+    case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, accessibleIdents, isAsync, ann)
+      if decorators.l.nonEmpty || otherKeyword.nonEmpty || otherPositional.nonEmpty || isAsync ||
         args.exists(x => x._3.nonEmpty || x._2 == ArgKind.Keyword) =>
         val body1 = new Unsupported(body, List(), body.ann.pos)
         FuncDef(name, args.map(a => (a._1, ArgKind.Positional, None, a._4.pos)), None, None, body1,
-          Decorators(List()), accessibleIdents, ann.pos)
-    case For(_, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | Yield(_, _) |
-      Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
+          Decorators(List()), accessibleIdents, isAsync, ann.pos)
+    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) |
+      Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
       ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, List(as), s.ann.pos)
     case ImportSymbol(from, what, as, _) => new Unsupported(s, List(as), s.ann.pos)
@@ -406,7 +409,7 @@ object SimplePass {
     val e1 = e match {
       case CallIndex(isCall, whom, args, ann) if !isCall || args.exists(x => x._1.nonEmpty) =>
         new UnsupportedExpr((e))
-      case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) |
+      case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
         Slice(_, _, _, _) | AnonFun(_, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) =>
           new UnsupportedExpr(e)
       case SimpleComparison(op, l, r, _) if (
@@ -466,9 +469,10 @@ object SimplePass {
   def explicitBases(s : Statement, ns : Names) : (Statement, Names) = s match {
     case ClassDef(name, bases0, body, decorators, ann) =>
       val (newBody, ns1) = explicitBases(body, ns)
-      val basesPos = GeneralAnnotation(bases0.head.ann.start, bases0.last.ann.stop)
+      val basesPos = GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
       (ClassDef(name, List(), Suite(List(
-        Assign(List(Ident("eo_bases", basesPos), CollectionCons(CollectionKind.List, bases0, basesPos)), basesPos),
+        Assign(List(Ident("eo_bases", basesPos),
+          CollectionCons(CollectionKind.List, bases0.map{case (None, x) => x}, basesPos)), basesPos),
         newBody),
         body.ann.pos),
         decorators, ann.pos), ns1)

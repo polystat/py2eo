@@ -83,8 +83,9 @@ object PrintLinearizedMutableEONoCage {
         (Left(Field(e, "callme", e.ann.pos)), ns)
       case (_, e, ns) => (Left(e), ns)
     })(st, SimplePass.Names(HashMap()))
-    val theTest@FuncDef(_, _, _, _, _, _, _, _) =
-      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, st1, Decorators(List()), HashMap(), st.ann.pos))
+    val theTest@FuncDef(_, _, _, _, _, _, _, _, _) =
+      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, st1, Decorators(List()),
+        HashMap(), false, st.ann.pos))
     val head :: tail = printFun(theTest)
     headers ++
       (head :: ident(prelude) ++

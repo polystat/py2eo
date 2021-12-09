@@ -6,7 +6,7 @@ object SimpleAnalysis {
 
   def childrenComprehension(c : Comprehension) = c match {
     case IfComprehension(cond) => List(cond)
-    case ForComprehension(what, in) => List(what, in)
+    case ForComprehension(what, in, _) => List(what, in)
   }
 
   def childrenDictEltDoubleStar(x : DictEltDoubleStar) = x match {
@@ -36,6 +36,8 @@ object SimpleAnalysis {
     case CollectionComprehension(kind, base, l, _) => base :: l.flatMap(childrenComprehension)
     case DictComprehension(base, l, _) =>
       childrenDictEltDoubleStar(base) ++ l.flatMap(childrenComprehension)
+    case Yield(l, _) => l.toList
+    case YieldFrom(e, ann) => List(e)
   }
 
   def foldEE[A](f0 : (A, T) => A)(acc0 : A, e : T) : A = {
@@ -47,10 +49,8 @@ object SimpleAnalysis {
   def childrenS(s : Statement) : (List[Statement], List[(Boolean, T)]) = {
     def isRhs(e : T) = (false, e)
     s match {
-      case Yield(l, _) => (List(), l.map(x => (false, x)).toList)
-      case YieldFrom(e, ann) => (List(), List((false, e)))
-      case With(cm, target, body, _) => (List(body), (false, cm) :: target.map(x => (true, x)).toList)
-      case For(what, in, body, eelse, _) => (List(body, eelse), List((false, what), (false, in)))
+      case With(cm, target, body, _, _) => (List(body), (false, cm) :: target.map(x => (true, x)).toList)
+      case For(what, in, body, eelse, _, _) => (List(body, eelse), List((false, what), (false, in)))
       case Del(e, _) => (List(), List((false, e)))
       case If(conditioned, eelse, _) => (eelse :: conditioned.map(_._2), conditioned.map(x => (false, x._1)))
       case IfSimple(cond, yes, no, _) => (List(yes, no), List((false, cond)))
@@ -64,8 +64,8 @@ object SimpleAnalysis {
       case Return(x, _) => (List(), List(isRhs(x)))
       case Assert(x, _) => (List(), List(isRhs(x)))
       case Raise(e, from, _) => (List(), (e.toList ++ from.toList).map(isRhs))
-      case ClassDef(name, bases, body, decorators, _) => (List(body), (bases ++ decorators.l).map(isRhs))
-      case FuncDef(name, args, _, _, body, decorators, _, _) => (List(body), decorators.l.map(isRhs))
+      case ClassDef(name, bases, body, decorators, _) => (List(body), (bases.map(_._2) ++ decorators.l).map(isRhs))
+      case FuncDef(name, args, _, _, body, decorators, _, _, _) => (List(body), decorators.l.map(isRhs))
       case NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | Global(_, _) | ImportModule(_, _, _)
            | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (List(), List())
       case x : Unsupported => (x.sts, x.es)
@@ -92,7 +92,7 @@ object SimpleAnalysis {
   private def classifyVariablesAssignedInFunctionBody(args : List[(String, ArgKind.T, Option[T], GeneralAnnotation)], body : Statement)
   : HashMap[String, (VarScope.T, GeneralAnnotation)] = {
     def dontVisitOtherBlocks(s : Statement) : Boolean = s match {
-      case FuncDef(_, _, _, _, _, _, _, _) | ClassDef(_, _, _, _, _) => false
+      case FuncDef(_, _, _, _, _, _, _, _, _) | ClassDef(_, _, _, _, _) => false
       case _ => true
     }
     type H = HashMap[String, (VarScope.T, GeneralAnnotation)]
@@ -108,7 +108,7 @@ object SimpleAnalysis {
       def add(name : String, ann : GeneralAnnotation) = add0(h, name, ann)
       st match {
         case ClassDef(name, bases, body, _, ann) => (add(name, ann), false)
-        case FuncDef(name, args, body, _, _, _, _, ann) => (add(name, ann), false)
+        case FuncDef(name, args, body, _, _, _, _, _, ann) => (add(name, ann), false)
         case Assign(List(CollectionCons(_, _, _), _), ann) =>
           throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(l, ann) if l.size > 2 =>
@@ -143,7 +143,7 @@ object SimpleAnalysis {
       case f : FuncDef => (computeAccessibleIdentsF(merged, f), ns, false)
       case _ => (s, ns, true)
     })(f.body, new SimplePass.Names())
-    FuncDef(f.name, f.args, f.otherPositional, f.otherKeyword, body, f.decorators, merged, f.ann.pos)
+    FuncDef(f.name, f.args, f.otherPositional, f.otherKeyword, body, f.decorators, merged, f.isAsync, f.ann.pos)
   }
 
   def computeAccessibleIdents(s : Statement) : Statement = {
@@ -159,7 +159,7 @@ object SimpleAnalysis {
 //      Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | Global(_) |
       IfSimple(_, _, _, _) | While(_, _, _, _) |
       Suite(_, _) | Assign(List(_), _) | Assign(List(Ident(_, _), _), _) | Return(_, _) |
-      FuncDef(_, _, _, _, _, Decorators(List()), _, _) |
+      FuncDef(_, _, _, _, _, Decorators(List()), _, _, _) |
       NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | ImportModule(_, _, _) |
       ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (acc, true)
   }
