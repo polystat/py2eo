@@ -148,6 +148,9 @@ object SimplePass {
     e match {
       case Binop(op, l, r, ann) if !lhs =>
         reconstruct(false, { case List(l, r) => Binop(op, l, r, ann.pos)}, List(l, r), ns)
+      case Yield(None, ann) => (Left(e), ns)
+      case Yield(Some(e), ann) => reconstruct(false, { case List(x) => Yield(Some(x), ann.pos) }, List(e), ns)
+      case YieldFrom(e, ann) => reconstruct(false, { case List(x) => YieldFrom(x, ann.pos) }, List(e), ns)
       case SimpleComparison(op, l, r, ann) if !lhs =>
         reconstruct(false, { case List(l, r) => SimpleComparison(op, l, r, ann.pos)}, List(l, r), ns)
       case FreakingComparison(ops, l, ann) if !lhs && ops.size == 1 =>
@@ -271,6 +274,14 @@ object SimplePass {
       case Raise(None, None, _) | Pass(_) | Break(_) | Continue(_) | NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) |
            ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (s, ns)
       case Del(Ident(_, _), _) => (s, ns)
+//      case With(cm, target, body, isAsync, ann) =>
+//        val (body1, ns1) = pst(body, ns)
+//        forceAllIfNecessary(f)((false, cm) :: target.toList.map(x => (true, x)), ns1) match {
+//          case Left((l, ns)) => (With(l.head, l.tail.headOption, body1, isAsync, ann.pos), ns)
+//          case Right((l, ns)) =>
+//            val w = (With(l.head._2, l.map(_._2).tail.headOption, body1, isAsync, ann.pos))
+//            (Suite(l.map(_._1) :+ w, ann.pos), ns)
+//        }
       case IfSimple(cond, yes, no, ann) =>
         val (yes1, ns1) = pst(yes, ns)
         val (no1, ns2) = pst(no, ns1)
@@ -397,7 +408,7 @@ object SimplePass {
         val body1 = new Unsupported(body, List(), body.ann.pos)
         FuncDef(name, args.map(a => (a._1, ArgKind.Positional, None, a._4.pos)), None, None, body1,
           Decorators(List()), accessibleIdents, isAsync, ann.pos)
-    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) |
+    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _ : ClassDef |
       Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
       ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, List(as), s.ann.pos)
@@ -469,7 +480,7 @@ object SimplePass {
   def explicitBases(s : Statement, ns : Names) : (Statement, Names) = s match {
     case ClassDef(name, bases0, body, decorators, ann) =>
       val (newBody, ns1) = explicitBases(body, ns)
-      val basesPos = GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
+      val basesPos = if (bases0.isEmpty) ann.pos else GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
       (ClassDef(name, List(), Suite(List(
         Assign(List(Ident("eo_bases", basesPos),
           CollectionCons(CollectionKind.List, bases0.map{case (None, x) => x}, basesPos)), basesPos),
