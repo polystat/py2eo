@@ -172,6 +172,8 @@ object Expression {
   case class Field(whose : T, name : String, ann : GeneralAnnotation) extends T
   case class Cond(cond : T, yes : T, no : T, ann : GeneralAnnotation) extends T
   case class AnonFun(args : List[Ident], body : T, ann : GeneralAnnotation) extends T
+  case class Yield(l : Option[T], ann : GeneralAnnotation) extends T
+  case class YieldFrom(e : T, ann : GeneralAnnotation) extends T
   class UnsupportedExpr(original0 : T, children0 : List[T], ann0 : GeneralAnnotation) extends T {
     val original = original0
     val children = children0
@@ -184,7 +186,7 @@ object Expression {
 
   sealed trait Comprehension
   case class IfComprehension(cond : T) extends Comprehension
-  case class ForComprehension(what : T, in : T) extends Comprehension
+  case class ForComprehension(what : T, in : T, isAsync : Boolean) extends Comprehension
 
   def mapRef(f: String => String)(x: T): T = {
     val m = mapRef(f)(_)
@@ -277,7 +279,7 @@ import Expression.{T => ET}
 case class If(conditioned : List[(ET, Statement)], eelse : Statement, ann : GeneralAnnotation) extends Statement
 case class IfSimple(cond : ET, yes : Statement, no : Statement, ann : GeneralAnnotation) extends Statement
 case class While(cond : ET, body : Statement, eelse : Statement, ann : GeneralAnnotation) extends Statement
-case class For(what : ET, in : ET, body : Statement, eelse : Statement, ann : GeneralAnnotation) extends Statement
+case class For(what : ET, in : ET, body : Statement, eelse : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
 case class Suite(l : List[Statement], ann : GeneralAnnotation) extends Statement
 case class AugAssign(op : AugOps.T, lhs : ET, rhs : ET, ann : GeneralAnnotation) extends Statement
 case class Assign(l : List[ET], ann : GeneralAnnotation) extends Statement
@@ -286,28 +288,24 @@ case class Pass(ann : GeneralAnnotation) extends Statement
 case class Break(ann : GeneralAnnotation) extends Statement
 case class Continue(ann : GeneralAnnotation) extends Statement
 case class Return(x : ET, ann : GeneralAnnotation) extends Statement
-case class Yield(l : Option[ET], ann : GeneralAnnotation) extends Statement
-case class YieldFrom(e : ET, ann : GeneralAnnotation) extends Statement
 case class Assert(x : ET, ann : GeneralAnnotation) extends Statement
 case class Raise(e : Option[ET], from : Option[ET], ann : GeneralAnnotation) extends Statement
 case class Del(l : ET, ann : GeneralAnnotation) extends Statement
 case class Decorators(l : List[ET])
 case class FuncDef(name : String, args : List[(String, ArgKind.T, Option[ET], GeneralAnnotation)], otherPositional : Option[String],
          otherKeyword : Option[String], body : Statement, decorators: Decorators,
-         accessibleIdents : HashMap[String, (VarScope.T, GeneralAnnotation)], ann : GeneralAnnotation) extends Statement {
+         accessibleIdents : HashMap[String, (VarScope.T, GeneralAnnotation)], isAsync : Boolean, ann : GeneralAnnotation) extends Statement {
 //  lazy val variablesClassification = SimpleAnalysis.classifyFunctionVariables(args, body, false)
 }
 
-case class ClassDef(name : String, bases0 : List[ET], body : Statement, decorators: Decorators, ann : GeneralAnnotation) extends Statement {
-  val bases = bases0
-}
+case class ClassDef(name : String, bases : List[(Option[String], ET)], body : Statement, decorators: Decorators, ann : GeneralAnnotation) extends Statement
 
 case class NonLocal(l : List[String], ann : GeneralAnnotation) extends Statement
 case class Global(l : List[String], ann : GeneralAnnotation) extends Statement
 case class ImportModule(what : List[String], as : String, ann : GeneralAnnotation) extends Statement
 case class ImportAllSymbols(from : List[String], ann : GeneralAnnotation) extends Statement
 case class ImportSymbol(from : List[String], what : String, as : String, ann : GeneralAnnotation) extends Statement
-case class With(cm : ET, target : Option[ET], body : Statement, ann : GeneralAnnotation) extends Statement
+case class With(cm : ET, target : Option[ET], body : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
 case class Try(ttry : Statement, excepts : List[(Option[(ET, Option[String])], Statement)],
                eelse : Statement, ffinally : Statement, ann : GeneralAnnotation) extends Statement
 class Unsupported(original0 : Statement, declareVars0 : List[String],
@@ -386,25 +384,41 @@ object MapStatements {
     }
   }
 
-  def mapFuncDef(s : FuncdefContext, decorators: Decorators) = {
+  def mapFuncDef(s : FuncdefContext, decorators: Decorators, isAsync : Boolean) = {
     val z = mapTypedargslist(s.parameters().typedargslist())
-    FuncDef(s.NAME().getText, z._1, z._2, z._3, mapNullableSuite(s.suite()), decorators, HashMap(), new GeneralAnnotation(s))
+    FuncDef(s.NAME().getText, z._1, z._2, z._3, mapNullableSuite(s.suite()), decorators, HashMap(), isAsync,
+      new GeneralAnnotation(s))
   }
 
   def mapClassDef(s : ClassdefContext, decorators: Decorators) = {
     ClassDef(
-      s.NAME().getText, mapArglistNullable(s.arglist()).map{case (None, e) => e},
+      s.NAME().getText, mapArglistNullable(s.arglist()),
         mapNullableSuite(s.suite()), decorators, new GeneralAnnotation(s)
+    )
+  }
+
+  def mapFor(s : For_stmtContext, isAsync : Boolean) = {
+    For(mapExprList(s.exprlist()), mapTestList(s.testlist()),
+      mapNullableSuite(s.body), mapNullableSuite(s.eelse), isAsync, new GeneralAnnotation(s))
+  }
+
+  def mapIf(s : If_stmtContext) = {
+    If(
+      asScala(s.conds).map(mapTest).zip(asScala(s.bodies).map(mapNullableSuite)).toList,
+      mapNullableSuite(s.eelse), new GeneralAnnotation(s)
+    )
+  }
+
+  def mapWith(s : With_stmtContext, isAsync : Boolean) = {
+    asScala(s.l).toList.foldRight(mapNullableSuite(s.suite()))((x, s) =>
+      With(mapTest(x.test()), Option(x.expr()).map(mapExpr), s, isAsync, s.ann.pos)
     )
   }
 
   def mapStmt(s : StmtContext) : Statement = s match {
     case s : StmtSimpleContext => mapSimpleStmt(s.simple_stmt())
     case s : StmtCompoundContext => s.compound_stmt() match {
-      case s : CompIfContext => If(
-        asScala(s.if_stmt().conds).map(mapTest).zip(asScala(s.if_stmt().bodies).map(mapNullableSuite)).toList,
-        mapNullableSuite(s.if_stmt().eelse), new GeneralAnnotation(s)
-      )
+      case s : CompIfContext => mapIf(s.if_stmt())
       case s : CompWhileContext =>
         While(
           mapTest(s.while_stmt().cond),
@@ -412,9 +426,7 @@ object MapStatements {
           mapNullableSuite(s.while_stmt().eelse),
           new GeneralAnnotation(s)
         )
-      case s : CompForContext =>
-        For(mapExprList(s.for_stmt().exprlist()), mapTestList(s.for_stmt().testlist()),
-          mapNullableSuite(s.for_stmt().body), mapNullableSuite(s.for_stmt().eelse), new GeneralAnnotation(s))
+      case s : CompForContext => mapFor(s.for_stmt(), false)
       case s : CompTryContext =>
         val t = s.try_stmt()
         val es = asScala(t.except_clause()).toList.zip(asScala(t.exceptSuites).toList)
@@ -426,20 +438,21 @@ object MapStatements {
           else
             mapNullableSuite(t.finallySuite.get(0))
           , new GeneralAnnotation(s))
-      case s : CompWithContext =>
-        asScala(s.with_stmt().l).toList.foldRight(mapNullableSuite(s.with_stmt().suite()))((x, s) =>
-          With(mapTest(x.test()), Option(x.expr()).map(mapExpr), s, s.ann.pos)
-        )
-      case s : CompFuncDefContext => mapFuncDef(s.funcdef(), Decorators(List()))
+      case s : CompWithContext => mapWith(s.with_stmt(), false)
+      case s : CompFuncDefContext => mapFuncDef(s.funcdef(), Decorators(List()), false)
       case s : CompClassDefContext => mapClassDef(s.classdef(), Decorators(List()))
       case s : CompDecoratedContext =>
         val s1 = s.decorated()
         val decorators = mapDecorators(s1.decorators())
         if (s1.classdef() != null) mapClassDef(s1.classdef(), decorators) else
-        if (s1.funcdef() != null) mapFuncDef(s1.funcdef(), decorators) else
+        if (s1.funcdef() != null) mapFuncDef(s1.funcdef(), decorators, false) else
         if (s1.async_funcdef() != null) ??? else
           throw new AssertionError("nothing after decorators. This must not be parseable with the golden python compiler")
-      case s : CompAsyncContext => ???
+      case s : CompAsyncContext =>
+        if (s.async_stmt().with_stmt() != null) mapWith(s.async_stmt().with_stmt(), true) else
+        if (s.async_stmt().for_stmt() != null) mapFor(s.async_stmt().for_stmt(), true) else
+        if (s.async_stmt().funcdef() != null) mapFuncDef(s.async_stmt().funcdef(), Decorators(List()), true)
+        else ???
     }
   }
 
@@ -478,19 +491,14 @@ object MapStatements {
         val tests = asScala(r.raise_stmt().test()).toList.map(mapTest)
         Raise(tests.headOption, tests.lift(1), new GeneralAnnotation(r))
       case y : FlowYieldContext =>
-        val y1 = y.yield_stmt().yield_expr()
-        if (y1.yield_arg() == null) Yield(None, new GeneralAnnotation(y)) else {
-          if (y1.yield_arg().FROM() == null)
-            Yield(Some(mapTestList(y1.yield_arg().testlist())), new GeneralAnnotation(y))
-          else
-            YieldFrom(mapTest(y1.yield_arg().test()), new GeneralAnnotation(y))
-        }
+        Assign(List(mapYieldExpr(y.yield_stmt().yield_expr())), new GeneralAnnotation(y))
     }
     case s : SmallImportContext => mapImportModule(s.import_stmt())
   }
 
   def mapRhsAssign(x : RhsassignContext) = x match {
     case l : RhsTestlistContext => mapTestlistStarExpr(CollectionKind.Tuple, l.testlist_star_expr())
+    case y : RhsYieldContext => mapYieldExpr(y.yield_expr())
   }
 
   def mapFile(parsingBuiltins : Boolean, x : File_inputContext) = {
@@ -537,13 +545,22 @@ object MapExpressions {
   def mapDictEltDoubleStar(c : Dict_elt_double_starContext) =
     if (c.expr() != null) Right(mapExpr(c.expr())) else Left((mapTest(c.test(0)), mapTest(c.test(1))))
 
+  def mapYieldExpr(y1 : Yield_exprContext) : T = {
+    if (y1.yield_arg() == null) Yield(None, new GeneralAnnotation(y1)) else {
+      if (y1.yield_arg().FROM() == null)
+        Yield(Some(mapTestList(y1.yield_arg().testlist())), new GeneralAnnotation(y1))
+      else
+        YieldFrom(mapTest(y1.yield_arg().test()), new GeneralAnnotation(y1))
+    }
+  }
+
   def mapAtom(a : AtomContext) : T  = {
     if (a.OPEN_PAREN() != null || a.OPEN_BRACK() != null) {
       val collectionKind = if (a.OPEN_BRACK() != null) CollectionKind.List else CollectionKind.Tuple
       if (a.testlist_comp() != null) {
         mapTestList_comp(collectionKind, a.testlist_comp())
       } else
-      if (a.yield_expr() != null) ??? else
+      if (a.yield_expr() != null) mapYieldExpr(a.yield_expr()) else
       CollectionCons(collectionKind, List(), new GeneralAnnotation(a))
     } else
     if (a.OPEN_BRACE() != null) {
@@ -608,8 +625,8 @@ object MapExpressions {
     }
 
   def mapCompFor(cf : Comp_forContext) : List[Comprehension] = {
-    assert(cf.ASYNC() == null)
-    ForComprehension(mapExprList(cf.exprlist()), mapOrTest(cf.or_test())) :: mapCompIterNullable(cf.comp_iter())
+    ForComprehension(mapExprList(cf.exprlist()), mapOrTest(cf.or_test()), cf.ASYNC() != null) ::
+      mapCompIterNullable(cf.comp_iter())
   }
 
   def mapCompIterNullable(context: Python3Parser.Comp_iterContext) : List[Comprehension] =

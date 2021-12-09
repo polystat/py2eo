@@ -45,7 +45,7 @@ class Tests {
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-      val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
+      val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
       val thePos = theFun.ann.pos
       val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name, thePos), List(), thePos)), thePos)), thePos)
       PrintPython.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
@@ -70,7 +70,7 @@ class Tests {
 
     val z = ExplicitImmutableHeap.explicitHeap(theFun, x._2)
     val Suite(l, _) = z._1
-    val FuncDef(mainName, _, _, _, _, _, _, ann) = l.head
+    val FuncDef(mainName, _, _, _, _, _, _, _, ann) = l.head
 
     val pos = ann.pos
     val hacked = Suite(List(
@@ -123,7 +123,7 @@ class Tests {
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_, _)), _) = x._1
-    val FuncDef(mainName, _, _, _, _, _, _, ann) = theFun
+    val FuncDef(mainName, _, _, _, _, _, _, _, ann) = theFun
 
     val z = ExplicitMutableHeap.explicitHeap(theFun, x._2)
 
@@ -161,7 +161,7 @@ class Tests {
 
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
       val Suite(List(theFun, Return(_, _)), _) = z._1
-      val FuncDef(mainName, _, _, _, body, _, _, ann) = theFun
+      val FuncDef(mainName, _, _, _, body, _, _, _, ann) = theFun
 
       val theFunC = ClosureWithCage.closurize(theFun)
       val hacked = Suite(List(theFunC, Assert((CallIndex(true,
@@ -195,7 +195,7 @@ class Tests {
       PrintPython.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
       val hacked = SimpleAnalysis.computeAccessibleIdents(
-        FuncDef("hack", List(), None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), unsupportedExpr._1.ann.pos))
+        FuncDef("hack", List(), None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), false,  unsupportedExpr._1.ann.pos))
 
       def findGlobals(l : Set[String], f : FuncDef) : Set[String] = {
         SimpleAnalysis.foldSE[Set[String]](

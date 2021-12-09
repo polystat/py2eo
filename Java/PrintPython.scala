@@ -67,6 +67,9 @@ object PrintPython {
         brak(printExpr(base) + " " + l.map(printComprehension).mkString(" "), braks._1, braks._2)
       case DictCons(l, _) => brak(l.map(printDictElt).mkString(", "), "{", "}")
       case DictComprehension(base, l, _) => brak(printDictElt(base) + " " + l.map(printComprehension).mkString(" "), "{", "}")
+      case Yield(Some(e), ann) => "yield " + printExpr(e)
+      case Yield(None, ann) =>  "yield"
+      case YieldFrom(e, ann) => "yield " + printExpr(e)
     }
   }
 
@@ -77,6 +80,7 @@ object PrintPython {
 
   def printSt(s : Statement, shift : String) : String = {
 //    def mksh(shift : Int) = " " * shift
+    def async(isAsync : Boolean) = if (isAsync) "async " else ""
     val shiftIncr = shift + "    "
     val posComment = " # " + s.ann
     def printDecorators(decorators: Decorators) =
@@ -85,12 +89,9 @@ object PrintPython {
       case u : Unsupported => shift + "assert(false)" + posComment
 
       case Del(e, ann) => shift + "del " + printExpr(e) + posComment
-      case Yield(Some(e), ann) => shift + "yield " + printExpr(e) + posComment
-      case Yield(None, ann) => shift + "yield" + posComment
-      case YieldFrom(e, ann) => shift + "yield " + printExpr(e) + posComment
 
-      case With(cm, target, body, ann) =>
-        shift + "with " + printExpr(cm) + (target match {
+      case With(cm, target, body, isAsync, ann) =>
+        shift + async(isAsync) + "with " + printExpr(cm) + (target match {
           case Some(value) => " as " + printExpr(value)
           case None => ""
         }) + ":" + posComment + "\n" +
@@ -115,8 +116,8 @@ object PrintPython {
         shift + "else:\n" +
           printSt(eelse, shiftIncr)
 
-      case For(what, in, body, eelse, ann) =>
-        shift + "for " + printExpr(what) + " in " + printExpr(in) + ":" + posComment + "\n" +
+      case For(what, in, body, eelse, isAsync, ann) =>
+        shift + async(isAsync) + "for " + printExpr(what) + " in " + printExpr(in) + ":" + posComment + "\n" +
           printSt(body, shiftIncr) + "\n" +
         shift + "else:\n" +
           printSt(eelse, shiftIncr)
@@ -150,9 +151,12 @@ object PrintPython {
       case Global(l, ann) => shift + "global " + l.mkString(", ") + posComment
       case ClassDef(name, bases, body, decorators, ann) =>
         printDecorators(decorators) +
-        shift + "class " + name + "(" + bases.map(printExpr).mkString(", ") + "):" + posComment + "\n" +
+        shift + "class " + name + "(" +
+          bases.map(x =>
+            (x._1 match { case None => "" case Some(name) => name + "="}) + printExpr(x._2)
+          ).mkString(", ") + "):" + posComment + "\n" +
           printSt(body, shiftIncr)
-      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, _, ann) =>
+      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, _, isAsync, ann) =>
         val positionalOnly = args.filter(_._2 == ArgKind.Positional)
         val posOrKeyword = args.filter(_._2 == ArgKind.PosOrKeyword)
         val keywordOnly = args.filter(_._2 == ArgKind.Keyword)
@@ -165,7 +169,7 @@ object PrintPython {
           }) ++
           keywordOnly.map(_._1) ++ otherKeyword.toList.map("**" + _)
         printDecorators(decorators) +
-        shift + "def " + name + "(" + argstring.mkString(", ") + "):" + posComment + "\n" +
+        shift + async(isAsync) + "def " + name + "(" + argstring.mkString(", ") + "):" + posComment + "\n" +
         printSt(body, shiftIncr)
       case ImportModule(what, as, ann) => shift + s"import ${what.mkString(".")} as $as" + posComment
       case ImportSymbol(from, what, as, ann) => shift + s"from ${from.mkString(".")} import $what as $as" + posComment

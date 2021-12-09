@@ -49,8 +49,9 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printTest(testName : String, st : Statement) : Text = {
-    val theTest@FuncDef(_, _, _, _, _, _, _, _) =
-      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, st, Decorators(List()), HashMap(), st.ann.pos))
+    val theTest@FuncDef(_, _, _, _, _, _, _, _, _) =
+      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, st, Decorators(List()),
+        HashMap(), false, st.ann.pos))
     headers ++ printFun(theTest.name, theTest)
   }
 

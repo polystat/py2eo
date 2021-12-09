@@ -50,7 +50,8 @@ object ExplicitMutableHeap {
         result
       }
       st match {
-        case FuncDef(name, args, None, None, body, Decorators(List()), vars, ann) =>
+        case FuncDef(name, args, None, None, body, Decorators(List()), vars, isAsync, ann) =>
+          assert(!isAsync)
           def scope(name : String) = if (vars.contains(name)) vars(name) else (VarScope.Global, nopos)
           val add2closure =
             vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).toList
@@ -64,7 +65,7 @@ object ExplicitMutableHeap {
           val newName = s"tmpFun${fs1.size}"
           val f1 = FuncDef(newName,
               ("closure", ArgKind.Positional, None, ann.pos) :: args,
-            None, None, Suite(createLocals.toList :+ body1, body1.ann.pos), Decorators(List()), HashMap(), ann.pos)
+            None, None, Suite(createLocals.toList :+ body1, body1.ann.pos), Decorators(List()), HashMap(), isAsync, ann.pos)
           val fs2 = fs1 :+ f1
           val rhs = CollectionCons(Expression.CollectionKind.List,
             IntLiteral(fs1.size, ann.pos) :: add2closure.map(s => Ident(s._1, s._2._2)), ann.pos)

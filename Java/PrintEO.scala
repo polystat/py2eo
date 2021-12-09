@@ -110,7 +110,7 @@ object PrintEO {
         List("while.",
           Ident + printExpr(visibility)(cond),
         ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
-      case FuncDef(name, args, None, None, body, Decorators(List()), h, _) =>
+      case FuncDef(name, args, None, None, body, Decorators(List()), h, false, _) =>
         val locals = h.filter(z => z._2._1 == VarScope.Local).keys
         val args1 = args.map{ case (argname, _, None, _) => "x" + argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)

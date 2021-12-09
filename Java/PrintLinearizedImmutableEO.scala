@@ -47,7 +47,7 @@ object PrintLinearizedImmutableEO {
 //          s"debugMagic.seq (debugMagic.printDataized \"leaving fun\" \"$currentFunName\") (" +
             "(" + printExpr(visibility)(expr) +
             ") > @!")
-      case FuncDef(name, args, None, None, body, Decorators(List()), accessibleIdents, ann) =>
+      case FuncDef(name, args, None, None, body, Decorators(List()), accessibleIdents, false,  ann) =>
         val locals = accessibleIdents.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.Arg).keys
         val args1 = args.map{ case (argname, ArgKind.Positional, None, _) => argname }.mkString(" ")
         val st@Suite(_, _) = body

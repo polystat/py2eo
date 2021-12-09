@@ -48,7 +48,8 @@ object RemoveControlFlow {
       case Break(ann) => (List((headLabel, goto(breakTarget, ann))), false, ns)
       case Continue(_) | Raise(_, _, _) | ClassDef(_, _, _, _, _) => ???
 
-      case FuncDef(name, args, None, None, body, _, accessibleIdents, ann) =>
+      case FuncDef(name, args, None, None, body, _, accessibleIdents, isAsync, ann) =>
+        assert(!isAsync)
         val vars = accessibleIdents.toList
         val nonlocals = NonLocal(vars.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.NonLocal).map(_._1), ann.pos)
         val (List(headLabelInner0, afterLabelInner0), ns1) = ns(List("bb_start", "bb_finish"))
@@ -63,14 +64,14 @@ object RemoveControlFlow {
           map(z => Assign(List(z._1, NoneLiteral(z._1.ann.pos)), z._1.ann.pos))
         val body2 = body1.map(z => FuncDef(z._1.name, List(), None, None,
           (if (nonlocals.l.nonEmpty) Suite(List(nonlocals, z._2), z._2.ann.pos) else z._2),
-          Decorators(List()), HashMap(), z._2.ann.pos)
+          Decorators(List()), HashMap(), isAsync, z._2.ann.pos)
         )
         val finish = FuncDef(afterLabelInner.name, List(), None, None,
           Return(NoneLiteral(afterLabelInner.ann.pos), afterLabelInner.ann.pos), Decorators(List()),
-          HashMap(), afterLabelInner.ann.pos)
+          HashMap(), isAsync, afterLabelInner.ann.pos)
         val ans = FuncDef(name, args, None, None, Suite(
           locals ++ body2 :+ finish :+ goto(headLabelInner, ann), ann.pos
-        ), Decorators(List()), HashMap(), ann.pos)
+        ), Decorators(List()), HashMap(), isAsync, ann.pos)
         (List((headLabel, Suite(List(ans, goto(afterLabel, new GeneralAnnotation())), body.ann.pos))), b, ns2)
 
         // todo: a hack: just throw away all the import statements
@@ -85,7 +86,7 @@ object RemoveControlFlow {
   def removeControlFlow(s : Statement, ns : Names) : (Statement, Names) = {
     SimpleAnalysis.checkIsSimplified(s)
     val Suite(l, _) = s
-    val List(f@FuncDef(_, _, _, _, _, _, _, _)) = l.filter({
+    val List(f@FuncDef(_, _, _, _, _, _, _, _, _)) = l.filter({
       case ImportModule(_, _, _) | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => false
       case _ => true
     })

@@ -43,7 +43,8 @@ object ExplicitImmutableHeap {
       }
 //      def procIdentInSt = SimplePass.procExprInStatement(procIdentStep)(_, _)
       s match {
-        case FuncDef(name, args, None, None, body, Decorators(List()), vars, ann) =>
+        case FuncDef(name, args, None, None, body, Decorators(List()), vars, isAsync, ann) =>
+          assert(!isAsync)
           def scope(name : String) =
             if (vars.contains(name)) vars(name) else (VarScope.Global, new GeneralAnnotation())
           val locals = vars.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.Arg).toList
@@ -77,7 +78,7 @@ object ExplicitImmutableHeap {
             ("heap", ArgKind.Positional, None, ann.pos) ::
               ("closure", ArgKind.Positional, None, ann.pos) ::
               args,
-            None, None, Suite(body2, body1.ann.pos), Decorators(List()), HashMap(), ann.pos)
+            None, None, Suite(body2, body1.ann.pos), Decorators(List()), HashMap(), isAsync, ann.pos)
           val mkNewClosure = CreateConst(newClosure,
             DictCons(Left((StringLiteral("\"callme\"", ann.pos), Ident(tmpFun, ann.pos))) ::
               vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).
