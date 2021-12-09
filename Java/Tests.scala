@@ -186,12 +186,12 @@ class Tests {
     }
   }
 
-  @Ignore
   @Test def useUnsupported() : Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
-      val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
+      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(testsPrefix, name), new SimplePass.Names())
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
-      val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(unsupportedSt._1, unsupportedSt._2)
+      val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
+        unsupportedSt._1, unsupportedSt._2)
       PrintPython.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
       val hacked = SimpleAnalysis.computeAccessibleIdents(
