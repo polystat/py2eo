@@ -85,7 +85,7 @@ object RemoveControlFlow {
   // this pass currently only works for files with a single function, which is the test function
   def removeControlFlow(s : Statement, ns : Names) : (Statement, Names) = {
     SimpleAnalysis.checkIsSimplified(s)
-    val Suite(l, _) = s
+    val (Suite(l, _), _) = SimplePass.procStatement(SimplePass.unSuite)(s, SimplePass.Names(HashMap()))
     val List(f@FuncDef(_, _, _, _, _, _, _, _, _)) = l.filter({
       case ImportModule(_, _, _) | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => false
       case _ => true

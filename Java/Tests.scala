@@ -15,12 +15,23 @@ import scala.sys.process._
 class Tests {
 
   private val testsPrefix = System.getProperty("user.dir") + "/test/"
-  val intermediateDirs = List(
-    "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
-  )
 
-  def debugPrinter(moduleName : String)(s : Statement, dirSuffix : String) : Unit = {
-    PrintPython.toFile(s, testsPrefix + "/" + dirSuffix, moduleName)
+  def writeFile(test : File, dirSuffix : String, fileSuffix : String, what : String) : String = {
+    assert(test.getName.endsWith(".py"))
+    val moduleName = test.getName.substring(0, test.getName.length - 3)
+    val outPath = test.getParentFile.getPath + "/" + dirSuffix
+    val d = new File(outPath)
+    if (!d.exists()) d.mkdir()
+    val outName = outPath + "/" + moduleName + fileSuffix
+    val output = new FileWriter(outName)
+    output.write(what)
+    output.close()
+    outName
+  }
+
+  def debugPrinter(module : File)(s : Statement, dirSuffix : String) : Unit = {
+    val what = PrintPython.printSt(s, "")
+    writeFile(module, dirSuffix, ".py", what)
   }
 
   val python = {
@@ -32,33 +43,29 @@ class Tests {
     if (match1.group(1) == "2") "python3" else "python"
   }
 
-  @Before def initialize(): Unit = {
-    for (dir <- intermediateDirs) {
-      val f = new File(testsPrefix + dir + "/")
-      if (!f.isDirectory) assertTrue(f.mkdir())
-    }
-  }
-
   @Test def removeControlFlow(): Unit = {
     for (name <- List("x", "trivial", "trivialWithBreak")) {
-      val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
+      val test = new File(testsPrefix + "/" + name + ".py")
+      val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
       val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
       val thePos = theFun.ann.pos
       val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name, thePos), List(), thePos)), thePos)), thePos)
-      PrintPython.toFile(zHacked, testsPrefix + "afterRemoveControlFlow", name)
+      val runme = writeFile(test, "afterRemoveControlFlow", ".py", PrintPython.printSt(zHacked, ""))
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
-      assertTrue(0 == (s"$python \"$testsPrefix/afterRemoveControlFlow/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
       println(stdout)
     }
   }
 	
   @Test def immutabilize() : Unit = {
     val name = "trivial"
-    val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
+    val test = new File(testsPrefix + "/" + name + ".py")
+
+    val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter((test))), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -84,39 +91,38 @@ class Tests {
       )
     ), pos)
 
-    PrintPython.toFile(hacked, testsPrefix + "afterImmutabilization", name)
+    val runme = writeFile(test, "afterImmutabilization", ".py", PrintPython.printSt(hacked, ""))
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"),
       java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"), REPLACE_EXISTING)
-    assertTrue(0 == (s"$python \"$testsPrefix/afterImmutabilization/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
     val hacked4EO = Suite(List(l.head), pos)
-    val output = new FileWriter(testsPrefix + "genImmutableEO/" + name + ".eo")
-    val eoText = PrintLinearizedImmutableEO.printSt(name, hacked4EO)
-    output.write(eoText +
-      "  * > emptyHeap\n" +
-      "  [] > emptyClosure\n" +
-      s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
-    )
-    output.close()
+    val eoText =
+      PrintLinearizedImmutableEO.printSt(name, hacked4EO) +
+        "  * > emptyHeap\n" +
+        "  [] > emptyClosure\n" +
+        s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
+    writeFile(test, "genImmutableEO", ".eo", eoText)
   }
 
   @Test def simplifyInheritance(): Unit = {
-    val output = new FileWriter(testsPrefix + "afterSimplifyInheritance/inheritanceTest.py")
-    output.write("from C3 import eo_getattr, eo_setattr\n\n\n")
-
     val name = "inheritance"
-    val res = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
-    output.write(PrintPython.printSt(res._1, ""))
-    output.close()
+    val test = new File(testsPrefix + "/" + name + ".py")
+    def db = debugPrinter(test)(_, _)
+
+    val res = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
   }
 
   @Test def heapify() : Unit = {
     val name = "trivial"
-    val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
+    val test = new File(testsPrefix + "/" + name + ".py")
+    def db = debugPrinter(test)(_, _)
+
+    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -137,24 +143,25 @@ class Tests {
           IntLiteral(0, pos))), List((None, NoneLiteral(pos))), pos), pos)
     ), pos)
 
-    PrintPython.toFile(hacked, testsPrefix + "afterHeapify", name)
+    val runme = writeFile(test, "afterHeapify", ".py", PrintPython.printSt(hacked, ""))
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/heapifyRuntime.py"),
-      java.nio.file.Paths.get(testsPrefix + "/afterHeapify/heapifyRuntime.py"), REPLACE_EXISTING)
-    assertTrue(0 == (s"$python \"$testsPrefix/afterHeapify/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      java.nio.file.Paths.get(test.getParentFile.getPath + "/afterHeapify/heapifyRuntime.py"), REPLACE_EXISTING)
+    assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
-    val output = new FileWriter(testsPrefix + "genHeapifiedEO/" + name + ".eo")
     val eoText = PrintLinearizedMutableEONoCage.printTest(name, z._1)
-    output.write(eoText.mkString("\n") + "\n")
-    output.close()
+    writeFile(test, "genHeapifiedEO", ".eo", eoText.mkString("\n"))
   }
 
   @Test def useCage() : Unit = {
     for (name <- List("x", "trivial")) {
-      val y = SimplePass.allTheGeneralPasses(debugPrinter(name), Parse.parse(testsPrefix, name), new SimplePass.Names())
+      val test = new File(testsPrefix + "/" + name + ".py")
+      def db = debugPrinter(test)(_, _)
+
+      val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
 
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -167,11 +174,11 @@ class Tests {
       val hacked = Suite(List(theFunC, Assert((CallIndex(true,
         ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
         List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
-      PrintPython.toFile(hacked, testsPrefix + "afterUseCage", name)
+      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
 
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
-      assertTrue(0 == (s"$python \"$testsPrefix/afterUseCage/$name.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
       println(stdout)
 
       val eoHacked = Suite(List(
@@ -179,16 +186,18 @@ class Tests {
         Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"), List(), ann.pos)), ann.pos)
       ), ann.pos)
 
-      val output = new FileWriter(testsPrefix + "genCageEO/" + name + ".eo")
       val eoText = PrintLinearizedMutableEOWithCage.printTest(name, eoHacked)
-      output.write(eoText.mkString("\n") + "\n")
-      output.close()
+      writeFile(test, "genCageEO", ".eo", eoText.mkString("\n"))
+
     }
   }
 
   @Test def useUnsupported() : Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
-      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(testsPrefix, name), new SimplePass.Names())
+      val test = new File(testsPrefix + "/" + name + ".py")
+      def db = debugPrinter(test)(_, _)
+
+      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
         unsupportedSt._1, unsupportedSt._2)
@@ -214,12 +223,25 @@ class Tests {
 
       println(s"globals = $globals")
 
-      val output = new FileWriter(testsPrefix + "genUnsupportedEO/" + name + ".eo")
       val eoText = PrintEO.printSt(name, hacked, globals.map(name => s"[args...] > x$name").toList)
-      output.write(eoText.mkString("\n") + "\n")
-      output.close()
-
+      writeFile(test, "genUnsupportedEO", ".eo", eoText.mkString("\n"))
     }
+  }
+
+  @Ignore
+  @Test def parserPrinterOnCPython() : Unit = {
+    val dirName = testsPrefix + "/testParserPrinter"
+    val dir = new File(dirName)
+    assert(dir.isDirectory)
+    val test = new File(dirName + "/test_keywordonlyarg.py")
+//    for (file <- dir.listFiles())
+      if (!test.isDirectory && test.getName.endsWith(".py")) {
+        def db = debugPrinter(test)(_, _)
+        println(s"parsing ${test.getName}")
+        val y = Parse.parse(test, db)
+
+      }
+
   }
 
 }
