@@ -466,28 +466,41 @@ object SimplePass {
     }
   }
 
-  def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
-    case (false, Field(obj, name, ann), ns) =>
-      (Left(CallIndex(true, Ident("eo_getattr", ann.pos), List((None, obj),
-        (None, StringLiteral("\"" + name + "\"", ann.pos))), ann.pos)), ns)
-    case (false, CallIndex(_, Ident("getattr", anni), args, annc), ns) =>
-      (Left(CallIndex(true, Ident("eo_getattr", anni.pos), args, annc.pos)), ns)
-    case (false, CallIndex(_, Ident("setattr", anni), args, annc), ns) =>
-      (Left(CallIndex(true, Ident("eo_setattr", anni.pos), args, annc.pos)), ns)
-    case (_, e, ns) => (Left(e), ns)
-  })
+  def simplifyInheritance(s : Statement, ns : Names) : (Statement, Names) = {
 
-  def explicitBases(s : Statement, ns : Names) : (Statement, Names) = s match {
-    case ClassDef(name, bases0, body, decorators, ann) =>
-      val (newBody, ns1) = explicitBases(body, ns)
-      val basesPos = if (bases0.isEmpty) ann.pos else GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
-      (ClassDef(name, List(), Suite(List(
-        Assign(List(Ident("eo_bases", basesPos),
-          CollectionCons(CollectionKind.List, bases0.map{case (None, x) => x}, basesPos)), basesPos),
-        newBody),
-        body.ann.pos),
-        decorators, ann.pos), ns1)
-    case _ => (s, ns)
+    def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
+      case (false, Field(obj, name, ann), ns) =>
+        (Left(CallIndex(true, Ident("eo_getattr", ann.pos), List((None, obj),
+          (None, StringLiteral("\"" + name + "\"", ann.pos))), ann.pos)), ns)
+      case (false, CallIndex(_, Ident("getattr", anni), args, annc), ns) =>
+        (Left(CallIndex(true, Ident("eo_getattr", anni.pos), args, annc.pos)), ns)
+      case (false, CallIndex(_, Ident("setattr", anni), args, annc), ns) =>
+        (Left(CallIndex(true, Ident("eo_setattr", anni.pos), args, annc.pos)), ns)
+      case (_, e, ns) => (Left(e), ns)
+    })
+
+    def explicitBases(s: Statement, ns: Names): (Statement, Names) = s match {
+      case ClassDef(name, bases0, body, decorators, ann) =>
+        val (newBody, ns1) = explicitBases(body, ns)
+        val basesPos = if (bases0.isEmpty) ann.pos else GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
+        (ClassDef(name, List(), Suite(List(
+          Assign(List(Ident("eo_bases", basesPos),
+            CollectionCons(CollectionKind.List, bases0.map { case (None, x) => x }, basesPos)), basesPos),
+          newBody),
+          body.ann.pos),
+          decorators, ann.pos), ns1)
+      case _ => (s, ns)
+
+    }
+
+    val texplicitBases = SimplePass.procStatement(explicitBases)(s, ns)
+    val (s1, ns1) = SimplePass.procExprInStatement(simplifyInheritance)(texplicitBases._1, texplicitBases._2)
+    (Suite(List(
+      ImportSymbol(List("C3"), "eo_getattr", "eo_getattr", s1.ann.pos),
+      ImportSymbol(List("C3"), "eo_setattr", "eo_setattr", s1.ann.pos),
+      s1
+    ), s1.ann.pos),
+    ns1)
 
   }
 
@@ -498,10 +511,7 @@ object SimplePass {
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
-    val texplicitBases = SimplePass.procStatement(SimplePass.explicitBases)(tsimplifyIf._1, tsimplifyIf._2)
-    debugPrinter(texplicitBases._1, "afterExplicitBases")
-
-    val tsimplifyInheritance = SimplePass.procExprInStatement(SimplePass.simplifyInheritance)(texplicitBases._1, texplicitBases._2)
+    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
     debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
 
     tsimplifyInheritance

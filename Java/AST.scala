@@ -363,8 +363,11 @@ object MapStatements {
       else d
     }))
 
-  def mapTfparg(kind : ArgKind.T, c : TfpargContext) : (String, ArgKind.T, Option[ET], GeneralAnnotation) =
-    (c.tfpdef().NAME().getText, kind, Option(c.test()).map(mapTest), new GeneralAnnotation(c)) // todo: default value is ignored
+  def mapTfparg(kind : ArgKind.T, c : TfpargContext) : (String, ArgKind.T, Option[ET], GeneralAnnotation) = {
+    val default = Option(c.test()).map(mapTest)
+    (c.tfpdef().NAME().getText, kind, default, new GeneralAnnotation(c))
+  }
+
   def mapTypedargslistNopos(c : Typedargslist_noposContext) = {
     (asScala(c.l).toList.map(x => (mapTfparg(ArgKind.Keyword, x))),
       // todo: the next line may be wrong, it may break the method with which python forces all args to be keyword only (4.8.3 in tutorial)
@@ -502,13 +505,8 @@ object MapStatements {
   }
 
   def mapFile(parsingBuiltins : Boolean, x : File_inputContext) = {
-    val bins = "builtins"
     Suite(
-    (if (parsingBuiltins) List() else List(
-      ImportModule(List(bins), bins, new GeneralAnnotation(x)),
-      ImportAllSymbols(List(bins), new GeneralAnnotation(x)))) ++
-      ( ImportModule(List("sys"), "sys", new GeneralAnnotation(x)) ::
-        asScala(x.stmt()).map(mapStmt).toList),
+      (if (parsingBuiltins) List() else asScala(x.stmt()).map(mapStmt).toList),
       new GeneralAnnotation(x)
     )
   }
@@ -764,17 +762,7 @@ object MapExpressions {
 object Parse {
   import org.antlr.v4.runtime.CommonTokenStream
 
-  def parse(path : String, fileName : String) : (Statement) = {
-    val test = fileName
-
-    def output(t: Statement, dir: String) = PrintPython.toFile(t, dir, test)
-
-    val fullName = path + "/" + test + ".py"
-    println(s"parsing $fullName")
-    parse(new File(fullName))
-  }
-
-  def parse(file : File) : Statement = {
+  def parse(file : File, debugPrinter : (Statement, String) => Unit) : Statement = {
     assert(file.getName.endsWith(".py"))
 
     val input = new FileReader(file)
@@ -787,7 +775,7 @@ object Parse {
     val e = parser.file_input()
 
     val t = MapStatements.mapFile(file.getName == "builtins", e)
-    PrintPython.toFile(t, file.getParentFile.getPath + "/afterParser", file.getName.substring(0, file.getName.length - 3))
+    debugPrinter(t, "afterParser")
     t
   }
 

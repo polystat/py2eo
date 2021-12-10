@@ -58,7 +58,7 @@ object PrintPython {
         args.map{case (None, e) => printExpr(e)  case (Some(keyword), e) => keyword + "=" + printExpr(e)}.mkString(", "))
       case Field(whose, name, _) =>printExpr(whose) + "." + name
       case Cond(cond, yes, no, _) => printExpr(yes) + " if " + printExpr(cond) + " else " + printExpr(no)
-      case AnonFun(args, body, _) => "lambda " + args.mkString(", ") + " : " + printExpr(body)
+      case AnonFun(args, body, _) => "lambda " + args.map(_.name).mkString(", ") + " : " + printExpr(body)
       case CollectionCons(kind, l, _) =>
         val braks = CollectionKind.toBraks(kind)
         brak(l.map(printExpr).mkString(", ") + (if (l.size == 1) "," else ""), braks._1, braks._2)
@@ -129,8 +129,10 @@ object PrintPython {
           shift + "except " + option2string(x._1.map(y => printExpr(y._1) + option2string(y._2.map(z => " as " + z)))) + ":\n" +
             printSt(x._2, shiftIncr)
         ).mkString("\n") + "\n" +
-        shift + "else:\n" +
-          printSt(eelse, shiftIncr) + "\n" +
+        (if (excepts.isEmpty) "" else
+          shift + "else:\n" +
+            printSt(eelse, shiftIncr) + "\n"
+        ) +
         shift + "finally:\n" +
           printSt(ffinally, shiftIncr)
 
@@ -161,13 +163,16 @@ object PrintPython {
         val posOrKeyword = args.filter(_._2 == ArgKind.PosOrKeyword)
         val keywordOnly = args.filter(_._2 == ArgKind.Keyword)
         assert(positionalOnly ++ posOrKeyword ++ keywordOnly == args)
-        def printArg(x : (String, ArgKind.T, Option[T], _)) = x._1 + (x._3 match { case None => "" case Some(default) => " = " + printExpr(default)})
-        val argstring = positionalOnly.map(printArg) ++ (if (positionalOnly.isEmpty) List() else List("/")) ++ posOrKeyword.map(printArg) ++
+        def printArg(x : (String, ArgKind.T, Option[T], _)) =
+          x._1 + (x._3 match { case None => "" case Some(default) => " = " + printExpr(default)})
+        val argstring = positionalOnly.map(printArg) ++
+          (if (positionalOnly.isEmpty) List() else List("/")) ++
+          posOrKeyword.map(printArg) ++
           (otherPositional match {
             case Some(name) => List("*" + name)
             case None => if (keywordOnly.isEmpty) List() else List("*")
           }) ++
-          keywordOnly.map(_._1) ++ otherKeyword.toList.map("**" + _)
+          keywordOnly.map(printArg) ++ otherKeyword.toList.map("**" + _)
         printDecorators(decorators) +
         shift + async(isAsync) + "def " + name + "(" + argstring.mkString(", ") + "):" + posComment + "\n" +
         printSt(body, shiftIncr)
