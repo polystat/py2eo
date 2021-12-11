@@ -10,8 +10,7 @@ class TestsNewGen {
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
   val separator: String = "/"
-  val scalaList = List()
-  val emptyArray =  Array.empty[File]
+  val emptyList: List[Int] = List()
 
   @Before def initialize(): Unit = {
     for (dir <- intermediateDirs) {
@@ -26,7 +25,7 @@ class TestsNewGen {
       val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
       if (testHolder.exists && testHolder.isDirectory) {
         for (file <- testHolder.listFiles.filter(_.isFile).toList){
-          emptyArray
+          List():+file
         }
       }
     }
