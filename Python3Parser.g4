@@ -56,7 +56,7 @@ typedargslist_nopos: tfptuple (',' l+=tfparg)* (',' (tfpdict)?)?;
 tfparg: tfpdef ('=' test)?;
 tfptuple: '*' (tfpdef)?;
 tfpdict: '**' tfpdef (',')?;
-tfpdef: NAME (':' test)?;
+tfpdef: (NAME | '/' | '*') (':' test)?;
 
 varargslist: (l+=vfparg (',' l+=vfparg)* (',' (varargslist_nopos | vfpdict)?)?
   | varargslist_nopos
@@ -66,7 +66,7 @@ varargslist_nopos: vfptuple (',' l+=vfparg)* (',' (vfpdict)?)?;
 vfptuple: '*' (vfpdef)?;
 vfpdict: '**' vfpdef (',')?;
 vfparg: vfpdef ('=' test)?;
-vfpdef: NAME;
+vfpdef: (NAME | '/' | '*');
 
 stmt:
     simple_stmt     # StmtSimple
@@ -111,7 +111,7 @@ flow_stmt:
     ;
 break_stmt: 'break';
 continue_stmt: 'continue';
-return_stmt: 'return' (testlist)?;
+return_stmt: 'return' (testlist_star_expr)?; // changed acc test_grammar.py:854, tag v3.8.10
 yield_stmt: yield_expr;
 raise_stmt: 'raise' (test ('from' test)?)?;
 
@@ -209,7 +209,7 @@ trailer:
 subscriptlist: l+=subscript_ (',' l+=subscript_)* (',')?;
 subscript_:
     test # SubIndex
-    | (start=test)? ':' (stop=test)? (':' step=test)? # SubSlice
+    | (start=test)? ':' (stop=test)? (':' (step=test)?)? # SubSlice
     ;
 expr_star_expr : expr | star_expr;
 exprlist: l+=expr_star_expr (',' l+=expr_star_expr)* (',')?;
@@ -244,4 +244,4 @@ comp_if: 'if' test_nocond (comp_iter)?;
 encoding_decl: NAME;
 
 yield_expr: 'yield' (yield_arg)?;
-yield_arg: 'from' test | testlist;
+yield_arg: 'from' test | testlist_star_expr; // acc to test_grammar.py:1072, tag v3.8.10

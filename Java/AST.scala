@@ -300,8 +300,8 @@ case class Assert(x : List[ET], ann : GeneralAnnotation) extends Statement {
 case class Raise(e : Option[ET], from : Option[ET], ann : GeneralAnnotation) extends Statement
 case class Del(l : ET, ann : GeneralAnnotation) extends Statement
 case class Decorators(l : List[ET])
-case class FuncDef(name : String, args : List[Expression.Parameter], otherPositional : Option[String],
-         otherKeyword : Option[String], returnAnnotation : Option[ET], body : Statement, decorators: Decorators,
+case class FuncDef(name : String, args : List[Expression.Parameter], otherPositional : Option[(String, Option[ET])],
+         otherKeyword : Option[(String, Option[ET])], returnAnnotation : Option[ET], body : Statement, decorators: Decorators,
          accessibleIdents : HashMap[String, (VarScope.T, GeneralAnnotation)], isAsync : Boolean, ann : GeneralAnnotation) extends Statement {
 //  lazy val variablesClassification = SimpleAnalysis.classifyFunctionVariables(args, body, false)
 }
@@ -379,8 +379,8 @@ object MapStatements {
   def mapTypedargslistNopos(c : Typedargslist_noposContext) = {
     (asScala(c.l).toList.map(x => (mapTfparg(ArgKind.Keyword, x))),
       // todo: the next line may be wrong, it may break the method with which python forces all args to be keyword only (4.8.3 in tutorial)
-      if (c.tfptuple().tfpdef() == null) None else Some(c.tfptuple().tfpdef().NAME().getText),
-      Option(c.tfpdict()).map(_.tfpdef().NAME().getText)
+      Option(c.tfptuple().tfpdef()).map(x => (x.NAME().getText, Option(x.test()).map(mapTest))),
+      Option(c.tfpdict()).map(x => (x.tfpdef().NAME().getText, Option(x.tfpdef().test()).map(mapTest)))
     )
   }
 
@@ -388,10 +388,19 @@ object MapStatements {
     if (c == null) (List(), None, None) else {
       val tail =
         if (c.typedargslist_nopos() != null) mapTypedargslistNopos(c.typedargslist_nopos()) else
-        if (c.tfpdict() != null) (List(), None, Some(c.tfpdict().tfpdef().NAME().getText)) else
+        if (c.tfpdict() != null) (List(), None,
+          Some(c.tfpdict().tfpdef().NAME().getText, Option(c.tfpdict().tfpdef().test()).map(mapTest))) else
           (List(), None, None)
-      val head = asScala(c.l).toList.map(x => (mapTfparg(ArgKind.PosOrKeyword, x)))
-      (head ++ tail._1, tail._2, tail._3)
+      val l = asScala(c.l).toList
+      val (posOnly, others) = l.splitAt(l.indexWhere(c => c.tfpdef().DIV() != null))
+      val (posAndKword, kwordOnly) = others.splitAt({
+        val pos = others.indexWhere(c => c.tfpdef().STAR() != null)
+        if (-1 == pos) others.length else pos
+      })
+      def f(kind : ArgKind.T, l : List[TfpargContext]) = l.flatMap(x =>
+        if (x.tfpdef().NAME() == null) List() else List(mapTfparg(kind, x)))
+      (f(ArgKind.Positional, posOnly) ++ f(ArgKind.PosOrKeyword, posAndKword) ++ f(ArgKind.Keyword, kwordOnly) ++
+        tail._1, tail._2, tail._3)
     }
   }
 
@@ -493,7 +502,8 @@ object MapStatements {
       case _ : FlowBreakContext => Break(new GeneralAnnotation(s))
       case _ : FlowContinueContext => Continue(new GeneralAnnotation(s))
       case r : FlowReturnContext =>
-        Return(Option(r.return_stmt().testlist()).map(mapTestList), new GeneralAnnotation(r))
+        Return(Option(r.return_stmt().testlist_star_expr()).map(mapTestlistStarExpr(CollectionKind.Tuple, _)),
+          new GeneralAnnotation(r))
       case r : FlowRaiseContext =>
         val tests = asScala(r.raise_stmt().test()).toList.map(mapTest)
         Raise(tests.headOption, tests.lift(1), new GeneralAnnotation(r))
@@ -527,23 +537,29 @@ object MapExpressions {
       val int =
         if (x.startsWith("0x") || x.startsWith("0X"))
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
-            acc * 16 + (
-              if (ch >= '0' && ch <= '9') (ch.toInt - '0'.toInt) else
-              if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else
-              if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else
-                throw new NumberFormatException()
-              )
+            if (ch != '_')
+              acc * 16 + (
+                if (ch >= '0' && ch <= '9') (ch.toInt - '0'.toInt) else
+                if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else
+                if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else
+                  throw new NumberFormatException()
+                )
+            else acc
           })
         else if (x.startsWith("0o") || x.startsWith("0O"))
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
-            acc * 8 + (if (ch >= '0' && ch <= '7') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+            if (ch != '_')
+              acc * 8 + (if (ch >= '0' && ch <= '7') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+            else acc
           )
         else if (x.startsWith("0b") || x.startsWith("0B"))
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
-            acc * 2 + (if (ch >= '0' && ch <= '1') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+            if (ch != '_')
+              acc * 2 + (if (ch >= '0' && ch <= '1') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+            else acc
           )
         else
-          BigInt(x)
+          BigInt(x.filter(_ != '_'))
       Expression.IntLiteral(int, new GeneralAnnotation(c))
     }
   }
@@ -556,7 +572,7 @@ object MapExpressions {
   def mapYieldExpr(y1 : Yield_exprContext) : T = {
     if (y1.yield_arg() == null) Yield(None, new GeneralAnnotation(y1)) else {
       if (y1.yield_arg().FROM() == null)
-        Yield(Some(mapTestList(y1.yield_arg().testlist())), new GeneralAnnotation(y1))
+        Yield(Some(mapTestlistStarExpr(CollectionKind.Tuple, y1.yield_arg().testlist_star_expr())), new GeneralAnnotation(y1))
       else
         YieldFrom(mapTest(y1.yield_arg().test()), new GeneralAnnotation(y1))
     }
@@ -603,7 +619,7 @@ object MapExpressions {
 
   def mapExprStarExpr(e : Expr_star_exprContext) = if (e.expr() != null) mapExpr(e.expr()) else mapStarExpr(e.star_expr())
   def mapExprList(e : ExprlistContext) = asScala(e.l).map(mapExprStarExpr).toList match {
-    case List(x) => x
+    case List(x) if e.COMMA().isEmpty => x
     case l => CollectionCons(CollectionKind.Tuple, l, new GeneralAnnotation(e))
   }
 
@@ -626,8 +642,16 @@ object MapExpressions {
         if (c.varargslist_nopos() != null) mapVarargslistNopos(c.varargslist_nopos()) else
           if (c.vfpdict() != null) (List(), None, Some(c.vfpdict().vfpdef().NAME().getText)) else
             (List(), None, None)
-      val head = asScala(c.l).toList.map(x => (mapVfparg(ArgKind.PosOrKeyword, x)))
-      (head ++ tail._1, tail._2, tail._3)
+      val l = asScala(c.l).toList
+      val (posOnly, others) = l.splitAt(l.indexWhere(c => c.vfpdef().DIV() != null))
+      val (posAndKword, kwordOnly) = others.splitAt({
+        val pos = others.indexWhere(c => c.vfpdef().STAR() != null)
+        if (-1 == pos) others.length else pos
+      })
+      def f(kind : ArgKind.T, l : List[VfpargContext]) = l.flatMap(x =>
+        if (x.vfpdef().NAME() == null) List() else List(mapVfparg(kind, x)))
+      (f(ArgKind.Positional, posOnly) ++ f(ArgKind.PosOrKeyword, posAndKword) ++ f(ArgKind.Keyword, kwordOnly) ++
+           tail._1, tail._2, tail._3)
     }
   }
 
@@ -732,7 +756,10 @@ object MapExpressions {
     if (l == null) List() else asScala(l.l).map(mapArgument).toList
   }
 
-
+  def mapSubscriptList(c : SubscriptlistContext) = asScala(c.l).toList match {
+    case List(x) if c.COMMA().isEmpty => mapSubscript(x)
+    case l => CollectionCons(CollectionKind.Tuple, l.map(mapSubscript), new GeneralAnnotation(c))
+  }
 
   def mapAtomExpr(e : Atom_exprContext) = {
     val noawait = {
@@ -740,7 +767,7 @@ object MapExpressions {
       asScala(e.trailer()).foldLeft(whom)((acc, trailer) => trailer match {
         case call: TrailerCallContext => CallIndex(true, acc, mapArglistNullable(call.arglist()), new GeneralAnnotation(call))
         case ind: TrailerSubContext => CallIndex(false, acc,
-          asScala(ind.subscriptlist().l).map(x => (None, mapSubscript(x))).toList, new GeneralAnnotation(ind))
+          List((None, mapSubscriptList(ind.subscriptlist()))), new GeneralAnnotation(ind))
         case field: TrailerFieldContext => Field(acc, field.NAME().getText, new GeneralAnnotation(field))
       })
     }

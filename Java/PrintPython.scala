@@ -48,12 +48,14 @@ object PrintPython {
           case Some(e) => printExpr(e)
         })
         s"${procBound(from)}:${procBound(to)}:${procBound(by)}"
+      case CallIndex(false, whom, List((_, CollectionCons(CollectionKind.Tuple, l, _))), ann) if l.nonEmpty =>
+        printExpr(whom) + sqr(l.map(printExpr).mkString(", ") + (if (l.size == 1) "," else ""))
       case CallIndex(isCall, whom, args, _) => printExpr(whom) + (if (isCall) rnd _ else sqr _)(
         args.map{case (None, e) => printExpr(e)  case (Some(keyword), e) => keyword + "=" + printExpr(e)}.mkString(", "))
       case Field(whose, name, _) =>printExpr(whose) + "." + name
       case Cond(cond, yes, no, _) => printExpr(yes) + " if " + printExpr(cond) + " else " + printExpr(no)
       case AnonFun(args, otherPositional, otherKeyword, body, _) =>
-        brak("lambda " + printArgs(args, otherPositional, otherKeyword) + " : " + printExpr(body))
+        brak("lambda " + printArgs(args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None))) + " : " + printExpr(body))
       case CollectionCons(kind, l, _) =>
         val braks = CollectionKind.toBraks(kind)
         brak(l.map(printExpr).mkString(", ") + (if (l.size == 1) "," else ""), braks._1, braks._2)
@@ -170,24 +172,26 @@ object PrintPython {
     }
   }
 
-  def printArgs(args : List[Parameter], otherPositional : Option[String],
-                otherKeyword : Option[String]) : String = {
+  def printArgs(args : List[Parameter], otherPositional : Option[(String, Option[T])],
+                otherKeyword : Option[(String, Option[T])]) : String = {
     val positionalOnly = args.filter(_.kind == ArgKind.Positional)
     val posOrKeyword = args.filter(_.kind == ArgKind.PosOrKeyword)
     val keywordOnly = args.filter(_.kind == ArgKind.Keyword)
     assert(positionalOnly ++ posOrKeyword ++ keywordOnly == args)
+    def f(pref : String, z : Option[(String, Option[T])]) : List[String] =
+      (z match {
+        case Some((name, None)) => List(pref + name)
+        case Some((name, Some(typAnn))) => List(pref + name + " : " + printExpr(typAnn))
+        case None => if (pref != "*" || keywordOnly.isEmpty) List() else List(pref)
+      })
     def printArg(x : Parameter) =
       x.name +
         (x.paramAnn match { case None => "" case Some(value) => " : " + printExpr(value)}) +
         (x.default match { case None => "" case Some(default) => " = " + printExpr(default)})
     val argstring = positionalOnly.map(printArg) ++
       (if (positionalOnly.isEmpty) List() else List("/")) ++
-      posOrKeyword.map(printArg) ++
-      (otherPositional match {
-        case Some(name) => List("*" + name)
-        case None => if (keywordOnly.isEmpty) List() else List("*")
-      }) ++
-      keywordOnly.map(printArg) ++ otherKeyword.toList.map("**" + _)
+      posOrKeyword.map(printArg) ++ f("*", otherPositional) ++
+      keywordOnly.map(printArg) ++ f("**", otherKeyword)
     argstring.mkString(", ")
   }
 

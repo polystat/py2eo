@@ -205,7 +205,7 @@ object SimplePass {
             Suite(List(value._1, Return(Some(value._2), value._2.ann.pos)), GeneralAnnotation(value._1.ann.start, value._2.ann.stop))
         }
         // todo: all the keyword args must be supported in the "lambda" as well
-        val f = FuncDef(funname, args, otherPositional, otherKeyword, None,
+        val f = FuncDef(funname, args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None)), None,
           finalBody, Decorators(List()), HashMap(), false, ann.pos)
         (Right((f, Ident(funname, ann.pos))), ns2)
 
