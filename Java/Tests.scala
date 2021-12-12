@@ -1,6 +1,6 @@
 
 import java.io.{File, FileWriter}
-import java.nio.file.Files
+import java.nio.file.{Files, Paths}
 import Expression._
 import org.junit.Assert._
 import org.junit.{Before, Ignore, Test}
@@ -10,6 +10,10 @@ import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import scala.collection.immutable.HashMap
 import scala.collection.{immutable, mutable}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
+import scala.concurrent.{Await, Future}
+import scala.language.postfixOps
 import scala.sys.process._
 
 class Tests {
@@ -50,9 +54,9 @@ class Tests {
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-      val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
+      val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
       val thePos = theFun.ann.pos
-      val zHacked = Suite(List(theFun, Assert((CallIndex(true, Ident(theFun.name, thePos), List(), thePos)), thePos)), thePos)
+      val zHacked = Suite(List(theFun, new Assert((CallIndex(true, Ident(theFun.name, thePos), List(), thePos)), thePos)), thePos)
       val runme = writeFile(test, "afterRemoveControlFlow", ".py", PrintPython.printSt(zHacked, ""))
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
@@ -77,13 +81,13 @@ class Tests {
 
     val z = ExplicitImmutableHeap.explicitHeap(theFun, x._2)
     val Suite(l, _) = z._1
-    val FuncDef(mainName, _, _, _, _, _, _, _, ann) = l.head
+    val FuncDef(mainName, _, _, _, _, _, _, _, _, ann) = l.head
 
     val pos = ann.pos
     val hacked = Suite(List(
       ImportAllSymbols(List("closureRuntime"), pos),
       Suite(l.init, pos),
-      Assert(CallIndex(false,
+      new Assert(CallIndex(false,
           (CallIndex(true, Ident(mainName, pos),
             List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos)),
           List((None, IntLiteral(1, pos))), pos),
@@ -95,8 +99,8 @@ class Tests {
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
-    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/closureRuntime.py"),
-      java.nio.file.Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"), REPLACE_EXISTING)
+    Files.copy(Paths.get(testsPrefix + "/closureRuntime.py"),
+      Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"), REPLACE_EXISTING)
     assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
@@ -129,7 +133,7 @@ class Tests {
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_, _)), _) = x._1
-    val FuncDef(mainName, _, _, _, _, _, _, _, ann) = theFun
+    val FuncDef(mainName, _, _, _, _, _, _, _, _, ann) = theFun
 
     val z = ExplicitMutableHeap.explicitHeap(theFun, x._2)
 
@@ -138,7 +142,7 @@ class Tests {
       ImportAllSymbols(List("heapifyRuntime"), pos),
       Assign(List(Ident(mainName, pos), ExplicitMutableHeap.newPtr(IntLiteral(0, pos))), pos),
       z._1,
-      Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns", pos),
+      new Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns", pos),
         ExplicitMutableHeap.index(ExplicitMutableHeap.valueGet(ExplicitMutableHeap.ptrGet(Ident(mainName, pos))),
           IntLiteral(0, pos))), List((None, NoneLiteral(pos))), pos), pos)
     ), pos)
@@ -168,10 +172,10 @@ class Tests {
 
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
       val Suite(List(theFun, Return(_, _)), _) = z._1
-      val FuncDef(mainName, _, _, _, body, _, _, _, ann) = theFun
+      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
 
       val theFunC = ClosureWithCage.closurize(theFun)
-      val hacked = Suite(List(theFunC, Assert((CallIndex(true,
+      val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
         ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
         List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
       val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
@@ -204,7 +208,7 @@ class Tests {
       PrintPython.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
       val hacked = SimpleAnalysis.computeAccessibleIdents(
-        FuncDef("hack", List(), None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), false,  unsupportedExpr._1.ann.pos))
+        FuncDef("hack", List(), None, None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), false,  unsupportedExpr._1.ann.pos))
 
       def findGlobals(l : Set[String], f : FuncDef) : Set[String] = {
         SimpleAnalysis.foldSE[Set[String]](
@@ -233,15 +237,51 @@ class Tests {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
     assert(dir.isDirectory)
-    val test = new File(dirName + "/test_keywordonlyarg.py")
-//    for (file <- dir.listFiles())
-      if (!test.isDirectory && test.getName.endsWith(".py")) {
-        def db = debugPrinter(test)(_, _)
-        println(s"parsing ${test.getName}")
-        val y = Parse.parse(test, db)
+    // todo: the following files fail to parse (the grammar is wrong)
+    //    val test = List("test_grammar.py",
+    //    "test_crypt.py", "test_largefile.py", "test__xxsubinterpreters.py", "test_class.py",
+    //    "test_named_expressions.py","test_positional_only_arg.py", "test_functools.py", "test_buffer.py",
+    //    "test_array.py", "test_positional_only_arg.py", "test_types.py", "test_dis.py", "test_inspect.py",
+    //    "test_statistics.py",
+    //    )
+    //      .map(name => new File(dirName + "/" + name))
 
+    // "test_zipimport_support.py", todo: what's the problem here???
+    // "test_zipfile64.py" works for more 2 minutes, too slow
+    // test_sys.py just hangs the testing with no progress (with no CPU load)
+
+//    val test = List(
+//          )
+//          .map(name => new File(dirName + "/" + name))
+    val test = dir.listFiles().toList
+    val futures = test.map(test =>
+      Future
+      {
+        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")
+           && test.getName != "test_strtod.py"  //todo: don't know, what's with this test!
+          ) {
+          def db = debugPrinter(test)(_, _)
+
+          println(s"parsing ${test.getName}")
+          val y = Parse.parse(test, db)
+          Files.copy(
+            Paths.get(s"$dirName/afterParser/${test.getName}"),
+            Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
+            REPLACE_EXISTING
+          )
+          val stdout = new StringBuilder()
+          val stderr = new StringBuilder()
+          val exitCode =
+            Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
+              "PYTHONPATH" -> "..") !   ProcessLogger(stdout.append(_), stderr.append(_))
+          writeFile(test, "stdout", ".stdout", stdout.toString())
+          writeFile(test, "stderr", ".stderr", stderr.toString())
+          if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
+          assertTrue(exitCode == 0)
+        }
       }
-
+    )
+    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
 }

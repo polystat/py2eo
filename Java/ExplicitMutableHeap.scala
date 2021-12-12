@@ -50,7 +50,7 @@ object ExplicitMutableHeap {
         result
       }
       st match {
-        case FuncDef(name, args, None, None, body, Decorators(List()), vars, isAsync, ann) =>
+        case FuncDef(name, args, None, None, None, body, Decorators(List()), vars, isAsync, ann) =>
           assert(!isAsync)
           def scope(name : String) = if (vars.contains(name)) vars(name) else (VarScope.Global, nopos)
           val add2closure =
@@ -64,8 +64,8 @@ object ExplicitMutableHeap {
             .map(x => Assign(List(Ident(x._1, ann.pos), newPtr(IntLiteral(0, ann.pos))), ann.pos))
           val newName = s"tmpFun${fs1.size}"
           val f1 = FuncDef(newName,
-              ("closure", ArgKind.Positional, None, ann.pos) :: args,
-            None, None, Suite(createLocals.toList :+ body1, body1.ann.pos), Decorators(List()), HashMap(), isAsync, ann.pos)
+              Expression.Parameter("closure", ArgKind.Positional, None, None, ann.pos) :: args,
+            None, None, None, Suite(createLocals.toList :+ body1, body1.ann.pos), Decorators(List()), HashMap(), isAsync, ann.pos)
           val fs2 = fs1 :+ f1
           val rhs = CollectionCons(Expression.CollectionKind.List,
             IntLiteral(fs1.size, ann.pos) :: add2closure.map(s => Ident(s._1, s._2._2)), ann.pos)
@@ -82,7 +82,7 @@ object ExplicitMutableHeap {
             List((None, pe(true, lhs)), (None, newValue(pe(false, rhs)))), ann.pos)),
             ann.pos
         ), functions)
-        case Return(x, ann) => (Return(pe(false, x), ann.pos), functions)
+        case Return(x, ann) => (Return(x.map(pe(false, _)), ann.pos), functions)
         case IfSimple(cond, yes, no, ann) =>
           val (yes1, f1) = procSt(closure, scope, yes, functions)
           val (no1, f2) = procSt(closure, scope, no, f1)
