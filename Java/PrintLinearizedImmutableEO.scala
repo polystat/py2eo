@@ -29,8 +29,8 @@ object PrintLinearizedImmutableEO {
       case CreateConst(name, value, _) => List(printExpr(visibility)(value) + " > " + name + "!")
       case one@(Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _)) =>
         val expr = one match {
-          case Return(x, _) => x
-          case IfSimple(cond, Return(yes, _), Return(no, _), ann) => Cond(cond, yes, no, ann.pos)
+          case Return(Some(x), _) => x
+          case IfSimple(cond, Return(Some(yes), _), Return(Some(no), _), ann) => Cond(cond, yes, no, ann.pos)
         }
         /*
         val printers = List(
@@ -47,9 +47,9 @@ object PrintLinearizedImmutableEO {
 //          s"debugMagic.seq (debugMagic.printDataized \"leaving fun\" \"$currentFunName\") (" +
             "(" + printExpr(visibility)(expr) +
             ") > @!")
-      case FuncDef(name, args, None, None, body, Decorators(List()), accessibleIdents, false,  ann) =>
+      case FuncDef(name, args, None, None, None, body, Decorators(List()), accessibleIdents, false,  ann) =>
         val locals = accessibleIdents.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.Arg).keys
-        val args1 = args.map{ case (argname, ArgKind.Positional, None, _) => argname }.mkString(" ")
+        val args1 = args.map{ case Expression.Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
         val st@Suite(_, _) = body
         val body1 = printBody(name, visibility.stepInto(locals.toList))(st)
         List(s"[$args1] > $name") ++ ident(body1)

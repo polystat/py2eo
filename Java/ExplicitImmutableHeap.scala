@@ -1,7 +1,8 @@
-import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
+import Expression.{CallIndex, Parameter, CollectionCons, CollectionKind, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
 import SimplePass.{EAfterPass, Names}
 
 import scala.collection.immutable.HashMap
+
 
 object ExplicitImmutableHeap {
 
@@ -43,7 +44,7 @@ object ExplicitImmutableHeap {
       }
 //      def procIdentInSt = SimplePass.procExprInStatement(procIdentStep)(_, _)
       s match {
-        case FuncDef(name, args, None, None, body, Decorators(List()), vars, isAsync, ann) =>
+        case FuncDef(name, args, None, None, None, body, Decorators(List()), vars, isAsync, ann) =>
           assert(!isAsync)
           def scope(name : String) =
             if (vars.contains(name)) vars(name) else (VarScope.Global, new GeneralAnnotation())
@@ -69,16 +70,16 @@ object ExplicitImmutableHeap {
 //                CallIndex(true, Ident("mkNew"), List((None, Ident("heap")), (None, if (scope(name) == VarScope.Arg) Ident(name) else NoneLiteral())))
 //            ))))
           val (body1, ns1) = SimplePass.procStatementGeneral(procSt(scope)(_, _))(body, ns0)
-          val defaultReturn = Return(CollectionCons(CollectionKind.Tuple,
-            List(Ident(ns1.last(constHeap), ann.pos), NoneLiteral(ann.pos)), ann.pos), ann.pos)
+          val defaultReturn = Return(Some(CollectionCons(CollectionKind.Tuple,
+            List(Ident(ns1.last(constHeap), ann.pos), NoneLiteral(ann.pos)), ann.pos)), ann.pos)
           val noNeedForDefaultReturn = true
           val body2 = if (noNeedForDefaultReturn) (pushLocals :+ body1) else  (pushLocals :+ body1 :+ defaultReturn)
           val (List(newHeap, newClosure, tmpFun), ns2) = ns1(List(constHeap, "newClosure", "tmpFun"))
           val f1 = FuncDef(tmpFun,
-            ("heap", ArgKind.Positional, None, ann.pos) ::
-              ("closure", ArgKind.Positional, None, ann.pos) ::
+            Parameter("heap", ArgKind.Positional, None, None, ann.pos) ::
+              Parameter("closure", ArgKind.Positional, None, None, ann.pos) ::
               args,
-            None, None, Suite(body2, body1.ann.pos), Decorators(List()), HashMap(), isAsync, ann.pos)
+            None, None, None, Suite(body2, body1.ann.pos), Decorators(List()), HashMap(), isAsync, ann.pos)
           val mkNewClosure = CreateConst(newClosure,
             DictCons(Left((StringLiteral("\"callme\"", ann.pos), Ident(tmpFun, ann.pos))) ::
               vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).
@@ -95,10 +96,10 @@ object ExplicitImmutableHeap {
 
         case NonLocal(l, ann) => (Pass(ann.pos), ns, false)
 
-        case Return(call@CallIndex(true, whom, args, _), ann) => (Return(procCall(call, ns), ann.pos), ns, false)
+        case Return(Some(call@CallIndex(true, whom, args, _)), ann) => (Return(Some(procCall(call, ns)), ann.pos), ns, false)
 
-        case Return(x, ann) => (Return(
-          CollectionCons(Expression.CollectionKind.Tuple, List(Ident(ns.last(constHeap), ann.pos), procIdentInRhs(x)), ann.pos),
+        case Return(x, ann) => (Return(x.map(x =>
+          CollectionCons(Expression.CollectionKind.Tuple, List(Ident(ns.last(constHeap), ann.pos), procIdentInRhs(x)), ann.pos)),
           ann.pos
         ), ns, false)
 //          val (Assign(List(x1)), ns1) = procIdentInSt(Assign(List(x)), ns)

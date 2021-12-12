@@ -1,4 +1,4 @@
-import Expression.{CallIndex, CollectionCons, Cond, DictCons, Field, Ident, StringLiteral}
+import Expression.{CallIndex, CollectionCons, Cond, DictCons, Field, Ident, Parameter, StringLiteral}
 import PrintEO.{EOVisibility, Text, ident, printExpr}
 import PrintLinearizedImmutableEO.rmUnreachableTail
 import PrintLinearizedMutableEONoCage.headers
@@ -32,14 +32,14 @@ object PrintLinearizedMutableEOWithCage {
           s"x$lhsName.write forceData"
         )
       case Assign(List(e), _) => List(printExpr(bogusVisibility)(e))
-      case Return(e, _) => List(printExpr(bogusVisibility)(e))
-      case IfSimple(cond, Return(yes, _), Return(no, _), ann) =>
+      case Return(e, _) => e.toList.map(printExpr(bogusVisibility)(_))
+      case IfSimple(cond, Return(Some(yes), _), Return(Some(no), _), ann) =>
         val e = Cond(cond, yes, no, ann.pos)
         List(printExpr(bogusVisibility)(e))
       case Pass(_) => List()
       case Suite(l, _) => others(l)
     }
-    val args1 = f.args.map{ case (argname, ArgKind.Positional, None, _) => argname }.mkString(" ")
+    val args1 = f.args.map{ case Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
     s"[$args1] > x${newName}" :: ident(
       "memory > forceData" :: memories ++ innerFuns ++
         ("seq > @" :: ident(
@@ -49,8 +49,8 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printTest(testName : String, st : Statement) : Text = {
-    val theTest@FuncDef(_, _, _, _, _, _, _, _, _) =
-      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, st, Decorators(List()),
+    val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
+      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), false, st.ann.pos))
     headers ++ printFun(theTest.name, theTest)
   }

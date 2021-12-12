@@ -1,4 +1,4 @@
-import Expression.{CallIndex, CollectionCons, Cond, DictCons, Field, Ident, StringLiteral}
+import Expression.{CallIndex, CollectionCons, Cond, DictCons, Field, Ident, Parameter, StringLiteral}
 import PrintEO.{EOVisibility, Text, ident, printExpr}
 import PrintLinearizedImmutableEO.rmUnreachableTail
 
@@ -62,15 +62,15 @@ object PrintLinearizedMutableEONoCage {
       case Assign(List(Ident(lhsName, _), rhs), _) =>
         List(s"$lhsName.write ${printExpr(bogusVisibility)(rhs)}")
       case Assign(List(e), _) => List(printExpr(bogusVisibility)(e))
-      case Return(e, _) => List(printExpr(bogusVisibility)(e))
-      case IfSimple(cond, Return(yes, _), Return(no, _), ann) =>
+      case Return(e, _) => (e.toList.map(printExpr(bogusVisibility)(_)))
+      case IfSimple(cond, Return(Some(yes), _), Return(Some(no), _), ann) =>
         val e = Cond(cond, yes, no, ann.pos)
         List(printExpr(bogusVisibility)(e))
       case Pass(_) => List()
       case CreateConst("allFuns", _, _) => List()
       case Suite(l, _) => others(l)
     }
-    val args1 = f.args.map{ case (argname, ArgKind.Positional, None, _) => argname }.mkString(" ")
+    val args1 = f.args.map{ case Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
     s"[$args1] > ${f.name}" :: ident(
       memories ++ (innerFuns ++ mkAllFuns) ++ ("seq > @" :: ident(others(l.filterNot(isFun))))
     )
@@ -83,9 +83,9 @@ object PrintLinearizedMutableEONoCage {
         (Left(Field(e, "callme", e.ann.pos)), ns)
       case (_, e, ns) => (Left(e), ns)
     })(st, SimplePass.Names(HashMap()))
-    val theTest@FuncDef(_, _, _, _, _, _, _, _, _) =
-      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, st1, Decorators(List()),
-        HashMap(), false, st.ann.pos))
+    val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
+      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None,
+        st1, Decorators(List()), HashMap(), false, st.ann.pos))
     val head :: tail = printFun(theTest)
     headers ++
       (head :: ident(prelude) ++

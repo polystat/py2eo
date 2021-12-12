@@ -7,7 +7,7 @@ object PrintPython {
 
   def printComprehension(e : Comprehension) : String =
     e match {
-      case f : ForComprehension =>  "for " + printExpr(f.what) + " in " + printExpr(f.in)
+      case f : ForComprehension => (if (f.isAsync) "async " else "") + "for " + printExpr(f.what) + " in " + printExpr(f.in)
       case x : IfComprehension => "if " + printExpr(x.cond)
     }
 
@@ -21,9 +21,11 @@ object PrintPython {
     def rnd(s : String) = brak(s, "(", ")")
     def sqr(s : String) : String = brak(s, "[", "]")
     e match {
+      case Await(what, ann) => brak("await " + printExpr(what))
       case NoneLiteral(_) => "None"
+      case EllipsisLiteral(ann) => "..."
       case UnsupportedExpr(t, value) => "None"
-      case IntLiteral(value, _) => value.toString(10)
+      case IntLiteral(value, _) => value.toString(10) + " "
       case FloatLiteral(value, _) => value.toString
       case ImagLiteral(value, _) => value.toString + "j"
       case StringLiteral(value, _) => value
@@ -36,40 +38,34 @@ object PrintPython {
         val sops = ops.map(Compops.toString) :+ ""
         val sopnds = l.map(printExpr)
         brak(sopnds.zip(sops).flatMap(x => List(x._1, x._2)).mkString(" "))
-      case Unop(op, x, _) => Unops.toString(op) + printExpr(x)
+      case Unop(op, x, _) => brak(Unops.toString(op) + printExpr(x))
       case Ident(name, _) => name
       case Star(e, _) => "*" + printExpr(e)
       case DoubleStar(e, _) => "**" + printExpr(e)
       case Slice(from, to, by, _) =>
-        val from1 = from match {
-          case Some(value) => printExpr(value)
-          case None => "0"
-        }
-        val to1 = to match {
-          case Some(value) => printExpr(value)
-          case None => s"($from1) + 1"
-        }
-        val by1 = by match {
-          case Some(value) => printExpr(value)
-          case None => "1"
-        }
-        s"slice($from1, $to1, $by1)"
+        def procBound(b : Option[T]) = (b match {
+          case None => ""
+          case Some(e) => printExpr(e)
+        })
+        s"${procBound(from)}:${procBound(to)}:${procBound(by)}"
       case CallIndex(isCall, whom, args, _) => printExpr(whom) + (if (isCall) rnd _ else sqr _)(
         args.map{case (None, e) => printExpr(e)  case (Some(keyword), e) => keyword + "=" + printExpr(e)}.mkString(", "))
       case Field(whose, name, _) =>printExpr(whose) + "." + name
       case Cond(cond, yes, no, _) => printExpr(yes) + " if " + printExpr(cond) + " else " + printExpr(no)
-      case AnonFun(args, body, _) => "lambda " + args.map(_.name).mkString(", ") + " : " + printExpr(body)
+      case AnonFun(args, otherPositional, otherKeyword, body, _) =>
+        brak("lambda " + printArgs(args, otherPositional, otherKeyword) + " : " + printExpr(body))
       case CollectionCons(kind, l, _) =>
         val braks = CollectionKind.toBraks(kind)
         brak(l.map(printExpr).mkString(", ") + (if (l.size == 1) "," else ""), braks._1, braks._2)
       case CollectionComprehension(kind, base, l, _) =>
         val braks = CollectionKind.toBraks(kind)
         brak(printExpr(base) + " " + l.map(printComprehension).mkString(" "), braks._1, braks._2)
+      case GeneratorComprehension(base, l, ann) => printExpr(base) + " " + l.map(printComprehension).mkString(" ")
       case DictCons(l, _) => brak(l.map(printDictElt).mkString(", "), "{", "}")
       case DictComprehension(base, l, _) => brak(printDictElt(base) + " " + l.map(printComprehension).mkString(" "), "{", "}")
-      case Yield(Some(e), ann) => "yield " + printExpr(e)
-      case Yield(None, ann) =>  "yield"
-      case YieldFrom(e, ann) => "yield " + printExpr(e)
+      case Yield(Some(e), ann) => brak("yield " + printExpr(e))
+      case Yield(None, ann) =>  brak("yield")
+      case YieldFrom(e, ann) => brak("yield from " + printExpr(e))
     }
   }
 
@@ -140,12 +136,15 @@ object PrintPython {
 
       case AugAssign(op, lhs, rhs, ann) => shift + printExpr(lhs) + " " + AugOps.toString(op) + " " + printExpr(rhs) + posComment
       case Assign(l, ann) => shift + l.map(printExpr).mkString(" = ") + posComment
+      case AnnAssign(lhs, rhsAnn, rhs, ann) =>
+        shift + printExpr(lhs) + " : " + printExpr(rhsAnn) + (rhs match { case None => "" case Some(e) => " = " + printExpr(e)})
       case CreateConst(name, value, ann) => printSt(Assign(List(Ident(name, value.ann.pos), value), ann.pos.pos), shift) + posComment
       case Break(ann) => shift + "break" + posComment
-      case Continue(ann) => shift + "cantinue" + posComment
+      case Continue(ann) => shift + "continue" + posComment
       case Pass(ann) => shift + "pass" + posComment
-      case Return(x, ann) =>shift + "return " + printExpr(x) + posComment
-      case Assert(x, ann) => shift + "assert " + printExpr(x) + posComment
+      case Return(Some(x), ann) =>shift + "return " + printExpr(x) + posComment
+      case Return(None, _) => shift + "return " + posComment
+      case Assert(l, ann) => shift + "assert " + l.map(printExpr).mkString(", ") + posComment
       case Raise(Some(x), Some(from), ann) => shift + "raise " + printExpr(x) + " from " + printExpr(from) + posComment
       case Raise(Some(x), None, ann) => shift + "raise " + printExpr(x) + posComment
       case Raise(None, None, ann) => shift + "raise" + posComment
@@ -158,28 +157,38 @@ object PrintPython {
             (x._1 match { case None => "" case Some(name) => name + "="}) + printExpr(x._2)
           ).mkString(", ") + "):" + posComment + "\n" +
           printSt(body, shiftIncr)
-      case FuncDef(name, args, otherPositional, otherKeyword, body, decorators, _, isAsync, ann) =>
-        val positionalOnly = args.filter(_._2 == ArgKind.Positional)
-        val posOrKeyword = args.filter(_._2 == ArgKind.PosOrKeyword)
-        val keywordOnly = args.filter(_._2 == ArgKind.Keyword)
-        assert(positionalOnly ++ posOrKeyword ++ keywordOnly == args)
-        def printArg(x : (String, ArgKind.T, Option[T], _)) =
-          x._1 + (x._3 match { case None => "" case Some(default) => " = " + printExpr(default)})
-        val argstring = positionalOnly.map(printArg) ++
-          (if (positionalOnly.isEmpty) List() else List("/")) ++
-          posOrKeyword.map(printArg) ++
-          (otherPositional match {
-            case Some(name) => List("*" + name)
-            case None => if (keywordOnly.isEmpty) List() else List("*")
-          }) ++
-          keywordOnly.map(printArg) ++ otherKeyword.toList.map("**" + _)
+      case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, _, isAsync, ann) =>
+        val retAnn = returnAnnotation match { case None => "" case Some(e) => " -> " + printExpr(e) }
         printDecorators(decorators) +
-        shift + async(isAsync) + "def " + name + "(" + argstring.mkString(", ") + "):" + posComment + "\n" +
+        shift + async(isAsync) + "def " + name +
+          "(" + printArgs(args, otherPositional, otherKeyword) + ")" + retAnn + ":" + posComment + "\n" +
         printSt(body, shiftIncr)
-      case ImportModule(what, as, ann) => shift + s"import ${what.mkString(".")} as $as" + posComment
+      case ImportModule(what, as, ann) =>
+        shift + s"import ${what.mkString(".")}" + (as match { case None => "" case Some(x) => s" as $x"}) + posComment
       case ImportSymbol(from, what, as, ann) => shift + s"from ${from.mkString(".")} import $what as $as" + posComment
       case ImportAllSymbols(from, ann) => shift + s"from ${from.mkString(".")} import *" + posComment
     }
+  }
+
+  def printArgs(args : List[Parameter], otherPositional : Option[String],
+                otherKeyword : Option[String]) : String = {
+    val positionalOnly = args.filter(_.kind == ArgKind.Positional)
+    val posOrKeyword = args.filter(_.kind == ArgKind.PosOrKeyword)
+    val keywordOnly = args.filter(_.kind == ArgKind.Keyword)
+    assert(positionalOnly ++ posOrKeyword ++ keywordOnly == args)
+    def printArg(x : Parameter) =
+      x.name +
+        (x.paramAnn match { case None => "" case Some(value) => " : " + printExpr(value)}) +
+        (x.default match { case None => "" case Some(default) => " = " + printExpr(default)})
+    val argstring = positionalOnly.map(printArg) ++
+      (if (positionalOnly.isEmpty) List() else List("/")) ++
+      posOrKeyword.map(printArg) ++
+      (otherPositional match {
+        case Some(name) => List("*" + name)
+        case None => if (keywordOnly.isEmpty) List() else List("*")
+      }) ++
+      keywordOnly.map(printArg) ++ otherKeyword.toList.map("**" + _)
+    argstring.mkString(", ")
   }
 
   def toFile(t : Statement, dirName : String, moduleName : String) = {

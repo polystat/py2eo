@@ -58,12 +58,14 @@ tfptuple: '*' (tfpdef)?;
 tfpdict: '**' tfpdef (',')?;
 tfpdef: NAME (':' test)?;
 
-varargslist: (l+=vfpdef ('=' test)? (',' l+=vfpdef ('=' test)?)* (',' (
-        '*' (vfpdef)? (',' vfpdef ('=' test)?)* (',' ('**' vfpdef (',')?)?)?
-      | '**' vfpdef (',')?)?)?
-  | '*' (vfpdef)? (',' vfpdef ('=' test)?)* (',' ('**' vfpdef (',')?)?)?
-  | '**' vfpdef (',')?
+varargslist: (l+=vfparg (',' l+=vfparg)* (',' (varargslist_nopos | vfpdict)?)?
+  | varargslist_nopos
+  | vfpdict
 );
+varargslist_nopos: vfptuple (',' l+=vfparg)* (',' (vfpdict)?)?;
+vfptuple: '*' (vfpdef)?;
+vfpdict: '**' vfpdef (',')?;
+vfparg: vfpdef ('=' test)?;
 vfpdef: NAME;
 
 stmt:
@@ -89,7 +91,7 @@ rhsassign :
     yield_expr              # RhsYield
     |testlist_star_expr     # RhsTestlist
     ;
-annassign: ':' test ('=' test)?;
+annassign: ':' ann=test ('=' value=test)?;
 test_star_expr :
     test # TestNotStar
     | star_expr # StarNotTest
@@ -207,7 +209,7 @@ trailer:
 subscriptlist: l+=subscript_ (',' l+=subscript_)* (',')?;
 subscript_:
     test # SubIndex
-    | (test)? ':' (test)? (':' test)? # SubSlice
+    | (start=test)? ':' (stop=test)? (':' step=test)? # SubSlice
     ;
 expr_star_expr : expr | star_expr;
 exprlist: l+=expr_star_expr (',' l+=expr_star_expr)* (',')?;
