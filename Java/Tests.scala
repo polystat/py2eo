@@ -238,8 +238,8 @@ class Tests {
     val dir = new File(dirName)
     assert(dir.isDirectory)
     // todo: the following files fail to parse (the grammar is wrong)
-    //    val test = List("test_grammar.py",
-    //    "test_crypt.py", "test_largefile.py", "test__xxsubinterpreters.py", "test_class.py",
+    //    val test = List(
+    //
     //    "test_named_expressions.py","test_positional_only_arg.py", "test_functools.py", "test_buffer.py",
     //    "test_array.py", "test_positional_only_arg.py", "test_types.py", "test_dis.py", "test_inspect.py",
     //    "test_statistics.py",
@@ -247,13 +247,12 @@ class Tests {
     //      .map(name => new File(dirName + "/" + name))
 
     // "test_zipimport_support.py", todo: what's the problem here???
-    // "test_zipfile64.py" works for more 2 minutes, too slow
+    // "test_zipfile64.py" works for more 2 minutes, too slowm
     // test_sys.py just hangs the testing with no progress (with no CPU load)
 
-//    val test = List(
-//          )
-//          .map(name => new File(dirName + "/" + name))
-    val test = dir.listFiles().toList
+    val test = List("test_named_expressions.py")
+          .map(name => new File(dirName + "/" + name))
+//    val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future
       {
@@ -273,7 +272,7 @@ class Tests {
           val stderr = new StringBuilder()
           val exitCode =
             Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
-              "PYTHONPATH" -> "..") !   ProcessLogger(stdout.append(_), stderr.append(_))
+              "PYTHONPATH" -> "..") !  ProcessLogger(stdout.append(_), stderr.append(_))
           writeFile(test, "stdout", ".stdout", stdout.toString())
           writeFile(test, "stderr", ".stderr", stderr.toString())
           if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
