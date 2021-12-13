@@ -237,6 +237,16 @@ class Tests {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
     assert(dir.isDirectory)
+
+    val afterParser = new File(dirName + "/afterParser")
+    if (!afterParser.exists()) afterParser.mkdir()
+    val cpython = new File(afterParser.getPath + "/cpython")
+    if (!cpython.exists()) {
+//      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
+      assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
+      assert(0 == Process("git checkout v3.8.10", cpython).!)
+    }
+
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // supporting them may take several days, so this feature is currently skipped
 
