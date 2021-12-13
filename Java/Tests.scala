@@ -237,22 +237,17 @@ class Tests {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
     assert(dir.isDirectory)
-    // todo: the following files fail to parse (the grammar is wrong)
-    //    val test = List(
-    //
-    //    "test_named_expressions.py","test_positional_only_arg.py", "test_functools.py", "test_buffer.py",
-    //    "test_array.py", "test_positional_only_arg.py", "test_types.py", "test_dis.py", "test_inspect.py",
-    //    "test_statistics.py",
-    //    )
-    //      .map(name => new File(dirName + "/" + name))
+    // todo: test_named_expressions.py uses assignment expressions which are not supported.
+    // supporting them may take several days, so this feature is currently skipped
 
     // "test_zipimport_support.py", todo: what's the problem here???
     // "test_zipfile64.py" works for more 2 minutes, too slowm
     // test_sys.py just hangs the testing with no progress (with no CPU load)
+    // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
 
-    val test = List("test_named_expressions.py")
-          .map(name => new File(dirName + "/" + name))
-//    val test = dir.listFiles().toList
+//    val test = List("test_statistics.py")
+//          .map(name => new File(dirName + "/" + name))
+    val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future
       {
@@ -272,7 +267,7 @@ class Tests {
           val stderr = new StringBuilder()
           val exitCode =
             Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
-              "PYTHONPATH" -> "..") !  ProcessLogger(stdout.append(_), stderr.append(_))
+              "PYTHONPATH" -> "..") !   ProcessLogger(stdout.append(_), stderr.append(_))
           writeFile(test, "stdout", ".stdout", stdout.toString())
           writeFile(test, "stderr", ".stderr", stderr.toString())
           if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
