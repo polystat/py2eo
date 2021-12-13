@@ -262,7 +262,7 @@ class Tests {
 //          .map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
-//      Future
+      Future
       {
         if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")
            && test.getName != "test_strtod.py"  //todo: don't know, what's with this test!
@@ -280,7 +280,7 @@ class Tests {
           val stderr = new StringBuilder()
           val exitCode =
             Process(s"../../python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
-              "PYTHONPATH" -> "..") .!  // ProcessLogger(stdout.append(_), stderr.append(_))
+              "PYTHONPATH" -> "..") !  ProcessLogger(stdout.append(_), stderr.append(_))
           writeFile(test, "stdout", ".stdout", stdout.toString())
           writeFile(test, "stderr", ".stderr", stderr.toString())
           if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
@@ -289,7 +289,7 @@ class Tests {
         }
       }
     )
-//    for (f <- futures) Await.result(f, Duration.Inf)
+    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
 }
