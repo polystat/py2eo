@@ -249,11 +249,6 @@ class Tests {
     println("Version of python is:")
     s"$python --version"!
 
-//    if (!(new File(cpython.getPath + "/python")).isFile) {
-//      assert(0 == Process("./configure", cpython).!)
-//      assert(0 == Process("make -j 8", cpython).!)
-//    }
-
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // supporting them may take several days, so this feature is currently skipped
 
@@ -261,9 +256,9 @@ class Tests {
     // "test_zipfile64.py" works for more 2 minutes, too slowm
     // test_sys.py just hangs the testing with no progress (with no CPU load)
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
+    // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_statistics.py")
-//          .map(name => new File(dirName + "/" + name))
+//    val test = List("test_statistics.py").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future
