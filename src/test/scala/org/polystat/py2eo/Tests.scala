@@ -12,6 +12,7 @@ import scala.collection.immutable.HashMap
 import scala.collection.{immutable, mutable}
 
 // run these tests with py2eo/python/python3 as a currend directory
+//@RunWith(classOf[JUnitRunner])
 class Tests {
 
   private val testsPrefix = System.getProperty("user.dir") + "/test/"

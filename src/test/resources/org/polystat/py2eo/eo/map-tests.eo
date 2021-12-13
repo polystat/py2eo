@@ -1,0 +1,86 @@
++package org.eolang
++alias org.eolang.txt.sprintf
++alias org.eolang.io.stdout
++junit
+
+[] > map-find
+  eq. > @
+    option
+      TRUE
+      'b'
+    (immutablemap (* 1 2 3) (* 'a' 'b' 'c')).find 2
+
+[] > map-find-non-existing
+  eq. > @
+    FALSE
+    ((immutablemap (* 1 2 3) (* 'a' 'b' 'c')).find 6).valid
+
+[] > map-add
+  eq. > @
+    option
+      TRUE
+      't'
+    ((immutablemap (* 1 2 3) (* 'a' 'b' 'c')).add 6 't').find 6
+
+[] > map-add-existing
+  eq. > @
+    option
+      TRUE
+      't'
+    ((immutablemap (* 1 2 3) (* 'a' 'b' 'c')).add 2 't').find 2
+
+[] > map-remove
+  eq. > @
+    option
+      TRUE
+      'c'
+    ((immutablemap (* 1 2 3) (* 'a' 'b' 'c')).remove 2).find 3
+
+[] > map-remove-non-existing
+  eq. > @
+    0
+    ((immutablemap (* 1 2 3) (* 'a' 'b' 'c')).remove 6)
+
+[] > map-remove-and-find
+  eq. > @
+    FALSE
+    (((immutablemap (* 1 2 3) (* 'a' 'b' 'c')).remove 2).find 2).valid
+
+[] > map-find-alt
+  eq. > @
+    option
+      TRUE
+      2
+    (immutablemap (* 'a' 'b' 'c') (* 1 2 3)).find 'b'
+
+[] > map-find-non-existing-alt
+  eq. > @
+    FALSE
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).find 't').valid
+
+[] > map-add-alt
+  eq. > @
+    option
+      TRUE
+      6
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).add 't' 6).find 't'
+
+[] > map-add-existing-alt
+  eq. > @
+    option
+      TRUE
+      6
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).add 'b' 6).find 'b'
+
+[] > map-remove-alt
+  eq. > @
+    option
+      TRUE
+      3
+    ((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).remove 'b').find 'c'
+
+[] > map-remove-and-find-alt
+  eq. > @
+    FALSE
+    (((immutablemap (* 'a' 'b' 'c') (* 1 2 3)).remove 'b').find 'b').valid
+
