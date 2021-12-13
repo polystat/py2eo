@@ -245,10 +245,10 @@ class Tests {
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
-    if (!(new File(cpython.getPath + "/python")).isFile) {
-      assert(0 == Process("./configure", cpython).!)
-      assert(0 == Process("make -j 8", cpython).!)
-    }
+//    if (!(new File(cpython.getPath + "/python")).isFile) {
+//      assert(0 == Process("./configure", cpython).!)
+//      assert(0 == Process("make -j 8", cpython).!)
+//    }
 
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // supporting them may take several days, so this feature is currently skipped
@@ -279,7 +279,7 @@ class Tests {
           val stdout = new StringBuilder()
           val stderr = new StringBuilder()
           val exitCode =
-            Process(s"../../python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
+            Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
               "PYTHONPATH" -> "..") !  ProcessLogger(stdout.append(_), stderr.append(_))
           writeFile(test, "stdout", ".stdout", stdout.toString())
           writeFile(test, "stderr", ".stderr", stderr.toString())
