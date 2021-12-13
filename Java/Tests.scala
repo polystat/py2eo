@@ -245,6 +245,10 @@ class Tests {
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
+
+    println("Version of python is:")
+    s"$python --version"!
+
 //    if (!(new File(cpython.getPath + "/python")).isFile) {
 //      assert(0 == Process("./configure", cpython).!)
 //      assert(0 == Process("make -j 8", cpython).!)
