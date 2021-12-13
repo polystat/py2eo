@@ -164,6 +164,7 @@ COLON : ':';
 SEMI_COLON : ';';
 POWER : '**';
 ASSIGN : '=';
+ASSIGN_IN_EXPR : ':=';
 OPEN_BRACK : '[' {openBrace();};
 CLOSE_BRACK : ']' {closeBrace();};
 OR_OP : '|';

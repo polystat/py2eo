@@ -145,8 +145,9 @@ compound_stmt:
     | async_stmt # CompAsync
     ;
 async_stmt: ASYNC (funcdef | with_stmt | for_stmt);
-if_stmt: 'if' conds+=test ':' bodies+=suite ('elif' conds+=test ':' bodies+=suite)* ('else' ':' eelse=suite)?;
-while_stmt: 'while' cond=test ':' body=suite ('else' ':' eelse=suite)?;
+if_stmt: 'if' conds+=assignment_expression ':' bodies+=suite
+    ('elif' conds+=assignment_expression ':' bodies+=suite)* ('else' ':' eelse=suite)?;
+while_stmt: 'while' cond=assignment_expression ':' body=suite ('else' ':' eelse=suite)?;
 for_stmt: 'for' exprlist 'in' testlist ':' body=suite ('else' ':' eelse=suite)?;
 
 try_stmt: ('try' ':' trySuite=suite
@@ -163,6 +164,8 @@ suite:
     simple_stmt # SuiteSimpleStmt
     | NEWLINE INDENT (l+=stmt)+ DEDENT  # SuiteBlockStmts
     ;
+
+assignment_expression: (IDENT ASSIGN_IN_EXPR)? test;
 
 test:
     or_test ('if' or_test 'else' test)? # TestOrTest

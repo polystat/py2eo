@@ -144,6 +144,7 @@ object Expression {
 
   case class Parameter(name : String, kind : ArgKind.T, paramAnn : Option[T], default : Option[T], ann : GeneralAnnotation)
 
+  case class Assignment(ident : String, rhs : T, ann : GeneralAnnotation) extends T
   case class Await(what : T, ann : GeneralAnnotation) extends T
   case class IntLiteral(value : BigInt, ann : GeneralAnnotation) extends T
   case class FloatLiteral(value : String, ann : GeneralAnnotation) extends T
@@ -424,7 +425,7 @@ object MapStatements {
 
   def mapIf(s : If_stmtContext) = {
     If(
-      asScala(s.conds).map(mapTest).zip(asScala(s.bodies).map(mapNullableSuite)).toList,
+      asScala(s.conds).map(mapAssignmentExpression).zip(asScala(s.bodies).map(mapNullableSuite)).toList,
       mapNullableSuite(s.eelse), new GeneralAnnotation(s)
     )
   }
@@ -441,7 +442,7 @@ object MapStatements {
       case s : CompIfContext => mapIf(s.if_stmt())
       case s : CompWhileContext =>
         While(
-          mapTest(s.while_stmt().cond),
+          mapAssignmentExpression(s.while_stmt().cond),
           mapNullableSuite(s.while_stmt().body),
           mapNullableSuite(s.while_stmt().eelse),
           new GeneralAnnotation(s)
@@ -565,6 +566,11 @@ object MapExpressions {
   }
 
   import Expression._
+
+  def mapAssignmentExpression(c : Assignment_expressionContext) = {
+    if (c.ASSIGN_IN_EXPR() == null) mapTest(c.test())
+    else Assignment(c.IDENT().getText, mapTest(c.test()), new GeneralAnnotation(c))
+  }
 
   def mapDictEltDoubleStar(c : Dict_elt_double_starContext) =
     if (c.expr() != null) Right(mapExpr(c.expr())) else Left((mapTest(c.test(0)), mapTest(c.test(1))))
