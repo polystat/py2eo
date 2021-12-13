@@ -232,7 +232,6 @@ class Tests {
     }
   }
 
-  @Ignore
   @Test def parserPrinterOnCPython() : Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -247,6 +246,9 @@ class Tests {
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
 
+    println("Version of python is:")
+    s"$python --version"!
+
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // supporting them may take several days, so this feature is currently skipped
 
@@ -254,9 +256,9 @@ class Tests {
     // "test_zipfile64.py" works for more 2 minutes, too slowm
     // test_sys.py just hangs the testing with no progress (with no CPU load)
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
+    // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_statistics.py")
-//          .map(name => new File(dirName + "/" + name))
+//    val test = List("test_statistics.py").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future
@@ -277,10 +279,11 @@ class Tests {
           val stderr = new StringBuilder()
           val exitCode =
             Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
-              "PYTHONPATH" -> "..") !   ProcessLogger(stdout.append(_), stderr.append(_))
+              "PYTHONPATH" -> "..") !  ProcessLogger(stdout.append(_), stderr.append(_))
           writeFile(test, "stdout", ".stdout", stdout.toString())
           writeFile(test, "stderr", ".stderr", stderr.toString())
           if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
+          else println(s"finished ${test.getName}")
           assertTrue(exitCode == 0)
         }
       }
