@@ -245,6 +245,10 @@ class Tests {
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
+    if (!(new File(cpython.getPath + "/python")).isFile) {
+      assert(0 == Process("./configure", cpython).!)
+      assert(0 == Process("make -j 8", cpython).!)
+    }
 
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // supporting them may take several days, so this feature is currently skipped
@@ -258,7 +262,7 @@ class Tests {
 //          .map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
-//      Future
+      Future
       {
         if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")
            && test.getName != "test_strtod.py"  //todo: don't know, what's with this test!
@@ -275,16 +279,17 @@ class Tests {
           val stdout = new StringBuilder()
           val stderr = new StringBuilder()
           val exitCode =
-            Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
-              "PYTHONPATH" -> ".."). ! //  ProcessLogger(stdout.append(_), stderr.append(_))
+            Process(s"../../python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
+              "PYTHONPATH" -> "..") !   ProcessLogger(stdout.append(_), stderr.append(_))
           writeFile(test, "stdout", ".stdout", stdout.toString())
           writeFile(test, "stderr", ".stderr", stderr.toString())
           if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
+          else println(s"finished ${test.getName}")
           assertTrue(exitCode == 0)
         }
       }
     )
-//    for (f <- futures) Await.result(f, Duration.Inf)
+    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
 }
