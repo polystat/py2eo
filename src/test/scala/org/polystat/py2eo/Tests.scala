@@ -15,7 +15,7 @@ import scala.collection.{immutable, mutable}
 //@RunWith(classOf[JUnitRunner])
 class Tests {
 
-  private val testsPrefix = System.getProperty("user.dir") + "/test/"
+  private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
   val intermediateDirs = List(
     "afterEmptyProcStatement", "afterExtractAllCalls", "afterImmutabilization",
     "afterParser", "afterRemoveControlFlow", "afterSimplifyIf", "afterHeapify",
