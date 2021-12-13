@@ -28,13 +28,13 @@ object ClosureWithCage {
       result
     }
     st match {
-      case FuncDef(name, args, None, None, body, Decorators(List()), vars, isAsync, ann) =>
+      case FuncDef(name, args, None, None, None, body, Decorators(List()), vars, isAsync, ann) =>
         def scope(name : String) = if (vars.contains(name)) vars(name) else (VarScope.Global, new GeneralAnnotation())
         val (body1) = closurizeInner(scope, body)
         val tmpFun = s"tmpFun$name"
         val f1 = FuncDef(tmpFun,
-          ("closure", ArgKind.Positional, None, ann.pos) :: args,
-          None, None, body1, Decorators(List()), HashMap(), isAsync, ann.pos)
+          Expression.Parameter("closure", ArgKind.Positional, None, None, ann.pos) :: args,
+          None, None, None, body1, Decorators(List()), HashMap(), isAsync, ann.pos)
         val rhs = DictCons(Left((StringLiteral("\"callme\"", ann.pos), Ident(tmpFun, ann.pos))) ::
           vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).
             map(z => Left((StringLiteral("\"" + z._1 + "\"", ann.pos), Ident(z._1 + "Ptr", ann.pos)))).toList,
@@ -46,7 +46,7 @@ object ClosureWithCage {
       case Assign(List(lhs, rhs), ann) =>
         Assign(List(pe(true, lhs), pe(false, rhs)), ann.pos)
 
-      case Return(x, ann) => (Return(pe(false, x), ann.pos))
+      case Return(x, ann) => (Return(x.map(pe(false, _)), ann.pos))
       case IfSimple(cond, yes, no, ann) =>
         val (yes1) = closurizeInner(scope, yes)
         val (no1) = closurizeInner(scope, no)

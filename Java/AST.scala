@@ -1,6 +1,5 @@
 import java.io.{File, FileReader, FileWriter}
 import java.math.BigInteger
-import Common.HashStack
 import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, NoneLiteral}
 import Python3Parser._
 import org.antlr.v4.runtime.{ANTLRInputStream, ParserRuleContext, Token}
@@ -143,12 +142,17 @@ object Expression {
     }
   }
 
+  case class Parameter(name : String, kind : ArgKind.T, paramAnn : Option[T], default : Option[T], ann : GeneralAnnotation)
+
+  case class Assignment(ident : String, rhs : T, ann : GeneralAnnotation) extends T
+  case class Await(what : T, ann : GeneralAnnotation) extends T
   case class IntLiteral(value : BigInt, ann : GeneralAnnotation) extends T
-  case class FloatLiteral(value : Double, ann : GeneralAnnotation) extends T
-  case class ImagLiteral(value : Double, ann : GeneralAnnotation) extends T
+  case class FloatLiteral(value : String, ann : GeneralAnnotation) extends T
+  case class ImagLiteral(value : String, ann : GeneralAnnotation) extends T
   case class StringLiteral(value : String, ann : GeneralAnnotation) extends T
   case class BoolLiteral(value : Boolean, ann : GeneralAnnotation) extends T
   case class NoneLiteral(ann : GeneralAnnotation) extends T
+  case class EllipsisLiteral(ann : GeneralAnnotation) extends T
   case class Binop(op : Binops.T, l : T, r : T, ann : GeneralAnnotation) extends T
   case class SimpleComparison(op : Compops.T, l : T, r : T, ann : GeneralAnnotation) extends T
   case class LazyLAnd(l : T, r : T, ann : GeneralAnnotation) extends T
@@ -160,6 +164,7 @@ object Expression {
   case class DoubleStar(e : T, ann : GeneralAnnotation) extends T
   case class CollectionCons(kind : CollectionKind.T, l : List[T], ann : GeneralAnnotation) extends T
   case class CollectionComprehension(kind : CollectionKind.T, base : T, l : List[Comprehension], ann : GeneralAnnotation) extends T
+  case class GeneratorComprehension(base : T, l : List[Comprehension], ann : GeneralAnnotation) extends T
   type DictEltDoubleStar = Either[(T, T), T]
   case class DictCons(l : List[DictEltDoubleStar], ann : GeneralAnnotation) extends T
   case class DictComprehension(base : DictEltDoubleStar, l : List[Comprehension], ann : GeneralAnnotation) extends T
@@ -171,7 +176,8 @@ object Expression {
   }
   case class Field(whose : T, name : String, ann : GeneralAnnotation) extends T
   case class Cond(cond : T, yes : T, no : T, ann : GeneralAnnotation) extends T
-  case class AnonFun(args : List[Ident], body : T, ann : GeneralAnnotation) extends T
+  case class AnonFun(args : List[Parameter], otherPositional : Option[String],
+                     otherKeyword : Option[String], body : T, ann : GeneralAnnotation) extends T
   case class Yield(l : Option[T], ann : GeneralAnnotation) extends T
   case class YieldFrom(e : T, ann : GeneralAnnotation) extends T
   class UnsupportedExpr(original0 : T, children0 : List[T], ann0 : GeneralAnnotation) extends T {
@@ -282,18 +288,21 @@ case class While(cond : ET, body : Statement, eelse : Statement, ann : GeneralAn
 case class For(what : ET, in : ET, body : Statement, eelse : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
 case class Suite(l : List[Statement], ann : GeneralAnnotation) extends Statement
 case class AugAssign(op : AugOps.T, lhs : ET, rhs : ET, ann : GeneralAnnotation) extends Statement
+case class AnnAssign(lhs : ET, rhsAnn : ET, rhs : Option[ET], ann : GeneralAnnotation) extends Statement
 case class Assign(l : List[ET], ann : GeneralAnnotation) extends Statement
 case class CreateConst(name : String, value : ET, ann : GeneralAnnotation) extends Statement
 case class Pass(ann : GeneralAnnotation) extends Statement
 case class Break(ann : GeneralAnnotation) extends Statement
 case class Continue(ann : GeneralAnnotation) extends Statement
-case class Return(x : ET, ann : GeneralAnnotation) extends Statement
-case class Assert(x : ET, ann : GeneralAnnotation) extends Statement
+case class Return(x : Option[ET], ann : GeneralAnnotation) extends Statement
+case class Assert(x : List[ET], ann : GeneralAnnotation) extends Statement {
+  def this(x : ET, ann : GeneralAnnotation) = this(List(x), ann)
+}
 case class Raise(e : Option[ET], from : Option[ET], ann : GeneralAnnotation) extends Statement
 case class Del(l : ET, ann : GeneralAnnotation) extends Statement
 case class Decorators(l : List[ET])
-case class FuncDef(name : String, args : List[(String, ArgKind.T, Option[ET], GeneralAnnotation)], otherPositional : Option[String],
-         otherKeyword : Option[String], body : Statement, decorators: Decorators,
+case class FuncDef(name : String, args : List[Expression.Parameter], otherPositional : Option[(String, Option[ET])],
+         otherKeyword : Option[(String, Option[ET])], returnAnnotation : Option[ET], body : Statement, decorators: Decorators,
          accessibleIdents : HashMap[String, (VarScope.T, GeneralAnnotation)], isAsync : Boolean, ann : GeneralAnnotation) extends Statement {
 //  lazy val variablesClassification = SimpleAnalysis.classifyFunctionVariables(args, body, false)
 }
@@ -302,7 +311,7 @@ case class ClassDef(name : String, bases : List[(Option[String], ET)], body : St
 
 case class NonLocal(l : List[String], ann : GeneralAnnotation) extends Statement
 case class Global(l : List[String], ann : GeneralAnnotation) extends Statement
-case class ImportModule(what : List[String], as : String, ann : GeneralAnnotation) extends Statement
+case class ImportModule(what : List[String], as : Option[String], ann : GeneralAnnotation) extends Statement
 case class ImportAllSymbols(from : List[String], ann : GeneralAnnotation) extends Statement
 case class ImportSymbol(from : List[String], what : String, as : String, ann : GeneralAnnotation) extends Statement
 case class With(cm : ET, target : Option[ET], body : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
@@ -329,7 +338,7 @@ object MapStatements {
     case s : ImportNameContext =>
       val l = asScala(s.import_name().dotted_as_names().l).map(x => {
         val what = mapDottedName(x.dotted_name())
-        val as = if (x.NAME() == null) what.last else x.NAME().getText
+        val as = Option(x.NAME()).map(_.getText)
         ImportModule(what, as, new GeneralAnnotation(x))
       }).toList
       Suite(l, new GeneralAnnotation(s))
@@ -359,20 +368,20 @@ object MapStatements {
       // it is an assignment expression now https://docs.python.org/3/reference/compound_stmts.html#grammar-token-decorators
       val d = dname.tail.foldLeft(Ident(dname.head.getText, new GeneralAnnotation(dname.head)) : ET)((acc, token) =>
           Expression.Field(acc, token.getText, new GeneralAnnotation(token)))
-      if (x.arglist()!= null) CallIndex(true, d, mapArglistNullable(x.arglist()), new GeneralAnnotation(x))
+      if (x.OPEN_PAREN() != null) CallIndex(true, d, mapArglistNullable(x.arglist()), new GeneralAnnotation(x))
       else d
     }))
 
-  def mapTfparg(kind : ArgKind.T, c : TfpargContext) : (String, ArgKind.T, Option[ET], GeneralAnnotation) = {
+  def mapTfparg(kind : ArgKind.T, c : TfpargContext) : Expression.Parameter = {
     val default = Option(c.test()).map(mapTest)
-    (c.tfpdef().NAME().getText, kind, default, new GeneralAnnotation(c))
+    Expression.Parameter(c.tfpdef().NAME().getText, kind, Option(c.tfpdef().test()).map(mapTest), default, new GeneralAnnotation(c))
   }
 
   def mapTypedargslistNopos(c : Typedargslist_noposContext) = {
     (asScala(c.l).toList.map(x => (mapTfparg(ArgKind.Keyword, x))),
       // todo: the next line may be wrong, it may break the method with which python forces all args to be keyword only (4.8.3 in tutorial)
-      if (c.tfptuple().tfpdef() == null) None else Some(c.tfptuple().tfpdef().NAME().getText),
-      Option(c.tfpdict()).map(_.tfpdef().NAME().getText)
+      Option(c.tfptuple().tfpdef()).map(x => (x.NAME().getText, Option(x.test()).map(mapTest))),
+      Option(c.tfpdict()).map(x => (x.tfpdef().NAME().getText, Option(x.tfpdef().test()).map(mapTest)))
     )
   }
 
@@ -380,17 +389,26 @@ object MapStatements {
     if (c == null) (List(), None, None) else {
       val tail =
         if (c.typedargslist_nopos() != null) mapTypedargslistNopos(c.typedargslist_nopos()) else
-        if (c.tfpdict() != null) (List(), None, Some(c.tfpdict().tfpdef().NAME().getText)) else
+        if (c.tfpdict() != null) (List(), None,
+          Some(c.tfpdict().tfpdef().NAME().getText, Option(c.tfpdict().tfpdef().test()).map(mapTest))) else
           (List(), None, None)
-      val head = asScala(c.l).toList.map(x => (mapTfparg(ArgKind.PosOrKeyword, x)))
-      (head ++ tail._1, tail._2, tail._3)
+      val l = asScala(c.l).toList
+      val (posOnly, others) = l.splitAt(l.indexWhere(c => c.tfpdef().DIV() != null))
+      val (posAndKword, kwordOnly) = others.splitAt({
+        val pos = others.indexWhere(c => c.tfpdef().STAR() != null)
+        if (-1 == pos) others.length else pos
+      })
+      def f(kind : ArgKind.T, l : List[TfpargContext]) = l.flatMap(x =>
+        if (x.tfpdef().NAME() == null) List() else List(mapTfparg(kind, x)))
+      (f(ArgKind.Positional, posOnly) ++ f(ArgKind.PosOrKeyword, posAndKword) ++ f(ArgKind.Keyword, kwordOnly) ++
+        tail._1, tail._2, tail._3)
     }
   }
 
   def mapFuncDef(s : FuncdefContext, decorators: Decorators, isAsync : Boolean) = {
     val z = mapTypedargslist(s.parameters().typedargslist())
-    FuncDef(s.NAME().getText, z._1, z._2, z._3, mapNullableSuite(s.suite()), decorators, HashMap(), isAsync,
-      new GeneralAnnotation(s))
+    FuncDef(s.NAME().getText, z._1, z._2, z._3, Option(s.test()).map(mapTest),
+      mapNullableSuite(s.suite()), decorators, HashMap(), isAsync, new GeneralAnnotation(s))
   }
 
   def mapClassDef(s : ClassdefContext, decorators: Decorators) = {
@@ -407,7 +425,7 @@ object MapStatements {
 
   def mapIf(s : If_stmtContext) = {
     If(
-      asScala(s.conds).map(mapTest).zip(asScala(s.bodies).map(mapNullableSuite)).toList,
+      asScala(s.conds).map(mapAssignmentExpression).zip(asScala(s.bodies).map(mapNullableSuite)).toList,
       mapNullableSuite(s.eelse), new GeneralAnnotation(s)
     )
   }
@@ -424,7 +442,7 @@ object MapStatements {
       case s : CompIfContext => mapIf(s.if_stmt())
       case s : CompWhileContext =>
         While(
-          mapTest(s.while_stmt().cond),
+          mapAssignmentExpression(s.while_stmt().cond),
           mapNullableSuite(s.while_stmt().body),
           mapNullableSuite(s.while_stmt().eelse),
           new GeneralAnnotation(s)
@@ -449,7 +467,7 @@ object MapStatements {
         val decorators = mapDecorators(s1.decorators())
         if (s1.classdef() != null) mapClassDef(s1.classdef(), decorators) else
         if (s1.funcdef() != null) mapFuncDef(s1.funcdef(), decorators, false) else
-        if (s1.async_funcdef() != null) ??? else
+        if (s1.async_funcdef() != null) mapFuncDef(s1.async_funcdef().funcdef(), decorators, true) else
           throw new AssertionError("nothing after decorators. This must not be parseable with the golden python compiler")
       case s : CompAsyncContext =>
         if (s.async_stmt().with_stmt() != null) mapWith(s.async_stmt().with_stmt(), true) else
@@ -465,7 +483,7 @@ object MapStatements {
   def mapSmallStmt(s : Small_stmtContext) : Statement = s match {
     case s : SmallNonLocalContext => NonLocal(asScala(s.nonlocal_stmt().l).map(_.getText).toList, new GeneralAnnotation(s))
     case s : SmallGlobalContext   => Global(asScala(s.global_stmt().l).map(_.getText).toList, new GeneralAnnotation(s))
-    case s : SmallAssertContext => Assert(mapTest(s.assert_stmt().test(0)), new GeneralAnnotation(s))
+    case s : SmallAssertContext => Assert(asScala(s.assert_stmt().test()).toList.map(mapTest), new GeneralAnnotation(s))
     case s : SmallExprContext => {
       val lhs = mapTestlistStarExpr(CollectionKind.Tuple, s.expr_stmt().testlist_star_expr())
       s.expr_stmt().expr_stmt_right() match {
@@ -476,9 +494,7 @@ object MapStatements {
           val rhss = asScala(a.l).map(mapRhsAssign).toList
           Assign(lhs :: rhss, new GeneralAnnotation(a))
         case x : AnnAssignLabelContext =>
-          val es = asScala(x.annassign().test()).toList.map(x => (false, mapTest(x)))
-          new Unsupported(Pass(new GeneralAnnotation(x)), es(0)._2 match { case Ident(name, _) => List(name) case _ => List() },
-            es, List(), new GeneralAnnotation(x))
+          AnnAssign(lhs, mapTest(x.annassign().ann), Option(x.annassign().value).map(mapTest), new GeneralAnnotation(x))
       }
     }
     case s : SmallDelContext => Del(mapExprList(s.del_stmt().exprlist()), new GeneralAnnotation(s))
@@ -487,9 +503,8 @@ object MapStatements {
       case _ : FlowBreakContext => Break(new GeneralAnnotation(s))
       case _ : FlowContinueContext => Continue(new GeneralAnnotation(s))
       case r : FlowReturnContext =>
-        Return(if (r.return_stmt().testlist() == null)
-          Expression.CollectionCons(CollectionKind.Tuple, List(), new GeneralAnnotation(r)) else
-          mapTestList(r.return_stmt().testlist()), new GeneralAnnotation(r))
+        Return(Option(r.return_stmt().testlist_star_expr()).map(mapTestlistStarExpr(CollectionKind.Tuple, _)),
+          new GeneralAnnotation(r))
       case r : FlowRaiseContext =>
         val tests = asScala(r.raise_stmt().test()).toList.map(mapTest)
         Raise(tests.headOption, tests.lift(1), new GeneralAnnotation(r))
@@ -516,29 +531,46 @@ object MapStatements {
 object MapExpressions {
 
   def string2num(x : String, c : ParserRuleContext) : Expression.T = {
-    if (x.last == 'j') Expression.ImagLiteral(x.init.toDouble, new GeneralAnnotation(c)) else
-    if (x.exists(c => (c == 'e' && !x.startsWith("0x")) || c == '.' || c == '+' || c == '-'))
-      Expression.FloatLiteral(x.toDouble, new GeneralAnnotation(c))
+    if (x.last == 'j') Expression.ImagLiteral(x.init, new GeneralAnnotation(c)) else
+    if (x.exists(c => ((c == 'e' || c == 'E') && !x.startsWith("0x") && !x.startsWith("0X")) || c == '.' || c == '+' || c == '-'))
+      Expression.FloatLiteral(x, new GeneralAnnotation(c))
     else {
       val int =
-        if (x.length >= 2 && x.substring(0, 2) == "0x")
+        if (x.startsWith("0x") || x.startsWith("0X"))
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
-            acc * 16 + (
-              if (ch >= '0' && ch <= '9') (ch.toInt - '0'.toInt) else if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt else if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt else
-                throw new NumberFormatException()
-              )
+            if (ch != '_')
+              acc * 16 + (
+                if (ch >= '0' && ch <= '9') (ch.toInt - '0'.toInt) else
+                if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else
+                if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else
+                  throw new NumberFormatException()
+                )
+            else acc
           })
-        else if (x.length >= 2 && x.substring(0, 2) == "0o")
+        else if (x.startsWith("0o") || x.startsWith("0O"))
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
-            acc * 8 + (if (ch >= '0' && ch <= '7') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+            if (ch != '_')
+              acc * 8 + (if (ch >= '0' && ch <= '7') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+            else acc
+          )
+        else if (x.startsWith("0b") || x.startsWith("0B"))
+          x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
+            if (ch != '_')
+              acc * 2 + (if (ch >= '0' && ch <= '1') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+            else acc
           )
         else
-          BigInt(x)
+          BigInt(x.filter(_ != '_'))
       Expression.IntLiteral(int, new GeneralAnnotation(c))
     }
   }
 
   import Expression._
+
+  def mapAssignmentExpression(c : Assignment_expressionContext) = {
+    if (c.ASSIGN_IN_EXPR() == null) mapTest(c.test())
+    else Assignment(c.IDENT().getText, mapTest(c.test()), new GeneralAnnotation(c))
+  }
 
   def mapDictEltDoubleStar(c : Dict_elt_double_starContext) =
     if (c.expr() != null) Right(mapExpr(c.expr())) else Left((mapTest(c.test(0)), mapTest(c.test(1))))
@@ -546,53 +578,90 @@ object MapExpressions {
   def mapYieldExpr(y1 : Yield_exprContext) : T = {
     if (y1.yield_arg() == null) Yield(None, new GeneralAnnotation(y1)) else {
       if (y1.yield_arg().FROM() == null)
-        Yield(Some(mapTestList(y1.yield_arg().testlist())), new GeneralAnnotation(y1))
+        Yield(Some(mapTestlistStarExpr(CollectionKind.Tuple, y1.yield_arg().testlist_star_expr())), new GeneralAnnotation(y1))
       else
         YieldFrom(mapTest(y1.yield_arg().test()), new GeneralAnnotation(y1))
     }
   }
 
   def mapAtom(a : AtomContext) : T  = {
-    if (a.OPEN_PAREN() != null || a.OPEN_BRACK() != null) {
-      val collectionKind = if (a.OPEN_BRACK() != null) CollectionKind.List else CollectionKind.Tuple
-      if (a.testlist_comp() != null) {
-        mapTestList_comp(collectionKind, a.testlist_comp())
+      if (a.OPEN_PAREN() != null || a.OPEN_BRACK() != null) {
+        val collectionKind = if (a.OPEN_BRACK() != null) CollectionKind.List else CollectionKind.Tuple
+        if (a.testlist_comp() != null) {
+          mapTestList_comp(collectionKind, a.testlist_comp())
+        } else
+        if (a.yield_expr() != null) mapYieldExpr(a.yield_expr()) else
+        CollectionCons(collectionKind, List(), new GeneralAnnotation(a))
       } else
-      if (a.yield_expr() != null) mapYieldExpr(a.yield_expr()) else
-      CollectionCons(collectionKind, List(), new GeneralAnnotation(a))
-    } else
-    if (a.OPEN_BRACE() != null) {
-      // An empty set cannot be constructed with {}; this literal constructs an empty dictionary. https://docs.python.org/3/reference/expressions.html#set-displays
-      if (a.dictorsetmaker() == null) DictCons(List(), new GeneralAnnotation(a)) else
-      if (a.dictorsetmaker().testlist_comp() != null) {
-        mapTestList_comp(CollectionKind.Set, a.dictorsetmaker().testlist_comp())
-      } else {
-        if (a.dictorsetmaker().comp_for() != null)
-          DictComprehension(mapDictEltDoubleStar(a.dictorsetmaker().dict_elt_double_star(0)), mapCompFor(a.dictorsetmaker().comp_for()), new GeneralAnnotation(a))
-        else
-          DictCons(asScala(a.dictorsetmaker().dict_elt_double_star()).toList.map(mapDictEltDoubleStar), new GeneralAnnotation(a))
+      if (a.OPEN_BRACE() != null) {
+        // An empty set cannot be constructed with {}; this literal constructs an empty dictionary. https://docs.python.org/3/reference/expressions.html#set-displays
+        if (a.dictorsetmaker() == null) DictCons(List(), new GeneralAnnotation(a)) else
+        if (a.dictorsetmaker().testlist_comp() != null) {
+          mapTestList_comp(CollectionKind.Set, a.dictorsetmaker().testlist_comp())
+        } else {
+          if (a.dictorsetmaker().comp_for() != null)
+            DictComprehension(mapDictEltDoubleStar(a.dictorsetmaker().dict_elt_double_star(0)),
+              mapCompFor(a.dictorsetmaker().comp_for()), new GeneralAnnotation(a))
+          else
+            DictCons(asScala(a.dictorsetmaker().dict_elt_double_star()).toList.map(mapDictEltDoubleStar), new GeneralAnnotation(a))
+        }
+      } else
+      if (a.NUMBER() != null) string2num(a.NUMBER().getText, a) else
+      if (a.NAME() != null) Ident(a.NAME().getText, new GeneralAnnotation(a)) else
+      if (a.TRUE() != null) BoolLiteral(true, new GeneralAnnotation(a)) else
+      if (a.FALSE() != null) BoolLiteral(false, new GeneralAnnotation(a)) else
+      if (a.NONE() != null) NoneLiteral(new GeneralAnnotation(a)) else {
+      if (a.ELLIPSIS() != null) EllipsisLiteral(new GeneralAnnotation(a)) else
+        StringLiteral(asScala(a.STRING()).map(_.getText).mkString(" "), new GeneralAnnotation(a))
       }
-    } else
-    if (a.NUMBER() != null) string2num(a.NUMBER().getText, a) else
-    if (a.NAME() != null) Ident(a.NAME().getText, new GeneralAnnotation(a)) else
-    if (a.TRUE() != null) BoolLiteral(true, new GeneralAnnotation(a)) else
-    if (a.FALSE() != null) BoolLiteral(false, new GeneralAnnotation(a)) else
-    if (a.NONE() != null) NoneLiteral(new GeneralAnnotation(a)) else
-      StringLiteral(asScala(a.STRING()).map(_.getText).mkString(""), new GeneralAnnotation(a))
-/*    else {  todo: incorrect string literal processing?
-      println(a.STRING())
-      println(a.yield_expr())
-      println(a.testlist_comp())
-      println(a.dictorsetmaker(), a.ELLIPSIS(), a.NONE(), a.TRUE(), a.FALSE())
-      ???
-    }*/
+      /*    else {  todo: incorrect string literal processing?
+            println(a.STRING())
+            println(a.yield_expr())
+            println(a.testlist_comp())
+            println(a.dictorsetmaker(), a.ELLIPSIS(), a.NONE(), a.TRUE(), a.FALSE())
+            ???
+          }*/
   }
 
   def mapExprStarExpr(e : Expr_star_exprContext) = if (e.expr() != null) mapExpr(e.expr()) else mapStarExpr(e.star_expr())
   def mapExprList(e : ExprlistContext) = asScala(e.l).map(mapExprStarExpr).toList match {
-    case List(x) => x
+    case List(x) if e.COMMA().isEmpty => x
     case l => CollectionCons(CollectionKind.Tuple, l, new GeneralAnnotation(e))
   }
+
+  def mapVfparg(kind : ArgKind.T, c : VfpargContext) : Parameter = {
+    val default = Option(c.test()).map(mapTest)
+    Parameter(c.vfpdef().NAME().getText, kind, None, default, new GeneralAnnotation(c))
+  }
+
+  def mapVarargslistNopos(c : Varargslist_noposContext) = {
+    (asScala(c.l).toList.map(x => (mapVfparg(ArgKind.Keyword, x))),
+      // todo: the next line may be wrong, it may break the method with which python forces all args to be keyword only (4.8.3 in tutorial)
+      if (c.vfptuple().vfpdef() == null) None else Some(c.vfptuple().vfpdef().NAME().getText),
+      Option(c.vfpdict()).map(_.vfpdef().NAME().getText)
+    )
+  }
+
+  def mapVarargslist(c : VarargslistContext)  = {
+    if (c == null) (List(), None, None) else {
+      val tail =
+        if (c.varargslist_nopos() != null) mapVarargslistNopos(c.varargslist_nopos()) else
+          if (c.vfpdict() != null) (List(), None, Some(c.vfpdict().vfpdef().NAME().getText)) else
+            (List(), None, None)
+      val l = asScala(c.l).toList
+      val (posOnly, others) = l.splitAt(l.indexWhere(c => c.vfpdef().DIV() != null))
+      val (posAndKword, kwordOnly) = others.splitAt({
+        val pos = others.indexWhere(c => c.vfpdef().STAR() != null)
+        if (-1 == pos) others.length else pos
+      })
+      def f(kind : ArgKind.T, l : List[VfpargContext]) = l.flatMap(x =>
+        if (x.vfpdef().NAME() == null) List() else List(mapVfparg(kind, x)))
+      (f(ArgKind.Positional, posOnly) ++ f(ArgKind.PosOrKeyword, posAndKword) ++ f(ArgKind.Keyword, kwordOnly) ++
+           tail._1, tail._2, tail._3)
+    }
+  }
+
+
 
   def mapTest(e : TestContext) : T = e match {
     case e : TestOrTestContext =>
@@ -600,12 +669,13 @@ object MapExpressions {
         mapOrTest(e.or_test(0))
       else
         Cond(mapOrTest(e.or_test(1)), mapOrTest(e.or_test(0)), mapTest(e.test()), new GeneralAnnotation(e))
-    case e : TestLambdefContext => AnonFun(
-      if (e.lambdef().varargslist() == null) List() else
-        asScala(e.lambdef().varargslist().l).toList.map(tok => Ident(tok.NAME().getText, new GeneralAnnotation(tok))),
-      mapTest(e.lambdef().test()),
-      new GeneralAnnotation(e)
-    )
+    case e : TestLambdefContext =>
+      val (args, o1, o2) = mapVarargslist(e.lambdef().varargslist())
+      AnonFun(
+        args, o1, o2,
+        mapTest(e.lambdef().test()),
+        new GeneralAnnotation(e)
+      )
   }
 
   def mapTestList_comp(collectionKind: CollectionKind.T, e : Testlist_compContext) : T =
@@ -636,16 +706,16 @@ object MapExpressions {
     IfComprehension(mapTestNocond(context.test_nocond())) :: mapCompIterNullable(context.comp_iter())
 
   def mapTestNocond(context: Python3Parser.Test_nocondContext) : T =
-    if (context.or_test() != null) mapOrTest(context.or_test()) else
-    AnonFun(
-      if (context.lambdef_nocond().varargslist() == null) List() else
-        asScala(context.lambdef_nocond().varargslist().l).toList.map(tok => Ident(tok.NAME().getText, new GeneralAnnotation(tok))),
-      mapTestNocond(context.lambdef_nocond().test_nocond()),
-      new GeneralAnnotation(context)
-    )
+    if (context.or_test() != null) mapOrTest(context.or_test()) else {
+      val (args, o1, o2) = mapVarargslist(context.lambdef_nocond().varargslist())
+      AnonFun(args, o1, o2,
+        mapTestNocond(context.lambdef_nocond().test_nocond()),
+        new GeneralAnnotation(context)
+      )
+    }
 
   def mapTestList(e : TestlistContext) = (asScala(e.l).map(mapTest).toList) match {
-    case List(x) => x
+    case List(x) if e.COMMA().isEmpty => x
     case l => CollectionCons(CollectionKind.Tuple, l, new GeneralAnnotation(e))
   }
 
@@ -658,7 +728,7 @@ object MapExpressions {
 
   def mapTestlistStarExpr(collectionKind : CollectionKind.T, e : Testlist_star_exprContext) = {
     (asScala(e.l).map(mapTestStarExpr).toList) match {
-      case List(x) => x
+      case List(x) if e.COMMA().size() == 0 => x
       case l => CollectionCons(collectionKind, l, new GeneralAnnotation(e))
     }
   }
@@ -666,9 +736,9 @@ object MapExpressions {
   def mapSubscript(e : Subscript_Context) : T = e match {
     case i : SubIndexContext => mapTest(i.test())
     case slice : SubSliceContext => Slice(
-      if (slice.test(0) == null) None else Some(mapTest(slice.test(0))),
-      if (slice.test(1) == null) None else Some(mapTest(slice.test(1))),
-      if (slice.test(2) == null) None else Some(mapTest(slice.test(2))),
+      if (slice.start == null) None else Some(mapTest(slice.start)),
+      if (slice.stop == null) None else Some(mapTest(slice.stop)),
+      if (slice.step == null) None else Some(mapTest(slice.step)),
       new GeneralAnnotation(e)
     )
   }
@@ -683,8 +753,7 @@ object MapExpressions {
       val a = mapTest(e.test(0))
       if (e.comp_for() != null) {
         val comp = mapCompFor(e.comp_for())
-        (None, // todo: I represent this arg comprehension as a star of a list, but it may be a star of a tuple or a set as well
-          Star(CollectionComprehension(CollectionKind.List, a, comp, new GeneralAnnotation(e)), new GeneralAnnotation(e)))
+        (None, GeneratorComprehension(a, comp, new GeneralAnnotation(e)))
       } else
         (None, a)
     }
@@ -693,16 +762,22 @@ object MapExpressions {
     if (l == null) List() else asScala(l.l).map(mapArgument).toList
   }
 
-
+  def mapSubscriptList(c : SubscriptlistContext) = asScala(c.l).toList match {
+    case List(x) if c.COMMA().isEmpty => mapSubscript(x)
+    case l => CollectionCons(CollectionKind.Tuple, l.map(mapSubscript), new GeneralAnnotation(c))
+  }
 
   def mapAtomExpr(e : Atom_exprContext) = {
-    val whom = mapAtom(e.atom())
-    asScala(e.trailer()).foldLeft(whom)((acc, trailer) => trailer match {
-      case call : TrailerCallContext => CallIndex(true, acc, mapArglistNullable(call.arglist()), new GeneralAnnotation(call))
-      case ind  : TrailerSubContext => CallIndex(false, acc,
-        asScala(ind.subscriptlist().l).map(x => (None, mapSubscript(x))).toList, new GeneralAnnotation(ind))
-      case field : TrailerFieldContext => Field(acc, field.NAME().getText, new GeneralAnnotation(field))
-    })
+    val noawait = {
+      val whom = mapAtom(e.atom())
+      asScala(e.trailer()).foldLeft(whom)((acc, trailer) => trailer match {
+        case call: TrailerCallContext => CallIndex(true, acc, mapArglistNullable(call.arglist()), new GeneralAnnotation(call))
+        case ind: TrailerSubContext => CallIndex(false, acc,
+          List((None, mapSubscriptList(ind.subscriptlist()))), new GeneralAnnotation(ind))
+        case field: TrailerFieldContext => Field(acc, field.NAME().getText, new GeneralAnnotation(field))
+      })
+    }
+    if (e.AWAIT() != null) Await(noawait, noawait.ann.pos) else noawait
   }
 
   def mapPower(e : PowerContext) = {

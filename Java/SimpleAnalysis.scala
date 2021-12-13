@@ -15,7 +15,7 @@ object SimpleAnalysis {
   }
 
   def childrenE(e : T) : List[T] = e match {
-    case AnonFun(args, body, ann) => List(body)
+    case AnonFun(args, _, _, body, ann) => List(body)
     case Binop(op, l, r, _) =>List(l, r)
     case SimpleComparison(op, l, r, _) => List(l, r)
     case LazyLAnd(l, r, _) => List(l, r)
@@ -31,8 +31,9 @@ object SimpleAnalysis {
     case Field(whose, name, _) => List(whose)
     case Cond(cond, yes, no, _) => List(cond, yes, no)
     case x : UnsupportedExpr => x.children
-    case IntLiteral(_, _) | FloatLiteral(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | NoneLiteral(_) | ImagLiteral(_, _) |
-         Ident(_, _) => List()
+    case IntLiteral(_, _) | FloatLiteral(_, _) | StringLiteral(_, _) | BoolLiteral(_, _)
+         | NoneLiteral(_) | ImagLiteral(_, _) | Ident(_, _) | EllipsisLiteral(_) =>
+      List()
     case CollectionComprehension(kind, base, l, _) => base :: l.flatMap(childrenComprehension)
     case DictComprehension(base, l, _) =>
       childrenDictEltDoubleStar(base) ++ l.flatMap(childrenComprehension)
@@ -60,12 +61,15 @@ object SimpleAnalysis {
       case Suite(l, _) => (l, List())
       case AugAssign(op, lhs, rhs, _) => (List(), List((true, lhs), (false, rhs)))
       case Assign(l, _) => (List(), (false, l.head) :: l.tail.map(isRhs))
+      case AnnAssign(lhs, rhsAnn, rhs, ann) => (List(), (true, lhs) :: (List(rhsAnn) ++ rhs.toList).map(isRhs))
       case CreateConst(name, value, _) => (List(), List(isRhs(value)))
-      case Return(x, _) => (List(), List(isRhs(x)))
-      case Assert(x, _) => (List(), List(isRhs(x)))
+      case Return(x, _) => (List(), x.toList.map(isRhs))
+      case Assert(x, _) => (List(), x.map(isRhs))
       case Raise(e, from, _) => (List(), (e.toList ++ from.toList).map(isRhs))
       case ClassDef(name, bases, body, decorators, _) => (List(body), (bases.map(_._2) ++ decorators.l).map(isRhs))
-      case FuncDef(name, args, _, _, body, decorators, _, _, _) => (List(body), decorators.l.map(isRhs))
+      case FuncDef(name, args, _, _, returnAnnotation, body, decorators, _, _, _) =>
+        (List(body),
+          (decorators.l ++ returnAnnotation.toList ++ args.flatMap(p => p.paramAnn.toList ++ p.default.toList)).map(isRhs))
       case NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | Global(_, _) | ImportModule(_, _, _)
            | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (List(), List())
       case x : Unsupported => (x.sts, x.es)
@@ -89,10 +93,10 @@ object SimpleAnalysis {
     }
   }
 
-  private def classifyVariablesAssignedInFunctionBody(args : List[(String, ArgKind.T, Option[T], GeneralAnnotation)], body : Statement)
+  private def classifyVariablesAssignedInFunctionBody(args : List[Parameter], body : Statement)
   : HashMap[String, (VarScope.T, GeneralAnnotation)] = {
     def dontVisitOtherBlocks(s : Statement) : Boolean = s match {
-      case FuncDef(_, _, _, _, _, _, _, _, _) | ClassDef(_, _, _, _, _) => false
+      case FuncDef(_, _, _, _, _, _, _, _, _, _) | ClassDef(_, _, _, _, _) => false
       case _ => true
     }
     type H = HashMap[String, (VarScope.T, GeneralAnnotation)]
@@ -108,19 +112,20 @@ object SimpleAnalysis {
       def add(name : String, ann : GeneralAnnotation) = add0(h, name, ann)
       st match {
         case ClassDef(name, bases, body, _, ann) => (add(name, ann), false)
-        case FuncDef(name, args, body, _, _, _, _, _, ann) => (add(name, ann), false)
+        case FuncDef(name, args, body, _, _, _, _, _, _, ann) => (add(name, ann), false)
         case Assign(List(CollectionCons(_, _, _), _), ann) =>
           throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(l, ann) if l.size > 2 =>
           throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(List(Ident(name, _), _), ann) => (add(name, ann), true)
+        case AnnAssign(Ident(name, _), _, _, ann) => (add(name, ann), true)
         case u : Unsupported => (u.declareVars.foldLeft(h)(add0(_, _, u.ann)), true)
         case CreateConst(name, _, ann) => (add(name, ann), true)
         case _ => (h, true)
       }
     })(h2, body)
 
-    args.foldLeft(h3)((h, name) => h.+((name._1, (VarScope.Arg, name._4))))
+    args.foldLeft(h3)((h, name) => h.+((name.name, (VarScope.Arg, name.ann))))
 
 //    foldSE[H]((h, e) => e match {
 //      case Ident(name) => if (h.contains(name)) h else {
@@ -143,7 +148,8 @@ object SimpleAnalysis {
       case f : FuncDef => (computeAccessibleIdentsF(merged, f), ns, false)
       case _ => (s, ns, true)
     })(f.body, new SimplePass.Names())
-    FuncDef(f.name, f.args, f.otherPositional, f.otherKeyword, body, f.decorators, merged, f.isAsync, f.ann.pos)
+    FuncDef(f.name, f.args, f.otherPositional, f.otherKeyword, f.returnAnnotation,
+      body, f.decorators, merged, f.isAsync, f.ann.pos)
   }
 
   def computeAccessibleIdents(s : Statement) : Statement = {
@@ -159,7 +165,7 @@ object SimpleAnalysis {
 //      Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | Global(_) |
       IfSimple(_, _, _, _) | While(_, _, _, _) |
       Suite(_, _) | Assign(List(_), _) | Assign(List(Ident(_, _), _), _) | Return(_, _) |
-      FuncDef(_, _, _, _, _, Decorators(List()), _, _, _) |
+      FuncDef(_, _, _, _, _, _, Decorators(List()), _, _, _) |
       NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | ImportModule(_, _, _) |
       ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (acc, true)
   }
@@ -167,7 +173,7 @@ object SimpleAnalysis {
   private def assertExpressionIsSimplified(acc : Unit, e : T) : Unit = e match {
     case FreakingComparison(List(_), List(_, _), _) => ()
     case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _)
-         | CallIndex(false, _, _, _) | FreakingComparison(_, _, _) | AnonFun(_, _, _) =>
+         | CallIndex(false, _, _, _) | FreakingComparison(_, _, _) | AnonFun(_, _, _, _, _) =>
       throw new Throwable("these must never happen after all passes: " + PrintPython.printExpr(e))
     case _ => ()
   }
