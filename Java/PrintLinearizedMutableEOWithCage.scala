@@ -28,8 +28,7 @@ object PrintLinearizedMutableEOWithCage {
       case f : FuncDef => List(s"${f.name}.write ${f.name}Fun")
       case Assign(List(Ident(lhsName, _), rhs), _) =>
         List(
-          s"forceData.write ${printExpr(bogusVisibility)(rhs)}",
-          s"x$lhsName.write forceData"
+          s"x$lhsName.write ${printExpr(bogusVisibility)(rhs)}.@"
         )
       case Assign(List(e), _) => List(printExpr(bogusVisibility)(e))
       case Return(e, _) => e.toList.map(printExpr(bogusVisibility)(_))
