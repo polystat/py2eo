@@ -187,11 +187,12 @@ class Tests {
 
       val eoHacked = Suite(List(
         theFunC,
-        Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"), List(), ann.pos)), ann.pos)
+        Return(Some(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
+          List((None, NoneLiteral(ann.pos))), ann.pos)), ann.pos)
       ), ann.pos)
 
       val eoText = PrintLinearizedMutableEOWithCage.printTest(name, eoHacked)
-      writeFile(test, "genCageEO", ".eo", eoText.mkString("\n"))
+      writeFile(test, "genCageEO", ".eo", (eoText.init :+ "    xresult").mkString("\n"))
 
     }
   }
