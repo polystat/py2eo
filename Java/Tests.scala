@@ -20,7 +20,9 @@ class Tests {
 
 
   def recursiveListFiles(f: File): Array[File] = {
-    val these = f.listFiles.filter(f => !f.getParent.contains("after") && f.getName.contains(".py"))
+    val these = f.listFiles.filter(f => f.getName.contains(".py"))
+    println(these)
+
     these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
   }
 
@@ -30,7 +32,21 @@ class Tests {
       val f = new File(testsPrefix + dir + separator)
       if (!f.isDirectory) assertTrue(f.mkdir())
     }
-    files = recursiveListFiles(new File(System.getProperty("user.dir") + "/test/"))
+
+
+    for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
+      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
+      if (testHolder.exists && testHolder.isDirectory) {
+        for (file <- testHolder.listFiles.filter(_.isFile).toList){
+          files +:= file
+          println(files.length)
+        }
+      }
+    }
+
+//    for (folder <- List("assignCheck", "ifCheck", "whileCheck")){
+//      files = recursiveListFiles(new File(System.getProperty("user.dir") + s"/test/$folder/"))
+//    }
   }
 
   @Test def removeControlFlow(): Unit = {
