@@ -56,8 +56,10 @@ object PrintLinearizedMutableEOWithCage {
           case None => acc
         }
         case IfSimple(cond, Return(Some(yes), _), Return(Some(no), _), ann) =>
-          val e = Cond(cond, yes, no, ann.pos)
-          (acc._1, acc._2 :+ ("result.write " + pe(e)))
+          val (ns1, stsY) = others(acc._1, List(Assign(List(Ident("result", ann.pos), yes), ann.pos)))
+          val (ns2, stsN) = others(ns1,    List(Assign(List(Ident("result", ann.pos), no), ann.pos)))
+          val ifelse = pe(cond) + ".if" :: indent("seq" :: indent(stsY)) ++ indent("seq" :: indent(stsN))
+          (ns2, acc._2 ++ ifelse)
         case Pass(_) => acc
         case Suite(l, _) => others(ns, l)
       })
