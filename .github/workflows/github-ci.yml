@@ -32,6 +32,8 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8.10'
       - name: Build with Maven
         run: mvn clean test -B
       - name: archive artifacts
@@ -58,7 +60,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifacts
-          path: ./test/src/main/eo
+          path: ./test/genCageEO/
       - name: Build with Maven
         run: cd ./test && mvn clean test
       - name: upload artifacts
