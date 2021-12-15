@@ -164,6 +164,7 @@ COLON : ':';
 SEMI_COLON : ';';
 POWER : '**';
 ASSIGN : '=';
+ASSIGN_IN_EXPR : ':=';
 OPEN_BRACK : '[' {openBrace();};
 CLOSE_BRACK : ']' {closeBrace();};
 OR_OP : '|';
@@ -249,24 +250,29 @@ fragment NON_ZERO_DIGIT
  : [1-9]
  ;
 
+// all int digits except the first one may be separators equal to '_'
+fragment FIRST_DIGIT
+ : [0-9]
+ ;
+
 /// digit          ::=  "0"..."9"
 fragment DIGIT
- : [0-9]
+ : [0-9_]
  ;
 
 /// octdigit       ::=  "0"..."7"
 fragment OCT_DIGIT
- : [0-7]
+ : [0-7_]
  ;
 
 /// hexdigit       ::=  digit | "a"..."f" | "A"..."F"
 fragment HEX_DIGIT
- : [0-9a-fA-F]
+ : [0-9a-fA-F_]
  ;
 
 /// bindigit       ::=  "0" | "1"
 fragment BIN_DIGIT
- : [01]
+ : [01_]
  ;
 
 /// pointfloat    ::=  [intpart] fraction | intpart "."
@@ -282,17 +288,17 @@ fragment EXPONENT_FLOAT
 
 /// intpart       ::=  digit+
 fragment INT_PART
- : DIGIT+
+ : FIRST_DIGIT DIGIT*
  ;
 
 /// fraction      ::=  "." digit+
 fragment FRACTION
- : '.' DIGIT+
+ : '.' FIRST_DIGIT DIGIT*
  ;
 
 /// exponent      ::=  ("e" | "E") ["+" | "-"] digit+
 fragment EXPONENT
- : [eE] [+-]? DIGIT+
+ : [eE] [+-]? FIRST_DIGIT DIGIT*
  ;
 
 /// shortbytes     ::=  "'" shortbytesitem* "'" | '"' shortbytesitem* '"'
