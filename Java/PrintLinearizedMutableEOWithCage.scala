@@ -1,5 +1,5 @@
 import Expression.{CallIndex, CollectionCons, Cond, DictCons, Field, Ident, Parameter, StringLiteral}
-import PrintEO.{EOVisibility, Text, ident, printExpr}
+import PrintEO.{EOVisibility, Text, indent, printExpr}
 import PrintLinearizedImmutableEO.rmUnreachableTail
 import PrintLinearizedMutableEONoCage.headers
 
@@ -36,7 +36,7 @@ object PrintLinearizedMutableEOWithCage {
         case NonLocal(l, _) => acc
         case Assign(List(Ident(name, _), DictCons(l, _)), _) =>
           (acc._1, acc._2 ++ ("write." ::
-            ident("x" + name :: "[]" :: ident(l.map{ case Left((StringLiteral(name, _), value)) =>
+            indent("x" + name :: "[]" :: indent(l.map{ case Left((StringLiteral(name, _), value)) =>
               pe(value) + " > x" + name.substring(1, name.length - 1) }))))
         case f : FuncDef => (acc._1, acc._2 :+ s"${f.name}.write ${f.name}Fun")
         case Assign(List(lhs, rhs@CallIndex(true, whom, args, ann)), _) if isSeqOfFields(whom) && isSeqOfFields(lhs) =>
@@ -63,11 +63,11 @@ object PrintLinearizedMutableEOWithCage {
       })
 
     val args1 = f.args.map{ case Parameter(argname, ArgKind.Positional, None, None, _) => argname + "NotCopied" }.mkString(" ")
-    s"[$args1] > x${newName}" :: ident(
+    s"[$args1] > x${newName}" :: indent(
       "cage > xresult" ::
       "cage > tmp" ::
       argCopies ++ memories ++ innerFuns ++
-        ("seq > @" :: ident(
+        ("seq > @" :: indent(
   //          s"stdout \"$newName\\n\"" ::
               f.args.map(parm => s"${parm.name}.<") ++
               others(new SimplePass.Names(), l.filterNot(isFun))._2  :+

@@ -81,7 +81,7 @@ object PrintEO {
     }
   }
 
-  def ident(l : Text) = l.map(Ident + _)
+  def indent(l : Text) = l.map(Ident + _)
 
   def printSt(visibility : EOVisibility)(st : Statement) : Text = {
     def s = printSt(visibility)(_)
@@ -90,7 +90,7 @@ object PrintEO {
       case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List() // todo: a quick hack
       case Pass(_) => List()
       case IfSimple(cond, yes, no, _) =>
-        List(printExpr(visibility)(cond) + ".if") ++ ident(s(yes)) ++ ident(s(no))
+        List(printExpr(visibility)(cond) + ".if") ++ indent(s(yes)) ++ indent(s(no))
       // todo: a hackish printer for single integers only!
       case Assign(List(CallIndex(true, Expression.Ident("print", _), List((None, n)), _)), _) =>
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
@@ -101,22 +101,22 @@ object PrintEO {
         List("x" + visibility(lname) + ".write " + printExpr(visibility)(erhs))
       case Assign(List(_), _) => List("unsupported")
       case Suite(List(st), _) => s(st)
-      case Suite(l, _) => List("seq") ++ ident(l.flatMap(s))
+      case Suite(l, _) => List("seq") ++ indent(l.flatMap(s))
       case u : Unsupported =>
         val e1 = CallIndex(true, Expression.Ident("unsupported", new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(visibility)(e1)
-        List(head) ++ ident(u.sts.flatMap(s))
+        List(head) ++ indent(u.sts.flatMap(s))
       case While(cond, body, Pass(_), _) =>
         List("while.",
           Ident + printExpr(visibility)(cond),
-        ) ++ ident("[unused]" :: ident("seq > @" :: ident(printSt(visibility.stepInto(List()))(body))))
+        ) ++ indent("[unused]" :: indent("seq > @" :: indent(printSt(visibility.stepInto(List()))(body))))
       case FuncDef(name, args, None, None, None, body, Decorators(List()), h, false, _) =>
         val locals = h.filter(z => z._2._1 == VarScope.Local).keys
         val args1 = args.map{ case Parameter(argname, _, None, None, _) => "x" + argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
         List(s"x$name.write") ++
-          ident(s"[$args1]" ::
-            ident(locals.map(name => s"memory > x$name").toList ++ List("seq > @") ++ ident(body1)))
+          indent(s"[$args1]" ::
+            indent(locals.map(name => s"memory > x$name").toList ++ List("seq > @") ++ indent(body1)))
     }
   }
 
@@ -142,7 +142,7 @@ object PrintEO {
         Ident + "memory > xhack",
         Ident + "seq > @"
       ) ++
-      ident(ident(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))
+      indent(indent(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))
     )
   }
 
