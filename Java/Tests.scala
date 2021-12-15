@@ -16,12 +16,21 @@ class Tests {
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
   val separator: String = File.separator
+  var files = Array.empty[File]
+
+
+  def recursiveListFiles(f: File): Array[File] = {
+    val these = f.listFiles.filter(f => !f.getParent.contains("after") && f.getName.contains(".py"))
+    these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
+  }
+
 
   @Before def initialize(): Unit = {
     for (dir <- intermediateDirs) {
-      val f = new File(testsPrefix + dir + "/")
+      val f = new File(testsPrefix + dir + separator)
       if (!f.isDirectory) assertTrue(f.mkdir())
     }
+    files = recursiveListFiles(new File(System.getProperty("user.dir") + "/test/"))
   }
 
   @Test def removeControlFlow(): Unit = {
@@ -136,15 +145,16 @@ class Tests {
   }
 
   @Test def useCage() : Unit = {
-    for (name <- List("x", "trivial")) {
-      val y = Parse.parse(testsPrefix, name)
+    for (file <- files) {
+      val name = file.getName.replace(".py", "")
+      val y = Parse.parse(file.getParent, name)
 
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
       val Suite(List(theFun, Return(_))) = z._1
-      val FuncDef(mainName, _, _, _, body, _, _) = theFun
+      val FuncDef(mainName, _, _, _, _, _, _) = theFun
 
       val theFunC = ClosureWithCage.closurize(theFun)
       val hacked = Suite(List(theFunC, Assert(CallIndex(isCall = true,

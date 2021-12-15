@@ -11,7 +11,6 @@ class TestsNewGen {
     "genImmutableEO", "genHeapifiedEO", "genCageEO", "genUnsupportedEO"
   )
   val separator: String = "/"
-  val scalaList = List()
   var files = Array.empty[File]
 
 
