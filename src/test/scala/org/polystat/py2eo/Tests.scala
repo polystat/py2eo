@@ -16,9 +16,10 @@ import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
 import scala.sys.process._
 
+//@RunWith(classOf[JUnitRunner])
 class Tests {
 
-  private val testsPrefix = System.getProperty("user.dir") + "/test/"
+  private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
 
   def writeFile(test : File, dirSuffix : String, fileSuffix : String, what : String) : String = {
     assert(test.getName.endsWith(".py"))
@@ -31,7 +32,7 @@ class Tests {
     output.write(what)
     output.close()
     outName
-  }
+    }
 
   def debugPrinter(module : File)(s : Statement, dirSuffix : String) : Unit = {
     val what = PrintPython.printSt(s, "")
@@ -107,9 +108,9 @@ class Tests {
     val hacked4EO = Suite(List(l.head), pos)
     val eoText =
       PrintLinearizedImmutableEO.printSt(name, hacked4EO) +
-        "  * > emptyHeap\n" +
-        "  [] > emptyClosure\n" +
-        s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
+      "  * > emptyHeap\n" +
+      "  [] > emptyClosure\n" +
+      s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
     writeFile(test, "genImmutableEO", ".eo", eoText)
   }
 
@@ -285,7 +286,7 @@ class Tests {
           if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
           else println(s"finished ${test.getName}")
           assertTrue(exitCode == 0)
-        }
+  }
       }
     )
     for (f <- futures) Await.result(f, Duration.Inf)

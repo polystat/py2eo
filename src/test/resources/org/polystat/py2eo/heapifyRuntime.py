@@ -17,4 +17,3 @@ indirHeap  = CHeap()
 
 #ptr = theHeap.mkNew(11)
 #print(theHeap.get(ptr))
-
