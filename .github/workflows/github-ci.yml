@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifacts
-          path: test/genCageEO/
+          path: src/test/resources/org/polystat/py2eo/genCageEO/
 
   runEO:
     strategy:
@@ -60,9 +60,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifacts
-          path: ./test/genCageEO/
+          path: ./runEO/genCageEO/
       - name: Build with Maven
-        run: cd ./test && mvn clean test
+        run: cd ./runEO && mvn clean test
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
