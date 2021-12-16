@@ -301,7 +301,7 @@ class Tests {
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
       import scala.sys.process._
-      assertTrue(0 == (s"python3 \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+      assertTrue(0 == (s"$python \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
       println(stdout)
     }
   }
