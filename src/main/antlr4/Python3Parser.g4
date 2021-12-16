@@ -56,15 +56,17 @@ typedargslist_nopos: tfptuple (',' l+=tfparg)* (',' (tfpdict)?)?;
 tfparg: tfpdef ('=' test)?;
 tfptuple: '*' (tfpdef)?;
 tfpdict: '**' tfpdef (',')?;
-tfpdef: NAME (':' test)?;
+tfpdef: (NAME | '/' | '*') (':' test)?;
 
-varargslist: (l+=vfpdef ('=' test)? (',' l+=vfpdef ('=' test)?)* (',' (
-        '*' (vfpdef)? (',' vfpdef ('=' test)?)* (',' ('**' vfpdef (',')?)?)?
-      | '**' vfpdef (',')?)?)?
-  | '*' (vfpdef)? (',' vfpdef ('=' test)?)* (',' ('**' vfpdef (',')?)?)?
-  | '**' vfpdef (',')?
+varargslist: (l+=vfparg (',' l+=vfparg)* (',' (varargslist_nopos | vfpdict)?)?
+  | varargslist_nopos
+  | vfpdict
 );
-vfpdef: NAME;
+varargslist_nopos: vfptuple (',' l+=vfparg)* (',' (vfpdict)?)?;
+vfptuple: '*' (vfpdef)?;
+vfpdict: '**' vfpdef (',')?;
+vfparg: vfpdef ('=' test)?;
+vfpdef: (NAME | '/' | '*');
 
 stmt:
     simple_stmt     # StmtSimple
@@ -89,7 +91,7 @@ rhsassign :
     yield_expr              # RhsYield
     |testlist_star_expr     # RhsTestlist
     ;
-annassign: ':' test ('=' test)?;
+annassign: ':' ann=test ('=' value=test)?;
 test_star_expr :
     test # TestNotStar
     | star_expr # StarNotTest
@@ -109,7 +111,7 @@ flow_stmt:
     ;
 break_stmt: 'break';
 continue_stmt: 'continue';
-return_stmt: 'return' (testlist)?;
+return_stmt: 'return' (testlist_star_expr)?; // changed acc test_grammar.py:854, tag v3.8.10
 yield_stmt: yield_expr;
 raise_stmt: 'raise' (test ('from' test)?)?;
 
@@ -143,8 +145,9 @@ compound_stmt:
     | async_stmt # CompAsync
     ;
 async_stmt: ASYNC (funcdef | with_stmt | for_stmt);
-if_stmt: 'if' conds+=test ':' bodies+=suite ('elif' conds+=test ':' bodies+=suite)* ('else' ':' eelse=suite)?;
-while_stmt: 'while' cond=test ':' body=suite ('else' ':' eelse=suite)?;
+if_stmt: 'if' conds+=assignment_expression ':' bodies+=suite
+    ('elif' conds+=assignment_expression ':' bodies+=suite)* ('else' ':' eelse=suite)?;
+while_stmt: 'while' cond=assignment_expression ':' body=suite ('else' ':' eelse=suite)?;
 for_stmt: 'for' exprlist 'in' testlist ':' body=suite ('else' ':' eelse=suite)?;
 
 try_stmt: ('try' ':' trySuite=suite
@@ -161,6 +164,8 @@ suite:
     simple_stmt # SuiteSimpleStmt
     | NEWLINE INDENT (l+=stmt)+ DEDENT  # SuiteBlockStmts
     ;
+
+assignment_expression: (IDENT ASSIGN_IN_EXPR)? test;
 
 test:
     or_test ('if' or_test 'else' test)? # TestOrTest
@@ -207,7 +212,7 @@ trailer:
 subscriptlist: l+=subscript_ (',' l+=subscript_)* (',')?;
 subscript_:
     test # SubIndex
-    | (test)? ':' (test)? (':' test)? # SubSlice
+    | (start=test)? ':' (stop=test)? (':' (step=test)?)? # SubSlice
     ;
 expr_star_expr : expr | star_expr;
 exprlist: l+=expr_star_expr (',' l+=expr_star_expr)* (',')?;
@@ -242,4 +247,4 @@ comp_if: 'if' test_nocond (comp_iter)?;
 encoding_decl: NAME;
 
 yield_expr: 'yield' (yield_arg)?;
-yield_arg: 'from' test | testlist;
+yield_arg: 'from' test | testlist_star_expr; // acc to test_grammar.py:1072, tag v3.8.10

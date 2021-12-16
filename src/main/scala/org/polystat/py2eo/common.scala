@@ -67,12 +67,6 @@ package Common {
     }
   }
 
-  class Collector[T] {
-    private var l =  List[T]()
-    def add(x : T) = l = x :: l
-    def get = l
-  }
-
   // an ocaml style HashMap to simplify variable scopes traversal
   class HashStack[Key, Value](h0 : HashMap[Key, List[Value]]) {
     val h = h0
