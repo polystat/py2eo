@@ -1,15 +1,13 @@
 
-import java.io.{File, FileWriter}
-import java.nio.file.{Files, Paths}
 import Expression._
 import org.junit.Assert._
-import org.junit.{Before, Ignore, Test}
+import org.junit.Test
 
 import java.io.{File, FileWriter}
-import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.{Files, Paths}
+import scala.collection.immutable
 import scala.collection.immutable.HashMap
-import scala.collection.{immutable, mutable}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -18,7 +16,8 @@ import scala.sys.process._
 
 //@RunWith(classOf[JUnitRunner])
 class Tests {
-
+  val separator: String = "/"
+  var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
 
   def writeFile(test : File, dirSuffix : String, fileSuffix : String, what : String) : String = {
@@ -292,5 +291,24 @@ class Tests {
     for (f <- futures) Await.result(f, Duration.Inf)
   }
 
+  @Test def simpleConstructionTest(): Unit = {
+    for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
+      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
+      if (testHolder.exists && testHolder.isDirectory) {
+        for (file <- testHolder.listFiles.filter(_.isFile).toList){
+          val fileName = file.getName.replace(".py", "")
+          val test = new File(file.getPath)
+          def db = debugPrinter(new File(file.getPath))(_, _)
+
+          Parse.parse(test, db)
+          val stdout = new StringBuilder()
+          val stderr = new StringBuilder()
+          import scala.sys.process._
+          assertTrue(0 == (s"$python \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+          println(stdout)
+        }
+      }
+    }
+  }
 }
 
