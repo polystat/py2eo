@@ -17,11 +17,11 @@ object ClosureWithCage {
           case Ident(name, ann)  =>
             val e1 = if (scope(name)._1 != VarScope.Arg && scope(name)._1 != VarScope.Local &&
               scope(name)._1 != VarScope.Global)
-              index(Ident("closure", ann.pos), name) else
+              Field(Ident("closure", ann.pos), "clo" + name, ann.pos) else
               e
             (Left(e1), ns)
           case CallIndex(true, whom, args, ann) => // todo: this implementation is incorrect, it evals whom twice! we must extract whom to a variable!
-            (Left(CallIndex(true, index(whom, "callme"), (None, whom) :: args, ann.pos)), ns)
+            (Left(CallIndex(true, Field(whom, "callme", ann.pos), (None, whom) :: args, ann.pos)), ns)
           case _ => (Left(e), ns)
         }
       })(lhs, e, Names(HashMap()))
@@ -29,18 +29,19 @@ object ClosureWithCage {
     }
     st match {
       case FuncDef(name, args, None, None, None, body, Decorators(List()), vars, isAsync, ann) =>
-        def scope(name : String) = if (vars.contains(name)) vars(name) else (VarScope.Global, new GeneralAnnotation())
+        def scope(name : String) =
+          if (vars.contains(name)) vars(name) else (VarScope.Global, new GeneralAnnotation())
         val (body1) = closurizeInner(scope, body)
         val tmpFun = s"tmpFun$name"
         val f1 = FuncDef(tmpFun,
           Expression.Parameter("closure", ArgKind.Positional, None, None, ann.pos) :: args,
           None, None, None, body1, Decorators(List()), HashMap(), isAsync, ann.pos)
-        val rhs = DictCons(Left((StringLiteral("\"callme\"", ann.pos), Ident(tmpFun, ann.pos))) ::
+        val mkClosure = SimpleObject(name, ("callme", Ident(tmpFun, ann.pos)) ::
           vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).
-            map(z => Left((StringLiteral("\"" + z._1 + "\"", ann.pos), Ident(z._1 + "Ptr", ann.pos)))).toList,
+            map(z => ("clo" + z._1, Ident(z._1, ann.pos))).toList,
           ann.pos
         )
-        Suite(List(f1, Assign(List(Ident(name, ann.pos), rhs), ann.pos)), ann.pos)
+        Suite(List(f1, mkClosure), ann.pos)
 
       case Assign(List(x), ann) => Assign(List(pe(false, x)), ann.pos)
       case Assign(List(lhs, rhs), ann) =>

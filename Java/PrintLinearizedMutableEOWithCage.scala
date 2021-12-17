@@ -34,9 +34,9 @@ object PrintLinearizedMutableEOWithCage {
     def others(ns : SimplePass.Names, l : List[Statement]) : (SimplePass.Names, Text) =
       l.foldLeft((ns, List[String]()))((acc, st) => st match {
         case NonLocal(l, _) => acc
-        case Assign(List(Ident(name, _), DictCons(l, _)), _) =>
+        case SimpleObject(name, l, ann) =>
           (acc._1, acc._2 ++ ("write." ::
-            indent("x" + name :: "[]" :: indent(l.map{ case Left((StringLiteral(name, _), value)) =>
+            indent("x" + name :: "[]" :: indent(l.map{ case (name, value) =>
               pe(value) + " > x" + name.substring(1, name.length - 1) }))))
         case f : FuncDef => (acc._1, acc._2 :+ s"${f.name}.write ${f.name}Fun")
         case Assign(List(lhs, rhs@CallIndex(true, whom, args, ann)), _) if isSeqOfFields(whom) && isSeqOfFields(lhs) =>

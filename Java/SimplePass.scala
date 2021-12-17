@@ -85,7 +85,7 @@ object SimplePass {
         (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
           xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
       case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
-           | ImportAllSymbols(_, _) | Del(_, _)  => nochange
+           | ImportAllSymbols(_, _) | Del(_, _) | _ : SimpleObject => nochange
     }
   }
 
