@@ -1,7 +1,7 @@
 
 import Expression._
 import org.junit.Assert._
-import org.junit.{Before, Test}
+import org.junit.{Before, BeforeClass, Test}
 
 import java.io.{File, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
@@ -16,6 +16,7 @@ import scala.sys.process._
 
 //@RunWith(classOf[JUnitRunner])
 class Tests {
+
   val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
@@ -232,7 +233,7 @@ class Tests {
     }
   }
 
-  @Before def getAndCompileCpython() : Unit = {
+  @Test def parserPrinterOnCPython() : Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
     assert(dir.isDirectory)
@@ -241,20 +242,13 @@ class Tests {
     if (!afterParser.exists()) afterParser.mkdir()
     val cpython = new File(afterParser.getPath + "/cpython")
     if (!cpython.exists()) {
-      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
-      //      assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
+//      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
+      assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
     assert(0 == Process("./configure", cpython).!)
     val nprocessors = Runtime.getRuntime().availableProcessors()
     assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
-
-  }
-
-  @Test def parserPrinterOnCPython() : Unit = {
-    val dirName = testsPrefix + "/testParserPrinter"
-    val dir = new File(testsPrefix +  "/testParserPrinter/")
-    val cpython = new File(testsPrefix +  "/testParserPrinter/afterParser/cpython")
 
     println("Version of python is:")
     s"$python --version"!
