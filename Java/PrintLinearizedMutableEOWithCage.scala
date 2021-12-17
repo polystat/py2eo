@@ -64,7 +64,8 @@ object PrintLinearizedMutableEOWithCage {
         case Suite(l, _) => others(ns, l)
       })
 
-    val args1 = f.args.map{ case Parameter(argname, ArgKind.Positional, None, None, _) => argname + "NotCopied" }.mkString(" ")
+    val args1 = f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
+      argname + "NotCopied" }.mkString(" ")
     s"[$args1] > x${newName}" :: indent(
       "cage > xresult" ::
       "cage > tmp" ::
