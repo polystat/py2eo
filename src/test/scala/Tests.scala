@@ -1,7 +1,7 @@
 
 import Expression._
 import org.junit.Assert._
-import org.junit.Test
+import org.junit.{Before, Test}
 
 import java.io.{File, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
@@ -232,7 +232,7 @@ class Tests {
     }
   }
 
-  @Test def parserPrinterOnCPython() : Unit = {
+  @Before def getAndCompileCpython() : Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
     assert(dir.isDirectory)
@@ -241,10 +241,20 @@ class Tests {
     if (!afterParser.exists()) afterParser.mkdir()
     val cpython = new File(afterParser.getPath + "/cpython")
     if (!cpython.exists()) {
-//      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
-      assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
+      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
+      //      assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
+    assert(0 == Process("./configure", cpython).!)
+    val nprocessors = Runtime.getRuntime().availableProcessors()
+    assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
+
+  }
+
+  @Test def parserPrinterOnCPython() : Unit = {
+    val dirName = testsPrefix + "/testParserPrinter"
+    val dir = new File(testsPrefix +  "/testParserPrinter/")
+    val cpython = new File(testsPrefix +  "/testParserPrinter/afterParser/cpython")
 
     println("Version of python is:")
     s"$python --version"!
@@ -252,6 +262,7 @@ class Tests {
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // supporting them may take several days, so this feature is currently skipped
 
+    // "test_strtod.py", todo: what's the problem here???
     // "test_zipimport_support.py", todo: what's the problem here???
     // "test_zipfile64.py" works for more 2 minutes, too slowm
     // test_sys.py just hangs the testing with no progress (with no CPU load)
@@ -263,9 +274,7 @@ class Tests {
     val futures = test.map(test =>
       Future
       {
-        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")
-           && test.getName != "test_strtod.py"  //todo: don't know, what's with this test!
-          ) {
+        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")) {
           def db = debugPrinter(test)(_, _)
 
           println(s"parsing ${test.getName}")
@@ -275,20 +284,15 @@ class Tests {
             Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
             REPLACE_EXISTING
           )
-          val stdout = new StringBuilder()
-          val stderr = new StringBuilder()
-          val exitCode =
-            Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
-              "PYTHONPATH" -> "..") !  ProcessLogger(stdout.append(_), stderr.append(_))
-          writeFile(test, "stdout", ".stdout", stdout.toString())
-          writeFile(test, "stderr", ".stderr", stderr.toString())
-          if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
-          else println(s"finished ${test.getName}")
-          assertTrue(exitCode == 0)
-  }
+        }
       }
     )
     for (f <- futures) Await.result(f, Duration.Inf)
+
+    assume(System.getProperty("os.name") == "Linux")
+
+    assertTrue(0 == Process("make test", cpython).!)
+
   }
 
   @Test def simpleConstructionTest(): Unit = {
