@@ -166,10 +166,16 @@ object SimpleAnalysis {
 //      Del(Ident(_)) | Try(_, List((None, _)), _, _) | AugAssign(_, _, _) |
 //      Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | Global(_) |
       IfSimple(_, _, _, _) | While(_, _, _, _) |
-      Suite(_, _) | Assign(List(_), _) | Assign(List(Ident(_, _), _), _) | Return(_, _) |
+      Suite(_, _) | Assign(List(_), _) |
+      Return(_, _) |
       FuncDef(_, _, _, _, _, _, Decorators(List()), _, _, _) |
       NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | ImportModule(_, _, _) |
       ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (acc, true)
+    case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.isSeqOfFields(lhs)  => (acc, true)
+    case ClassDef(_, List(), body, Decorators(List()), _) =>
+      val (Suite(defs, _), _) = SimplePass.procStatement(SimplePass.unSuite)(body, SimplePass.Names(HashMap()))
+      assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })
+      (acc, true)
   }
 
   private def assertExpressionIsSimplified(acc : Unit, e : T) : Unit = e match {

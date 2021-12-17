@@ -54,6 +54,15 @@ object ClosureWithCage {
         (IfSimple(pe(false, cond), yes1, no1, ann.pos))
       case Pass(_) | NonLocal(_, _) => (st)
 
+      case ClassDef(name, List(), Suite(l, _), Decorators(List()), ann) =>
+        val mkObj = SimpleObject(name, l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos)
+        val creator = FuncDef(name, List(), None, None, None,
+          Suite(List(mkObj, Return(Some(Ident(name, ann.pos)), ann.pos)), ann.pos)
+          , Decorators(List()), HashMap(), false, ann)
+        closurizeInner(scope, creator)
+
+      case SimpleObject(name, fields, ann) => SimpleObject(name, fields.map(x => (x._1, pe(false, x._2))), ann.pos)
+
       case Suite(l, ann) => Suite(l.map(closurizeInner(scope, _)), ann.pos)
     }
   }

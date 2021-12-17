@@ -48,7 +48,7 @@ class Tests {
   }
 
   @Test def removeControlFlow(): Unit = {
-    for (name <- List("x", "trivial", "trivialWithBreak")) {
+    for (name <- List("x", "trivial", "trivialWithBreak", "myList")) {
       val test = new File(testsPrefix + "/" + name + ".py")
       val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
       val textractAllCalls = SimplePass.procExprInStatement(
@@ -161,7 +161,8 @@ class Tests {
   }
 
   @Test def useCage() : Unit = {
-    for (name <- List("x", "trivial")) {
+    for (name <- List("x", "trivial", "myList")) {
+      println(s"proc $name")
       val test = new File(testsPrefix + "/" + name + ".py")
       def db = debugPrinter(test)(_, _)
 
