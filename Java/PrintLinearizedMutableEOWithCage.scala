@@ -26,7 +26,7 @@ object PrintLinearizedMutableEOWithCage {
     def isFun(f : Statement) = f match { case f : FuncDef => true case _ => false }
     val funs = l.filter(isFun)
     val funNames = funs.map{ case f : FuncDef => f.name }.toSet
-    val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > ${parm.name}")
+    val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > x${parm.name}")
     val memories = f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
       map(x => s"cage > x${x._1}").toList
     val innerFuns = funs.flatMap{case f : FuncDef => (printFun(f.name, f))}
@@ -36,8 +36,11 @@ object PrintLinearizedMutableEOWithCage {
         case NonLocal(l, _) => acc
         case SimpleObject(name, l, ann) =>
           (acc._1, acc._2 ++ ("write." ::
-            indent("x" + name :: "[]" :: indent(l.map{ case (name, value) =>
-              pe(value) + " > x" + name.substring(1, name.length - 1) }))))
+            indent("x" + name :: "[]" :: indent(
+              l.map{ case (name, value) => "cage > x" + name } ++ (
+                "seq > @" :: indent(l.map{case (name, value) => s"x$name.write " + pe(value)})
+              ))
+            )) :+ s"x$name.@")
         case f : FuncDef => (acc._1, acc._2 :+ s"${f.name}.write ${f.name}Fun")
         case Assign(List(lhs, rhs@CallIndex(true, whom, args, ann)), _) if isSeqOfFields(whom) && isSeqOfFields(lhs) =>
 //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
