@@ -299,6 +299,10 @@ class Tests {
       val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
       if (testHolder.exists && testHolder.isDirectory) {
         for (file <- testHolder.listFiles.filter(_.isFile).toList){
+          if (!file.getName.contains(".disabled")){
+            println(file.getPath)
+            useCageHolder(file.getPath)
+          }
           //val fileName = file.getName.replace(".py", "")
 //          val test = new File(file.getPath)
 //          def db = debugPrinter(new File(file.getPath))(_, _)
@@ -309,8 +313,7 @@ class Tests {
 //          import scala.sys.process._
 //          assertTrue(0 == (s"$python \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
 //          println(stdout)
-          println(file.getPath)
-          useCageHolder(file.getPath)
+
         }
       }
     }
