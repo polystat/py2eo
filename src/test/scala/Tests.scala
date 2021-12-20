@@ -5,7 +5,7 @@ import java.nio.file.{Files, Paths}
 
 import Expression._
 import org.junit.Assert._
-import org.junit.Test
+import org.junit.{Ignore, Test}
 
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
@@ -204,6 +204,7 @@ class Tests {
     }
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython() : Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -259,7 +260,7 @@ class Tests {
     assertTrue(0 == Process("make test", cpython).!)
   }
 
-  def useCageHolder(path:String): Unit ={
+  def useCageHolder(path:String,simpleConstructions:Boolean = false): Unit ={
     val test = new File(path)
     def db = debugPrinter(test)(_, _)
 
@@ -270,7 +271,7 @@ class Tests {
 
     val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_, _)), _) = z._1
-    val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
+    val FuncDef(mainName, _, _, _, _, _, _, _, _, ann) = theFun
 
     val theFunC = ClosureWithCage.closurize(theFun)
     val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
@@ -290,7 +291,6 @@ class Tests {
 
     val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py",""), eoHacked)
     writeFile(test, "genCageEO", ".eo", eoText.mkString("\n"))
-
   }
 
 
@@ -301,7 +301,7 @@ class Tests {
         for (file <- testHolder.listFiles.filter(_.isFile).toList){
           if (!file.getName.contains(".disabled")){
             println(file.getPath)
-            useCageHolder(file.getPath)
+            useCageHolder(file.getPath,simpleConstructions = true)
           }
           //val fileName = file.getName.replace(".py", "")
 //          val test = new File(file.getPath)
