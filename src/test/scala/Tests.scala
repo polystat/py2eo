@@ -1,7 +1,7 @@
 
 import Expression._
 import org.junit.Assert._
-import org.junit.{Before, BeforeClass, Test}
+import org.junit.{Before, BeforeClass, Test, Ignore}
 
 import java.io.{File, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
