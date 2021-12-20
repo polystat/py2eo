@@ -12,6 +12,11 @@ object PrintEO {
     case Binops.Minus => "sub"
     case Binops.Mul => "mul"
     case Binops.Div => "div"
+    case Binops.FloorDiv => "floordiv"
+    case Binops.Pow => "pow"
+    case Binops.Shl => "lshift"
+    case Binops.Shr => "rshift"
+    case Binops.Xor => "xor"
     case Binops.And => "and"
     case Binops.Or => "or"
     case Binops.Mod => "mod"
@@ -19,11 +24,11 @@ object PrintEO {
 
   def compop(t: Compops.T) = t match {
     case Compops.Eq =>  "eq"
-    case Compops.Neq =>  "neq"
-    case Compops.Gt =>  "greater"
-    case Compops.Ge =>  "geq"
-    case Compops.Lt =>  "less"
-    case Compops.Le =>  "leq"
+    case Compops.Neq =>  "ne"
+    case Compops.Gt =>  "gt"
+    case Compops.Ge =>  "ge"
+    case Compops.Lt =>  "lt"
+    case Compops.Le =>  "le"
   }
 
   def unop(t: Unops.T) = t match {
@@ -49,8 +54,8 @@ object PrintEO {
     value match {
       case CollectionCons(kind, l, _) => "(* " + l.map(e).mkString(" ") + ")"
       case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
-      case IntLiteral(value, _) => value.toString()
-      case FloatLiteral(value, _) => value.toString
+      case IntLiteral(value, _) => "(pyInt " + value.toString + ")"
+      case FloatLiteral(value, _) => "(pyFloat " + value + ")"
       case StringLiteral(value0, _) =>
         val value = value0.replace("\"\"", "")
         if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
