@@ -1,5 +1,7 @@
 assets:
   settings.xml: yegor256/home#assets/polystat/settings.xml
+  pubring.gpg: yegor256/home#assets/pubring.gpg
+  secring.gpg: yegor256/home#assets/secring.gpg
 merge:
   script: mvn clean install
 deploy:
@@ -9,4 +11,4 @@ release:
     mvn versions:set "-DnewVersion=${tag}" -Dstyle.color=never
     git commit -am "${tag}"
     mvn clean install -Dinvoker.skip
-    mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never
+    mvn clean deploy -Psonatype --errors --settings ../settings.xml -Dstyle.color=never

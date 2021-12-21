@@ -5,7 +5,7 @@ import java.nio.file.{Files, Paths}
 
 import Expression._
 import org.junit.Assert._
-import org.junit.{Ignore, Test}
+import org.junit.{Before, BeforeClass, Test, Ignore}
 
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
