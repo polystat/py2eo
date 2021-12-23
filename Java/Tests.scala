@@ -161,7 +161,7 @@ class Tests {
   }
 
   @Test def useCage() : Unit = {
-    for (name <- List("x", "trivial", "myList", "simplestClass")) {
+    for (name <- List("x", "trivial", "simplestClass", "myList")) {
       println(s"proc $name")
       val test = new File(testsPrefix + "/" + name + ".py")
       def db = debugPrinter(test)(_, _)
@@ -171,11 +171,14 @@ class Tests {
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
-      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-      val Suite(List(theFun, Return(_, _)), _) = z._1
-      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
+//      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
+//      val Suite(List(theFun, Return(_, _)), _) = z._1
+//      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
 
-      val theFunC = ClosureWithCage.closurize(SimpleAnalysis.computeAccessibleIdents(theFun))
+      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, body, _, _, _, ann)), _) =
+        ClosureWithCage.declassifyOnly(textractAllCalls._1)
+
+//      val theFunC = ClosureWithCage.closurize(SimpleAnalysis.computeAccessibleIdents(theFun))
 //      val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
 //        ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
 //        List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
@@ -185,16 +188,28 @@ class Tests {
 //      val stderr = new StringBuilder()
 //      assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
 //      println(stdout)
+//
+//      val eoHacked = Suite(List(
+//        theFun,
+//        Return(Some(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
+//          List((None, NoneLiteral(ann.pos))), ann.pos)), ann.pos)
+//      ), ann.pos)
+
+      val hacked = Suite(List(
+        theFun,
+        Assert(List(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+      ), ann.pos)
+      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+      assertTrue(0 == (s"$python \"$runme\"".!))
 
       val eoHacked = Suite(List(
-        theFunC,
-        Return(Some(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
-          List((None, NoneLiteral(ann.pos))), ann.pos)), ann.pos)
+        theFun,
+        Return(Some(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
       ), ann.pos)
 
-      writeFile(test, "afterUseCage", ".py", PrintPython.printSt(eoHacked, ""))
       val eoText = PrintLinearizedMutableEOWithCage.printTest(name, eoHacked)
-      writeFile(test, "genCageEO", ".eo", (eoText.init :+ "    xresult").mkString("\n"))
+      writeFile(test, "genCageEO", ".eo",
+        (eoText.init.init :+ "        xresult").mkString("\n"))
 
     }
   }
@@ -235,6 +250,7 @@ class Tests {
     }
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython() : Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)

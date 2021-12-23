@@ -77,7 +77,10 @@ object PrintEO {
       case Field(whose, name, _) => "(" + e(whose) + ".x" + name + ")"
       case Cond(cond, yes, no, _) => "(" + e(cond) + ".if " + e(yes) + " " + e(no) + ")"
       case CallIndex(true, whom, args, _)  =>
-        "((" + e(whom) + ")" + args.map{case (None, ee) => " (" + e(ee) + ")"}.mkString("") + ")"
+        "((" + e(whom) + ")" +
+          // todo: empty arg list hack
+          (if (args.isEmpty) " 0" else (args.map{case (None, ee) => " (" + e(ee) + ")"}.mkString(""))) +
+        ")"
     }
   }
 
