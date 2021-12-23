@@ -1,6 +1,7 @@
 import Expression._
 
-import scala.collection.immutable.{HashMap, HashSet}
+import scala.annotation.tailrec
+import scala.collection.immutable.HashMap
 
 object SimplePass {
 
@@ -72,13 +73,13 @@ object SimplePass {
         val xfinally = pst(ffinally, xelse._2)
         (Try(xtry._1, excepts.map(_._1).zip(xex._1), xelse._1, xfinally._1, ann.pos), xfinally._2)
 
-      case AugAssign(op, lhs, rhs, ann) =>  nochange
-      case AnnAssign(lhs, rhsAnn, rhs, ann) => nochange
+      case AugAssign(_, _, _, _) =>  nochange
+      case AnnAssign(_, _, _, _) => nochange
       case Return(_, _) | Assert(_, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
            | Continue(_) | CreateConst(_, _, _) =>  nochange
       case ClassDef(name, bases, body, decorators, ann) =>
         val xbody = pst(body, ns)
-        (new ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
+        (ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
       case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
         body, decorators, accessibleIdents, isAsync, ann) =>
         val xbody = pst(body, ns)
@@ -151,7 +152,7 @@ object SimplePass {
     e match {
       case Binop(op, l, r, ann) if !lhs =>
         reconstruct(false, { case List(l, r) => Binop(op, l, r, ann.pos)}, List(l, r), ns)
-      case Yield(None, ann) => (Left(e), ns)
+      case Yield(None, _) => (Left(e), ns)
       case Yield(Some(e), ann) => reconstruct(false, { case List(x) => Yield(Some(x), ann.pos) }, List(e), ns)
       case YieldFrom(e, ann) => reconstruct(false, { case List(x) => YieldFrom(x, ann.pos) }, List(e), ns)
       case SimpleComparison(op, l, r, ann) if !lhs =>
@@ -166,26 +167,26 @@ object SimplePass {
         reconstruct(false, { case List(x) => DoubleStar(x, ann.pos) }, List(e), ns)
       case Slice(from, to, by, ann) if !lhs =>
         val l0 = List(from, to, by)
-        val l = l0.map{ case None => BoolLiteral(true, ann.pos)  case Some(x) => x}
+        val l = l0.map{ case None => BoolLiteral(value = true, ann.pos)  case Some(x) => x}
         def cons(l : List[T]) = {
           val List(from, to, by) = l.zip(l0).map{ case (_, None) => None case (x, _) => Some(x) }
           Slice(from, to, by, ann.pos)
         }
-        reconstruct(false, cons, l, ns)
+        reconstruct(lhs = false, cons, l, ns)
       case CallIndex(isCall, whom, args, ann) if isCall && !lhs =>
-        reconstruct(false, { case (h :: t) =>
+        reconstruct(false, { case h :: t =>
           CallIndex(isCall, h, args.map(_._1).zip(t), ann.pos) }, whom :: args.map(_._2), ns)
       case u : UnsupportedExpr =>
         reconstruct(lhs, es => new UnsupportedExpr(u.original, es, u.ann.pos), u.children, ns)
       case LazyLAnd(l, r, ann) if !lhs => // l and r <=> r if l else false
-        pe(Cond(l, r, BoolLiteral(false, ann.pos), ann.pos), ns)
+        pe(Cond(l, r, BoolLiteral(value = false, ann.pos), ann.pos), ns)
       case LazyLOr(l, r, ann) if !lhs => // l or r <=> true if l else r
-        pe(Cond(l, BoolLiteral(true, ann.pos), r, ann.pos), ns)
+        pe(Cond(l, BoolLiteral(value = true, ann.pos), r, ann.pos), ns)
 
       case FreakingComparison(ops, a :: t, ann) if !lhs =>
         val (a0, ns0) = pe(a, ns)
         val (a1, ns1) = forceSt2(a0, ns0)
-        val (a2, ns2) = forceSt(BoolLiteral(true, ann.pos), ns1)
+        val (a2, ns2) = forceSt(BoolLiteral(value = true, ann.pos), ns1)
         val z = ops.zip(t).foldLeft((List(a1._1, a2._1), a1._2, ns2))((acc, x) => {
           val (r0, ns0) = pe(x._2, acc._3)
           val (r, ns1) = forceSt2(r0, ns0)
@@ -206,7 +207,7 @@ object SimplePass {
         }
         // todo: all the keyword args must be supported in the "lambda" as well
         val f = FuncDef(funname, args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None)), None,
-          finalBody, Decorators(List()), HashMap(), false, ann.pos)
+          finalBody, Decorators(List()), HashMap(), isAsync = false, ann.pos)
         (Right((f, Ident(funname, ann.pos))), ns2)
 
       case Cond(cond, yes, no, ann) if !lhs => forceAllIfNecessary(f)(List(cond, yes, no).map(x => (false, x)), ns) match {
@@ -230,7 +231,7 @@ object SimplePass {
           case (Right(_) :: otl, z :: stl) => Right(z) :: cons(otl, stl)
           case (Left(_) :: otl, a :: b :: stl) => Left((a, b)) :: cons(otl, stl)
         }
-        reconstruct(false, simple => DictCons(cons(l, simple), ann.pos), simple, ns)
+        reconstruct(lhs = false, simple => DictCons(cons(l, simple), ann.pos), simple, ns)
 
       case IntLiteral(_, _) | Ident(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | NoneLiteral(_) | FloatLiteral(_, _) |
         EllipsisLiteral(_) | ImagLiteral(_, _) => f(lhs, e, ns)
@@ -239,21 +240,21 @@ object SimplePass {
       case CallIndex(isCall, whom, args, ann) if !isCall =>
         val (Left(whom1), ns1) = procExpr(f)(lhs, whom, ns)
         val argsNoKw = args.map{case (None, x) => x}
-        reconstruct(false, { case args => new CallIndex(whom1, args, isCall, ann.pos) }, argsNoKw, ns1)
+        reconstruct(lhs = false, args => new CallIndex(whom1, args, isCall, ann.pos), argsNoKw, ns1)
 
       case CollectionComprehension(kind, base, l, ann) =>
         val l1 = base :: l.map{
-          case IfComprehension(cond) => CallIndex(true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
-          case ForComprehension(what, in, _) => CallIndex(true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
+          case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
+          case ForComprehension(what, in, _) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
         }
-        reconstruct(lhs, { case (base :: l2) => {
+        reconstruct(lhs, { case base :: l2 =>
           val l3 = l.zip(l2).map{
-            case (IfComprehension(cond), CallIndex(_, _, List((_, x)), ann)) => IfComprehension(x)
-            case (ForComprehension(what, in, isAsync), CallIndex(_, _, List((_, a), (_, b)), ann)) =>
+            case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
+            case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
               ForComprehension(a, b, isAsync)
           }
           CollectionComprehension(kind, base, l3, ann.pos)
-        }}, l1, ns)
+        }, l1, ns)
     }
 
   }
@@ -311,21 +312,21 @@ object SimplePass {
             eelse match {
               case Pass(ann1) =>
                 val brk = IfSimple(Unop(Unops.LNot, cond, ann1), Break(ann1.pos), Pass(ann1.pos), ann1.pos)
-                (While(BoolLiteral(true, ann.pos),
+                (While(BoolLiteral(value = true, ann.pos),
                   Suite(List(scond, brk, body1), body.ann.pos), eelse, ann.pos), ns)
               case _ =>
                 val (doElseName, ns1) = ns("doElse")
                 val poselse = eelse.ann.pos
                 val brk = IfSimple(Unop(Unops.LNot, cond, cond.ann.pos),
                   Suite(List(
-                    Assign(List(Ident(doElseName, poselse), BoolLiteral(true, poselse)), poselse),
+                    Assign(List(Ident(doElseName, poselse), BoolLiteral(value = true, poselse)), poselse),
                     Break(poselse)), poselse),
                   Pass(poselse),
                   poselse)
                 val pos = ann.pos
                 (Suite(List(
-                  Assign(List(Ident(doElseName, poselse), BoolLiteral(false, poselse)), poselse),
-                  While(BoolLiteral(true, ann), Suite(List(scond, brk, body1), pos), Pass(pos), pos),
+                  Assign(List(Ident(doElseName, poselse), BoolLiteral(value = false, poselse)), poselse),
+                  While(BoolLiteral(value = true, ann), Suite(List(scond, brk, body1), pos), Pass(pos), pos),
                   IfSimple(Ident(doElseName, ann), else1, Pass(pos), pos)
                 ), pos), ns1)
             }
@@ -346,14 +347,14 @@ object SimplePass {
         }
 
       case Assign(List(l, r), ann) =>
-        val rp = procExpr(f)(false, r, ns)
-        val lp = procExpr(f)(true, l, rp._2)
+        val rp = procExpr(f)(lhs = false, r, ns)
+        val lp = procExpr(f)(lhs = true, l, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(str ++ stl :+ Assign(List(el, er), ann.pos), ann.pos), lp._2)
 
       case CreateConst(name, r, ann) =>
-        val rp = procExpr(f)(false, r, ns)
+        val rp = procExpr(f)(lhs = false, r, ns)
         val (str, er) = procEA(rp._1)
         (Suite(str :+ CreateConst(name, er, ann.pos), ann.pos), rp._2)
 
@@ -363,18 +364,18 @@ object SimplePass {
       }
 
       case AnnAssign(lhs, rhsAnn, rhs, ann) =>
-        def recon(l : List[T]) = AnnAssign(l(0), l(1), if (l.length == 3) Some(l(2)) else None, ann.pos)
+        def recon(l : List[T]) = AnnAssign(l.head, l(1), if (l.length == 3) Some(l(2)) else None, ann.pos)
         forceAllIfNecessary(f)((true, lhs) :: (List(rhsAnn) ++ rhs.toList).map((false, _)), ns) match {
           case Left((l, ns)) => (recon(l), ns)
           case Right((l, ns)) => (Suite(l.map(_._1) :+ recon(l.map(_._2)), ann.pos), ns)
         }
 
       case AugAssign(op, lhs, rhs, ann) =>
-        val rp = procExpr(f)(false, rhs, ns)
-        val lp = procExpr(f)(true, lhs, rp._2)
+        val rp = procExpr(f)(lhs = false, rhs, ns)
+        val lp = procExpr(f)(lhs = true, lhs, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
-        (Suite((stl ++ str :+ AugAssign(op, el, er, ann.pos)), ann.pos), ns)
+        (Suite(stl ++ str :+ AugAssign(op, el, er, ann.pos), ann.pos), ns)
       case Return(Some(x), ann) => f(false, x, ns) match {
         case (Left(e), ns) => (Return(Some(e), ann.pos), ns)
         case (Right((st, e)), ns) => (Suite(List(st, Return(Some(e), e.ann.pos)), ann.pos), ns)
@@ -432,16 +433,16 @@ object SimplePass {
 
   def mkUnsupportedExpr(lhs : Boolean, e : Expression.T, ns : Names) : (EAfterPass, Names) = {
     val e1 = e match {
-      case CallIndex(isCall, whom, args, ann) if !isCall || args.exists(x => x._1.nonEmpty) =>
-        new UnsupportedExpr((e))
+      case CallIndex(isCall, _, args, _) if !isCall || args.exists(x => x._1.nonEmpty) =>
+        new UnsupportedExpr(e)
       case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
         Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
         EllipsisLiteral(_) =>
           new UnsupportedExpr(e)
-      case SimpleComparison(op, l, r, _) if (
+      case SimpleComparison(op, _, _, _) if (
           try { PrintEO.compop(op); false } catch { case _ : Throwable => true }
         ) => new UnsupportedExpr(e)
-      case Binop(op, l, r, _) if (
+      case Binop(op, _, _, _) if (
           try { PrintEO.binop(op); false } catch { case _ : Throwable => true }
         ) => new UnsupportedExpr(e)
       case _ => e
@@ -450,13 +451,14 @@ object SimplePass {
   }
 
   def unSuite(s : Statement, ns : Names) : (Statement, Names) = {
+    @tailrec
     def inner(s : Statement) : Statement = s match {
       case Suite(l, ann) =>
         val l1 = l.flatMap{ case Suite(l, _) => l case s => List(s) }
-        (if (!l1.exists{ case Suite(l, _) => true case _ => false })
+        if (!l1.exists{ case Suite(l, _) => true case _ => false })
           Suite(l1, ann.pos)
         else
-          inner(Suite(l1, ann.pos)))
+          inner(Suite(l1, ann.pos))
       case _ => s
     }
 //    println(s"$s \n -> $s1")
@@ -485,12 +487,12 @@ object SimplePass {
 
     def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
       case (false, Field(obj, name, ann), ns) =>
-        (Left(CallIndex(true, Ident("eo_getattr", ann.pos), List((None, obj),
+        (Left(CallIndex(isCall = true, Ident("eo_getattr", ann.pos), List((None, obj),
           (None, StringLiteral("\"" + name + "\"", ann.pos))), ann.pos)), ns)
       case (false, CallIndex(_, Ident("getattr", anni), args, annc), ns) =>
-        (Left(CallIndex(true, Ident("eo_getattr", anni.pos), args, annc.pos)), ns)
+        (Left(CallIndex(isCall = true, Ident("eo_getattr", anni.pos), args, annc.pos)), ns)
       case (false, CallIndex(_, Ident("setattr", anni), args, annc), ns) =>
-        (Left(CallIndex(true, Ident("eo_setattr", anni.pos), args, annc.pos)), ns)
+        (Left(CallIndex(isCall = true, Ident("eo_setattr", anni.pos), args, annc.pos)), ns)
       case (_, e, ns) => (Left(e), ns)
     })
 

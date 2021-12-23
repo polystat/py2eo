@@ -1,6 +1,5 @@
 import Expression._
 import PrintEO.{EOVisibility, Text, indent, printExpr}
-import PrintLinearizedImmutableEO.rmUnreachableTail
 import PrintLinearizedMutableEONoCage.headers
 
 import scala.annotation.tailrec
@@ -14,7 +13,7 @@ object PrintLinearizedMutableEOWithCage {
   // todo: imperative style suddenly
   object HackName {
     var count : Int = 0
-    def apply() = {
+    def apply(): String = {
       count = count + 1
       "tmp" + count
     }
@@ -22,8 +21,8 @@ object PrintLinearizedMutableEOWithCage {
 
   @tailrec
   def isSeqOfFields(x : Expression.T) : Boolean = x match {
-    case Field(whose, name, ann) => isSeqOfFields(whose)
-    case CallIndex(false, whom, List((_, StringLiteral(_, _))), ann) => isSeqOfFields(whom)
+    case Field(whose, _, _) => isSeqOfFields(whose)
+    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
     case Ident(_, _) => true
     case _ => false
   }
@@ -31,48 +30,48 @@ object PrintLinearizedMutableEOWithCage {
   def printFun(newName : String, f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     def pe = printExpr(bogusVisibility)(_)
-    def isFun(f : Statement) = f match { case f : FuncDef => true case _ => false }
+    def isFun(f : Statement) = f match { case _: FuncDef => true case _ => false }
     val funs = SimpleAnalysis.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
       case _ => (l, true)
     })(List(), f.body)
-    val funNames = funs.map{ case f : FuncDef => f.name }.toSet
+    val funNames = funs.map { f: FuncDef => f.name }.toSet
     val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > x${parm.name}")
     val memories = f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
       map(x => s"cage > x${x._1}").toList
-    val innerFuns = funs.flatMap{case f : FuncDef => (printFun(f.name, f))}
+    val innerFuns = funs.flatMap { f: FuncDef => printFun(f.name, f) }
 
-    def inner(st : Statement) : (Text) =
+    def inner(st : Statement) : Text =
       st match {
-        case NonLocal(l, _) => List()
-        case SimpleObject(name, l, ann) =>
-          (("write." ::
+        case NonLocal(_, _) => List()
+        case SimpleObject(name, l, _) =>
+          ("write." ::
             indent("x" + name :: "[]" :: indent(
-              l.map{ case (name, value) => "cage > x" + name } ++ (
+              l.map{ case (name, _) => "cage > x" + name } ++ (
                 "seq > @" :: indent(l.map{case (name, value) => s"x$name.write " + pe(value)})
               ))
-            )) :+ s"(x$name.@)")
-        case f : FuncDef => List()
-        case Assign(List(lhs, rhs@CallIndex(true, whom, args, ann)), _) if isSeqOfFields(whom) && isSeqOfFields(lhs) =>
+            )) :+ s"(x$name.@)"
+        case _: FuncDef => List()
+        case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if isSeqOfFields(whom) && isSeqOfFields(lhs) =>
 //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
-          (List(
+          List(
             s"tmp.write ${pe(rhs)}",
             "(tmp.@)",
             s"${pe(lhs)}.write (tmp.xresult)"
-          ))
+          )
         case Assign(List(lhs, rhs), _) if isSeqOfFields(lhs) =>
           rhs match {
             case _ : DictCons | _ : CollectionCons | _ : Await | _ : Star | _ : DoubleStar |
               _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
               throw new Throwable("these expressions must be wrapped in a function call " +
                 "because a copy creation is needed and dataization is impossible")
-            case CallIndex(false, whom, args, ann) => throw new Throwable("this is A PROBLEM") // todo
-            case CallIndex(false, whom, args, ann) => throw new Throwable("this is A PROBLEM") // todo
+            case CallIndex(false, _, _, _) => throw new Throwable("this is A PROBLEM") // todo
+            case CallIndex(false, _, _, _) => throw new Throwable("this is A PROBLEM") // todo
             case _ => ()
           }
           val doNotCopy = rhs match {
 //            case z if isSeqOfFields(z) => false
-            case Ident(name, ann) => false
+            case Ident(_, _) => false
             case _ => true
           }
           if (doNotCopy)
@@ -87,15 +86,15 @@ object PrintLinearizedMutableEOWithCage {
         case Assign(List(e), _) => List(pe(e))
         case Return(e, ann) => e match {
           case Some(value) =>
-            val (sts) = inner((Assign(List(Ident("result", ann.pos), value), ann.pos)))
-            (sts :+ s"$returnLabel.forward 0")
+            val sts = inner(Assign(List(Ident("result", ann.pos), value), ann.pos))
+            sts :+ s"$returnLabel.forward 0"
           case None => List(s"$returnLabel.forward 0")
         }
-        case IfSimple(cond, yes, no, ann) =>
-          val (stsY) = inner(yes)
-          val (stsN) = inner(no)
+        case IfSimple(cond, yes, no, _) =>
+          val stsY = inner(yes)
+          val stsN = inner(no)
           pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "TRUE")) ++ indent("seq" :: indent(stsN :+ "TRUE"))
-        case While(cond, body, Pass(_), ann) => {
+        case While(cond, body, Pass(_), _) =>
           "goto" :: indent(
             s"[breakLabel]" :: indent(
               "seq > @" :: indent(
@@ -105,8 +104,7 @@ object PrintLinearizedMutableEOWithCage {
               )
             )
           )
-        }
-        case Break(ann) => List(s"breakLabel.forward 1")
+        case Break(_) => List(s"breakLabel.forward 1")
 
         case Pass(_) => List()
         case Suite(l, _) => l.flatMap(inner)
@@ -116,21 +114,20 @@ object PrintLinearizedMutableEOWithCage {
       argname + "NotCopied" }.mkString(" ")
     // todo: empty arg list hack
     val args2 = if (args1.isEmpty) "unused" else args1
-    s"[$args2] > x${newName}" :: indent(
+    s"[$args2] > x$newName" :: indent(
       "cage > xresult" ::
       "cage > tmp" ::
       argCopies ++ memories ++ innerFuns ++
         ("goto > @" :: indent(
-          (s"[$returnLabel]" :: indent(
-            ("seq > @" :: indent(
+          s"[$returnLabel]" :: indent(
+            "seq > @" :: indent(
               s"stdout \"$newName\\n\"" ::
               f.args.map(parm => s"x${parm.name}.<") ++
               (inner(f.body) :+
                 "123"
                 )
               )
-            )
-          ))
+          )
         ))
     )
   }
@@ -139,7 +136,7 @@ object PrintLinearizedMutableEOWithCage {
     println(s"doing $testName")
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
-        HashMap(), false, st.ann.pos))
+        HashMap(), isAsync = false, st.ann.pos))
     headers ++ printFun(theTest.name, theTest)
   }
 

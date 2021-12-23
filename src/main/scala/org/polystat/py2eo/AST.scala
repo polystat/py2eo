@@ -1,10 +1,8 @@
-import java.io.{File, FileReader, FileWriter}
-import java.math.BigInteger
-import Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, NoneLiteral}
+import Expression.{CallIndex, CollectionKind, Compops, Ident}
 import Python3Parser._
 import org.antlr.v4.runtime.{ANTLRInputStream, ParserRuleContext, Token}
 
-import java.io.{FileReader, FileWriter}
+import java.io.{File, FileReader}
 import scala.collection.JavaConverters._
 import scala.collection.immutable.HashMap
 
@@ -21,12 +19,12 @@ case class GeneralAnnotation(start : Option[Position], stop : Option[Position]) 
   }
   def this(t : Token) = this(Some(GeneralAnnotation.token2StartPos(t)), Some(GeneralAnnotation.token2StopPos(t)))
   def this() = this(None, None)
-  override def toString = {
+  override def toString: String = {
     def s(o : Option[Position]) = o match { case None => "???" case Some(x) => x.toString }
     s(start) + "-" + s(stop)
   }
-  def rangeTo(to : GeneralAnnotation) = GeneralAnnotation(start, to.stop)
-  val pos = this // maybe some other annotations will be added later, so lets have an explicit method to copy position
+  def rangeTo(to : GeneralAnnotation): GeneralAnnotation = GeneralAnnotation(start, to.stop)
+  val pos: GeneralAnnotation = this // maybe some other annotations will be added later, so lets have an explicit method to copy position
 }
 object GeneralAnnotation{
   private def token2StartPos(t : Token) = Position(t.getLine, t.getCharPositionInLine)
@@ -90,7 +88,7 @@ object Expression {
       case "in" => In
       case "is" => Is
     }
-    def toString(x : T) = x match {
+    def toString(x : T): String = x match {
       case Eq => "=="
       case Neq =>"!="
       case Gt =>">"
@@ -102,7 +100,7 @@ object Expression {
       case Is =>"is"
       case IsNot =>"is not"
     }
-    def ofContext(c : Comp_opContext) = {
+    def ofContext(c : Comp_opContext): Compops.Value = {
       if (c.EQUALS() != null) Eq else
       if (c.NOT_EQ_1() != null || c.NOT_EQ_2() != null) Neq else
       if (c.GREATER_THAN() != null) Gt else
@@ -124,7 +122,7 @@ object Expression {
       case "~" => Neg
       case "not" => LNot
     }
-    def toString(x : T) = x match {
+    def toString(x : T): String = x match {
       case Plus => "+"
       case Minus =>"-"
       case Neg =>"~"
@@ -135,7 +133,7 @@ object Expression {
   object CollectionKind extends Enumeration {
     type T = Value
     val Tuple, List, Set = Value
-    def toBraks(x : T) = x match {
+    def toBraks(x : T): (String, String) = x match {
       case Tuple => ("(", ")")
       case List =>  ("[", "]")
       case Set =>   ("{", "}")
@@ -181,13 +179,13 @@ object Expression {
   case class Yield(l : Option[T], ann : GeneralAnnotation) extends T
   case class YieldFrom(e : T, ann : GeneralAnnotation) extends T
   class UnsupportedExpr(original0 : T, children0 : List[T], ann0 : GeneralAnnotation) extends T {
-    val original = original0
-    val children = children0
-    val ann = ann0
+    val original: T = original0
+    val children: List[T] = children0
+    val ann: GeneralAnnotation = ann0
     def this(original : T) = this(original, SimpleAnalysis.childrenE(original), original.ann.pos)
   }
   object UnsupportedExpr {
-    def unapply(e : UnsupportedExpr) = Some((e.original, e.children))
+    def unapply(e : UnsupportedExpr): Option[(T, List[T])] = Some((e.original, e.children))
   }
 
   sealed trait Comprehension
@@ -222,7 +220,7 @@ object Expression {
 object AugOps extends Enumeration {
   type T = Value
   val Plus, Minus, Mul, At, Div, Mod, And, Or, Xor, Shl, Shr, Pow, FloorDiv = Value
-  def ofString(s : String) = s match {
+  def ofString(s : String): AugOps.Value = s match {
     case  "+=" => Plus
     case  "-=" =>  Minus
     case  "*=" =>  Mul
@@ -238,7 +236,7 @@ object AugOps extends Enumeration {
     case  "//=" => FloorDiv
   }
 
-  def ofContext(c : AugassignContext) = {
+  def ofContext(c : AugassignContext): AugOps.Value = {
     if (c.ADD_ASSIGN() != null) Plus else
     if (c.SUB_ASSIGN() != null) Minus else
     if (c.MULT_ASSIGN() != null) Mul else
@@ -328,11 +326,11 @@ case class Try(ttry : Statement, excepts : List[(Option[(ET, Option[String])], S
                eelse : Statement, ffinally : Statement, ann : GeneralAnnotation) extends Statement
 class Unsupported(original0 : Statement, declareVars0 : List[String],
                   es0 : List[(Boolean, Expression.T)], sts0 : List[Statement], ann0 : GeneralAnnotation) extends Statement {
-  val original = original0
-  val declareVars = declareVars0
-  val es = es0
-  val sts = sts0
-  val ann = ann0
+  val original: Statement = original0
+  val declareVars: List[String] = declareVars0
+  val es: List[(Boolean, ET)] = es0
+  val sts: List[Statement] = sts0
+  val ann: GeneralAnnotation = ann0
   def this(original : Statement, declareVars : List[String], ann : GeneralAnnotation) =
     this(original, declareVars, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1, ann)
 }
@@ -341,7 +339,7 @@ object MapStatements {
 
   import MapExpressions._
 
-  def mapDottedName(x : Dotted_nameContext) = asScala(x.l).toList.map(x => x.getText)
+  def mapDottedName(x : Dotted_nameContext): List[String] = asScala(x.l).toList.map(x => x.getText)
 
   def mapImportModule(s : Import_stmtContext) : Statement = s match {
     case s : ImportNameContext =>
@@ -370,14 +368,14 @@ object MapStatements {
       case s : SuiteSimpleStmtContext => mapSimpleStmt(s.simple_stmt())
     }
 
-  def mapDecorators(c : DecoratorsContext) = Decorators(
+  def mapDecorators(c : DecoratorsContext): Decorators = Decorators(
     asScala(c.decorator()).toList.map(x => {
       val dname = asScala(x.dotted_name().l).toList
       // todo: decorators in the parser do not conform to the newest reference:
       // it is an assignment expression now https://docs.python.org/3/reference/compound_stmts.html#grammar-token-decorators
       val d = dname.tail.foldLeft(Ident(dname.head.getText, new GeneralAnnotation(dname.head)) : ET)((acc, token) =>
           Expression.Field(acc, token.getText, new GeneralAnnotation(token)))
-      if (x.OPEN_PAREN() != null) CallIndex(true, d, mapArglistNullable(x.arglist()), new GeneralAnnotation(x))
+      if (x.OPEN_PAREN() != null) CallIndex(isCall = true, d, mapArglistNullable(x.arglist()), new GeneralAnnotation(x))
       else d
     }))
 
@@ -386,15 +384,15 @@ object MapStatements {
     Expression.Parameter(c.tfpdef().NAME().getText, kind, Option(c.tfpdef().test()).map(mapTest), default, new GeneralAnnotation(c))
   }
 
-  def mapTypedargslistNopos(c : Typedargslist_noposContext) = {
-    (asScala(c.l).toList.map(x => (mapTfparg(ArgKind.Keyword, x))),
+  def mapTypedargslistNopos(c : Typedargslist_noposContext): (List[Expression.Parameter], Option[(String, Option[ET])], Option[(String, Option[ET])]) = {
+    (asScala(c.l).toList.map(x => mapTfparg(ArgKind.Keyword, x)),
       // todo: the next line may be wrong, it may break the method with which python forces all args to be keyword only (4.8.3 in tutorial)
       Option(c.tfptuple().tfpdef()).map(x => (x.NAME().getText, Option(x.test()).map(mapTest))),
       Option(c.tfpdict()).map(x => (x.tfpdef().NAME().getText, Option(x.tfpdef().test()).map(mapTest)))
     )
   }
 
-  def mapTypedargslist(c : TypedargslistContext) = {
+  def mapTypedargslist(c : TypedargslistContext): (List[Expression.Parameter], Option[(String, Option[ET])], Option[(String, Option[ET])]) = {
     if (c == null) (List(), None, None) else {
       val tail =
         if (c.typedargslist_nopos() != null) mapTypedargslistNopos(c.typedargslist_nopos()) else
@@ -414,32 +412,32 @@ object MapStatements {
     }
   }
 
-  def mapFuncDef(s : FuncdefContext, decorators: Decorators, isAsync : Boolean) = {
+  def mapFuncDef(s : FuncdefContext, decorators: Decorators, isAsync : Boolean): FuncDef = {
     val z = mapTypedargslist(s.parameters().typedargslist())
     FuncDef(s.NAME().getText, z._1, z._2, z._3, Option(s.test()).map(mapTest),
       mapNullableSuite(s.suite()), decorators, HashMap(), isAsync, new GeneralAnnotation(s))
   }
 
-  def mapClassDef(s : ClassdefContext, decorators: Decorators) = {
+  def mapClassDef(s : ClassdefContext, decorators: Decorators): ClassDef = {
     ClassDef(
       s.NAME().getText, mapArglistNullable(s.arglist()),
         mapNullableSuite(s.suite()), decorators, new GeneralAnnotation(s)
     )
   }
 
-  def mapFor(s : For_stmtContext, isAsync : Boolean) = {
+  def mapFor(s : For_stmtContext, isAsync : Boolean): For = {
     For(mapExprList(s.exprlist()), mapTestList(s.testlist()),
       mapNullableSuite(s.body), mapNullableSuite(s.eelse), isAsync, new GeneralAnnotation(s))
   }
 
-  def mapIf(s : If_stmtContext) = {
+  def mapIf(s : If_stmtContext): If = {
     If(
       asScala(s.conds).map(mapAssignmentExpression).zip(asScala(s.bodies).map(mapNullableSuite)).toList,
       mapNullableSuite(s.eelse), new GeneralAnnotation(s)
     )
   }
 
-  def mapWith(s : With_stmtContext, isAsync : Boolean) = {
+  def mapWith(s : With_stmtContext, isAsync : Boolean): Statement = {
     asScala(s.l).toList.foldRight(mapNullableSuite(s.suite()))((x, s) =>
       With(mapTest(x.test()), Option(x.expr()).map(mapExpr), s, isAsync, s.ann.pos)
     )
@@ -456,11 +454,11 @@ object MapStatements {
           mapNullableSuite(s.while_stmt().eelse),
           new GeneralAnnotation(s)
         )
-      case s : CompForContext => mapFor(s.for_stmt(), false)
+      case s : CompForContext => mapFor(s.for_stmt(), isAsync = false)
       case s : CompTryContext =>
         val t = s.try_stmt()
         val es = asScala(t.except_clause()).toList.zip(asScala(t.exceptSuites).toList)
-          .map(ex => ((if (ex._1.test() == null) None else Some((mapTest(ex._1.test()), Option(ex._1.NAME()).map(_.getText)))),
+          .map(ex => (if (ex._1.test() == null) None else Some((mapTest(ex._1.test()), Option(ex._1.NAME()).map(_.getText))),
             mapNullableSuite(ex._2)))
         Try(mapNullableSuite(t.trySuite), es, mapNullableSuite(t.elseSuite),
           if (t.finallySuite.size() == 0)
@@ -468,32 +466,32 @@ object MapStatements {
           else
             mapNullableSuite(t.finallySuite.get(0))
           , new GeneralAnnotation(s))
-      case s : CompWithContext => mapWith(s.with_stmt(), false)
-      case s : CompFuncDefContext => mapFuncDef(s.funcdef(), Decorators(List()), false)
+      case s : CompWithContext => mapWith(s.with_stmt(), isAsync = false)
+      case s : CompFuncDefContext => mapFuncDef(s.funcdef(), Decorators(List()), isAsync = false)
       case s : CompClassDefContext => mapClassDef(s.classdef(), Decorators(List()))
       case s : CompDecoratedContext =>
         val s1 = s.decorated()
         val decorators = mapDecorators(s1.decorators())
         if (s1.classdef() != null) mapClassDef(s1.classdef(), decorators) else
-        if (s1.funcdef() != null) mapFuncDef(s1.funcdef(), decorators, false) else
-        if (s1.async_funcdef() != null) mapFuncDef(s1.async_funcdef().funcdef(), decorators, true) else
+        if (s1.funcdef() != null) mapFuncDef(s1.funcdef(), decorators, isAsync = false) else
+        if (s1.async_funcdef() != null) mapFuncDef(s1.async_funcdef().funcdef(), decorators, isAsync = true) else
           throw new AssertionError("nothing after decorators. This must not be parseable with the golden python compiler")
       case s : CompAsyncContext =>
-        if (s.async_stmt().with_stmt() != null) mapWith(s.async_stmt().with_stmt(), true) else
-        if (s.async_stmt().for_stmt() != null) mapFor(s.async_stmt().for_stmt(), true) else
-        if (s.async_stmt().funcdef() != null) mapFuncDef(s.async_stmt().funcdef(), Decorators(List()), true)
+        if (s.async_stmt().with_stmt() != null) mapWith(s.async_stmt().with_stmt(), isAsync = true) else
+        if (s.async_stmt().for_stmt() != null) mapFor(s.async_stmt().for_stmt(), isAsync = true) else
+        if (s.async_stmt().funcdef() != null) mapFuncDef(s.async_stmt().funcdef(), Decorators(List()), isAsync = true)
         else ???
     }
   }
 
-  def mapSimpleStmt(context: Simple_stmtContext) =
+  def mapSimpleStmt(context: Simple_stmtContext): Suite =
     Suite(asScala(context.l).map(mapSmallStmt).toList, new GeneralAnnotation(context))
 
   def mapSmallStmt(s : Small_stmtContext) : Statement = s match {
     case s : SmallNonLocalContext => NonLocal(asScala(s.nonlocal_stmt().l).map(_.getText).toList, new GeneralAnnotation(s))
     case s : SmallGlobalContext   => Global(asScala(s.global_stmt().l).map(_.getText).toList, new GeneralAnnotation(s))
     case s : SmallAssertContext => Assert(asScala(s.assert_stmt().test()).toList.map(mapTest), new GeneralAnnotation(s))
-    case s : SmallExprContext => {
+    case s : SmallExprContext =>
       val lhs = mapTestlistStarExpr(CollectionKind.Tuple, s.expr_stmt().testlist_star_expr())
       s.expr_stmt().expr_stmt_right() match {
         case r : AugAssignLabelContext =>
@@ -505,7 +503,6 @@ object MapStatements {
         case x : AnnAssignLabelContext =>
           AnnAssign(lhs, mapTest(x.annassign().ann), Option(x.annassign().value).map(mapTest), new GeneralAnnotation(x))
       }
-    }
     case s : SmallDelContext => Del(mapExprList(s.del_stmt().exprlist()), new GeneralAnnotation(s))
     case s : SmallPassContext => Pass(new GeneralAnnotation(s))
     case s : SmallFlowContext => s.flow_stmt() match {
@@ -523,14 +520,14 @@ object MapStatements {
     case s : SmallImportContext => mapImportModule(s.import_stmt())
   }
 
-  def mapRhsAssign(x : RhsassignContext) = x match {
+  def mapRhsAssign(x : RhsassignContext): ET = x match {
     case l : RhsTestlistContext => mapTestlistStarExpr(CollectionKind.Tuple, l.testlist_star_expr())
     case y : RhsYieldContext => mapYieldExpr(y.yield_expr())
   }
 
-  def mapFile(parsingBuiltins : Boolean, x : File_inputContext) = {
+  def mapFile(parsingBuiltins : Boolean, x : File_inputContext): Suite = {
     Suite(
-      (if (parsingBuiltins) List() else asScala(x.stmt()).map(mapStmt).toList),
+      if (parsingBuiltins) List() else asScala(x.stmt()).map(mapStmt).toList,
       new GeneralAnnotation(x)
     )
   }
@@ -549,7 +546,7 @@ object MapExpressions {
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
             if (ch != '_')
               acc * 16 + (
-                if (ch >= '0' && ch <= '9') (ch.toInt - '0'.toInt) else
+                if (ch >= '0' && ch <= '9') ch.toInt - '0'.toInt else
                 if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else
                 if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else
                   throw new NumberFormatException()
@@ -559,13 +556,13 @@ object MapExpressions {
         else if (x.startsWith("0o") || x.startsWith("0O"))
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
             if (ch != '_')
-              acc * 8 + (if (ch >= '0' && ch <= '7') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+              acc * 8 + (if (ch >= '0' && ch <= '7') ch.toInt - '0'.toInt else throw new NumberFormatException())
             else acc
           )
         else if (x.startsWith("0b") || x.startsWith("0B"))
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
             if (ch != '_')
-              acc * 2 + (if (ch >= '0' && ch <= '1') (ch.toInt - '0'.toInt) else throw new NumberFormatException())
+              acc * 2 + (if (ch >= '0' && ch <= '1') ch.toInt - '0'.toInt else throw new NumberFormatException())
             else acc
           )
         else
@@ -576,12 +573,12 @@ object MapExpressions {
 
   import Expression._
 
-  def mapAssignmentExpression(c : Assignment_expressionContext) = {
+  def mapAssignmentExpression(c : Assignment_expressionContext): ET = {
     if (c.ASSIGN_IN_EXPR() == null) mapTest(c.test())
     else Assignment(c.IDENT().getText, mapTest(c.test()), new GeneralAnnotation(c))
   }
 
-  def mapDictEltDoubleStar(c : Dict_elt_double_starContext) =
+  def mapDictEltDoubleStar(c : Dict_elt_double_starContext): Either[(ET, ET), ET] =
     if (c.expr() != null) Right(mapExpr(c.expr())) else Left((mapTest(c.test(0)), mapTest(c.test(1))))
 
   def mapYieldExpr(y1 : Yield_exprContext) : T = {
@@ -617,8 +614,8 @@ object MapExpressions {
       } else
       if (a.NUMBER() != null) string2num(a.NUMBER().getText, a) else
       if (a.NAME() != null) Ident(a.NAME().getText, new GeneralAnnotation(a)) else
-      if (a.TRUE() != null) BoolLiteral(true, new GeneralAnnotation(a)) else
-      if (a.FALSE() != null) BoolLiteral(false, new GeneralAnnotation(a)) else
+      if (a.TRUE() != null) BoolLiteral(value = true, new GeneralAnnotation(a)) else
+      if (a.FALSE() != null) BoolLiteral(value = false, new GeneralAnnotation(a)) else
       if (a.NONE() != null) NoneLiteral(new GeneralAnnotation(a)) else {
       if (a.ELLIPSIS() != null) EllipsisLiteral(new GeneralAnnotation(a)) else
         StringLiteral(asScala(a.STRING()).map(_.getText).mkString(" "), new GeneralAnnotation(a))
@@ -632,8 +629,8 @@ object MapExpressions {
           }*/
   }
 
-  def mapExprStarExpr(e : Expr_star_exprContext) = if (e.expr() != null) mapExpr(e.expr()) else mapStarExpr(e.star_expr())
-  def mapExprList(e : ExprlistContext) = asScala(e.l).map(mapExprStarExpr).toList match {
+  def mapExprStarExpr(e : Expr_star_exprContext): ET = if (e.expr() != null) mapExpr(e.expr()) else mapStarExpr(e.star_expr())
+  def mapExprList(e : ExprlistContext): ET = asScala(e.l).map(mapExprStarExpr).toList match {
     case List(x) if e.COMMA().isEmpty => x
     case l => CollectionCons(CollectionKind.Tuple, l, new GeneralAnnotation(e))
   }
@@ -643,15 +640,15 @@ object MapExpressions {
     Parameter(c.vfpdef().NAME().getText, kind, None, default, new GeneralAnnotation(c))
   }
 
-  def mapVarargslistNopos(c : Varargslist_noposContext) = {
-    (asScala(c.l).toList.map(x => (mapVfparg(ArgKind.Keyword, x))),
+  def mapVarargslistNopos(c : Varargslist_noposContext): (List[Parameter], Option[String], Option[String]) = {
+    (asScala(c.l).toList.map(x => mapVfparg(ArgKind.Keyword, x)),
       // todo: the next line may be wrong, it may break the method with which python forces all args to be keyword only (4.8.3 in tutorial)
       if (c.vfptuple().vfpdef() == null) None else Some(c.vfptuple().vfpdef().NAME().getText),
       Option(c.vfpdict()).map(_.vfpdef().NAME().getText)
     )
   }
 
-  def mapVarargslist(c : VarargslistContext)  = {
+  def mapVarargslist(c : VarargslistContext): (List[Parameter], Option[String], Option[String]) = {
     if (c == null) (List(), None, None) else {
       val tail =
         if (c.varargslist_nopos() != null) mapVarargslistNopos(c.varargslist_nopos()) else
@@ -723,20 +720,20 @@ object MapExpressions {
       )
     }
 
-  def mapTestList(e : TestlistContext) = (asScala(e.l).map(mapTest).toList) match {
+  def mapTestList(e : TestlistContext): ET = asScala(e.l).map(mapTest).toList match {
     case List(x) if e.COMMA().isEmpty => x
     case l => CollectionCons(CollectionKind.Tuple, l, new GeneralAnnotation(e))
   }
 
-  def mapStarExpr(e : Star_exprContext) = Star(mapExpr(e.expr()), new GeneralAnnotation(e))
+  def mapStarExpr(e : Star_exprContext): Star = Star(mapExpr(e.expr()), new GeneralAnnotation(e))
 
   def mapTestStarExpr(e : Test_star_exprContext) : T = e match {
     case e : TestNotStarContext => mapTest(e.test())
     case e : StarNotTestContext => mapStarExpr(e.star_expr())
   }
 
-  def mapTestlistStarExpr(collectionKind : CollectionKind.T, e : Testlist_star_exprContext) = {
-    (asScala(e.l).map(mapTestStarExpr).toList) match {
+  def mapTestlistStarExpr(collectionKind : CollectionKind.T, e : Testlist_star_exprContext): ET = {
+    asScala(e.l).map(mapTestStarExpr).toList match {
       case List(x) if e.COMMA().size() == 0 => x
       case l => CollectionCons(collectionKind, l, new GeneralAnnotation(e))
     }
@@ -767,21 +764,21 @@ object MapExpressions {
         (None, a)
     }
   }
-  def mapArglistNullable(l : ArglistContext) = {
+  def mapArglistNullable(l : ArglistContext): List[(Option[String], ET)] = {
     if (l == null) List() else asScala(l.l).map(mapArgument).toList
   }
 
-  def mapSubscriptList(c : SubscriptlistContext) = asScala(c.l).toList match {
+  def mapSubscriptList(c : SubscriptlistContext): ET = asScala(c.l).toList match {
     case List(x) if c.COMMA().isEmpty => mapSubscript(x)
     case l => CollectionCons(CollectionKind.Tuple, l.map(mapSubscript), new GeneralAnnotation(c))
   }
 
-  def mapAtomExpr(e : Atom_exprContext) = {
+  def mapAtomExpr(e : Atom_exprContext): ET = {
     val noawait = {
       val whom = mapAtom(e.atom())
       asScala(e.trailer()).foldLeft(whom)((acc, trailer) => trailer match {
-        case call: TrailerCallContext => CallIndex(true, acc, mapArglistNullable(call.arglist()), new GeneralAnnotation(call))
-        case ind: TrailerSubContext => CallIndex(false, acc,
+        case call: TrailerCallContext => CallIndex(isCall = true, acc, mapArglistNullable(call.arglist()), new GeneralAnnotation(call))
+        case ind: TrailerSubContext => CallIndex(isCall = false, acc,
           List((None, mapSubscriptList(ind.subscriptlist()))), new GeneralAnnotation(ind))
         case field: TrailerFieldContext => Field(acc, field.NAME().getText, new GeneralAnnotation(field))
       })
@@ -789,7 +786,7 @@ object MapExpressions {
     if (e.AWAIT() != null) Await(noawait, noawait.ann.pos) else noawait
   }
 
-  def mapPower(e : PowerContext) = {
+  def mapPower(e : PowerContext): ET = {
     if (e.factor() != null) Binop(Binops.Pow, mapAtomExpr(e.atom_expr()), mapFactor(e.factor()), new GeneralAnnotation(e))
     else mapAtomExpr(e.atom_expr())
   }
@@ -803,15 +800,14 @@ object MapExpressions {
 
   def mapNotTest(e : Not_testContext) : T = e match {
     case e : NotNotContext => Unop(Unops.LNot, mapNotTest(e.not_test()), new GeneralAnnotation(e))
-    case e : NotComparisonContext => {
+    case e : NotComparisonContext =>
       val ops0 = asScala(e.comparison().ops)
       val ops = ops0.map(Compops.ofContext).toList
       val args = asScala(e.comparison().args).map(mapExpr).toList
       if (ops.isEmpty) args.head else FreakingComparison(ops, args, new GeneralAnnotation(e))
-    }
   }
 
-  def mapBinop[TT](args : java.util.List[TT], ops : java.util.List[Token], mapa : TT => T) = {
+  def mapBinop[TT](args : java.util.List[TT], ops : java.util.List[Token], mapa : TT => T): ET = {
     val sargs = asScala(args)
     val sops  = asScala(ops)
     val head = sargs.head
@@ -820,20 +816,20 @@ object MapExpressions {
     })
   }
 
-  def mapTerm(e : TermContext) = mapBinop(e.args, e.ops, mapFactor)
-  def mapArithExpr(e : Arith_exprContext) = mapBinop(e.args, e.ops, mapTerm)
-  def mapShiftExpr(e : Shift_exprContext) = mapBinop(e.args, e.ops, mapArithExpr)
-  def mapAndExpr(e : And_exprContext) = mapBinop(e.args, e.ops, mapShiftExpr)
-  def mapXorExpr(e : Xor_exprContext) = mapBinop(e.args, e.ops, mapAndExpr)
-  def mapExpr(e : ExprContext) = mapBinop(e.args, e.ops, mapXorExpr)
-  def mapOrTest(e : Or_testContext) = {
+  def mapTerm(e : TermContext): ET = mapBinop(e.args, e.ops, mapFactor)
+  def mapArithExpr(e : Arith_exprContext): ET = mapBinop(e.args, e.ops, mapTerm)
+  def mapShiftExpr(e : Shift_exprContext): ET = mapBinop(e.args, e.ops, mapArithExpr)
+  def mapAndExpr(e : And_exprContext): ET = mapBinop(e.args, e.ops, mapShiftExpr)
+  def mapXorExpr(e : Xor_exprContext): ET = mapBinop(e.args, e.ops, mapAndExpr)
+  def mapExpr(e : ExprContext): ET = mapBinop(e.args, e.ops, mapXorExpr)
+  def mapOrTest(e : Or_testContext): ET = {
     def inner(l : List[And_testContext]) : T = l match {
       case List(x) => mapAndTest(x)
       case h :: t => LazyLOr(mapAndTest(h), inner(t), new GeneralAnnotation(h))
     }
     inner(asScala(e.args).toList)
   }
-  def mapAndTest(e : And_testContext) = {
+  def mapAndTest(e : And_testContext): ET = {
     def inner(l : List[Not_testContext]) : T = l match {
       case List(x) => mapNotTest(x)
       case h :: t => LazyLAnd(mapNotTest(h), inner(t), new GeneralAnnotation(h))
@@ -851,10 +847,10 @@ object Parse {
 
     val input = new FileReader(file)
 
-    val inputStream = new ANTLRInputStream(input);
-    val lexer = new Python3Lexer(inputStream);
-    val tokenStream = new CommonTokenStream(lexer);
-    val parser = new Python3Parser(tokenStream);
+    val inputStream = new ANTLRInputStream(input)
+    val lexer = new Python3Lexer(inputStream)
+    val tokenStream = new CommonTokenStream(lexer)
+    val parser = new Python3Parser(tokenStream)
 
     val e = parser.file_input()
 

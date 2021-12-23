@@ -1,12 +1,11 @@
 
+import Expression._
+import org.junit.Assert._
+import org.junit.Test
+
 import java.io.{File, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Paths}
-
-import Expression._
-import org.junit.Assert._
-import org.junit.{Before, BeforeClass, Test, Ignore}
-
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,7 +39,7 @@ class Tests {
     writeFile(module, dirSuffix, ".py", what)
   }
 
-  val python = {
+  private val python = {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     assertTrue(0 == (s"python --version" ! ProcessLogger(stdout.append(_), stderr.append(_))))
@@ -58,7 +57,7 @@ class Tests {
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
       val Suite(List(theFun@FuncDef(_, _, _, _, _, _, _, _, _, _), Return(_, _)), _) = z._1
       val thePos = theFun.ann.pos
-      val zHacked = Suite(List(theFun, new Assert((CallIndex(true, Ident(theFun.name, thePos), List(), thePos)), thePos)), thePos)
+      val zHacked = Suite(List(theFun, new Assert(CallIndex(isCall = true, Ident(theFun.name, thePos), List(), thePos), thePos)), thePos)
       val runme = writeFile(test, "afterRemoveControlFlow", ".py", PrintPython.printSt(zHacked, ""))
       val stdout = new StringBuilder()
       val stderr = new StringBuilder()
@@ -71,7 +70,7 @@ class Tests {
     val name = "trivial"
     val test = new File(testsPrefix + "/" + name + ".py")
 
-    val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter((test))), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -89,9 +88,9 @@ class Tests {
     val hacked = Suite(List(
       ImportAllSymbols(List("closureRuntime"), pos),
       Suite(l.init, pos),
-      new Assert(CallIndex(false,
-          (CallIndex(true, Ident(mainName, pos),
-            List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos)),
+      new Assert(CallIndex(isCall = false,
+          CallIndex(isCall = true, Ident(mainName, pos),
+            List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos),
           List((None, IntLiteral(1, pos))), pos),
         pos
       )
@@ -120,7 +119,7 @@ class Tests {
     val test = new File(testsPrefix + "/" + name + ".py")
     def db = debugPrinter(test)(_, _)
 
-    val res = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
   }
 
   @Test def heapify() : Unit = {
@@ -144,7 +143,7 @@ class Tests {
       ImportAllSymbols(List("heapifyRuntime"), pos),
       Assign(List(Ident(mainName, pos), ExplicitMutableHeap.newPtr(IntLiteral(0, pos))), pos),
       z._1,
-      new Assert(CallIndex(true, ExplicitMutableHeap.index(Ident("allFuns", pos),
+      new Assert(CallIndex(isCall = true, ExplicitMutableHeap.index(Ident("allFuns", pos),
         ExplicitMutableHeap.index(ExplicitMutableHeap.valueGet(ExplicitMutableHeap.ptrGet(Ident(mainName, pos))),
           IntLiteral(0, pos))), List((None, NoneLiteral(pos))), pos), pos)
     ), pos)
@@ -177,10 +176,10 @@ class Tests {
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
         unsupportedSt._1, unsupportedSt._2)
-      PrintPython.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
+      writeFile(test, "afterMkUnsupported", ".py", PrintPython.printSt(unsupportedExpr._1, ""))
 
       val hacked = SimpleAnalysis.computeAccessibleIdents(
-        FuncDef("hack", List(), None, None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), false,  unsupportedExpr._1.ann.pos))
+        FuncDef("hack", List(), None, None, None, unsupportedExpr._1, Decorators(List()), HashMap(), isAsync = false,  unsupportedExpr._1.ann.pos))
 
       def findGlobals(l : Set[String], f : FuncDef) : Set[String] = {
         SimpleAnalysis.foldSE[Set[String]](
@@ -218,7 +217,7 @@ class Tests {
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
     assert(0 == Process("./configure", cpython).!)
-    val nprocessors = Runtime.getRuntime().availableProcessors()
+    val nprocessors = Runtime.getRuntime.availableProcessors()
     assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
 
     println("Version of python is:")
@@ -244,7 +243,7 @@ class Tests {
           def db = debugPrinter(test)(_, _)
 
           println(s"parsing ${test.getName}")
-          val y = Parse.parse(test, db)
+          Parse.parse(test, db)
           Files.copy(
             Paths.get(s"$dirName/afterParser/${test.getName}"),
             Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
@@ -273,7 +272,7 @@ class Tests {
 //      val Suite(List(theFun, Return(_, _)), _) = z._1
 //      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
 
-      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, body, _, _, _, ann)), _) =
+      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
         ClosureWithCage.declassifyOnly(textractAllCalls._1)
 
 //      val theFunC = ClosureWithCage.closurize(SimpleAnalysis.computeAccessibleIdents(theFun))
@@ -295,14 +294,14 @@ class Tests {
 
       val hacked = Suite(List(
         theFun,
-        Assert(List(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+        Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
       ), ann.pos)
       val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-      assertTrue(0 == (s"$python \"$runme\"".!))
+      assertTrue(0 == s"$python \"$runme\"".!)
 
       val eoHacked = Suite(List(
         theFun,
-        Return(Some(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+        Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
       ), ann.pos)
 
     
@@ -313,7 +312,7 @@ class Tests {
 
   @Test def simpleConstructionTest(): Unit = {
     for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
-      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
+      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + subfolder)
       if (testHolder.exists && testHolder.isDirectory) {
         for (file <- testHolder.listFiles.filter(_.isFile).toList){
           if (!file.getName.contains(".disabled")){

@@ -6,21 +6,24 @@ import scala.collection.immutable.HashMap
 
 object ExplicitMutableHeap {
 
-  val valueHeap = "valuesHeap"
-  def valueHeapId(ann : GeneralAnnotation) = Ident(valueHeap, ann.pos)
-  val ptrHeap = "indirHeap"
-  def ptrHeapId(ann : GeneralAnnotation) = Ident(ptrHeap, ann.pos)
+  private val valueHeap = "valuesHeap"
+  private def valueHeapId(ann : GeneralAnnotation) = Ident(valueHeap, ann.pos)
+
+  private val ptrHeap = "indirHeap"
+  private def ptrHeapId(ann : GeneralAnnotation) = Ident(ptrHeap, ann.pos)
   val allFunsName = "allFuns"
-  def allFunsId(ann : GeneralAnnotation) = Ident(allFunsName, ann.pos)
-  val nopos = new GeneralAnnotation()
+  private def allFunsId(ann : GeneralAnnotation) = Ident(allFunsName, ann.pos)
 
-  def valueGet(e: Expression.T) = CallIndex(true, Field(valueHeapId(e.ann), "get", e.ann.pos), List((None, e)), e.ann.pos)
-  def ptrGet(e: Expression.T) = CallIndex(true, Field(ptrHeapId(e.ann), "get", e.ann.pos), List((None, e)), e.ann.pos)
-  def index(arr: Expression.T, ind: Expression.T) = CallIndex(false, arr, List((None, ind)), ind.ann.pos)
-  def newValue(e : Expression.T) = CallIndex(true, Field(valueHeapId(e.ann), "new", e.ann.pos), List((None, e)), e.ann.pos)
-  def newPtr(e : Expression.T) = CallIndex(true, Field(ptrHeapId(e.ann), "new", e.ann.pos), List((None, e)), e.ann.pos)
+  private val nopos = new GeneralAnnotation()
 
-  def explicitHeap(st: Statement, ns: Names) = {
+  def valueGet(e: Expression.T): CallIndex = CallIndex(isCall = true, Field(valueHeapId(e.ann), "get", e.ann.pos), List((None, e)), e.ann.pos)
+  def ptrGet(e: Expression.T): CallIndex = CallIndex(isCall = true, Field(ptrHeapId(e.ann), "get", e.ann.pos), List((None, e)), e.ann.pos)
+  def index(arr: Expression.T, ind: Expression.T): CallIndex = CallIndex(isCall = false, arr, List((None, ind)), ind.ann.pos)
+
+  private def newValue(e : Expression.T) = CallIndex(isCall = true, Field(valueHeapId(e.ann), "new", e.ann.pos), List((None, e)), e.ann.pos)
+  def newPtr(e : Expression.T): CallIndex = CallIndex(isCall = true, Field(ptrHeapId(e.ann), "new", e.ann.pos), List((None, e)), e.ann.pos)
+
+  def explicitHeap(st: Statement, ns: Names): (Suite, Names) = {
 
     def procSt(closure : String => Int, scope : String => (VarScope.T, GeneralAnnotation),
                st : Statement, functions : List[FuncDef]) : (Statement, List[FuncDef]) = {
@@ -35,7 +38,7 @@ object ExplicitMutableHeap {
                 index(Ident("closure", ann.pos), IntLiteral(closure(name), ann.pos)) else
                 e
               val e2 = if (List(valueHeap, ptrHeap, allFunsName, "closure").contains(name)) e1 else
-                if (!lhs) valueGet(ptrGet(e1)) else (e1)
+                if (!lhs) valueGet(ptrGet(e1)) else e1
               (Left(e2), ns)
             case CallIndex(true, whom, args, ann) => // todo: this implementation is incorrect, it evals whom twice! we must extract whom to a variable!
               val args2 = args.map {
@@ -43,7 +46,7 @@ object ExplicitMutableHeap {
                   (None, newValue(x._2))
                 case x@(None, _) => x
               }
-              (Left(CallIndex(true, index(allFunsId(ann), index(whom, IntLiteral(0, ann.pos))), (None, whom) :: args2, ann.pos)), ns)
+              (Left(CallIndex(isCall = true, index(allFunsId(ann), index(whom, IntLiteral(0, ann.pos))), (None, whom) :: args2, ann.pos)), ns)
             case _ => (Left(e), ns)
           }
         })(lhs, e, Names(HashMap()))
@@ -72,21 +75,21 @@ object ExplicitMutableHeap {
           (
             Suite(List(
               Assign(List(Ident("nextClosure", ann.pos), rhs), ann.pos),
-              Assign(List(CallIndex(true, Field(ptrHeapId(ann), "set", ann.pos),
+              Assign(List(CallIndex(isCall = true, Field(ptrHeapId(ann), "set", ann.pos),
                 List((None, Ident(name, ann.pos)), (None, newValue(Ident("nextClosure", ann.pos)))), ann.pos)), ann.pos)
             ), ann.pos)
             , fs2)
 
         case Assign(List(lhs, rhs), ann) => (Assign(List(
-          CallIndex(true, Field(ptrHeapId(ann), "set", ann.pos),
-            List((None, pe(true, lhs)), (None, newValue(pe(false, rhs)))), ann.pos)),
+          CallIndex(isCall = true, Field(ptrHeapId(ann), "set", ann.pos),
+            List((None, pe(lhs = true, lhs)), (None, newValue(pe(lhs = false, rhs)))), ann.pos)),
             ann.pos
         ), functions)
         case Return(x, ann) => (Return(x.map(pe(false, _)), ann.pos), functions)
         case IfSimple(cond, yes, no, ann) =>
           val (yes1, f1) = procSt(closure, scope, yes, functions)
           val (no1, f2) = procSt(closure, scope, no, f1)
-          (IfSimple(pe(false, cond), yes1, no1, ann.pos), f2)
+          (IfSimple(pe(lhs = false, cond), yes1, no1, ann.pos), f2)
         case NonLocal(l, ann) => (Pass(ann.pos), functions)
         case Break(_) | Pass(_) | Continue(_) => (st, functions)
 
@@ -99,7 +102,7 @@ object ExplicitMutableHeap {
       }
     }
 
-    val (rest, allFuns) = procSt(_ => ???, (_ => (VarScope.Global, new GeneralAnnotation())), SimpleAnalysis.computeAccessibleIdents(st), List())
+    val (rest, allFuns) = procSt(_ => ???, _ => (VarScope.Global, new GeneralAnnotation()), SimpleAnalysis.computeAccessibleIdents(st), List())
 
     val outst = Suite(
       allFuns :+
