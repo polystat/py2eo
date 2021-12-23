@@ -211,6 +211,12 @@ object Expression {
     }
   }
 
+  def isLiteral(e : T) : Boolean = e match {
+    case _ : NoneLiteral | _ : StringLiteral | _ : IntLiteral | _ : FloatLiteral | _ : ImagLiteral |
+         _ : BoolLiteral | _ : EllipsisLiteral => true
+    case _ => false
+  }
+
 }
 
 object AugOps extends Enumeration {
