@@ -213,8 +213,8 @@ object SimplePass {
         case Left((List(a, b, c), ns)) => (Left(Cond(a, b, c, ann.pos)), ns)
         case Right((List((cond, condName), (yes, yesName), (no, noName)), ns)) =>
           (Right((Suite(List(cond,
-            If(
-              List((condName, yes)),
+            IfSimple(
+              condName, yes,
               Suite(List(no, Assign(List(yesName, noName), noName.ann.pos)), no.ann.pos),
               ann.pos
             )), ann.pos), yesName)), ns)
