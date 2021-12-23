@@ -1,5 +1,5 @@
 import Expression.{CallIndex, CollectionCons, Cond, DictCons, Field, Ident, Parameter, StringLiteral}
-import PrintEO.{EOVisibility, Text, ident, printExpr}
+import PrintEO.{EOVisibility, Text, indent, printExpr}
 import PrintLinearizedImmutableEO.rmUnreachableTail
 
 import scala.collection.immutable.HashMap
@@ -10,16 +10,17 @@ object PrintLinearizedMutableEONoCage {
 
   val headers = List(
     "+package org.eolang",
-    "+alias cage org.eolang.gray.cage",
+    "+alias goto org.eolang.gray.goto",
     "+alias stdout org.eolang.io.stdout",
-    "+alias sprintf org.eolang.txt.sprintf",
+    "+alias cage org.eolang.gray.cage",
+//    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
     ""
   )
 
   val manyMemories = " memory" * 300
 
-  val cHeap = "[] > cHeap" :: ident(List(
+  val cHeap = "[] > cHeap" :: indent(List(
   s"(*$manyMemories) > a",
   "memory > last",
 //  "[] > init",
@@ -51,13 +52,13 @@ object PrintLinearizedMutableEONoCage {
     val innerFuns = l.filter(isFun).flatMap{case f : FuncDef => (printFun(f))}
     val mkAllFuns = l.find{ case (CreateConst(name, value, _)) => true case _ => false} match {
       case Some(CreateConst("allFuns", CollectionCons(_, allFuns, _), _)) =>
-        "* > allFuns" :: ident(allFuns.flatMap(e => List("[]", s"  ${printExpr(bogusVisibility)(e)} > callme")))
+        "* > allFuns" :: indent(allFuns.flatMap(e => List("[]", s"  ${printExpr(bogusVisibility)(e)} > callme")))
       case None => List()
     }
     def others(l : List[Statement]) : Text = l.flatMap{
       case Assign(List(Ident(name, _), DictCons(l, _)), _) =>
         "write." ::
-        ident(name :: "[]" :: ident(l.map{ case Left((StringLiteral(name, _), value)) =>
+        indent(name :: "[]" :: indent(l.map{ case Left((StringLiteral(name, _), value)) =>
           printExpr(bogusVisibility)(value) + " > " + name.substring(1, name.length - 1) }))
       case Assign(List(Ident(lhsName, _), rhs), _) =>
         List(s"$lhsName.write ${printExpr(bogusVisibility)(rhs)}")
@@ -71,8 +72,8 @@ object PrintLinearizedMutableEONoCage {
       case Suite(l, _) => others(l)
     }
     val args1 = f.args.map{ case Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
-    s"[$args1] > ${f.name}" :: ident(
-      memories ++ (innerFuns ++ mkAllFuns) ++ ("seq > @" :: ident(others(l.filterNot(isFun))))
+    s"[$args1] > ${f.name}" :: indent(
+      memories ++ (innerFuns ++ mkAllFuns) ++ ("seq > @" :: indent(others(l.filterNot(isFun))))
     )
   }
 
@@ -88,7 +89,7 @@ object PrintLinearizedMutableEONoCage {
         st1, Decorators(List()), HashMap(), false, st.ann.pos))
     val head :: tail = printFun(theTest)
     headers ++
-      (head :: ident(prelude) ++
+      (head :: indent(prelude) ++
         (tail.init :+
         "    (allFuns.get (nextClosure.get 0)).callme nextClosure")
       )

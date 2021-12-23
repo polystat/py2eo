@@ -46,7 +46,7 @@ object RemoveControlFlow {
         f(headLabel, afterLabel, l, ns)
 
       case Break(ann) => (List((headLabel, goto(breakTarget, ann))), false, ns)
-      case Continue(_) | Raise(_, _, _) | ClassDef(_, _, _, _, _) => ???
+      case Continue(_) | Raise(_, _, _) => ???
 
       case FuncDef(name, args, None, None, None,  body, _, accessibleIdents, isAsync, ann) =>
         assert(!isAsync)

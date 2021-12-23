@@ -50,7 +50,7 @@ class Tests {
   }
 
   @Test def removeControlFlow(): Unit = {
-    for (name <- List("x", "trivial", "trivialWithBreak")) {
+    for (name <- List("x", "trivial", "trivialWithBreak", "myList", "simplestClass")) {
       val test = new File(testsPrefix + "/" + name + ".py")
       val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
       val textractAllCalls = SimplePass.procExprInStatement(
@@ -163,7 +163,7 @@ class Tests {
   }
 
   @Test def useCage() : Unit = {
-    for (name <- List("x", "trivial")) {
+    for (name <- List("x", "trivial", "simplestClass", "myList")) {
       useCageHolder(testsPrefix + "/" + name + ".py")
     }
   }
@@ -226,6 +226,7 @@ class Tests {
     s"$python --version"!
 
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
+    // test_os leads to a strange error with inode numbers on the rultor server only
     // supporting them may take several days, so this feature is currently skipped
 
     // "test_strtod.py", todo: what's the problem here???
@@ -264,31 +265,48 @@ class Tests {
     val test = new File(path)
     def db = debugPrinter(test)(_, _)
 
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+      val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
 
-    val textractAllCalls = SimplePass.procExprInStatement(
-      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+      val textractAllCalls = SimplePass.procExprInStatement(
+        SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
-    val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-    val Suite(List(theFun, Return(_, _)), _) = z._1
-    val FuncDef(mainName, _, _, _, _, _, _, _, _, ann) = theFun
+//      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
+//      val Suite(List(theFun, Return(_, _)), _) = z._1
+//      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
 
-    val theFunC = ClosureWithCage.closurize(theFun)
-    val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
-      ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
-      List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
-    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, body, _, _, _, ann)), _) =
+        ClosureWithCage.declassifyOnly(textractAllCalls._1)
 
-    val stdout = new StringBuilder()
-    val stderr = new StringBuilder()
-    assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-    println(stdout)
+//      val theFunC = ClosureWithCage.closurize(SimpleAnalysis.computeAccessibleIdents(theFun))
+//      val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
+//        ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
+//        List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
+//      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+//
+//      val stdout = new StringBuilder()
+//      val stderr = new StringBuilder()
+//      assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+//      println(stdout)
+//
+//      val eoHacked = Suite(List(
+//        theFun,
+//        Return(Some(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
+//          List((None, NoneLiteral(ann.pos))), ann.pos)), ann.pos)
+//      ), ann.pos)
 
-    val eoHacked = Suite(List(
-      theFunC,
-      Assign(List(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"), List(), ann.pos)), ann.pos)
-    ), ann.pos)
+      val hacked = Suite(List(
+        theFun,
+        Assert(List(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+      ), ann.pos)
+      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+      assertTrue(0 == (s"$python \"$runme\"".!))
 
+      val eoHacked = Suite(List(
+        theFun,
+        Return(Some(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+      ), ann.pos)
+
+    
     val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py",""), eoHacked)
     writeFile(test, "genCageEO", ".eo", eoText.mkString("\n"))
   }
