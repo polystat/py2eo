@@ -308,7 +308,7 @@ class Tests {
 
     
     val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py",""), eoHacked)
-    writeFile(test, "genCageEO", ".eo", eoText.mkString("\n"))
+    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        xresult").mkString("\n"))
   }
 
 
