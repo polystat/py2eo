@@ -10,8 +10,9 @@ object PrintLinearizedMutableEONoCage {
 
   val headers = List(
     "+package org.eolang",
-    "+alias cage org.eolang.gray.cage",
+    "+alias goto org.eolang.gray.goto",
     "+alias stdout org.eolang.io.stdout",
+    "+alias cage org.eolang.gray.cage",
 //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
     ""
