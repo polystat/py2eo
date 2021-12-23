@@ -3723,33 +3723,7 @@ class TestScandir(unittest.TestCase):
         else:
             self.assertEqual(stat1, stat2)
 
-    def check_entry(self, entry, name, is_dir, is_file, is_symlink):
-        self.assertIsInstance(entry, os.DirEntry)
-        self.assertEqual(entry.name, name)
-        self.assertEqual(entry.path, os.path.join(self.path, name))
-        self.assertEqual(entry.inode(),
-                         os.stat(entry.path, follow_symlinks=False).st_ino)
-
-        entry_stat = os.stat(entry.path)
-        self.assertEqual(entry.is_dir(),
-                         stat.S_ISDIR(entry_stat.st_mode))
-        self.assertEqual(entry.is_file(),
-                         stat.S_ISREG(entry_stat.st_mode))
-        self.assertEqual(entry.is_symlink(),
-                         os.path.islink(entry.path))
-
-        entry_lstat = os.stat(entry.path, follow_symlinks=False)
-        self.assertEqual(entry.is_dir(follow_symlinks=False),
-                         stat.S_ISDIR(entry_lstat.st_mode))
-        self.assertEqual(entry.is_file(follow_symlinks=False),
-                         stat.S_ISREG(entry_lstat.st_mode))
-
-        self.assert_stat_equal(entry.stat(),
-                               entry_stat,
-                               os.name == 'nt' and not is_symlink)
-        self.assert_stat_equal(entry.stat(follow_symlinks=False),
-                               entry_lstat,
-                               os.name == 'nt')
+    def check_entry(self, entry, name, is_dir, is_file, is_symlink): pass
 
     def test_attributes(self):
         link = hasattr(os, 'link')

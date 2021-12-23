@@ -1,24 +1,25 @@
 
-import java.io.{File, FileWriter}
-import java.nio.file.{Files, Paths}
 import Expression._
 import org.junit.Assert._
-import org.junit.{Before, Ignore, Test}
+import org.junit.{Before, BeforeClass, Test, Ignore}
 
 import java.io.{File, FileWriter}
-import java.nio.file.Files.copy
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.{Files, Paths}
+import scala.collection.immutable
 import scala.collection.immutable.HashMap
-import scala.collection.{immutable, mutable}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
 import scala.sys.process._
 
+//@RunWith(classOf[JUnitRunner])
 class Tests {
 
-  private val testsPrefix = System.getProperty("user.dir") + "/test/"
+  val separator: String = "/"
+  var files = Array.empty[File]
+  private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
 
   def writeFile(test : File, dirSuffix : String, fileSuffix : String, what : String) : String = {
     assert(test.getName.endsWith(".py"))
@@ -31,7 +32,7 @@ class Tests {
     output.write(what)
     output.close()
     outName
-  }
+    }
 
   def debugPrinter(module : File)(s : Statement, dirSuffix : String) : Unit = {
     val what = PrintPython.printSt(s, "")
@@ -107,9 +108,9 @@ class Tests {
     val hacked4EO = Suite(List(l.head), pos)
     val eoText =
       PrintLinearizedImmutableEO.printSt(name, hacked4EO) +
-        "  * > emptyHeap\n" +
-        "  [] > emptyClosure\n" +
-        s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
+      "  * > emptyHeap\n" +
+      "  [] > emptyClosure\n" +
+      s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
     writeFile(test, "genImmutableEO", ".eo", eoText)
   }
 
@@ -264,6 +265,9 @@ class Tests {
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
+    assert(0 == Process("./configure", cpython).!)
+    val nprocessors = Runtime.getRuntime().availableProcessors()
+    assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
 
     println("Version of python is:")
     s"$python --version"!
@@ -272,6 +276,7 @@ class Tests {
     // test_os leads to a strange error with inode numbers on the rultor server only
     // supporting them may take several days, so this feature is currently skipped
 
+    // "test_strtod.py", todo: what's the problem here???
     // "test_zipimport_support.py", todo: what's the problem here???
     // "test_zipfile64.py" works for more 2 minutes, too slowm
     // test_sys.py just hangs the testing with no progress (with no CPU load)
@@ -283,9 +288,7 @@ class Tests {
     val futures = test.map(test =>
       Future
       {
-        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")
-           && test.getName != "test_strtod.py"  //todo: don't know, what's with this test!
-          ) {
+        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")) {
           def db = debugPrinter(test)(_, _)
 
           println(s"parsing ${test.getName}")
@@ -295,21 +298,35 @@ class Tests {
             Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
             REPLACE_EXISTING
           )
-          val stdout = new StringBuilder()
-          val stderr = new StringBuilder()
-          val exitCode =
-            Process(s"$python ${test.getName}", new File(s"$dirName/afterParser/cpython/Lib/test/"),
-              "PYTHONPATH" -> "..") !  ProcessLogger(stdout.append(_), stderr.append(_))
-          writeFile(test, "stdout", ".stdout", stdout.toString())
-          writeFile(test, "stderr", ".stderr", stderr.toString())
-          if (0 != exitCode) println(s"non-zero exit code for test ${test.getName}!")
-          else println(s"finished ${test.getName}")
-          assertTrue(exitCode == 0)
         }
       }
     )
     for (f <- futures) Await.result(f, Duration.Inf)
+
+    assume(System.getProperty("os.name") == "Linux")
+
+    assertTrue(0 == Process("make test", cpython).!)
+
   }
 
+  @Test def simpleConstructionTest(): Unit = {
+    for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
+      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
+      if (testHolder.exists && testHolder.isDirectory) {
+        for (file <- testHolder.listFiles.filter(_.isFile).toList){
+          val fileName = file.getName.replace(".py", "")
+          val test = new File(file.getPath)
+          def db = debugPrinter(new File(file.getPath))(_, _)
+
+          Parse.parse(test, db)
+          val stdout = new StringBuilder()
+          val stderr = new StringBuilder()
+          import scala.sys.process._
+          assertTrue(0 == (s"$python \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+          println(stdout)
+        }
+      }
+    }
+  }
 }
 
