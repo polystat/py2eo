@@ -2,6 +2,6 @@ def conditionalCheck4():
     a = 4
     b = 2
     if a == b:
-        return a - b
+        return True
     else:
-        return a + b
+        return False
