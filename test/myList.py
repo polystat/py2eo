@@ -1,17 +1,16 @@
 def myLi():
-  class C:
+  class c:
       head = None
       tail = None
   
   def co(head, tail):
-    c = C()
-    c.head = head
-    c.tail = tail
-    return c
+    o = c()
+    o.head = head
+    o.tail = tail
+    return o
 
   lst = None
   lst = co(1, lst)
   lst = co(2, lst)
 
   return lst.tail.head == 1
-
