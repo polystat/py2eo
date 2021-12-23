@@ -1,5 +1,8 @@
+package org.polystat.py2eo;
+
+
 import scala.collection.immutable.HashMap
-package Common {
+object Common {
 
   import scala.collection.immutable.HashMap
 
@@ -125,12 +128,9 @@ package Common {
     def map(f : T => T) : T
   }
 
-
-}
-
-package object Common {
-
   type ExternalConstants = HashMap[String, BigInt]
 
   val successfullyFinishedString = "SUCCESSFULLY FINISHED"
+
 }
+

@@ -1,3 +1,5 @@
+package org.polystat.py2eo;
+
 import Expression.{CallIndex, Field, Ident, StringLiteral}
 import SimplePass.{Names, procExpr, procStatement}
 

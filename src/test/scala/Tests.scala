@@ -1,3 +1,4 @@
+package org.polystat.py2eo
 
 import Expression._
 import org.junit.Assert._

@@ -1,3 +1,5 @@
+package org.polystat.py2eo;
+
 import Expression._
 
 import scala.annotation.tailrec

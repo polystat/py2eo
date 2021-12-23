@@ -1,3 +1,5 @@
+package org.polystat.py2eo
+
 import scala.collection.immutable.HashMap
 
 object SimpleAnalysis {

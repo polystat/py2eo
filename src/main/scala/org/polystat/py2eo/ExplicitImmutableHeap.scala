@@ -1,3 +1,5 @@
+package org.polystat.py2eo;
+
 import Expression.{CallIndex, Parameter, CollectionCons, CollectionKind, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
 import SimplePass.{EAfterPass, Names}
 

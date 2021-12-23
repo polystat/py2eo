@@ -1,3 +1,5 @@
+package org.polystat.py2eo;
+
 import ExplicitImmutableHeap.constHeap
 import Expression.{BoolLiteral, CallIndex, CollectionCons, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
 import SimplePass.{EAfterPass, Names, procExpr, procExprInStatement, procStatement, procStatementGeneral}
