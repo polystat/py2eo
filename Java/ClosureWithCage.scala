@@ -1,6 +1,6 @@
 import ExplicitMutableHeap.{allFunsName, index}
 import Expression.{BoolLiteral, CallIndex, CollectionCons, DictCons, Field, Ident, IntLiteral, NoneLiteral, StringLiteral}
-import SimplePass.{Names, procExpr}
+import SimplePass.{Names, procExpr, procStatement}
 
 import scala.collection.immutable.HashMap
 
@@ -68,5 +68,20 @@ object ClosureWithCage {
   }
 
   def closurize(st : Statement) : Statement = closurizeInner(_ => (VarScope.Global, new GeneralAnnotation()), st)
+
+  def declassifyOnly(st : Statement) : Statement = {
+    val st1 = procStatement(SimplePass.unSuite)(st, new Names())._1
+    val st2 = procStatement((st, ns) => st match {
+      case ClassDef(name, List(), Suite(l, _), Decorators(List()), ann) =>
+        val mkObj = SimpleObject(name, l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos)
+        val creator = FuncDef(name, List(), None, None, None,
+          Suite(List(mkObj, Return(Some(Ident(name, ann.pos)), ann.pos)), ann.pos)
+          , Decorators(List()), HashMap(), false, ann)
+        (creator, ns)
+      case _ => (st, ns)
+    })(st1, new SimplePass.Names())._1
+    st2
+  }
+
 
 }
