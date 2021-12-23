@@ -1,9 +1,9 @@
 def myC():
-    class C:
+    class c:
         value = None
     
-    c = C()
-    c.value = 11
+    o = c()
+    o.value = 11
 
-    return c.value == 11
+    return o.value == 11
 
