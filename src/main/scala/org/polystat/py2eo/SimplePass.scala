@@ -85,7 +85,7 @@ object SimplePass {
         (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
           xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
       case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
-           | ImportAllSymbols(_, _) | Del(_, _)  => nochange
+           | ImportAllSymbols(_, _) | Del(_, _) | _ : SimpleObject => nochange
     }
   }
 
@@ -526,10 +526,10 @@ object SimplePass {
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
-    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
-    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
+//    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
+//    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
 
-    tsimplifyInheritance
+    tsimplifyIf
   }
 
 

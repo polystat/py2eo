@@ -152,6 +152,11 @@ object PrintPython {
       case Raise(None, None, ann) => shift + "raise" + posComment
       case NonLocal(l, ann) => shift + "nonlocal " + l.mkString(", ") + posComment
       case Global(l, ann) => shift + "global " + l.mkString(", ") + posComment
+
+      case SimpleObject(name, fields, ann) =>
+        shift + s"class $name:" + posComment + "\n" +
+          printSt(Suite(fields.map(z => Assign(List(Ident(z._1, z._2.ann.pos), z._2), z._2.ann.pos)), ann.pos), shiftIncr)
+
       case ClassDef(name, bases, body, decorators, ann) =>
         printDecorators(decorators) +
         shift + "class " + name + "(" +

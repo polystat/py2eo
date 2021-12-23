@@ -5,7 +5,7 @@ import scala.collection.immutable.{HashMap, HashSet}
 
 object PrintLinearizedImmutableEO {
 
-  import PrintEO.{EOVisibility, printExpr, Text, ident}
+  import PrintEO.{EOVisibility, printExpr, Text, indent}
 
   def isRetIfRet(st : Statement) = st match {
     case Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _) => true
@@ -24,7 +24,7 @@ object PrintLinearizedImmutableEO {
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
       case CreateConst(name, DictCons(l, _), ann) =>
         val visibility1 = visibility.stepInto(List())
-        s"[] > $name!" :: ident(l.map{ case Left((StringLiteral(name, ann.pos), value)) =>
+        s"[] > $name!" :: indent(l.map{ case Left((StringLiteral(name, ann.pos), value)) =>
           printExpr(visibility1)(value) + " > " + name.substring(1, name.length - 1) })
       case CreateConst(name, value, _) => List(printExpr(visibility)(value) + " > " + name + "!")
       case one@(Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _)) =>
@@ -52,7 +52,7 @@ object PrintLinearizedImmutableEO {
         val args1 = args.map{ case Expression.Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
         val st@Suite(_, _) = body
         val body1 = printBody(name, visibility.stepInto(locals.toList))(st)
-        List(s"[$args1] > $name") ++ ident(body1)
+        List(s"[$args1] > $name") ++ indent(body1)
       case s@Suite(l, _) => printBody(currentFunName, visibility)(s)
       case Pass(_) => List()
     }
@@ -65,7 +65,7 @@ object PrintLinearizedImmutableEO {
         List(
           "[] > " + moduleName,
         ) ++
-        ident(List(
+        indent(List(
           "[heap] > nextFreePtr",
           "  heap.length > @",
           "[heap newValue] > append2heap",
@@ -76,7 +76,7 @@ object PrintLinearizedImmutableEO {
           "    [x i]",
           "      (ptr.eq i).if (newValue) x > @!",
         )) ++
-        ident(printBody("top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
+        indent(printBody("top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
       ).mkString("\n") + "\n"
   }
 
