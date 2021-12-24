@@ -2,7 +2,7 @@ package org.polystat.py2eo
 
 import Expression._
 import org.junit.Assert._
-import org.junit.Test
+import org.junit.{Ignore, Test}
 
 import java.io.{File, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
@@ -204,6 +204,7 @@ class Tests {
     }
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython() : Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
