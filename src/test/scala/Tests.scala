@@ -204,6 +204,7 @@ class Tests {
     }
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython() : Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -310,30 +311,44 @@ class Tests {
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        xresult").mkString("\n"))
   }
 
-
-  @Test def simpleConstructionTest(): Unit = {
-    for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
-      val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + subfolder)
-      if (testHolder.exists && testHolder.isDirectory) {
-        for (file <- testHolder.listFiles.filter(_.isFile).toList){
-          if (!file.getName.contains(".disabled")){
-            println(file.getPath)
-            useCageHolder(file.getPath,simpleConstructions = true)
-          }
-          //val fileName = file.getName.replace(".py", "")
-//          val test = new File(file.getPath)
-//          def db = debugPrinter(new File(file.getPath))(_, _)
-//
-//          Parse.parse(test, db)
-//          val stdout = new StringBuilder()
-//          val stderr = new StringBuilder()
-//          import scala.sys.process._
-//          assertTrue(0 == (s"$python \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-//          println(stdout)
-
+  @Ignore
+  @Test def whileCheckTest():Unit = {
+    val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
+    if (testHolder.exists && testHolder.isDirectory) {
+      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+        if (!file.getName.contains(".disabled")) {
+          println(file.getPath)
+          useCageHolder(file.getPath, simpleConstructions = true)
         }
       }
     }
   }
+
+  @Test def ifCheck():Unit = {
+    val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
+    if (testHolder.exists && testHolder.isDirectory) {
+      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+        if (!file.getName.contains(".disabled")) {
+          println(file.getPath)
+          useCageHolder(file.getPath, simpleConstructions = true)
+        }
+      }
+    }
+  }
+
+
+  @Test def assignCheck():Unit = {
+    val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + "assignCheck")
+    if (testHolder.exists && testHolder.isDirectory) {
+      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+        if (!file.getName.contains(".disabled")) {
+          println(file.getPath)
+          useCageHolder(file.getPath, simpleConstructions = true)
+        }
+      }
+    }
+  }
+
+
 }
 
