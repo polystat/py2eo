@@ -1,3 +1,5 @@
+package org.polystat.py2eo;
+
 import Expression.{CallIndex, Ident, NoneLiteral}
 import SimplePass.Names
 
@@ -7,11 +9,8 @@ object RemoveControlFlow {
 
   def inner(headLabel : Ident, afterLabel : Ident, breakTarget : Ident, s : Statement, ns : Names) :
         (List[(Ident, Statement)], Boolean, Names) = {
-//    def st2Fun(headLabel : String, afterLabel : String, x : Statement) =
-//      FuncDef(headLabel, List(), None, None, Suite(List(x, Return(CallIndex(true, Ident(afterLabel), List())))), new Decorators(List()))
     def goto(label : Ident, ann : GeneralAnnotation) =
-      Return(Some(CallIndex(true, label, List(), ann.pos)), ann.pos)
-    def mkPhi(labels : List[String]) = {}
+      Return(Some(CallIndex(isCall = true, label, List(), ann.pos)), ann.pos)
     s match {
       case IfSimple(cond, yes, no, ann) =>
         val (List(yesHead0, noHead0), ns1) = ns(List("bb_yes", "bb_no"))
@@ -23,7 +22,7 @@ object RemoveControlFlow {
         val ans = (headLabel, IfSimple(cond, goto(yesHead, cond.ann), goto(noHead, cond.ann), ann.pos)) :: (yes1 ++ no1)
         (ans, b, ns3)
 
-      case While(cond, body, eelse, ann) =>
+      case While(cond, body, eelse, _) =>
         val (List(bodyHead0, elseHead0), ns1) = ns(List("bb_body", "bb_else"))
         val bodyHead = Ident(bodyHead0, body.ann.pos)
         val elseHead = Ident(elseHead0, eelse.ann.pos)
@@ -33,7 +32,7 @@ object RemoveControlFlow {
         val ans = (headLabel, IfSimple(cond, goto(bodyHead, cond.ann), goto(elseHead, cond.ann), cond.ann.pos)) :: (body1 ++ eelse1)
         (ans, b, ns3)
 
-      case Suite(l, ann) =>
+      case Suite(l, _) =>
         def f(h : Ident, a : Ident, l : List[Statement], ns : Names) : (List[(Ident, Statement)], Boolean, Names) = l match {
           case List(s) => inner(h, a, breakTarget, s, ns)
           case ::(head, next) =>
@@ -46,7 +45,7 @@ object RemoveControlFlow {
         f(headLabel, afterLabel, l, ns)
 
       case Break(ann) => (List((headLabel, goto(breakTarget, ann))), false, ns)
-      case Continue(_) | Raise(_, _, _) | ClassDef(_, _, _, _, _) => ???
+      case Continue(_) | Raise(_, _, _) => ???
 
       case FuncDef(name, args, None, None, None,  body, _, accessibleIdents, isAsync, ann) =>
         assert(!isAsync)
@@ -63,7 +62,7 @@ object RemoveControlFlow {
         val locals = (vars.filter(z => z._2._1 == VarScope.Local).map(z => (Ident(z._1, z._2._2), ())) ++ body1 :+ (afterLabelInner, ())).
           map(z => Assign(List(z._1, NoneLiteral(z._1.ann.pos)), z._1.ann.pos))
         val body2 = body1.map(z => FuncDef(z._1.name, List(), None, None, None,
-          (if (nonlocals.l.nonEmpty) Suite(List(nonlocals, z._2), z._2.ann.pos) else z._2),
+          if (nonlocals.l.nonEmpty) Suite(List(nonlocals, z._2), z._2.ann.pos) else z._2,
           Decorators(List()), HashMap(), isAsync, z._2.ann.pos)
         )
         val finish = FuncDef(afterLabelInner.name, List(), None, None, None,

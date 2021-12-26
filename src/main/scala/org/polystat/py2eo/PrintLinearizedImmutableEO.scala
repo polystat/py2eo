@@ -1,3 +1,5 @@
+package org.polystat.py2eo;
+
 import Expression.{CallIndex, Cond, DictCons, Ident, StringLiteral}
 import PrintEO.standardTestPreface
 
@@ -5,9 +7,9 @@ import scala.collection.immutable.{HashMap, HashSet}
 
 object PrintLinearizedImmutableEO {
 
-  import PrintEO.{EOVisibility, printExpr, Text, ident}
+  import PrintEO.{EOVisibility, printExpr, Text, indent}
 
-  def isRetIfRet(st : Statement) = st match {
+  private def isRetIfRet(st : Statement) = st match {
     case Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _) => true
     case _ => false
   }
@@ -24,7 +26,7 @@ object PrintLinearizedImmutableEO {
         List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
       case CreateConst(name, DictCons(l, _), ann) =>
         val visibility1 = visibility.stepInto(List())
-        s"[] > $name!" :: ident(l.map{ case Left((StringLiteral(name, ann.pos), value)) =>
+        s"[] > $name!" :: indent(l.map{ case Left((StringLiteral(name, ann.pos), value)) =>
           printExpr(visibility1)(value) + " > " + name.substring(1, name.length - 1) })
       case CreateConst(name, value, _) => List(printExpr(visibility)(value) + " > " + name + "!")
       case one@(Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _)) =>
@@ -47,13 +49,13 @@ object PrintLinearizedImmutableEO {
 //          s"debugMagic.seq (debugMagic.printDataized \"leaving fun\" \"$currentFunName\") (" +
             "(" + printExpr(visibility)(expr) +
             ") > @!")
-      case FuncDef(name, args, None, None, None, body, Decorators(List()), accessibleIdents, false,  ann) =>
+      case FuncDef(name, args, None, None, None, body, Decorators(List()), accessibleIdents, false, _) =>
         val locals = accessibleIdents.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.Arg).keys
         val args1 = args.map{ case Expression.Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
         val st@Suite(_, _) = body
         val body1 = printBody(name, visibility.stepInto(locals.toList))(st)
-        List(s"[$args1] > $name") ++ ident(body1)
-      case s@Suite(l, _) => printBody(currentFunName, visibility)(s)
+        List(s"[$args1] > $name") ++ indent(body1)
+      case s@Suite(_, _) => printBody(currentFunName, visibility)(s)
       case Pass(_) => List()
     }
   }
@@ -65,7 +67,7 @@ object PrintLinearizedImmutableEO {
         List(
           "[] > " + moduleName,
         ) ++
-        ident(List(
+        indent(List(
           "[heap] > nextFreePtr",
           "  heap.length > @",
           "[heap newValue] > append2heap",
@@ -76,7 +78,7 @@ object PrintLinearizedImmutableEO {
           "    [x i]",
           "      (ptr.eq i).if (newValue) x > @!",
         )) ++
-        ident(printBody("top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
+        indent(printBody("top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue")))(st))
       ).mkString("\n") + "\n"
   }
 

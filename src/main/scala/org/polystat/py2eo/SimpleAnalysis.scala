@@ -1,44 +1,46 @@
+package org.polystat.py2eo
+
 import scala.collection.immutable.HashMap
 
 object SimpleAnalysis {
 
   import Expression._
 
-  def childrenComprehension(c : Comprehension) = c match {
+  private def childrenComprehension(c : Comprehension) = c match {
     case IfComprehension(cond) => List(cond)
     case ForComprehension(what, in, _) => List(what, in)
   }
 
-  def childrenDictEltDoubleStar(x : DictEltDoubleStar) = x match {
+  private def childrenDictEltDoubleStar(x : DictEltDoubleStar) = x match {
     case Right(value) => List(value)
     case Left((a, b)) => List(a, b)
   }
 
   def childrenE(e : T) : List[T] = e match {
-    case AnonFun(args, _, _, body, ann) => List(body)
-    case Binop(op, l, r, _) =>List(l, r)
-    case SimpleComparison(op, l, r, _) => List(l, r)
+    case AnonFun(_, _, _, body, _) => List(body)
+    case Binop(_, l, r, _) =>List(l, r)
+    case SimpleComparison(_, l, r, _) => List(l, r)
     case LazyLAnd(l, r, _) => List(l, r)
     case LazyLOr(l, r, _) => List(l, r)
-    case FreakingComparison(ops, l, _) => l
-    case Unop(op, x, _) => List(x)
+    case FreakingComparison(_, l, _) => l
+    case Unop(_, x, _) => List(x)
     case Star(e, _) => List(e)
     case DoubleStar(e, _) => List(e)
-    case CollectionCons(wasList, l, _) => l
+    case CollectionCons(_, l, _) => l
     case DictCons(l, _) => l.flatMap(childrenDictEltDoubleStar)
     case Slice(from, to, by, _) => from.toList ++ to.toList ++ by.toList
-    case CallIndex(isCall, whom, args, _) => whom :: args.map(_._2)
-    case Field(whose, name, _) => List(whose)
+    case CallIndex(_, whom, args, _) => whom :: args.map(_._2)
+    case Field(whose, _, _) => List(whose)
     case Cond(cond, yes, no, _) => List(cond, yes, no)
     case x : UnsupportedExpr => x.children
     case IntLiteral(_, _) | FloatLiteral(_, _) | StringLiteral(_, _) | BoolLiteral(_, _)
          | NoneLiteral(_) | ImagLiteral(_, _) | Ident(_, _) | EllipsisLiteral(_) =>
       List()
-    case CollectionComprehension(kind, base, l, _) => base :: l.flatMap(childrenComprehension)
+    case CollectionComprehension(_, base, l, _) => base :: l.flatMap(childrenComprehension)
     case DictComprehension(base, l, _) =>
       childrenDictEltDoubleStar(base) ++ l.flatMap(childrenComprehension)
     case Yield(l, _) => l.toList
-    case YieldFrom(e, ann) => List(e)
+    case YieldFrom(e, _) => List(e)
   }
 
   def foldEE[A](f0 : (A, T) => A)(acc0 : A, e : T) : A = {
@@ -50,6 +52,7 @@ object SimpleAnalysis {
   def childrenS(s : Statement) : (List[Statement], List[(Boolean, T)]) = {
     def isRhs(e : T) = (false, e)
     s match {
+      case SimpleObject(_, fields, _) => (List(), fields.map(x => (false, x._2)))
       case With(cm, target, body, _, _) => (List(body), (false, cm) :: target.map(x => (true, x)).toList)
       case For(what, in, body, eelse, _, _) => (List(body, eelse), List((false, what), (false, in)))
       case Del(e, _) => (List(), List((false, e)))
@@ -59,15 +62,15 @@ object SimpleAnalysis {
         ((ttry :: excepts.map(_._2)) :+ eelse :+ ffinally, excepts.flatMap(p => p._1.map(x => (false, x._1)).toList))
       case While(cond, body, eelse, _) => (List(body, eelse), List(isRhs(cond)))
       case Suite(l, _) => (l, List())
-      case AugAssign(op, lhs, rhs, _) => (List(), List((true, lhs), (false, rhs)))
+      case AugAssign(_, lhs, rhs, _) => (List(), List((true, lhs), (false, rhs)))
       case Assign(l, _) => (List(), (false, l.head) :: l.tail.map(isRhs))
-      case AnnAssign(lhs, rhsAnn, rhs, ann) => (List(), (true, lhs) :: (List(rhsAnn) ++ rhs.toList).map(isRhs))
-      case CreateConst(name, value, _) => (List(), List(isRhs(value)))
+      case AnnAssign(lhs, rhsAnn, rhs, _) => (List(), (true, lhs) :: (List(rhsAnn) ++ rhs.toList).map(isRhs))
+      case CreateConst(_, value, _) => (List(), List(isRhs(value)))
       case Return(x, _) => (List(), x.toList.map(isRhs))
       case Assert(x, _) => (List(), x.map(isRhs))
       case Raise(e, from, _) => (List(), (e.toList ++ from.toList).map(isRhs))
-      case ClassDef(name, bases, body, decorators, _) => (List(body), (bases.map(_._2) ++ decorators.l).map(isRhs))
-      case FuncDef(name, args, _, _, returnAnnotation, body, decorators, _, _, _) =>
+      case ClassDef(_, bases, body, decorators, _) => (List(body), (bases.map(_._2) ++ decorators.l).map(isRhs))
+      case FuncDef(_, args, _, _, returnAnnotation, body, decorators, _, _, _) =>
         (List(body),
           (decorators.l ++ returnAnnotation.toList ++ args.flatMap(p => p.paramAnn.toList ++ p.default.toList)).map(isRhs))
       case NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | Global(_, _) | ImportModule(_, _, _)
@@ -101,8 +104,8 @@ object SimpleAnalysis {
     }
     type H = HashMap[String, (VarScope.T, GeneralAnnotation)]
     val h2 = foldSS[H]((h, st) => st match {
-      case (NonLocal(l, ann)) => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.NonLocal, ann.pos)))), false)
-      case (Global(l, ann))  => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.Global, ann.pos)))), false)
+      case NonLocal(l, ann) => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.NonLocal, ann.pos)))), false)
+      case Global(l, ann)  => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.Global, ann.pos)))), false)
       case _ => (h, dontVisitOtherBlocks(st))
     })(HashMap[String, (VarScope.T, GeneralAnnotation)](), body)
 
@@ -111,11 +114,12 @@ object SimpleAnalysis {
         if (h.contains(name)) h else h.+((name, (VarScope.Local, ann.pos)))
       def add(name : String, ann : GeneralAnnotation) = add0(h, name, ann)
       st match {
-        case ClassDef(name, bases, body, _, ann) => (add(name, ann), false)
-        case FuncDef(name, args, body, _, _, _, _, _, _, ann) => (add(name, ann), false)
-        case Assign(List(CollectionCons(_, _, _), _), ann) =>
+        case ClassDef(name, _, _, _, ann) => (add(name, ann), false)
+        case SimpleObject(name, _, ann) => (add(name, ann), false)
+        case FuncDef(name, _, _, _, _, _, _, _, _, ann) => (add(name, ann), false)
+        case Assign(List(CollectionCons(_, _, _), _), _) =>
           throw new Throwable("run this analysis after all assignment simplification passes!")
-        case Assign(l, ann) if l.size > 2 =>
+        case Assign(l, _) if l.size > 2 =>
           throw new Throwable("run this analysis after all assignment simplification passes!")
         case Assign(List(Ident(name, _), _), ann) => (add(name, ann), true)
         case AnnAssign(Ident(name, _), _, _, ann) => (add(name, ann), true)
@@ -164,10 +168,16 @@ object SimpleAnalysis {
 //      Del(Ident(_)) | Try(_, List((None, _)), _, _) | AugAssign(_, _, _) |
 //      Raise(_, None) | ClassDef(_, _, _, Decorators(List())) | Global(_) |
       IfSimple(_, _, _, _) | While(_, _, _, _) |
-      Suite(_, _) | Assign(List(_), _) | Assign(List(Ident(_, _), _), _) | Return(_, _) |
+      Suite(_, _) | Assign(List(_), _) |
+      Return(_, _) |
       FuncDef(_, _, _, _, _, _, Decorators(List()), _, _, _) |
       NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | ImportModule(_, _, _) |
       ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (acc, true)
+    case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.isSeqOfFields(lhs)  => (acc, true)
+    case ClassDef(_, List(), body, Decorators(List()), _) =>
+      val (Suite(defs, _), _) = SimplePass.procStatement(SimplePass.unSuite)(body, SimplePass.Names(HashMap()))
+      assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })
+      (acc, true)
   }
 
   private def assertExpressionIsSimplified(acc : Unit, e : T) : Unit = e match {

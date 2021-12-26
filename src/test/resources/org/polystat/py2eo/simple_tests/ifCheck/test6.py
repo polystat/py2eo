@@ -1,7 +1,7 @@
 def conditionalCheck6():
     a = 4
     b = 2
-    if a <= b:
-        return a - b
+    if a >= b:
+        return True
     else:
-        return a + b
+        return False

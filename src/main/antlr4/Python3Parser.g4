@@ -30,6 +30,10 @@
  */
 parser grammar Python3Parser;
 
+@header {
+  package org.polystat.py2eo;
+}
+
 options {
     tokenVocab=Python3Lexer;
 }

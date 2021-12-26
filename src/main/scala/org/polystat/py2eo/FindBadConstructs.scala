@@ -1,3 +1,5 @@
+package org.polystat.py2eo;
+
 import Expression.{CallIndex, Ident, StringLiteral}
 
 import java.io.File
@@ -13,7 +15,7 @@ object FindBadConstructs extends App {
     println(s"parsing ${file.getPath}")
     val y = Parse.parse(file, (_, _) => ())
     SimpleAnalysis.foldSE[Unit]((_, e) => e match {
-      case CallIndex(true, Ident("eval", _), ((_, StringLiteral(_, _)) :: _), ann) => ()
+      case CallIndex(true, Ident("eval", _), (_, StringLiteral(_, _)) :: _, _) => ()
       case CallIndex(true, Ident("eval", ann), _, _) =>
         println(s"bad eval ${file.getName}:$ann")
       case _ => ()
