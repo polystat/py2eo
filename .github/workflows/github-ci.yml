@@ -40,7 +40,11 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifacts
-          path: src/test/resources/org/polystat/py2eo/genCageEO/
+          path: |
+            src/test/resources/org/polystat/py2eo/genCageEO/*.eo
+            src/test/resources/org/polystat/py2eo/simple_tests/assignCheck/genCageEO/*.eo
+            src/test/resources/org/polystat/py2eo/simple_tests/ifCheck/genCageEO/*.eo
+            src/test/resources/org/polystat/py2eo/simple_tests/whileCheck/genCageEO/*.eo
 
   runEO:
     strategy:
@@ -60,7 +64,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifacts
-          path: ./runEO/genCageEO/
+          path: ./src/test/resources/org/polystat/py2eo/
       - name: Build with Maven
         run: cd ./runEO && mvn clean test
       - name: upload artifacts
