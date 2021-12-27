@@ -1,2 +1,3 @@
 def conditionalCheck9():
-    return 42 if True else 43
+    c =  42 if True else 43
+    return c == 42

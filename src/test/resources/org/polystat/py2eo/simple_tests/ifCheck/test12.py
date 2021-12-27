@@ -1,4 +1,5 @@
 def conditionalCheck11():
     a = 4
     b = 2
-    return 42 if a <= b else 43
+    c = 42 if a <= b else 43
+    return c == 43

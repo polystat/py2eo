@@ -1,7 +1,8 @@
 def whileCheck4():
     a = 100
     b = 10
-    while a != b:
+
+    while a > 0:
         a = a - b
-    else:
-        return a + b
+
+    return True
