@@ -77,7 +77,14 @@ object PrintLinearizedMutableEOWithCage {
             case _ => true
           }
           if (doNotCopy)
-            List(s"${pe(lhs)}.write (${pe(rhs)}" + (if (isLiteral(rhs)) "" else ".@") + ")")
+            if (isLiteral(rhs))
+              List(s"${pe(lhs)}.write (${pe(rhs)}" + ")")
+            else {
+              val tmp = HackName()
+                (s"[] > $tmp" ::
+                indent("memory > dddata" :: s"dddata.write (${pe(rhs)}) > @" :: List())) :+
+                s"${pe(lhs)}.write ($tmp.dddata)"
+            }
           else {
             val tmp = HackName()
             val Ident(name, _) = rhs
