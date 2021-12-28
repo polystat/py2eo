@@ -310,7 +310,6 @@ class Tests {
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        xresult").mkString("\n"))
   }
 
-  @Ignore
   @Test def whileCheckTest():Unit = {
     val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
     if (testHolder.exists && testHolder.isDirectory) {
