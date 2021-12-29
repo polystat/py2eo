@@ -173,7 +173,7 @@ object SimpleAnalysis {
       FuncDef(_, _, _, _, _, _, Decorators(List()), _, _, _) |
       NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | ImportModule(_, _, _) |
       ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => (acc, true)
-    case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.isSeqOfFields(lhs)  => (acc, true)
+    case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.seqOfFields(lhs).isDefined  => (acc, true)
     case ClassDef(_, List(), body, Decorators(List()), _) =>
       val (Suite(defs, _), _) = SimplePass.procStatement(SimplePass.unSuite)(body, SimplePass.Names(HashMap()))
       assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })

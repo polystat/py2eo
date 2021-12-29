@@ -21,12 +21,11 @@ object PrintLinearizedMutableEOWithCage {
     }
   }
 
-  @tailrec
-  def isSeqOfFields(x : Expression.T) : Boolean = x match {
-    case Field(whose, _, _) => isSeqOfFields(whose)
-    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
-    case Ident(_, _) => true
-    case _ => false
+  def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
+    case Field(whose, name, _) => seqOfFields(whose).map(_ :+ name)
+//    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
+    case Ident(name, _) => Some(List(name))
+    case _ => None
   }
 
   def printFun(newName : String, f : FuncDef) : Text = {
@@ -54,14 +53,15 @@ object PrintLinearizedMutableEOWithCage {
               ))
             )) :+ s"(x$name.@)"
         case _: FuncDef => List()
-        case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if isSeqOfFields(whom) && isSeqOfFields(lhs) =>
+        case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if (seqOfFields(whom).isDefined &&
+          seqOfFields(lhs).isDefined) =>
 //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
           List(
             s"tmp.write ${pe(rhs)}",
             "(tmp.@)",
             s"${pe(lhs)}.write (tmp.xresult)"
           )
-        case Assign(List(lhs, rhs), _) if isSeqOfFields(lhs) =>
+        case Assign(List(lhs, rhs), _) if seqOfFields(lhs).isDefined =>
           rhs match {
             case _ : DictCons | _ : CollectionCons | _ : Await | _ : Star | _ : DoubleStar |
               _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
@@ -71,11 +71,8 @@ object PrintLinearizedMutableEOWithCage {
             case CallIndex(false, _, _, _) => throw new Throwable("this is A PROBLEM") // todo
             case _ => ()
           }
-          val doNotCopy = rhs match {
-//            case z if isSeqOfFields(z) => false
-            case Ident(_, _) => false
-            case _ => true
-          }
+          val seqOfFields1 = seqOfFields(rhs)
+          val doNotCopy = seqOfFields1.isEmpty
           if (doNotCopy)
             if (isLiteral(rhs))
               List(s"${pe(lhs)}.write (${pe(rhs)}" + ")")
@@ -87,8 +84,9 @@ object PrintLinearizedMutableEOWithCage {
             }
           else {
             val tmp = HackName()
-            val Ident(name, _) = rhs
-            (s"[] > $tmp" :: indent(List(s"x$name' > copy", "copy.< > @"))) :+
+//            val Ident(name, _) = rhs
+            val Some(l) = seqOfFields1
+            (s"[] > $tmp" :: indent(List(s"${l.mkString(".")}' > copy", "copy.< > @"))) :+
               s"${pe(lhs)}.write ($tmp.copy)"
           }
 
