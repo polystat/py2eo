@@ -162,10 +162,26 @@ class Tests {
     writeFile(test, "genHeapifiedEO", ".eo", eoText.mkString("\n"))
   }
 
-  @Test def useCage() : Unit = {
-    for (name <- List("x", "trivial", "simplestClass", "myList")) {
-      useCageHolder(testsPrefix + "/" + name + ".py")
-    }
+//  @Test def useCage() : Unit = {
+//    for (name <- List("x", "trivial", "simplestClass", "myList")) {
+//      useCageHolder(testsPrefix + "/" + name + ".py")
+//    }
+//  }
+
+  @Test def trivialTest():Unit = {
+    useCageHolder(testsPrefix + "/trivial.py")
+  }
+
+  @Test def simplestClassTest():Unit = {
+    useCageHolder(testsPrefix + "/simplestClass.py")
+  }
+
+  @Test def myListTest():Unit = {
+    useCageHolder(testsPrefix + "/myList.py")
+  }
+
+  @Test def xTest():Unit = {
+    useCageHolder(testsPrefix + "/x.py")
   }
 
   @Test def useUnsupported() : Unit = {
@@ -312,32 +328,19 @@ class Tests {
 
   @Ignore
   @Test def whileCheckTest():Unit = {
-    val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
-    if (testHolder.exists && testHolder.isDirectory) {
-      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-        if (!file.getName.contains(".disabled")) {
-          println(file.getPath)
-          useCageHolder(file.getPath, simpleConstructions = true)
-        }
-      }
-    }
+    simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
   }
 
   @Test def ifCheck():Unit = {
-    val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
-    if (testHolder.exists && testHolder.isDirectory) {
-      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-        if (!file.getName.contains(".disabled")) {
-          println(file.getPath)
-          useCageHolder(file.getPath, simpleConstructions = true)
-        }
-      }
-    }
+    simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
   }
 
-
   @Test def assignCheck():Unit = {
-    val testHolder = new File(testsPrefix + s"${File.separator}simple_tests$separator" + "assignCheck")
+    simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "assignCheck")
+  }
+
+  def simpleConstructionCheck(path:String):Unit = {
+    val testHolder = new File(path)
     if (testHolder.exists && testHolder.isDirectory) {
       for (file <- testHolder.listFiles.filter(_.isFile).toList) {
         if (!file.getName.contains(".disabled")) {
