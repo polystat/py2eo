@@ -162,10 +162,26 @@ class Tests {
     writeFile(test, "genHeapifiedEO", ".eo", eoText.mkString("\n"))
   }
 
-  @Test def useCage() : Unit = {
-    for (name <- List("x", "trivial", "simplestClass", "myList")) {
-      useCageHolder(testsPrefix + "/" + name + ".py")
-    }
+//  @Test def useCage() : Unit = {
+//    for (name <- List("x", "trivial", "simplestClass", "myList")) {
+//      useCageHolder(testsPrefix + "/" + name + ".py")
+//    }
+//  }
+
+  @Test def trivialTest():Unit = {
+    useCageHolder(testsPrefix + "/trivial.py")
+  }
+
+  @Test def simplestClassTest():Unit = {
+    useCageHolder(testsPrefix + "/simplestClass.py")
+  }
+
+  @Test def myListTest():Unit = {
+    useCageHolder(testsPrefix + "/myList.py")
+  }
+
+  @Test def xTest():Unit = {
+    useCageHolder(testsPrefix + "/x.py")
   }
 
   @Test def useUnsupported() : Unit = {
