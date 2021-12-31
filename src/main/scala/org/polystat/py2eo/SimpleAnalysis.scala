@@ -106,7 +106,8 @@ object SimpleAnalysis {
       case _ => true
     }
     type H = HashMap[String, (VarScope.T, GeneralAnnotation)]
-    val h2 = foldSS[H]((h, st) => st match {
+    val h2 = foldSS[H]((h, st) => 
+      st match {
         case NonLocal(l, ann) => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.NonLocal, ann.pos)))), false)
         case Global(l, ann)  => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.Global, ann.pos)))), false)
         case _ => (h, dontVisitOtherBlocks(st))
