@@ -25,8 +25,6 @@ object PrintLinearizedMutableEONoCage {
   private val cHeap = "[] > cHeap" :: indent(List(
   s"(*$manyMemories) > a",
   "memory > last",
-//  "[] > init",
-//  "  memory.write 0",
   "[index] > get",
   "  a.get index > @",
   "[index value] > set",
@@ -46,7 +44,6 @@ object PrintLinearizedMutableEONoCage {
   def printFun(f : FuncDef) : Text = {
     val (Suite(l0, _), _) = SimplePass.procStatement(SimplePass.unSuite)(f.body, SimplePass.Names(HashMap()))
     val l = rmUnreachableTail(l0)
-//    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     def isFun(f : Statement) = f match { case _: FuncDef => true case _ => false }
     val notMemories = "allFuns" :: l.filter(isFun).map{case f : FuncDef => f.name}
     val memories = f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !notMemories.contains(x._1)).
