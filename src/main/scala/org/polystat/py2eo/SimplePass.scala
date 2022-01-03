@@ -4,19 +4,19 @@ import scala.collection.immutable.{HashMap, HashSet}
 
 object SimplePass {
 
-  case class Names(used : HashMap[String, Int]) {
+  case class Names(used: HashMap[String, Int]) {
 
     // the names mentioned here are incompatible with EO (see issue #416 in github.com/cqfn/eo)
     def this() = this(HashMap("x" -> 1, "i" -> 1, "msg" -> 1, "txt" -> 1))
 
-    def last(s : String) : String = s + (used(s) - 1)
+    def last(s: String): String = s + (used(s) - 1)
 
-    def apply(s : String) : (String, Names) = {
+    def apply(s: String): (String, Names) = {
       if (used.contains(s)) (s + used(s), Names(used.+((s, used(s) + 1))))
       else (s + "0", Names(used.+((s, 1))))
     }
 
-    def apply(l : List[String]) : (List[String], Names) = {
+    def apply(l: List[String]): (List[String], Names) = {
       l.foldLeft((List[String](), this))((acc, s) => {
         val z = acc._2(s)
         (acc._1 :+ z._1, z._2)
@@ -25,9 +25,10 @@ object SimplePass {
 
   }
 
-  def procStatementGeneral(f : (Statement, Names) => (Statement, Names, Boolean))(s0 : Statement, ns0 : Names) : (Statement, Names) = {
+  def procStatementGeneral(f: (Statement, Names) => (Statement, Names, Boolean))(s0: Statement, ns0: Names): (Statement, Names) = {
     def pst = procStatementGeneral(f)(_, _)
-    def pstl[T](extract : T => Statement, l : List[T], ns : Names) =
+
+    def pstl[T](extract: T => Statement, l: List[T], ns: Names) =
       l.foldLeft((List[Statement](), ns))((acc, st) => {
         val xst = pst(extract(st), acc._2)
         (acc._1 :+ xst._1, xst._2)
@@ -38,59 +39,61 @@ object SimplePass {
     val nochange = (s, ns)
 
     if (!visitChildren) nochange else
-    s match {
-      case If(conditioned, eelse, ann) =>
-        val xconditioned = pstl[(T, Statement)](_._2, conditioned, ns)
-        val xelse = pst(eelse, xconditioned._2)
-        (If(conditioned.map(_._1).zip(xconditioned._1), xelse._1, ann.pos), xelse._2)
-      case IfSimple(cond, yes, no, ann) =>
-        val xyes = pst(yes, ns)
-        val xno  = pst(no, xyes._2)
-        (IfSimple(cond, xyes._1, xno._1, ann.pos), xno._2)
-      case While(cond, body, eelse, ann) =>
-        val xbody = pst(body, ns)
-        val xelse = pst(eelse, xbody._2)
-        (While(cond, xbody._1, xelse._1, ann.pos), xelse._2)
-      case For(what, in, body, eelse, isAsync, ann) =>
-        val xbody = pst(body, ns)
-        val xelse = pst(eelse, xbody._2)
-        (For(what, in, xbody._1, xelse._1, isAsync, ann.pos), xelse._2)
-      case Suite(l, ann) =>
-        val xl = pstl[Statement](x => x, l, ns)
-        (Suite(xl._1, ann.pos), xl._2)
-      case u : Unsupported =>
-        val xl = pstl[Statement](x => x, u.sts, ns)
-        (new Unsupported(u.original, u.declareVars, u.es, xl._1, u.ann.pos), xl._2)
+      s match {
+        case If(conditioned, eelse, ann) =>
+          val xconditioned = pstl[(T, Statement)](_._2, conditioned, ns)
+          val xelse = pst(eelse, xconditioned._2)
+          (If(conditioned.map(_._1).zip(xconditioned._1), xelse._1, ann.pos), xelse._2)
+        case IfSimple(cond, yes, no, ann) =>
+          val xyes = pst(yes, ns)
+          val xno = pst(no, xyes._2)
+          (IfSimple(cond, xyes._1, xno._1, ann.pos), xno._2)
+        case While(cond, body, eelse, ann) =>
+          val xbody = pst(body, ns)
+          val xelse = pst(eelse, xbody._2)
+          (While(cond, xbody._1, xelse._1, ann.pos), xelse._2)
+        case For(what, in, body, eelse, isAsync, ann) =>
+          val xbody = pst(body, ns)
+          val xelse = pst(eelse, xbody._2)
+          (For(what, in, xbody._1, xelse._1, isAsync, ann.pos), xelse._2)
+        case Suite(l, ann) =>
+          val xl = pstl[Statement](x => x, l, ns)
+          (Suite(xl._1, ann.pos), xl._2)
+        case u: Unsupported =>
+          val xl = pstl[Statement](x => x, u.sts, ns)
+          (new Unsupported(u.original, u.declareVars, u.es, xl._1, u.ann.pos), xl._2)
 
-      case With(cm, target, body, isAsync, ann) =>
-        val xbody = pst(body, ns)
-        (With(cm, target, xbody._1, isAsync, ann.pos), xbody._2)
-      case Try(ttry, excepts, eelse, ffinally, ann) =>
-        val xtry = pst(ttry, ns)
-        val xex = pstl[(Option[(T, Option[String])], Statement)](_._2, excepts, xtry._2)
-        val xelse = pst(eelse, xex._2)
-        val xfinally = pst(ffinally, xelse._2)
-        (Try(xtry._1, excepts.map(_._1).zip(xex._1), xelse._1, xfinally._1, ann.pos), xfinally._2)
+        case With(cm, target, body, isAsync, ann) =>
+          val xbody = pst(body, ns)
+          (With(cm, target, xbody._1, isAsync, ann.pos), xbody._2)
+        case Try(ttry, excepts, eelse, ffinally, ann) =>
+          val xtry = pst(ttry, ns)
+          val xex = pstl[(Option[(T, Option[String])], Statement)](_._2, excepts, xtry._2)
+          val xelse = pst(eelse, xex._2)
+          val xfinally = pst(ffinally, xelse._2)
+          (Try(xtry._1, excepts.map(_._1).zip(xex._1), xelse._1, xfinally._1, ann.pos), xfinally._2)
 
-      case AugAssign(op, lhs, rhs, ann) =>  nochange
-      case AnnAssign(lhs, rhsAnn, rhs, ann) => nochange
-      case Return(_, _) | Assert(_, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
-           | Continue(_) | CreateConst(_, _, _) =>  nochange
-      case ClassDef(name, bases, body, decorators, ann) =>
-        val xbody = pst(body, ns)
-        (new ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
-      case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
+        case AugAssign(op, lhs, rhs, ann) => nochange
+        case AnnAssign(lhs, rhsAnn, rhs, ann) => nochange
+        case Return(_, _) | Assert(_, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
+             | Continue(_) | CreateConst(_, _, _) => nochange
+        case ClassDef(name, bases, body, decorators, ann) =>
+          val xbody = pst(body, ns)
+          (new ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
+        case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
         body, decorators, accessibleIdents, isAsync, ann) =>
-        val xbody = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
-          xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
-      case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
-           | ImportAllSymbols(_, _) | Del(_, _) | _ : SimpleObject => nochange
-    }
+          val xbody = pst(body, ns)
+          (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
+            xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
+        case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
+             | ImportAllSymbols(_, _) | Del(_, _) | _: SimpleObject => nochange
+      }
   }
 
-  def procStatement(f : (Statement, Names) => (Statement, Names))(s0 : Statement, ns0 : Names) : (Statement, Names) =
-    procStatementGeneral((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
+  def procStatement(f: (Statement, Names) => (Statement, Names))(s0: Statement, ns0: Names): (Statement, Names) =
+    procStatementGeneral((st, ns) => {
+      val z = f(st, ns); (z._1, z._2, true)
+    })(s0, ns0)
 
 
   // all the forcing code is only needed to keep computation order if we transform an expression to a statement:
@@ -98,26 +101,26 @@ object SimplePass {
   // it must be transformed to z0 = f(); z = g(); x = h(z0, z) or not be transformed at all
   type EAfterPass = Either[T, (Statement, Ident)]
 
-  def forceSt(e : T, ns : Names) : ((Statement, Ident), Names) = {
+  def forceSt(e: T, ns: Names): ((Statement, Ident), Names) = {
     val (lhsName, ns1) = ns("lhs")
     val l = Ident(lhsName, e.ann.pos)
     ((Assign(List(l, e), e.ann.pos), l), ns1)
   }
 
-  def forceSt2(e : EAfterPass, ns : Names) : ((Statement, Ident), Names) = e match {
+  def forceSt2(e: EAfterPass, ns: Names): ((Statement, Ident), Names) = e match {
     case Left(e) => forceSt(e, ns)
     case Right(value) => (value, ns)
   }
 
-  def forceAllIfNecessary(f : (Boolean, T, Names) => (EAfterPass, Names))
-                         (l : List[(Boolean, T)], ns : Names) : Either[(List[T], Names), (List[(Statement, Ident)], Names)] = {
+  def forceAllIfNecessary(f: (Boolean, T, Names) => (EAfterPass, Names))
+                         (l: List[(Boolean, T)], ns: Names): Either[(List[T], Names), (List[(Statement, Ident)], Names)] = {
     val (l1, ns1) = l.foldLeft((List[EAfterPass](), ns))((acc, e) => {
       val xe = procExpr(f)(e._1, e._2, acc._2)
       (acc._1 :+ xe._1, xe._2)
     })
     val hasStatement = l1.exists(_.isRight)
-    if (!hasStatement) Left(l1.map{case Left(value) => value }, ns1) else
-      Right (
+    if (!hasStatement) Left(l1.map { case Left(value) => value }, ns1) else
+      Right(
         l1.foldLeft((List[(Statement, Ident)](), ns1))((acc, x) => x match {
           case Left(value) =>
             val (p, ns) = forceSt(value, acc._2)
@@ -127,11 +130,11 @@ object SimplePass {
       )
   }
 
-  def procExpr(f : (Boolean, T, Names) => (EAfterPass, Names))
-              (lhs : Boolean, e : T, ns : Names) : (EAfterPass, Names) = {
+  def procExpr(f: (Boolean, T, Names) => (EAfterPass, Names))
+              (lhs: Boolean, e: T, ns: Names): (EAfterPass, Names) = {
     def pe = procExpr(f)(false, _, _)
 
-    def reconstruct(lhs : Boolean, cons : List[T] => T, l : List[T], ns : Names) : (EAfterPass, Names) = {
+    def reconstruct(lhs: Boolean, cons: List[T] => T, l: List[T], ns: Names): (EAfterPass, Names) = {
       forceAllIfNecessary(f)(l.map(x => (lhs, x)), ns) match {
         case Left((es, ns)) => f(lhs, cons(es), ns)
         case Right((sts, ns)) =>
@@ -150,14 +153,14 @@ object SimplePass {
 
     e match {
       case Binop(op, l, r, ann) if !lhs =>
-        reconstruct(false, { case List(l, r) => Binop(op, l, r, ann.pos)}, List(l, r), ns)
+        reconstruct(false, { case List(l, r) => Binop(op, l, r, ann.pos) }, List(l, r), ns)
       case Yield(None, ann) => (Left(e), ns)
       case Yield(Some(e), ann) => reconstruct(false, { case List(x) => Yield(Some(x), ann.pos) }, List(e), ns)
       case YieldFrom(e, ann) => reconstruct(false, { case List(x) => YieldFrom(x, ann.pos) }, List(e), ns)
       case SimpleComparison(op, l, r, ann) if !lhs =>
-        reconstruct(false, { case List(l, r) => SimpleComparison(op, l, r, ann.pos)}, List(l, r), ns)
+        reconstruct(false, { case List(l, r) => SimpleComparison(op, l, r, ann.pos) }, List(l, r), ns)
       case FreakingComparison(ops, l, ann) if !lhs && ops.size == 1 =>
-        reconstruct(false, { case List(l, r) => SimpleComparison(ops.head, l, r, ann.pos)}, List(l.head, l.last), ns)
+        reconstruct(false, { case List(l, r) => SimpleComparison(ops.head, l, r, ann.pos) }, List(l.head, l.last), ns)
       case Unop(op, x, ann) if !lhs =>
         reconstruct(false, { case List(x) => Unop(op, x, ann.pos) }, List(x), ns)
       case Star(e, ann) if !lhs =>
@@ -166,16 +169,19 @@ object SimplePass {
         reconstruct(false, { case List(x) => DoubleStar(x, ann.pos) }, List(e), ns)
       case Slice(from, to, by, ann) if !lhs =>
         val l0 = List(from, to, by)
-        val l = l0.map{ case None => BoolLiteral(true, ann.pos)  case Some(x) => x}
-        def cons(l : List[T]) = {
-          val List(from, to, by) = l.zip(l0).map{ case (_, None) => None case (x, _) => Some(x) }
+        val l = l0.map { case None => BoolLiteral(true, ann.pos) case Some(x) => x }
+
+        def cons(l: List[T]) = {
+          val List(from, to, by) = l.zip(l0).map { case (_, None) => None case (x, _) => Some(x) }
           Slice(from, to, by, ann.pos)
         }
+
         reconstruct(false, cons, l, ns)
       case CallIndex(isCall, whom, args, ann) if isCall && !lhs =>
         reconstruct(false, { case (h :: t) =>
-          CallIndex(isCall, h, args.map(_._1).zip(t), ann.pos) }, whom :: args.map(_._2), ns)
-      case u : UnsupportedExpr =>
+          CallIndex(isCall, h, args.map(_._1).zip(t), ann.pos)
+        }, whom :: args.map(_._2), ns)
+      case u: UnsupportedExpr =>
         reconstruct(lhs, es => new UnsupportedExpr(u.original, es, u.ann.pos), u.children, ns)
       case LazyLAnd(l, r, ann) if !lhs => // l and r <=> r if l else false
         pe(Cond(l, r, BoolLiteral(false, ann.pos), ann.pos), ns)
@@ -200,7 +206,7 @@ object SimplePass {
         val (funname, ns1) = ns("anonFun")
         val (xbody, ns2) = pe(body, ns1)
         val finalBody = xbody match {
-          case Left(value) =>   Return(Some(value), value.ann.pos)
+          case Left(value) => Return(Some(value), value.ann.pos)
           case Right(value) =>
             Suite(List(value._1, Return(Some(value._2), value._2.ann.pos)), GeneralAnnotation(value._1.ann.start, value._2.ann.stop))
         }
@@ -225,50 +231,54 @@ object SimplePass {
 
       case DictCons(l, ann) if !lhs =>
         val simple = l.flatMap({ case Right(x) => List(x) case Left((x, y)) => List(x, y) })
-        def cons(original : List[DictEltDoubleStar], simple : List[T]) : List[DictEltDoubleStar] = (original, simple) match {
+
+        def cons(original: List[DictEltDoubleStar], simple: List[T]): List[DictEltDoubleStar] = (original, simple) match {
           case (Nil, Nil) => List()
           case (Right(_) :: otl, z :: stl) => Right(z) :: cons(otl, stl)
           case (Left(_) :: otl, a :: b :: stl) => Left((a, b)) :: cons(otl, stl)
         }
+
         reconstruct(false, simple => DictCons(cons(l, simple), ann.pos), simple, ns)
 
       case IntLiteral(_, _) | Ident(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | NoneLiteral(_) | FloatLiteral(_, _) |
-        EllipsisLiteral(_) | ImagLiteral(_, _) => f(lhs, e, ns)
+           EllipsisLiteral(_) | ImagLiteral(_, _) => f(lhs, e, ns)
       case Field(whose, name, ann) => reconstruct(lhs, { case List(x) => Field(x, name, ann.pos) }, List(whose), ns)
 
       case CallIndex(isCall, whom, args, ann) if !isCall =>
         val (Left(whom1), ns1) = procExpr(f)(lhs, whom, ns)
-        val argsNoKw = args.map{case (None, x) => x}
+        val argsNoKw = args.map { case (None, x) => x }
         reconstruct(false, { case args => new CallIndex(whom1, args, isCall, ann.pos) }, argsNoKw, ns1)
 
       case CollectionComprehension(kind, base, l, ann) =>
-        val l1 = base :: l.map{
+        val l1 = base :: l.map {
           case IfComprehension(cond) => CallIndex(true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
           case ForComprehension(what, in, _) => CallIndex(true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
         }
         reconstruct(lhs, { case (base :: l2) => {
-          val l3 = l.zip(l2).map{
+          val l3 = l.zip(l2).map {
             case (IfComprehension(cond), CallIndex(_, _, List((_, x)), ann)) => IfComprehension(x)
             case (ForComprehension(what, in, isAsync), CallIndex(_, _, List((_, a), (_, b)), ann)) =>
               ForComprehension(a, b, isAsync)
           }
           CollectionComprehension(kind, base, l3, ann.pos)
-        }}, l1, ns)
+        }
+        }, l1, ns)
     }
 
   }
 
-  def alreadyDone(s : String) = throw new Throwable(s"remove $s before!")
+  def alreadyDone(s: String) = throw new Throwable(s"remove $s before!")
 
-  def procExprInStatement(f : (Boolean, T, Names) => (EAfterPass, Names))(s : Statement, ns : Names) : (Statement, Names) = {
+  def procExprInStatement(f: (Boolean, T, Names) => (EAfterPass, Names))(s: Statement, ns: Names): (Statement, Names) = {
     def pst = procExprInStatement(f)(_, _)
-    def pstl(l : List[Statement], ns : Names) =
+
+    def pstl(l: List[Statement], ns: Names) =
       l.foldLeft((List[Statement](), ns))((acc, st) => {
         val (st1, ns1) = pst(st, acc._2)
         (acc._1 :+ st1, ns1)
       })
 
-    def procEA(x : EAfterPass) : (List[Statement], T) = x match {
+    def procEA(x: EAfterPass): (List[Statement], T) = x match {
       case Left(value) => (List[Statement](), value)
       case Right(value) => (List(value._1), value._2)
     }
@@ -277,14 +287,14 @@ object SimplePass {
       case Raise(None, None, _) | Pass(_) | Break(_) | Continue(_) | NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) |
            ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) | Return(None, _) => (s, ns)
       case Del(Ident(_, _), _) => (s, ns)
-//      case With(cm, target, body, isAsync, ann) =>
-//        val (body1, ns1) = pst(body, ns)
-//        forceAllIfNecessary(f)((false, cm) :: target.toList.map(x => (true, x)), ns1) match {
-//          case Left((l, ns)) => (With(l.head, l.tail.headOption, body1, isAsync, ann.pos), ns)
-//          case Right((l, ns)) =>
-//            val w = (With(l.head._2, l.map(_._2).tail.headOption, body1, isAsync, ann.pos))
-//            (Suite(l.map(_._1) :+ w, ann.pos), ns)
-//        }
+      //      case With(cm, target, body, isAsync, ann) =>
+      //        val (body1, ns1) = pst(body, ns)
+      //        forceAllIfNecessary(f)((false, cm) :: target.toList.map(x => (true, x)), ns1) match {
+      //          case Left((l, ns)) => (With(l.head, l.tail.headOption, body1, isAsync, ann.pos), ns)
+      //          case Right((l, ns)) =>
+      //            val w = (With(l.head._2, l.map(_._2).tail.headOption, body1, isAsync, ann.pos))
+      //            (Suite(l.map(_._1) :+ w, ann.pos), ns)
+      //        }
       case IfSimple(cond, yes, no, ann) =>
         val (yes1, ns1) = pst(yes, ns)
         val (no1, ns2) = pst(no, ns1)
@@ -300,7 +310,7 @@ object SimplePass {
         val (ffinally1, ns4) = pst(ffinally, ns3)
         (Try(try1, List((None, catchBody1)), eelse1, ffinally1, ann.pos), ns4)
 
-        // todo: wow, this is a lot. Maybe we should just generate GOTOs instead of such rewriting
+      // todo: wow, this is a lot. Maybe we should just generate GOTOs instead of such rewriting
       case While(cond, body, eelse, ann) =>
         val (body1, ns1) = pst(body, ns)
         val (else1, ns2) = pst(eelse, ns1)
@@ -335,7 +345,7 @@ object SimplePass {
         val (l1, ns1) = pstl(l, ns)
         (Suite(l1, ann.pos), ns1)
 
-      case u : Unsupported =>
+      case u: Unsupported =>
         val (sts, ns1) = pstl(u.sts, ns)
         val pos = u.ann.pos
         forceAllIfNecessary(f)(u.es, ns1) match {
@@ -363,7 +373,8 @@ object SimplePass {
       }
 
       case AnnAssign(lhs, rhsAnn, rhs, ann) =>
-        def recon(l : List[T]) = AnnAssign(l(0), l(1), if (l.length == 3) Some(l(2)) else None, ann.pos)
+        def recon(l: List[T]) = AnnAssign(l(0), l(1), if (l.length == 3) Some(l(2)) else None, ann.pos)
+
         forceAllIfNecessary(f)((true, lhs) :: (List(rhsAnn) ++ rhs.toList).map((false, _)), ns) match {
           case Left((l, ns)) => (recon(l), ns)
           case Right((l, ns)) => (Suite(l.map(_._1) :+ recon(l.map(_._2)), ann.pos), ns)
@@ -392,7 +403,7 @@ object SimplePass {
               body1, cd.decorators, body1.ann.pos), ann.pos), ns)
         }
       case fd@FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
-        body, Decorators(List()), accessibleIdents, isAsync, ann) =>
+      body, Decorators(List()), accessibleIdents, isAsync, ann) =>
         val (body1, ns1) = pst(body, ns)
         // todo: process default param values and annotations
         assert(returnAnnotation.isEmpty && args.forall(p => p.default.isEmpty && p.paramAnn.isEmpty))
@@ -404,7 +415,7 @@ object SimplePass {
     }
   }
 
-  def simplifyIf(s : Statement, ns : Names) : (Statement, Names) = s match {
+  def simplifyIf(s: Statement, ns: Names): (Statement, Names) = s match {
     case If(List((cond, yes)), no, ann) => (IfSimple(cond, yes, no, ann.pos), ns)
     case If((cond, yes) :: t, eelse, ann) =>
       val (newElse, ns1) = simplifyIf(If(t, eelse, GeneralAnnotation(t.head._2.ann.start, eelse.ann.stop)), ns)
@@ -412,54 +423,62 @@ object SimplePass {
     case _ => (s, ns)
   }
 
-  def mkUnsupported(s : Statement, ns : Names) : (Statement, Names) = (s match {
+  def mkUnsupported(s: Statement, ns: Names): (Statement, Names) = (s match {
     case Assign(List(_), _) => s
     case Assign(List(Ident(_, _), _), _) => s
-    case Assign(l, ann)  => new Unsupported(s, l.init.flatMap{ case Ident(s, _) => List(s) case _ => List()}, ann.pos)
+    case Assign(l, ann) => new Unsupported(s, l.init.flatMap { case Ident(s, _) => List(s) case _ => List() }, ann.pos)
     case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, accessibleIdents, isAsync, ann)
       if decorators.l.nonEmpty || otherKeyword.nonEmpty || otherPositional.nonEmpty || isAsync || returnAnnotation.nonEmpty ||
         args.exists(x => x.default.nonEmpty || x.paramAnn.nonEmpty || x.kind == ArgKind.Keyword) =>
-        val body1 = new Unsupported(body, List(), body.ann.pos)
-        FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
-          Decorators(List()), accessibleIdents, isAsync, ann.pos)
-    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _ : ClassDef | _ : AnnAssign |
-      Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
-      ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
+      val body1 = new Unsupported(body, List(), body.ann.pos)
+      FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
+        Decorators(List()), accessibleIdents, isAsync, ann.pos)
+    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _: ClassDef | _: AnnAssign |
+         Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
+         ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
     case ImportSymbol(from, what, as, _) => new Unsupported(s, List(as), s.ann.pos)
     case _ => s
   }, ns)
 
-  def mkUnsupportedExpr(lhs : Boolean, e : Expression.T, ns : Names) : (EAfterPass, Names) = {
+  def mkUnsupportedExpr(lhs: Boolean, e: Expression.T, ns: Names): (EAfterPass, Names) = {
     val e1 = e match {
       case CallIndex(isCall, whom, args, ann) if !isCall || args.exists(x => x._1.nonEmpty) =>
         new UnsupportedExpr((e))
       case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
-        Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
-        EllipsisLiteral(_) =>
-          new UnsupportedExpr(e)
+           Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
+           EllipsisLiteral(_) =>
+        new UnsupportedExpr(e)
       case SimpleComparison(op, l, r, _) if (
-          try { PrintEO.compop(op); false } catch { case _ : Throwable => true }
+        try {
+          PrintEO.compop(op); false
+        } catch {
+          case _: Throwable => true
+        }
         ) => new UnsupportedExpr(e)
       case Binop(op, l, r, _) if (
-          try { PrintEO.binop(op); false } catch { case _ : Throwable => true }
+        try {
+          PrintEO.binop(op); false
+        } catch {
+          case _: Throwable => true
+        }
         ) => new UnsupportedExpr(e)
       case _ => e
     }
     (Left(e1), ns)
   }
 
-  def unSuite(s : Statement, ns : Names) : (Statement, Names) = {
-    def inner(s : Statement) : Statement = s match {
+  def unSuite(s: Statement, ns: Names): (Statement, Names) = {
+    def inner(s: Statement): Statement = s match {
       case Suite(l, ann) =>
-        val l1 = l.flatMap{ case Suite(l, _) => l case s => List(s) }
-        (if (!l1.exists{ case Suite(l, _) => true case _ => false })
+        val l1 = l.flatMap { case Suite(l, _) => l case s => List(s) }
+        (if (!l1.exists { case Suite(l, _) => true case _ => false })
           Suite(l1, ann.pos)
         else
           inner(Suite(l1, ann.pos)))
       case _ => s
     }
-//    println(s"$s \n -> $s1")
+    //    println(s"$s \n -> $s1")
     (inner(s), ns)
   }
 
@@ -467,21 +486,21 @@ object SimplePass {
   // possible side effects to a separate statement, i.e., a set of locals assignments, where op with side effects
   // may happen only in a root node of an rhs syntax tree
   // note that, say, binops and almost anything else may also be function calls, because they may be overriden
-  def extractAllCalls(lhs : Boolean, e : T, ns : Names) : (EAfterPass, Names) = {
+  def extractAllCalls(lhs: Boolean, e: T, ns: Names): (EAfterPass, Names) = {
     if (lhs) (Left(e), ns) else
-    e match {
-      case IntLiteral(_, _) | FloatLiteral(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | DictCons(_, _)
-           | CollectionCons(_, _, _) | NoneLiteral(_) | LazyLAnd(_, _, _) | LazyLOr(_, _, _) | Cond(_, _, _, _)
-           | EllipsisLiteral(_) | Ident(_, _) =>
-        (Left(e), ns)
-      case _ =>
-        val (name, ns1) = ns("e")
-        val id = Ident(name, e.ann.pos)
-        (Right((Assign(List(id, e), e.ann.pos), id)), ns1)
-    }
+      e match {
+        case IntLiteral(_, _) | FloatLiteral(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | DictCons(_, _)
+             | CollectionCons(_, _, _) | NoneLiteral(_) | LazyLAnd(_, _, _) | LazyLOr(_, _, _) | Cond(_, _, _, _)
+             | EllipsisLiteral(_) | Ident(_, _) =>
+          (Left(e), ns)
+        case _ =>
+          val (name, ns1) = ns("e")
+          val id = Ident(name, e.ann.pos)
+          (Right((Assign(List(id, e), e.ann.pos), id)), ns1)
+      }
   }
 
-  def simplifyInheritance(s : Statement, ns : Names) : (Statement, Names) = {
+  def simplifyInheritance(s: Statement, ns: Names): (Statement, Names) = {
 
     def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
       case (false, Field(obj, name, ann), ns) =>
@@ -515,23 +534,22 @@ object SimplePass {
       ImportSymbol(List("C3"), "eo_setattr", "eo_setattr", s1.ann.pos),
       s1
     ), s1.ann.pos),
-    ns1)
+      ns1)
 
   }
 
-  def allTheGeneralPasses(debugPrinter : (Statement, String) => Unit, s : Statement, ns : Names) : (Statement, SimplePass.Names) = {
+  def allTheGeneralPasses(debugPrinter: (Statement, String) => Unit, s: Statement, ns: Names): (Statement, SimplePass.Names) = {
     val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")
 
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
-//    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
-//    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
+    //    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
+    //    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
 
     tsimplifyIf
   }
-
 
 
 }

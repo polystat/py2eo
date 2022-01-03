@@ -4,15 +4,6 @@ import java.io.{File, FileWriter}
 import java.nio.file.{Files, Paths}
 
 object Main {
-  val python: String = {
-    val stdout = new StringBuilder()
-    val stderr = new StringBuilder()
-   // 0 == (s"python --version" ! ProcessLogger(stdout.append(_), stderr.append(_)))
-    val pattern = "Python (\\d+)".r
-//    val Some(match1) = pattern.findFirstMatchIn(if (stderr.toString() == "") stdout.toString() else stderr.toString())
-    "python3"
-  }
-
 
   def main(args: Array[String]): Unit = {
     if (!args.isEmpty) {
