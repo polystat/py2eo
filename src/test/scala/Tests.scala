@@ -1,12 +1,11 @@
 
+import Expression._
+import org.junit.Assert._
+import org.junit.Test
+
 import java.io.{File, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Paths}
-
-import Expression._
-import org.junit.Assert._
-import org.junit.{Before, BeforeClass, Test, Ignore}
-
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -22,7 +21,7 @@ class Tests {
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
 
-  def writeFile(test : File, dirSuffix : String, fileSuffix : String, what : String) : String = {
+  def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
     assert(test.getName.endsWith(".py"))
     val moduleName = test.getName.substring(0, test.getName.length - 3)
     val outPath = test.getParentFile.getPath + "/" + dirSuffix
@@ -33,14 +32,14 @@ class Tests {
     output.write(what)
     output.close()
     outName
-    }
+  }
 
-  def debugPrinter(module : File)(s : Statement, dirSuffix : String) : Unit = {
+  def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
     val what = PrintPython.printSt(s, "")
     writeFile(module, dirSuffix, ".py", what)
   }
 
-  val python = {
+  val python: String = {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     assertTrue(0 == (s"python --version" ! ProcessLogger(stdout.append(_), stderr.append(_))))
@@ -66,8 +65,8 @@ class Tests {
       println(stdout)
     }
   }
-	
-  @Test def immutabilize() : Unit = {
+
+  @Test def immutabilize(): Unit = {
     val name = "trivial"
     val test = new File(testsPrefix + "/" + name + ".py")
 
@@ -75,11 +74,11 @@ class Tests {
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-//    Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
+    //    Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_, _)), _) = x._1
-//    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
+    //    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
 
     val z = ExplicitImmutableHeap.explicitHeap(theFun, x._2)
     val Suite(l, _) = z._1
@@ -90,9 +89,9 @@ class Tests {
       ImportAllSymbols(List("closureRuntime"), pos),
       Suite(l.init, pos),
       new Assert(CallIndex(false,
-          (CallIndex(true, Ident(mainName, pos),
-            List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos)),
-          List((None, IntLiteral(1, pos))), pos),
+        (CallIndex(true, Ident(mainName, pos),
+          List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos)),
+        List((None, IntLiteral(1, pos))), pos),
         pos
       )
     ), pos)
@@ -109,23 +108,25 @@ class Tests {
     val hacked4EO = Suite(List(l.head), pos)
     val eoText =
       PrintLinearizedImmutableEO.printSt(name, hacked4EO) +
-      "  * > emptyHeap\n" +
-      "  [] > emptyClosure\n" +
-      s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
+        "  * > emptyHeap\n" +
+        "  [] > emptyClosure\n" +
+        s"  ($mainName emptyHeap emptyClosure).get 1 > @\n"
     writeFile(test, "genImmutableEO", ".eo", eoText)
   }
 
   @Test def simplifyInheritance(): Unit = {
     val name = "inheritance"
     val test = new File(testsPrefix + "/" + name + ".py")
+
     def db = debugPrinter(test)(_, _)
 
     val res = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
   }
 
-  @Test def heapify() : Unit = {
+  @Test def heapify(): Unit = {
     val name = "trivial"
     val test = new File(testsPrefix + "/" + name + ".py")
+
     def db = debugPrinter(test)(_, _)
 
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
@@ -162,15 +163,16 @@ class Tests {
     writeFile(test, "genHeapifiedEO", ".eo", eoText.mkString("\n"))
   }
 
-  @Test def useCage() : Unit = {
+  @Test def useCage(): Unit = {
     for (name <- List("x", "trivial", "simplestClass", "myList")) {
       useCageHolder(testsPrefix + "/" + name + ".py")
     }
   }
 
-  @Test def useUnsupported() : Unit = {
+  @Test def useUnsupported(): Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
       val test = new File(testsPrefix + "/" + name + ".py")
+
       def db = debugPrinter(test)(_, _)
 
       val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
@@ -180,21 +182,26 @@ class Tests {
       PrintPython.toFile(unsupportedExpr._1, testsPrefix + "afterMkUnsupported", name)
 
       val hacked = SimpleAnalysis.computeAccessibleIdents(
-        FuncDef("hack", List(), None, None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), false,  unsupportedExpr._1.ann.pos))
+        FuncDef("hack", List(), None, None, None, unsupportedExpr._1, new Decorators(List()), HashMap(), false, unsupportedExpr._1.ann.pos))
 
-      def findGlobals(l : Set[String], f : FuncDef) : Set[String] = {
+      def findGlobals(l: Set[String], f: FuncDef): Set[String] = {
         SimpleAnalysis.foldSE[Set[String]](
-          (l, e) => {e match {
-//            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
-            case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
-            case _ => l
-          }},
-          { case _ : FuncDef => false case _ => true }
+          (l, e) => {
+            e match {
+              //            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
+              case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
+              case _ => l
+            }
+          },
+          { case _: FuncDef => false case _ => true }
         )(l, f.body)
       }
 
       val globals = SimpleAnalysis.foldSS[Set[String]]((l, st) => {
-        (st match { case f : FuncDef => findGlobals(l, f)  case _ => l }, true)
+        (st match {
+          case f: FuncDef => findGlobals(l, f)
+          case _ => l
+        }, true)
       })(immutable.HashSet(), hacked)
 
       println(s"globals = $globals")
@@ -204,7 +211,7 @@ class Tests {
     }
   }
 
-  @Test def parserPrinterOnCPython() : Unit = {
+  @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
     assert(dir.isDirectory)
@@ -213,16 +220,16 @@ class Tests {
     if (!afterParser.exists()) afterParser.mkdir()
     val cpython = new File(afterParser.getPath + "/cpython")
     if (!cpython.exists()) {
-//      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
+      //      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
     assert(0 == Process("./configure", cpython).!)
-    val nprocessors = Runtime.getRuntime().availableProcessors()
+    val nprocessors = Runtime.getRuntime.availableProcessors()
     assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
 
     println("Version of python is:")
-    s"$python --version"!
+    s"$python --version" !
 
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // test_os leads to a strange error with inode numbers on the rultor server only
@@ -235,11 +242,10 @@ class Tests {
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
     // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_statistics.py").map(name => new File(dirName + "/" + name))
+    //    val test = List("test_statistics.py").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
-      Future
-      {
+      Future {
         if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")) {
           def db = debugPrinter(test)(_, _)
 
@@ -260,76 +266,77 @@ class Tests {
     assertTrue(0 == Process("make test", cpython).!)
   }
 
-  def useCageHolder(path:String,simpleConstructions:Boolean = false): Unit ={
+  def useCageHolder(path: String, simpleConstructions: Boolean = false): Unit = {
     val test = new File(path)
+
     def db = debugPrinter(test)(_, _)
 
-      val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
 
-      val textractAllCalls = SimplePass.procExprInStatement(
-        SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+    val textractAllCalls = SimplePass.procExprInStatement(
+      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
-//      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-//      val Suite(List(theFun, Return(_, _)), _) = z._1
-//      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
+    //      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
+    //      val Suite(List(theFun, Return(_, _)), _) = z._1
+    //      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
 
-      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, body, _, _, _, ann)), _) =
-        ClosureWithCage.declassifyOnly(textractAllCalls._1)
+    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, body, _, _, _, ann)), _) =
+      ClosureWithCage.declassifyOnly(textractAllCalls._1)
 
-//      val theFunC = ClosureWithCage.closurize(SimpleAnalysis.computeAccessibleIdents(theFun))
-//      val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
-//        ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
-//        List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
-//      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-//
-//      val stdout = new StringBuilder()
-//      val stderr = new StringBuilder()
-//      assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-//      println(stdout)
-//
-//      val eoHacked = Suite(List(
-//        theFun,
-//        Return(Some(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
-//          List((None, NoneLiteral(ann.pos))), ann.pos)), ann.pos)
-//      ), ann.pos)
+    //      val theFunC = ClosureWithCage.closurize(SimpleAnalysis.computeAccessibleIdents(theFun))
+    //      val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
+    //        ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
+    //        List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
+    //      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    //
+    //      val stdout = new StringBuilder()
+    //      val stderr = new StringBuilder()
+    //      assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    //      println(stdout)
+    //
+    //      val eoHacked = Suite(List(
+    //        theFun,
+    //        Return(Some(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
+    //          List((None, NoneLiteral(ann.pos))), ann.pos)), ann.pos)
+    //      ), ann.pos)
 
-      val hacked = Suite(List(
-        theFun,
-        Assert(List(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-      ), ann.pos)
-      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-      assertTrue(0 == (s"$python \"$runme\"".!))
+    val hacked = Suite(List(
+      theFun,
+      Assert(List(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+    ), ann.pos)
+    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    assertTrue(0 == (s"$python \"$runme\"".!))
 
-      val eoHacked = Suite(List(
-        theFun,
-        Return(Some(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-      ), ann.pos)
+    val eoHacked = Suite(List(
+      theFun,
+      Return(Some(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+    ), ann.pos)
 
-    
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py",""), eoHacked)
+
+    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        xresult").mkString("\n"))
   }
 
 
   @Test def simpleConstructionTest(): Unit = {
-    for (subfolder <- List("assignCheck","ifCheck","whileCheck")) {
+    for (subfolder <- List("assignCheck", "ifCheck", "whileCheck")) {
       val testHolder = new File(testsPrefix + s"${File.separator}simple_tests${separator}" + subfolder)
       if (testHolder.exists && testHolder.isDirectory) {
-        for (file <- testHolder.listFiles.filter(_.isFile).toList){
-          if (!file.getName.contains(".disabled")){
+        for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+          if (!file.getName.contains(".disabled")) {
             println(file.getPath)
-            useCageHolder(file.getPath,simpleConstructions = true)
+            useCageHolder(file.getPath, simpleConstructions = true)
           }
           //val fileName = file.getName.replace(".py", "")
-//          val test = new File(file.getPath)
-//          def db = debugPrinter(new File(file.getPath))(_, _)
-//
-//          Parse.parse(test, db)
-//          val stdout = new StringBuilder()
-//          val stderr = new StringBuilder()
-//          import scala.sys.process._
-//          assertTrue(0 == (s"$python \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-//          println(stdout)
+          //          val test = new File(file.getPath)
+          //          def db = debugPrinter(new File(file.getPath))(_, _)
+          //
+          //          Parse.parse(test, db)
+          //          val stdout = new StringBuilder()
+          //          val stderr = new StringBuilder()
+          //          import scala.sys.process._
+          //          assertTrue(0 == (s"$python \"${file.getParent}${separator}afterParser${separator}$fileName.py\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+          //          println(stdout)
 
         }
       }
