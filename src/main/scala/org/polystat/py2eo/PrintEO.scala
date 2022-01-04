@@ -103,7 +103,7 @@ object PrintEO {
       case Assign(List(c@CallIndex(true, whom, args, _)), ann) =>
         s(Assign(List(Expression.Ident("bogusForceDataize", new GeneralAnnotation()), c), ann.pos))
       case Assign(List(Expression.Ident(lname, _), erhs), _) =>
-        List("x" + visibility(lname) + ".write " + printExpr(visibility)(erhs))
+        List(visibility(lname) + ".write " + printExpr(visibility)(erhs))
       case Assign(List(_), _) => List("unsupported")
       case Suite(List(st), _) => s(st)
       case Suite(l, _) => List("seq") ++ indent(l.flatMap(s))
@@ -117,9 +117,9 @@ object PrintEO {
         ) ++ indent("[unused]" :: indent("seq > @" :: indent(printSt(visibility.stepInto(List()))(body))))
       case FuncDef(name, args, None, None, None, body, Decorators(List()), h, false, _) =>
         val locals = h.filter(z => z._2._1 == VarScope.Local).keys
-        val args1 = args.map{ case Parameter(argname, _, None, None, _) => "x" + argname }.mkString(" ")
+        val args1 = args.map{ case Parameter(argname, _, None, None, _) => argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
-        List(s"x$name.write") ++
+        List(s"$name.write") ++
           indent(s"[$args1]" ::
             indent(locals.map(name => s"memory > x$name").toList ++ List("seq > @") ++ indent(body1)))
     }
