@@ -38,9 +38,9 @@ object PrintLinearizedMutableEOWithCage {
       case _ => (l, true)
     })(List(), f.body)
     val funNames = funs.map { f: FuncDef => f.name }.toSet
-    val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > x${parm.name}")
+    val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > ${parm.name}")
     val memories = f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
-      map(x => s"cage > x${x._1}").toList
+      map(x => s"cage > ${x._1}").toList
     val innerFuns = funs.flatMap { f: FuncDef => printFun(f.name, f) }
 
     def inner(st : Statement) : Text =
@@ -48,18 +48,18 @@ object PrintLinearizedMutableEOWithCage {
         case NonLocal(_, _) => List()
         case SimpleObject(name, l, _) =>
           ("write." ::
-            indent("x" + name :: "[]" :: indent(
-              l.map{ case (name, _) => "cage > x" + name } ++ (
-                "seq > @" :: indent(l.map{case (name, value) => s"x$name.write " + pe(value)})
+            indent(name :: "[]" :: indent(
+              l.map{ case (name, _) => "cage > " + name } ++ (
+                "seq > @" :: indent(l.map{case (name, value) => s"$name.write " + pe(value)})
               ))
-            )) :+ s"(x$name.@)"
+            )) :+ s"($name.@)"
         case _: FuncDef => List()
         case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if isSeqOfFields(whom) && isSeqOfFields(lhs) =>
 //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
           List(
             s"tmp.write ${pe(rhs)}",
             "(tmp.@)",
-            s"${pe(lhs)}.write (tmp.xresult)"
+            s"${pe(lhs)}.write (tmp.result)"
           )
         case Assign(List(lhs, rhs), _) if isSeqOfFields(lhs) =>
           rhs match {
@@ -81,7 +81,7 @@ object PrintLinearizedMutableEOWithCage {
           else {
             val tmp = HackName()
             val Ident(name, _) = rhs
-            (s"[] > $tmp" :: indent(List(s"x$name' > copy", "copy.< > @"))) :+
+            (s"[] > $tmp" :: indent(List(s"$name' > copy", "copy.< > @"))) :+
               s"${pe(lhs)}.write ($tmp.copy)"
           }
 
@@ -116,15 +116,15 @@ object PrintLinearizedMutableEOWithCage {
       argname + "NotCopied" }.mkString(" ")
     // todo: empty arg list hack
     val args2 = if (args1.isEmpty) "unused" else args1
-    s"[$args2] > x$newName" :: indent(
-      "cage > xresult" ::
+    s"[$args2] > $newName" :: indent(
+      "cage > result" ::
       "cage > tmp" ::
       argCopies ++ memories ++ innerFuns ++
         ("goto > @" :: indent(
           s"[$returnLabel]" :: indent(
             "seq > @" :: indent(
               s"stdout \"$newName\\n\"" ::
-              f.args.map(parm => s"x${parm.name}.<") ++
+              f.args.map(parm => s"${parm.name}.<") ++
               (inner(f.body) :+
                 "123"
                 )

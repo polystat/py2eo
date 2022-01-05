@@ -67,7 +67,7 @@ object PrintEO {
       case LazyLAnd(l, r, _) =>  "(" + e(l) + ".and " + e(r) + ")"
       case LazyLOr(l, r, _) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x, _) => "(" + e(x) + "." + unop(op) + ")"
-      case Expression.Ident(name, _) => "(x" + visibility(name) + ")"
+      case Expression.Ident(name, _) => "(" + visibility(name) + ")"
       case CallIndex(false, from, List((_, StringLiteral(fname, _))), _)
         if fname == "\"callme\"" || (from match { case Expression.Ident("closure", _) => true case _ => false}) =>
           e(Field(from, fname.substring(1, fname.length - 1), from.ann.pos))
@@ -76,7 +76,7 @@ object PrintEO {
         e(e1)
       case CallIndex(isCall, whom, args, _) if !isCall && args.size == 1 =>
         "(" + e(whom) + ".get " + e(args(0)._2) + ")"
-      case Field(whose, name, _) => "(" + e(whose) + ".x" + name + ")"
+      case Field(whose, name, _) => "(" + e(whose) + "." + name + ")"
       case Cond(cond, yes, no, _) => "(" + e(cond) + ".if " + e(yes) + " " + e(no) + ")"
       case CallIndex(true, whom, args, _)  =>
         "((" + e(whom) + ")" +
@@ -121,7 +121,7 @@ object PrintEO {
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
         List(s"$name.write") ++
           indent(s"[$args1]" ::
-            indent(locals.map(name => s"memory > x$name").toList ++ List("seq > @") ++ indent(body1)))
+            indent(locals.map(name => s"memory > $name").toList ++ List("seq > @") ++ indent(body1)))
     }
   }
 
