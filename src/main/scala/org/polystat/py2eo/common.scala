@@ -1,7 +1,5 @@
-package org.polystat.py2eo;
+package org.polystat.py2eo
 
-
-import scala.collection.immutable.HashMap
 object Common {
 
   import scala.collection.immutable.HashMap
@@ -18,7 +16,7 @@ object Common {
   }
 
   object Lazy {
-    def apply[A <: HasName](x0: => A) = new Lazy(x0)
+    def apply[A <: HasName](x0: => A) : Lazy[A] = new Lazy(x0)
     def unapply[A <: HasName](x : Lazy[A]) : Some[A] = Some(x.x)
   }
 
@@ -37,9 +35,6 @@ object Common {
       new UIDMap(h.+(uv))
     }
   }
-/*  object UIDMap {
-    def apply[A, B](elems: (A, B)*): UIDMap[A, B] = new UIDMap[A, B](HashMap[A, B](elems))
-  }*/
 
   // a HashMap wrapper, which remembers the order in which the keys were added and restores it when .toList is called
   case class HashMapWithOrder[Key, Value](h : HashMap[Key, Value], l : List[Key]) {
@@ -57,10 +52,11 @@ object Common {
     def this() = this(HashMap())
 
     def apply(pref: String): (String, GenNames) =
-      if (h.contains(pref))
+      if (h.contains(pref)) {
         (pref + "_" + h(pref), new GenNames(h.+((pref, 1 + h(pref)))))
-      else
+      } else {
         (pref + "_0", new GenNames(h.+((pref, 1))))
+      }
 
     override def toString: String = h.toString
 
@@ -79,8 +75,9 @@ object Common {
       if (h.contains(key)) {
         val l = h(key)
         new HashStack(h.+((key, value :: l)))
-      }; else
+      } else {
         new HashStack(h.+((key, List(value))))
+      }
     }
 
     def contains(key : Key): Boolean = h.contains(key)
@@ -104,21 +101,19 @@ object Common {
     def foldLeft[Accum](accum : Accum)(f : (Accum, (Key, Value)) => Accum) : Accum =
       h.foldLeft(accum){ case (accum, (key, l)) => f(accum, (key, l.head)) }
 
-    def empty = new HashStack(h.empty)
+    def empty : HashStack[Key, Value] = new HashStack(h.empty)
 
     override def toString: String = h.toString
   }
 
   object HashStack {
-    def apply[Key, Value]() = new HashStack[Key, Value](HashMap[Key, List[Value]]())
+    def apply[Key, Value]() : HashStack[Key, Value] = new HashStack[Key, Value](HashMap[Key, List[Value]]())
   }
 
-  object log2Up {
-    def apply(n: BigInt): Int = {
-      var w = 1
-      while ((BigInt(1) << w) <= n) w = w + 1
-      w
-    }
+  def log2Up(n: BigInt): Int = {
+    var w = 1
+    while ((BigInt(1) << w) <= n) w = w + 1
+    w
   }
 
   trait HasMapFold[T] {
@@ -129,8 +124,6 @@ object Common {
   }
 
   type ExternalConstants = HashMap[String, BigInt]
-
-  val successfullyFinishedString = "SUCCESSFULLY FINISHED"
 
 }
 
