@@ -28,7 +28,7 @@ object PrintLinearizedMutableEOWithCage {
     case _ => None
   }
 
-  def printFun(newName : String, f : FuncDef) : Text = {
+  def printFun(newName : String, preface : List[String], f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     def pe = printExpr(bogusVisibility)(_)
     def isFun(f : Statement) = f match { case _: FuncDef => true case _ => false }
@@ -40,7 +40,7 @@ object PrintLinearizedMutableEOWithCage {
     val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > ${parm.name}")
     val memories = f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
       map(x => s"cage > ${x._1}").toList
-    val innerFuns = funs.flatMap { f: FuncDef => printFun(f.name, f) }
+    val innerFuns = funs.flatMap { f: FuncDef => printFun(f.name, List(), f) }
 
     def inner(st : Statement) : Text =
       st match {
@@ -86,8 +86,10 @@ object PrintLinearizedMutableEOWithCage {
             val tmp = HackName()
 //            val Ident(name, _) = rhs
             val Some(l) = seqOfFields1
-            (s"[] > $tmp" :: indent(List(s"${l.mkString(".")}' > copy", "copy.< > @"))) :+
+            List (
+              s"mkCopy (${l.mkString(".")}) > $tmp",
               s"${pe(lhs)}.write ($tmp.copy)"
+            )
           }
 
         case Assign(List(e), _) => List(pe(e))
@@ -122,29 +124,35 @@ object PrintLinearizedMutableEOWithCage {
     // todo: empty arg list hack
     val args2 = if (args1.isEmpty) "unused" else args1
     s"[$args2] > $newName" :: indent(
-      "cage > result" ::
-      "cage > tmp" ::
-      argCopies ++ memories ++ innerFuns ++
-        ("goto > @" :: indent(
-          s"[$returnLabel]" :: indent(
-            "seq > @" :: indent(
-              s"stdout \"$newName\\n\"" ::
-              f.args.map(parm => s"${parm.name}.<") ++
-              (inner(f.body) :+
-                "123"
-                )
+      preface ++ (
+        "cage > result" ::
+        "cage > tmp" ::
+        argCopies ++ memories ++ innerFuns ++ (
+          "goto > @" :: indent(
+            s"[$returnLabel]" :: indent(
+              "seq > @" :: indent(
+                s"stdout \"$newName\\n\"" ::
+                f.args.map(parm => s"${parm.name}.<") ++
+                (inner(f.body) :+ "123")
               )
+            )
           )
-        ))
+        )
+      )
     )
   }
 
   def printTest(testName : String, st : Statement) : Text = {
     println(s"doing $testName")
+    val mkCopy = List(
+      "[x] > mkCopy",
+      "  x' > copy",
+      "  copy.< > @"
+    )
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
-    headers ++ printFun(theTest.name, theTest)
+    headers ++ printFun(theTest.name, mkCopy, theTest)
   }
 
 
