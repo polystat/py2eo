@@ -1,9 +1,7 @@
-package org.polystat.py2eo;
+package org.polystat.py2eo
 
 import Expression.{CallIndex, Cond, DictCons, Ident, StringLiteral}
 import PrintEO.standardTestPreface
-
-import scala.collection.immutable.{HashMap, HashSet}
 
 object PrintLinearizedImmutableEO {
 
@@ -34,16 +32,13 @@ object PrintLinearizedImmutableEO {
                 printExpr(visibility1)(value) + " > " + name.substring(1, name.length - 1)
             }
           )
-      case CreateConst(name, value, _) => List(printExpr(visibility)(value) + " > " + name + "!")
+      case CreateConst(name, value, _) => List("%s > %s!".format(printExpr(visibility)(value), name))
       case one@(Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _)) =>
         val expr = one match {
           case Return(Some(x), _) => x
           case IfSimple(cond, Return(Some(yes), _), Return(Some(no), _), ann) => Cond(cond, yes, no, ann.pos)
         }
-        List(
-          "(" + printExpr(visibility)(expr) +
-          ") > @!"
-        )
+        List("(%s) > @!".format(printExpr(visibility)(expr)))
       case FuncDef(name, args, None, None, None, body, Decorators(List()), accessibleIdents, false, _) =>
         val locals = accessibleIdents.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.Arg).keys
         val args1 = args.map{ case Expression.Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
@@ -59,9 +54,7 @@ object PrintLinearizedImmutableEO {
     val st@Suite(_, _) = SimpleAnalysis.computeAccessibleIdents(body)
     (
       standardTestPreface ++
-      List(
-        "[] > " + moduleName,
-      ) ++
+      List(s"[] > $moduleName") ++
       indent(
         List(
           "[heap] > nextFreePtr",
@@ -79,7 +72,7 @@ object PrintLinearizedImmutableEO {
         "top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue"))
       )(st))
     )
-      .mkString("\n") + "\n"
+    .mkString("\n") + "\n"
   }
 
 }
