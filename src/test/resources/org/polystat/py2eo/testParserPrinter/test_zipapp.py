@@ -83,7 +83,7 @@ class ZipAppTest(unittest.TestCase):
         (source / '__main__.py').touch()
         (source / 'test.py').touch()
         (source / 'dummy').mkdir()
-        (source / 'dummy' / 'test2.py').touch()
+        (source / 'dummy' / 'assign_check_test2.py').touch()
         target = self.tmpdir / 'source.pyz'
 
         zipapp.create_archive(source, target, filter=skip_dummy_dir)
