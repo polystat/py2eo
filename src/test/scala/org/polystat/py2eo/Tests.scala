@@ -326,7 +326,6 @@ class Tests {
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
 
-  @Ignore
   @Test def whileCheckTest():Unit = {
     simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
   }
