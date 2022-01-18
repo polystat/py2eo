@@ -63,7 +63,7 @@ object PrintLinearizedMutableEONoCage {
         indent(
           name :: "[]" :: indent(
             l.map{
-              case Left((StringLiteral(name, _), value)) =>
+              case Left((StringLiteral(List(name), _), value)) =>
                 "%s > %s".format(printExpr(bogusVisibility)(value), name.substring(1, name.length - 1))
             }
           )

@@ -100,7 +100,7 @@ object MapExpressions {
       }
     } else if (a.NUMBER() != null) string2num(a.NUMBER().getText, a) else if (a.NAME() != null) Ident(a.NAME().getText, new GeneralAnnotation(a)) else if (a.TRUE() != null) BoolLiteral(value = true, new GeneralAnnotation(a)) else if (a.FALSE() != null) BoolLiteral(value = false, new GeneralAnnotation(a)) else if (a.NONE() != null) NoneLiteral(new GeneralAnnotation(a)) else {
       if (a.ELLIPSIS() != null) EllipsisLiteral(new GeneralAnnotation(a)) else {
-        StringLiteral(asScala(a.STRING()).map(_.getText).mkString(" "), new GeneralAnnotation(a))
+        StringLiteral(asScala(a.STRING()).map(_.getText).toList, new GeneralAnnotation(a))
       }
     }
     /*    else {  todo: incorrect string literal processing?

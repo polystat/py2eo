@@ -149,7 +149,7 @@ object Expression {
   case class IntLiteral(value : BigInt, ann : GeneralAnnotation) extends T
   case class FloatLiteral(value : String, ann : GeneralAnnotation) extends T
   case class ImagLiteral(value : String, ann : GeneralAnnotation) extends T
-  case class StringLiteral(value : String, ann : GeneralAnnotation) extends T
+  case class StringLiteral(value : List[String], ann : GeneralAnnotation) extends T
   case class BoolLiteral(value : Boolean, ann : GeneralAnnotation) extends T
   case class NoneLiteral(ann : GeneralAnnotation) extends T
   case class EllipsisLiteral(ann : GeneralAnnotation) extends T

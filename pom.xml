@@ -19,8 +19,8 @@
   </parent>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <encoding>UTF-8</encoding>
     <scala.version>2.13.6</scala.version>
 	<antlr.version>4.9.2</antlr.version>
@@ -76,6 +76,26 @@
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-toolchains-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>toolchain</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <toolchains>
+                    <jdk>
+                        <version>17</version>
+                        <vendor>sun</vendor>
+                    </jdk>
+                </toolchains>
+            </configuration>
+        </plugin>
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
@@ -116,8 +136,10 @@
 		<configuration>
 		    <sourceDirectory>${project.basedir}/src/main/antlr4</sourceDirectory>
 		    <includes>
-			<include>Python3Lexer.g4</include>
-			<include>Python3Parser.g4</include>
+                <include>Python3Lexer.g4</include>
+                <include>Python3Parser.g4</include>
+                <include>PythonLexer.g4</include>
+                <include>PythonParser.g4</include>
 		    </includes>
 		    <visitor>true</visitor>
 		    <listener>true</listener>

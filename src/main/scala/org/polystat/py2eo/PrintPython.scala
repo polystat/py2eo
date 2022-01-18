@@ -28,7 +28,7 @@ object PrintPython {
       case IntLiteral(value, _) => s"$value "
       case FloatLiteral(value, _) => value
       case ImagLiteral(value, _) => s"${value}j"
-      case StringLiteral(value, _) => value
+      case StringLiteral(values, _) => values.mkString("")
       case BoolLiteral(b, _) => if (b) "True" else "False"
       case Binop(op, l, r, _) => brak("%s %s %s".format(printExpr(l), Binops.toString(op), printExpr(r)))
       case LazyLOr(l, r, _) => rnd("%s or %s".format(printExpr(l), printExpr(r)))

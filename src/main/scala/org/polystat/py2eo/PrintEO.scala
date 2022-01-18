@@ -53,7 +53,7 @@ object PrintEO {
       case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
       case IntLiteral(value, _) => value.toString()
       case FloatLiteral(value, _) => value.toString
-      case StringLiteral(value0, _) =>
+      case StringLiteral(List(value0), _) =>
         val value = value0.replace("\"\"", "")
         if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'')
@@ -68,7 +68,7 @@ object PrintEO {
       case LazyLOr(l, r, _) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x, _) => "(" + e(x) + "." + unop(op) + ")"
       case Expression.Ident(name, _) => "(" + visibility(name) + ")"
-      case CallIndex(false, from, List((_, StringLiteral(fname, _))), _)
+      case CallIndex(false, from, List((_, StringLiteral(List(fname), _))), _)
         if fname == "\"callme\"" || (from match { case Expression.Ident("closure", _) => true case _ => false}) =>
           e(Field(from, fname.substring(1, fname.length - 1), from.ann.pos))
       case u : UnsupportedExpr =>

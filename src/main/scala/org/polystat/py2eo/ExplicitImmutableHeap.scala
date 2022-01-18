@@ -17,7 +17,7 @@ object ExplicitImmutableHeap {
       def accessHeap(e : Expression.T, ns : Names) =
         CallIndex(isCall = false, Ident(ns.last(constHeap), e.ann.pos), List((None, e)), e.ann.pos)
       def callme(arr : Expression.T) =
-        CallIndex(isCall = false, arr, List((None, StringLiteral("\"callme\"", arr.ann.pos))), arr.ann.pos)
+        CallIndex(isCall = false, arr, List((None, StringLiteral(List("\"callme\""), arr.ann.pos))), arr.ann.pos)
       def index(arr : Expression.T, ind : Int) =
         CallIndex(isCall = false, arr, List((None, IntLiteral(ind, arr.ann.pos))), arr.ann.pos)
       def ptr4ident(name : Ident) : Expression.T = {
@@ -26,7 +26,7 @@ object ExplicitImmutableHeap {
         if (s._1 == VarScope.NonLocal || s._1 == VarScope.ImplicitNonLocal) {
           CallIndex(
             isCall = false, Ident("closure", name.ann.pos),
-            List((None, StringLiteral(s"\"${name.name}\"", name.ann.pos))), name.ann.pos
+            List((None, StringLiteral(List(s"\"${name.name}\""), name.ann.pos))), name.ann.pos
           )
         } else {
           Ident(name.name, name.ann.pos)
@@ -102,9 +102,9 @@ object ExplicitImmutableHeap {
           val mkNewClosure = CreateConst(
             newClosure,
             DictCons(
-              Left((StringLiteral("\"callme\"", ann.pos), Ident(tmpFun, ann.pos))) ::
+              Left((StringLiteral(List("\"callme\""), ann.pos), Ident(tmpFun, ann.pos))) ::
                 vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).
-                map(z => Left((StringLiteral("\"" + z._1 + "\"", ann.pos), Ident(z._1 + "Ptr", ann.pos)))).toList,
+                map(z => Left((StringLiteral(List("\"" + z._1 + "\""), ann.pos), Ident(z._1 + "Ptr", ann.pos)))).toList,
               ann.pos
             ),
             ann.pos
