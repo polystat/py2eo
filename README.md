@@ -5,10 +5,10 @@
 
 This is a translator of Python to [EOLANG](https://www.eolang.org).
 
-User Manual
+User Quick Start
 ----
 Required software:
-* [Java 11](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - add path to /bin folder to system variables
+* [Java 11](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
 
 Run info:
 * download [archive](https://s01.oss.sonatype.org/service/local/repositories/releases/content/org/polystat/py2eo/0.0.2/py2eo-0.0.2.jar) with executable file / or open [link](https://s01.oss.sonatype.org/#nexus-search;quick~py2eo) and download `py2eo-0.0.2.jar`
