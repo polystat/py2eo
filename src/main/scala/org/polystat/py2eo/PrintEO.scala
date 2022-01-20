@@ -53,8 +53,8 @@ object PrintEO {
       case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
       case IntLiteral(value, _) => value.toString()
       case FloatLiteral(value, _) => value.toString
-      case StringLiteral(List(value0), _) =>
-        val value = value0.replace("\"\"", "")
+      case StringLiteral(value0, _) =>
+        val value = value0.mkString(" ").replace("\"\"", "")
         if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'')
           "\"" + value + "\""
@@ -111,7 +111,7 @@ object PrintEO {
         val e1 = CallIndex(true, Expression.Ident("unsupported", new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(visibility)(e1)
         List(head) ++ indent(u.sts.flatMap(s))
-      case While(cond, body, Pass(_), _) =>
+      case While(cond, body, Some(Pass(_)), _) =>
         List("while.",
           Ident + printExpr(visibility)(cond),
         ) ++ indent("[unused]" :: indent("seq > @" :: indent(printSt(visibility.stepInto(List()))(body))))

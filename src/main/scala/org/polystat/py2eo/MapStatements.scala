@@ -31,7 +31,7 @@ object MapStatements {
       } else {
         val symbols = asScala(s.import_from().import_as_names().l).toList
         Suite(symbols.map(x => ImportSymbol(from, x.what.getText,
-          if (x.aswhat != null) x.aswhat.getText else x.what.getText, new GeneralAnnotation(x)
+          Option(x.aswhat).map(_.getText), new GeneralAnnotation(x)
         )), new GeneralAnnotation(s))
       }
   }
@@ -121,20 +121,20 @@ object MapStatements {
   def mapFor(s: For_stmtContext, isAsync: Boolean): For = {
     For(
       mapExprList(s.exprlist()), mapTestList(s.testlist()),
-      mapNullableSuite(s.body), mapNullableSuite(s.eelse), isAsync, new GeneralAnnotation(s)
+      mapNullableSuite(s.body), Option(s.eelse).map(mapNullableSuite), isAsync, new GeneralAnnotation(s)
     )
   }
 
   def mapIf(s: If_stmtContext): If = {
     If(
       asScala(s.conds).map(mapAssignmentExpression).zip(asScala(s.bodies).map(mapNullableSuite)).toList,
-      mapNullableSuite(s.eelse), new GeneralAnnotation(s)
+      Option(s.eelse).map(mapNullableSuite), new GeneralAnnotation(s)
     )
   }
 
   def mapWith(s: With_stmtContext, isAsync: Boolean): Statement = {
     asScala(s.l).toList.foldRight(mapNullableSuite(s.suite()))(
-      (x, s) => With(mapTest(x.test()), Option(x.expr()).map(mapExpr), s, isAsync, s.ann.pos)
+      (x, s) => With(List((mapTest(x.test()), Option(x.expr()).map(mapExpr))), s, isAsync, s.ann.pos)
     )
   }
 
@@ -146,7 +146,7 @@ object MapStatements {
         While(
           mapAssignmentExpression(s.while_stmt().cond),
           mapNullableSuite(s.while_stmt().body),
-          mapNullableSuite(s.while_stmt().eelse),
+          Option(s.while_stmt().eelse).map(mapNullableSuite),
           new GeneralAnnotation(s)
         )
       case s: CompForContext => mapFor(s.for_stmt(), isAsync = false)
@@ -156,13 +156,9 @@ object MapStatements {
           .map(ex => (if (ex._1.test() == null) None else Some((mapTest(ex._1.test()), Option(ex._1.NAME()).map(_.getText))),
             mapNullableSuite(ex._2)))
         Try(
-          mapNullableSuite(t.trySuite), es, mapNullableSuite(t.elseSuite),
-          if (t.finallySuite.size() == 0) {
-            Pass(new GeneralAnnotation(s))
-          } else {
-            mapNullableSuite(t.finallySuite.get(0))
-          }
-          , new GeneralAnnotation(s)
+          mapNullableSuite(t.trySuite), es, Option(t.elseSuite).map(mapNullableSuite),
+          (if (t.finallySuite.size() == 0) None else Some(mapNullableSuite(t.finallySuite.get(0)))),
+          new GeneralAnnotation(s)
         )
       case s: CompWithContext => mapWith(s.with_stmt(), isAsync = false)
       case s: CompFuncDefContext => mapFuncDef(s.funcdef(), Decorators(List()), isAsync = false)

@@ -288,10 +288,10 @@ sealed trait Statement {
 
 import Expression.{T => ET}
 
-case class If(conditioned : List[(ET, Statement)], eelse : Statement, ann : GeneralAnnotation) extends Statement
+case class If(conditioned : List[(ET, Statement)], eelse : Option[Statement], ann : GeneralAnnotation) extends Statement
 case class IfSimple(cond : ET, yes : Statement, no : Statement, ann : GeneralAnnotation) extends Statement
-case class While(cond : ET, body : Statement, eelse : Statement, ann : GeneralAnnotation) extends Statement
-case class For(what : ET, in : ET, body : Statement, eelse : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
+case class While(cond : ET, body : Statement, eelse : Option[Statement], ann : GeneralAnnotation) extends Statement
+case class For(what : ET, in : ET, body : Statement, eelse : Option[Statement], isAsync : Boolean, ann : GeneralAnnotation) extends Statement
 case class Suite(l : List[Statement], ann : GeneralAnnotation) extends Statement
 case class AugAssign(op : AugOps.T, lhs : ET, rhs : ET, ann : GeneralAnnotation) extends Statement
 case class AnnAssign(lhs : ET, rhsAnn : ET, rhs : Option[ET], ann : GeneralAnnotation) extends Statement
@@ -320,10 +320,10 @@ case class NonLocal(l : List[String], ann : GeneralAnnotation) extends Statement
 case class Global(l : List[String], ann : GeneralAnnotation) extends Statement
 case class ImportModule(what : List[String], as : Option[String], ann : GeneralAnnotation) extends Statement
 case class ImportAllSymbols(from : List[String], ann : GeneralAnnotation) extends Statement
-case class ImportSymbol(from : List[String], what : String, as : String, ann : GeneralAnnotation) extends Statement
-case class With(cm : ET, target : Option[ET], body : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
+case class ImportSymbol(from : List[String], what : String, as : Option[String], ann : GeneralAnnotation) extends Statement
+case class With(cms : List[(ET, Option[ET])], body : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
 case class Try(ttry : Statement, excepts : List[(Option[(ET, Option[String])], Statement)],
-               eelse : Statement, ffinally : Statement, ann : GeneralAnnotation) extends Statement
+               eelse : Option[Statement], ffinally : Option[Statement], ann : GeneralAnnotation) extends Statement
 class Unsupported(original0 : Statement, declareVars0 : List[String],
                   es0 : List[(Boolean, Expression.T)], sts0 : List[Statement], ann0 : GeneralAnnotation) extends Statement {
   val original: Statement = original0

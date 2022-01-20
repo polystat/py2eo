@@ -96,7 +96,7 @@ object PrintLinearizedMutableEOWithCage {
           val stsY = inner(yes)
           val stsN = inner(no)
           pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "TRUE")) ++ indent("seq" :: indent(stsN :+ "TRUE"))
-        case While(cond, body, Pass(_), _) =>
+        case While(cond, body, Some(Pass(_)), _) =>
           "goto" :: indent(
             s"[breakLabel]" :: indent(
               "seq > @" :: indent(

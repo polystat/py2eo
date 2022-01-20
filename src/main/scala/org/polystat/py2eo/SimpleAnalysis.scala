@@ -53,14 +53,15 @@ object SimpleAnalysis {
     def isRhs(e : T) = (false, e)
     s match {
       case SimpleObject(_, fields, _) => (List(), fields.map(x => (false, x._2)))
-      case With(cm, target, body, _, _) => (List(body), (false, cm) :: target.map(x => (true, x)).toList)
-      case For(what, in, body, eelse, _, _) => (List(body, eelse), List((false, what), (false, in)))
+      case With(cms, body, _, _) =>
+        (List(body), cms.flatMap(x => (false, x._1) :: x._2.map(x => (true, x)).toList))
+      case For(what, in, body, eelse, _, _) => (body :: eelse.toList, List((false, what), (false, in)))
       case Del(e, _) => (List(), List((false, e)))
-      case If(conditioned, eelse, _) => (eelse :: conditioned.map(_._2), conditioned.map(x => (false, x._1)))
+      case If(conditioned, eelse, _) => (eelse.toList ++ conditioned.map(_._2), conditioned.map(x => (false, x._1)))
       case IfSimple(cond, yes, no, _) => (List(yes, no), List((false, cond)))
       case Try(ttry, excepts, eelse, ffinally, _) =>
-        ((ttry :: excepts.map(_._2)) :+ eelse :+ ffinally, excepts.flatMap(p => p._1.map(x => (false, x._1)).toList))
-      case While(cond, body, eelse, _) => (List(body, eelse), List(isRhs(cond)))
+        ((ttry :: excepts.map(_._2)) ++ eelse.toList ++ ffinally.toList, excepts.flatMap(p => p._1.map(x => (false, x._1)).toList))
+      case While(cond, body, eelse, _) => (body :: eelse.toList, List(isRhs(cond)))
       case Suite(l, _) => (l, List())
       case AugAssign(_, lhs, rhs, _) => (List(), List((true, lhs), (false, rhs)))
       case Assign(l, _) => (List(), (false, l.head) :: l.tail.map(isRhs))

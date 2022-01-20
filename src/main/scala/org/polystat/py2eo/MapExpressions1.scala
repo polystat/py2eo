@@ -2,7 +2,7 @@ package org.polystat.py2eo
 
 import org.antlr.v4.runtime
 import org.antlr.v4.runtime.tree.TerminalNode
-import org.antlr.v4.runtime.{ParserRuleContext, Token}
+import org.antlr.v4.runtime.{ParserRuleContext}
 import org.polystat.py2eo.PythonParser._
 
 import scala.collection.JavaConverters.asScala
@@ -13,9 +13,9 @@ object MapExpressions1 {
 
   import Expression._
 
-  private def ga(c : ParserRuleContext) = new GeneralAnnotation(c)
-  private def toList[T](l : java.util.List[T]) = asScala(l).toList
-  private def toListNullable[T](l : java.util.List[T]) = if (l == null) List() else toList(l)
+  def ga(c : ParserRuleContext) = new GeneralAnnotation(c)
+  def toList[T](l : java.util.List[T]) = asScala(l).toList
+  def toListNullable[T](l : java.util.List[T]) = if (l == null) List() else toList(l)
 
   private def mapBinop[TT](args: java.util.List[TT], ops : java.util.List[TerminalNode], mapa: TT => T): T = {
     val sargs = asScala(args)
