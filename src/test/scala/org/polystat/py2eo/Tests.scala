@@ -127,7 +127,6 @@ class Tests {
   @Test def heapify(): Unit = {
     val name = "trivial"
     val test = new File(testsPrefix + "/" + name + ".py")
-
     def db = debugPrinter(test)(_, _)
 
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
@@ -189,7 +188,6 @@ class Tests {
   @Test def useUnsupported() : Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
       val test = new File(testsPrefix + "/" + name + ".py")
-
       def db = debugPrinter(test)(_, _)
 
       val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
