@@ -231,8 +231,7 @@ object SimplePass {
         reconstruct(lhs, l => CollectionCons(kind, l, ann.pos), l, ns)
 
       case DictCons(l, ann) if !lhs =>
-        val simple = l.flatMap({ case Right(x) => List(x) case Left((x, y)) => List(x, y) })
-
+        val simple = l.flatMap({ case Right(x) => List(x) case Left((x, y)) => List(x, y) })=
         def cons(original: List[DictEltDoubleStar], simple: List[T]): List[DictEltDoubleStar] = (original, simple) match {
           case (Nil, Nil) => List()
           case (Right(_) :: otl, z :: stl) => Right(z) :: cons(otl, stl)
@@ -270,7 +269,6 @@ object SimplePass {
 
   def procExprInStatement(f: (Boolean, T, Names) => (EAfterPass, Names))(s: Statement, ns: Names): (Statement, Names) = {
     def pst = procExprInStatement(f)(_, _)
-
     def pstl(l: List[Statement], ns: Names) =
       l.foldLeft((List[Statement](), ns))((acc, st) => {
         val (st1, ns1) = pst(st, acc._2)
@@ -309,7 +307,7 @@ object SimplePass {
         val (ffinally1, ns4) = pst(ffinally, ns3)
         (Try(try1, List((None, catchBody1)), eelse1, ffinally1, ann.pos), ns4)
 
-      // todo: wow, this is a lot. Maybe we should just generate GOTOs instead of such rewriting
+        // todo: wow, this is a lot. Maybe we should just generate GOTOs instead of such rewriting
       case While(cond, body, eelse, ann) =>
         val (body1, ns1) = pst(body, ns)
         val (else1, ns2) = pst(eelse, ns1)
@@ -432,8 +430,8 @@ object SimplePass {
       FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
         Decorators(List()), accessibleIdents, isAsync, ann.pos)
     case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _: ClassDef | _: AnnAssign |
-       Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
-       ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
+      Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
+      ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
     case ImportSymbol(from, what, as, _) => new Unsupported(s, List(as), s.ann.pos)
     case _ => s
@@ -444,8 +442,8 @@ object SimplePass {
       case CallIndex(isCall, _, args, _) if !isCall || args.exists(x => x._1.nonEmpty) =>
         new UnsupportedExpr(e)
       case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
-         Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
-         EllipsisLiteral(_) =>
+        Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
+        EllipsisLiteral(_) =>
         new UnsupportedExpr(e)
       case SimpleComparison(op, _, _, _) if (
         try {
@@ -533,7 +531,7 @@ object SimplePass {
       ImportSymbol(List("C3"), "eo_setattr", "eo_setattr", s1.ann.pos),
       s1
     ), s1.ann.pos),
-      ns1)
+    ns1)
 
   }
 
@@ -544,11 +542,12 @@ object SimplePass {
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
-    //    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
-    //    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
+//    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
+//    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
 
     tsimplifyIf
   }
+
 
 
 }

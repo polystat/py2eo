@@ -33,7 +33,7 @@ class Tests {
     output.write(what)
     output.close()
     outName
-  }
+    }
 
   def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
     val what = PrintPython.printSt(s, "")
@@ -66,7 +66,7 @@ class Tests {
       println(stdout)
     }
   }
-
+	
   @Test def immutabilize(): Unit = {
     val name = "trivial"
     val test = new File(testsPrefix + "/" + name + ".py")
@@ -118,7 +118,6 @@ class Tests {
   @Test def simplifyInheritance(): Unit = {
     val name = "inheritance"
     val test = new File(testsPrefix + "/" + name + ".py")
-
     def db = debugPrinter(test)(_, _)
 
     SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
@@ -283,7 +282,6 @@ class Tests {
 
   def useCageHolder(path: String, simpleConstructions: Boolean = false): Unit = {
     val test = new File(path)
-
     def db = debugPrinter(test)(_, _)
 
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
@@ -327,7 +325,7 @@ class Tests {
         Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
       ), ann.pos)
 
-
+    
     val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
