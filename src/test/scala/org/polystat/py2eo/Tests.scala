@@ -202,7 +202,7 @@ class Tests {
         SimpleAnalysis.foldSE[Set[String]](
           (l, e) => {
             e match {
-              //            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
+//            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
               case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
               case _ => l
             }
