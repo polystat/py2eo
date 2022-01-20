@@ -25,4 +25,43 @@ def conditionalCheck2():
     return a > b
 ```
 
-Sample .eo output from the code scope above:
+
+Sample .eo output from the code scope above in the path_of_py/genCageEO/name_of_py.eo:
+```
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > test1
+  cage > result
+  cage > tmp
+  [unused] > conditionalCheck1
+    cage > result
+    cage > tmp
+    cage > a
+    cage > e0
+    cage > b
+    goto > @
+      [returnLabel]
+        seq > @
+          stdout "conditionalCheck1\n"
+          (a).write (1)
+          (b).write (2)
+          (e0).write (((a).less (b)).@)
+          [] > tmp1
+            e0' > copy
+            copy.< > @
+          (result).write (tmp1.copy)
+          returnLabel.forward 0
+          123
+  goto > @
+    [returnLabel]
+      seq > @
+        stdout "test1\n"
+        tmp.write (((conditionalCheck1)) 0)
+        (tmp.@)
+        (result).write (tmp.result)
+        xresult
+```
