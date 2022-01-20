@@ -94,9 +94,7 @@ object SimplePass {
   }
 
   def procStatement(f: (Statement, Names) => (Statement, Names))(s0: Statement, ns0: Names): (Statement, Names) =
-    procStatementGeneral((st, ns) => {
-      val z = f(st, ns); (z._1, z._2, true)
-    })(s0, ns0)
+    procStatementGeneral((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
 
 
   // all the forcing code is only needed to keep computation order if we transform an expression to a statement:
@@ -231,7 +229,7 @@ object SimplePass {
         reconstruct(lhs, l => CollectionCons(kind, l, ann.pos), l, ns)
 
       case DictCons(l, ann) if !lhs =>
-        val simple = l.flatMap({ case Right(x) => List(x) case Left((x, y)) => List(x, y) })=
+        val simple = l.flatMap({ case Right(x) => List(x) case Left((x, y)) => List(x, y) })
         def cons(original: List[DictEltDoubleStar], simple: List[T]): List[DictEltDoubleStar] = (original, simple) match {
           case (Nil, Nil) => List()
           case (Right(_) :: otl, z :: stl) => Right(z) :: cons(otl, stl)
