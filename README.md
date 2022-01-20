@@ -26,7 +26,7 @@ def conditionalCheck2():
 ```
 
 
-Sample .eo output from the code scope above in the path_of_py/genCageEO/name_of_py.eo:
+Sample .eo output from the code scope above in the `path_of_py/genCageEO/name_of_py.eo`:
 ```
 +package org.eolang
 +alias goto org.eolang.gray.goto
