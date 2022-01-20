@@ -85,12 +85,12 @@ object SimplePass {
         (ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
       case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
         body, decorators, accessibleIdents, isAsync, ann) =>
-          val xbody = pst(body, ns)
-          (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
-            xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
-        case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
-             | ImportAllSymbols(_, _) | Del(_, _) | _: SimpleObject => nochange
-      }
+        val xbody = pst(body, ns)
+        (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
+          xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
+      case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
+           | ImportAllSymbols(_, _) | Del(_, _) | _: SimpleObject => nochange
+    }
   }
 
   def procStatement(f: (Statement, Names) => (Statement, Names))(s0: Statement, ns0: Names): (Statement, Names) =
@@ -241,7 +241,7 @@ object SimplePass {
         reconstruct(lhs = false, simple => DictCons(cons(l, simple), ann.pos), simple, ns)
 
       case IntLiteral(_, _) | Ident(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | NoneLiteral(_) | FloatLiteral(_, _) |
-           EllipsisLiteral(_) | ImagLiteral(_, _) => f(lhs, e, ns)
+        EllipsisLiteral(_) | ImagLiteral(_, _) => f(lhs, e, ns)
       case Field(whose, name, ann) => reconstruct(lhs, { case List(x) => Field(x, name, ann.pos) }, List(whose), ns)
 
       case CallIndex(isCall, whom, args, ann) if !isCall =>
@@ -401,7 +401,7 @@ object SimplePass {
               body1, cd.decorators, body1.ann.pos), ann.pos), ns)
         }
       case fd@FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
-      body, Decorators(List()), accessibleIdents, isAsync, ann) =>
+        body, Decorators(List()), accessibleIdents, isAsync, ann) =>
         val (body1, ns1) = pst(body, ns)
         // todo: process default param values and annotations
         assert(returnAnnotation.isEmpty && args.forall(p => p.default.isEmpty && p.paramAnn.isEmpty))
