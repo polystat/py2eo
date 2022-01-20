@@ -286,14 +286,14 @@ object SimplePass {
       case Raise(None, None, _) | Pass(_) | Break(_) | Continue(_) | NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) |
            ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) | Return(None, _) => (s, ns)
       case Del(Ident(_, _), _) => (s, ns)
-      //      case With(cm, target, body, isAsync, ann) =>
-      //        val (body1, ns1) = pst(body, ns)
-      //        forceAllIfNecessary(f)((false, cm) :: target.toList.map(x => (true, x)), ns1) match {
-      //          case Left((l, ns)) => (With(l.head, l.tail.headOption, body1, isAsync, ann.pos), ns)
-      //          case Right((l, ns)) =>
-      //            val w = (With(l.head._2, l.map(_._2).tail.headOption, body1, isAsync, ann.pos))
-      //            (Suite(l.map(_._1) :+ w, ann.pos), ns)
-      //        }
+//      case With(cm, target, body, isAsync, ann) =>
+//        val (body1, ns1) = pst(body, ns)
+//        forceAllIfNecessary(f)((false, cm) :: target.toList.map(x => (true, x)), ns1) match {
+//          case Left((l, ns)) => (With(l.head, l.tail.headOption, body1, isAsync, ann.pos), ns)
+//          case Right((l, ns)) =>
+//            val w = (With(l.head._2, l.map(_._2).tail.headOption, body1, isAsync, ann.pos))
+//            (Suite(l.map(_._1) :+ w, ann.pos), ns)
+//        }
       case IfSimple(cond, yes, no, ann) =>
         val (yes1, ns1) = pst(yes, ns)
         val (no1, ns2) = pst(no, ns1)
@@ -432,8 +432,8 @@ object SimplePass {
       FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
         Decorators(List()), accessibleIdents, isAsync, ann.pos)
     case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _: ClassDef | _: AnnAssign |
-         Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
-         ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
+       Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
+       ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
     case ImportSymbol(from, what, as, _) => new Unsupported(s, List(as), s.ann.pos)
     case _ => s
@@ -444,8 +444,8 @@ object SimplePass {
       case CallIndex(isCall, _, args, _) if !isCall || args.exists(x => x._1.nonEmpty) =>
         new UnsupportedExpr(e)
       case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
-           Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
-           EllipsisLiteral(_) =>
+         Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
+         EllipsisLiteral(_) =>
         new UnsupportedExpr(e)
       case SimpleComparison(op, _, _, _) if (
         try {
@@ -477,7 +477,7 @@ object SimplePass {
           inner(Suite(l1, ann.pos))
       case _ => s
     }
-    //    println(s"$s \n -> $s1")
+//    println(s"$s \n -> $s1")
     (inner(s), ns)
   }
 
