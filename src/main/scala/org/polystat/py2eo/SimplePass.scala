@@ -449,14 +449,14 @@ object SimplePass {
         } catch {
           case _: Throwable => true
         }
-        ) => new UnsupportedExpr(e)
+      ) => new UnsupportedExpr(e)
       case Binop(op, _, _, _) if (
         try {
           PrintEO.binop(op); false
         } catch {
           case _: Throwable => true
         }
-        ) => new UnsupportedExpr(e)
+      ) => new UnsupportedExpr(e)
       case _ => e
     }
     (Left(e1), ns)
