@@ -41,7 +41,7 @@ object MapExpressions1 {
     mapLazyLogic(c.inversion(), LazyLAnd, mapInversion)
 
   def mapInversion(c : InversionContext) : T =
-    if (c.NOT() != null) mapComparison(c.comparison()) else
+    if (c.NOT() == null) mapComparison(c.comparison()) else
     Unop(Unops.LNot, mapInversion(c.inversion()), ga(c))
 
   def mapComparison(context: PythonParser.ComparisonContext) : T = {
@@ -82,7 +82,7 @@ object MapExpressions1 {
   }
 
   def mapBitwiseAnd(context: PythonParser.Bitwise_andContext) : T = {
-    if (context.shift_expr() != null) {
+    if (context.bitwise_and() != null) {
       Binop(Binops.And, mapBitwiseAnd(context.bitwise_and()), mapShiftExpr(context.shift_expr()), ga(context))
     } else {
       mapShiftExpr(context.shift_expr())
@@ -152,14 +152,20 @@ object MapExpressions1 {
 
   def mapPrimary(context: PythonParser.PrimaryContext) : T = {
     if (context.NAME() != null) Field(mapPrimary(context.primary()), context.NAME().getText, ga(context)) else
-    if (context.genexp() != null) ??? else
+    if (context.genexp() != null) mapGenexp(context.genexp()) else
     if (context.arguments() != null) {
       CallIndex(true, mapPrimary(context.primary()), mapArgs(context.arguments().args()), ga(context))
     } else
     if (context.slices() != null) {
       CallIndex(false, mapPrimary(context.primary()), mapSlices(context.slices()).map(x => (None, x)), ga(context))
     } else
-    mapAtom(context.atom())
+    if (context.atom() != null) mapAtom(context.atom()) else
+    mapPrimary(context.primary())
+  }
+
+  def mapGenexp(c : GenexpContext) : T = {
+    if (c.assignment_expression() != null) mapAssignmentExpression(c.assignment_expression()) else
+    GeneratorComprehension(mapExpression(c.expression()), mapForIfClauses(c.for_if_clauses()), ga(c))
   }
 
   def mapAtom(context: PythonParser.AtomContext) : T = {
@@ -175,6 +181,7 @@ object MapExpressions1 {
       if (context.group().named_expression() != null) mapNamedExpression(context.group().named_expression()) else
       throw new RuntimeException("context.group problem")
     } else
+    if (context.genexp() != null) mapGenexp(context.genexp()) else
     if (context.list() != null) mapList(context.list()) else
     if (context.listcomp() != null) mapListcomp(context.listcomp()) else
     if (context.dict() != null) mapDict(context.dict()) else
@@ -214,6 +221,7 @@ object MapExpressions1 {
   }
 
   def mapDict(context: PythonParser.DictContext) : DictCons = {
+    if (context.double_starred_kvpairs() == null) DictCons(List(), ga(context)) else
     DictCons(toList(context.double_starred_kvpairs().double_starred_kvpair()).map(mapDoubleStarredKvpair), ga(context))
   }
 
@@ -226,9 +234,14 @@ object MapExpressions1 {
     (mapExpression(context.expression(0)), mapExpression(context.expression(1)))
 
   def mapTuple(context: PythonParser.TupleContext) : T = {
-    val l = if (context.star_named_expressions() == null) List() else mapStarNamedExpressions(context.star_named_expressions())
-    val head = mapStarNamedExpression(context.star_named_expression())
-    CollectionCons(CollectionKind.Tuple, head :: l, ga(context))
+    val l = if (context.star_named_expression() == null) {
+      List()
+    } else {
+      val l = if (context.star_named_expressions() == null) List() else mapStarNamedExpressions(context.star_named_expressions())
+      val head = mapStarNamedExpression(context.star_named_expression())
+      head :: l
+    }
+    CollectionCons(CollectionKind.Tuple, l, ga(context))
   }
 
   def mapSet(context: PythonParser.SetContext) : CollectionCons = {
@@ -258,7 +271,7 @@ object MapExpressions1 {
   def mapForIfClause(c : For_if_clauseContext) : List[Comprehension] = {
     val isAsync = c.ASYNC() != null
     val ffor = ForComprehension(mapStarTargets(c.star_targets()), mapDisjunction(c.disjunction(0)), isAsync)
-    val iff = if (c.IF() == null) List() else List(IfComprehension(mapDisjunction(c.disjunction(1))))
+    val iff = toList(c.disjunction()).tail.map(x => IfComprehension(mapDisjunction(x)))
     ffor :: iff
   }
 
@@ -292,9 +305,12 @@ object MapExpressions1 {
   def mapStarAtom(context: PythonParser.Star_atomContext) : T = {
     if (context.NAME() != null) Ident(context.NAME().getText, ga(context)) else
     if (context.target_with_star_atom() != null) mapTargetWithStarAtom(context.target_with_star_atom()) else
-    if (context.star_targets_tuple_seq() != null) mapStarTargetsTupleSeq(context.star_targets_tuple_seq()) else
+    if (context.star_targets_tuple_seq() != null) mapStarTargetsTupleSeq(context.star_targets_tuple_seq()) else {
+    if (context.OPEN_PAREN() != null) CollectionCons(CollectionKind.Tuple, List(), ga(context)) else
     if (context.star_targets_list_seq() != null) mapStarTargetsListSeq(context.star_targets_list_seq()) else
+    if (context.OPEN_BRACK() != null) CollectionCons(CollectionKind.List, List(), ga(context)) else
     throw new RuntimeException("mapStarAtom")
+    }
   }
 
   def mapStarNamedExpression(context: PythonParser.Star_named_expressionContext) : T = {
@@ -340,32 +356,38 @@ object MapExpressions1 {
   }
 
   def mapLambdaSlashNoDefault(c : Lambda_slash_no_defaultContext) : List[Parameter] = {
+    if (c == null) return List()
     val l = toListNullable(c.lambda_param_no_default())
     l.map(mapLambdaParamNoDefault(ArgKind.Positional))
   }
 
   def mapLambdaSlashWithDefault(c : Lambda_slash_with_defaultContext) : List[Parameter] = {
+    if (c == null) return List()
     toListNullable(c.lambda_param_no_default()).map(mapLambdaParamNoDefault(ArgKind.Positional)) ++
     toListNullable(c.lambda_param_with_default()).map(mapLambdaParamWithDefault(ArgKind.Positional))
   }
 
   def mapLambdef(context: PythonParser.LambdefContext) : AnonFun = {
     val body = mapExpression(context.expression())
-    val z = context.lambda_params().lambda_parameters()
-    val snd = mapLambdaSlashNoDefault(z.lambda_slash_no_default())
-    val swd = mapLambdaSlashWithDefault(z.lambda_slash_with_default())
-    val pnd = toListNullable(z.lambda_param_no_default()).map(mapLambdaParamNoDefault(ArgKind.PosOrKeyword))
-    val pwd = toListNullable(z.lambda_param_with_default()).map(mapLambdaParamWithDefault(ArgKind.PosOrKeyword))
-    val otherPositional = Option(z.lambda_star_etc()).flatMap(
-      x => Option(x.lambda_param_no_default()).map(x => x.lambda_param().NAME().getText)
-    )
-    val otherKeywords = Option(z.lambda_star_etc()).flatMap(
-      x => Option(x.lambda_kwds()).map(x => x.lambda_param_no_default().lambda_param().NAME().getText)
-    )
-    val rest = Option(z.lambda_star_etc()).toList.flatMap(
-      x => toListNullable(x.lambda_param_maybe_default()).map(mapLambdaParamMaybeDefault(ArgKind.Keyword))
-    )
-    AnonFun(snd ++ swd ++ pnd ++ pwd ++ rest, otherPositional, otherKeywords, body, ga(context))
+    if (context.lambda_params() == null) {
+      AnonFun(List(), None, None, body, ga(context))
+    } else {
+      val z = context.lambda_params().lambda_parameters()
+      val snd = mapLambdaSlashNoDefault(z.lambda_slash_no_default())
+      val swd = mapLambdaSlashWithDefault(z.lambda_slash_with_default())
+      val pnd = toListNullable(z.lambda_param_no_default()).map(mapLambdaParamNoDefault(ArgKind.PosOrKeyword))
+      val pwd = toListNullable(z.lambda_param_with_default()).map(mapLambdaParamWithDefault(ArgKind.PosOrKeyword))
+      val otherPositional = Option(z.lambda_star_etc()).flatMap(
+        x => Option(x.lambda_param_no_default()).map(x => x.lambda_param().NAME().getText)
+      )
+      val otherKeywords = Option(z.lambda_star_etc()).flatMap(
+        x => Option(x.lambda_kwds()).map(x => x.lambda_param_no_default().lambda_param().NAME().getText)
+      )
+      val rest = Option(z.lambda_star_etc()).toList.flatMap(
+        x => toListNullable(x.lambda_param_maybe_default()).map(mapLambdaParamMaybeDefault(ArgKind.Keyword))
+      )
+      AnonFun(snd ++ swd ++ pnd ++ pwd ++ rest, otherPositional, otherKeywords, body, ga(context))
+    }
   }
 
   def mapSlice(c : SliceContext) : T = {
@@ -385,13 +407,14 @@ object MapExpressions1 {
   def mapTPrimary(c : T_primaryContext) : T = {
     if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
     if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), mapSlices(c.slices()).map(x => (None, x)), ga(c)) else
-    if (c.genexp() != null) ??? else
+    if (c.genexp() != null) mapGenexp(c.genexp()) else
     if (c.arguments() != null) CallIndex(
       true, mapTPrimary(c.t_primary()),
       if (c.arguments() == null) List() else mapArgs(c.arguments().args()),
       ga(c)
     ) else
-      mapAtom(c.atom())
+    if (c.atom() != null) mapAtom(c.atom()) else
+    mapTPrimary(c.t_primary())
   }
 
   def mapArgs(context: PythonParser.ArgsContext) : List[(Option[String], T)] = {

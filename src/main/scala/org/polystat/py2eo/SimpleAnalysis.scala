@@ -68,7 +68,7 @@ object SimpleAnalysis {
       case AnnAssign(lhs, rhsAnn, rhs, _) => (List(), (true, lhs) :: (List(rhsAnn) ++ rhs.toList).map(isRhs))
       case CreateConst(_, value, _) => (List(), List(isRhs(value)))
       case Return(x, _) => (List(), x.toList.map(isRhs))
-      case Assert(x, _) => (List(), x.map(isRhs))
+      case Assert(what, param, _) => (List(), (what :: param.toList).map(isRhs))
       case Raise(e, from, _) => (List(), (e.toList ++ from.toList).map(isRhs))
       case ClassDef(_, bases, body, decorators, _) => (List(body), (bases.map(_._2) ++ decorators.l).map(isRhs))
       case FuncDef(_, args, _, _, returnAnnotation, body, decorators, _, _, _) => (

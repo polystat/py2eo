@@ -301,8 +301,8 @@ case class Pass(ann : GeneralAnnotation) extends Statement
 case class Break(ann : GeneralAnnotation) extends Statement
 case class Continue(ann : GeneralAnnotation) extends Statement
 case class Return(x : Option[ET], ann : GeneralAnnotation) extends Statement
-case class Assert(x : List[ET], ann : GeneralAnnotation) extends Statement {
-  def this(x : ET, ann : GeneralAnnotation) = this(List(x), ann)
+case class Assert(what : ET, param : Option[ET], ann : GeneralAnnotation) extends Statement {
+  def this(x : ET, ann : GeneralAnnotation) = this(x, None, ann)
 }
 case class Raise(e : Option[ET], from : Option[ET], ann : GeneralAnnotation) extends Statement
 case class Del(l : ET, ann : GeneralAnnotation) extends Statement

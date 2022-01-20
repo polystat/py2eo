@@ -14,13 +14,13 @@ object Parse {
     val input = new FileReader(file)
 
     val inputStream = new ANTLRInputStream(input)
-    val lexer = new Python3Lexer(inputStream)
+    val lexer = new PythonLexer(inputStream)
     val tokenStream = new CommonTokenStream(lexer)
-    val parser = new Python3Parser(tokenStream)
+    val parser = new PythonParser(tokenStream)
 
-    val e = parser.file_input()
+    val e = parser.file()
 
-    val t = MapStatements.mapFile(file.getName == "builtins", e)
+    val t = MapStatements1.mapFile(e)
     debugPrinter(t, "afterParser")
     t
   }

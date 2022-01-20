@@ -77,7 +77,7 @@ object SimplePass {
 
       case AugAssign(_, _, _, _) =>  nochange
       case AnnAssign(_, _, _, _) => nochange
-      case Return(_, _) | Assert(_, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
+      case Return(_, _) | Assert(_, _, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
            | Continue(_) | CreateConst(_, _, _) =>  nochange
       case ClassDef(name, bases, body, decorators, ann) =>
         val xbody = pst(body, ns)
@@ -401,7 +401,7 @@ object SimplePass {
         assert(returnAnnotation.isEmpty && args.forall(p => p.default.isEmpty && p.paramAnn.isEmpty))
         (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body1, fd.decorators, accessibleIdents, isAsync, ann.pos), ns1)
 
-      case Assert(_, _) => alreadyDone("assert")
+      case Assert(_, _, _) => alreadyDone("assert")
       case If(_, _, _) => alreadyDone("ifelseif")
       case Assign(l, _) if l.size > 2 => alreadyDone("complex assign")
     }
@@ -427,7 +427,7 @@ object SimplePass {
         FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
           Decorators(List()), accessibleIdents, isAsync, ann.pos)
     case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _ : ClassDef | _ : AnnAssign |
-      Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
+      Assert(_, _, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
       ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
     case ImportSymbol(from, what, as, _) => new Unsupported(s, as.toList, s.ann.pos)

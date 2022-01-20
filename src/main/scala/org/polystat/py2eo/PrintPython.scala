@@ -172,7 +172,7 @@ object PrintPython {
       case Pass(_) => indentPos("pass")
       case Return(Some(x), _) => indentPos("return %s".format(printExpr(x)))
       case Return(None, _) => indentPos("return ")
-      case Assert(l, _) => indentPos("assert %s".format(l.map(printExpr).mkString(", ")))
+      case Assert(what, param, _) => indentPos("assert %s".format((what :: param.toList).map(printExpr).mkString(", ")))
       case Raise(Some(x), Some(from), _) => indentPos("raise %s from %s".format(printExpr(x), printExpr(from)))
       case Raise(Some(x), None, _) => indentPos("raise %s".format(printExpr(x)))
       case Raise(None, None, _) => indentPos("raise")

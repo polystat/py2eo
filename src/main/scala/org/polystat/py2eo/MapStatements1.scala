@@ -129,11 +129,13 @@ object MapStatements1 {
   }
 
   def mapSlashNoDefault(c : Slash_no_defaultContext) : List[Parameter] = {
+    if (c == null) return List()
     val l = toListNullable(c.param_no_default())
     l.map(mapParamNoDefault(ArgKind.Positional))
   }
 
   def mapSlashWithDefault(c : Slash_with_defaultContext) : List[Parameter] = {
+    if (c == null) return List()
     toListNullable(c.param_no_default()).map(mapParamNoDefault(ArgKind.Positional)) ++
       toListNullable(c.param_with_default()).map(mapParamWithDefault(ArgKind.Positional))
   }
@@ -142,22 +144,27 @@ object MapStatements1 {
     if (context.func_type_comment() != null) ???
     val body = mapBlock(context.block())
     val returnType = Option(context.expression()).map(mapExpression)
-    val params = context.params().parameters()
-    val snd = mapSlashNoDefault(params.slash_no_default())
-    val swd = mapSlashWithDefault(params.slash_with_default())
-    val pnd = toListNullable(params.param_no_default()).map(mapParamNoDefault(ArgKind.PosOrKeyword))
-    val pwd = toListNullable(params.param_with_default()).map(mapParamWithDefault(ArgKind.PosOrKeyword))
-    val otherPositional = Option(params.star_etc()).flatMap(
-      x => Option(x.param_no_default()).map(x => mapParam(x.param()))
-    )
-    val otherKeywords = Option(params.star_etc()).flatMap(
-      x => Option(x.kwds()).map(x => mapParam(x.param_no_default().param()))
-    )
-    val rest = Option(params.star_etc()).toList.flatMap(
-      x => toListNullable(x.param_maybe_default()).map(mapParamMaybeDefault(ArgKind.Keyword))
-    )
+    val (params, otherPositional, otherKeywords) = if (context.params() != null) {
+      val params = context.params().parameters()
+      val snd = mapSlashNoDefault(params.slash_no_default())
+      val swd = mapSlashWithDefault(params.slash_with_default())
+      val pnd = toListNullable(params.param_no_default()).map(mapParamNoDefault(ArgKind.PosOrKeyword))
+      val pwd = toListNullable(params.param_with_default()).map(mapParamWithDefault(ArgKind.PosOrKeyword))
+      val otherPositional = Option(params.star_etc()).flatMap(
+        x => Option(x.param_no_default()).map(x => mapParam(x.param()))
+      )
+      val otherKeywords = Option(params.star_etc()).flatMap(
+        x => Option(x.kwds()).map(x => mapParam(x.param_no_default().param()))
+      )
+      val rest = Option(params.star_etc()).toList.flatMap(
+        x => toListNullable(x.param_maybe_default()).map(mapParamMaybeDefault(ArgKind.Keyword))
+      )
+      (snd ++ swd ++ pnd ++ pwd ++ rest, otherPositional, otherKeywords)
+    } else {
+      (List(), None, None)
+    }
     FuncDef(
-      context.NAME().getText, snd ++ swd ++ pnd ++ pwd ++ rest, otherPositional, otherKeywords,
+      context.NAME().getText, params, otherPositional, otherKeywords,
       returnType, body, decorators, HashMap(), context.ASYNC() != null, ga(context)
     )
   }
@@ -203,7 +210,7 @@ object MapStatements1 {
   def mapDelTargets(c : Del_targetsContext) : List[ET] = toList(c.del_target()).map(mapDelTarget)
 
   def mapDelTarget(c : Del_targetContext) : ET = {
-    if (c.t_primary() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
+    if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
     if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), mapSlices(c.slices()).map((None, _)), ga(c)) else
     mapDelTAtom(c.del_t_atom())
   }
@@ -225,8 +232,8 @@ object MapStatements1 {
     Assign(List(mapYieldExpr(context.yield_expr())), ga(context))
 
   def mapAssertStmt(context: PythonParser.Assert_stmtContext) : Assert = {
-    if (context.expression().size() > 1) ???
-    Assert(List(mapExpression(context.expression(0))), ga(context))
+    val l = toList(context.expression()).map(mapExpression)
+    Assert(l.head, if (l.length == 1) None else Some(l(1)), ga(context))
   }
 
   def mapGlobalStmt(context: PythonParser.Global_stmtContext) : Global =
@@ -245,7 +252,7 @@ object MapStatements1 {
   }
 
   def mapDottedName(c : Dotted_nameContext) : List[String] = {
-    if (c.dotted_name() != null) mapDottedName(c) :+ c.NAME().getText else List(c.NAME().getText)
+    if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else List(c.NAME().getText)
   }
 
   def mapImportName(c : Import_nameContext) : Statement = {
@@ -258,7 +265,6 @@ object MapStatements1 {
   }
 
   def mapImportFrom(c : Import_fromContext) : Statement = {
-    if (c.dotted_name() != null) ???
     if (!c.ELLIPSIS().isEmpty || !c.DOT().isEmpty) ???
     val from = mapDottedName(c.dotted_name())
     if (c.import_from_targets().STAR() != null) ImportAllSymbols(from, ga(c)) else {
@@ -314,7 +320,7 @@ object MapStatements1 {
       if (context.yield_expr() != null) mapYieldExpr(context.yield_expr()) else mapStarExpressions2CollectionCons(context.star_expressions()),
       ga(context)
     ) else
-    if (context.star_targets() != null) {
+    if (context.star_targets().size() > 0) {
       val l = toList(context.star_targets()).map(mapStarTargets)
       val rhs = if (context.yield_expr() != null) {
         mapYieldExpr(context.yield_expr())

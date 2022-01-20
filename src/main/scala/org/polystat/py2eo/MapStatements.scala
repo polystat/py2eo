@@ -182,7 +182,11 @@ object MapStatements {
   def mapSmallStmt(s: Small_stmtContext): Statement = s match {
     case s: SmallNonLocalContext => NonLocal(asScala(s.nonlocal_stmt().l).map(_.getText).toList, new GeneralAnnotation(s))
     case s: SmallGlobalContext => Global(asScala(s.global_stmt().l).map(_.getText).toList, new GeneralAnnotation(s))
-    case s: SmallAssertContext => Assert(asScala(s.assert_stmt().test()).toList.map(mapTest), new GeneralAnnotation(s))
+    case s: SmallAssertContext => Assert(
+      mapTest(s.assert_stmt().l.get(0)),
+      if (s.assert_stmt().l.size() == 1) None else Some(mapTest(s.assert_stmt().l.get(1))),
+      new GeneralAnnotation(s)
+    )
     case s: SmallExprContext =>
       val lhs = mapTestlistStarExpr(CollectionKind.Tuple, s.expr_stmt().testlist_star_expr())
       s.expr_stmt().expr_stmt_right() match {
