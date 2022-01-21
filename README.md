@@ -14,7 +14,7 @@ This is a translator of Python to [EOLANG](https://www.eolang.org).
 ----
 
 Transpile Python to EOLang:
-1. get jar from release https://mvnrepository.com/artifact/org.polystat/py2eo with name lasting jar-with-dependencies.jar
+1. get jar from [release](https://mvnrepository.com/artifact/org.polystat/py2eo) with name lasting jar-with-dependencies.jar
 2. Put yor python code to .py
 3. open folder with jar file
 4. run `java -jar path_to_jar path_to_py_code`
