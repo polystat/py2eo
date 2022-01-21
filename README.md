@@ -13,7 +13,7 @@ This is a translator of Python to [EOLANG](https://www.eolang.org).
 ### User Quick Start ###
 ----
 
-Run info:
+Transpile Python to EOLang:
 1. get jar from release https://mvnrepository.com/artifact/org.polystat/py2eo with name lasting jar-with-dependencies.jar
 2. Put yor python code to .py
 3. open folder with jar file
@@ -24,7 +24,7 @@ Run info:
 ### Developer Quick Start ###
 ----
 
-Run info:
+Transpile Python to EOLang:
 1. Download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
 2. Put yor python code to .py next to jar
 3. Open the folder with downloaded project
