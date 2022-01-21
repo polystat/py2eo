@@ -5,12 +5,13 @@
 
 This is a translator of Python to [EOLANG](https://www.eolang.org).
 
+### Required packages for testing ###
+* linux (16.04+) or windows (7+)
+* [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
+* [Maven 3.8+](https://maven.apache.org/download.cgi) - check in command line `mvn --version`
+
 ### User Quick Start ###
 ----
-1. How to transpile (your own) Python (test) to EO
-Environment:
-* linux (16.04+), windows (7+)
-* [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
 
 Run info:
 1. get jar from release https://mvnrepository.com/artifact/org.polystat/py2eo with name lasting jar-with-dependencies.jar
@@ -22,10 +23,6 @@ Run info:
 
 ### Developer Quick Start ###
 ----
-Environment:
-* linux, windows (todo: versions?)
-* [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
-* [Maven 3.8+](https://maven.apache.org/download.cgi) - check in command line `mvn --version`
 
 Run info:
 1. Download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
@@ -37,6 +34,7 @@ Run info:
 7. check output .eo file in `path_of_py/genCageEO/name_of_py.eo`
 
 
+### Sample for Quick Start ###
 -----
 Sample .py code:
 ```
