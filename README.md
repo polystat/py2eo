@@ -5,8 +5,8 @@
 
 This is a translator of Python to [EOLANG](https://www.eolang.org).
 
-### Required packages for testing ###
-* linux (16.04+) or windows (7+)
+### Prerequisites ###
+* Linux Ubuntu(16.04+) or Windows (7+)
 * [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
 * [Maven 3.8+](https://maven.apache.org/download.cgi) - check in command line `mvn --version`
 
