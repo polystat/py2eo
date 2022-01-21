@@ -59,18 +59,25 @@ object RemoveControlFlow {
         // a dynamic type error, while an access to a variable before assignment leads to exception
         // UnboundLocalError: local variable 'x' referenced before assignment
         // I'm not sure that this behaviour can be represented with a py2py pass
-        val locals = (vars.filter(z => z._2._1 == VarScope.Local).map(z => (Ident(z._1, z._2._2), ())) ++ body1 :+ (afterLabelInner, ())).
-          map(z => Assign(List(z._1, NoneLiteral(z._1.ann.pos)), z._1.ann.pos))
-        val body2 = body1.map(z => FuncDef(z._1.name, List(), None, None, None,
-          if (nonlocals.l.nonEmpty) Suite(List(nonlocals, z._2), z._2.ann.pos) else z._2,
-          Decorators(List()), HashMap(), isAsync, z._2.ann.pos)
+        val locals = (vars.filter(z => z._2._1 == VarScope.Local).map(z => (Ident(z._1, z._2._2), ())) ++ body1 :+ (afterLabelInner, ()))
+          .map(z => Assign(List(z._1, NoneLiteral(z._1.ann.pos)), z._1.ann.pos))
+        val body2 = body1.map(
+          z => FuncDef(
+            z._1.name, List(), None, None, None,
+            if (nonlocals.l.nonEmpty) Suite(List(nonlocals, z._2), z._2.ann.pos) else z._2,
+            Decorators(List()), HashMap(), isAsync, z._2.ann.pos
+          )
         )
-        val finish = FuncDef(afterLabelInner.name, List(), None, None, None,
+        val finish = FuncDef(
+          afterLabelInner.name, List(), None, None, None,
           Return(Some(NoneLiteral(afterLabelInner.ann.pos)), afterLabelInner.ann.pos), Decorators(List()),
-          HashMap(), isAsync, afterLabelInner.ann.pos)
-        val ans = FuncDef(name, args, None, None, None, Suite(
-          locals ++ body2 :+ finish :+ goto(headLabelInner, ann), ann.pos
-        ), Decorators(List()), HashMap(), isAsync, ann.pos)
+          HashMap(), isAsync, afterLabelInner.ann.pos
+        )
+        val ans = FuncDef(
+          name, args, None, None, None,
+          Suite(locals ++ body2 :+ finish :+ goto(headLabelInner, ann), ann.pos),
+          Decorators(List()), HashMap(), isAsync, ann.pos
+        )
         (List((headLabel, Suite(List(ans, goto(afterLabel, new GeneralAnnotation())), body.ann.pos))), b, ns2)
 
         // todo: a hack: just throw away all the import statements
@@ -89,8 +96,10 @@ object RemoveControlFlow {
       case ImportModule(_, _, _) | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) => false
       case _ => true
     })
-    val (List((_, s1)), _, ns1) = inner(Ident("", s.ann.pos), Ident("", new GeneralAnnotation()), Ident("", new GeneralAnnotation()),
-      SimpleAnalysis.computeAccessibleIdents(f), ns)
+    val (List((_, s1)), _, ns1) = inner(
+      Ident("", s.ann.pos), Ident("", new GeneralAnnotation()), Ident("", new GeneralAnnotation()),
+      SimpleAnalysis.computeAccessibleIdents(f), ns
+    )
     (s1, ns1)
   }
 

@@ -1,7 +1,8 @@
-def whileCheck3():
-    a = 4
-    b = 2
-    while a > b:
-        b = b + 1
+def whileCheck4():
+    a = 100
+    b = 10
+
+    while a > 0:
+        a = a - b
 
     return True
