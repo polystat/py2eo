@@ -1,0 +1,8 @@
+def whileCheck4():
+    a = 100
+    b = 10
+
+    while a > 0:
+        a = a - b
+
+    return True
