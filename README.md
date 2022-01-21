@@ -5,20 +5,37 @@
 
 This is a translator of Python to [EOLANG](https://www.eolang.org).
 
-User Quick Start
+### User Quick Start ###
 ----
 1. How to transpile (your own) Python (test) to EO
 Environment:
-* linux, windows (todo: versions?)
+* linux (16.04+), windows (7+)
 * [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
 
 Run info:
 1. get jar from release https://mvnrepository.com/artifact/org.polystat/py2eo with name lasting jar-with-dependencies.jar
-2. download [archive](https://s01.oss.sonatype.org/service/local/repositories/releases/content/org/polystat/py2eo/0.0.2/py2eo-0.0.2.jar) with executable file / or open [link](https://s01.oss.sonatype.org/#nexus-search;quick~py2eo) and download `py2eo-0.0.2.jar` <------ TODO check whether it will be useful for us!!!
-3. Put yor python code to .py next to jar
-4. open folder with jar file
-5. run `java -jar path_to_jar path_to_py_code`
-6. check output .eo file in `path_of_py/genCageEO/name_of_py.eo`
+2. Put yor python code to .py
+3. open folder with jar file
+4. run `java -jar path_to_jar path_to_py_code`
+5. check output .eo file in `path_of_py/genCageEO/name_of_py.eo`
+
+
+### Developer Quick Start ###
+----
+Environment:
+* linux, windows (todo: versions?)
+* [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
+* [Maven 3.8+](https://maven.apache.org/download.cgi) - check in command line `mvn --version`
+
+Run info:
+1. Download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
+2. Put yor python code to .py next to jar
+3. Open the folder with downloaded project
+4. run `mvn clean package -DskipTests=true`
+5. open ./target folder (via `cd target` for example)
+6. run `java -jar .\py2eo-0.0.1-SNAPSHOT-jar-with-dependencies.jar path_to_py_code `
+7. check output .eo file in `path_of_py/genCageEO/name_of_py.eo`
+
 
 -----
 Sample .py code:
@@ -70,18 +87,3 @@ Sample .eo output from the code scope above in the `path_of_py/genCageEO/name_of
         xresult
 ```
 
-
-### Developer Quick Start ###
-Environment:
-* linux, windows (todo: versions?)
-* [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
-* [Maven 3.8+](https://maven.apache.org/download.cgi) - check in command line `mvn --version`
-
-Run info:
-1. Download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
-2. Put yor python code to .py next to jar
-3. Open the folder with downloaded project
-4. run `mvn clean package -DskipTests=true` (TODO fix without parameter after build fix)
-5. open ./target folder (via `cd target` for example)
-6. run `java -jar .\py2eo-0.0.1-SNAPSHOT-jar-with-dependencies.jar path_to_py_code `
-7. check output .eo file in `path_of_py/genCageEO/name_of_py.eo`
