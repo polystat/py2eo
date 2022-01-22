@@ -16,12 +16,15 @@ object PrintPython {
     case Right(value) =>  "**%s".format(printExpr(value))
   }
 
-  def printExpr(e : T) : String = {
-    def brak(s : String, open : String = "(", close : String = ")") = s"$open$s$close"
+  def printExpr = printExprOrDecorator(false)(_)
+
+  def printExprOrDecorator(isDecorator : Boolean)(e : T) : String = {
+    def brak(s : String, open : String, close : String) = s"$open$s$close"
+    def around(s : String) = if (isDecorator) s else brak(s, "(", ")")
     def rnd(s : String) = brak(s, "(", ")")
     def sqr(s : String) : String = brak(s, "[", "]")
     e match {
-      case Await(what, _) => brak("await %s".format(printExpr(what)))
+      case Await(what, _) => around("await %s".format(printExpr(what)))
       case NoneLiteral(_) => "None"
       case EllipsisLiteral(_) => "..."
       case UnsupportedExpr(_, _) => "None"
@@ -30,15 +33,15 @@ object PrintPython {
       case ImagLiteral(value, _) => s"${value}j"
       case StringLiteral(values, _) => values.mkString(" ")
       case BoolLiteral(b, _) => if (b) "True" else "False"
-      case Binop(op, l, r, _) => brak("%s %s %s".format(printExpr(l), Binops.toString(op), printExpr(r)))
-      case LazyLOr(l, r, _) => rnd("%s or %s".format(printExpr(l), printExpr(r)))
-      case LazyLAnd(l, r, _) => rnd("%s and %s".format(printExpr(l), printExpr(r)))
-      case SimpleComparison(op, l, r, _) => brak("%s %s %s".format(printExpr(l), Compops.toString(op), printExpr(r)))
+      case Binop(op, l, r, _) => around("%s %s %s".format(printExpr(l), Binops.toString(op), printExpr(r)))
+      case LazyLOr(l, r, _) => around("%s or %s".format(printExpr(l), printExpr(r)))
+      case LazyLAnd(l, r, _) => around("%s and %s".format(printExpr(l), printExpr(r)))
+      case SimpleComparison(op, l, r, _) => around("%s %s %s".format(printExpr(l), Compops.toString(op), printExpr(r)))
       case FreakingComparison(ops, l, _) =>
         val sops = ops.map(Compops.toString) :+ ""
         val sopnds = l.map(printExpr)
-        brak(sopnds.zip(sops).flatMap(x => List(x._1, x._2)).mkString(" "))
-      case Unop(op, x, _) => brak(Unops.toString(op) + printExpr(x))
+        around(sopnds.zip(sops).flatMap(x => List(x._1, x._2)).mkString(" "))
+      case Unop(op, x, _) => around(Unops.toString(op) + printExpr(x))
       case Ident(name, _) => name
       case Star(e, _) => "*%s".format(printExpr(e))
       case DoubleStar(e, _) => "**%s".format(printExpr(e))
@@ -56,7 +59,7 @@ object PrintPython {
       case Field(whose, name, _) => "%s.%s".format(printExpr(whose), name)
       case Cond(cond, yes, no, _) => "%s if %s else %s".format(printExpr(yes), printExpr(cond), printExpr(no))
       case AnonFun(args, otherPositional, otherKeyword, body, _) =>
-         "(lambda %s : %s)".format(
+         around("lambda %s : %s").format(
            printArgs(args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None))),
            printExpr(body)
          )
@@ -67,13 +70,13 @@ object PrintPython {
         val braks = CollectionKind.toBraks(kind)
         brak("%s %s".format(printExpr(base), l.map(printComprehension).mkString(" ")), braks._1, braks._2)
       case GeneratorComprehension(base, l, _) =>
-        "(%s %s)".format(printExpr(base), l.map(printComprehension).mkString(" "))
+        around("%s %s").format(printExpr(base), l.map(printComprehension).mkString(" "))
       case DictCons(l, _) => brak(l.map(printDictElt).mkString(", "), "{", "}")
       case DictComprehension(base, l, _) =>
         "{%s %s}".format(printDictElt(base), l.map(printComprehension).mkString(" "))
-      case Yield(Some(e), _) => brak("yield %s".format(printExpr(e)))
-      case Yield(None, _) =>  "(yield)"
-      case YieldFrom(e, _) => "(yield from %s)".format(printExpr(e))
+      case Yield(Some(e), _) => around("yield %s".format(printExpr(e)))
+      case Yield(None, _) =>  around("yield")
+      case YieldFrom(e, _) => around("yield from %s").format(printExpr(e))
     }
   }
 
@@ -87,7 +90,7 @@ object PrintPython {
     val indentIncrAmount = indentAmount + "    "
     def indentPos(str : String) : String = "%s%s # %s".format(indentAmount, str, s.ann)
     def printDecorators(decorators: Decorators) =
-      decorators.l.map(z => "%s@%s\n".format(indentAmount, printExpr(z))).mkString("")
+      decorators.l.map(z => "%s@%s\n".format(indentAmount, printExprOrDecorator(true)(z))).mkString("")
     s match {
       case _: Unsupported => indentPos("assert(false)")
       case Del(e, _) => indentPos("del %s".format(printExpr(e)))

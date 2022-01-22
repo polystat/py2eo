@@ -538,9 +538,9 @@ primary
 
 slices
     : slice {is_notNextToken(',')}?
-    | l+=slice (',' l+=slice)* ','?;
+    | slice (',' slice)* ','?;
 slice
-    : expression? ':' expression? (':' expression? )?
+    : (from=expression)? ':' (to=expression)? (':' (by=expression)? )?
     | named_expression;
 atom
     : NAME

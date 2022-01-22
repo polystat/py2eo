@@ -5,13 +5,11 @@ import org.antlr.v4.runtime.tree.TerminalNode
 import org.antlr.v4.runtime.{ParserRuleContext, Token}
 import org.polystat.py2eo.PythonParser._
 import org.polystat.py2eo.Expression.{CallIndex, CollectionCons, CollectionKind, Field, Ident, Parameter, T => ET}
-import org.polystat.py2eo.MapExpressions1.{ga, mapExpression, mapNamedExpression, mapSlices, mapStarExpressions, mapStarTarget, mapStarTargets, mapTPrimary, mapYieldExpr, toList, toListNullable}
+import org.polystat.py2eo.MapExpressions1.{ga, mapExpression, mapNamedExpression, mapSlices, mapStarExpression, mapStarExpressions, mapStarTarget, mapStarTargets, mapTPrimary, mapYieldExpr, toList, toListNullable}
 
 import scala.collection.immutable.HashMap
 
 object MapStatements1 {
-
-  def toTuple(es : List[ET], g : GeneralAnnotation) : CollectionCons = CollectionCons(CollectionKind.Tuple, es, g)
 
   def mapFile(c : FileContext) : Statement =
     if (c.statements() == null) Pass(ga(c)) else mapStatements(c.statements())
@@ -49,14 +47,16 @@ object MapStatements1 {
     mapBlock(c.block())
   )
 
-  def mapForStmt(context: PythonParser.For_stmtContext) : For = For(
-    mapStarTargets(context.star_targets()),
-    toTuple(mapStarExpressions(context.star_expressions()), ga(context)),
-    mapBlock(context.block()),
-    Option(context.else_block()).map(c => mapBlock(c.block())),
-    context.ASYNC() != null,
-    ga(context)
-  )
+  def mapForStmt(context: PythonParser.For_stmtContext) : For = {
+    For(
+      mapStarTargets(context.star_targets()),
+      mapStarExpressions2Expression(context.star_expressions()),
+      mapBlock(context.block()),
+      Option(context.else_block()).map(c => mapBlock(c.block())),
+      context.ASYNC() != null,
+      ga(context)
+    )
+  }
 
   def mapWithStmt(context: PythonParser.With_stmtContext) : With = {
     if (context.TYPE_COMMENT() != null) ???
@@ -192,7 +192,12 @@ object MapStatements1 {
 
   def mapSimpleStmt(c : Simple_stmtContext) : Statement = {
     if (c.assignment() != null) mapAssignment(c.assignment()) else
-    if (c.star_expressions() != null) Assign(MapExpressions1.mapStarExpressions(c.star_expressions()), ga(c)) else
+    if (c.star_expressions() != null) {
+      val l = MapExpressions1.mapStarExpressions(c.star_expressions())
+      Assign(List(
+        if (c.star_expressions().COMMA().size() > 1) CollectionCons(CollectionKind.Tuple, l, ga(c)) else l.head
+      ), ga(c))
+    } else
     if (c.return_stmt() != null) mapReturnStmt(c.return_stmt()) else
     if (c.import_stmt() != null) mapImportStmt(c.import_stmt()) else
     if (c.raise_stmt() != null) mapRaiseStmt(c.raise_stmt()) else
@@ -211,7 +216,7 @@ object MapStatements1 {
 
   def mapDelTarget(c : Del_targetContext) : ET = {
     if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
-    if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), mapSlices(c.slices()).map((None, _)), ga(c)) else
+    if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)) else
     mapDelTAtom(c.del_t_atom())
   }
 
@@ -282,23 +287,25 @@ object MapStatements1 {
   }
 
   def mapReturnStmt(context: PythonParser.Return_stmtContext) : Return = {
-    Return(Option(context.star_expressions()).map(mapStarExpressions2CollectionCons), ga(context))
+    Return(Option(context.star_expressions()).map(mapStarExpressions2Expression), ga(context))
   }
 
-  def mapStarExpressions2CollectionCons(c : Star_expressionsContext) : ET =
+  def mapStarExpressions2Expression(c : Star_expressionsContext) : ET = {
+    if (c.COMMA().size() == 0) mapStarExpression(c.star_expression(0)) else
     CollectionCons(CollectionKind.Tuple, mapStarExpressions(c), ga(c))
+  }
 
   def mapAnnotatedRhs(c : Annotated_rhsContext) : ET = {
     if (c.yield_expr() != null) {
       mapYieldExpr(c.yield_expr())
     } else {
-      mapStarExpressions2CollectionCons(c.star_expressions())
+      mapStarExpressions2Expression(c.star_expressions())
     }
   }
 
   def mapSingleSubscriptAttributeTarget(context: PythonParser.Single_subscript_attribute_targetContext) : ET = {
     if (context.NAME() != null) Field(mapTPrimary(context.t_primary()), context.NAME().getText, ga(context)) else
-    CallIndex(false, mapTPrimary(context.t_primary()), mapSlices(context.slices()).map(x => (None, x)), ga(context))
+    CallIndex(false, mapTPrimary(context.t_primary()), List((None, mapSlices(context.slices()))), ga(context))
   }
 
   def mapSingleTarget(c : Single_targetContext) : ET = {
@@ -317,7 +324,7 @@ object MapStatements1 {
     if (context.augassign() != null) AugAssign(
       AugOps.ofString(context.augassign().getText),
       mapSingleTarget(context.single_target()),
-      if (context.yield_expr() != null) mapYieldExpr(context.yield_expr()) else mapStarExpressions2CollectionCons(context.star_expressions()),
+      if (context.yield_expr() != null) mapYieldExpr(context.yield_expr()) else mapStarExpressions2Expression(context.star_expressions()),
       ga(context)
     ) else
     if (context.star_targets().size() > 0) {
@@ -325,7 +332,7 @@ object MapStatements1 {
       val rhs = if (context.yield_expr() != null) {
         mapYieldExpr(context.yield_expr())
       } else {
-        mapStarExpressions2CollectionCons(context.star_expressions())
+        mapStarExpressions2Expression(context.star_expressions())
       }
       Assign(l :+ rhs, ga(context))
     } else {

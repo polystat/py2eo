@@ -151,16 +151,20 @@ object MapExpressions1 {
   }
 
   def mapPrimary(context: PythonParser.PrimaryContext) : T = {
-    if (context.NAME() != null) Field(mapPrimary(context.primary()), context.NAME().getText, ga(context)) else
-    if (context.genexp() != null) mapGenexp(context.genexp()) else
+    if (context.NAME() != null) {
+      Field(mapPrimary(context.primary()), context.NAME().getText, ga(context))
+    } else
+    if (context.genexp() != null) {
+      CallIndex(true, mapPrimary(context.primary()), List((None, mapGenexp(context.genexp()))), ga(context))
+    } else
     if (context.arguments() != null) {
       CallIndex(true, mapPrimary(context.primary()), mapArgs(context.arguments().args()), ga(context))
     } else
     if (context.slices() != null) {
-      CallIndex(false, mapPrimary(context.primary()), mapSlices(context.slices()).map(x => (None, x)), ga(context))
+      CallIndex(false, mapPrimary(context.primary()), List((None, mapSlices(context.slices()))), ga(context))
     } else
     if (context.atom() != null) mapAtom(context.atom()) else
-    mapPrimary(context.primary())
+    CallIndex(true, mapPrimary(context.primary()), List(), ga(context))
   }
 
   def mapGenexp(c : GenexpContext) : T = {
@@ -196,7 +200,10 @@ object MapExpressions1 {
     if (context.FROM() != null) YieldFrom(mapExpression(context.expression()), ga(context)) else
     if (context.star_expressions() == null) Yield(None, ga(context)) else {
       val l = mapStarExpressions(context.star_expressions())
-      Yield(Some(CollectionCons(CollectionKind.Tuple, l, ga(context))), ga(context))
+      Yield(Some(
+        if (context.star_expressions().COMMA().size() == 0) l.head else
+        CollectionCons(CollectionKind.Tuple, l, ga(context))
+      ), ga(context))
     }
   }
 
@@ -275,7 +282,8 @@ object MapExpressions1 {
     ffor :: iff
   }
 
-  def mapStarTargets(context: PythonParser.Star_targetsContext) : CollectionCons = {
+  def mapStarTargets(context: PythonParser.Star_targetsContext) : T = {
+    if (context.COMMA().size() == 0) mapStarTarget(context.star_target().get(0)) else
     CollectionCons(CollectionKind.Tuple, toList(context.l).map(mapStarTarget), ga(context))
   }
 
@@ -287,17 +295,19 @@ object MapExpressions1 {
   def mapTargetWithStarAtom(c : Target_with_star_atomContext) : T = {
     if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
     if (c.slices() != null) CallIndex(
-      false, mapTPrimary(c.t_primary()), mapSlices(c.slices()).map(x => (None, x)), ga(c)
+      false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)
     ) else
     mapStarAtom(c.star_atom())
   }
 
-  def mapStarTargetsTupleSeq(context: PythonParser.Star_targets_tuple_seqContext) : CollectionCons = {
-    val l = toList(context.l).map(mapStarTarget)
-    CollectionCons(CollectionKind.Tuple, l, ga(context))
+  def mapStarTargetsTupleSeq(context: PythonParser.Star_targets_tuple_seqContext) : T = {
+    if (context.COMMA().size() == 0) mapStarTarget(context.star_target().get(0)) else {
+      val l = toList(context.l).map(mapStarTarget)
+      CollectionCons(CollectionKind.Tuple, l, ga(context))
+    }
   }
 
-  def mapStarTargetsListSeq(context: PythonParser.Star_targets_list_seqContext) : CollectionCons = {
+  def mapStarTargetsListSeq(context: PythonParser.Star_targets_list_seqContext) : T = {
     val l = toList(context.star_target()).map(mapStarTarget)
     CollectionCons(CollectionKind.List, l, ga(context))
   }
@@ -392,21 +402,21 @@ object MapExpressions1 {
 
   def mapSlice(c : SliceContext) : T = {
     if (c.named_expression() != null) mapNamedExpression(c.named_expression()) else {
-      val from = Option(c.expression(0)).map(mapExpression)
-      val to = Option(c.expression(0)).map(mapExpression)
-      val by = Option(c.expression(0)).map(mapExpression)
+      val from = Option(c.from).map(mapExpression)
+      val to = Option(c.to).map(mapExpression)
+      val by = Option(c.by).map(mapExpression)
       Slice(from, to, by, ga(c))
     }
   }
 
-  def mapSlices(c : SlicesContext) : List[T] = {
-    if (c.l != null) asScala(c.l).toList.map(mapSlice) else
-    List(mapSlice(c.slice))
+  def mapSlices(c : SlicesContext) : T = {
+    val l = toList(c.slice()).map(mapSlice)
+    if (c.COMMA().size() > 0) CollectionCons(CollectionKind.Tuple, l, ga(c)) else l.head
   }
 
   def mapTPrimary(c : T_primaryContext) : T = {
     if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
-    if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), mapSlices(c.slices()).map(x => (None, x)), ga(c)) else
+    if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)) else
     if (c.genexp() != null) mapGenexp(c.genexp()) else
     if (c.arguments() != null) CallIndex(
       true, mapTPrimary(c.t_primary()),
@@ -414,7 +424,7 @@ object MapExpressions1 {
       ga(c)
     ) else
     if (c.atom() != null) mapAtom(c.atom()) else
-    mapTPrimary(c.t_primary())
+    CallIndex(true, mapTPrimary(c.t_primary()), List(), ga(c))
   }
 
   def mapArgs(context: PythonParser.ArgsContext) : List[(Option[String], T)] = {
