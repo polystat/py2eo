@@ -220,7 +220,7 @@ fragment EXPONENT       : ('e' | 'E') ('+' | '-')? DIGIT_PART;
 
 fragment IMAG_NUMBER : (FLOAT_NUMBER | DIGIT_PART) ('j' | 'J');
 
-fragment OS_INDEPEND_NL : '\r'? '\n'; // Unix, Windows
+fragment OS_INDEPEND_NL : ( '\r'? '\n' | '\r' | '\f' ); // Unix, Windows
 
 fragment ID_CONTINUE // based on: https://github.com/asmeurer/python-unicode-variable-names
  : ID_START
