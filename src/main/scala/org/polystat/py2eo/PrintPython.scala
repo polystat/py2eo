@@ -18,9 +18,9 @@ object PrintPython {
 
   def printExpr = printExprOrDecorator(false)(_)
 
-  def printExprOrDecorator(isDecorator : Boolean)(e : T) : String = {
+  def printExprOrDecorator(noBracketsAround : Boolean)(e : T) : String = {
     def brak(s : String, open : String, close : String) = s"$open$s$close"
-    def around(s : String) = if (isDecorator) s else brak(s, "(", ")")
+    def around(s : String) = if (noBracketsAround) s else brak(s, "(", ")")
     def rnd(s : String) = brak(s, "(", ")")
     def sqr(s : String) : String = brak(s, "[", "]")
     e match {
@@ -195,7 +195,7 @@ object PrintPython {
           indentAmount, name,
           bases.map(
             x => {
-              val r = printExpr(x._2)
+              val r = printExprOrDecorator(true)(x._2)
               x._1 match {
                 case None => r
                 case Some(name) => s"$name=$r"
