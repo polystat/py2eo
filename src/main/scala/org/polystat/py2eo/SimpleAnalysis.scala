@@ -37,6 +37,7 @@ object SimpleAnalysis {
       | NoneLiteral(_) | ImagLiteral(_, _) | Ident(_, _) | EllipsisLiteral(_) =>
       List()
     case CollectionComprehension(_, base, l, _) => base :: l.flatMap(childrenComprehension)
+    case GeneratorComprehension(base, l, ann) => base :: l.flatMap(childrenComprehension)
     case DictComprehension(base, l, _) =>
       childrenDictEltDoubleStar(base) ++ l.flatMap(childrenComprehension)
     case Yield(l, _) => l.toList

@@ -453,7 +453,7 @@ object SimplePass {
         new UnsupportedExpr(e)
       case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
         Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
-        EllipsisLiteral(_) =>
+        EllipsisLiteral(_) | GeneratorComprehension(_, _, _) =>
           new UnsupportedExpr(e)
       case SimpleComparison(op, _, _, _) if (
           try { PrintEO.compop(op); false } catch { case _ : Throwable => true }

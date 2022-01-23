@@ -45,7 +45,7 @@ object MapExpressions1 {
     Unop(Unops.LNot, mapInversion(c.inversion()), ga(c))
 
   def mapComparison(context: PythonParser.ComparisonContext) : T = {
-    if (context.compare_op_bitwise_or_pair() == null) {
+    if (context.compare_op_bitwise_or_pair().size() == 0) {
       mapBitwiseOr(context.bitwise_or())
     } else {
       val l = toList(context.compare_op_bitwise_or_pair())

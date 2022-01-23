@@ -235,6 +235,7 @@ class Tests {
     }
     assert(0 == Process("./configure", cpython).!)
     val nprocessors = Runtime.getRuntime.availableProcessors()
+    println(s"have $nprocessors processors")
     assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
 
     println("Version of python is:")
@@ -251,7 +252,7 @@ class Tests {
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
     // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_statistics.py").map(name => new File(dirName + "/" + name))
+//    val test = List("test_named_expressions.py").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future
@@ -285,6 +286,7 @@ class Tests {
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
+      db(textractAllCalls._1, "afterExtractAllCalls")
 //      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
 //      val Suite(List(theFun, Return(_, _)), _) = z._1
 //      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
@@ -311,7 +313,7 @@ class Tests {
 
       val hacked = Suite(List(
         theFun,
-        Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+        Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
       ), ann.pos)
       val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
       assertTrue(0 == s"$python \"$runme\"".!)
@@ -326,7 +328,6 @@ class Tests {
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
 
-  @Ignore
   @Test def whileCheckTest():Unit = {
     simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
   }
