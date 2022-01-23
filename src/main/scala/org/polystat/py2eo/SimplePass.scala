@@ -161,6 +161,8 @@ object SimplePass {
         reconstruct(false, { case List(l, r) => SimpleComparison(op, l, r, ann.pos)}, List(l, r), ns)
       case FreakingComparison(ops, l, ann) if !lhs && ops.size == 1 =>
         reconstruct(false, { case List(l, r) => SimpleComparison(ops.head, l, r, ann.pos)}, List(l.head, l.last), ns)
+      case Assignment(ident, rhs, ann) =>
+        reconstruct(lhs, { case List(x) => Assignment(ident, x, ann) }, List(rhs), ns)
       case Unop(op, x, ann) if !lhs =>
         reconstruct(false, { case List(x) => Unop(op, x, ann.pos) }, List(x), ns)
       case Star(e, ann) if !lhs =>
@@ -245,20 +247,31 @@ object SimplePass {
         reconstruct(lhs = false, args => new CallIndex(whom1, args, isCall, ann.pos), argsNoKw, ns1)
 
       case CollectionComprehension(kind, base, l, ann) =>
-        val l1 = base :: l.map{
-          case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
-          case ForComprehension(what, in, _) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
-        }
+        val l1 = base :: comprehensions2calls(l, ann)
         reconstruct(lhs, { case base :: l2 =>
-          val l3 = l.zip(l2).map{
-            case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
-            case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
-              ForComprehension(a, b, isAsync)
-          }
+          val l3 = call2comprehensions(l.zip(l2))
           CollectionComprehension(kind, base, l3, ann.pos)
         }, l1, ns)
-    }
+      case GeneratorComprehension(base, l, ann) =>
+        val l1 = base :: comprehensions2calls(l, ann)
+        reconstruct(lhs, { case base :: l2 =>
+          val l3 = call2comprehensions(l.zip(l2))
+          GeneratorComprehension(base, l3, ann.pos)
+        }, l1, ns)
 
+    }
+  }
+
+  def call2comprehensions(l : List[(Comprehension, T)]) = l.map{
+    case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
+    case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
+      ForComprehension(a, b, isAsync)
+  }
+
+  def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation) = l.map{
+    case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
+    case ForComprehension(what, in, _) =>
+      CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
   }
 
   def alreadyDone(s : String) = throw new Throwable(s"remove $s before!")

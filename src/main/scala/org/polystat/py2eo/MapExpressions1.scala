@@ -168,8 +168,12 @@ object MapExpressions1 {
   }
 
   def mapGenexp(c : GenexpContext) : T = {
-    if (c.assignment_expression() != null) mapAssignmentExpression(c.assignment_expression()) else
-    GeneratorComprehension(mapExpression(c.expression()), mapForIfClauses(c.for_if_clauses()), ga(c))
+    GeneratorComprehension(
+      if (c.assignment_expression() != null) mapAssignmentExpression(c.assignment_expression()) else
+      mapExpression(c.expression()),
+      mapForIfClauses(c.for_if_clauses()),
+      ga(c)
+    )
   }
 
   def mapAtom(context: PythonParser.AtomContext) : T = {

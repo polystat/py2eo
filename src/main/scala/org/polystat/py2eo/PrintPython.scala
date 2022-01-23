@@ -24,6 +24,7 @@ object PrintPython {
     def rnd(s : String) = brak(s, "(", ")")
     def sqr(s : String) : String = brak(s, "[", "]")
     e match {
+      case Assignment(ident, rhs, _) => around(s"$ident := ${printExpr(rhs)}")
       case Await(what, _) => around("await %s".format(printExpr(what)))
       case NoneLiteral(_) => "None"
       case EllipsisLiteral(_) => "..."
