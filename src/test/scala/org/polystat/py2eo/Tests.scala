@@ -1,10 +1,12 @@
 package org.polystat.py2eo
 
-import Expression._
 import org.junit.Assert._
-import org.junit.{Ignore, Test}
+import org.junit.Test
+import org.junit.runners.Parameterized.Parameters
+import org.polystat.py2eo.Expression._
+import org.yaml.snakeyaml.Yaml
 
-import java.io.{File, FileWriter}
+import java.io.{File, FileInputStream, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Paths}
 import scala.collection.immutable
@@ -15,12 +17,14 @@ import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
 import scala.sys.process._
 
+
 //@RunWith(classOf[JUnitRunner])
 class Tests {
 
   val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
+  private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
     assert(test.getName.endsWith(".py"))
@@ -335,11 +339,22 @@ class Tests {
   }
 
   @Test def ifCheck():Unit = {
-    simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
+    simpleYamlCheck(yamlPrefix)
+    //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
   }
 
   @Test def assignCheck():Unit = {
     simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "assignCheck")
+  }
+
+  def simpleYamlCheck(path:String):Unit = {
+    val testHolder = new File(path)
+    if (testHolder.exists && testHolder.isDirectory) {
+      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+        println(file.getPath)
+        //parameters.get("python")
+      }
+    }
   }
 
   def simpleConstructionCheck(path:String):Unit = {
@@ -354,6 +369,17 @@ class Tests {
     }
   }
 
+  @Parameters def parameters: Array[java.util.Map[String, Any]]= {
+    //val source = scala.io.Source.fromFile("D:\\EO\\yaml\\src\\test\\resources\\org\\polystat\\py2eo\\test.yaml").mkString
+    var res = Array[java.util.Map[String, Any]]()
+    val src = new FileInputStream(new File("D:\\EO\\yaml\\src\\test\\resources\\yaml\\test.yaml"))
+    val yaml = new Yaml()
+    val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
+    res.
 
+
+
+    res
+  }
 }
 
