@@ -28,7 +28,13 @@
  *                https://github.com/bkiers/python3-parser
  * Developed by : Bart Kiers, bart@big-o.nl
  */
+
 lexer grammar Python3Lexer;
+
+@header {
+  package org.polystat.py2eo;
+}
+
 
 // All comments that start with "///" are copy-pasted from
 // The Python Language Reference
