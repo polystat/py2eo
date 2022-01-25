@@ -398,7 +398,7 @@ class Tests {
     val testHolder = new File(path)
     if (testHolder.exists && testHolder.isDirectory) {
       for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-        if (!file.getName.contains(".disabled")) {
+        if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
           println(file.getPath)
           useCageHolder(file.getPath, simpleConstructions = true)
         }
