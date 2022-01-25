@@ -1,8 +1,8 @@
 package org.polystat.py2eo
 
-import Expression.{CallIndex, CollectionKind, Compops, Ident}
-import Python3Parser._
 import org.antlr.v4.runtime.{ANTLRInputStream, ParserRuleContext, Token}
+import org.polystat.py2eo.Expression.{CallIndex, CollectionKind, Ident}
+import org.polystat.py2eo.Python3Parser._
 
 import java.io.{File, FileReader}
 import scala.collection.JavaConverters._
@@ -286,7 +286,7 @@ sealed trait Statement {
   val ann : GeneralAnnotation
 }
 
-import Expression.{T => ET}
+import org.polystat.py2eo.Expression.{T => ET}
 
 case class If(conditioned : List[(ET, Statement)], eelse : Statement, ann : GeneralAnnotation) extends Statement
 case class IfSimple(cond : ET, yes : Statement, no : Statement, ann : GeneralAnnotation) extends Statement
@@ -901,6 +901,20 @@ object Parse {
     val input = new FileReader(file)
 
     val inputStream = new ANTLRInputStream(input)
+    val lexer = new Python3Lexer(inputStream)
+    val tokenStream = new CommonTokenStream(lexer)
+    val parser = new Python3Parser(tokenStream)
+
+    val e = parser.file_input()
+
+    val t = MapStatements.mapFile(file.getName == "builtins", e)
+    debugPrinter(t, "afterParser")
+    t
+  }
+
+  def parseYaml(file : File,fcontent:String, debugPrinter : (Statement, String) => Unit) : Statement = {
+    assert(file.getName.endsWith(".yaml"))
+    val inputStream = new ANTLRInputStream(fcontent)
     val lexer = new Python3Lexer(inputStream)
     val tokenStream = new CommonTokenStream(lexer)
     val parser = new Python3Parser(tokenStream)
