@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.{ANTLRInputStream, ParserRuleContext, Token}
 import org.polystat.py2eo.Expression.{CallIndex, CollectionKind, Ident}
 import org.polystat.py2eo.Python3Parser._
 
-import java.io.{File, FileReader}
+import java.io.File
 import scala.collection.JavaConverters._
 import scala.collection.immutable.HashMap
 
@@ -898,8 +898,10 @@ object Parse {
   def parse(file : File, debugPrinter : (Statement, String) => Unit) : Statement = {
     assert(file.getName.endsWith(".py"))
 
-    val input = new FileReader(file)
-    parse(input.toString,file.getName == "builtins",debugPrinter)
+    val source = scala.io.Source.fromFile(file.getPath)
+    val lines = try source.mkString finally source.close()
+
+    parse(lines,file.getName == "builtins",debugPrinter)
   }
 
   def parse(input : String, parsingBuiltins:Boolean = false, debugPrinter : (Statement, String) => Unit) : Statement = {
