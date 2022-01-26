@@ -57,7 +57,7 @@ class Tests {
   @Test def removeControlFlow(): Unit = {
     for (name <- List("x", "trivial", "trivialWithBreak", "myList", "simplestClass")) {
       val test = new File(testsPrefix + "/" + name + ".py")
-      val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
+      val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test,null, debugPrinter(test)), new SimplePass.Names())
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
@@ -76,7 +76,7 @@ class Tests {
     val name = "trivial"
     val test = new File(testsPrefix + "/" + name + ".py")
 
-    val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test,null, debugPrinter(test)), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -125,7 +125,7 @@ class Tests {
     val test = new File(testsPrefix + "/" + name + ".py")
     def db = debugPrinter(test)(_, _)
 
-    SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    SimplePass.allTheGeneralPasses(db, Parse.parse(test,null, db), new SimplePass.Names())
   }
 
   @Test def heapify(): Unit = {
@@ -133,7 +133,7 @@ class Tests {
     val test = new File(testsPrefix + "/" + name + ".py")
     def db = debugPrinter(test)(_, _)
 
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test,null, db), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -194,7 +194,7 @@ class Tests {
       val test = new File(testsPrefix + "/" + name + ".py")
       def db = debugPrinter(test)(_, _)
 
-      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
+      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test,null, db), new SimplePass.Names())
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
         unsupportedSt._1, unsupportedSt._2)
@@ -269,7 +269,7 @@ class Tests {
           def db = debugPrinter(test)(_, _)
 
           println(s"parsing ${test.getName}")
-          Parse.parse(test, db)
+          Parse.parse(test,null, db)
           Files.copy(
             Paths.get(s"$dirName/afterParser/${test.getName}"),
             Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
@@ -285,39 +285,44 @@ class Tests {
     assertTrue(0 == Process("make test", cpython).!)
   }
 
-  def yamlUseCageHolder(file: File, content:String, simpleConstructions: Boolean = false): Unit = {
-    def db = debugPrinter(file)(_, _)
+//  def yamlUseCageHolder(file: File, content:String, simpleConstructions: Boolean = false): Unit = {
+//    def db = debugPrinter(file)(_, _)
+//
+//    val y = SimplePass.allTheGeneralPasses(db, Parse.parseYaml(file, content, db), new SimplePass.Names())
+//
+//    val textractAllCalls = SimplePass.procExprInStatement(
+//      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+//
+//    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
+//      ClosureWithCage.declassifyOnly(textractAllCalls._1)
+//
+//    val hacked = Suite(List(
+//      theFun,
+//      Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+//    ), ann.pos)
+//    val runme = writeFile(file, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+//    assertTrue(0 == s"$python \"$runme\"".!)
+//
+//    val eoHacked = Suite(List(
+//      theFun,
+//      Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+//    ), ann.pos)
+//
+//
+//    val eoText = PrintLinearizedMutableEOWithCage.printTest(file.getName.replace(".yaml", ""), eoHacked)
+//    writeFile(file, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
+//  }
 
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parseYaml(file, content, db), new SimplePass.Names())
-
-    val textractAllCalls = SimplePass.procExprInStatement(
-      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-
-    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-      ClosureWithCage.declassifyOnly(textractAllCalls._1)
-
-    val hacked = Suite(List(
-      theFun,
-      Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-    ), ann.pos)
-    val runme = writeFile(file, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-    assertTrue(0 == s"$python \"$runme\"".!)
-
-    val eoHacked = Suite(List(
-      theFun,
-      Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-    ), ann.pos)
-
-
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(file.getName.replace(".yaml", ""), eoHacked)
-    writeFile(file, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
-  }
-
-  def useCageHolder(path: String, simpleConstructions: Boolean = false): Unit = {
+  def useCageHolder(path: String, yamlContent:String = null, simpleConstructions: Boolean = false): Unit = {
     val test = new File(path)
+
     def db = debugPrinter(test)(_, _)
 
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    val y = if(yamlContent != null){
+      SimplePass.allTheGeneralPasses(db, Parse.parse(test, yamlContent, db), new SimplePass.Names())
+    }else{
+      SimplePass.allTheGeneralPasses(db, Parse.parse(test,null, db), new SimplePass.Names())
+    }
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -359,43 +364,43 @@ class Tests {
       ), ann.pos)
 
     
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
+    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(if(yamlContent == null) ".py" else ".yaml", ""), eoHacked)
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
 
   @Test def whileCheckTest():Unit = {
-    simpleYamlCheck("whileCheck")
-    //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
+    simpleConstructionCheck(yamlTest = "whileCheck")
   }
 
   @Test def ifCheck():Unit = {
-    simpleYamlCheck("ifCheck")
-    //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
+    simpleConstructionCheck(yamlTest = "ifCheck")
   }
 
   @Test def assignCheck():Unit = {
-    simpleYamlCheck("assignCheck")
-    //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "assignCheck")
+    simpleConstructionCheck(yamlTest = "assignCheck")
   }
 
-  def simpleYamlCheck(testName: String):Unit = {
-    for (item <- parsePython()){
-      val file = new File(item.testName.toString)
-      if (item.testName.getParent.getFileName.toString == testName){
-        yamlUseCageHolder(file,item.yaml.get("python").asInstanceOf[String], simpleConstructions = true)
+  def simpleConstructionCheck(path:String = null, yamlTest:String = null):Unit = {
+    if (path != null){
+      val testHolder = new File(path)
+      if (testHolder.exists && testHolder.isDirectory) {
+        for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+          if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
+            useCageHolder(file.getPath, simpleConstructions = true)
+          }
+        }
       }
-    }
-  }
-
-  def simpleConstructionCheck(path:String):Unit = {
-    val testHolder = new File(path)
-    if (testHolder.exists && testHolder.isDirectory) {
-      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-        if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
-          useCageHolder(file.getPath, simpleConstructions = true)
+    }else{
+      if (yamlTest != null){
+        for (item <- parsePython()){
+          val file = new File(item.testName.toString)
+          if (item.testName.getParent.getFileName.toString == yamlTest){
+            useCageHolder(file.getPath,item.yaml.get("python").asInstanceOf[String], simpleConstructions = true)
+          }
         }
       }
     }
+
   }
 
   @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
