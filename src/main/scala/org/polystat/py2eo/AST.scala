@@ -899,23 +899,11 @@ object Parse {
     assert(file.getName.endsWith(".py"))
 
     val input = new FileReader(file)
-
-    val inputStream = new ANTLRInputStream(input)
-
-
-    val lexer = new Python3Lexer(inputStream)
-    val tokenStream = new CommonTokenStream(lexer)
-    val parser = new Python3Parser(tokenStream)
-
-    val e = parser.file_input()
-
-    val t = MapStatements.mapFile(file.getName == "builtins", e)
-    debugPrinter(t, "afterParser")
-    t
+    parse(input.toString,debugPrinter)
   }
 
-  def parse(yamlContent : String ,debugPrinter : (Statement, String) => Unit) : Statement = {
-    val inputStream = new ANTLRInputStream(yamlContent)
+  def parse(input : String ,debugPrinter : (Statement, String) => Unit) : Statement = {
+    val inputStream = new ANTLRInputStream(input)
     val lexer = new Python3Lexer(inputStream)
     val tokenStream = new CommonTokenStream(lexer)
     val parser = new Python3Parser(tokenStream)
