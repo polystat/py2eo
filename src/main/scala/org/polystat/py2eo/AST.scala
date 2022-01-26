@@ -899,10 +899,10 @@ object Parse {
     assert(file.getName.endsWith(".py"))
 
     val input = new FileReader(file)
-    parse(input.toString,debugPrinter)
+    parse(input.toString,file.getName == "builtins",debugPrinter)
   }
 
-  def parse(input : String ,debugPrinter : (Statement, String) => Unit) : Statement = {
+  def parse(input : String, parsingBuiltins:Boolean = false, debugPrinter : (Statement, String) => Unit) : Statement = {
     val inputStream = new ANTLRInputStream(input)
     val lexer = new Python3Lexer(inputStream)
     val tokenStream = new CommonTokenStream(lexer)
@@ -910,7 +910,7 @@ object Parse {
 
     val e = parser.file_input()
 
-    val t = MapStatements.mapFile(parsingBuiltins = false, e)
+    val t = MapStatements.mapFile(parsingBuiltins = parsingBuiltins, e)
     debugPrinter(t, "afterParser")
     t
   }

@@ -292,10 +292,6 @@ class Tests {
     def db = debugPrinter(test)(_, _)
 
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
-//      SimplePass.allTheGeneralPasses(db, Parse.parse(yamlContent, db), new SimplePass.Names())
-//    }else{
-//      SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
-//    }
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
