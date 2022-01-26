@@ -1,15 +1,16 @@
 package org.polystat.py2eo
 
 import org.junit.Assert._
-import org.junit.rules.TestName
+import org.junit.Test
+import org.junit.jupiter.api
 import org.junit.runners.Parameterized.Parameters
-import org.junit.{Rule, Test}
 import org.polystat.py2eo.Expression._
+import org.scalatest.Tag
 import org.yaml.snakeyaml.Yaml
 
 import java.io.{File, FileInputStream, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.{Files, Paths}
+import java.nio.file.{Files, Path, Paths}
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -18,14 +19,10 @@ import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
 import scala.sys.process._
 
+object SlowTest extends Tag("SlowTest")
+class YamlItem(var testName: Path, var yaml: java.util.Map[String, Any])
+
 class Tests {
-  var _testName: TestName = new TestName
-
-  @Rule
-  def testName = _testName
-  def testName_=(aTestName: TestName) {_testName = aTestName}
-
-
   val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
@@ -289,11 +286,10 @@ class Tests {
     assertTrue(0 == Process("make test", cpython).!)
   }
 
-  def yamlUseCageHolder(path: String, content:String, simpleConstructions: Boolean = false): Unit = {
-    val test = new File(path)
-    def db = debugPrinter(test)(_, _)
+  def yamlUseCageHolder(file: File, content:String, simpleConstructions: Boolean = false): Unit = {
+    def db = debugPrinter(file)(_, _)
 
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parseYaml(test, content, db), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(db, Parse.parseYaml(file, content, db), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -305,7 +301,7 @@ class Tests {
       theFun,
       Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
     ), ann.pos)
-    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    val runme = writeFile(file, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
     assertTrue(0 == s"$python \"$runme\"".!)
 
     val eoHacked = Suite(List(
@@ -314,8 +310,8 @@ class Tests {
     ), ann.pos)
 
 
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
-    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
+    val eoText = PrintLinearizedMutableEOWithCage.printTest(file.getName.replace(".yaml", ""), eoHacked)
+    writeFile(file, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
 
   def useCageHolder(path: String, simpleConstructions: Boolean = false): Unit = {
@@ -369,27 +365,29 @@ class Tests {
   }
 
   @Test def whileCheckTest():Unit = {
-    simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
+    simpleYamlCheck("whileCheck")
+    //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
   }
 
+
+
+  @api.Tag("some tag")
   @Test def ifCheck():Unit = {
-    simpleYamlCheck(yamlPrefix)
+    simpleYamlCheck("ifCheck")
     //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
   }
 
   @Test def assignCheck():Unit = {
-    simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "assignCheck")
+    simpleYamlCheck("assignCheck")
+    //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "assignCheck")
   }
 
-  def simpleYamlCheck(path:String):Unit = {
-    val testHolder = new File(path)
-    if (testHolder.exists && testHolder.isDirectory) {
-      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-//        for (item <- parsePython()){
-//          println(item.get("python"))
-//        }
-
-        yamlUseCageHolder(file.getPath,parameters.get("python").asInstanceOf[String], simpleConstructions = true)
+  def simpleYamlCheck(testName: String):Unit = {
+    println("received " + testName)
+    for (item <- parsePython()){
+      val file = new File(item.testName.toString)
+      if (item.testName.getParent.getFileName.toString == testName){
+        yamlUseCageHolder(file,item.yaml.get("python").asInstanceOf[String], simpleConstructions = true)
       }
     }
   }
@@ -399,7 +397,6 @@ class Tests {
     if (testHolder.exists && testHolder.isDirectory) {
       for (file <- testHolder.listFiles.filter(_.isFile).toList) {
         if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
-          println(file.getPath)
           useCageHolder(file.getPath, simpleConstructions = true)
         }
       }
@@ -407,49 +404,21 @@ class Tests {
   }
 
   @Parameters def parameters: java.util.Map[String, Any]= {
-    //val source = scala.io.Source.fromFile("D:\\EO\\yaml\\src\\test\\resources\\org\\polystat\\py2eo\\test.yaml").mkString
-
-
-
     val src = new FileInputStream(new File(s"$yamlPrefix${File.separator}test.yaml"))
     val yaml = new Yaml()
     val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
     yamlObj
   }
 
-  @Parameters def parsePython():collection.mutable.ArrayBuffer[java.util.Map[String, Any]] = {
-    val res = collection.mutable.ArrayBuffer[java.util.Map[String, Any]]()
-//    val testHolder = new File(testsPrefix)
-//    if (testHolder.exists && testHolder.isDirectory) {
-//      for (file <- testHolder.listFiles.toList) {
-//        if (file.isFile && file.getName.contains(".yaml")){
-//          val src = new FileInputStream(file)
-//          val yaml = new Yaml()
-//          val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
-//          res.addOne(yamlObj)
-//        }else{
-//          if (file.isDirectory){
-//            println(res.size)
-//            res.addAll(getYamls(file.getPath,collection.mutable.ArrayBuffer[java.util.Map[String, Any]]()))
-//            println(res.size)
-//          }
-//        }
-//      }
-//    }
-    res
-  }
-
-
-  private def getYamls(path:String, result:collection.mutable.ArrayBuffer[java.util.Map[String, Any]]): collection.mutable.ArrayBuffer[java.util.Map[String, Any]] ={
-    val res = collection.mutable.ArrayBuffer[java.util.Map[String, Any]]()
-    res.addAll(result)
-    val folder = new File(path)
-    for (file <- folder.listFiles()){
-      if(file.isDirectory){
-
-      }
-    }
-
+  @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
+    val res = collection.mutable.ArrayBuffer[YamlItem]()
+    Files.walk(Paths.get(testsPrefix)).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
+      val testHolder = new File(p.toString)
+      val src = new FileInputStream(testHolder)
+      val yaml = new Yaml()
+      val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
+      res.addOne(new YamlItem(p,yamlObj))
+    })
     res
   }
 }
