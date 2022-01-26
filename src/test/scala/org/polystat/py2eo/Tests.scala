@@ -285,34 +285,6 @@ class Tests {
     assertTrue(0 == Process("make test", cpython).!)
   }
 
-//  def yamlUseCageHolder(file: File, content:String, simpleConstructions: Boolean = false): Unit = {
-//    def db = debugPrinter(file)(_, _)
-//
-//    val y = SimplePass.allTheGeneralPasses(db, Parse.parseYaml(file, content, db), new SimplePass.Names())
-//
-//    val textractAllCalls = SimplePass.procExprInStatement(
-//      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-//
-//    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-//      ClosureWithCage.declassifyOnly(textractAllCalls._1)
-//
-//    val hacked = Suite(List(
-//      theFun,
-//      Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-//    ), ann.pos)
-//    val runme = writeFile(file, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-//    assertTrue(0 == s"$python \"$runme\"".!)
-//
-//    val eoHacked = Suite(List(
-//      theFun,
-//      Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-//    ), ann.pos)
-//
-//
-//    val eoText = PrintLinearizedMutableEOWithCage.printTest(file.getName.replace(".yaml", ""), eoHacked)
-//    writeFile(file, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
-//  }
-
 
   def useCageHolder(path: String): Unit = {
     val test = new File(path)
