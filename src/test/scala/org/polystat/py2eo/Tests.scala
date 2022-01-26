@@ -2,7 +2,6 @@ package org.polystat.py2eo
 
 import org.junit.Assert._
 import org.junit.Test
-import org.junit.jupiter.api
 import org.junit.runners.Parameterized.Parameters
 import org.polystat.py2eo.Expression._
 import org.scalatest.Tag
@@ -369,9 +368,6 @@ class Tests {
     //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "whileCheck")
   }
 
-
-
-  @api.Tag("some tag")
   @Test def ifCheck():Unit = {
     simpleYamlCheck("ifCheck")
     //simpleConstructionCheck(testsPrefix + s"${File.separator}simple_tests$separator" + "ifCheck")
@@ -383,7 +379,6 @@ class Tests {
   }
 
   def simpleYamlCheck(testName: String):Unit = {
-    println("received " + testName)
     for (item <- parsePython()){
       val file = new File(item.testName.toString)
       if (item.testName.getParent.getFileName.toString == testName){
@@ -401,13 +396,6 @@ class Tests {
         }
       }
     }
-  }
-
-  @Parameters def parameters: java.util.Map[String, Any]= {
-    val src = new FileInputStream(new File(s"$yamlPrefix${File.separator}test.yaml"))
-    val yaml = new Yaml()
-    val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
-    yamlObj
   }
 
   @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
