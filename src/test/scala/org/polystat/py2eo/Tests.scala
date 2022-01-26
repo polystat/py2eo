@@ -233,10 +233,6 @@ class Tests {
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
-    assert(0 == Process("./configure", cpython).!)
-    val nprocessors = Runtime.getRuntime.availableProcessors()
-    println(s"have $nprocessors processors")
-    assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
 
     println("Version of python is:")
     s"$python --version"!
@@ -273,7 +269,10 @@ class Tests {
     for (f <- futures) Await.result(f, Duration.Inf)
 
     assume(System.getProperty("os.name") == "Linux")
-
+    assert(0 == Process("./configure", cpython).!)
+    val nprocessors = Runtime.getRuntime.availableProcessors()
+    println(s"have $nprocessors processors")
+    assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
     assertTrue(0 == Process("make test", cpython).!)
   }
 
