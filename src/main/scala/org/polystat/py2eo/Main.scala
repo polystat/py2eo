@@ -15,7 +15,7 @@ object Main {
 
           def db = debugPrinter(pyFile)(_, _)
 
-          val y = SimplePass.allTheGeneralPasses(db, Parse.parse(pyFile,null, db), new SimplePass.Names())
+          val y = SimplePass.allTheGeneralPasses(db, Parse.parse(pyFile, db), new SimplePass.Names())
 
           val textractAllCalls = SimplePass.procExprInStatement(
             SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)

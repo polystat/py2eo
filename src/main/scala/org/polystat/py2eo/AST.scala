@@ -895,16 +895,13 @@ object MapExpressions {
 object Parse {
   import org.antlr.v4.runtime.CommonTokenStream
 
-  def parse(file : File, yamlContent : String = null,debugPrinter : (Statement, String) => Unit) : Statement = {
-    assert(file.getName.endsWith(if(yamlContent == null) ".py" else ".yaml"))
+  def parse(file : File, debugPrinter : (Statement, String) => Unit) : Statement = {
+    assert(file.getName.endsWith(".py"))
 
     val input = new FileReader(file)
 
-    val inputStream =if(yamlContent == null) {
-      new ANTLRInputStream(input)
-    }else{
-      new ANTLRInputStream(yamlContent)
-    }
+    val inputStream = new ANTLRInputStream(input)
+
 
     val lexer = new Python3Lexer(inputStream)
     val tokenStream = new CommonTokenStream(lexer)
@@ -913,6 +910,19 @@ object Parse {
     val e = parser.file_input()
 
     val t = MapStatements.mapFile(file.getName == "builtins", e)
+    debugPrinter(t, "afterParser")
+    t
+  }
+
+  def parse(yamlContent : String ,debugPrinter : (Statement, String) => Unit) : Statement = {
+    val inputStream = new ANTLRInputStream(yamlContent)
+    val lexer = new Python3Lexer(inputStream)
+    val tokenStream = new CommonTokenStream(lexer)
+    val parser = new Python3Parser(tokenStream)
+
+    val e = parser.file_input()
+
+    val t = MapStatements.mapFile(parsingBuiltins = false, e)
     debugPrinter(t, "afterParser")
     t
   }
