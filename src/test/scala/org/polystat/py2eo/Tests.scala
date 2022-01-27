@@ -379,7 +379,7 @@ class Tests {
     simpleConstructionCheck(yamlTest = "assignCheck")
   }
 
-  def simpleConstructionCheck(yamlTest:String = null):Unit = {
+  def simpleConstructionCheck(yamlTest:String):Unit = {
     for (item <- parsePython()){
       val file = new File(item.testName.toString)
       if (item.testName.getParent.getFileName.toString == yamlTest){
