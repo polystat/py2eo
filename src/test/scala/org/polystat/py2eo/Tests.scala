@@ -28,7 +28,6 @@ class Tests {
   private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
-    //assert(test.getName.endsWith(".py"))
     val moduleName = test.getName.substring(0, test.getName.length - 3)
     val outPath = test.getParentFile.getPath + "/" + dirSuffix
     val d = new File(outPath)
@@ -217,10 +216,12 @@ class Tests {
       }
 
       val globals = SimpleAnalysis.foldSS[Set[String]]((l, st) => {
-        (st match {
-          case f: FuncDef => findGlobals(l, f)
-          case _ => l
-        }, true)
+        (
+          st match {
+            case f: FuncDef => findGlobals(l, f)
+            case _ => l
+          }, true
+        )
       })(immutable.HashSet(), hacked)
 
       println(s"globals = $globals")
@@ -243,9 +244,6 @@ class Tests {
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
-    assert(0 == Process("./configure", cpython).!)
-    val nprocessors = Runtime.getRuntime.availableProcessors()
-    assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
 
     println("Version of python is:")
     s"$python --version" !
@@ -261,7 +259,7 @@ class Tests {
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
     // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_statistics.py").map(name => new File(dirName + "/" + name))
+//    val test = List("test_named_expressions.py").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future {
@@ -281,14 +279,15 @@ class Tests {
     for (f <- futures) Await.result(f, Duration.Inf)
 
     assume(System.getProperty("os.name") == "Linux")
-
+    assert(0 == Process("./configure", cpython).!)
+    val nprocessors = Runtime.getRuntime.availableProcessors()
+    println(s"have $nprocessors processors")
+    assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
     assertTrue(0 == Process("make test", cpython).!)
   }
 
-
   def useCageHolder(path: String): Unit = {
     val test = new File(path)
-
     def db = debugPrinter(test)(_, _)
 
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
@@ -296,33 +295,13 @@ class Tests {
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
 
-//      val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
-//      val Suite(List(theFun, Return(_, _)), _) = z._1
-//      val FuncDef(mainName, _, _, _, _, body, _, _, _, ann) = theFun
-
-      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-        ClosureWithCage.declassifyOnly(textractAllCalls._1)
-
-//      val theFunC = ClosureWithCage.closurize(SimpleAnalysis.computeAccessibleIdents(theFun))
-//      val hacked = Suite(List(theFunC, new Assert((CallIndex(true,
-//        ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
-//        List((None, Ident(mainName, ann.pos))), ann.pos)), ann.pos)), ann.pos)
-//      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-//
-//      val stdout = new StringBuilder()
-//      val stderr = new StringBuilder()
-//      assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
-//      println(stdout)
-//
-//      val eoHacked = Suite(List(
-//        theFun,
-//        Return(Some(CallIndex(true, ClosureWithCage.index(Ident(mainName, ann.pos), "callme"),
-//          List((None, NoneLiteral(ann.pos))), ann.pos)), ann.pos)
-//      ), ann.pos)
+    db(textractAllCalls._1, "afterExtractAllCalls")
+    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
+      ClosureWithCage.declassifyOnly(textractAllCalls._1)
 
       val hacked = Suite(List(
         theFun,
-        Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+        Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
       ), ann.pos)
       val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
       assertTrue(0 == s"$python \"$runme\"".!)
@@ -342,7 +321,7 @@ class Tests {
     val test = new File(path)
 
     def db = debugPrinter(test)(_, _)
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(yamlString,false, db), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(yamlString, db), new SimplePass.Names())
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
     val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
@@ -350,7 +329,7 @@ class Tests {
 
     val hacked = Suite(List(
       theFun,
-      Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+      Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
     ), ann.pos)
     val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
     assertTrue(0 == s"$python \"$runme\"".!)
@@ -394,7 +373,7 @@ class Tests {
         for (item <- parsePython()){
           val file = new File(item.testName.toString)
           if (item.testName.getParent.getFileName.toString == yamlTest){
-            useCageHolder(file.getPath,item.yaml.get("python").asInstanceOf[String])
+            useCageHolder(file.getPath, item.yaml.get("python").asInstanceOf[String])
           }
         }
       }

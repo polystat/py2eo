@@ -36,7 +36,7 @@ object SimplePass {
         val xst = pst(extract(st), acc._2)
         (acc._1 :+ xst._1, xst._2)
       })
-
+    def procElse(s : Option[Statement]) = s match { case None => Pass(s0.ann) case Some(s) => s }
     val (s, ns, visitChildren) = f(s0, ns0)
 
     val nochange = (s, ns)
@@ -45,20 +45,20 @@ object SimplePass {
       s match {
         case If(conditioned, eelse, ann) =>
           val xconditioned = pstl[(T, Statement)](_._2, conditioned, ns)
-          val xelse = pst(eelse, xconditioned._2)
-          (If(conditioned.map(_._1).zip(xconditioned._1), xelse._1, ann.pos), xelse._2)
+          val xelse = pst(procElse(eelse), xconditioned._2)
+          (If(conditioned.map(_._1).zip(xconditioned._1), Some(xelse._1), ann.pos), xelse._2)
         case IfSimple(cond, yes, no, ann) =>
           val xyes = pst(yes, ns)
           val xno = pst(no, xyes._2)
           (IfSimple(cond, xyes._1, xno._1, ann.pos), xno._2)
         case While(cond, body, eelse, ann) =>
           val xbody = pst(body, ns)
-          val xelse = pst(eelse, xbody._2)
-          (While(cond, xbody._1, xelse._1, ann.pos), xelse._2)
+          val xelse = pst(procElse(eelse), xbody._2)
+          (While(cond, xbody._1, Some(xelse._1), ann.pos), xelse._2)
         case For(what, in, body, eelse, isAsync, ann) =>
           val xbody = pst(body, ns)
-          val xelse = pst(eelse, xbody._2)
-          (For(what, in, xbody._1, xelse._1, isAsync, ann.pos), xelse._2)
+          val xelse = pst(procElse(eelse), xbody._2)
+          (For(what, in, xbody._1, Some(xelse._1), isAsync, ann.pos), xelse._2)
         case Suite(l, ann) =>
           val xl = pstl[Statement](x => x, l, ns)
           (Suite(xl._1, ann.pos), xl._2)
@@ -66,19 +66,19 @@ object SimplePass {
           val xl = pstl[Statement](x => x, u.sts, ns)
           (new Unsupported(u.original, u.declareVars, u.es, xl._1, u.ann.pos), xl._2)
 
-        case With(cm, target, body, isAsync, ann) =>
+        case With(cms, body, isAsync, ann) =>
           val xbody = pst(body, ns)
-          (With(cm, target, xbody._1, isAsync, ann.pos), xbody._2)
+          (With(cms, xbody._1, isAsync, ann.pos), xbody._2)
         case Try(ttry, excepts, eelse, ffinally, ann) =>
           val xtry = pst(ttry, ns)
           val xex = pstl[(Option[(T, Option[String])], Statement)](_._2, excepts, xtry._2)
-          val xelse = pst(eelse, xex._2)
-          val xfinally = pst(ffinally, xelse._2)
-          (Try(xtry._1, excepts.map(_._1).zip(xex._1), xelse._1, xfinally._1, ann.pos), xfinally._2)
+          val xelse = pst(procElse(eelse), xex._2)
+          val xfinally = pst(procElse(ffinally), xelse._2)
+          (Try(xtry._1, excepts.map(_._1).zip(xex._1), Some(xelse._1), Some(xfinally._1), ann.pos), xfinally._2)
 
       case AugAssign(_, _, _, _) =>  nochange
       case AnnAssign(_, _, _, _) => nochange
-      case Return(_, _) | Assert(_, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
+      case Return(_, _) | Assert(_, _, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
            | Continue(_) | CreateConst(_, _, _) =>  nochange
       case ClassDef(name, bases, body, decorators, ann) =>
         val xbody = pst(body, ns)
@@ -162,6 +162,8 @@ object SimplePass {
         reconstruct(false, { case List(l, r) => SimpleComparison(op, l, r, ann.pos) }, List(l, r), ns)
       case FreakingComparison(ops, l, ann) if !lhs && ops.size == 1 =>
         reconstruct(false, { case List(l, r) => SimpleComparison(ops.head, l, r, ann.pos) }, List(l.head, l.last), ns)
+      case Assignment(ident, rhs, ann) =>
+        reconstruct(lhs, { case List(x) => Assignment(ident, x, ann) }, List(rhs), ns)
       case Unop(op, x, ann) if !lhs =>
         reconstruct(false, { case List(x) => Unop(op, x, ann.pos) }, List(x), ns)
       case Star(e, ann) if !lhs =>
@@ -247,20 +249,31 @@ object SimplePass {
         reconstruct(lhs = false, args => new CallIndex(whom1, args, isCall, ann.pos), argsNoKw, ns1)
 
       case CollectionComprehension(kind, base, l, ann) =>
-        val l1 = base :: l.map {
-          case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
-          case ForComprehension(what, in, _) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
-        }
+        val l1 = base :: comprehensions2calls(l, ann)
         reconstruct(lhs, { case base :: l2 =>
-          val l3 = l.zip(l2).map {
-            case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
-            case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
-              ForComprehension(a, b, isAsync)
-          }
+          val l3 = call2comprehensions(l.zip(l2))
           CollectionComprehension(kind, base, l3, ann.pos)
         }, l1, ns)
-    }
+      case GeneratorComprehension(base, l, ann) =>
+        val l1 = base :: comprehensions2calls(l, ann)
+        reconstruct(lhs, { case base :: l2 =>
+          val l3 = call2comprehensions(l.zip(l2))
+          GeneratorComprehension(base, l3, ann.pos)
+        }, l1, ns)
 
+    }
+  }
+
+  def call2comprehensions(l : List[(Comprehension, T)]) = l.map {
+    case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
+    case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
+      ForComprehension(a, b, isAsync)
+  }
+
+  def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation) = l.map{
+    case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
+    case ForComprehension(what, in, _) =>
+      CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
   }
 
   def alreadyDone(s: String) = throw new Throwable(s"remove $s before!")
@@ -298,26 +311,26 @@ object SimplePass {
           case (Right((scond, cond)), ns) => (Suite(List(scond, IfSimple(cond, yes1, no1, ann.pos)), ann.pos), ns)
         }
 
-      case Try(ttry, List((None, catchBody)), eelse, ffinally, ann) =>
+      case Try(ttry, List((None, catchBody)), Some(eelse), Some(ffinally), ann) =>
         val (try1, ns1) = pst(ttry, ns)
         val (catchBody1, ns2) = pst(catchBody, ns1)
         val (eelse1, ns3) = pst(eelse, ns2)
         val (ffinally1, ns4) = pst(ffinally, ns3)
-        (Try(try1, List((None, catchBody1)), eelse1, ffinally1, ann.pos), ns4)
+        (Try(try1, List((None, catchBody1)), Some(eelse1), Some(ffinally1), ann.pos), ns4)
 
         // todo: wow, this is a lot. Maybe we should just generate GOTOs instead of such rewriting
-      case While(cond, body, eelse, ann) =>
+      case While(cond, body, Some(eelse), ann) =>
         val (body1, ns1) = pst(body, ns)
         val (else1, ns2) = pst(eelse, ns1)
         f(false, cond, ns2) match {
-          case (Left(cond), ns) => (While(cond, body1, else1, ann.pos), ns)
+          case (Left(cond), ns) => (While(cond, body1, Some(else1), ann.pos), ns)
           case (Right((scond, cond)), ns) =>
             val ann = cond.ann.pos
             eelse match {
               case Pass(ann1) =>
                 val brk = IfSimple(Unop(Unops.LNot, cond, ann1), Break(ann1.pos), Pass(ann1.pos), ann1.pos)
                 (While(BoolLiteral(value = true, ann.pos),
-                  Suite(List(scond, brk, body1), body.ann.pos), eelse, ann.pos), ns)
+                  Suite(List(scond, brk, body1), body.ann.pos), Some(eelse), ann.pos), ns)
               case _ =>
                 val (doElseName, ns1) = ns("doElse")
                 val poselse = eelse.ann.pos
@@ -330,7 +343,7 @@ object SimplePass {
                 val pos = ann.pos
                 (Suite(List(
                   Assign(List(Ident(doElseName, poselse), BoolLiteral(value = false, poselse)), poselse),
-                  While(BoolLiteral(value = true, ann), Suite(List(scond, brk, body1), pos), Pass(pos), pos),
+                  While(BoolLiteral(value = true, ann), Suite(List(scond, brk, body1), pos), Some(Pass(pos)), pos),
                   IfSimple(Ident(doElseName, ann), else1, Pass(pos), pos)
                 ), pos), ns1)
             }
@@ -403,16 +416,17 @@ object SimplePass {
         assert(returnAnnotation.isEmpty && args.forall(p => p.default.isEmpty && p.paramAnn.isEmpty))
         (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body1, fd.decorators, accessibleIdents, isAsync, ann.pos), ns1)
 
-      case Assert(_, _) => alreadyDone("assert")
+      case Assert(_, _, _) => alreadyDone("assert")
       case If(_, _, _) => alreadyDone("ifelseif")
       case Assign(l, _) if l.size > 2 => alreadyDone("complex assign")
     }
   }
 
   def simplifyIf(s: Statement, ns: Names): (Statement, Names) = s match {
-    case If(List((cond, yes)), no, ann) => (IfSimple(cond, yes, no, ann.pos), ns)
-    case If((cond, yes) :: t, eelse, ann) =>
-      val (newElse, ns1) = simplifyIf(If(t, eelse, GeneralAnnotation(t.head._2.ann.start, eelse.ann.stop)), ns)
+    case If(List((cond, yes)), Some(no), ann) => (IfSimple(cond, yes, no, ann.pos), ns)
+    case If(List((cond, yes)), None, ann) => (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
+    case If((cond, yes) :: t, Some(eelse), ann) =>
+      val (newElse, ns1) = simplifyIf(If(t, Some(eelse), GeneralAnnotation(t.head._2.ann.start, eelse.ann.stop)), ns)
       (IfSimple(cond, yes, newElse, ann.pos), ns1)
     case _ => (s, ns)
   }
@@ -428,10 +442,10 @@ object SimplePass {
       FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
         Decorators(List()), accessibleIdents, isAsync, ann.pos)
     case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _: ClassDef | _: AnnAssign |
-      Assert(_, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _, _) | Try(_, _, _, _, _) |
+      Assert(_, _, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
       ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
-    case ImportSymbol(from, what, as, _) => new Unsupported(s, List(as), s.ann.pos)
+    case ImportSymbol(from, what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
     case _ => s
   }, ns)
 
@@ -441,7 +455,7 @@ object SimplePass {
         new UnsupportedExpr(e)
       case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
         Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
-        EllipsisLiteral(_) =>
+        EllipsisLiteral(_) | GeneratorComprehension(_, _, _) =>
         new UnsupportedExpr(e)
       case SimpleComparison(op, _, _, _) if (
         try {
@@ -500,7 +514,7 @@ object SimplePass {
     def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
       case (false, Field(obj, name, ann), ns) =>
         (Left(CallIndex(isCall = true, Ident("eo_getattr", ann.pos), List((None, obj),
-          (None, StringLiteral("\"" + name + "\"", ann.pos))), ann.pos)), ns)
+          (None, StringLiteral(List("\"" + name + "\""), ann.pos))), ann.pos)), ns)
       case (false, CallIndex(_, Ident("getattr", anni), args, annc), ns) =>
         (Left(CallIndex(isCall = true, Ident("eo_getattr", anni.pos), args, annc.pos)), ns)
       case (false, CallIndex(_, Ident("setattr", anni), args, annc), ns) =>
@@ -525,8 +539,8 @@ object SimplePass {
     val texplicitBases = SimplePass.procStatement(explicitBases)(s, ns)
     val (s1, ns1) = SimplePass.procExprInStatement(simplifyInheritance)(texplicitBases._1, texplicitBases._2)
     (Suite(List(
-      ImportSymbol(List("C3"), "eo_getattr", "eo_getattr", s1.ann.pos),
-      ImportSymbol(List("C3"), "eo_setattr", "eo_setattr", s1.ann.pos),
+      ImportSymbol(List("C3"), "eo_getattr", Some("eo_getattr"), s1.ann.pos),
+      ImportSymbol(List("C3"), "eo_setattr", Some("eo_setattr"), s1.ann.pos),
       s1
     ), s1.ann.pos),
     ns1)

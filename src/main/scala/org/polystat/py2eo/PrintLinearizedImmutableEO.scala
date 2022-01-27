@@ -28,7 +28,7 @@ object PrintLinearizedImmutableEO {
         s"[] > $name!" ::
           indent(
             l.map{
-              case Left((StringLiteral(name, ann.pos), value)) =>
+              case Left((StringLiteral(List(name), ann.pos), value)) =>
                 printExpr(visibility1)(value) + " > " + name.substring(1, name.length - 1)
             }
           )

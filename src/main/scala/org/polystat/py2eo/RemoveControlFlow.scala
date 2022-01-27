@@ -22,7 +22,7 @@ object RemoveControlFlow {
         val ans = (headLabel, IfSimple(cond, goto(yesHead, cond.ann), goto(noHead, cond.ann), ann.pos)) :: (yes1 ++ no1)
         (ans, b, ns3)
 
-      case While(cond, body, eelse, _) =>
+      case While(cond, body, Some(eelse), _) =>
         val (List(bodyHead0, elseHead0), ns1) = ns(List("bb_body", "bb_else"))
         val bodyHead = Ident(bodyHead0, body.ann.pos)
         val elseHead = Ident(elseHead0, eelse.ann.pos)

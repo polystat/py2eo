@@ -54,7 +54,7 @@ object PrintEO {
       case IntLiteral(value, _) => value.toString()
       case FloatLiteral(value, _) => value.toString
       case StringLiteral(value0, _) =>
-        val value = value0.replace("\"\"", "")
+        val value = value0.mkString(" ").replace("\"\"", "")
         if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'')
           "\"" + value + "\""
@@ -68,7 +68,7 @@ object PrintEO {
       case LazyLOr(l, r, _) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x, _) => "(" + e(x) + "." + unop(op) + ")"
       case Expression.Ident(name, _) => "(" + visibility(name) + ")"
-      case CallIndex(false, from, List((_, StringLiteral(fname, _))), _)
+      case CallIndex(false, from, List((_, StringLiteral(List(fname), _))), _)
         if fname == "\"callme\"" || (from match { case Expression.Ident("closure", _) => true case _ => false}) =>
           e(Field(from, fname.substring(1, fname.length - 1), from.ann.pos))
       case u : UnsupportedExpr =>
@@ -111,7 +111,7 @@ object PrintEO {
         val e1 = CallIndex(true, Expression.Ident("unsupported", new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(visibility)(e1)
         List(head) ++ indent(u.sts.flatMap(s))
-      case While(cond, body, Pass(_), _) =>
+      case While(cond, body, Some(Pass(_)), _) =>
         List("while.",
           Ident + printExpr(visibility)(cond),
         ) ++ indent("[unused]" :: indent("seq > @" :: indent(printSt(visibility.stepInto(List()))(body))))
