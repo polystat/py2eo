@@ -292,36 +292,20 @@ class Tests {
 
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
 
-    val textractAllCalls = SimplePass.procExprInStatement(
-      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-
-    db(textractAllCalls._1, "afterExtractAllCalls")
-    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-      ClosureWithCage.declassifyOnly(textractAllCalls._1)
-
-      val hacked = Suite(List(
-        theFun,
-        Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
-      ), ann.pos)
-      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-      assertTrue(0 == s"$python \"$runme\"".!)
-
-      val eoHacked = Suite(List(
-        theFun,
-        Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-      ), ann.pos)
-
-    
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
-    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
+    passProcessor(y,test,".py")
   }
 
 
   def useCageHolder(path: String, yamlString:String): Unit = {
-    val test = new File(path)
+    val file = new File(path)
 
-    def db = debugPrinter(test)(_, _)
+    def db = debugPrinter(file)(_, _)
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(yamlString, db), new SimplePass.Names())
+
+    passProcessor(y,file,".yaml")
+  }
+
+  def passProcessor(y: (Statement, SimplePass.Names), file: File,fileType:String): Unit ={
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
     val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
@@ -329,9 +313,9 @@ class Tests {
 
     val hacked = Suite(List(
       theFun,
-      Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
+      Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
     ), ann.pos)
-    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    val runme = writeFile(file, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
     assertTrue(0 == s"$python \"$runme\"".!)
 
     val eoHacked = Suite(List(
@@ -340,9 +324,8 @@ class Tests {
     ), ann.pos)
 
 
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".yaml", ""), eoHacked)
-    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
-
+    val eoText = PrintLinearizedMutableEOWithCage.printTest(file.getName.replace(fileType, ""), eoHacked)
+    writeFile(file, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
 
 
@@ -358,27 +341,13 @@ class Tests {
     simpleConstructionCheck(yamlTest = "assignCheck")
   }
 
-  def simpleConstructionCheck(path:String = null, yamlTest:String = null):Unit = {
-    if (path != null){
-      val testHolder = new File(path)
-      if (testHolder.exists && testHolder.isDirectory) {
-        for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-          if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
-            useCageHolder(file.getPath)
-          }
-        }
-      }
-    }else{
-      if (yamlTest != null){
-        for (item <- parsePython()){
-          val file = new File(item.testName.toString)
-          if (item.testName.getParent.getFileName.toString == yamlTest){
-            useCageHolder(file.getPath, item.yaml.get("python").asInstanceOf[String])
-          }
-        }
+  def simpleConstructionCheck(yamlTest:String):Unit = {
+    for (item <- parsePython()){
+      val file = new File(item.testName.toString)
+      if (item.testName.getParent.getFileName.toString == yamlTest){
+        useCageHolder(file.getPath,item.yaml.get("python").asInstanceOf[String])
       }
     }
-
   }
 
   @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
