@@ -37,7 +37,7 @@ class Tests {
     output.write(what)
     output.close()
     outName
-    }
+  }
 
   def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
     val what = PrintPython.printSt(s, "")
@@ -70,7 +70,7 @@ class Tests {
       println(stdout)
     }
   }
-	
+
   @Test def immutabilize(): Unit = {
     val name = "trivial"
     val test = new File(testsPrefix + "/" + name + ".py")
@@ -79,11 +79,11 @@ class Tests {
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-//    Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
+    //    Parse.toFile(textractAllCalls._1, "afterExtractAllCalls", name)
 
     val x = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
     val Suite(List(theFun, Return(_, _)), _) = x._1
-//    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
+    //    Parse.toFile(theFun, testsPrefix + "afterRemoveControlFlow", name)
 
     val z = ExplicitImmutableHeap.explicitHeap(theFun, x._2)
     val Suite(l, _) = z._1
@@ -94,9 +94,9 @@ class Tests {
       ImportAllSymbols(List("closureRuntime"), pos),
       Suite(l.init, pos),
       new Assert(CallIndex(isCall = false,
-          CallIndex(isCall = true, Ident(mainName, pos),
-            List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos),
-          List((None, IntLiteral(1, pos))), pos),
+        CallIndex(isCall = true, Ident(mainName, pos),
+          List((None, CollectionCons(CollectionKind.List, List(), pos)), (None, DictCons(List(), pos))), pos),
+        List((None, IntLiteral(1, pos))), pos),
         pos
       )
     ), pos)
@@ -166,11 +166,11 @@ class Tests {
     writeFile(test, "genHeapifiedEO", ".eo", eoText.mkString("\n"))
   }
 
-//  @Test def useCage() : Unit = {
-//    for (name <- List("x", "trivial", "simplestClass", "myList")) {
-//      useCageHolder(testsPrefix + "/" + name + ".py")
-//    }
-//  }
+  //  @Test def useCage() : Unit = {
+  //    for (name <- List("x", "trivial", "simplestClass", "myList")) {
+  //      useCageHolder(testsPrefix + "/" + name + ".py")
+  //    }
+  //  }
 
   @Test def trivialTest():Unit = {
     useCageHolder(testsPrefix + "/trivial.py")
@@ -206,7 +206,7 @@ class Tests {
         SimpleAnalysis.foldSE[Set[String]](
           (l, e) => {
             e match {
-//            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
+              //            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
               case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
               case _ => l
             }
@@ -240,7 +240,7 @@ class Tests {
     if (!afterParser.exists()) afterParser.mkdir()
     val cpython = new File(afterParser.getPath + "/cpython")
     if (!cpython.exists()) {
-//      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
+      //      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
@@ -259,7 +259,7 @@ class Tests {
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
     // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_named_expressions.py").map(name => new File(dirName + "/" + name))
+    //    val test = List("test_named_expressions.py").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future {
@@ -292,30 +292,18 @@ class Tests {
 
     val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
 
-    passProcessor(y,test,".py")
-  }
-
-
-  def useCageHolder(path: String, yamlString:String): Unit = {
-    val file = new File(path)
-
-    def db = debugPrinter(file)(_, _)
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(yamlString, db), new SimplePass.Names())
-
-    passProcessor(y,file,".yaml")
-  }
-
-  def passProcessor(y: (Statement, SimplePass.Names), file: File,fileType:String): Unit ={
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+
+    db(textractAllCalls._1, "afterExtractAllCalls")
     val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
       ClosureWithCage.declassifyOnly(textractAllCalls._1)
 
     val hacked = Suite(List(
       theFun,
-      Assert(List(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+      Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
     ), ann.pos)
-    val runme = writeFile(file, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
     assertTrue(0 == s"$python \"$runme\"".!)
 
     val eoHacked = Suite(List(
@@ -324,8 +312,37 @@ class Tests {
     ), ann.pos)
 
 
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(file.getName.replace(fileType, ""), eoHacked)
-    writeFile(file, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
+    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
+    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
+  }
+
+
+  def useCageHolder(path: String, yamlString:String): Unit = {
+    val test = new File(path)
+
+    def db = debugPrinter(test)(_, _)
+    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(yamlString, db), new SimplePass.Names())
+    val textractAllCalls = SimplePass.procExprInStatement(
+      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
+      ClosureWithCage.declassifyOnly(textractAllCalls._1)
+
+    val hacked = Suite(List(
+      theFun,
+      Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
+    ), ann.pos)
+    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    assertTrue(0 == s"$python \"$runme\"".!)
+
+    val eoHacked = Suite(List(
+      theFun,
+      Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+    ), ann.pos)
+
+
+    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".yaml", ""), eoHacked)
+    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
+
   }
 
 
@@ -341,13 +358,27 @@ class Tests {
     simpleConstructionCheck(yamlTest = "assignCheck")
   }
 
-  def simpleConstructionCheck(yamlTest:String):Unit = {
-    for (item <- parsePython()){
-      val file = new File(item.testName.toString)
-      if (item.testName.getParent.getFileName.toString == yamlTest){
-        useCageHolder(file.getPath,item.yaml.get("python").asInstanceOf[String])
+  def simpleConstructionCheck(path:String = null, yamlTest:String = null):Unit = {
+    if (path != null){
+      val testHolder = new File(path)
+      if (testHolder.exists && testHolder.isDirectory) {
+        for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+          if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
+            useCageHolder(file.getPath)
+          }
+        }
+      }
+    }else{
+      if (yamlTest != null){
+        for (item <- parsePython()){
+          val file = new File(item.testName.toString)
+          if (item.testName.getParent.getFileName.toString == yamlTest){
+            useCageHolder(file.getPath, item.yaml.get("python").asInstanceOf[String])
+          }
+        }
       }
     }
+
   }
 
   @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
@@ -362,4 +393,3 @@ class Tests {
     res
   }
 }
-
