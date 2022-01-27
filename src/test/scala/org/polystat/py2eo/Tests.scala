@@ -379,27 +379,13 @@ class Tests {
     simpleConstructionCheck(yamlTest = "assignCheck")
   }
 
-  def simpleConstructionCheck(path:String = null, yamlTest:String = null):Unit = {
-    if (path != null){
-      val testHolder = new File(path)
-      if (testHolder.exists && testHolder.isDirectory) {
-        for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-          if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
-            useCageHolder(file.getPath)
-          }
-        }
-      }
-    }else{
-      if (yamlTest != null){
-        for (item <- parsePython()){
-          val file = new File(item.testName.toString)
-          if (item.testName.getParent.getFileName.toString == yamlTest){
-            useCageHolder(file.getPath,item.yaml.get("python").asInstanceOf[String])
-          }
-        }
+  def simpleConstructionCheck(yamlTest:String = null):Unit = {
+    for (item <- parsePython()){
+      val file = new File(item.testName.toString)
+      if (item.testName.getParent.getFileName.toString == yamlTest){
+        useCageHolder(file.getPath,item.yaml.get("python").asInstanceOf[String])
       }
     }
-
   }
 
   @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
