@@ -85,3 +85,9 @@ Sample .eo output from the code scope above in the `path_of_py/genCageEO/name_of
         xresult
 ```
 
+
+
+-----
+-----
+What is it? 
+This is a translator of Python to [EOLANG](https://www.eolang.org). It is needed for transpiling Python code to EO programming language. After successful transpiling final EO code will be available for analyzing via Polystat analyser which will notify you about leak places in the code. 
