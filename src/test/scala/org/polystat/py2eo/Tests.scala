@@ -1,10 +1,9 @@
 package org.polystat.py2eo
 
 import org.junit.Assert._
-import org.junit.Test
 import org.junit.runners.Parameterized.Parameters
+import org.junit.{Ignore, Test}
 import org.polystat.py2eo.Expression._
-import org.scalatest.Tag
 import org.yaml.snakeyaml.Yaml
 
 import java.io.{File, FileInputStream, FileWriter}
@@ -18,7 +17,6 @@ import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
 import scala.sys.process._
 
-object SlowTest extends Tag("SlowTest")
 class YamlItem(var testName: Path, var yaml: java.util.Map[String, Any])
 
 class Tests {
@@ -27,7 +25,7 @@ class Tests {
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
-    val moduleName = test.getName.substring(0, test.getName.length - 3)
+    val moduleName = test.getName.substring(0, test.getName.length - 5)
     val outPath = test.getParentFile.getPath + "/" + dirSuffix
     val d = new File(outPath)
     if (!d.exists()) d.mkdir()
@@ -71,6 +69,7 @@ class Tests {
     }
   }
 
+  @Ignore
   @Test def immutabilize(): Unit = {
     val name = "trivial"
     val fileInfo = testHolderParser(name)
@@ -128,6 +127,7 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse.parse(fileInfo._2, db), new SimplePass.Names())
   }
 
+  @Ignore
   @Test def heapify(): Unit = {
     val fileInfo = testHolderParser("trivial")
     val test = new File(fileInfo._1)
