@@ -24,14 +24,14 @@ This is a translator of Python to [EOLANG](https://www.eolang.org).
 This is a translator of Python to [EOLANG](https://www.eolang.org). It is needed for transpiling Python code to EO programming language. After successful transpiling final EO code will be available for analyzing via Polystat analyser which will notify you about leak places in the code. 
 
 #### How does it work? ####
-This transpiler receives as input data python code. Then with usage AST received code is simplified. After successfull simplyfying it is sent to the py2eo translator for getting EO.
+This transpiler receives as input data python code. Then received code is simplified with AST usage. After successfull simplyfying it is sent to the py2eo translator for getting EO.
 
 #### What do you need to use it? ####
 * Linux Ubuntu(16.04+) or Windows (7+)
-* [Java 11+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
+* [Java 17+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
 
 #### How to use it? ####
-- go to user directory on your PC
+- go to some directory on your PC
 - create directory `Transpiler Test`
 - download and save into this folder py2eo trsnspiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/0.0.3/py2eo-0.0.3-jar-with-dependencies.jar)
 - download and unzip to this folder test python file [sample_test.zip](https://github.com/AndrewG0R/py2eo/files/7966053/sample_test.zip)
