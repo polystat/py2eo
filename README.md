@@ -7,15 +7,6 @@
 [![DevOps By Rultor.com](http://www.rultor.com/b/polystat/py2eo)](http://www.rultor.com/p/polystat/py2eo)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
-[![CI checks](https://github.com/polystat/polystat/actions/workflows/mvn.yml/badge.svg)](https://github.com/polystat/py2eo/actions/workflows/mvn.yml)
-[![PDD status](http://www.0pdd.com/svg?name=polystat/py2eo)](http://www.0pdd.com/p?name=polystat/py2eo)
-[![codecov](https://codecov.io/gh/polystat/py2eo/branch/master/graph/badge.svg)](https://codecov.io/gh/polystat/py2eo)
-
-[![Javadoc](http://www.javadoc.io/badge/org.polystat/polystat.svg)](http://www.javadoc.io/doc/org.polystat/polystat)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/polystat/py2eo/blob/master/LICENSE.txt)
-[![Maven Central](https://img.shields.io/maven-central/v/org.polystat/polystat.svg)](https://maven-badges.herokuapp.com/maven-central/org.polystat/polystat)
-[![Hits-of-Code](https://hitsofcode.com/github/polystat/py2eo)](https://hitsofcode.com/view/github/polystat/py2eo)
-
 This is a translator of Python to [EOLANG](https://www.eolang.org).
 #### What is the traspiler? ####
 > A source-to-source translator, source-to-source compiler (S2S compiler), transcompiler, or transpiler is a type of translator that takes the source code of a > program written in a programming language as its input and produces an equivalent source code in the same or a different programming language
