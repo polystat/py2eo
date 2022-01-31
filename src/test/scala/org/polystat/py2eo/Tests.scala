@@ -353,10 +353,8 @@ class Tests {
       Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
     ), ann.pos)
 
-
     val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".yaml", ""), eoHacked)
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
-
   }
 
 
