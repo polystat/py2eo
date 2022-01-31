@@ -503,30 +503,43 @@ object SimplePass {
         args.exists(x => x.default.nonEmpty || x.paramAnn.nonEmpty || x.kind == ArgKind.Keyword) =>
       val body1 = new Unsupported(body, List(), body.ann.pos)
       FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
-        Decorators(List()), accessibleIdents, isAsync, ann.pos)
-    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | _: ClassDef | _: AnnAssign |
-      Assert(_, _, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
-      ImportAllSymbols(_, _) | Return(_, _) => new Unsupported(s, List(), s.ann.pos)
+        Decorators(List()), accessibleIdents, false, ann.pos)
+    case While(_, _, None, _) => s
+    case While(_, _, Some(Pass(_)), _) => s
+    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | Break(_) | _: ClassDef | _: AnnAssign |
+      Assert(_, _, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | NonLocal(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
+      ImportAllSymbols(_, _) | Return(_, _) | While(_, _, _, _) => new Unsupported(s, List(), s.ann.pos)
     case ImportModule(what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
     case ImportSymbol(from, what, as, _) => new Unsupported(s, as.toList, s.ann.pos)
     case _ => s
   }, ns)
 
-  def mkUnsupportedExpr(lhs: Boolean, e: Expression.T, ns: Names): (EAfterPass, Names) = {
+  def mkUnsupportedExpr(e: Expression.T): T = {
+    def supportedCompOp(op : Expression.Compops.T) =
+      try {
+        PrintEO.compop(op); true
+      } catch {
+        case _: Throwable => false
+      }
     val e1 = e match {
       case CallIndex(isCall, _, args, _) if !isCall || args.exists(x => x._1.nonEmpty) =>
         new UnsupportedExpr(e)
-      case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) | Yield(_, _) |
-        Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) | DictCons(_, _) | ImagLiteral(_, _) |
-        EllipsisLiteral(_) | GeneratorComprehension(_, _, _) =>
-        new UnsupportedExpr(e)
-      case SimpleComparison(op, _, _, _) if (
-        try {
-          PrintEO.compop(op); false
-        } catch {
-          case _: Throwable => true
-        }
+      case StringLiteral(value, ann) if value.exists(
+        s => (s.head != '\'' && s.head != '"') || "\\\\[^\"'\\\\]".r.findFirstMatchIn(s).nonEmpty
       ) => new UnsupportedExpr(e)
+      case ImagLiteral(_, _) => new UnsupportedExpr(e)
+      case FloatLiteral(value, ann)
+        if value.contains("e") || value.contains("E") || value.endsWith(".") || value.startsWith(".") =>
+        new UnsupportedExpr(e)
+      case IntLiteral(value, ann) if value < -(BigInt(1) << 31) || value > (BigInt(1) << 31) - 1 => new UnsupportedExpr(e)
+      case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _) |
+        Yield(_, _) | YieldFrom(_, _) | Slice(_, _, _, _) | AnonFun(_, _, _, _, _) | CollectionCons(_, _, _) |
+        DictCons(_, _) | ImagLiteral(_, _) | EllipsisLiteral(_) | GeneratorComprehension(_, _, _) |
+        Await(_, _) | Assignment(_, _, _) =>
+        new UnsupportedExpr(e)
+      case FreakingComparison(List(op), _, ann) if !supportedCompOp(op) => new UnsupportedExpr(e)
+      case FreakingComparison(ops, l, ann) if (l.length != 2) => new UnsupportedExpr(e)
+      case SimpleComparison(op, _, _, _) if (!supportedCompOp(op)) => new UnsupportedExpr(e)
       case Binop(op, _, _, _) if (
         try {
           PrintEO.binop(op); false
@@ -536,7 +549,7 @@ object SimplePass {
       ) => new UnsupportedExpr(e)
       case _ => e
     }
-    (Left(e1), ns)
+    e1
   }
 
   def unSuite(s : Statement, ns : Names) : (Statement, Names) = {
