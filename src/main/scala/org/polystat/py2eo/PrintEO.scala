@@ -131,25 +131,23 @@ object PrintEO {
     "+alias org.eolang.txt.sprintf",
     "+alias org.eolang.io.stdout",
     "+junit",
-	""
+	  ""
   )
 
   def printSt(moduleName : String, st : Statement, hackPreface : Text) : Text = {
-//    val h = SimpleAnalysis.classifyFunctionVariables(List(), st, false)
-//    val locals = h.filter(z => z._2 == VarScope.Local).keys
-    (
-      standardTestPreface ++ hackPreface ++
-      List(
-        "[] > " + moduleName,
-        Ident + "[args...] > unsupported",
-        Ident + "[args...] > xunsupported",
-        Ident + "memory > bogusForceDataize",
-        Ident + "memory > xbogusForceDataize",
-        Ident + "memory > xhack",
-        Ident + "seq > @"
-      ) ++
-      indent(indent(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))
-    )
+    hackPreface ++
+    List(
+      "[] > " + moduleName,
+      Ident + "[args...] > unsupported",
+      Ident + "[args...] > xunsupported",
+      Ident + "memory > bogusForceDataize",
+      Ident + "memory > xbogusForceDataize",
+      Ident + "memory > xhack",
+      Ident + "seq > @"
+    ) ++
+    indent(indent(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))
   }
 
+  def printTest(moduleName : String, st : Statement, hackPreface : Text) : Text =
+    standardTestPreface ++ printSt(moduleName, st, hackPreface)
 }
