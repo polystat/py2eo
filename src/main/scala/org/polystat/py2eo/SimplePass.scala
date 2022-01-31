@@ -41,7 +41,7 @@ object SimplePass {
 
     val nochange = (s, ns)
 
-    if (!visitChildren) nochange else
+    if (!visitChildren) nochange else {
       s match {
         case If(conditioned, eelse, ann) =>
           val xconditioned = pstl[(T, Statement)](_._2, conditioned, ns)
@@ -76,20 +76,21 @@ object SimplePass {
           val xfinally = pst(procElse(ffinally), xelse._2)
           (Try(xtry._1, excepts.map(_._1).zip(xex._1), Some(xelse._1), Some(xfinally._1), ann.pos), xfinally._2)
 
-      case AugAssign(_, _, _, _) =>  nochange
-      case AnnAssign(_, _, _, _) => nochange
-      case Return(_, _) | Assert(_, _, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
-           | Continue(_) | CreateConst(_, _, _) =>  nochange
-      case ClassDef(name, bases, body, decorators, ann) =>
-        val xbody = pst(body, ns)
-        (ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
-      case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
-        body, decorators, accessibleIdents, isAsync, ann) =>
-        val xbody = pst(body, ns)
-        (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
-          xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
-      case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
-           | ImportAllSymbols(_, _) | Del(_, _) | _: SimpleObject => nochange
+        case AugAssign(_, _, _, _) =>  nochange
+        case AnnAssign(_, _, _, _) => nochange
+        case Return(_, _) | Assert(_, _, _) | Raise(_, _, _) | Assign(_, _) | Pass(_) | Break(_)
+             | Continue(_) | CreateConst(_, _, _) =>  nochange
+        case ClassDef(name, bases, body, decorators, ann) =>
+          val xbody = pst(body, ns)
+          (ClassDef(name, bases, xbody._1, decorators, ann.pos), xbody._2)
+        case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
+          body, decorators, accessibleIdents, isAsync, ann) =>
+          val xbody = pst(body, ns)
+          (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
+            xbody._1, decorators, accessibleIdents, isAsync, ann.pos), xbody._2)
+        case NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) | ImportSymbol(_, _, _, _)
+             | ImportAllSymbols(_, _) | Del(_, _) | _: SimpleObject => nochange
+      }
     }
   }
 
