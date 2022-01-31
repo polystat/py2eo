@@ -206,10 +206,10 @@ class Tests {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
       val fileInfo = testHolderParser(name)
 
-      val test = new File(fileInfo._1)
+      val test = new File(testsPrefix + "/" + name + ".py")
       def db = debugPrinter(test)(_, _)
 
-      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(fileInfo._2, db), new SimplePass.Names())
+      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
         unsupportedSt._1, unsupportedSt._2)
@@ -391,6 +391,11 @@ class Tests {
       val yaml = new Yaml()
       val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
       res.addOne(new YamlItem(p,yamlObj))
+
+      if (testHolder.getName.contains("twoFuns")){
+        println(yamlObj.get("python"))
+      }
+
     })
     res
   }
