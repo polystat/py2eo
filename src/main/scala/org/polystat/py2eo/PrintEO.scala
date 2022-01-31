@@ -59,7 +59,7 @@ object PrintEO {
       case IntLiteral(value, _) => "(pyInt " + value.toString + ")"
       case FloatLiteral(value, _) => "(pyFloat " + value + ")"
       case StringLiteral(value0, _) =>
-        val value = value0.replace("\"\"", "")
+        val value = value0.mkString(" ").replace("\"\"", "")
         if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'')
           "\"" + value + "\""
@@ -72,8 +72,8 @@ object PrintEO {
       case LazyLAnd(l, r, _) =>  "(" + e(l) + ".and " + e(r) + ")"
       case LazyLOr(l, r, _) =>  "(" + e(l) + ".or " + e(r) + ")"
       case Unop(op, x, _) => "(" + e(x) + "." + unop(op) + ")"
-      case Expression.Ident(name, _) => "(x" + visibility(name) + ")"
-      case CallIndex(false, from, List((_, StringLiteral(fname, _))), _)
+      case Expression.Ident(name, _) => "(" + visibility(name) + ")"
+      case CallIndex(false, from, List((_, StringLiteral(List(fname), _))), _)
         if fname == "\"callme\"" || (from match { case Expression.Ident("closure", _) => true case _ => false}) =>
           e(Field(from, fname.substring(1, fname.length - 1), from.ann.pos))
       case u : UnsupportedExpr =>
@@ -81,7 +81,7 @@ object PrintEO {
         e(e1)
       case CallIndex(isCall, whom, args, _) if !isCall && args.size == 1 =>
         "(" + e(whom) + ".get " + e(args(0)._2) + ")"
-      case Field(whose, name, _) => "(" + e(whose) + ".x" + name + ")"
+      case Field(whose, name, _) => "(" + e(whose) + "." + name + ")"
       case Cond(cond, yes, no, _) => "(" + e(cond) + ".if " + e(yes) + " " + e(no) + ")"
       case CallIndex(true, whom, args, _)  =>
         "((" + e(whom) + ")" +
@@ -108,7 +108,7 @@ object PrintEO {
       case Assign(List(c@CallIndex(true, whom, args, _)), ann) =>
         s(Assign(List(Expression.Ident("bogusForceDataize", new GeneralAnnotation()), c), ann.pos))
       case Assign(List(Expression.Ident(lname, _), erhs), _) =>
-        List("x" + visibility(lname) + ".write " + printExpr(visibility)(erhs))
+        List(visibility(lname) + ".write " + printExpr(visibility)(erhs))
       case Assign(List(_), _) => List("unsupported")
       case Suite(List(st), _) => s(st)
       case Suite(l, _) => List("seq") ++ indent(l.flatMap(s))
@@ -116,17 +116,17 @@ object PrintEO {
         val e1 = CallIndex(true, Expression.Ident("unsupported", new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(visibility)(e1)
         List(head) ++ indent(u.sts.flatMap(s))
-      case While(cond, body, Pass(_), _) =>
+      case While(cond, body, Some(Pass(_)), _) =>
         List("while.",
           Ident + printExpr(visibility)(cond),
         ) ++ indent("[unused]" :: indent("seq > @" :: indent(printSt(visibility.stepInto(List()))(body))))
       case FuncDef(name, args, None, None, None, body, Decorators(List()), h, false, _) =>
         val locals = h.filter(z => z._2._1 == VarScope.Local).keys
-        val args1 = args.map{ case Parameter(argname, _, None, None, _) => "x" + argname }.mkString(" ")
+        val args1 = args.map{ case Parameter(argname, _, None, None, _) => argname }.mkString(" ")
         val body1 = printSt(visibility.stepInto(locals.toList))(body)
-        List(s"x$name.write") ++
+        List(s"$name.write") ++
           indent(s"[$args1]" ::
-            indent(locals.map(name => s"memory > x$name").toList ++ List("seq > @") ++ indent(body1)))
+            indent(locals.map(name => s"memory > $name").toList ++ List("seq > @") ++ indent(body1)))
     }
   }
 

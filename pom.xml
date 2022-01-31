@@ -19,8 +19,8 @@
   </parent>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <encoding>UTF-8</encoding>
     <scala.version>2.13.6</scala.version>
 	<antlr.version>4.9.2</antlr.version>
@@ -69,13 +69,44 @@
 		<artifactId>scalatest_2.13</artifactId>
 		<version>3.2.10</version>
 	</dependency>
-	
+	  <dependency>
+		  <groupId>org.yaml</groupId>
+		  <artifactId>snakeyaml</artifactId>
+		  <version>1.29</version>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>org.cactoos</groupId>
+		  <artifactId>cactoos</artifactId>
+		  <version>0.50</version>
+	  </dependency>
+
   </dependencies>
 
   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-toolchains-plugin</artifactId>
+            <version>3.0.0</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>toolchain</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <toolchains>
+                    <jdk>
+                        <version>17</version>
+                        <vendor>sun</vendor>
+                    </jdk>
+                </toolchains>
+            </configuration>
+        </plugin>
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
@@ -116,32 +147,59 @@
 		<configuration>
 		    <sourceDirectory>${project.basedir}/src/main/antlr4</sourceDirectory>
 		    <includes>
-			<include>Python3Lexer.g4</include>
-			<include>Python3Parser.g4</include>
-		    </includes>
-		    <visitor>true</visitor>
-		    <listener>true</listener>
-		</configuration>
-		<executions>
-			<execution>
-				<goals>
-					<goal>antlr4</goal>
-				</goals>
-			</execution>
-		</executions>
-	    </plugin>
-	    <plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-resources-plugin</artifactId>
-		<version>3.1.0</version>
-	    </plugin> 
-	    <plugin>
-		<groupId>org.sonatype.plugins</groupId>
-		<artifactId>nexus-staging-maven-plugin</artifactId>
-		<configuration>
-          <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-        </configuration>
-      </plugin>
-    </plugins>
+                <include>Python3Lexer.g4</include>
+                <include>Python3Parser.g4</include>
+                <include>PythonLexer.g4</include>
+                <include>PythonParser.g4</include>
+					</includes>
+					<visitor>true</visitor>
+					<listener>true</listener>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<skip>${skipTests}</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>org.polystat.py2eo.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<configuration>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+				</configuration>
+			</plugin>
+		</plugins>
   </build>
 </project>

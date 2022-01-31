@@ -1,0 +1,7 @@
+def whileCheck2():
+    a = 4
+    b = 2
+    while a > b:
+        b = b + 1
+
+    return True
