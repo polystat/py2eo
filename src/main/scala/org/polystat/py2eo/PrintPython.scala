@@ -28,7 +28,7 @@ object PrintPython {
       case Await(what, _) => around("await %s".format(printExpr(what)))
       case NoneLiteral(_) => "None"
       case EllipsisLiteral(_) => "..."
-      case UnsupportedExpr(_, _) => "None"
+      case UnsupportedExpr(e, _) => s"Unsupported(${printExpr(e)})"
       case IntLiteral(value, _) => s"$value "
       case FloatLiteral(value, _) => value
       case ImagLiteral(value, _) => s"${value}j"
@@ -93,7 +93,7 @@ object PrintPython {
     def printDecorators(decorators: Decorators) =
       decorators.l.map(z => "%s@%s\n".format(indentAmount, printExprOrDecorator(true)(z))).mkString("")
     s match {
-      case _: Unsupported => indentPos("assert(false)")
+      case u : Unsupported => indentPos("Unsupported:\n%s".format(printSt(u.original, indentIncrAmount)))
       case Del(e, _) => indentPos("del %s".format(printExpr(e)))
       case With(cms, body, isAsync, _) =>
         val cmsString = cms.map(
