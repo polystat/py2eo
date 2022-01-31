@@ -426,8 +426,17 @@ object SimplePass {
   def simplifyIf(s: Statement, ns: Names): (Statement, Names) = s match {
     case If(List((cond, yes)), Some(no), ann) => (IfSimple(cond, yes, no, ann.pos), ns)
     case If(List((cond, yes)), None, ann) => (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
-    case If((cond, yes) :: t, Some(eelse), ann) =>
-      val (newElse, ns1) = simplifyIf(If(t, Some(eelse), GeneralAnnotation(t.head._2.ann.start, eelse.ann.stop)), ns)
+    case If((cond, yes) :: t, eelse, ann) =>
+      val (newElse, ns1) = simplifyIf(If(
+        t, eelse,
+        GeneralAnnotation(
+          t.head._2.ann.start,
+          eelse match {
+            case Some(eelse) => eelse.ann.stop
+            case None => t.last._2.ann.stop
+          }
+        )
+      ), ns)
       (IfSimple(cond, yes, newElse, ann.pos), ns1)
     case _ => (s, ns)
   }
