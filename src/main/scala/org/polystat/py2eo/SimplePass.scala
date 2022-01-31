@@ -430,6 +430,52 @@ object SimplePass {
     }
   }
 
+  def simpleProcExprInStatement(f: T => T)(s: Statement, ns: Names): (Statement, Names) = {
+    def pst(s : Statement) : Statement = simpleProcExprInStatement(f)(s, ns)._1
+    val s1 = s match {
+      case If(conditioned, eelse, ann) => If(conditioned.map(x => (f(x._1), pst(x._2))), eelse.map(pst), ann)
+      case IfSimple(cond, yes, no, ann) => IfSimple(f(cond), pst(yes), pst(no), ann)
+      case While(cond, body, eelse, ann) => While(f(cond), pst(body), eelse.map(pst), ann)
+      case For(what, in, body, eelse, isAsync, ann) => For(f(what), f(in), pst(body), eelse.map(pst), isAsync, ann)
+      case Suite(l, ann) => Suite(l.map(pst), ann)
+      case AugAssign(op, lhs, rhs, ann) => AugAssign(op, f(lhs), f(rhs), ann)
+      case AnnAssign(lhs, rhsAnn, rhs, ann) => AnnAssign(f(lhs), f(rhsAnn), rhs.map(f), ann)
+      case Assign(l, ann) => Assign(l.map(f), ann)
+      case CreateConst(name, value, ann) => CreateConst(name, f(value), ann)
+      case Pass(ann) => s
+      case Break(ann) => s
+      case Continue(ann) => s
+      case Return(x, ann) => Return(x.map(f), ann)
+      case Assert(what, param, ann) => Assert(f(what), param.map(f), ann)
+      case Raise(e, from, ann) => Raise(e.map(f), from.map(f), ann)
+      case Del(l, ann) => Del(f(l), ann)
+      case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, accessibleIdents, isAsync, ann) =>
+        FuncDef(
+          name,
+          args.map(p => p.withAnnDefault(p.paramAnn.map(f), p.default.map(f))),
+          otherPositional.map(x => (x._1, x._2.map(f))),
+          otherKeyword.map(x => (x._1, x._2.map(f))),
+          returnAnnotation.map(f),
+          pst(body), Decorators(decorators.l.map(f)),
+          HashMap(), isAsync, ann
+        )
+      case ClassDef(name, bases, body, decorators, ann) =>
+        ClassDef(name, bases.map(x => (x._1, f(x._2))), pst(body), Decorators(decorators.l.map(f)), ann)
+      case SimpleObject(name, fields, ann) => SimpleObject(name, fields.map(x => (x._1, f(x._2))), ann)
+      case NonLocal(l, ann) => s
+      case Global(l, ann) => s
+      case ImportModule(what, as, ann) => s
+      case ImportAllSymbols(from, ann) => s
+      case ImportSymbol(from, what, as, ann) => s
+      case With(cms, body, isAsync, ann) => With(cms.map(x => (f(x._1), x._2.map(f))), pst(body), isAsync, ann)
+      case Try(ttry, excepts, eelse, ffinally, ann) =>
+        Try(pst(ttry), excepts.map(x => (x._1.map(x => (f(x._1), x._2)), pst(x._2))), eelse.map(pst), ffinally.map(pst), ann)
+      case uns: Unsupported =>
+        new Unsupported(pst(uns.original), uns.declareVars, uns.es.map(x => (x._1, f(x._2))), uns.sts.map(pst), uns.ann)
+    }
+    (s1, ns)
+  }
+
   def simplifyIf(s: Statement, ns: Names): (Statement, Names) = s match {
     case If(List((cond, yes)), Some(no), ann) => (IfSimple(cond, yes, no, ann.pos), ns)
     case If(List((cond, yes)), None, ann) => (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
