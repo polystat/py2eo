@@ -413,9 +413,16 @@ object SimplePass {
       case fd@FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation,
         body, Decorators(List()), accessibleIdents, isAsync, ann) =>
         val (body1, ns1) = pst(body, ns)
-        // todo: process default param values and annotations
-        assert(returnAnnotation.isEmpty && args.forall(p => p.default.isEmpty && p.paramAnn.isEmpty))
-        (FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body1, fd.decorators, accessibleIdents, isAsync, ann.pos), ns1)
+        val packed = List(returnAnnotation) ++ args.flatMap(p => List(p.default, p.paramAnn))
+        val (sts, packed1, ns2) =
+          forceAllIfNecessary(f)(packed.map{ case Some(e) => (false, e) case None => (false, NoneLiteral(fd.ann))}, ns1) match {
+            case Left((packed1, ns)) => (List(), packed1, ns)
+            case Right((l, ns)) => (l.map(_._1), l.map(_._2), ns)
+          }
+        val packed2 = packed.zip(packed1).map(x => x._1.map(_ => x._2))
+        val args1 = packed2.tail.grouped(2).zip(args).map{ case (List(default, annot), p) => Parameter(p.name, p.kind, annot, default, p.ann) }
+        val resFun = FuncDef(name, args1.toList, otherPositional, otherKeyword, packed2.head, body1, fd.decorators, accessibleIdents, isAsync, ann.pos)
+        if (sts.isEmpty) (resFun, ns2) else (Suite(sts :+ resFun, ann), ns2)
 
       case Assert(_, _, _) => alreadyDone("assert")
       case If(_, _, _) => alreadyDone("ifelseif")
