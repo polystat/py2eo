@@ -25,7 +25,6 @@ class Tests {
   val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
-  private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
     val moduleName = test.getName.substring(0, test.getName.length - 3)
@@ -55,8 +54,9 @@ class Tests {
 
   @Test def removeControlFlow(): Unit = {
     for (name <- List("x", "trivial", "trivialWithBreak", "myList", "simplestClass")) {
-      val test = new File(testsPrefix + "/" + name + ".py")
-      val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
+      val fileInfo = testHolderParser(name)
+      val test = new File(fileInfo._1)
+      val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(fileInfo._2, debugPrinter(test)), new SimplePass.Names())
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
       val z = RemoveControlFlow.removeControlFlow(textractAllCalls._1, textractAllCalls._2)
@@ -73,9 +73,10 @@ class Tests {
 
   @Test def immutabilize(): Unit = {
     val name = "trivial"
-    val test = new File(testsPrefix + "/" + name + ".py")
+    val fileInfo = testHolderParser(name)
+    val test = new File(fileInfo._1)
 
-    val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(test, debugPrinter(test)), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(debugPrinter(test), Parse.parse(fileInfo._2, debugPrinter(test)), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -105,7 +106,7 @@ class Tests {
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
-    Files.copy(Paths.get(testsPrefix + "/closureRuntime.py"),
+    Files.copy(Paths.get(fileInfo._1),
       Paths.get(testsPrefix + "/afterImmutabilization/closureRuntime.py"), REPLACE_EXISTING)
     assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
@@ -120,19 +121,19 @@ class Tests {
   }
 
   @Test def simplifyInheritance(): Unit = {
-    val name = "inheritance"
-    val test = new File(testsPrefix + "/" + name + ".py")
+    val fileInfo = testHolderParser("inheritance")
+    val test = new File(fileInfo._1)
     def db = debugPrinter(test)(_, _)
 
-    SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    SimplePass.allTheGeneralPasses(db, Parse.parse(fileInfo._2, db), new SimplePass.Names())
   }
 
   @Test def heapify(): Unit = {
-    val name = "trivial"
-    val test = new File(testsPrefix + "/" + name + ".py")
+    val fileInfo = testHolderParser("trivial")
+    val test = new File(fileInfo._1)
     def db = debugPrinter(test)(_, _)
 
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(fileInfo._2, db), new SimplePass.Names())
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
@@ -157,43 +158,58 @@ class Tests {
 
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
-    java.nio.file.Files.copy(java.nio.file.Paths.get(testsPrefix + "/heapifyRuntime.py"),
+    java.nio.file.Files.copy(java.nio.file.Paths.get(fileInfo._1),
       java.nio.file.Paths.get(test.getParentFile.getPath + "/afterHeapify/heapifyRuntime.py"), REPLACE_EXISTING)
     assertTrue(0 == (s"$python \"$runme\"" ! ProcessLogger(stdout.append(_), stderr.append(_))))
     println(stdout)
 
-    val eoText = PrintLinearizedMutableEONoCage.printTest(name, z._1)
+    val eoText = PrintLinearizedMutableEONoCage.printTest("trivial", z._1)
     writeFile(test, "genHeapifiedEO", ".eo", eoText.mkString("\n"))
   }
 
-  //  @Test def useCage() : Unit = {
-  //    for (name <- List("x", "trivial", "simplestClass", "myList")) {
-  //      useCageHolder(testsPrefix + "/" + name + ".py")
-  //    }
-  //  }
+  def testHolderParser(input:String):(String,String) = {
+    var res = ("","")
+    for (item <- parsePython()){
+      val file = new File(item.testName.toString)
+      var name = item.testName.getFileName.toString
+      val pos = name.lastIndexOf(".")
+      if (pos > 0) name = name.substring(0, pos)
+
+      if (name == input){
+        res = (file.getPath, item.yaml.get("python").asInstanceOf[String])
+      }
+    }
+    res
+  }
 
   @Test def trivialTest():Unit = {
-    useCageHolder(testsPrefix + "/trivial.py")
+    val fileInfo = testHolderParser("trivial")
+    useCageHolder(fileInfo._1,fileInfo._2)
   }
 
   @Test def simplestClassTest():Unit = {
-    useCageHolder(testsPrefix + "/simplestClass.py")
+    val fileInfo = testHolderParser("simplestClass")
+    useCageHolder(fileInfo._1,fileInfo._2)
   }
 
   @Test def myListTest():Unit = {
-    useCageHolder(testsPrefix + "/myList.py")
+    val fileInfo = testHolderParser("myList")
+    useCageHolder(fileInfo._1,fileInfo._2)
   }
 
   @Test def xTest():Unit = {
-    useCageHolder(testsPrefix + "/x.py")
+    val fileInfo = testHolderParser("x")
+    useCageHolder(fileInfo._1,fileInfo._2)
   }
 
   @Test def useUnsupported() : Unit = {
     for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
-      val test = new File(testsPrefix + "/" + name + ".py")
+      val fileInfo = testHolderParser(name)
+
+      val test = new File(fileInfo._1)
       def db = debugPrinter(test)(_, _)
 
-      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
+      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(fileInfo._2, db), new SimplePass.Names())
       val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
       val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
         unsupportedSt._1, unsupportedSt._2)
@@ -254,7 +270,7 @@ class Tests {
 
     // "test_strtod.py", todo: what's the problem here???
     // "test_zipimport_support.py", todo: what's the problem here???
-    // "test_zipfile64.py" works for more 2 minutes, too slowm
+    // "test_zipfile64.py" works for more 2 minutes, too slow
     // test_sys.py just hangs the testing with no progress (with no CPU load)
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
     // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
@@ -358,27 +374,13 @@ class Tests {
     simpleConstructionCheck(yamlTest = "assignCheck")
   }
 
-  def simpleConstructionCheck(path:String = null, yamlTest:String = null):Unit = {
-    if (path != null){
-      val testHolder = new File(path)
-      if (testHolder.exists && testHolder.isDirectory) {
-        for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-          if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
-            useCageHolder(file.getPath)
-          }
-        }
-      }
-    }else{
-      if (yamlTest != null){
-        for (item <- parsePython()){
-          val file = new File(item.testName.toString)
-          if (item.testName.getParent.getFileName.toString == yamlTest){
-            useCageHolder(file.getPath, item.yaml.get("python").asInstanceOf[String])
-          }
-        }
+  def simpleConstructionCheck(yamlTest:String):Unit = {
+    for (item <- parsePython()){
+      val file = new File(item.testName.toString)
+      if (item.testName.getParent.getFileName.toString == yamlTest){
+        useCageHolder(file.getPath, item.yaml.get("python").asInstanceOf[String])
       }
     }
-
   }
 
   @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
