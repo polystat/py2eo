@@ -294,24 +294,23 @@ class Tests {
 
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-
     db(textractAllCalls._1, "afterExtractAllCalls")
+
     val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
       ClosureWithCage.declassifyOnly(textractAllCalls._1)
 
-      val hacked = Suite(List(
-        theFun,
-        Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
-      ), ann.pos)
-      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-      assertTrue(0 == s"$python \"$runme\"".!)
+    val hacked = Suite(List(
+      theFun,
+      Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
+    ), ann.pos)
+    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    assertTrue(0 == s"$python \"$runme\"".!)
 
-      val eoHacked = Suite(List(
-        theFun,
-        Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-      ), ann.pos)
+    val eoHacked = Suite(List(
+      theFun,
+      Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+    ), ann.pos)
 
-    
     val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
