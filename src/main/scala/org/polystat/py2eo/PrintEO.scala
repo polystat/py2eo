@@ -54,8 +54,7 @@ object PrintEO {
       case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
       case IntLiteral(value, _) => value.toString()
       case FloatLiteral(value, _) => value.toString
-      case StringLiteral(value0, _) =>
-        val value = value0.mkString(" ").replace("\"\"", "")
+      case StringLiteral(List(value), _) =>
         if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'')
           "\"" + value + "\""

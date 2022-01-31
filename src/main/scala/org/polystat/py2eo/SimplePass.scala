@@ -572,6 +572,91 @@ object SimplePass {
       }
   }
 
+  def concatStringLiteral(e : T) : T = {
+    def reescape(s : String) : String = {
+      val v = s.foldLeft(("", false))(
+        (acc, char) =>
+          if ('\\' == char && !acc._2) (acc._1, true) else
+            if ('\\' == char && acc._2) (acc._1 + "\\\\", false) else {
+              if (!acc._2 && '"' == char) (acc._1 + "\\\"", false) else
+              if (!acc._2) (acc._1 :+ char, false) else
+                if ('\"' == char) (acc._1 + "\\\"", false) else
+                  (acc._1 :+ char, false)
+            }
+      )
+      assert(!v._2)
+      v._1
+    }
+    e match {
+      case StringLiteral(values, ann) =>
+        val s = values.map(
+          s => {
+            val s0 = if (!s.startsWith("'") && !s.startsWith("\"")) s.substring(1, s.length) else s
+            val s1 = if (!s0.startsWith("'") && !s0.startsWith("\"")) s0.substring(1, s0.length) else s0
+            val s2 = if (s1.startsWith("\"\"\"") || s1.startsWith("'''")) s1.substring(2, s1.length - 2) else s1
+            reescape(s2.substring(1, s2.length - 1))
+          }
+        )
+          .mkString
+        val s1 = s.replace("\n", "\\n")
+        StringLiteral(List(s"\"$s1\""), ann.pos)
+      case e => e
+    }
+  }
+
+  // need this because EO only allows first letters of idents to be small
+  def xPrefixInExpr(e : T) : T = {
+    def pref(s : String) = s"x$s"
+    e match {
+      case Assignment(ident, rhs, ann) => Assignment(pref(ident), rhs, ann)
+      case Ident(name, ann) => (Ident(pref(name), ann))
+      case Field(o, fname, ann) => Field(o, pref(fname), ann)
+      case CallIndex(isCall, whom, args, ann) =>
+        CallIndex(isCall, whom, args.map(x => (x._1.map(pref), x._2)), ann)
+      case AnonFun(args, otherPositional, otherKeyword, body, ann) =>
+        AnonFun(
+          args.map(p => Parameter(pref(p.name), p.kind, p.paramAnn, p.default, p.ann)),
+          otherPositional.map(pref),
+          otherKeyword.map(pref),
+          body,
+          ann
+        )
+      case _ => e
+    }
+  }
+
+  def xPrefixInStatement(x : Statement, ns : Names) : (Statement, Names) = {
+    def pref(s : String) = s"x$s"
+    (
+      x match {
+        case CreateConst(name, value, ann) => CreateConst(pref(name), value, ann)
+        case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, accessibleIdents, isAsync, ann) =>
+          FuncDef(
+            pref(name),
+            args.map(p => Parameter(pref(p.name), p.kind, p.paramAnn, p.default, p.ann)),
+            otherPositional.map(x => (pref(x._1), x._2)),
+            otherKeyword.map(x => (pref(x._1), x._2)),
+            returnAnnotation, body, decorators, accessibleIdents, isAsync, ann
+          )
+        case ClassDef(name, bases, body, decorators, ann) =>
+          ClassDef(pref(name), bases.map(x => (x._1.map(pref), x._2)), body, decorators, ann)
+        case SimpleObject(name, fields, ann) =>
+          SimpleObject(pref(name), fields.map(x => (pref(x._1), x._2)), ann)
+        case NonLocal(l, ann) => NonLocal(l.map(pref), ann)
+        case Global(l, ann) => Global(l.map(pref), ann)
+        case ImportModule(what, as, ann) => ImportModule(what.map(pref), as.map(pref), ann)
+        case ImportAllSymbols(from, ann) => ImportAllSymbols(from.map(pref), ann)
+        case ImportSymbol(from, what, as, ann) => ImportSymbol(from.map(pref), pref(what), as.map(pref), ann)
+        case Try(ttry, excepts, eelse, ffinally, ann) =>
+          Try(ttry, excepts.map(x => (x._1.map(x => (x._1, x._2.map(pref))), x._2)), eelse, ffinally, ann)
+        case u : Unsupported =>
+          new Unsupported(u.original, u.declareVars.map(pref), u.es, u.sts, u.ann)
+        case _ => x
+      }
+      , ns
+    )
+  }
+
   def simplifyInheritance(s: Statement, ns: Names): (Statement, Names) = {
 
     def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
