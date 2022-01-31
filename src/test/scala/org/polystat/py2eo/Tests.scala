@@ -189,46 +189,61 @@ class Tests {
   }
 
   @Test def useUnsupported() : Unit = {
-    for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
-      val test = new File(testsPrefix + "/" + name + ".py")
-      def db = debugPrinter(test)(_, _)
+    val dirName = testsPrefix + "/testParserPrinter"
+    val dir = new File(dirName)
+    assert(dir.isDirectory)
+    val test = dir.listFiles().toList
+    val futures = test.filter(test => (test.getName.endsWith(".py"))).map(test =>
+      Future
+      {
+        val name = test.getName
+        println(s"processing $name")
+        def db = debugPrinter(test)(_, _)
 
-      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
-      val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
-      val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
-        unsupportedSt._1, unsupportedSt._2)
-      writeFile(test, "afterMkUnsupported", ".py", PrintPython.printSt(unsupportedExpr._1, ""))
+        val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
+        val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y0._1, y0._2)
+        val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)
+        val y = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.xPrefixInExpr))(y2._1, y2._2)
+        val unsupportedExpr = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.mkUnsupportedExpr))(y._1, y._2)
+        val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 
-      val hacked = SimpleAnalysis.computeAccessibleIdents(
-        FuncDef("hack", List(), None, None, None, unsupportedExpr._1, Decorators(List()), HashMap(), isAsync = false,  unsupportedExpr._1.ann.pos))
-
-      def findGlobals(l: Set[String], f: FuncDef): Set[String] = {
-        SimpleAnalysis.foldSE[Set[String]](
-          (l, e) => {
-            e match {
-//            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
-              case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
-              case _ => l
-            }
-          },
-          { case _: FuncDef => false case _ => true }
-        )(l, f.body)
-      }
-
-      val globals = SimpleAnalysis.foldSS[Set[String]]((l, st) => {
-        (
-          st match {
-            case f: FuncDef => findGlobals(l, f)
-            case _ => l
-          }, true
+        val hacked = SimpleAnalysis.computeAccessibleIdents(
+          FuncDef(
+            "xhack", List(), None, None, None, unsupportedSt._1, Decorators(List()),
+            HashMap(), isAsync = false,  unsupportedSt._1.ann.pos
+          )
         )
-      })(immutable.HashSet(), hacked)
+        writeFile(test, "afterMkUnsupported", ".py", PrintPython.printSt(hacked, ""))
 
-      println(s"globals = $globals")
+        def findGlobals(l: Set[String], f: FuncDef): Set[String] = {
+          SimpleAnalysis.foldSE[Set[String]](
+            (l, e) => {
+              e match {
+  //            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
+                case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
+                case _ => l
+              }
+            },
+            { case _: FuncDef => false case _ => true }
+          )(l, f.body)
+        }
 
-      val eoText = PrintEO.printSt(name, hacked, globals.map(name => s"[args...] > x$name").toList)
-      writeFile(test, "genUnsupportedEO", ".eo", eoText.mkString("\n"))
-    }
+        val globals = SimpleAnalysis.foldSS[Set[String]]((l, st) => {
+          (
+            st match {
+              case f: FuncDef => findGlobals(l, f)
+              case _ => l
+            }, true
+          )
+        })(immutable.HashSet(), hacked)
+
+        println(s"globals = $globals")
+
+        val eoText = PrintEO.printSt(name.substring(0, name.length - 3), hacked, globals.map(name => s"memory > $name").toList)
+        writeFile(test, "genUnsupportedEOPrim", ".eo", eoText.mkString("\n"))
+      }
+    )
+    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
   @Test def parserPrinterOnCPython(): Unit = {
