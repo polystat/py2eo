@@ -29,9 +29,10 @@ object PrintEO {
   }
 
   def unop(t: Unops.T) = t match {
-    case Unops.Minus => "neg"
-    case Unops.Neg => "neg"
-    case Unops.LNot => "not"
+    case Unops.Minus => ".neg"
+    case Unops.Neg => ".neg"
+    case Unops.LNot => ".not"
+    case Unops.Plus => ""
   }
 
   // supports explicit access to parent fields with ^. prefixes
@@ -66,7 +67,7 @@ object PrintEO {
       case FreakingComparison(List(op), List(l, r), _) => "(" + e(l) + "." + compop(op) + " " + e(r) + ")"
       case LazyLAnd(l, r, _) =>  "(" + e(l) + ".and " + e(r) + ")"
       case LazyLOr(l, r, _) =>  "(" + e(l) + ".or " + e(r) + ")"
-      case Unop(op, x, _) => "(" + e(x) + "." + unop(op) + ")"
+      case Unop(op, x, _) => "(" + e(x) + unop(op) + ")"
       case Expression.Ident(name, _) => "(" + visibility(name) + ")"
       case CallIndex(false, from, List((_, StringLiteral(List(fname), _))), _)
         if fname == "\"callme\"" || (from match { case Expression.Ident("closure", _) => true case _ => false}) =>
