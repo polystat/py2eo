@@ -142,7 +142,9 @@ object Expression {
     }
   }
 
-  case class Parameter(name : String, kind : ArgKind.T, paramAnn : Option[T], default : Option[T], ann : GeneralAnnotation)
+  case class Parameter(name : String, kind : ArgKind.T, paramAnn : Option[T], default : Option[T], ann : GeneralAnnotation) {
+    def withAnnDefault(ann : Option[T], default : Option[T]) = Parameter(name, kind, ann, default, this.ann.pos)
+  }
 
   case class Assignment(ident : String, rhs : T, ann : GeneralAnnotation) extends T
   case class Await(what : T, ann : GeneralAnnotation) extends T
