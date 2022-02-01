@@ -72,9 +72,9 @@ object ClosureWithCage {
 
   def closurize(st : Statement) : Statement = closurizeInner(_ => (VarScope.Global, new GeneralAnnotation()), st)
 
-  def declassifyOnly(st : Statement) : Statement = {
-    val st1 = procStatement(SimplePass.unSuite)(st, new Names())._1
-    val st2 = procStatement(
+  def declassifyOnly(st : Statement, ns : Names) : (Statement, Names) = {
+    val st1 = procStatement(SimplePass.unSuite)(st, ns)
+    procStatement(
       (st, ns) => st match {
         case ClassDef(name, List(), Suite(l, _), Decorators(List()), ann) =>
           val mkObj = SimpleObject(
@@ -89,8 +89,7 @@ object ClosureWithCage {
           (creator, ns)
         case _ => (st, ns)
       }
-    )(st1, new SimplePass.Names())._1
-    st2
+    )(st1._1, st1._2)
   }
 
 }
