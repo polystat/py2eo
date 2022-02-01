@@ -49,7 +49,6 @@ object Main {
   }
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
-    assert(test.getName.endsWith(".py"))
     val moduleName = test.getName.substring(0, test.getName.length - 3)
     val outPath = test.getParentFile.getPath + "/" + dirSuffix
     val d = new File(outPath)
