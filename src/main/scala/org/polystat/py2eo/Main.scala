@@ -3,6 +3,7 @@ package org.polystat.py2eo;
 import Expression.{CallIndex, Ident}
 import java.io.{File, FileWriter}
 import java.nio.file.{Files, Paths}
+import scala.io.Source
 
 object Main {
 
@@ -46,6 +47,11 @@ object Main {
   def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
     val what = PrintPython.printSt(s, "")
     writeFile(module, dirSuffix, ".py", what)
+  }
+
+  def readFile(f : File) : String = {
+    val s = Source.fromFile(f)
+    s.mkString
   }
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
