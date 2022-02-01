@@ -277,8 +277,6 @@ object SimplePass {
       CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
   }
 
-  def alreadyDone(s: String) = throw new Throwable(s"remove $s before!")
-
   def procExprInStatement(f: (Boolean, T, Names) => (EAfterPass, Names))(s: Statement, ns: Names): (Statement, Names) = {
     def pst = procExprInStatement(f)(_, _)
     def pstl(l: List[Statement], ns: Names) =
@@ -423,10 +421,6 @@ object SimplePass {
         val args1 = packed2.tail.grouped(2).zip(args).map{ case (List(default, annot), p) => Parameter(p.name, p.kind, annot, default, p.ann) }
         val resFun = FuncDef(name, args1.toList, otherPositional, otherKeyword, packed2.head, body1, fd.decorators, accessibleIdents, isAsync, ann.pos)
         if (sts.isEmpty) (resFun, ns2) else (Suite(sts :+ resFun, ann), ns2)
-
-      case Assert(_, _, _) => alreadyDone("assert")
-      case If(_, _, _) => alreadyDone("ifelseif")
-      case Assign(l, _) if l.size > 2 => alreadyDone("complex assign")
     }
   }
 
