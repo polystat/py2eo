@@ -75,9 +75,9 @@ object PrintEO {
   }
 
   def indent(l : Text) = l.map(Ident + _)
-
-  def printSt(visibility : EOVisibility)(st : Statement) : Text = {
-    def s = printSt(visibility)(_)
+/*
+  def printSt(st : Statement) : Text = {
+    def s(x : Statement) = printSt(x)
 
     st match {
       case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List() // todo: a quick hack
@@ -111,7 +111,7 @@ object PrintEO {
           indent(s"[$args1]" ::
             indent(locals.map(name => s"memory > $name").toList ++ List("seq > @") ++ indent(body1)))
     }
-  }
+  }*/
 
   val standardTestPreface = List(
     "+package org.eolang",
@@ -132,7 +132,7 @@ object PrintEO {
       Ident + "memory > xhack",
       Ident + "seq > @"
     ) ++
-    indent(indent(printSt(new EOVisibility().stepInto(List("bogusForceDataize")/* :: locals.toList*/))(st)))
+    indent(indent(PrintLinearizedMutableEOWithCage.printSt(st, true)))
   }
 
   def printTest(moduleName : String, st : Statement, hackPreface : Text) : Text =
