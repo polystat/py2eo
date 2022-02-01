@@ -93,7 +93,10 @@ object PrintPython {
     def printDecorators(decorators: Decorators) =
       decorators.l.map(z => "%s@%s\n".format(indentAmount, printExprOrDecorator(true)(z))).mkString("")
     s match {
-      case u : Unsupported => indentPos("Unsupported:\n%s".format(printSt(u.original, indentIncrAmount)))
+      case u : Unsupported => indentPos("Unsupported:%s\n%s".format(
+        u.es.map(x => printExpr(x._2)).mkString(", "),
+        u.sts.map(printSt(_, indentIncrAmount)).mkString("\n")
+      ))
       case Del(e, _) => indentPos("del %s".format(printExpr(e)))
       case With(cms, body, isAsync, _) =>
         val cmsString = cms.map(
