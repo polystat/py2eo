@@ -75,11 +75,18 @@ object PrintEO {
   }
 
   def indent(l : Text) = l.map(Ident + _)
-/*
+
   def printSt(st : Statement) : Text = {
     def s(x : Statement) = printSt(x)
 
     st match {
+      case SimpleObject(name, l, _) =>
+        ("write." ::
+          indent(name :: "[]" :: indent(
+            l.map{ case (name, _) => "cage > " + name } ++ (
+              "seq > @" :: indent(l.map{case (name, value) => s"$name.write " + printExpr(value)})
+              ))
+          )) :+ s"($name.@)"
       case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List() // todo: a quick hack
       case Pass(_) => List()
       case IfSimple(cond, yes, no, _) =>
@@ -110,8 +117,13 @@ object PrintEO {
         List(s"$name.write") ++
           indent(s"[$args1]" ::
             indent(locals.map(name => s"memory > $name").toList ++ List("seq > @") ++ indent(body1)))
+      case u : Unsupported =>
+        val e1 = CallIndex(true, Expression.Ident("unsupported", new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
+        val head = printExpr(e1)
+        List(head) ++ indent(u.sts.flatMap(s))
+
     }
-  }*/
+  }
 
   val standardTestPreface = List(
     "+package org.eolang",
@@ -132,7 +144,7 @@ object PrintEO {
       Ident + "memory > xhack",
       Ident + "seq > @"
     ) ++
-    indent(indent(PrintLinearizedMutableEOWithCage.printSt(st, true)))
+    indent(indent(printSt(st)))
   }
 
   def printTest(moduleName : String, st : Statement, hackPreface : Text) : Text =

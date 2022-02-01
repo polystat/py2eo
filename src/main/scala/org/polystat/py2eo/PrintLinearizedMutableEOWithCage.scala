@@ -30,7 +30,7 @@ object PrintLinearizedMutableEOWithCage {
   def pe = printExpr _
   def isFun(f : Statement) = f match { case _: FuncDef => true case _ => false }
 
-  def printSt(st : Statement, toplevel : Boolean = false) : Text =
+  def printSt(st : Statement) : Text =
     st match {
       case SimpleObject(name, l, _) =>
         ("write." ::
@@ -40,7 +40,7 @@ object PrintLinearizedMutableEOWithCage {
               ))
           )) :+ s"($name.@)"
       case NonLocal(_, _) => List()
-      case f: FuncDef => if (toplevel) printFun(f.name, List(), f) else List()
+      case f: FuncDef => List()
       case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if (seqOfFields(whom).isDefined &&
         seqOfFields(lhs).isDefined) =>
         //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
@@ -104,12 +104,7 @@ object PrintLinearizedMutableEOWithCage {
       case Break(_) => List(s"breakLabel.forward 1")
 
       case Pass(_) => List()
-      case Suite(l, _) => l.flatMap(printSt(_, false))
-
-      case u : Unsupported =>
-        val e1 = CallIndex(true, Expression.Ident("unsupported", new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
-        val head = printExpr(e1)
-        List(head) ++ indent(u.sts.flatMap(printSt(_, false)))
+      case Suite(l, _) => l.flatMap(printSt)
     }
 
   def printFun(newName : String, preface : List[String], f : FuncDef) : Text = {
