@@ -374,6 +374,13 @@ object SimplePass {
         val (str, er) = procEA(rp._1)
         (Suite(str :+ CreateConst(name, er, ann.pos), ann.pos), rp._2)
 
+      case SimpleObject(name, fields, ann) => forceAllIfNecessary(f)(fields.map(x => (false, x._2)), ns) match {
+        case Right((l, ns)) =>
+          val obj = SimpleObject(name, l.zip(fields).map(x => (x._2._1, x._1._2)), ann.pos)
+          (Suite(l.map(_._1) :+ obj, ann.pos), ns)
+        case Left((l, ns)) => (SimpleObject(name, l.zip(fields).map(x => (x._2._1, x._1)), ann.pos), ns)
+      }
+
       case Assign(List(e), ann) => forceAllIfNecessary(f)(List((false, e)), ns) match {
         case Left((l, ns)) => (Assign(l, ann.pos), ns)
         case Right((List((s1, _)), ns)) => (s1, ns)
