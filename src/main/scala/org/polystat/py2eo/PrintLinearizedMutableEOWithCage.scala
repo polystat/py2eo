@@ -1,7 +1,7 @@
 package org.polystat.py2eo;
 
 import Expression._
-import PrintEO.{EOVisibility, Text, indent, printExpr}
+import PrintEO.{Text, indent, printExpr}
 import PrintLinearizedMutableEONoCage.headers
 
 import scala.annotation.tailrec
@@ -9,7 +9,6 @@ import scala.collection.immutable.HashMap
 
 object PrintLinearizedMutableEOWithCage {
 
-  val bogusVisibility = new EOVisibility()
   val returnLabel = "returnLabel"
 
   // todo: imperative style suddenly
