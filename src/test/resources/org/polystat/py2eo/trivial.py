@@ -1,4 +1,3 @@
-
 def testFib1():
     f0 = 0
     f1 = 1
