@@ -1,8 +1,9 @@
 package org.polystat.py2eo
 
 import org.junit.Assert._
-import org.junit.Test
+import org.junit.{Ignore, Test}
 import org.junit.runners.Parameterized.Parameters
+import org.polystat.py2eo.Common.dfsFiles
 import org.polystat.py2eo.Expression._
 import org.scalatest.Tag
 import org.yaml.snakeyaml.Yaml
@@ -222,6 +223,27 @@ class Tests {
     println(s"have $nprocessors processors")
     assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
     assertTrue(0 == Process("make test", cpython).!)
+  }
+
+  @Ignore
+  @Test def genUnsupportedDjango() : Unit = {
+    val root = new File(testsPrefix)
+    val django = new File(testsPrefix + "/django")
+    if (!django.exists()) {
+//      assert(0 == Process("git clone file:///home/bogus/pythonProjects/django", root).!)
+      assert(0 == Process("git clone https://github.com/django/django", root).!)
+    }
+    val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
+    val futures = test.map(test =>
+      Future {
+        def db(s : Statement, str : String) = () // debugPrinter(test)(_, _)
+        val name = test.getName
+        println(s"parsing $name")
+        val eoText = Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
+        writeFile(test, "genUnsupportedEO", ".eo", eoText)
+      }
+    )
+    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
   def useCageHolder(path: String): Unit = {
