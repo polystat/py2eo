@@ -257,7 +257,9 @@ object MapStatements1 {
   }
 
   def mapDottedName(c : Dotted_nameContext) : List[String] = {
-    if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else List(c.NAME().getText)
+    if (c == null) List() else
+    if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else
+    List(c.NAME().getText)
   }
 
   def mapImportName(c : Import_nameContext) : Statement = {
