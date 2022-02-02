@@ -1,8 +1,8 @@
 package org.polystat.py2eo;
 
-import Expression.{CallIndex, Ident}
 import java.io.{File, FileWriter}
 import java.nio.file.{Files, Paths}
+import scala.io.Source
 
 object Main {
 
@@ -10,27 +10,12 @@ object Main {
     if (!args.isEmpty) {
       if (Files.exists(Paths.get(args(0)))) {
         val pyFile = new File(args(0))
-        if (pyFile.isFile && pyFile.getName.substring(pyFile.getName.lastIndexOf('.') + 1) == "py") {
+        if (pyFile.isFile && pyFile.getName.endsWith("py")) {
           println(s"Working with file ${pyFile.getAbsolutePath}")
-
           def db = debugPrinter(pyFile)(_, _)
-
-          val y = SimplePass.allTheGeneralPasses(db, Parse.parse(pyFile, db), new SimplePass.Names())
-
-          val textractAllCalls = SimplePass.procExprInStatement(
-            SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-          val Suite(List(theFun@FuncDef(mainName, _, _, _, _, body, _, _, _, ann)), _) =
-            ClosureWithCage.declassifyOnly(textractAllCalls._1)
-
-
-          val eoHacked = Suite(List(
-            theFun,
-            Return(Some(CallIndex(true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-          ), ann.pos)
-
-
-          val eoText = PrintLinearizedMutableEOWithCage.printTest(pyFile.getName.replace(".py", ""), eoHacked)
-          writeFile(pyFile, "genCageEO", ".eo", (eoText.init.init :+ "        xresult").mkString("\n"))
+          val moduleName = pyFile.getName.substring(0, pyFile.getName.length - 3)
+          val eoText = Transpile.transpile(db)(moduleName, readFile(pyFile))
+          writeFile(pyFile, "genCageEO", ".eo", eoText)
         } else {
           println("Provided path is not a file")
         }
@@ -42,14 +27,17 @@ object Main {
     }
   }
 
-
   def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
     val what = PrintPython.printSt(s, "")
     writeFile(module, dirSuffix, ".py", what)
   }
 
+  def readFile(f : File) : String = {
+    val s = Source.fromFile(f)
+    s.mkString
+  }
+
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
-    assert(test.getName.endsWith(".py"))
     val moduleName = test.getName.substring(0, test.getName.length - 3)
     val outPath = test.getParentFile.getPath + "/" + dirSuffix
     val d = new File(outPath)

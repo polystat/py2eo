@@ -17,6 +17,8 @@ object SimpleAnalysis {
   }
 
   def childrenE(e : T) : List[T] = e match {
+    case Assignment(_, rhs, _) => List(rhs)
+    case Await(what, _) => List(what)
     case AnonFun(_, _, _, body, _) => List(body)
     case Binop(_, l, r, _) =>List(l, r)
     case SimpleComparison(_, l, r, _) => List(l, r)

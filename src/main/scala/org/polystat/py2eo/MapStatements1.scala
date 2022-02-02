@@ -257,7 +257,9 @@ object MapStatements1 {
   }
 
   def mapDottedName(c : Dotted_nameContext) : List[String] = {
-    if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else List(c.NAME().getText)
+    if (c == null) List() else
+    if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else
+    List(c.NAME().getText)
   }
 
   def mapImportName(c : Import_nameContext) : Statement = {
@@ -270,8 +272,8 @@ object MapStatements1 {
   }
 
   def mapImportFrom(c : Import_fromContext) : Statement = {
-    if (!c.ELLIPSIS().isEmpty || !c.DOT().isEmpty) ???
-    val from = mapDottedName(c.dotted_name())
+    val nprefixDots = c.ELLIPSIS().size() * 3 + c.DOT().size()
+    val from = List.fill(nprefixDots)("") ++ mapDottedName(c.dotted_name())
     if (c.import_from_targets().STAR() != null) ImportAllSymbols(from, ga(c)) else {
       Suite(
         toList(c.import_from_targets().import_from_as_names().import_from_as_name()).map(

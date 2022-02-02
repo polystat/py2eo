@@ -1,8 +1,9 @@
 package org.polystat.py2eo
 
 import org.junit.Assert._
-import org.junit.Test
+import org.junit.{Ignore, Test}
 import org.junit.runners.Parameterized.Parameters
+import org.polystat.py2eo.Common.dfsFiles
 import org.polystat.py2eo.Expression._
 import org.scalatest.Tag
 import org.yaml.snakeyaml.Yaml
@@ -27,22 +28,7 @@ class Tests {
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
   private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
-  def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String): String = {
-    val moduleName = test.getName.substring(0, test.getName.length - 3)
-    val outPath = test.getParentFile.getPath + "/" + dirSuffix
-    val d = new File(outPath)
-    if (!d.exists()) d.mkdir()
-    val outName = outPath + "/" + moduleName + fileSuffix
-    val output = new FileWriter(outName)
-    output.write(what)
-    output.close()
-    outName
-    }
-
-  def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
-    val what = PrintPython.printSt(s, "")
-    writeFile(module, dirSuffix, ".py", what)
-  }
+  import Main.{writeFile, readFile, debugPrinter}
 
   private val python = {
     val stdout = new StringBuilder()
@@ -166,12 +152,6 @@ class Tests {
     writeFile(test, "genHeapifiedEO", ".eo", eoText.mkString("\n"))
   }
 
-//  @Test def useCage() : Unit = {
-//    for (name <- List("x", "trivial", "simplestClass", "myList")) {
-//      useCageHolder(testsPrefix + "/" + name + ".py")
-//    }
-//  }
-
   @Test def trivialTest():Unit = {
     useCageHolder(testsPrefix + "/trivial.py")
   }
@@ -186,49 +166,6 @@ class Tests {
 
   @Test def xTest():Unit = {
     useCageHolder(testsPrefix + "/x.py")
-  }
-
-  @Test def useUnsupported() : Unit = {
-    for (name <- List("x", "trivial", "twoFuns", "test_typing", "test_typing_part1")) {
-      val test = new File(testsPrefix + "/" + name + ".py")
-      def db = debugPrinter(test)(_, _)
-
-      val y = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(test, db), new SimplePass.Names())
-      val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(y._1, y._2)
-      val unsupportedExpr = SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.mkUnsupportedExpr))(
-        unsupportedSt._1, unsupportedSt._2)
-      writeFile(test, "afterMkUnsupported", ".py", PrintPython.printSt(unsupportedExpr._1, ""))
-
-      val hacked = SimpleAnalysis.computeAccessibleIdents(
-        FuncDef("hack", List(), None, None, None, unsupportedExpr._1, Decorators(List()), HashMap(), isAsync = false,  unsupportedExpr._1.ann.pos))
-
-      def findGlobals(l: Set[String], f: FuncDef): Set[String] = {
-        SimpleAnalysis.foldSE[Set[String]](
-          (l, e) => {
-            e match {
-//            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
-              case Ident(name, _) if !f.accessibleIdents.contains(name) => l.+(name)
-              case _ => l
-            }
-          },
-          { case _: FuncDef => false case _ => true }
-        )(l, f.body)
-      }
-
-      val globals = SimpleAnalysis.foldSS[Set[String]]((l, st) => {
-        (
-          st match {
-            case f: FuncDef => findGlobals(l, f)
-            case _ => l
-          }, true
-        )
-      })(immutable.HashSet(), hacked)
-
-      println(s"globals = $globals")
-
-      val eoText = PrintEO.printSt(name, hacked, globals.map(name => s"[args...] > x$name").toList)
-      writeFile(test, "genUnsupportedEO", ".eo", eoText.mkString("\n"))
-    }
   }
 
   @Test def parserPrinterOnCPython(): Unit = {
@@ -266,8 +203,10 @@ class Tests {
         if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")) {
           def db = debugPrinter(test)(_, _)
 
-          println(s"parsing ${test.getName}")
-          Parse.parse(test, db)
+          val name = test.getName
+          println(s"parsing $name")
+          val eoText = Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
+          writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)
           Files.copy(
             Paths.get(s"$dirName/afterParser/${test.getName}"),
             Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
@@ -286,34 +225,38 @@ class Tests {
     assertTrue(0 == Process("make test", cpython).!)
   }
 
+  @Ignore
+  @Test def genUnsupportedDjango() : Unit = {
+    val root = new File(testsPrefix)
+    val django = new File(testsPrefix + "/django")
+    if (!django.exists()) {
+//      assert(0 == Process("git clone file:///home/bogus/pythonProjects/django", root).!)
+      assert(0 == Process("git clone https://github.com/django/django", root).!)
+    }
+    val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
+    val futures = test.map(test =>
+      Future {
+        def db(s : Statement, str : String) = () // debugPrinter(test)(_, _)
+        val name = test.getName
+        println(s"parsing $name")
+        val eoText = Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
+        writeFile(test, "genUnsupportedEO", ".eo", eoText)
+      }
+    )
+    for (f <- futures) Await.result(f, Duration.Inf)
+  }
+
   def useCageHolder(path: String): Unit = {
     val test = new File(path)
     def db = debugPrinter(test)(_, _)
-
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
-
-    val textractAllCalls = SimplePass.procExprInStatement(
-      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-
-    db(textractAllCalls._1, "afterExtractAllCalls")
-    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-      ClosureWithCage.declassifyOnly(textractAllCalls._1)
-
-      val hacked = Suite(List(
-        theFun,
-        Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
-      ), ann.pos)
-      val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-      assertTrue(0 == s"$python \"$runme\"".!)
-
-      val eoHacked = Suite(List(
-        theFun,
-        Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-      ), ann.pos)
-
-    
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".py", ""), eoHacked)
-    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
+    writeFile(
+      test, "genCageEO", ".eo", Transpile.transpile(db)(
+        test.getName.replace(".py", ""),
+        readFile(test)
+      )
+    )
+    val runme = test.getParentFile.getPath + "/afterUseCage/" + test.getName
+    assertTrue(0 == s"$python \"$runme\"".!)
   }
 
 
@@ -325,7 +268,7 @@ class Tests {
     val textractAllCalls = SimplePass.procExprInStatement(
       SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
     val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-      ClosureWithCage.declassifyOnly(textractAllCalls._1)
+      ClosureWithCage.declassifyOnly(textractAllCalls._1, textractAllCalls._2)._1
 
     val hacked = Suite(List(
       theFun,
@@ -339,10 +282,8 @@ class Tests {
       Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
     ), ann.pos)
 
-
     val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".yaml", ""), eoHacked)
     writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
-
   }
 
 
