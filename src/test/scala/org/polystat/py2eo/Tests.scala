@@ -239,7 +239,13 @@ class Tests {
         def db(s : Statement, str : String) = () // debugPrinter(test)(_, _)
         val name = test.getName
         println(s"parsing $name")
-        val eoText = Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
+        val eoText = try {
+          Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
+        } catch {
+          case e : Throwable =>
+            println(s"failed to transpile $name: ${e.toString}")
+            throw e
+        }
         writeFile(test, "genUnsupportedEO", ".eo", eoText)
       }
     )
