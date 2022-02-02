@@ -2,7 +2,6 @@ package org.polystat.py2eo;
 
 import Expression._
 import PrintEO.{Text, indent, printExpr}
-import PrintLinearizedMutableEONoCage.headers
 import org.polystat.py2eo.Common.GeneratorException
 
 import scala.annotation.tailrec
@@ -11,6 +10,16 @@ import scala.collection.immutable.HashMap
 object PrintLinearizedMutableEOWithCage {
 
   val returnLabel = "returnLabel"
+
+  val headers = List(
+    "+package org.eolang",
+    "+alias goto org.eolang.gray.goto",
+    "+alias stdout org.eolang.io.stdout",
+    "+alias cage org.eolang.gray.cage",
+    //    "+alias sprintf org.eolang.txt.sprintf",
+    "+junit",
+    ""
+  )
 
   // todo: imperative style suddenly
   object HackName {

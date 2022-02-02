@@ -1,7 +1,6 @@
 package org.polystat.py2eo
 
 import Expression.{CallIndex, CollectionKind, Compops, Ident}
-import Python3Parser._
 import org.antlr.v4.runtime.{ANTLRInputStream, ParserRuleContext, Token}
 
 import java.io.{File, FileReader}
@@ -101,17 +100,6 @@ object Expression {
       case NotIn =>"not in"
       case Is =>"is"
       case IsNot =>"is not"
-    }
-    def ofContext(c : Comp_opContext): Compops.Value = {
-      if (c.EQUALS() != null) Eq else
-      if (c.NOT_EQ_1() != null || c.NOT_EQ_2() != null) Neq else
-      if (c.GREATER_THAN() != null) Gt else
-      if (c.GT_EQ() != null) Ge else
-      if (c.LESS_THAN() != null) Lt else
-      if (c.LT_EQ() != null) Le else
-      if (c.IN() != null) if (c.NOT() != null) NotIn else In else
-      if (c.IS() != null) if (c.NOT() != null) IsNot else Is else
-        ???
     }
   }
 
@@ -285,23 +273,6 @@ object AugOps extends Enumeration {
     case  ">>=" =>  Shr
     case  "**=" =>  Pow
     case  "//=" => FloorDiv
-  }
-
-  def ofContext(c : AugassignContext): AugOps.Value = {
-    if (c.ADD_ASSIGN() != null) Plus else
-    if (c.SUB_ASSIGN() != null) Minus else
-    if (c.MULT_ASSIGN() != null) Mul else
-    if (c.AT_ASSIGN() != null) At else
-    if (c.DIV_ASSIGN() != null) Div else
-    if (c.MOD_ASSIGN() != null) Mod else
-    if (c.IDIV_ASSIGN() != null) FloorDiv else
-    if (c.AND_ASSIGN() != null) And else
-    if (c.OR_ASSIGN() != null) Or else
-    if (c.XOR_ASSIGN() != null) Xor else
-    if (c.LEFT_SHIFT_ASSIGN() != null) Shl else
-    if (c.RIGHT_SHIFT_ASSIGN() != null) Shr else
-    if (c.POWER_ASSIGN() != null) Pow else
-    { ??? }
   }
 
   def toString(s : T) : String = s match {

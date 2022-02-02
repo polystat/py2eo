@@ -10,8 +10,6 @@ import scala.collection.JavaConverters.asScala
 
 object MapExpressions1 {
 
-  import MapExpressions.string2num
-
   import Expression._
 
   def ga(c : ParserRuleContext) = new GeneralAnnotation(c)
@@ -183,7 +181,7 @@ object MapExpressions1 {
     if (context.FALSE() != null) BoolLiteral(false, ga(context)) else
     if (context.NONE() != null) NoneLiteral(ga(context)) else
     if (context.strings() != null) StringLiteral(toList(context.strings().STRING()).map(_.getText), ga(context)) else
-    if (context.NUMBER() != null) MapExpressions.string2num(context.NUMBER().getText, context) else
+    if (context.NUMBER() != null) string2num(context.NUMBER().getText, context) else
     if (context.tuple() != null) mapTuple(context.tuple()) else
     if (context.group() != null) {
       if (context.group().yield_expr() != null) mapYieldExpr(context.group().yield_expr()) else
@@ -468,4 +466,44 @@ object MapExpressions1 {
       (None, DoubleStar(mapExpression(c.expression()), ga(c)))
   }
 
+  def string2num(x: String, c: ParserRuleContext): T = {
+    if (x.last == 'j') Expression.ImagLiteral(x.init, new GeneralAnnotation(c)) else if (x.exists(c => ((c == 'e' || c == 'E') && !x.startsWith("0x") && !x.startsWith("0X")) || c == '.' || c == '+' || c == '-')) {
+      Expression.FloatLiteral(x, new GeneralAnnotation(c))
+    } else {
+      val int =
+        if (x.startsWith("0x") || x.startsWith("0X")) {
+          x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
+            if (ch != '_') {
+              acc * 16 + (
+                if (ch >= '0' && ch <= '9') ch.toInt - '0'.toInt else if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else {
+                  throw new NumberFormatException()
+                }
+                )
+            } else {
+              acc
+            }
+          }
+          )
+        } else if (x.startsWith("0o") || x.startsWith("0O")) {
+          x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
+            if (ch != '_') {
+              acc * 8 + (if (ch >= '0' && ch <= '7') ch.toInt - '0'.toInt else throw new NumberFormatException())
+            } else {
+              acc
+            }
+          )
+        } else if (x.startsWith("0b") || x.startsWith("0B")) {
+          x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) =>
+            if (ch != '_') {
+              acc * 2 + (if (ch >= '0' && ch <= '1') ch.toInt - '0'.toInt else throw new NumberFormatException())
+            } else {
+              acc
+            }
+          )
+        } else {
+          BigInt(x.filter(_ != '_'))
+        }
+      Expression.IntLiteral(int, new GeneralAnnotation(c))
+    }
+  }
 }
