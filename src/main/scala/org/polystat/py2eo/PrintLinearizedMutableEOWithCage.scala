@@ -3,6 +3,7 @@ package org.polystat.py2eo;
 import Expression._
 import PrintEO.{Text, indent, printExpr}
 import PrintLinearizedMutableEONoCage.headers
+import org.polystat.py2eo.Common.GeneratorException
 
 import scala.annotation.tailrec
 import scala.collection.immutable.HashMap
@@ -53,10 +54,10 @@ object PrintLinearizedMutableEOWithCage {
         rhs match {
           case _ : DictCons | _ : CollectionCons | _ : Await | _ : Star | _ : DoubleStar |
                _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
-            throw new Throwable("these expressions must be wrapped in a function call " +
+            throw new GeneratorException("these expressions must be wrapped in a function call " +
               "because a copy creation is needed and dataization is impossible")
-          case CallIndex(false, _, _, _) => throw new Throwable("this is A PROBLEM") // todo
-          case CallIndex(false, _, _, _) => throw new Throwable("this is A PROBLEM") // todo
+          case CallIndex(false, _, _, _) => throw new GeneratorException("this is A PROBLEM") // todo
+          case CallIndex(false, _, _, _) => throw new GeneratorException("this is A PROBLEM") // todo
           case _ => ()
         }
         val seqOfFields1 = seqOfFields(rhs)

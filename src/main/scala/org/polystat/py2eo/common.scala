@@ -133,5 +133,10 @@ object Common {
     }
   }
 
+  class TranspilerException(reason : String) extends Exception(reason)
+  class GeneratorException(reason : String) extends TranspilerException(reason)
+  class ASTAnalysisException(reason : String) extends TranspilerException(reason)
+  class ASTMapperException(reason : String) extends TranspilerException(reason)
+
 }
 

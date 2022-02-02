@@ -3,6 +3,7 @@ package org.polystat.py2eo
 import org.antlr.v4.runtime
 import org.antlr.v4.runtime.tree.TerminalNode
 import org.antlr.v4.runtime.{ParserRuleContext, Token}
+import org.polystat.py2eo.Common.ASTMapperException
 import org.polystat.py2eo.PythonParser._
 import org.polystat.py2eo.Expression.{CallIndex, CollectionCons, CollectionKind, Field, Ident, Parameter, T => ET}
 import org.polystat.py2eo.MapExpressions1.{ga, mapExpression, mapNamedExpression, mapSlices, mapStarExpression, mapStarExpressions, mapStarTarget, mapStarTargets, mapTPrimary, mapYieldExpr, toList, toListNullable}
@@ -31,7 +32,7 @@ object MapStatements1 {
     if (c.try_stmt() != null) mapTryStmt(c.try_stmt()) else
     if (c.while_stmt() != null) mapWhileStmt(c.while_stmt()) else
     if (c.match_stmt() != null) ??? else
-    throw new RuntimeException("mapCompoundStmt")
+    throw new ASTMapperException("mapCompoundStmt")
   }
 
   def mapTryStmt(context: PythonParser.Try_stmtContext) = Try(
@@ -209,7 +210,7 @@ object MapStatements1 {
     if (c.CONTINUE() != null) Continue(ga(c)) else
     if (c.global_stmt() != null) mapGlobalStmt(c.global_stmt()) else
     if (c.nonlocal_stmt() != null) mapNonlocalStmt(c.nonlocal_stmt()) else
-    throw new RuntimeException("mapSimpleStmt")
+    throw new ASTMapperException("mapSimpleStmt")
   }
 
   def mapDelTargets(c : Del_targetsContext) : List[ET] = toList(c.del_target()).map(mapDelTarget)

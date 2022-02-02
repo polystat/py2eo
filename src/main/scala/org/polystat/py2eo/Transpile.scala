@@ -1,5 +1,6 @@
 package org.polystat.py2eo
 
+import org.polystat.py2eo.Common.TranspilerException
 import org.polystat.py2eo.Expression.{CallIndex, Ident, UnsupportedExpr}
 import org.polystat.py2eo.Main.writeFile
 
@@ -36,7 +37,7 @@ object Transpile {
       (eoText.init.init :+ "        result").mkString("\n")
     }
     catch {
-      case _: MatchError => {
+      case _: MatchError | _: TranspilerException => {
         val unsupportedExpr = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.mkUnsupportedExpr))(y._1, y._2)
         val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 

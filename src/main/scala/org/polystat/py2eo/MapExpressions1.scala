@@ -2,7 +2,8 @@ package org.polystat.py2eo
 
 import org.antlr.v4.runtime
 import org.antlr.v4.runtime.tree.TerminalNode
-import org.antlr.v4.runtime.{ParserRuleContext}
+import org.antlr.v4.runtime.ParserRuleContext
+import org.polystat.py2eo.Common.ASTMapperException
 import org.polystat.py2eo.PythonParser._
 
 import scala.collection.JavaConverters.asScala
@@ -61,7 +62,7 @@ object MapExpressions1 {
           if (c.in_bitwise_or() != null) (Compops.In, mapBitwiseOr(c.in_bitwise_or().bitwise_or())) else
           if (c.isnot_bitwise_or() != null) (Compops.IsNot, mapBitwiseOr(c.isnot_bitwise_or().bitwise_or())) else
           if (c.is_bitwise_or() != null) (Compops.Is, mapBitwiseOr(c.is_bitwise_or().bitwise_or())) else
-          throw new RuntimeException("Unsupported comparison operation?")
+          throw new ASTMapperException("Unsupported comparison operation?")
         }
       )
       FreakingComparison(l1.map(_._1), mapBitwiseOr(context.bitwise_or()) :: l1.map(_._2), ga(context))
@@ -187,7 +188,7 @@ object MapExpressions1 {
     if (context.group() != null) {
       if (context.group().yield_expr() != null) mapYieldExpr(context.group().yield_expr()) else
       if (context.group().named_expression() != null) mapNamedExpression(context.group().named_expression()) else
-      throw new RuntimeException("context.group problem")
+      throw new ASTMapperException("context.group problem")
     } else
     if (context.genexp() != null) mapGenexp(context.genexp()) else
     if (context.list() != null) mapList(context.list()) else
@@ -197,7 +198,7 @@ object MapExpressions1 {
     if (context.dictcomp() != null) mapDictcomp(context.dictcomp()) else
     if (context.setcomp() != null) mapSetcomp(context.setcomp()) else
     if (context.ELLIPSIS() != null) EllipsisLiteral(ga(context)) else
-    throw new RuntimeException("wrong alternative in mapAtom")
+    throw new ASTMapperException("wrong alternative in mapAtom")
   }
 
   def mapYieldExpr(context: PythonParser.Yield_exprContext) : T = {
@@ -323,7 +324,7 @@ object MapExpressions1 {
     if (context.OPEN_PAREN() != null) CollectionCons(CollectionKind.Tuple, List(), ga(context)) else
     if (context.star_targets_list_seq() != null) mapStarTargetsListSeq(context.star_targets_list_seq()) else
     if (context.OPEN_BRACK() != null) CollectionCons(CollectionKind.List, List(), ga(context)) else
-    throw new RuntimeException("mapStarAtom")
+    throw new ASTMapperException("mapStarAtom")
     }
   }
 

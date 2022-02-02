@@ -1,5 +1,7 @@
 package org.polystat.py2eo
 
+import org.polystat.py2eo.Common.ASTAnalysisException
+
 import scala.collection.immutable.HashMap
 
 object SimpleAnalysis {
@@ -128,9 +130,9 @@ object SimpleAnalysis {
           case SimpleObject(name, _, ann) => (add(name, ann), false)
           case FuncDef(name, _, _, _, _, _, _, _, _, ann)  => (add(name, ann), false)
           case Assign(List(CollectionCons(_, _, _), _), _) =>
-            throw new RuntimeException("run this analysis after all assignment simplification passes!")
+            throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")
           case Assign(l, _) if l.size > 2 =>
-            throw new RuntimeException("run this analysis after all assignment simplification passes!")
+            throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")
           case Assign(List(Ident(name, _), _), ann) => (add(name, ann), true)
           case AnnAssign(Ident(name, _), _, _, ann) => (add(name, ann), true)
           case u : Unsupported => (u.declareVars.foldLeft(h)(add0(_, _, u.ann)), true)
@@ -188,7 +190,7 @@ object SimpleAnalysis {
     case FreakingComparison(List(_), List(_, _), _) => ()
     case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _)
       | CallIndex(false, _, _, _) | FreakingComparison(_, _, _) | AnonFun(_, _, _, _, _) =>
-      throw new RuntimeException("these must never happen after all passes: " + PrintPython.printExpr(e))
+      throw new ASTAnalysisException("these must never happen after all passes: " + PrintPython.printExpr(e))
     case _ => ()
   }
 
