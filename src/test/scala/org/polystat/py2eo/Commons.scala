@@ -1,7 +1,6 @@
 package org.polystat.py2eo
 
 import org.junit.Assert.assertTrue
-import org.polystat.py2eo.Expression.{CallIndex, Ident}
 import org.polystat.py2eo.Main.{debugPrinter, writeFile}
 
 import java.io.File
@@ -35,29 +34,17 @@ trait Commons {
     res
   }
 
-  def useCageHolder(path: String, yamlString:String): Unit = {
+
+  def useCageHolder(path: String, yamlString:String):Unit = {
     val test = new File(path)
-
     def db = debugPrinter(test)(_, _)
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(yamlString, db), new SimplePass.Names())
-    val textractAllCalls = SimplePass.procExprInStatement(
-      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-      ClosureWithCage.declassifyOnly(textractAllCalls._1, textractAllCalls._2)._1
-
-    val hacked = Suite(List(
-      theFun,
-      Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
-    ), ann.pos)
-    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
+    writeFile(
+      test, "genCageEO", ".eo", Transpile.transpile(db)(
+        test.getName.replace(".yaml", ""),
+        yamlString
+      )
+    )
+    val runme = test.getParentFile.getPath + "/afterUseCage/" + test.getName.substring(0,test.getName.lastIndexOf(".")) + ".py"
     assertTrue(0 == s"$python \"$runme\"".!)
-
-    val eoHacked = Suite(List(
-      theFun,
-      Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-    ), ann.pos)
-
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".yaml", ""), eoHacked)
-    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
   }
 }
