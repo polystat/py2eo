@@ -1,14 +1,12 @@
 package org.polystat.py2eo;
 
 import Expression.{CallIndex, CollectionCons, Cond, DictCons, Field, Ident, Parameter, StringLiteral}
-import PrintEO.{EOVisibility, Text, indent, printExpr}
+import PrintEO.{Text, indent, printExpr}
 import PrintLinearizedImmutableEO.rmUnreachableTail
 
 import scala.collection.immutable.HashMap
 
 object PrintLinearizedMutableEONoCage {
-
-  val bogusVisibility = new EOVisibility()
 
   val headers = List(
     "+package org.eolang",
@@ -54,7 +52,7 @@ object PrintLinearizedMutableEONoCage {
     val innerFuns = l.filter(isFun).flatMap{case f : FuncDef => printFun(f) }
     val mkAllFuns = l.find{ case CreateConst(_, _, _) => true case _ => false} match {
       case Some(CreateConst("allFuns", CollectionCons(_, allFuns, _), _)) =>
-        "* > allFuns" :: indent(allFuns.flatMap(e => List("[]", s"  ${printExpr(bogusVisibility)(e)} > callme")))
+        "* > allFuns" :: indent(allFuns.flatMap(e => List("[]", s"  ${printExpr(e)} > callme")))
       case None => List()
     }
     def others(l : List[Statement]) : Text = l.flatMap{
@@ -64,17 +62,17 @@ object PrintLinearizedMutableEONoCage {
           name :: "[]" :: indent(
             l.map{
               case Left((StringLiteral(List(name), _), value)) =>
-                "%s > %s".format(printExpr(bogusVisibility)(value), name.substring(1, name.length - 1))
+                "%s > %s".format(printExpr(value), name.substring(1, name.length - 1))
             }
           )
         )
       case Assign(List(Ident(lhsName, _), rhs), _) =>
-        List(s"$lhsName.write ${printExpr(bogusVisibility)(rhs)}")
-      case Assign(List(e), _) => List(printExpr(bogusVisibility)(e))
-      case Return(e, _) => e.toList.map(printExpr(bogusVisibility)(_))
+        List(s"$lhsName.write ${printExpr(rhs)}")
+      case Assign(List(e), _) => List(printExpr(e))
+      case Return(e, _) => e.toList.map(printExpr(_))
       case IfSimple(cond, Return(Some(yes), _), Return(Some(no), _), ann) =>
         val e = Cond(cond, yes, no, ann.pos)
-        List(printExpr(bogusVisibility)(e))
+        List(printExpr(e))
       case Pass(_) => List()
       case CreateConst("allFuns", _, _) => List()
       case Suite(l, _) => others(l)

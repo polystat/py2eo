@@ -5,7 +5,7 @@ import PrintEO.standardTestPreface
 
 object PrintLinearizedImmutableEO {
 
-  import PrintEO.{EOVisibility, printExpr, Text, indent}
+  import PrintEO.{printExpr, Text, indent}
 
   private def isRetIfRet(st : Statement) = st match {
     case Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _) => true
@@ -18,34 +18,33 @@ object PrintLinearizedImmutableEO {
     if (acc.nonEmpty && isRetIfRet(acc.last)) acc else acc :+ st
   )
 
-  def printBody(currentFunName : String, visibility : EOVisibility)(st : Suite) : Text = {
+  def printBody(currentFunName : String)(st : Suite) : Text = {
     val l = rmUnreachableTail(st.l)
     l.flatMap {
       case Assign(List(CallIndex(true, Expression.Ident("print", _), List((None, n)), _)), _) =>
-        List(s"stdout (sprintf \"%d\\n\" ${printExpr(visibility)(n)})")
+        List(s"stdout (sprintf \"%d\\n\" ${printExpr(n)})")
       case CreateConst(name, DictCons(l, _), ann) =>
-        val visibility1 = visibility.stepInto(List())
         s"[] > $name!" ::
           indent(
             l.map{
               case Left((StringLiteral(List(name), ann.pos), value)) =>
-                printExpr(visibility1)(value) + " > " + name.substring(1, name.length - 1)
+                printExpr(value) + " > " + name.substring(1, name.length - 1)
             }
           )
-      case CreateConst(name, value, _) => List("%s > %s!".format(printExpr(visibility)(value), name))
+      case CreateConst(name, value, _) => List("%s > %s!".format(printExpr(value), name))
       case one@(Return(_, _) | IfSimple(_, Return(_, _), Return(_, _), _)) =>
         val expr = one match {
           case Return(Some(x), _) => x
           case IfSimple(cond, Return(Some(yes), _), Return(Some(no), _), ann) => Cond(cond, yes, no, ann.pos)
         }
-        List("(%s) > @!".format(printExpr(visibility)(expr)))
+        List("(%s) > @!".format(printExpr(expr)))
       case FuncDef(name, args, None, None, None, body, Decorators(List()), accessibleIdents, false, _) =>
         val locals = accessibleIdents.filter(z => z._2._1 == VarScope.Local || z._2._1 == VarScope.Arg).keys
         val args1 = args.map{ case Expression.Parameter(argname, ArgKind.Positional, None, None, _) => argname }.mkString(" ")
         val st@Suite(_, _) = body
-        val body1 = printBody(name, visibility.stepInto(locals.toList))(st)
+        val body1 = printBody(name)(st)
         List(s"[$args1] > $name") ++ indent(body1)
-      case s@Suite(_, _) => printBody(currentFunName, visibility)(s)
+      case s@Suite(_, _) => printBody(currentFunName)(s)
       case Pass(_) => List()
     }
   }
@@ -68,9 +67,7 @@ object PrintLinearizedImmutableEO {
           "      (ptr.eq i).if (newValue) x > @!",
         )
       ) ++
-      indent(printBody(
-        "top level", new EOVisibility().stepInto(List("nextFreePtr", "append2heap", "immArrChangeValue"))
-      )(st))
+      indent(printBody("top level")(st))
     )
     .mkString("\n") + "\n"
   }

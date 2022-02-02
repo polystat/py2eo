@@ -142,7 +142,9 @@ object Expression {
     }
   }
 
-  case class Parameter(name : String, kind : ArgKind.T, paramAnn : Option[T], default : Option[T], ann : GeneralAnnotation)
+  case class Parameter(name : String, kind : ArgKind.T, paramAnn : Option[T], default : Option[T], ann : GeneralAnnotation) {
+    def withAnnDefault(ann : Option[T], default : Option[T]) = Parameter(name, kind, ann, default, this.ann.pos)
+  }
 
   case class Assignment(ident : String, rhs : T, ann : GeneralAnnotation) extends T
   case class Await(what : T, ann : GeneralAnnotation) extends T
@@ -209,6 +211,53 @@ object Expression {
       case Field(whose, name, ann) => Field(m(whose), name, ann.pos)
       case Cond(cond, yes, no, ann) => Cond(m(cond), m(yes), m(no), ann.pos)
     }
+  }
+
+  def map(f : T => T)(x : T) : T = {
+    def m(e : T) : T = map(f)(e)
+    def mD(x : DictEltDoubleStar) = x match {
+      case Right(value) => Right(m(value))
+      case Left(value) => Left(m(value._1), m(value._2))
+    }
+    def mC(x : Comprehension) = x match {
+      case IfComprehension(cond) => IfComprehension(m(cond))
+      case ForComprehension(what, in, isAsync) => ForComprehension(m(what), m(in), isAsync)
+    }
+    val x1 = x match {
+      case Assignment(ident, rhs, ann) => Assignment(ident, m(rhs), ann)
+      case Await(what, ann) => Await(m(what), ann)
+      case IntLiteral(value, ann) => x
+      case FloatLiteral(value, ann) => x
+      case ImagLiteral(value, ann) => x
+      case StringLiteral(value, ann) => x
+      case BoolLiteral(value, ann) => x
+      case NoneLiteral(ann) => x
+      case EllipsisLiteral(ann) => x
+      case Binop(op, l, r, ann) => Binop(op, m(l), m(r), ann)
+      case SimpleComparison(op, l, r, ann) => SimpleComparison(op, m(l), m(r), ann)
+      case LazyLAnd(l, r, ann) => LazyLAnd(m(l), m(r), ann)
+      case LazyLOr(l, r, ann) => LazyLOr(m(l), m(r), ann)
+      case FreakingComparison(ops, l, ann) => FreakingComparison(ops, l.map(m), ann)
+      case Unop(op, x, ann) => Unop(op, m(x), ann)
+      case Ident(name, ann) => x
+      case Star(e, ann) => Star(m(e), ann)
+      case DoubleStar(e, ann) => DoubleStar(m(e), ann)
+      case CollectionCons(kind, l, ann) => CollectionCons(kind, l.map(m), ann)
+      case CollectionComprehension(kind, base, l, ann) => CollectionComprehension(kind, m(base), l.map(mC), ann)
+      case GeneratorComprehension(base, l, ann) => GeneratorComprehension(m(base), l.map(mC), ann)
+      case DictCons(l, ann) => DictCons(l.map(mD), ann)
+      case DictComprehension(base, l, ann) => DictComprehension(mD(base), l.map(mC), ann)
+      case Slice(from, to, by, ann) => Slice(from.map(m), to.map(m), by.map(m), ann)
+      case CallIndex(isCall, whom, args, ann) => CallIndex(isCall, m(whom), args.map(x => (x._1, m(x._2))), ann)
+      case Field(whose, name, ann) => Field(m(whose), name, ann)
+      case Cond(cond, yes, no, ann) => Cond(m(cond), m(yes), m(no), ann)
+      case AnonFun(args, otherPositional, otherKeyword, body, ann) =>
+        AnonFun(args.map(p => p.withAnnDefault(p.paramAnn.map(m), p.default.map(m))), otherPositional, otherKeyword, m(body), ann)
+      case Yield(l, ann) => Yield(l.map(m), ann)
+      case YieldFrom(e, ann) => YieldFrom(m(e), ann)
+      case expr: UnsupportedExpr => new UnsupportedExpr(m(expr.original), expr.children.map(m), expr.ann)
+    }
+    f(x1)
   }
 
   def isLiteral(e : T) : Boolean = e match {
