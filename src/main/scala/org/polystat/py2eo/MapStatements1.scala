@@ -270,8 +270,8 @@ object MapStatements1 {
   }
 
   def mapImportFrom(c : Import_fromContext) : Statement = {
-    if (!c.ELLIPSIS().isEmpty || !c.DOT().isEmpty) ???
-    val from = mapDottedName(c.dotted_name())
+    val nprefixDots = c.ELLIPSIS().size() * 3 + c.DOT().size()
+    val from = List.fill(nprefixDots)("") ++ mapDottedName(c.dotted_name())
     if (c.import_from_targets().STAR() != null) ImportAllSymbols(from, ga(c)) else {
       Suite(
         toList(c.import_from_targets().import_from_as_names().import_from_as_name()).map(
