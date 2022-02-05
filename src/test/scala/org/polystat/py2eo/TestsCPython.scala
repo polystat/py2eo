@@ -73,6 +73,7 @@ class TestsCPython(path: jl.String){
             val pytest = new File(test.getParent + "/" + fName)
             eoText = Transpile.transpile(db)(fName, readFile(pytest))
             println(s"Error with file ${test.getName} with error ${e.getMessage} the outPut will be at ${pytest.getName}")
+          case e: Exception => println(s"Some unknown error ${e.getLocalizedMessage}")
         }
 
         writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)

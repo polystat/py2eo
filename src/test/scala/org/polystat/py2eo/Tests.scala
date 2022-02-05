@@ -30,6 +30,7 @@ class Tests extends Commons {
   }
 
 
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
