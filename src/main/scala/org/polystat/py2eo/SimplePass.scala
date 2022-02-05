@@ -709,8 +709,10 @@ object SimplePass {
 
   }
 
-  def changeIdentifierName: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
-    //case (false, Ident(name, ann), ns) => (Left(Ident(name, ann.pos)), ns)
+  private var needToChange = true
+
+  def changeIdentifierName:(Boolean, T, Names) => (EAfterPass, Names) = procExpr({
+    case (false, Ident(name, ann), ns) if needToChange => { needToChange = false; (Left(Ident(name + "2", ann.pos)), ns) }
     case (_, e, ns) => (Left(e), ns)
   })
 
