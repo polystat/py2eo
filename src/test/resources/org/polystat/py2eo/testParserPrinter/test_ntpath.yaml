@@ -1,0 +1,116 @@
+python: |
+  import ntpath
+  import os
+  import sys
+  import unittest
+  import warnings
+  from test.support import TestFailed, FakePath
+  from test import support, test_genericpath
+  from tempfile import TemporaryFile
+  
+  
+  try:
+      import nt
+  except ImportError:
+      # Most tests can complete without the nt module,
+      # but for those that require it we import here.
+      nt = None
+  
+  try:
+      ntpath._getfinalpathname
+  except AttributeError:
+      HAVE_GETFINALPATHNAME = False
+  else:
+      HAVE_GETFINALPATHNAME = True
+  
+  try:
+      import ctypes
+  except ImportError:
+      HAVE_GETSHORTPATHNAME = False
+  else:
+      HAVE_GETSHORTPATHNAME = True
+      def _getshortpathname(path):
+          GSPN = ctypes.WinDLL("kernel32", use_last_error=True).GetShortPathNameW
+          GSPN.argtypes = [ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32]
+          GSPN.restype = ctypes.c_uint32
+          result_len = GSPN(path, None, 0)
+          if not result_len:
+              raise OSError("failed to get short path name 0x{:08X}"
+                            .format(ctypes.get_last_error()))
+          result = ctypes.create_unicode_buffer(result_len)
+          result_len = GSPN(path, result, result_len)
+          return result[:result_len]
+  
+  def _norm(path):
+      if isinstance(path, (bytes, str, os.PathLike)):
+          return ntpath.normcase(os.fsdecode(path))
+      elif hasattr(path, "__iter__"):
+          return tuple(ntpath.normcase(os.fsdecode(p)) for p in path)
+      return path
+  
+  
+  def tester(fn, wantResult):
+      fn = fn.replace("\\", "\\\\")
+      gotResult = eval(fn)
+      if wantResult != gotResult and _norm(wantResult) != _norm(gotResult):
+          raise TestFailed("%s should return: %s but returned: %s" \
+                %(str(fn), str(wantResult), str(gotResult)))
+  
+      # then with bytes
+      fn = fn.replace("('", "(b'")
+      fn = fn.replace('("', '(b"')
+      fn = fn.replace("['", "[b'")
+      fn = fn.replace('["', '[b"')
+      fn = fn.replace(", '", ", b'")
+      fn = fn.replace(', "', ', b"')
+      fn = os.fsencode(fn).decode('latin1')
+      fn = fn.encode('ascii', 'backslashreplace').decode('ascii')
+      with warnings.catch_warnings():
+          warnings.simplefilter("ignore", DeprecationWarning)
+          gotResult = eval(fn)
+      if _norm(wantResult) != _norm(gotResult):
+          raise TestFailed("%s should return: %s but returned: %s" \
+                %(str(fn), str(wantResult), repr(gotResult)))
+  
+  
+  class NtpathTestCase(unittest.TestCase):
+      def assertPathEqual(self, path1, path2):
+          if path1 == path2 or _norm(path1) == _norm(path2):
+              return
+          self.assertEqual(path1, path2)
+  
+      def assertPathIn(self, path, pathset):
+          self.assertIn(_norm(path), _norm(pathset))
+  
+  
+  class TestNtpath(NtpathTestCase):
+      def test_splitext(self):
+          tester('ntpath.splitext("foo.ext")', ('foo', '.ext'))
+          tester('ntpath.splitext("/foo/foo.ext")', ('/foo/foo', '.ext'))
+          tester('ntpath.splitext(".ext")', ('.ext', ''))
+          tester('ntpath.splitext("\\foo.ext\\foo")', ('\\foo.ext\\foo', ''))
+          tester('ntpath.splitext("foo.ext\\")', ('foo.ext\\', ''))
+          tester('ntpath.splitext("")', ('', ''))
+          tester('ntpath.splitext("foo.bar.ext")', ('foo.bar', '.ext'))
+          tester('ntpath.splitext("xx/foo.bar.ext")', ('xx/foo.bar', '.ext'))
+          tester('ntpath.splitext("xx\\foo.bar.ext")', ('xx\\foo.bar', '.ext'))
+          tester('ntpath.splitext("c:a/b\\c.d")', ('c:a/b\\c', '.d'))
+  
+      def test_splitdrive(self):
+          tester('ntpath.splitdrive("c:\\foo\\bar")',
+                 ('c:', '\\foo\\bar'))
+          tester('ntpath.splitdrive("c:/foo/bar")',
+                 ('c:', '/foo/bar'))
+          tester('ntpath.splitdrive("\\\\conky\\mountpoint\\foo\\bar")',
+                 ('\\\\conky\\mountpoint', '\\foo\\bar'))
+          tester('ntpath.splitdrive("//conky/mountpoint/foo/bar")',
+                 ('//conky/mountpoint', '/foo/bar'))
+          tester('ntpath.splitdrive("\\\\\\conky\\mountpoint\\foo\\bar")',
+              ('', '\\\\\\conky\\mountpoint\\foo\\bar'))
+          tester('ntpath.splitdrive("///conky/mountpoint/foo/bar")',
+              ('', '///conky/mountpoint/foo/bar'))
+          tester('ntpath.splitdrive("\\\\conky\\\\mountpoint\\foo\\bar")',
+                 ('', '\\\\conky\\\\mountpoint\\foo\\bar'))
+          tester('ntpath.splitdrive("//conky//mountpoint/foo/bar")',
+                 ('', '//conky//mountpoint/foo/bar'))
+          # Issue #19911: UNC part containing U+0130

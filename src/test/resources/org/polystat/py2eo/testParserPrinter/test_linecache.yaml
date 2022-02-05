@@ -1,0 +1,92 @@
+python: |
+  """ Tests for the linecache module """
+  
+  import linecache
+  import unittest
+  import os.path
+  import tempfile
+  import tokenize
+  from test import support
+  
+  
+  FILENAME = linecache.__file__
+  NONEXISTENT_FILENAME = FILENAME + '.missing'
+  INVALID_NAME = '!@$)(!@#_1'
+  EMPTY = ''
+  TEST_PATH = os.path.dirname(__file__)
+  MODULES = "linecache abc".split()
+  MODULE_PATH = os.path.dirname(FILENAME)
+  
+  SOURCE_1 = '''
+  " Docstring "
+  
+  def function():
+      return result
+  
+  '''
+  
+  SOURCE_2 = '''
+  def f():
+      return 1 + 1
+  
+  a = f()
+  
+  '''
+  
+  SOURCE_3 = '''
+  def f():
+      return 3''' # No ending newline
+  
+  
+  class TempFile:
+  
+      def setUp(self):
+          super().setUp()
+          with tempfile.NamedTemporaryFile(delete=False) as fp:
+              self.file_name = fp.name
+              fp.write(self.file_byte_string)
+          self.addCleanup(support.unlink, self.file_name)
+  
+  
+  class GetLineTestsGoodData(TempFile):
+      # file_list   = ['list\n', 'of\n', 'good\n', 'strings\n']
+  
+      def setUp(self):
+          self.file_byte_string = ''.join(self.file_list).encode('utf-8')
+          super().setUp()
+  
+      def test_getline(self):
+          with tokenize.open(self.file_name) as fp:
+              for index, line in enumerate(fp):
+                  if not line.endswith('\n'):
+                      line += '\n'
+  
+                  cached_line = linecache.getline(self.file_name, index + 1)
+                  self.assertEqual(line, cached_line)
+  
+      def test_getlines(self):
+          lines = linecache.getlines(self.file_name)
+          self.assertEqual(lines, self.file_list)
+  
+  
+  class GetLineTestsBadData(TempFile):
+      # file_byte_string = b'Bad data goes here'
+  
+      def test_getline(self):
+          self.assertRaises((SyntaxError, UnicodeDecodeError),
+                            linecache.getline, self.file_name, 1)
+  
+      def test_getlines(self):
+          self.assertRaises((SyntaxError, UnicodeDecodeError),
+                            linecache.getlines, self.file_name)
+  
+  
+  class EmptyFile(GetLineTestsGoodData, unittest.TestCase):
+      file_list = []
+  
+  
+  class SingleEmptyLine(GetLineTestsGoodData, unittest.TestCase):
+      file_list = ['\n']
+  
+  
+  class GoodUnicode(GetLineTestsGoodData, unittest.TestCase):

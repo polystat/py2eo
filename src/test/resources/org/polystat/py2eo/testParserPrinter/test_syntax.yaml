@@ -1,0 +1,138 @@
+python: |
+  import re
+  import unittest
+  
+  from test import support
+  
+  class SyntaxTestCase(unittest.TestCase):
+  
+      def _check_error(self, code, errtext,
+                       filename="<testcase>", mode="exec", subclass=None, lineno=None, offset=None):
+          """Check that compiling code raises SyntaxError with errtext.
+  
+          errtest is a regular expression that must be present in the
+          test of the exception raised.  If subclass is specified it
+          is the expected subclass of SyntaxError (e.g. IndentationError).
+          """
+          try:
+              compile(code, filename, mode)
+          except SyntaxError as err:
+              if subclass and not isinstance(err, subclass):
+                  self.fail("SyntaxError is not a %s" % subclass.__name__)
+              mo = re.search(errtext, str(err))
+              if mo is None:
+                  self.fail("SyntaxError did not contain '%r'" % (errtext,))
+              self.assertEqual(err.filename, filename)
+              if lineno is not None:
+                  self.assertEqual(err.lineno, lineno)
+              if offset is not None:
+                  self.assertEqual(err.offset, offset)
+          else:
+              self.fail("compile() did not raise SyntaxError")
+  
+      def test_assign_call(self):
+          self._check_error("f() = 1", "assign")
+  
+      def test_assign_del(self):
+          self._check_error("del f()", "delete")
+  
+      def test_global_param_err_first(self):
+          source = """if 1:
+              def error(a):
+                  global a  # SyntaxError
+              def error2():
+                  b = 1
+                  global b  # SyntaxError
+              """
+          self._check_error(source, "parameter and global", lineno=3)
+  
+      def test_nonlocal_param_err_first(self):
+          source = """if 1:
+              def error(a):
+                  nonlocal a  # SyntaxError
+              def error2():
+                  b = 1
+                  global b  # SyntaxError
+              """
+          self._check_error(source, "parameter and nonlocal", lineno=3)
+  
+      def test_break_outside_loop(self):
+          self._check_error("break", "outside loop")
+  
+      def test_yield_outside_function(self):
+          self._check_error("if 0: yield",                "outside function")
+          self._check_error("if 0: yield\nelse:  x=1",    "outside function")
+          self._check_error("if 1: pass\nelse: yield",    "outside function")
+          self._check_error("while 0: yield",             "outside function")
+          self._check_error("while 0: yield\nelse:  x=1", "outside function")
+          self._check_error("class C:\n  if 0: yield",    "outside function")
+          self._check_error("class C:\n  if 1: pass\n  else: yield",
+                            "outside function")
+          self._check_error("class C:\n  while 0: yield", "outside function")
+          self._check_error("class C:\n  while 0: yield\n  else:  x = 1",
+                            "outside function")
+  
+      def test_return_outside_function(self):
+          self._check_error("if 0: return",                "outside function")
+          self._check_error("if 0: return\nelse:  x=1",    "outside function")
+          self._check_error("if 1: pass\nelse: return",    "outside function")
+          self._check_error("while 0: return",             "outside function")
+          self._check_error("class C:\n  if 0: return",    "outside function")
+          self._check_error("class C:\n  while 0: return", "outside function")
+          self._check_error("class C:\n  while 0: return\n  else:  x=1",
+                            "outside function")
+          self._check_error("class C:\n  if 0: return\n  else: x= 1",
+                            "outside function")
+          self._check_error("class C:\n  if 1: pass\n  else: return",
+                            "outside function")
+  
+      def test_break_outside_loop(self):
+          self._check_error("if 0: break",             "outside loop")
+          self._check_error("if 0: break\nelse:  x=1",  "outside loop")
+          self._check_error("if 1: pass\nelse: break", "outside loop")
+          self._check_error("class C:\n  if 0: break", "outside loop")
+          self._check_error("class C:\n  if 1: pass\n  else: break",
+                            "outside loop")
+  
+      def test_continue_outside_loop(self):
+          self._check_error("if 0: continue",             "not properly in loop")
+          self._check_error("if 0: continue\nelse:  x=1", "not properly in loop")
+          self._check_error("if 1: pass\nelse: continue", "not properly in loop")
+          self._check_error("class C:\n  if 0: continue", "not properly in loop")
+          self._check_error("class C:\n  if 1: pass\n  else: continue",
+                            "not properly in loop")
+  
+      def test_unexpected_indent(self):
+          self._check_error("foo()\n bar()\n", "unexpected indent",
+                            subclass=IndentationError)
+  
+      def test_no_indent(self):
+          self._check_error("if 1:\nfoo()", "expected an indented block",
+                            subclass=IndentationError)
+  
+      def test_bad_outdent(self):
+          self._check_error("if 1:\n  foo()\n bar()",
+                            "unindent does not match .* level",
+                            subclass=IndentationError)
+  
+      def test_kwargs_last(self):
+          self._check_error("int(base=10, '2')",
+                            "positional argument follows keyword argument")
+  
+      def test_kwargs_last2(self):
+          self._check_error("int(**{'base': 10}, '2')",
+                            "positional argument follows "
+                            "keyword argument unpacking")
+  
+      def test_kwargs_last3(self):
+          self._check_error("int(**{'base': 10}, *['2'])",
+                            "iterable argument unpacking follows "
+                            "keyword argument unpacking")
+  
+  def test_main():
+      support.run_unittest(SyntaxTestCase)
+      from test import test_syntax
+      support.run_doctest(test_syntax, verbosity=True)
+  
+  if __name__ == "__main__":
+      test_main()

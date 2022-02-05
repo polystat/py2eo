@@ -1,0 +1,114 @@
+python: |
+  from http.server import BaseHTTPRequestHandler, HTTPServer, \
+       SimpleHTTPRequestHandler, CGIHTTPRequestHandler
+  from http import server, HTTPStatus
+  
+  import os
+  import socket
+  import sys
+  import re
+  import base64
+  import ntpath
+  import shutil
+  import email.message
+  import email.utils
+  import html
+  import http.client
+  import urllib.parse
+  import tempfile
+  import time
+  import datetime
+  import threading
+  from unittest import mock
+  from io import BytesIO
+  
+  import unittest
+  from test import support
+  
+  
+  class NoLogRequestHandler:
+      def log_message(self, *args):
+          # don't write log messages to stderr
+          pass
+  
+      def read(self, n=None):
+          return ''
+  
+  
+  class TestServerThread(threading.Thread):
+      def __init__(self, test_object, request_handler):
+          threading.Thread.__init__(self)
+          self.request_handler = request_handler
+          self.test_object = test_object
+  
+      def run(self):
+          self.server = HTTPServer(('localhost', 0), self.request_handler)
+          self.test_object.HOST, self.test_object.PORT = self.server.socket.getsockname()
+          self.test_object.server_started.set()
+          self.test_object = None
+          try:
+              self.server.serve_forever(0.05)
+          finally:
+              self.server.server_close()
+  
+      def stop(self):
+          self.server.shutdown()
+          self.join()
+  
+  
+  class BaseTestCase(unittest.TestCase):
+      def setUp(self):
+          self._threads = support.threading_setup()
+          os.environ = support.EnvironmentVarGuard()
+          self.server_started = threading.Event()
+          self.thread = TestServerThread(self, self.request_handler)
+          self.thread.start()
+          self.server_started.wait()
+  
+      def tearDown(self):
+          self.thread.stop()
+          self.thread = None
+          os.environ.__exit__()
+          support.threading_cleanup(*self._threads)
+  
+      def request(self, uri, method='GET', body=None, headers={}):
+          self.connection = http.client.HTTPConnection(self.HOST, self.PORT)
+          self.connection.request(method, uri, body, headers)
+          return self.connection.getresponse()
+  
+  
+  class BaseHTTPServerTestCase(BaseTestCase):
+      class request_handler(NoLogRequestHandler, BaseHTTPRequestHandler):
+          protocol_version = 'HTTP/1.1'
+          default_request_version = 'HTTP/1.1'
+  
+          def do_TEST(self):
+              self.send_response(HTTPStatus.NO_CONTENT)
+              self.send_header('Content-Type', 'text/html')
+              self.send_header('Connection', 'close')
+              self.end_headers()
+  
+          def do_KEEP(self):
+              self.send_response(HTTPStatus.NO_CONTENT)
+              self.send_header('Content-Type', 'text/html')
+              self.send_header('Connection', 'keep-alive')
+              self.end_headers()
+  
+          def do_KEYERROR(self):
+              self.send_error(999)
+  
+          def do_NOTFOUND(self):
+              self.send_error(HTTPStatus.NOT_FOUND)
+  
+          def do_EXPLAINERROR(self):
+              self.send_error(999, "Short Message",
+                              "This is a long \n explanation")
+  
+          def do_CUSTOM(self):
+              self.send_response(999)
+              self.send_header('Content-Type', 'text/html')
+              self.send_header('Connection', 'close')
+              self.end_headers()
+  
+          def do_LATINONEHEADER(self):
+              self.send_response(999)

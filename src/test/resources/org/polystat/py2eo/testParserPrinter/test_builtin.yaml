@@ -1,0 +1,257 @@
+python: |
+  # Python test set -- built-in functions
+  
+  import ast
+  import asyncio
+  import builtins
+  import collections
+  import decimal
+  import fractions
+  import gc
+  import io
+  import locale
+  import os
+  import pickle
+  import platform
+  import random
+  import re
+  import sys
+  import traceback
+  import types
+  import unittest
+  import warnings
+  from contextlib import ExitStack
+  from functools import partial
+  from inspect import CO_COROUTINE
+  from itertools import product
+  from textwrap import dedent
+  from types import AsyncGeneratorType, FunctionType
+  from operator import neg
+  from test.support import (
+      EnvironmentVarGuard, TESTFN, check_warnings, swap_attr, unlink,
+      maybe_get_event_loop_policy, cpython_only)
+  from test.support.script_helper import assert_python_ok
+  from unittest.mock import MagicMock, patch
+  try:
+      import pty, signal
+  except ImportError:
+      pty = signal = None
+  
+  
+  class Squares:
+  
+      def __init__(self, max):
+          self.max = max
+          self.sofar = []
+  
+      def __len__(self): return len(self.sofar)
+  
+      def __getitem__(self, i):
+          if not 0 <= i < self.max: raise IndexError
+          n = len(self.sofar)
+          while n <= i:
+              self.sofar.append(n*n)
+              n += 1
+          return self.sofar[i]
+  
+  class StrSquares:
+  
+      def __init__(self, max):
+          self.max = max
+          self.sofar = []
+  
+      def __len__(self):
+          return len(self.sofar)
+  
+      def __getitem__(self, i):
+          if not 0 <= i < self.max:
+              raise IndexError
+          n = len(self.sofar)
+          while n <= i:
+              self.sofar.append(str(n*n))
+              n += 1
+          return self.sofar[i]
+  
+  class BitBucket:
+      def write(self, line):
+          pass
+  
+  test_conv_no_sign = [
+          ('0', 0),
+          ('1', 1),
+          ('9', 9),
+          ('10', 10),
+          ('99', 99),
+          ('100', 100),
+          ('314', 314),
+          (' 314', 314),
+          ('314 ', 314),
+          ('  \t\t  314  \t\t  ', 314),
+          (repr(sys.maxsize), sys.maxsize),
+          ('  1x', ValueError),
+          ('  1  ', 1),
+          ('  1\02  ', ValueError),
+          ('', ValueError),
+          (' ', ValueError),
+          ('  \t\t  ', ValueError),
+          (str(br'\u0663\u0661\u0664 ','raw-unicode-escape'), 314),
+          (chr(0x200), ValueError),
+  ]
+  
+  test_conv_sign = [
+          ('0', 0),
+          ('1', 1),
+          ('9', 9),
+          ('10', 10),
+          ('99', 99),
+          ('100', 100),
+          ('314', 314),
+          (' 314', ValueError),
+          ('314 ', 314),
+          ('  \t\t  314  \t\t  ', ValueError),
+          (repr(sys.maxsize), sys.maxsize),
+          ('  1x', ValueError),
+          ('  1  ', ValueError),
+          ('  1\02  ', ValueError),
+          ('', ValueError),
+          (' ', ValueError),
+          ('  \t\t  ', ValueError),
+          (str(br'\u0663\u0661\u0664 ','raw-unicode-escape'), 314),
+          (chr(0x200), ValueError),
+  ]
+  
+  class TestFailingBool:
+      def __bool__(self):
+          raise RuntimeError
+  
+  class TestFailingIter:
+      def __iter__(self):
+          raise RuntimeError
+  
+  def filter_char(arg):
+      return ord(arg) > ord("d")
+  
+  def map_char(arg):
+      return chr(ord(arg)+1)
+  
+  class BuiltinTest(unittest.TestCase):
+      # Helper to check picklability
+      def check_iter_pickle(self, it, seq, proto):
+          itorg = it
+          d = pickle.dumps(it, proto)
+          it = pickle.loads(d)
+          self.assertEqual(type(itorg), type(it))
+          self.assertEqual(list(it), seq)
+  
+          #test the iterator after dropping one from it
+          it = pickle.loads(d)
+          try:
+              next(it)
+          except StopIteration:
+              return
+          d = pickle.dumps(it, proto)
+          it = pickle.loads(d)
+          self.assertEqual(list(it), seq[1:])
+  
+      def test_import(self):
+          __import__('sys')
+          __import__('time')
+          __import__('string')
+          __import__(name='sys')
+          __import__(name='time', level=0)
+          self.assertRaises(ImportError, __import__, 'spamspam')
+          self.assertRaises(TypeError, __import__, 1, 2, 3, 4)
+          self.assertRaises(ValueError, __import__, '')
+          self.assertRaises(TypeError, __import__, 'sys', name='sys')
+          # Relative import outside of a package with no __package__ or __spec__ (bpo-37409).
+          with self.assertWarns(ImportWarning):
+              self.assertRaises(ImportError, __import__, '',
+                                {'__package__': None, '__spec__': None, '__name__': '__main__'},
+                                locals={}, fromlist=('foo',), level=1)
+          # embedded null character
+          self.assertRaises(ModuleNotFoundError, __import__, 'string\x00')
+  
+      def test_abs(self):
+          # int
+          self.assertEqual(abs(0), 0)
+          self.assertEqual(abs(1234), 1234)
+          self.assertEqual(abs(-1234), 1234)
+          self.assertTrue(abs(-sys.maxsize-1) > 0)
+          # float
+          self.assertEqual(abs(0.0), 0.0)
+          self.assertEqual(abs(3.14), 3.14)
+          self.assertEqual(abs(-3.14), 3.14)
+          # str
+          self.assertRaises(TypeError, abs, 'a')
+          # bool
+          self.assertEqual(abs(True), 1)
+          self.assertEqual(abs(False), 0)
+          # other
+          self.assertRaises(TypeError, abs)
+          self.assertRaises(TypeError, abs, None)
+          class AbsClass(object):
+              def __abs__(self):
+                  return -5
+          self.assertEqual(abs(AbsClass()), -5)
+  
+      def test_all(self):
+          self.assertEqual(all([2, 4, 6]), True)
+          self.assertEqual(all([2, None, 6]), False)
+          self.assertRaises(RuntimeError, all, [2, TestFailingBool(), 6])
+          self.assertRaises(RuntimeError, all, TestFailingIter())
+          self.assertRaises(TypeError, all, 10)               # Non-iterable
+          self.assertRaises(TypeError, all)                   # No args
+          self.assertRaises(TypeError, all, [2, 4, 6], [])    # Too many args
+          self.assertEqual(all([]), True)                     # Empty iterator
+          self.assertEqual(all([0, TestFailingBool()]), False)# Short-circuit
+          S = [50, 60]
+          self.assertEqual(all(x > 42 for x in S), True)
+          S = [50, 40, 60]
+          self.assertEqual(all(x > 42 for x in S), False)
+  
+      def test_any(self):
+          self.assertEqual(any([None, None, None]), False)
+          self.assertEqual(any([None, 4, None]), True)
+          self.assertRaises(RuntimeError, any, [None, TestFailingBool(), 6])
+          self.assertRaises(RuntimeError, any, TestFailingIter())
+          self.assertRaises(TypeError, any, 10)               # Non-iterable
+          self.assertRaises(TypeError, any)                   # No args
+          self.assertRaises(TypeError, any, [2, 4, 6], [])    # Too many args
+          self.assertEqual(any([]), False)                    # Empty iterator
+          self.assertEqual(any([1, TestFailingBool()]), True) # Short-circuit
+          S = [40, 60, 30]
+          self.assertEqual(any(x > 42 for x in S), True)
+          S = [10, 20, 30]
+          self.assertEqual(any(x > 42 for x in S), False)
+  
+      def test_ascii(self):
+          self.assertEqual(ascii(''), '\'\'')
+          self.assertEqual(ascii(0), '0')
+          self.assertEqual(ascii(()), '()')
+          self.assertEqual(ascii([]), '[]')
+          self.assertEqual(ascii({}), '{}')
+          a = []
+          a.append(a)
+          self.assertEqual(ascii(a), '[[...]]')
+          a = {}
+          a[0] = a
+          self.assertEqual(ascii(a), '{0: {...}}')
+          # Advanced checks for unicode strings
+          def _check_uni(s):
+              self.assertEqual(ascii(s), repr(s))
+          _check_uni("'")
+          _check_uni('"')
+          _check_uni('"\'')
+          _check_uni('\0')
+          _check_uni('\r\n\t .')
+          # Unprintable non-ASCII characters
+          _check_uni('\x85')
+          _check_uni('\u1fff')
+          _check_uni('\U00012fff')
+          # Lone surrogates
+          _check_uni('\ud800')
+          _check_uni('\udfff')
+          # Issue #9804: surrogates should be joined even for printable
+          # wide characters (UCS-2 builds).
+          self.assertEqual(ascii('\U0001d121'), "'\\U0001d121'")
+          # All together

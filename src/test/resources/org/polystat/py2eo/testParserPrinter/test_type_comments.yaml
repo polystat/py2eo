@@ -1,0 +1,55 @@
+python: |
+  import ast
+  import sys
+  import unittest
+  
+  
+  funcdef = """\
+  def foo():
+      # type: () -> int
+      pass
+  
+  def bar():  # type: () -> None
+      pass
+  """
+  
+  asyncdef = """\
+  async def foo():
+      # type: () -> int
+      return await bar()
+  
+  async def bar():  # type: () -> int
+      return await bar()
+  """
+  
+  asyncvar = """\
+  async = 12
+  await = 13
+  """
+  
+  asynccomp = """\
+  async def foo(xs):
+      [x async for x in xs]
+  """
+  
+  matmul = """\
+  a = b @ c
+  """
+  
+  fstring = """\
+  a = 42
+  f"{a}"
+  """
+  
+  underscorednumber = """\
+  a = 42_42_42
+  """
+  
+  redundantdef = """\
+  def foo():  # type: () -> int
+      # type: () -> str
+      return ''
+  """
+  
+  nonasciidef = """\
+  def foo():
