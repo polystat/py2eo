@@ -1,20 +1,10 @@
 package org.polystat.py2eo
 
-import org.junit.Test
-import org.yaml.snakeyaml.Yaml
-
-import java.io.{File, FileInputStream}
 import java.nio.file.{Files, Path, Paths}
 
-class TestsUseCage extends Commons {
-  def getYamlStr(path:String): String ={
-    val testHolder = new File(path)
-    val src = new FileInputStream(testHolder)
-    val yaml = new Yaml()
-    val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
-    yamlObj.get("python").asInstanceOf[String]
-  }
+import org.junit.Test
 
+class TestsUseCage extends Commons {
   @Test def trivialTest():Unit = {
     val test = testsPrefix + "/trivial.yaml"
     useCageHolder(test,getYamlStr(test))

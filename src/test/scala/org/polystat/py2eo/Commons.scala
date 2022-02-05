@@ -2,8 +2,10 @@ package org.polystat.py2eo
 
 import org.junit.Assert.assertTrue
 import org.polystat.py2eo.Main.{debugPrinter, writeFile}
+import java.io.{File, FileInputStream}
 
-import java.io.File
+import org.yaml.snakeyaml.Yaml
+
 import scala.sys.process._
 
 trait Commons {
@@ -16,6 +18,14 @@ trait Commons {
     val pattern = "Python (\\d+)".r
     val Some(match1) = pattern.findFirstMatchIn(if (stderr.toString() == "") stdout.toString() else stderr.toString())
     if (match1.group(1) == "2") "python3" else "python"
+  }
+
+  def getYamlStr(path:String): String ={
+    val testHolder = new File(path)
+    val src = new FileInputStream(testHolder)
+    val yaml = new Yaml()
+    val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
+    yamlObj.get("python").asInstanceOf[String]
   }
 
 

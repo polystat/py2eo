@@ -23,10 +23,10 @@ class Tests extends Commons {
 
   @Test def simplifyInheritance(): Unit = {
     val name = "inheritance"
-    val test = new File(testsPrefix + "/" + name + ".py")
+    val test = new File(testsPrefix + "/" + name + ".yaml")
     def db = debugPrinter(test)(_, _)
 
-    SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    SimplePass.allTheGeneralPasses(db, Parse.parse(getYamlStr(test.getPath), db), new SimplePass.Names())
   }
 
 
