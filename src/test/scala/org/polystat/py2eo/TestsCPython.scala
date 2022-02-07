@@ -80,6 +80,13 @@ class TestsCPython(path: jl.String){
       }
     }
 
+    assume(System.getProperty("os.name") == "Linux")
+    assert(0 == Process("./configure", cpython).!)
+    val nprocessors = Runtime.getRuntime.availableProcessors()
+    println(s"have $nprocessors processors")
+    assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
+    assertTrue(0 == Process("make test", cpython).!)
+
     println("working with file" + path)
   }
 }
