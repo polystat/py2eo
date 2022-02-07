@@ -1,14 +1,13 @@
 package org.polystat.py2eo
 
-import java.io.File
-import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.{Files, Paths}
-
 import org.junit.Assert._
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.Common.dfsFiles
 import org.polystat.py2eo.Expression._
 
+import java.io.File
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.{Files, Paths}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -29,7 +28,7 @@ class Tests extends Commons {
     SimplePass.allTheGeneralPasses(db, Parse.parse(getYamlStr(test.getPath), db), new SimplePass.Names())
   }
 
-
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
