@@ -1,45 +1,43 @@
 package org.polystat.py2eo
 
-import java.nio.file.{Files, Path, Paths}
-
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
+import org.junit.runners.Parameterized.Parameters
+import org.yaml.snakeyaml.error.YAMLException
 
-class TestsUseCage extends Commons {
-  @Test def trivialTest():Unit = {
-    val test = testsPrefix + "/trivial.yaml"
-    useCageHolder(test,getYamlStr(test))
+import java.io.File
+import java.nio.file.{Files, Path}
+import java.{lang => jl, util => ju}
+
+@RunWith(value = classOf[Parameterized])
+class TestsUseCage(path: jl.String) extends Commons {
+  @Test def useCageRunner():Unit = {
+    useCageHolder(path,getYamlStr(path))
   }
+}
 
-  @Test def simplestClassTest():Unit = {
-    val test = testsPrefix + "/simplestClass.yaml"
-    useCageHolder(test,getYamlStr(test))
-  }
+object TestsUseCage{
+  @Parameters def parameters: ju.Collection[Array[jl.String]] = {
+    val resFolder = getClass.getResource("").getFile
+    val res = collection.mutable.ArrayBuffer[String]()
 
-  @Test def myListTest():Unit = {
-    val test = testsPrefix + "/myList.yaml"
-    useCageHolder(test,getYamlStr(test))
-  }
-
-  @Test def xTest():Unit = {
-    val test = testsPrefix + "/x.yaml"
-    useCageHolder(test,getYamlStr(test))
-  }
-
-  @Test def whileCheckTest():Unit = {
-    Files.walk(Paths.get(testsPrefix + "/simple_tests/whileCheck")).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
-      useCageHolder(p.toString, getYamlStr(p.toString))
+    Files.walk(new File(resFolder).toPath).filter((p: Path) => p.toString.endsWith(".yaml") &&
+      !p.toString.contains("testParserPrinter") && !p.toString.contains("trivialWithBreak")
+      && !p.toString.contains("inheritance")).forEach((p: Path) => {
+      val testHolder = new File(p.toString)
+      try {
+        println(testHolder.getPath)
+        res.addOne(p.toString)
+      } catch {
+        case e: YAMLException => println(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
+        case e: ClassCastException => println(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
+      }
     })
-  }
 
-  @Test def ifCheck():Unit = {
-    Files.walk(Paths.get(testsPrefix + "/simple_tests/ifCheck")).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
-      useCageHolder(p.toString, getYamlStr(p.toString))
-    })
-  }
 
-  @Test def assignCheck():Unit = {
-    Files.walk(Paths.get(testsPrefix + "/simple_tests/assignCheck")).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
-      useCageHolder(p.toString, getYamlStr(p.toString))
-    })
+    val list = new ju.ArrayList[Array[jl.String]]()
+    res.foreach(n => list.add(Array(n)))
+    list
   }
 }

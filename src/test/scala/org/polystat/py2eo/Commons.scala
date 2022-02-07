@@ -38,7 +38,14 @@ trait Commons {
         yamlString
       )
     )
+
+    println(path)
+
     val runme = test.getParentFile.getPath + "/afterUseCage/" + test.getName.substring(0,test.getName.lastIndexOf(".")) + ".py"
+
+
+    println(runme)
+
     assertTrue(0 == s"$python \"$runme\"".!)
   }
 }
