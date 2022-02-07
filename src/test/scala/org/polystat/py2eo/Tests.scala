@@ -1,14 +1,15 @@
 package org.polystat.py2eo
 
-import java.io.File
-import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.{Files, Paths}
-
 import org.junit.Assert._
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.Common.dfsFiles
 import org.polystat.py2eo.Expression._
+import org.yaml.snakeyaml.Yaml
+import org.yaml.snakeyaml.error.YAMLException
 
+import java.io.{File, FileInputStream}
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.{Files, Paths}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -30,7 +31,7 @@ class Tests extends Commons {
   }
 
 
-  @Ignore
+
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -63,18 +64,34 @@ class Tests extends Commons {
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future {
-        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")) {
+        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".yaml")) {
           def db = debugPrinter(test)(_, _)
 
           val name = test.getName
-          println(s"parsing $name")
-          val eoText = Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
-          writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)
-          Files.copy(
-            Paths.get(s"$dirName/afterParser/${test.getName}"),
-            Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
-            REPLACE_EXISTING
-          )
+          val fName = name.substring(0, name.lastIndexOf("."))
+
+          try {
+            val yaml = new Yaml()
+            val src = new FileInputStream(test)
+            val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
+            val str = yamlObj.get("python").asInstanceOf[String]
+            println(s"parsing $name")
+            try{
+              val eoText = Transpile.transpile(db)(fName, str)
+              writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)
+              Files.copy(
+                Paths.get(s"$dirName/afterParser/$fName.py"),
+                Paths.get(s"$dirName/afterParser/cpython/Lib/test/$fName.py"),
+                REPLACE_EXISTING
+              )
+            }
+
+          }catch {
+            case e: YAMLException =>
+              println(s"Couldn't parse ${test.getName} file with error ${e.getMessage} the outPut will be at ${fName}")
+            case  e: NullPointerException =>
+          }
+
         }
       }
     )

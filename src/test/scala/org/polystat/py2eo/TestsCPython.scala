@@ -3,9 +3,8 @@ package org.polystat.py2eo
 import java.io.{File, FileInputStream}
 import java.nio.file.{Files, Path}
 import java.{lang => jl, util => ju}
-
 import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.{Ignore, Test}
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
@@ -31,6 +30,7 @@ class TestsCPython(path: jl.String){
     if (match1.group(1) == "2") "python3" else "python"
   }
 
+  @Ignore
   @Test def testDef(): Unit = {
     val dirName = testsPrefix + "testParserPrinter"
     val dir = new File(dirName)
