@@ -8,9 +8,9 @@ deploy:
   script: mvn clean install
 release:
   script: |-
-    wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz &&
-    tar x -z < openjdk-17.0.2_linux-x64_bin.tar.gz &&
-    mkdir .m2 && cp toolchains.xml ~/.m2 &&
+    wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz 
+    tar x -z < openjdk-17.0.2_linux-x64_bin.tar.gz 
+    mkdir .m2 && cp toolchains.xml ~/.m2 
     mvn versions:set "-DnewVersion=${tag}" -Dstyle.color=never
     git commit -am "${tag}"
     mvn clean install -Dinvoker.skip -DskipTests=true
