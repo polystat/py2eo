@@ -37,6 +37,7 @@ This transpiler receives as input data python code. Then received code is simpli
 
 
 #### How to contribute? ####
+- check java version `java -version` or install `sudo apt install openjdk-17-jdk-headless`
 - check in command line installer Maven `mvn --version` or install it from [Maven 3.8+](https://maven.apache.org/download.cgi)
 - download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
 - open command line and go to the folder with downloaded project
@@ -50,8 +51,3 @@ This transpiler receives as input data python code. Then received code is simpli
     ```
 - run command `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\sample_test.py`
 - check output .eo file in `./genCageEO/sample_test.eo`
-
-#### Related links ####
-- https://github.com/cqfn/eo#:~:text=EO%20(stands%20for%20Elegant%20Objects,something%20we%20don't%20tolerate.
-- https://www.eolang.org/
-- https://www.yegor256.com/2016/11/29/eolang.html
