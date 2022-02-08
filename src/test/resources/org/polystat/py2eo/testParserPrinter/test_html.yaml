@@ -2,11 +2,11 @@ python: |
   """
   Tests for the html module functions.
   """
-  
+
   import html
   import unittest
-  
-  
+
+
   class HtmlTests(unittest.TestCase):
       def test_escape(self):
           self.assertEqual(
@@ -15,7 +15,7 @@ python: |
           self.assertEqual(
               html.escape('\'<script>"&foo;"</script>\'', False),
               '\'&lt;script&gt;"&amp;foo;"&lt;/script&gt;\'')
-  
+
       def test_unescape(self):
           numeric_formats = ['&#%d', '&#%d;', '&#x%x', '&#x%x;']
           errmsg = 'unescape(%r) should have returned %r'
@@ -80,6 +80,25 @@ python: |
           # check that non-existent named entities are returned unchanged
           check('&svadilfari;', '&svadilfari;')
           # the following examples are in the html5 specs
-          check('&notit', '�it')
-          check('&notit;', '�it;')
-          check('&notin', '�in')
+          check('&notit', '¬it')
+          check('&notit;', '¬it;')
+          check('&notin', '¬in')
+          check('&notin;', '∉')
+          # a similar example with a long name
+          check('&notReallyAnExistingNamedCharacterReference;',
+                '¬ReallyAnExistingNamedCharacterReference;')
+          # longest valid name
+          check('&CounterClockwiseContourIntegral;', '∳')
+          # check a charref that maps to two unicode chars
+          check('&acE;', '\u223E\u0333')
+          check('&acE', '&acE')
+          # see #12888
+          check('&#123; ' * 1050, '{ ' * 1050)
+          # see #15156
+          check('&Eacuteric&Eacute;ric&alphacentauri&alpha;centauri',
+                'ÉricÉric&alphacentauriαcentauri')
+          check('&co;', '&co;')
+
+
+  if __name__ == '__main__':
+      unittest.main()
