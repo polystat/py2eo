@@ -16,7 +16,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Build with Maven
-        run: mvn clean compile -B
+        run: |
+          wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz &&
+          tar x -z < openjdk-17.0.2_linux-x64_bin.tar.gz &&
+          mkdir .m2 && cp toolchains.xml ~/.m2 &&
+          mvn clean compile -B
 
   test:
     strategy:
@@ -35,7 +39,11 @@ jobs:
         with:
           python-version: '3.8.10'
       - name: Build with Maven
-        run: mvn clean package -B
+        run: |
+          wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz &&
+          tar x -z < openjdk-17.0.2_linux-x64_bin.tar.gz &&
+          mkdir .m2 && cp toolchains.xml ~/.m2 &&
+          mvn clean package -B
       - name: archive artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -50,7 +58,45 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: package
-          path: target/py2eo-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+          path: target/py2eo-0.0.1-SNAPSHOT-jar-with-dependencies.jar          
+
+  polystatIntegration:
+    strategy:
+        matrix:
+            os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    needs: test
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      - uses: actions/setup-python@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: package
+
+      - name: download polystat 
+        run: wget https://repo.maven.apache.org/maven2/org/polystat/polystat/0.4.0/polystat-0.4.0-jar-with-dependencies.jar
+      - name: translate python
+        run: java -jar ./py2eo-0.0.1-SNAPSHOT-jar-with-dependencies.jar ./src/test/resources/org/polystat/py2eo/integrationTests/test.py
+      - name: analysis
+        run: cp ./src/test/resources/org/polystat/py2eo/integrationTests/genCageEO/test.eo ./src/test.eo && cp ./src/test/resources/org/polystat/py2eo/integrationTests/goto.eo ./src/goto.eo && java -jar ./polystat-0.4.0-jar-with-dependencies.jar ./src ./temp --sarif
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: polystatResults
+          path: /Users/runner/work/py2eo/py2eo/temp
+      - name: failure artifacts
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+            name: py2eo output
+            path: ./src/test.eo
+
 
   runEO:
     strategy:
@@ -78,39 +124,3 @@ jobs:
         with:
           name: generatedJava
           path: /Users/runner/work/py2eo/py2eo/python/python3/test/target/generated-sources/
-          
-  polystatIntegration:
-    strategy: 
-        matrix:
-            os: [ ubuntu-latest ]
-    runs-on: ${{ matrix.os }}
-    needs: test
-    steps:
-      - uses: actions/checkout@v2
-      - name: set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-      - uses: actions/setup-python@v2
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: package
-      - name: download polystat 
-        run: wget https://repo.maven.apache.org/maven2/org/polystat/polystat/0.4.0/polystat-0.4.0-jar-with-dependencies.jar
-      - name: translate python
-        run: java -jar ./py2eo-0.0.1-SNAPSHOT-jar-with-dependencies.jar ./src/test/resources/org/polystat/py2eo/integrationTests/test.py
-      - name: analysis
-        run: cp ./src/test/resources/org/polystat/py2eo/integrationTests/genCageEO/test.eo ./src/test.eo && cp ./src/test/resources/org/polystat/py2eo/integrationTests/goto.eo ./src/goto.eo && java -jar ./polystat-0.4.0-jar-with-dependencies.jar ./src ./temp --sarif
-      - name: upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: polystatResults
-          path: /Users/runner/work/py2eo/py2eo/temp
-      - name: failure artifacts
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-            name: py2eo output
-            path: ./src/test.eo

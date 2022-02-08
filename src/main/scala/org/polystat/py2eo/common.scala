@@ -1,5 +1,7 @@
 package org.polystat.py2eo
 
+import java.io.File
+
 object Common {
 
   import scala.collection.immutable.HashMap
@@ -124,6 +126,17 @@ object Common {
   }
 
   type ExternalConstants = HashMap[String, BigInt]
+
+  def dfsFiles(file : File) : List[File] = {
+    if (!file.isDirectory) List(file) else {
+      file.listFiles().toList.flatMap(dfsFiles)
+    }
+  }
+
+  class TranspilerException(reason : String) extends Exception(reason)
+  class GeneratorException(reason : String) extends TranspilerException(reason)
+  class ASTAnalysisException(reason : String) extends TranspilerException(reason)
+  class ASTMapperException(reason : String) extends TranspilerException(reason)
 
 }
 

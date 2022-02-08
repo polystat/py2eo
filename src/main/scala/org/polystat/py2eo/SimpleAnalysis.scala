@@ -1,5 +1,7 @@
 package org.polystat.py2eo
 
+import org.polystat.py2eo.Common.ASTAnalysisException
+
 import scala.collection.immutable.HashMap
 
 object SimpleAnalysis {
@@ -17,6 +19,8 @@ object SimpleAnalysis {
   }
 
   def childrenE(e : T) : List[T] = e match {
+    case Assignment(_, rhs, _) => List(rhs)
+    case Await(what, _) => List(what)
     case AnonFun(_, _, _, body, _) => List(body)
     case Binop(_, l, r, _) =>List(l, r)
     case SimpleComparison(_, l, r, _) => List(l, r)
@@ -37,6 +41,7 @@ object SimpleAnalysis {
       | NoneLiteral(_) | ImagLiteral(_, _) | Ident(_, _) | EllipsisLiteral(_) =>
       List()
     case CollectionComprehension(_, base, l, _) => base :: l.flatMap(childrenComprehension)
+    case GeneratorComprehension(base, l, ann) => base :: l.flatMap(childrenComprehension)
     case DictComprehension(base, l, _) =>
       childrenDictEltDoubleStar(base) ++ l.flatMap(childrenComprehension)
     case Yield(l, _) => l.toList
@@ -53,21 +58,22 @@ object SimpleAnalysis {
     def isRhs(e : T) = (false, e)
     s match {
       case SimpleObject(_, fields, _) => (List(), fields.map(x => (false, x._2)))
-      case With(cm, target, body, _, _) => (List(body), (false, cm) :: target.map(x => (true, x)).toList)
-      case For(what, in, body, eelse, _, _) => (List(body, eelse), List((false, what), (false, in)))
+      case With(cms, body, _, _) =>
+        (List(body), cms.flatMap(x => (false, x._1) :: x._2.map(x => (true, x)).toList))
+      case For(what, in, body, eelse, _, _) => (body :: eelse.toList, List((false, what), (false, in)))
       case Del(e, _) => (List(), List((false, e)))
-      case If(conditioned, eelse, _) => (eelse :: conditioned.map(_._2), conditioned.map(x => (false, x._1)))
+      case If(conditioned, eelse, _) => (eelse.toList ++ conditioned.map(_._2), conditioned.map(x => (false, x._1)))
       case IfSimple(cond, yes, no, _) => (List(yes, no), List((false, cond)))
       case Try(ttry, excepts, eelse, ffinally, _) =>
-        ((ttry :: excepts.map(_._2)) :+ eelse :+ ffinally, excepts.flatMap(p => p._1.map(x => (false, x._1)).toList))
-      case While(cond, body, eelse, _) => (List(body, eelse), List(isRhs(cond)))
+        ((ttry :: excepts.map(_._2)) ++ eelse.toList ++ ffinally.toList, excepts.flatMap(p => p._1.map(x => (false, x._1)).toList))
+      case While(cond, body, eelse, _) => (body :: eelse.toList, List(isRhs(cond)))
       case Suite(l, _) => (l, List())
       case AugAssign(_, lhs, rhs, _) => (List(), List((true, lhs), (false, rhs)))
       case Assign(l, _) => (List(), (false, l.head) :: l.tail.map(isRhs))
       case AnnAssign(lhs, rhsAnn, rhs, _) => (List(), (true, lhs) :: (List(rhsAnn) ++ rhs.toList).map(isRhs))
       case CreateConst(_, value, _) => (List(), List(isRhs(value)))
       case Return(x, _) => (List(), x.toList.map(isRhs))
-      case Assert(x, _) => (List(), x.map(isRhs))
+      case Assert(what, param, _) => (List(), (what :: param.toList).map(isRhs))
       case Raise(e, from, _) => (List(), (e.toList ++ from.toList).map(isRhs))
       case ClassDef(_, bases, body, decorators, _) => (List(body), (bases.map(_._2) ++ decorators.l).map(isRhs))
       case FuncDef(_, args, _, _, returnAnnotation, body, decorators, _, _, _) => (
@@ -124,9 +130,9 @@ object SimpleAnalysis {
           case SimpleObject(name, _, ann) => (add(name, ann), false)
           case FuncDef(name, _, _, _, _, _, _, _, _, ann)  => (add(name, ann), false)
           case Assign(List(CollectionCons(_, _, _), _), _) =>
-            throw new RuntimeException("run this analysis after all assignment simplification passes!")
+            throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")
           case Assign(l, _) if l.size > 2 =>
-            throw new RuntimeException("run this analysis after all assignment simplification passes!")
+            throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")
           case Assign(List(Ident(name, _), _), ann) => (add(name, ann), true)
           case AnnAssign(Ident(name, _), _, _, ann) => (add(name, ann), true)
           case u : Unsupported => (u.declareVars.foldLeft(h)(add0(_, _, u.ann)), true)
@@ -184,7 +190,7 @@ object SimpleAnalysis {
     case FreakingComparison(List(_), List(_, _), _) => ()
     case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _)
       | CallIndex(false, _, _, _) | FreakingComparison(_, _, _) | AnonFun(_, _, _, _, _) =>
-      throw new RuntimeException("these must never happen after all passes: " + PrintPython.printExpr(e))
+      throw new ASTAnalysisException("these must never happen after all passes: " + PrintPython.printExpr(e))
     case _ => ()
   }
 
