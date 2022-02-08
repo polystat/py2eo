@@ -41,7 +41,7 @@ class Tests extends Commons {
     if (!afterParser.exists()) afterParser.mkdir()
     val cpython = new File(afterParser.getPath + "/cpython")
     if (!cpython.exists()) {
-//      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
+      //      assert(0 == Process("git clone file:///home/bogus/cpython/", afterParser).!)
       assert(0 == Process("git clone https://github.com/python/cpython", afterParser).!)
       assert(0 == Process("git checkout v3.8.10", cpython).!)
     }
@@ -60,7 +60,7 @@ class Tests extends Commons {
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
     // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_named_expressions.py").map(name => new File(dirName + "/" + name))
+    //    val test = List("test_named_expressions.py").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future {
@@ -74,9 +74,10 @@ class Tests extends Commons {
             val yaml = new Yaml()
             val src = new FileInputStream(test)
             val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
-            val str = yamlObj.get("python").asInstanceOf[String]
-            println(s"parsing $name")
+
+
             try{
+              val str = yamlObj.get("python").asInstanceOf[String]
               val eoText = Transpile.transpile(db)(fName, str)
               writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)
               Files.copy(
@@ -84,12 +85,14 @@ class Tests extends Commons {
                 Paths.get(s"$dirName/afterParser/cpython/Lib/test/$fName.py"),
                 REPLACE_EXISTING
               )
+              println(s"parsing $name")
+            }catch {
+              case _: NullPointerException => println(fName)
             }
 
           }catch {
             case e: YAMLException =>
               println(s"Couldn't parse ${test.getName} file with error ${e.getMessage} the outPut will be at ${fName}")
-            case  e: NullPointerException =>
           }
 
         }
@@ -110,7 +113,7 @@ class Tests extends Commons {
     val root = new File(testsPrefix)
     val django = new File(testsPrefix + "/django")
     if (!django.exists()) {
-//      assert(0 == Process("git clone file:///home/bogus/pythonProjects/django", root).!)
+      //      assert(0 == Process("git clone file:///home/bogus/pythonProjects/django", root).!)
       assert(0 == Process("git clone https://github.com/django/django", root).!)
     }
     val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
