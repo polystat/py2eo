@@ -1,13 +1,16 @@
 package org.polystat.py2eo;
 
-import Expression._
 import PrintEO.{Text, indent, printExpr}
 import org.polystat.py2eo.Common.GeneratorException
 
-import scala.annotation.tailrec
 import scala.collection.immutable.HashMap
 
 object PrintLinearizedMutableEOWithCage {
+
+  import org.polystat.py2eo.Expression.{
+    Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar,
+    Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
+  }
 
   val returnLabel = "returnLabel"
 
@@ -37,8 +40,8 @@ object PrintLinearizedMutableEOWithCage {
     case _ => None
   }
 
-  def pe = printExpr _
-  def isFun(f : Statement) = f match { case _: FuncDef => true case _ => false }
+  def pe: T => String = printExpr
+  def isFun(f : Statement): Boolean = f match { case _: FuncDef => true case _ => false }
 
   def printSt(st : Statement) : Text =
     st match {
@@ -72,9 +75,9 @@ object PrintLinearizedMutableEOWithCage {
         val seqOfFields1 = seqOfFields(rhs)
         val doNotCopy = seqOfFields1.isEmpty
         if (doNotCopy)
-          if (isLiteral(rhs))
+          if (isLiteral(rhs)) {
             List(s"${pe(lhs)}.write (${pe(rhs)}" + ")")
-          else {
+          } else {
             val tmp = HackName()
             (s"[] > $tmp" ::
               indent("memory > dddata" :: s"dddata.write (${pe(rhs)}) > @" :: List())) :+
@@ -103,15 +106,15 @@ object PrintLinearizedMutableEOWithCage {
         pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "TRUE")) ++ indent("seq" :: indent(stsN :+ "TRUE"))
       case While(cond, body, Some(Pass(_)), _) =>
         "goto" :: indent(
-          s"[breakLabel]" :: indent(
+          "[breakLabel]" :: indent(
             "seq > @" :: indent(
               pe(cond) + ".while" :: indent(
-                s"[unused]" :: indent("seq > @" :: indent(printSt(body) :+ "TRUE"))
+                "[unused]" :: indent("seq > @" :: indent(printSt(body) :+ "TRUE"))
               )
             )
           )
         )
-      case Break(_) => List(s"breakLabel.forward 1")
+      case Break(_) => List("breakLabel.forward 1")
 
       case Pass(_) => List()
       case Suite(l, _) => l.flatMap(printSt)
@@ -141,7 +144,7 @@ object PrintLinearizedMutableEOWithCage {
           "goto > @" :: indent(
             s"[$returnLabel]" :: indent(
               "seq > @" :: indent(
-                s"stdout \"$newName\\n\"" ::
+                ("stdout \"" + newName + "\\n\"") ::
                 f.args.map(parm => s"${parm.name}.<") ++
                 (printSt(f.body) :+ "123")
               )

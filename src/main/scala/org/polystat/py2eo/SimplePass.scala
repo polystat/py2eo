@@ -1,11 +1,17 @@
 package org.polystat.py2eo;
 
-import Expression._
-
 import scala.annotation.tailrec
 import scala.collection.immutable.HashMap
 
 object SimplePass {
+
+  import org.polystat.py2eo.Expression.{
+    AnonFun, Assignment, Await, Binop, Binops, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons,
+    CollectionKind, Compops, Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar,
+    EllipsisLiteral, Field, ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension,
+    LazyLAnd, LazyLOr, NoneLiteral, Parameter, Slice, Star, StringLiteral, T, Unop, Unops, Yield, YieldFrom,
+    FloatLiteral, ImagLiteral, IntLiteral, SimpleComparison, UnsupportedExpr
+  }
 
   case class Names(used: HashMap[String, Int]) {
 
@@ -15,8 +21,8 @@ object SimplePass {
     def last(s: String): String = s + (used(s) - 1)
 
     def apply(s: String): (String, Names) = {
-      if (used.contains(s)) (s + used(s), Names(used.+((s, used(s) + 1))))
-      else (s + "0", Names(used.+((s, 1))))
+      if (used.contains(s)) { (s + used(s), Names(used.+((s, used(s) + 1)))) }
+      else { (s + "0", Names(used.+((s, 1)))) }
     }
 
     def apply(l: List[String]): (List[String], Names) = {
@@ -121,7 +127,7 @@ object SimplePass {
       (acc._1 :+ xe._1, xe._2)
     })
     val hasStatement = l1.exists(_.isRight)
-    if (!hasStatement) Left(l1.map { case Left(value) => value }, ns1) else
+    if (!hasStatement) Left(l1.map { case Left(value) => value }, ns1) else {
       Right(
         l1.foldLeft((List[(Statement, Ident)](), ns1))((acc, x) => x match {
           case Left(value) =>
@@ -130,6 +136,7 @@ object SimplePass {
           case Right(value) => (acc._1 :+ value, acc._2)
         })
       )
+    }
   }
 
   def procExpr(f: (Boolean, T, Names) => (EAfterPass, Names))
@@ -265,13 +272,13 @@ object SimplePass {
     }
   }
 
-  def call2comprehensions(l : List[(Comprehension, T)]) = l.map {
+  def call2comprehensions(l : List[(Comprehension, T)]): List[Comprehension] = l.map {
     case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
     case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
       ForComprehension(a, b, isAsync)
   }
 
-  def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation) = l.map{
+  def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation): List[CallIndex] = l.map{
     case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
     case ForComprehension(what, in, _) =>
       CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
@@ -557,11 +564,12 @@ object SimplePass {
     @tailrec
     def inner(s : Statement) : Statement = s match {
       case Suite(l, ann) =>
-        val l1 = l.flatMap{ case Suite(l, _) => l case s => List(s) }
-        if (!l1.exists{ case Suite(l, _) => true case _ => false })
+        val l1 = l.flatMap{ case Suite(l, _) => l case s : Any => List(s) }
+        if (!l1.exists{ case Suite(l, _) => true case _ => false }) {
           Suite(l1, ann.pos)
-        else
+        } else {
           inner(Suite(l1, ann.pos))
+        }
       case _ => s
     }
 //    println(s"$s \n -> $s1")
@@ -573,7 +581,7 @@ object SimplePass {
   // may happen only in a root node of an rhs syntax tree
   // note that, say, binops and almost anything else may also be function calls, because they may be overriden
   def extractAllCalls(lhs: Boolean, e: T, ns: Names): (EAfterPass, Names) = {
-    if (lhs) (Left(e), ns) else
+    if (lhs) (Left(e), ns) else {
       e match {
         case IntLiteral(_, _) | FloatLiteral(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | DictCons(_, _)
              | CollectionCons(_, _, _) | NoneLiteral(_) | LazyLAnd(_, _, _) | LazyLOr(_, _, _) | Cond(_, _, _, _)
@@ -584,6 +592,7 @@ object SimplePass {
           val id = Ident(name, e.ann.pos)
           (Right((Assign(List(id, e), e.ann.pos), id)), ns1)
       }
+    }
   }
 
   def concatStringLiteral(e : T) : T = {
@@ -595,7 +604,7 @@ object SimplePass {
               if (!acc._2 && '"' == char) (acc._1 + "\\\"", false) else
               if (!acc._2) (acc._1 :+ char, false) else
                 if ('\"' == char) (acc._1 + "\\\"", false) else
-                  (acc._1 :+ char, false)
+                  { (acc._1 :+ char, false) }
             }
       )
       assert(!v._2)
@@ -613,8 +622,8 @@ object SimplePass {
         )
           .mkString
         val s1 = s.replace("\n", "\\n")
-        StringLiteral(List(s"\"$s1\""), ann.pos)
-      case e => e
+        StringLiteral(List("\"" + s1 + "\""), ann.pos)
+      case e : Any => e
     }
   }
 

@@ -1,6 +1,14 @@
 package org.polystat.py2eo
 
-import Expression._
+import org.polystat.py2eo.Common.{comma, dot, emptyString, lineFeed, space}
+import org.polystat.py2eo.Expression.{
+  AnonFun, Assignment, Await, Binop, Binops, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons,
+  CollectionKind, Compops, Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar,
+  EllipsisLiteral, Field, FloatLiteral, ForComprehension, FreakingComparison, GeneratorComprehension, Ident,
+  IfComprehension, ImagLiteral, IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice,
+  Star, StringLiteral, T, Unop, Unops, UnsupportedExpr, Yield, YieldFrom
+}
+
 
 object PrintPython {
 
@@ -16,7 +24,7 @@ object PrintPython {
     case Right(value) =>  "**%s".format(printExpr(value))
   }
 
-  def printExpr = printExprOrDecorator(false)(_)
+  def printExpr : T => String = printExprOrDecorator(false)(_)
 
   def printExprOrDecorator(noBracketsAround : Boolean)(e : T) : String = {
     def brak(s : String, open : String, close : String) = s"$open$s$close"
@@ -32,30 +40,30 @@ object PrintPython {
       case IntLiteral(value, _) => s"$value "
       case FloatLiteral(value, _) => value
       case ImagLiteral(value, _) => s"${value}j"
-      case StringLiteral(values, _) => values.mkString(" ")
+      case StringLiteral(values, _) => values.mkString(space)
       case BoolLiteral(b, _) => if (b) "True" else "False"
       case Binop(op, l, r, _) => around("%s %s %s".format(printExpr(l), Binops.toString(op), printExpr(r)))
       case LazyLOr(l, r, _) => around("%s or %s".format(printExpr(l), printExpr(r)))
       case LazyLAnd(l, r, _) => around("%s and %s".format(printExpr(l), printExpr(r)))
       case SimpleComparison(op, l, r, _) => around("%s %s %s".format(printExpr(l), Compops.toString(op), printExpr(r)))
       case FreakingComparison(ops, l, _) =>
-        val sops = ops.map(Compops.toString) :+ ""
+        val sops = ops.map(Compops.toString) :+ emptyString
         val sopnds = l.map(printExpr)
-        around(sopnds.zip(sops).flatMap(x => List(x._1, x._2)).mkString(" "))
+        around(sopnds.zip(sops).flatMap(x => List(x._1, x._2)).mkString(space))
       case Unop(op, x, _) => around(Unops.toString(op) + printExpr(x))
       case Ident(name, _) => name
       case Star(e, _) => "*%s".format(printExpr(e))
       case DoubleStar(e, _) => "**%s".format(printExpr(e))
       case Slice(from, to, by, _) =>
         def procBound(b : Option[T]) = b match {
-          case None => ""
+          case None => emptyString
           case Some(e) => printExpr(e)
         }
         "%s:%s:%s".format(procBound(from), procBound(to), procBound(by))
       case CallIndex(false, whom, List((_, CollectionCons(CollectionKind.Tuple, l, _))), _) if l.nonEmpty =>
-        "%s[%s%s]".format(printExpr(whom), l.map(printExpr).mkString(", "), if (l.size == 1) "," else "")
+        "%s[%s%s]".format(printExpr(whom), l.map(printExpr).mkString(comma), if (l.size == 1) "," else emptyString)
       case CallIndex(isCall, whom, args, _) => printExpr(whom) + (if (isCall) rnd _ else sqr _)(
-        args.map{case (None, e) => printExpr(e)  case (Some(keyword), e) => s"$keyword=${printExpr(e)}"}.mkString(", ")
+        args.map{case (None, e) => printExpr(e)  case (Some(keyword), e) => s"$keyword=${printExpr(e)}"}.mkString(comma)
       )
       case Field(whose, name, _) => "%s.%s".format(printExpr(whose), name)
       case Cond(cond, yes, no, _) => "%s if %s else %s".format(printExpr(yes), printExpr(cond), printExpr(no))
@@ -66,15 +74,15 @@ object PrintPython {
          )
       case CollectionCons(kind, l, _) =>
         val braks = CollectionKind.toBraks(kind)
-        brak("%s%s".format(l.map(printExpr).mkString(", "), if (l.size == 1) "," else ""), braks._1, braks._2)
+        brak("%s%s".format(l.map(printExpr).mkString(comma), if (l.size == 1) "," else emptyString), braks._1, braks._2)
       case CollectionComprehension(kind, base, l, _) =>
         val braks = CollectionKind.toBraks(kind)
-        brak("%s %s".format(printExpr(base), l.map(printComprehension).mkString(" ")), braks._1, braks._2)
+        brak("%s %s".format(printExpr(base), l.map(printComprehension).mkString(space)), braks._1, braks._2)
       case GeneratorComprehension(base, l, _) =>
-        around("%s %s").format(printExpr(base), l.map(printComprehension).mkString(" "))
-      case DictCons(l, _) => brak(l.map(printDictElt).mkString(", "), "{", "}")
+        around("%s %s").format(printExpr(base), l.map(printComprehension).mkString(space))
+      case DictCons(l, _) => brak(l.map(printDictElt).mkString(comma), "{", "}")
       case DictComprehension(base, l, _) =>
-        "{%s %s}".format(printDictElt(base), l.map(printComprehension).mkString(" "))
+        "{%s %s}".format(printDictElt(base), l.map(printComprehension).mkString(space))
       case Yield(Some(e), _) => around("yield %s".format(printExpr(e)))
       case Yield(None, _) =>  around("yield")
       case YieldFrom(e, _) => around("yield from %s").format(printExpr(e))
@@ -83,19 +91,19 @@ object PrintPython {
 
   def option2string[T](x : Option[T]): String = x match {
     case Some(value) => value.toString
-    case None => ""
+    case None => emptyString
   }
 
   def printSt(s : Statement, indentAmount : String) : String = {
-    def async(isAsync : Boolean) = if (isAsync) "async " else ""
+    def async(isAsync : Boolean) = if (isAsync) "async " else emptyString
     val indentIncrAmount = indentAmount + "    "
     def indentPos(str : String) : String = "%s%s # %s".format(indentAmount, str, s.ann)
     def printDecorators(decorators: Decorators) =
-      decorators.l.map(z => "%s@%s\n".format(indentAmount, printExprOrDecorator(true)(z))).mkString("")
+      decorators.l.map(z => "%s@%s\n".format(indentAmount, printExprOrDecorator(true)(z))).mkString(emptyString)
     s match {
       case u : Unsupported => indentPos("Unsupported:%s\n%s".format(
-        u.es.map(x => printExpr(x._2)).mkString(", "),
-        u.sts.map(printSt(_, indentIncrAmount)).mkString("\n")
+        u.es.map(x => printExpr(x._2)).mkString(comma),
+        u.sts.map(printSt(_, indentIncrAmount)).mkString(lineFeed)
       ))
       case Del(e, _) => indentPos("del %s".format(printExpr(e)))
       case With(cms, body, isAsync, _) =>
@@ -106,7 +114,7 @@ object PrintPython {
               case None => printExpr(cm._1)
             }
           }
-        ).mkString(", ")
+        ).mkString(comma)
         "%s%swith %s: #%s\n%s".format(
           indentAmount, async(isAsync), cmsString, s.ann, printSt(body, indentIncrAmount)
         )
@@ -120,16 +128,16 @@ object PrintPython {
         val iif :: elifs = conditioned
         val elseString = eelse match {
           case Some(eelse) => "%selse: # %s\n%s".format(indentAmount, eelse.ann.toString, printSt(eelse, indentIncrAmount))
-          case None => ""
+          case None => emptyString
         }
-        (oneCase("if", iif) :: elifs.map(oneCase("elif", _))).mkString("\n") + "\n" + elseString
+        (oneCase("if", iif) :: elifs.map(oneCase("elif", _))).mkString(lineFeed) + lineFeed + elseString
       case IfSimple(cond, yes, no, ann) => printSt(If(List((cond, yes)), Some(no), ann.pos), indentAmount)
       case While(cond, body, eelse, _) =>
         "%swhile (%s): # %s\n%s\n%s".format(
           indentAmount, printExpr(cond), s.ann, printSt(body, indentIncrAmount),
           eelse match {
             case Some(eelse) => "%selse:\n%s".format(indentAmount, printSt(eelse, indentIncrAmount))
-            case None => ""
+            case None => emptyString
           }
         )
       case For(what, in, body, eelse, isAsync, _) =>
@@ -138,14 +146,14 @@ object PrintPython {
           printSt(body, indentIncrAmount),
           eelse match {
             case Some(eelse) => "%selse:\n%s".format(indentAmount, printSt(eelse, indentIncrAmount))
-            case None => ""
+            case None => emptyString
           }
         )
       case Try(ttry, excepts, eelse, ffinally, _) =>
-        val elseString = if (excepts.isEmpty) "" else {
+        val elseString = if (excepts.isEmpty) emptyString else {
           eelse match {
             case Some(eelse) => "%selse:\n%s\n".format(indentAmount, printSt(eelse, indentIncrAmount))
-            case None => ""
+            case None => emptyString
           }
         }
         "%stry: # %s\n%s\n%s\n%s%s".format(
@@ -157,20 +165,20 @@ object PrintPython {
               option2string(x._1.map(y => printExpr(y._1) + option2string(y._2.map(z => " as " + z)))),
               printSt(x._2, indentIncrAmount)
             )
-          ).mkString("\n"),
+          ).mkString(lineFeed),
           elseString,
           ffinally match {
             case Some(ffinally) => "%sfinally:\n%s".format(indentAmount, printSt(ffinally, indentIncrAmount))
-            case None => ""
+            case None => emptyString
           }
         )
-      case Suite(l, _) => l.map(printSt(_, indentAmount)).mkString("\n")
+      case Suite(l, _) => l.map(printSt(_, indentAmount)).mkString(lineFeed)
       case AugAssign(op, lhs, rhs, _) => indentPos("%s%s%s".format(printExpr(lhs), AugOps.toString(op), printExpr(rhs)))
       case Assign(l, _) => indentPos(l.map(printExpr).mkString(" = "))
       case AnnAssign(lhs, rhsAnn, rhs, _) =>
         "%s%s : %s%s".format(
           indentAmount, printExpr(lhs), printExpr(rhsAnn),
-          rhs match { case None => "" case Some(e) => " = %s".format(printExpr(e))}
+          rhs match { case None => emptyString case Some(e) => " = %s".format(printExpr(e))}
         )
       case CreateConst(name, value, ann) =>
         printSt(Assign(List(Ident(name, value.ann.pos), value), ann.pos.pos), indentAmount)
@@ -179,12 +187,12 @@ object PrintPython {
       case Pass(_) => indentPos("pass")
       case Return(Some(x), _) => indentPos("return %s".format(printExpr(x)))
       case Return(None, _) => indentPos("return ")
-      case Assert(what, param, _) => indentPos("assert %s".format((what :: param.toList).map(printExpr).mkString(", ")))
+      case Assert(what, param, _) => indentPos("assert %s".format((what :: param.toList).map(printExpr).mkString(comma)))
       case Raise(Some(x), Some(from), _) => indentPos("raise %s from %s".format(printExpr(x), printExpr(from)))
       case Raise(Some(x), None, _) => indentPos("raise %s".format(printExpr(x)))
       case Raise(None, None, _) => indentPos("raise")
-      case NonLocal(l, _) => indentPos("nonlocal %s".format(l.mkString(", ")))
-      case Global(l, _) => indentPos("global %s".format(l.mkString(", ")))
+      case NonLocal(l, _) => indentPos("nonlocal %s".format(l.mkString(comma)))
+      case Global(l, _) => indentPos("global %s".format(l.mkString(comma)))
       case SimpleObject(name, fields, ann) =>
         "%sclass %s: # %s\n%s".format(
           indentAmount, name, s.ann,
@@ -205,11 +213,11 @@ object PrintPython {
                 case Some(name) => s"$name=$r"
               }
             }
-          ).mkString(", "), s.ann,
+          ).mkString(comma), s.ann,
           printSt(body, indentIncrAmount)
         )
       case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, _, isAsync, _) =>
-        val retAnn = returnAnnotation match { case None => "" case Some(e) => " -> " + printExpr(e) }
+        val retAnn = returnAnnotation match { case None => emptyString case Some(e) => " -> " + printExpr(e) }
         "%s%s%sdef %s(%s)%s: # %s\n%s".format(
           printDecorators(decorators),
           indentAmount, async(isAsync), name,
@@ -217,11 +225,11 @@ object PrintPython {
           printSt(body, indentIncrAmount)
         )
       case ImportModule(what, as, _) =>
-        indentPos("import %s%s".format(what.mkString("."), as match { case None => "" case Some(x) => s" as $x"}))
+        indentPos("import %s%s".format(what.mkString(dot), as match { case None => emptyString case Some(x) => s" as $x"}))
       case ImportSymbol(from, what, as0, _) =>
-        val as = as0 match { case None => "" case Some(s) => s" as $s" }
-        indentPos(s"from ${from.mkString(".")} import $what$as")
-      case ImportAllSymbols(from, _) => indentPos(s"from ${from.mkString(".")} import *")
+        val as = as0 match { case None => emptyString case Some(s) => s" as $s" }
+        indentPos(s"from ${from.mkString(dot)} import $what$as")
+      case ImportAllSymbols(from, _) => indentPos(s"from ${from.mkString(dot)} import *")
     }
   }
 
@@ -239,13 +247,13 @@ object PrintPython {
       }
     def printArg(x : Parameter) =
       x.name +
-        (x.paramAnn match { case None => "" case Some(value) => " : " + printExpr(value)}) +
-        (x.default match { case None => "" case Some(default) => " = " + printExpr(default)})
+        (x.paramAnn match { case None => emptyString case Some(value) => " : " + printExpr(value)}) +
+        (x.default match { case None => emptyString case Some(default) => " = " + printExpr(default)})
     val argstring = positionalOnly.map(printArg) ++
       (if (positionalOnly.isEmpty) List() else List("/")) ++
       posOrKeyword.map(printArg) ++ f("*", otherPositional) ++
       keywordOnly.map(printArg) ++ f("**", otherKeyword)
-    argstring.mkString(", ")
+    argstring.mkString(comma)
   }
 
 }

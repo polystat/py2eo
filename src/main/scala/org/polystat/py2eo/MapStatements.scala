@@ -4,13 +4,22 @@ import org.antlr.v4.runtime
 import org.antlr.v4.runtime.tree.TerminalNode
 import org.antlr.v4.runtime.{ParserRuleContext, Token}
 import org.polystat.py2eo.Common.ASTMapperException
-import org.polystat.py2eo.PythonParser._
 import org.polystat.py2eo.Expression.{CallIndex, CollectionCons, CollectionKind, Field, Ident, Parameter, T => ET}
-import org.polystat.py2eo.MapExpressions1.{ga, mapExpression, mapNamedExpression, mapSlices, mapStarExpression, mapStarExpressions, mapStarTarget, mapStarTargets, mapTPrimary, mapYieldExpr, toList, toListNullable}
+import org.polystat.py2eo.MapExpressions.{
+  ga, mapExpression, mapNamedExpression, mapSlices, mapStarExpression, mapStarExpressions,
+  mapStarTarget, mapStarTargets, mapTPrimary, mapYieldExpr, toList, toListNullable
+}
+import org.polystat.py2eo.PythonParser.{
+  Annotated_rhsContext, Class_def_rawContext, Compound_stmtContext, DecoratorsContext, Del_targetContext,
+  Del_targetsContext, Dotted_nameContext, Elif_stmtContext, Except_blockContext, FileContext, Function_defContext,
+  Import_fromContext, Import_nameContext, ParamContext, Param_maybe_defaultContext, Param_no_defaultContext,
+  Param_with_defaultContext, Simple_stmtContext, Single_targetContext, Slash_no_defaultContext,
+  Slash_with_defaultContext, Star_expressionsContext, StatementContext
+}
 
 import scala.collection.immutable.HashMap
 
-object MapStatements1 {
+object MapStatements {
 
   def mapFile(c : FileContext) : Statement =
     if (c.statements() == null) Pass(ga(c)) else mapStatements(c.statements())
@@ -18,9 +27,9 @@ object MapStatements1 {
   def mapStatements(context: PythonParser.StatementsContext) : Statement =
     Suite(toList(context.statement()).map(mapStatement), ga(context))
 
-  def mapStatement(c : StatementContext) = {
+  def mapStatement(c : StatementContext) : Statement = {
     if (c.compound_stmt() != null) mapCompoundStmt(c.compound_stmt()) else
-    Suite(mapSimpleStmts(c.simple_stmts()), ga(c))
+    { Suite(mapSimpleStmts(c.simple_stmts()), ga(c)) }
   }
 
   def mapCompoundStmt(c : Compound_stmtContext) : Statement = {
@@ -32,10 +41,10 @@ object MapStatements1 {
     if (c.try_stmt() != null) mapTryStmt(c.try_stmt()) else
     if (c.while_stmt() != null) mapWhileStmt(c.while_stmt()) else
     if (c.match_stmt() != null) ??? else
-    throw new ASTMapperException("mapCompoundStmt")
+    { throw new ASTMapperException("mapCompoundStmt") }
   }
 
-  def mapTryStmt(context: PythonParser.Try_stmtContext) = Try(
+  def mapTryStmt(context: PythonParser.Try_stmtContext) : Try = Try(
     mapBlock(context.block()),
     toListNullable(context.except_block()).map(mapExceptBlock),
     Option(context.else_block()).map(x => mapBlock(x.block())),
@@ -43,7 +52,7 @@ object MapStatements1 {
     ga(context)
   )
 
-  def mapExceptBlock(c : Except_blockContext) = (
+  def mapExceptBlock(c : Except_blockContext): (Option[(Expression.T, Option[String])], Statement) = (
     Option(c.expression()).map(c1 => (mapExpression(c1), Option(c.NAME()).map(_.getText))),
     mapBlock(c.block())
   )
@@ -73,7 +82,7 @@ object MapStatements1 {
   }
 
   def mapClassDefRaw(d : Decorators)(c : Class_def_rawContext) : ClassDef = {
-    val bases = if (c.arguments() != null) MapExpressions1.mapArgs(c.arguments().args()) else List()
+    val bases = if (c.arguments() != null) MapExpressions.mapArgs(c.arguments().args()) else List()
     ClassDef(c.NAME().getText, bases, mapBlock(c.block()), d, ga(c))
   }
 
@@ -130,15 +139,17 @@ object MapStatements1 {
   }
 
   def mapSlashNoDefault(c : Slash_no_defaultContext) : List[Parameter] = {
-    if (c == null) return List()
-    val l = toListNullable(c.param_no_default())
-    l.map(mapParamNoDefault(ArgKind.Positional))
+    if (c == null) List() else {
+      val l = toListNullable(c.param_no_default())
+      l.map(mapParamNoDefault(ArgKind.Positional))
+    }
   }
 
   def mapSlashWithDefault(c : Slash_with_defaultContext) : List[Parameter] = {
-    if (c == null) return List()
-    toListNullable(c.param_no_default()).map(mapParamNoDefault(ArgKind.Positional)) ++
-      toListNullable(c.param_with_default()).map(mapParamWithDefault(ArgKind.Positional))
+    if (c == null) List() else {
+      toListNullable(c.param_no_default()).map(mapParamNoDefault(ArgKind.Positional)) ++
+        toListNullable(c.param_with_default()).map(mapParamWithDefault(ArgKind.Positional))
+    }
   }
 
   def mapFunctionDefRaw(decorators : Decorators)(context: PythonParser.Function_def_rawContext) : FuncDef = {
@@ -171,7 +182,7 @@ object MapStatements1 {
   }
 
   def mapDecorators(c : DecoratorsContext) : Decorators = {
-    Decorators(if (c == null) List() else toList(c.named_expression()).map(MapExpressions1.mapNamedExpression))
+    Decorators(if (c == null) List() else toList(c.named_expression()).map(MapExpressions.mapNamedExpression))
   }
 
   def mapFunctionDef(c : Function_defContext) : FuncDef =
@@ -194,7 +205,7 @@ object MapStatements1 {
   def mapSimpleStmt(c : Simple_stmtContext) : Statement = {
     if (c.assignment() != null) mapAssignment(c.assignment()) else
     if (c.star_expressions() != null) {
-      val l = MapExpressions1.mapStarExpressions(c.star_expressions())
+      val l = MapExpressions.mapStarExpressions(c.star_expressions())
       Assign(List(
         if (c.star_expressions().COMMA().size() > 1) CollectionCons(CollectionKind.Tuple, l, ga(c)) else l.head
       ), ga(c))
@@ -210,7 +221,7 @@ object MapStatements1 {
     if (c.CONTINUE() != null) Continue(ga(c)) else
     if (c.global_stmt() != null) mapGlobalStmt(c.global_stmt()) else
     if (c.nonlocal_stmt() != null) mapNonlocalStmt(c.nonlocal_stmt()) else
-    throw new ASTMapperException("mapSimpleStmt")
+    { throw new ASTMapperException("mapSimpleStmt") }
   }
 
   def mapDelTargets(c : Del_targetsContext) : List[ET] = toList(c.del_target()).map(mapDelTarget)
@@ -218,23 +229,24 @@ object MapStatements1 {
   def mapDelTarget(c : Del_targetContext) : ET = {
     if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
     if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)) else
-    mapDelTAtom(c.del_t_atom())
+    { mapDelTAtom(c.del_t_atom()) }
   }
 
   def mapDelTAtom(context: PythonParser.Del_t_atomContext) : ET = {
     if (context.NAME() != null) Ident(context.NAME().getText, ga(context)) else
-    if (context.del_target() != null) mapDelTarget(context.del_target()) else
-    CollectionCons(
-      if (context.OPEN_BRACK() != null) CollectionKind.List else CollectionKind.Tuple,
-      if (context.del_targets() != null) mapDelTargets(context.del_targets()) else List(),
-      ga(context)
-    )
+    if (context.del_target() != null) mapDelTarget(context.del_target()) else {
+      CollectionCons(
+        if (context.OPEN_BRACK() != null) CollectionKind.List else CollectionKind.Tuple,
+        if (context.del_targets() != null) mapDelTargets(context.del_targets()) else List(),
+        ga(context)
+      )
+    }
   }
 
   def mapDelStmt(context: PythonParser.Del_stmtContext) : Del =
     Del(CollectionCons(CollectionKind.Tuple, mapDelTargets(context.del_targets()), ga(context)), ga(context))
 
-  def mapYieldStmt(context: PythonParser.Yield_stmtContext) =
+  def mapYieldStmt(context: PythonParser.Yield_stmtContext) : Assign =
     Assign(List(mapYieldExpr(context.yield_expr())), ga(context))
 
   def mapAssertStmt(context: PythonParser.Assert_stmtContext) : Assert = {
@@ -259,8 +271,9 @@ object MapStatements1 {
 
   def mapDottedName(c : Dotted_nameContext) : List[String] = {
     if (c == null) List() else
-    if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else
-    List(c.NAME().getText)
+    if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else {
+      List(c.NAME().getText)
+    }
   }
 
   def mapImportName(c : Import_nameContext) : Statement = {
@@ -295,7 +308,7 @@ object MapStatements1 {
 
   def mapStarExpressions2Expression(c : Star_expressionsContext) : ET = {
     if (c.COMMA().size() == 0) mapStarExpression(c.star_expression(0)) else
-    CollectionCons(CollectionKind.Tuple, mapStarExpressions(c), ga(c))
+    { CollectionCons(CollectionKind.Tuple, mapStarExpressions(c), ga(c)) }
   }
 
   def mapAnnotatedRhs(c : Annotated_rhsContext) : ET = {
@@ -308,28 +321,32 @@ object MapStatements1 {
 
   def mapSingleSubscriptAttributeTarget(context: PythonParser.Single_subscript_attribute_targetContext) : ET = {
     if (context.NAME() != null) Field(mapTPrimary(context.t_primary()), context.NAME().getText, ga(context)) else
-    CallIndex(false, mapTPrimary(context.t_primary()), List((None, mapSlices(context.slices()))), ga(context))
+    { CallIndex(false, mapTPrimary(context.t_primary()), List((None, mapSlices(context.slices()))), ga(context)) }
   }
 
   def mapSingleTarget(c : Single_targetContext) : ET = {
     if (c.single_subscript_attribute_target() != null) mapSingleSubscriptAttributeTarget(c.single_subscript_attribute_target()) else
     if (c.NAME() != null) Ident(c.NAME().getText, ga(c)) else
-    mapSingleTarget(c.single_target())
+    { mapSingleTarget(c.single_target()) }
   }
 
   def mapAssignment(context: PythonParser.AssignmentContext) : Statement = {
-    if (context.NAME() != null) AnnAssign(
-      Ident(context.NAME().getText, new GeneralAnnotation(context.NAME().getSymbol)),
-      mapExpression(context.expression()),
-      Option(context.annotated_rhs()).map(mapAnnotatedRhs),
-      ga(context)
-    ) else
-    if (context.augassign() != null) AugAssign(
-      AugOps.ofString(context.augassign().getText),
-      mapSingleTarget(context.single_target()),
-      if (context.yield_expr() != null) mapYieldExpr(context.yield_expr()) else mapStarExpressions2Expression(context.star_expressions()),
-      ga(context)
-    ) else
+    if (context.NAME() != null) {
+      AnnAssign(
+        Ident(context.NAME().getText, new GeneralAnnotation(context.NAME().getSymbol)),
+        mapExpression(context.expression()),
+        Option(context.annotated_rhs()).map(mapAnnotatedRhs),
+        ga(context)
+      )
+    } else
+    if (context.augassign() != null) {
+      AugAssign(
+        AugOps.ofString(context.augassign().getText),
+        mapSingleTarget(context.single_target()),
+        if (context.yield_expr() != null) mapYieldExpr(context.yield_expr()) else mapStarExpressions2Expression(context.star_expressions()),
+        ga(context)
+      )
+    } else
     if (context.star_targets().size() > 0) {
       val l = toList(context.star_targets()).map(mapStarTargets)
       val rhs = if (context.yield_expr() != null) {

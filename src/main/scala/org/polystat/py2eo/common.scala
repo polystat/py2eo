@@ -48,26 +48,6 @@ object Common {
     def foldLeft[Acc](acc : Acc)(f : (Acc, (Key, Value)) => Acc) : Acc = l.foldLeft(acc)((acc, key) => f(acc, (key, h(key))))
   }
 
-  class GenNames(h0: HashMap[String, Int]) {
-    private val h = h0
-
-    def this() = this(HashMap())
-
-    def apply(pref: String): (String, GenNames) =
-      if (h.contains(pref)) {
-        (pref + "_" + h(pref), new GenNames(h.+((pref, 1 + h(pref)))))
-      } else {
-        (pref + "_0", new GenNames(h.+((pref, 1))))
-      }
-
-    override def toString: String = h.toString
-
-    override def equals(o: Any): Boolean = o match {
-      case x: GenNames => h == x.h
-      case _ => false
-    }
-  }
-
   // an ocaml style HashMap to simplify variable scopes traversal
   class HashStack[Key, Value](h0 : HashMap[Key, List[Value]]) {
     private val h = h0
@@ -91,7 +71,7 @@ object Common {
         h(key) match {
           case List() => throw new AssertionError
           case List(_) => h.-(key)
-          case l => h.+((key, l.tail))
+          case l : Any => h.+((key, l.tail))
         }
       )
     }
@@ -137,6 +117,14 @@ object Common {
   class GeneratorException(reason : String) extends TranspilerException(reason)
   class ASTAnalysisException(reason : String) extends TranspilerException(reason)
   class ASTMapperException(reason : String) extends TranspilerException(reason)
+
+  val space = " "
+  val comma = ", "
+  val lineFeed = "\n"
+  val dot = "."
+  val emptyString = ""
+  val crb = ")"
+  val orb = "("
 
 }
 
