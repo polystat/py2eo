@@ -19,7 +19,7 @@ This transpiler receives as input data python code. Then received code is simpli
 
 #### What do you need to use it? ####
 * Linux Ubuntu(16.04+) or Windows (7+)
-* [Java 17+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
+* [Java 17+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version` (in case of failure - `sudo apt update`)
 
 #### How to use it? ####
 - go to some directory on your PC
@@ -37,10 +37,29 @@ This transpiler receives as input data python code. Then received code is simpli
 
 
 #### How to contribute? ####
-- check java version `java -version` or install `sudo apt install openjdk-17-jdk-headless`
+- check git version `git -version` or install it via `sudo apt install git`
+- check java version `java -version` or install `sudo apt install openjdk-17-jdk-headless` (in case of failure - `sudo apt update`)
 - check in command line installer Maven `mvn --version` or install it from [Maven 3.8+](https://maven.apache.org/download.cgi)
+- run command `sudo nano ~/.m2/toolchains.xml` and paste here file content:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<toolchains>
+  <!-- JDK toolchains -->
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>17</version>
+      <vendor>sun</vendor>
+    </provides>
+    <configuration>
+  <jdkHome>jdk-17.0.2</jdkHome> <------ paste here path to java executable (check where it is stored via `whereis java`)
+    </configuration>
+  </toolchain>
+</toolchains>
+```
 - download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
 - open command line and go to the folder with downloaded project
+- run `sudo nano ~/.m2/toolchains.xml` and change value of `<jdkHome>jdk-17.0.2</jdkHome>` to java executable path
 - run comand `mvn clean package -DskipTests=true`
 - open ./target folder (via `cd target` for example)
 - create in this folder test file with python code named `sample_test.py` and paste the code below into it:
