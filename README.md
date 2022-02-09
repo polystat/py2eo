@@ -38,8 +38,8 @@ This transpiler receives as input data python code. Then received code is simpli
 
 #### How to contribute? ####
 - check git version `git -version` or install it via `sudo apt install git`
-- check java version `java -version` or install `sudo apt install openjdk-17-jdk-headless` (in case of failure - `sudo apt update`)
-- check in command line installer Maven `mvn --version` or install it from [Maven 3.8+](https://maven.apache.org/download.cgi)
+- check java version `java -version` or install `sudo apt install openjdk-17-jdk-headless` (in case of failure - `sudo apt update` and run install comand)
+- check in command line installer Maven `mvn --version` or install it from [Maven 3.8+](https://maven.apache.org/download.cgi) and add it to PATH - `export PATH=path_to/apache-maven-3.8.4/bin:$PATH`
 - run command `sudo nano ~/.m2/toolchains.xml` and paste here file content:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
