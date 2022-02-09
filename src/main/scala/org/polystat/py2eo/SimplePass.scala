@@ -718,12 +718,13 @@ object SimplePass {
 
   }
 
-  private var needToChange = true
+  var needToChange = true
 
-  def changeIdentifierName:(Boolean, T, Names) => (EAfterPass, Names) = procExpr({
-    case (false, Ident(name, ann), ns) if needToChange => { needToChange = false; (Left(Ident(name + "2", ann.pos)), ns) }
-    case (_, e, ns) => (Left(e), ns)
-  })
+  def changeIdentifierName(expression: T): T =
+    expression match {
+    case Ident(name, ann) if needToChange => needToChange = false; Ident(name + "2", ann.pos)
+    case e: T => e
+  }
 
   def allTheGeneralPasses(debugPrinter: (Statement, String) => Unit, s: Statement, ns: Names): (Statement, SimplePass.Names) = {
     val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)

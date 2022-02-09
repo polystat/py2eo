@@ -1,14 +1,14 @@
 package org.polystat.py2eo
 
-import java.io.{File, FileWriter}
-import Main.debugPrinter
+import org.polystat.py2eo.Main.{debugPrinter, readFile}
 
-import scala.sys.process.stringSeqToProcess
+import java.io.{File, FileWriter}
+import scala.sys.process.{Process, stringSeqToProcess}
 
 object Validator extends App {
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
 
-  def writeFile(name : String, dirSuffix: String, fileSuffix: String, what: String): String = {
+  def writeFile(name: String, dirSuffix: String, fileSuffix: String, what: String): String = {
     val outPath = testsPrefix + "/" + dirSuffix
     val d = new File(outPath)
     if (!d.exists()) d.mkdir()
@@ -19,24 +19,61 @@ object Validator extends App {
     outName
   }
 
-  def validate(mutation: (Statement, SimplePass.Names) => (Statement, SimplePass.Names)): Unit = {
-    val test = new File(testsPrefix + "trivial.py")
-
+  def validate(test: File, mutation: (Statement, SimplePass.Names) => (Statement, SimplePass.Names)): Unit = {
     def db: (Statement, String) => Unit = debugPrinter(test)(_, _)
 
-    val AST = SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
-    val mutatedAST = mutation(AST._1, AST._2)
+    SimplePass.needToChange = true
 
-    val originalEOText = PrintLinearizedMutableEOWithCage.printTest(test.getName, AST._1)
-    val fstName = writeFile("before", "mutations", ".eo", originalEOText.mkString("\n"))
+    val ns = new SimplePass.Names()
+    val mutatedAST = mutation(SimplePass.simplifyIf(Parse.parse(test, db), ns)._1, ns)
+    val mutatedPy = PrintPython.printSt(mutatedAST._1, "")
 
-    PrintLinearizedMutableEOWithCage.HackName.count = 0
+    PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style
+    val originalEOText = Transpile.transpile(db)(test.getName, readFile(test))
+    val fstName = writeFile("before", "mutations", ".eo", originalEOText)
 
-    val mutatedEOText = PrintLinearizedMutableEOWithCage.printTest(test.getName, mutatedAST._1)
-    val sndName = writeFile("after", "mutations", ".eo", mutatedEOText.mkString("\n"))
+    PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style
+    val mutatedEOText = Transpile.transpile(db)(test.getName, mutatedPy)
+    val sndName = writeFile("after", "mutations", ".eo", mutatedEOText)
 
-    Seq("diff", fstName, sndName) .!
+    Seq("diff", fstName, sndName).!
   }
 
-  validate(SimplePass.procExprInStatement(SimplePass.procExpr(SimplePass.changeIdentifierName))(_,_))
+  def validateDir(prefix: String, mutation: (Statement, SimplePass.Names) => (Statement, SimplePass.Names)): Unit = {
+    val test = new File(prefix)
+
+    for (file <- test.listFiles()) if (file.getName.endsWith(".py")) validate(file, mutation)
+  }
+
+  def recursiveListFiles(f: File): Array[File] = {
+    val these = f.listFiles
+    these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
+  }
+
+  def validateCPython(mutation: (Statement, SimplePass.Names) => (Statement, SimplePass.Names)): Unit = {
+    val dirName = testsPrefix + "mutations/validateCPython"
+    val cpython = new File(dirName)
+    if (!cpython.exists()) {
+      Seq("git", "clone", "https://github.com/python/cpython", dirName).!
+      assert(0 == Process("git checkout v3.8.10", cpython).!)
+    }
+
+    val testsDir = new File(dirName + "/Lib/test")
+    for (file <- recursiveListFiles(testsDir))
+      if (file.getName.startsWith("test_") && file.getName.endsWith(".py")) {
+        val name = file.getPath // getName
+        println(s"validating $name")
+        validate(file, mutation)
+      }
+  }
+
+
+  private val testsDir = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
+  private val namesMutation = SimplePass.simpleProcExprInStatement(SimplePass.changeIdentifierName)(_, _)
+
+  validateDir(testsDir + "simple_tests/assignCheck", namesMutation)
+  validateDir(testsDir + "simple_tests/whileCheck", namesMutation)
+  validateDir(testsDir + "simple_tests/ifCheck", namesMutation)
+
+  validateCPython(namesMutation)
 }
