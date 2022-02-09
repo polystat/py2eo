@@ -19,7 +19,7 @@ This transpiler receives as input data python code. Then received code is simpli
 
 #### What do you need to use it? ####
 * Linux Ubuntu(16.04+) or Windows (7+)
-* [Java 17+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version`
+* [Java 17+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version` (in case of failure - `sudo apt update`)
 
 #### How to use it? ####
 - go to some directory on your PC
@@ -37,9 +37,29 @@ This transpiler receives as input data python code. Then received code is simpli
 
 
 #### How to contribute? ####
-- check in command line installer Maven `mvn --version` or install it from [Maven 3.8+](https://maven.apache.org/download.cgi)
+- check git version `git -version` or install it via `sudo apt install git`
+- check java version `java -version` or install `sudo apt install openjdk-17-jdk-headless` (in case of failure - `sudo apt update` and run install comand)
+- check in command line installer Maven `mvn --version` or install it from [Maven 3.8+](https://maven.apache.org/download.cgi) and add it to PATH - `export PATH=path_to/apache-maven-3.8.4/bin:$PATH`
+- run command `sudo nano ~/.m2/toolchains.xml` and paste here file content:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<toolchains>
+  <!-- JDK toolchains -->
+  <toolchain>
+    <type>jdk</type>
+    <provides>
+      <version>17</version>
+      <vendor>sun</vendor>
+    </provides>
+    <configuration>
+  <jdkHome>jdk-17.0.2</jdkHome> <------ paste here path to java executable (check where it is stored via `whereis java`)
+    </configuration>
+  </toolchain>
+</toolchains>
+```
 - download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
 - open command line and go to the folder with downloaded project
+- run `sudo nano ~/.m2/toolchains.xml` and change value of `<jdkHome>jdk-17.0.2</jdkHome>` to java executable path
 - run comand `mvn clean package -DskipTests=true`
 - open ./target folder (via `cd target` for example)
 - create in this folder test file with python code named `sample_test.py` and paste the code below into it:
@@ -50,8 +70,3 @@ This transpiler receives as input data python code. Then received code is simpli
     ```
 - run command `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\sample_test.py`
 - check output .eo file in `./genCageEO/sample_test.eo`
-
-#### Related links ####
-- https://github.com/cqfn/eo#:~:text=EO%20(stands%20for%20Elegant%20Objects,something%20we%20don't%20tolerate.
-- https://www.eolang.org/
-- https://www.yegor256.com/2016/11/29/eolang.html

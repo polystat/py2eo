@@ -8,7 +8,17 @@ deploy:
   script: mvn clean install
 release:
   script: |-
+    wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz
+    tar x -z < openjdk-17.0.2_linux-x64_bin.tar.gz
+    export PATH=/tmp/jdk-17.0.2/bin:$PATH
+    export JAVA_HOME=/tmp/jdk-17.0.2/
+    wget https://dlcdn.apache.org/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.tar.gz
+    tar x -z < apache-maven-3.8.4-bin.tar.gz
+    export PATH=/tmp/apache-maven-3.8.4/bin:$PATH
+    cp toolchains.xml ~/.m2
+    sed -i 's%jdk-17.0.2%/tmp/jdk-17.0.2%' ~/.m2/toolchains.xml
     mvn versions:set "-DnewVersion=${tag}" -Dstyle.color=never
     git commit -am "${tag}"
     mvn clean install -Dinvoker.skip -DskipTests=true
     mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never -DskipTests=true
+    

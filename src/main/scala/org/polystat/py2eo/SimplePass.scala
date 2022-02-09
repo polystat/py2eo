@@ -718,6 +718,13 @@ object SimplePass {
 
   }
 
+  private var needToChange = true
+
+  def changeIdentifierName:(Boolean, T, Names) => (EAfterPass, Names) = procExpr({
+    case (false, Ident(name, ann), ns) if needToChange => { needToChange = false; (Left(Ident(name + "2", ann.pos)), ns) }
+    case (_, e, ns) => (Left(e), ns)
+  })
+
   def allTheGeneralPasses(debugPrinter: (Statement, String) => Unit, s: Statement, ns: Names): (Statement, SimplePass.Names) = {
     val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")
