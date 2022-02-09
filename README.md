@@ -18,13 +18,14 @@ This is a translator of Python to [EOLANG](https://www.eolang.org). It is needed
 This transpiler receives as input data python code. Then received code is simplified with AST usage. After successfull simplyfying it is sent to the py2eo translator for getting EO.
 
 #### What do you need to use it? ####
-* Linux Ubuntu(16.04+) or Windows (7+)
-* [Java 17+](https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_windows-x64_bin.zip) - check in command line `java --version` (in case of failure - `sudo apt update`)
+* Linux Ubuntu(20.04+) or Windows (7+)
+* [Java 14+](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) - check in command line `java --version`. Use `sudo apt install openjdk-16-jdk-headless` in Ubuntu 20 (there is no java 14 package there).
+* For contributors: Maven 3.6.3 with Java 14 or Maven 3.8.4 with Java 17 (but there is no Maven 3.8 package in Ubuntu and no Java 14 package, so manual installation is needed anyway)
 
 #### How to use it? ####
 - go to some directory on your PC
 - create directory `Transpiler Test`
-- download and save into this folder py2eo trsnspiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/0.0.3/py2eo-0.0.3-jar-with-dependencies.jar)
+- download and save into this folder py2eo trsnspiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/0.0.4/py2eo-0.0.4-jar-with-dependencies.jar)
 - create in this folder test file with python code named `sample_test.py` and paste the code below into it:
     ```
     def conditionalCheck2():
@@ -37,30 +38,20 @@ This transpiler receives as input data python code. Then received code is simpli
 
 
 #### How to contribute? ####
-- check git version `git -version` or install it via `sudo apt install git`
-- check java version `java -version` or install `sudo apt install openjdk-17-jdk-headless` (in case of failure - `sudo apt update` and run install comand)
-- check in command line installer Maven `mvn --version` or install it from [Maven 3.8+](https://maven.apache.org/download.cgi) and add it to PATH - `export PATH=path_to/apache-maven-3.8.4/bin:$PATH`
-- run command `sudo nano ~/.m2/toolchains.xml` and paste here file content:
+- This instruction is for Ubuntu 20.04
+- Check git version `git -version` or install it via `sudo apt install git`
+- Install maven (`sudo apt install maven`)
+- You need exactly Java version 14, so download it [here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz), unpack it and manually setup the `PATH` and `JAVA_HOME` variables. For example, you may open command line and run these commands:
 ```
-<?xml version="1.0" encoding="UTF-8"?>
-<toolchains>
-  <!-- JDK toolchains -->
-  <toolchain>
-    <type>jdk</type>
-    <provides>
-      <version>17</version>
-      <vendor>sun</vendor>
-    </provides>
-    <configuration>
-  <jdkHome>jdk-17.0.2</jdkHome> <------ paste here path to java executable (check where it is stored via `whereis java`)
-    </configuration>
-  </toolchain>
-</toolchains>
+  cd ~
+  wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+  tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
+  PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+  export JAVA_HOME="$PWD/jdk-14.0.1/
 ```
+- check java version `java -version`
 - download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via git clone or downloading of zip)
-- open command line and go to the folder with downloaded project
-- run `sudo nano ~/.m2/toolchains.xml` and change value of `<jdkHome>jdk-17.0.2</jdkHome>` to java executable path
-- run comand `mvn clean package -DskipTests=true`
+- run comand `mvn clean package -DskipTests=true` in the same command line were you have set `PATH` and `JAVA_HOME` variables moments ago
 - open ./target folder (via `cd target` for example)
 - create in this folder test file with python code named `sample_test.py` and paste the code below into it:
     ```
