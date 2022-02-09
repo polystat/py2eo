@@ -4,17 +4,27 @@ import org.antlr.v4.runtime
 import org.antlr.v4.runtime.tree.TerminalNode
 import org.antlr.v4.runtime.ParserRuleContext
 import org.polystat.py2eo.Common.ASTMapperException
-import org.polystat.py2eo.PythonParser._
+import org.polystat.py2eo.Expression.{
+  AnonFun, Assignment, Await, Binop, Binops, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons,
+  CollectionKind, Compops, Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar,
+  EllipsisLiteral, Field, ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension,
+  LazyLAnd, LazyLOr, NoneLiteral, Parameter, Slice, Star, StringLiteral, T, Unop, Unops, Yield, YieldFrom
+}
+import org.polystat.py2eo.PythonParser.{
+  ArgContext, Bitwise_orContext, ConjunctionContext, Double_starred_kvpairContext, ExpressionContext,
+  For_if_clauseContext, GenexpContext, InversionContext, Kwarg_or_double_starredContext, Kwarg_or_starredContext,
+  Lambda_param_maybe_defaultContext, Lambda_param_no_defaultContext, Lambda_param_with_defaultContext,
+  Lambda_slash_no_defaultContext, Lambda_slash_with_defaultContext, SliceContext, SlicesContext,
+  Star_expressionContext, Star_targetContext, T_primaryContext, Target_with_star_atomContext
+}
 
 import scala.collection.JavaConverters.asScala
 
-object MapExpressions1 {
+object MapExpressions {
 
-  import Expression._
-
-  def ga(c : ParserRuleContext) = new GeneralAnnotation(c)
-  def toList[T](l : java.util.List[T]) = asScala(l).toList
-  def toListNullable[T](l : java.util.List[T]) = if (l == null) List() else toList(l)
+  def ga(c : ParserRuleContext) : GeneralAnnotation = new GeneralAnnotation(c)
+  def toList[T](l : java.util.List[T]) : List[T] = asScala(l).toList
+  def toListNullable[T](l : java.util.List[T]) : List[T] = if (l == null) List() else toList(l)
 
   private def mapBinop[TT](args: java.util.List[TT], ops : java.util.List[TerminalNode], mapa: TT => T): T = {
     val sargs = asScala(args)
@@ -28,8 +38,9 @@ object MapExpressions1 {
 
   def mapLazyLogic[TT <: runtime.ParserRuleContext](args : java.util.List[TT], cons : (T, T, GeneralAnnotation) => T, mapa : TT => T) : T = {
     def inner(l : List[TT]) : T =
-      if (l.length == 1) mapa(l.head) else
-      cons(inner(l.init), mapa(l.last), ga(l.last))
+      if (l.length == 1) { mapa(l.head) } else {
+        cons(inner(l.init), mapa(l.last), ga(l.last))
+      }
     inner(toList(args))
   }
 
@@ -40,8 +51,9 @@ object MapExpressions1 {
     mapLazyLogic(c.inversion(), LazyLAnd, mapInversion)
 
   def mapInversion(c : InversionContext) : T =
-    if (c.NOT() == null) mapComparison(c.comparison()) else
-    Unop(Unops.LNot, mapInversion(c.inversion()), ga(c))
+    if (c.NOT() == null) { mapComparison(c.comparison()) } else {
+      Unop(Unops.LNot, mapInversion(c.inversion()), ga(c))
+    }
 
   def mapComparison(context: PythonParser.ComparisonContext) : T = {
     if (context.compare_op_bitwise_or_pair().size() == 0) {
@@ -59,8 +71,8 @@ object MapExpressions1 {
           if (c.notin_bitwise_or() != null) (Compops.NotIn, mapBitwiseOr(c.notin_bitwise_or().bitwise_or())) else
           if (c.in_bitwise_or() != null) (Compops.In, mapBitwiseOr(c.in_bitwise_or().bitwise_or())) else
           if (c.isnot_bitwise_or() != null) (Compops.IsNot, mapBitwiseOr(c.isnot_bitwise_or().bitwise_or())) else
-          if (c.is_bitwise_or() != null) (Compops.Is, mapBitwiseOr(c.is_bitwise_or().bitwise_or())) else
-          throw new ASTMapperException("Unsupported comparison operation?")
+          if (c.is_bitwise_or() != null) { (Compops.Is, mapBitwiseOr(c.is_bitwise_or().bitwise_or())) } else
+          { throw new ASTMapperException("Unsupported comparison operation?") }
         }
       )
       FreakingComparison(l1.map(_._1), mapBitwiseOr(context.bitwise_or()) :: l1.map(_._2), ga(context))
@@ -68,8 +80,11 @@ object MapExpressions1 {
   }
 
   def mapBitwiseOr(c : Bitwise_orContext) : T = {
-    if (c.bitwise_or() != null) Binop(Binops.Or, mapBitwiseOr(c.bitwise_or()), mapBitwiseXOr(c.bitwise_xor()), ga(c)) else
-    mapBitwiseXOr(c.bitwise_xor())
+    if (c.bitwise_or() != null) {
+      Binop(Binops.Or, mapBitwiseOr(c.bitwise_or()), mapBitwiseXOr(c.bitwise_xor()), ga(c))
+    } else {
+      mapBitwiseXOr(c.bitwise_xor())
+    }
   }
 
   def mapBitwiseXOr(context: PythonParser.Bitwise_xorContext) : T = {
@@ -134,7 +149,7 @@ object MapExpressions1 {
     if (context.PLUS() != null) Unop(Unops.Plus, mapFactor(context.factor()), ga(context)) else
     if (context.MINUS() != null) Unop(Unops.Minus, mapFactor(context.factor()), ga(context)) else
     if (context.TILDE() != null) Unop(Unops.Neg, mapFactor(context.factor()), ga(context)) else
-    mapPower(context.power())
+    { mapPower(context.power()) }
   }
 
   def mapPower(context: PythonParser.PowerContext) : T = {
@@ -163,13 +178,16 @@ object MapExpressions1 {
       CallIndex(false, mapPrimary(context.primary()), List((None, mapSlices(context.slices()))), ga(context))
     } else
     if (context.atom() != null) mapAtom(context.atom()) else
-    CallIndex(true, mapPrimary(context.primary()), List(), ga(context))
+    { CallIndex(true, mapPrimary(context.primary()), List(), ga(context)) }
   }
 
   def mapGenexp(c : GenexpContext) : T = {
     GeneratorComprehension(
-      if (c.assignment_expression() != null) mapAssignmentExpression(c.assignment_expression()) else
-      mapExpression(c.expression()),
+      if (c.assignment_expression() != null) {
+        mapAssignmentExpression(c.assignment_expression())
+      } else {
+        mapExpression(c.expression())
+      },
       mapForIfClauses(c.for_if_clauses()),
       ga(c)
     )
@@ -186,7 +204,7 @@ object MapExpressions1 {
     if (context.group() != null) {
       if (context.group().yield_expr() != null) mapYieldExpr(context.group().yield_expr()) else
       if (context.group().named_expression() != null) mapNamedExpression(context.group().named_expression()) else
-      throw new ASTMapperException("context.group problem")
+      { throw new ASTMapperException("context.group problem") }
     } else
     if (context.genexp() != null) mapGenexp(context.genexp()) else
     if (context.list() != null) mapList(context.list()) else
@@ -196,7 +214,7 @@ object MapExpressions1 {
     if (context.dictcomp() != null) mapDictcomp(context.dictcomp()) else
     if (context.setcomp() != null) mapSetcomp(context.setcomp()) else
     if (context.ELLIPSIS() != null) EllipsisLiteral(ga(context)) else
-    throw new ASTMapperException("wrong alternative in mapAtom")
+    { throw new ASTMapperException("wrong alternative in mapAtom") }
   }
 
   def mapYieldExpr(context: PythonParser.Yield_exprContext) : T = {
@@ -205,7 +223,7 @@ object MapExpressions1 {
       val l = mapStarExpressions(context.star_expressions())
       Yield(Some(
         if (context.star_expressions().COMMA().size() == 0) l.head else
-        CollectionCons(CollectionKind.Tuple, l, ga(context))
+        { CollectionCons(CollectionKind.Tuple, l, ga(context)) }
       ), ga(context))
     }
   }
@@ -216,7 +234,7 @@ object MapExpressions1 {
 
   def mapStarExpression(c : Star_expressionContext) : T = {
     if (c.bitwise_or() != null) Star(mapBitwiseOr(c.bitwise_or()), ga(c)) else
-    mapExpression(c.expression())
+    { mapExpression(c.expression()) }
   }
 
   def mapSetcomp(context: PythonParser.SetcompContext) : CollectionComprehension = {
@@ -232,12 +250,12 @@ object MapExpressions1 {
 
   def mapDict(context: PythonParser.DictContext) : DictCons = {
     if (context.double_starred_kvpairs() == null) DictCons(List(), ga(context)) else
-    DictCons(toList(context.double_starred_kvpairs().double_starred_kvpair()).map(mapDoubleStarredKvpair), ga(context))
+    { DictCons(toList(context.double_starred_kvpairs().double_starred_kvpair()).map(mapDoubleStarredKvpair), ga(context)) }
   }
 
   def mapDoubleStarredKvpair(c : Double_starred_kvpairContext) : DictEltDoubleStar = {
     if (c.bitwise_or() != null) Right(mapBitwiseOr(c.bitwise_or())) else
-    Left(mapKvpair(c.kvpair()))
+    { Left(mapKvpair(c.kvpair())) }
   }
 
   def mapKvpair(context: PythonParser.KvpairContext) : (T, T) =
@@ -287,20 +305,20 @@ object MapExpressions1 {
 
   def mapStarTargets(context: PythonParser.Star_targetsContext) : T = {
     if (context.COMMA().size() == 0) mapStarTarget(context.star_target().get(0)) else
-    CollectionCons(CollectionKind.Tuple, toList(context.l).map(mapStarTarget), ga(context))
+    { CollectionCons(CollectionKind.Tuple, toList(context.l).map(mapStarTarget), ga(context)) }
   }
 
   def mapStarTarget(c : Star_targetContext) : T = {
     if (c.star_target() != null) Star(mapStarTarget(c.star_target()), ga(c)) else
-    mapTargetWithStarAtom(c.target_with_star_atom())
+    { mapTargetWithStarAtom(c.target_with_star_atom()) }
   }
 
   def mapTargetWithStarAtom(c : Target_with_star_atomContext) : T = {
     if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
-    if (c.slices() != null) CallIndex(
-      false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)
-    ) else
-    mapStarAtom(c.star_atom())
+    if (c.slices() != null) {
+      CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c))
+    } else
+    { mapStarAtom(c.star_atom()) }
   }
 
   def mapStarTargetsTupleSeq(context: PythonParser.Star_targets_tuple_seqContext) : T = {
@@ -319,21 +337,21 @@ object MapExpressions1 {
     if (context.NAME() != null) Ident(context.NAME().getText, ga(context)) else
     if (context.target_with_star_atom() != null) mapTargetWithStarAtom(context.target_with_star_atom()) else
     if (context.star_targets_tuple_seq() != null) mapStarTargetsTupleSeq(context.star_targets_tuple_seq()) else {
-    if (context.OPEN_PAREN() != null) CollectionCons(CollectionKind.Tuple, List(), ga(context)) else
-    if (context.star_targets_list_seq() != null) mapStarTargetsListSeq(context.star_targets_list_seq()) else
-    if (context.OPEN_BRACK() != null) CollectionCons(CollectionKind.List, List(), ga(context)) else
-    throw new ASTMapperException("mapStarAtom")
+      if (context.OPEN_PAREN() != null) CollectionCons(CollectionKind.Tuple, List(), ga(context)) else
+      if (context.star_targets_list_seq() != null) mapStarTargetsListSeq(context.star_targets_list_seq()) else
+      if (context.OPEN_BRACK() != null) CollectionCons(CollectionKind.List, List(), ga(context)) else
+      { throw new ASTMapperException("mapStarAtom") }
     }
   }
 
   def mapStarNamedExpression(context: PythonParser.Star_named_expressionContext) : T = {
     if (context.bitwise_or() != null) Star(mapBitwiseOr(context.bitwise_or()), ga(context)) else
-    mapNamedExpression(context.named_expression())
+    { mapNamedExpression(context.named_expression()) }
   }
 
   def mapNamedExpression(context: PythonParser.Named_expressionContext) : T = {
     if (context.assignment_expression() != null) mapAssignmentExpression(context.assignment_expression()) else
-    mapExpression(context.expression())
+    { mapExpression(context.expression()) }
   }
 
   def mapStarNamedExpressions(context: PythonParser.Star_named_expressionsContext) : List[T] = {
@@ -348,7 +366,7 @@ object MapExpressions1 {
       )
     } else
     if (c.lambdef() != null) mapLambdef(c.lambdef()) else
-    mapDisjunction(c.disjunction(0))
+    { mapDisjunction(c.disjunction(0)) }
   }
 
   def mapLambdaParamMaybeDefault(kind : ArgKind.T)(c : Lambda_param_maybe_defaultContext) : Parameter = {
@@ -369,15 +387,17 @@ object MapExpressions1 {
   }
 
   def mapLambdaSlashNoDefault(c : Lambda_slash_no_defaultContext) : List[Parameter] = {
-    if (c == null) return List()
-    val l = toListNullable(c.lambda_param_no_default())
-    l.map(mapLambdaParamNoDefault(ArgKind.Positional))
+    if (c == null) List() else {
+      val l = toListNullable(c.lambda_param_no_default())
+      l.map(mapLambdaParamNoDefault(ArgKind.Positional))
+    }
   }
 
   def mapLambdaSlashWithDefault(c : Lambda_slash_with_defaultContext) : List[Parameter] = {
-    if (c == null) return List()
-    toListNullable(c.lambda_param_no_default()).map(mapLambdaParamNoDefault(ArgKind.Positional)) ++
-    toListNullable(c.lambda_param_with_default()).map(mapLambdaParamWithDefault(ArgKind.Positional))
+    if (c == null) List() else {
+      toListNullable(c.lambda_param_no_default()).map(mapLambdaParamNoDefault(ArgKind.Positional)) ++
+        toListNullable(c.lambda_param_with_default()).map(mapLambdaParamWithDefault(ArgKind.Positional))
+    }
   }
 
   def mapLambdef(context: PythonParser.LambdefContext) : AnonFun = {
@@ -421,13 +441,15 @@ object MapExpressions1 {
     if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else
     if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)) else
     if (c.genexp() != null) mapGenexp(c.genexp()) else
-    if (c.arguments() != null) CallIndex(
-      true, mapTPrimary(c.t_primary()),
-      if (c.arguments() == null) List() else mapArgs(c.arguments().args()),
-      ga(c)
-    ) else
+    if (c.arguments() != null) {
+      CallIndex(
+        true, mapTPrimary(c.t_primary()),
+        if (c.arguments() == null) List() else mapArgs(c.arguments().args()),
+        ga(c)
+      )
+    } else
     if (c.atom() != null) mapAtom(c.atom()) else
-    CallIndex(true, mapTPrimary(c.t_primary()), List(), ga(c))
+    { CallIndex(true, mapTPrimary(c.t_primary()), List(), ga(c)) }
   }
 
   def mapArgs(context: PythonParser.ArgsContext) : List[(Option[String], T)] = {
@@ -439,7 +461,7 @@ object MapExpressions1 {
   def mapArg(c : ArgContext) : T = {
     if (c.starred_expression() != null) mapStarredExpression(c.starred_expression()) else
     if (c.assignment_expression() != null) mapAssignmentExpression(c.assignment_expression()) else
-    mapExpression(c.expression())
+    { mapExpression(c.expression()) }
   }
 
   def mapAssignmentExpression(context: PythonParser.Assignment_expressionContext) : Assignment = {
@@ -452,22 +474,25 @@ object MapExpressions1 {
   def mapKwargs(context: PythonParser.KwargsContext) : List[(Option[String], T)] = {
     val starred = if (context.kwarg_or_starred() == null) List() else toList(context.kwarg_or_starred()).map(mapKwargOrStarred)
     val doubleStarred = if (context.kwarg_or_double_starred() == null) List() else
-      toList(context.kwarg_or_double_starred()).map(mapKwargOrDoubleStarred)
+      { toList(context.kwarg_or_double_starred()).map(mapKwargOrDoubleStarred) }
     starred ++ doubleStarred
   }
 
   def mapKwargOrStarred(c : Kwarg_or_starredContext) : (Option[String], T) = {
     if (c.expression() != null) (Some(c.NAME().getText), mapExpression(c.expression())) else
-    (None, mapStarredExpression(c.starred_expression()))
+    { (None, mapStarredExpression(c.starred_expression())) }
   }
 
   def mapKwargOrDoubleStarred(c : Kwarg_or_double_starredContext) : (Option[String], T) = {
     if (c.NAME() != null) (Some(c.NAME().getText), mapExpression(c.expression())) else
-      (None, DoubleStar(mapExpression(c.expression()), ga(c)))
+      { (None, DoubleStar(mapExpression(c.expression()), ga(c))) }
   }
 
   def string2num(x: String, c: ParserRuleContext): T = {
-    if (x.last == 'j') Expression.ImagLiteral(x.init, new GeneralAnnotation(c)) else if (x.exists(c => ((c == 'e' || c == 'E') && !x.startsWith("0x") && !x.startsWith("0X")) || c == '.' || c == '+' || c == '-')) {
+    if (x.last == 'j') Expression.ImagLiteral(x.init, new GeneralAnnotation(c)) else
+    if (x.exists(
+      c => ((c == 'e' || c == 'E') && !x.startsWith("0x") && !x.startsWith("0X")) || c == '.' || c == '+' || c == '-')
+    ) {
       Expression.FloatLiteral(x, new GeneralAnnotation(c))
     } else {
       val int =
@@ -475,7 +500,9 @@ object MapExpressions1 {
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
             if (ch != '_') {
               acc * 16 + (
-                if (ch >= '0' && ch <= '9') ch.toInt - '0'.toInt else if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else {
+                if (ch >= '0' && ch <= '9') ch.toInt - '0'.toInt else
+                if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else
+                if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else {
                   throw new NumberFormatException()
                 }
                 )

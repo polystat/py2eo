@@ -21,7 +21,7 @@ object Parse {
     val tokenStream = new CommonTokenStream(lexer)
     val parser = new PythonParser(tokenStream)
     val e = parser.file()
-    val t = MapStatements1.mapFile(e)
+    val t = MapStatements.mapFile(e)
     debugPrinter(t, "afterParser")
     t
   }

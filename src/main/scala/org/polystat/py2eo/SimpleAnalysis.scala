@@ -1,12 +1,18 @@
 package org.polystat.py2eo
 
 import org.polystat.py2eo.Common.ASTAnalysisException
+import org.polystat.py2eo.Expression.{FloatLiteral, ImagLiteral, IntLiteral, SimpleComparison, UnsupportedExpr}
 
 import scala.collection.immutable.HashMap
 
 object SimpleAnalysis {
 
-  import Expression._
+  import org.polystat.py2eo.Expression.{
+    AnonFun, Assignment, Await, Binop, Binops, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons,
+    CollectionKind, Compops, Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar,
+    EllipsisLiteral, Field, ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension,
+    LazyLAnd, LazyLOr, NoneLiteral, Parameter, Slice, Star, StringLiteral, T, Unop, Unops, Yield, YieldFrom
+  }
 
   private def childrenComprehension(c : Comprehension) = c match {
     case IfComprehension(cond) => List(cond)

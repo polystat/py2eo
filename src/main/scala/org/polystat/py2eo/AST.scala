@@ -4,11 +4,10 @@ import Expression.{CallIndex, CollectionKind, Compops, Ident}
 import org.antlr.v4.runtime.{ANTLRInputStream, ParserRuleContext, Token}
 
 import java.io.{File, FileReader}
-import scala.collection.JavaConverters._
 import scala.collection.immutable.HashMap
 
 case class Position(line : Int, char : Int) {
-  override def toString = s"$line:$char"
+  override def toString : String = s"$line:$char"
 }
 // annotates all the AST nodes
 case class GeneralAnnotation(start : Option[Position], stop : Option[Position]) {
@@ -131,7 +130,7 @@ object Expression {
   }
 
   case class Parameter(name : String, kind : ArgKind.T, paramAnn : Option[T], default : Option[T], ann : GeneralAnnotation) {
-    def withAnnDefault(ann : Option[T], default : Option[T]) = Parameter(name, kind, ann, default, this.ann.pos)
+    def withAnnDefault(ann : Option[T], default : Option[T]): Parameter = Parameter(name, kind, ann, default, this.ann.pos)
   }
 
   case class Assignment(ident : String, rhs : T, ann : GeneralAnnotation) extends T
