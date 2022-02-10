@@ -23,6 +23,9 @@ object SlowTest extends Tag("SlowTest")
 class YamlItem(var testName: Path, var yaml: java.util.Map[String, Any])
 
 class Tests {
+  // the script to convert python files to .yaml containers. Use it to add new big files
+  // for i in *.py; do perl -e 'print "python: |\n"; while (<>) { print "  $_" } ' < $i > ${i%.py}.yaml; done
+
   val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
@@ -39,6 +42,13 @@ class Tests {
     if (match1.group(1) == "2") "python3" else "python"
   }
 
+  def yaml2python(f : File): String = {
+    val yaml = new Yaml()
+    yaml.load[java.util.Map[String, String]](new FileInputStream(f)).get("python")
+  }
+
+  def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
+
   @Test def simplifyInheritance(): Unit = {
     val name = "inheritance"
     val test = new File(testsPrefix + "/" + name + ".py")
@@ -48,19 +58,19 @@ class Tests {
   }
 
   @Test def trivialTest():Unit = {
-    useCageHolder(testsPrefix + "/trivial.py")
+    useCageHolder(new File(testsPrefix + "/trivial.yaml"))
   }
 
   @Test def simplestClassTest():Unit = {
-    useCageHolder(testsPrefix + "/simplestClass.py")
+    useCageHolder(new File(testsPrefix + "/simplestClass.yaml"))
   }
 
   @Test def myListTest():Unit = {
-    useCageHolder(testsPrefix + "/myList.py")
+    useCageHolder(new File(testsPrefix + "/myList.yaml"))
   }
 
   @Test def xTest():Unit = {
-    useCageHolder(testsPrefix + "/x.py")
+    useCageHolder(new File(testsPrefix + "/x.yaml"))
   }
 
   @Test def parserPrinterOnCPython(): Unit = {
@@ -91,20 +101,26 @@ class Tests {
     // test_dis.py, test*trace*.py are not supported, because they seem to compare line numbers, which change after printing
     // many test for certain libraries are not present here, because these libraries are not installed by default in the CI
 
-//    val test = List("test_named_expressions.py").map(name => new File(dirName + "/" + name))
+//    val test = List("test_threading.yaml", "test_sndhdr.yaml").map(name => new File(dirName + "/" + name))
     val test = dir.listFiles().toList
     val futures = test.map(test =>
       Future {
-        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".py")) {
+        if (!test.isDirectory && test.getName.startsWith("test_") && test.getName.endsWith(".yaml")) {
           def db = debugPrinter(test)(_, _)
-
-          val name = test.getName
+          val name = chopExtension(test.getName)
           println(s"parsing $name")
-          val eoText = Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
+          val py = try {
+            yaml2python(test)
+          } catch {
+            case e : Throwable =>
+              println(s"OBLOM for $name")
+              throw e
+          }
+          val eoText = Transpile.transpile(db)(name, py)
           writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)
           Files.copy(
-            Paths.get(s"$dirName/afterParser/${test.getName}"),
-            Paths.get(s"$dirName/afterParser/cpython/Lib/test/${test.getName}"),
+            Paths.get(s"$dirName/afterParser/$name.py"),
+            Paths.get(s"$dirName/afterParser/cpython/Lib/test/$name.py"),
             REPLACE_EXISTING
           )
         }
@@ -135,7 +151,7 @@ class Tests {
         val name = test.getName
         println(s"parsing $name")
         val eoText = try {
-          Transpile.transpile(db)(name.substring(0, name.length - 3), readFile(test))
+          Transpile.transpile(db)(chopExtension(name), readFile(test))
         } catch {
           case e : Throwable =>
             println(s"failed to transpile $name: ${e.toString}")
@@ -147,92 +163,40 @@ class Tests {
     for (f <- futures) Await.result(f, Duration.Inf)
   }
 
-  def useCageHolder(path: String): Unit = {
-    val test = new File(path)
+  def useCageHolder(test : File): Unit = {
     def db = debugPrinter(test)(_, _)
     writeFile(
       test, "genCageEO", ".eo", Transpile.transpile(db)(
-        test.getName.replace(".py", ""),
-        readFile(test)
+        test.getName.replace(".yaml", ""),
+        yaml2python(test)
       )
     )
-    val runme = test.getParentFile.getPath + "/afterUseCage/" + test.getName
+    val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
     assertTrue(0 == s"$python \"$runme\"".!)
   }
-
-
-  def useCageHolder(path: String, yamlString:String): Unit = {
-    val test = new File(path)
-
-    def db = debugPrinter(test)(_, _)
-    val y = SimplePass.allTheGeneralPasses(db, Parse.parse(yamlString, db), new SimplePass.Names())
-    val textractAllCalls = SimplePass.procExprInStatement(
-      SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
-    val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-      ClosureWithCage.declassifyOnly(textractAllCalls._1, textractAllCalls._2)._1
-
-    val hacked = Suite(List(
-      theFun,
-      Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
-    ), ann.pos)
-    val runme = writeFile(test, "afterUseCage", ".py", PrintPython.printSt(hacked, ""))
-    assertTrue(0 == s"$python \"$runme\"".!)
-
-    val eoHacked = Suite(List(
-      theFun,
-      Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
-    ), ann.pos)
-
-    val eoText = PrintLinearizedMutableEOWithCage.printTest(test.getName.replace(".yaml", ""), eoHacked)
-    writeFile(test, "genCageEO", ".eo", (eoText.init.init :+ "        result").mkString("\n"))
-  }
-
 
   @Test def whileCheckTest():Unit = {
-    simpleConstructionCheck(yamlTest = "whileCheck")
+    simpleConstructionCheck("whileCheck")
   }
 
   @Test def ifCheck():Unit = {
-    simpleConstructionCheck(yamlTest = "ifCheck")
+    simpleConstructionCheck("ifCheck")
   }
 
   @Test def assignCheck():Unit = {
-    simpleConstructionCheck(yamlTest = "assignCheck")
+    simpleConstructionCheck("assignCheck")
   }
 
-  def simpleConstructionCheck(path:String = null, yamlTest:String = null):Unit = {
-    if (path != null){
-      val testHolder = new File(path)
-      if (testHolder.exists && testHolder.isDirectory) {
-        for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-          if (!file.getName.contains(".disabled") && !file.getName.contains(".yaml")) {
-            useCageHolder(file.getPath)
-          }
-        }
-      }
-    }else{
-      if (yamlTest != null){
-        for (item <- parsePython()){
-          val file = new File(item.testName.toString)
-          if (item.testName.getParent.getFileName.toString == yamlTest){
-            useCageHolder(file.getPath, item.yaml.get("python").asInstanceOf[String])
-          }
+  def simpleConstructionCheck(path:String): Unit = {
+    val testHolder = new File(path)
+    if (testHolder.exists && testHolder.isDirectory) {
+      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
+        if (!file.getName.contains(".disabled") && file.getName.endsWith(".yaml")) {
+          useCageHolder(file)
         }
       }
     }
-
   }
 
-  @Parameters def parsePython():collection.mutable.ArrayBuffer[YamlItem] = {
-    val res = collection.mutable.ArrayBuffer[YamlItem]()
-    Files.walk(Paths.get(testsPrefix)).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
-      val testHolder = new File(p.toString)
-      val src = new FileInputStream(testHolder)
-      val yaml = new Yaml()
-      val yamlObj = yaml.load(src).asInstanceOf[java.util.Map[String, Any]]
-      res.addOne(new YamlItem(p,yamlObj))
-    })
-    res
-  }
 }
 
