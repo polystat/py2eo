@@ -43,11 +43,11 @@ This transpiler receives as input data python code. Then received code is simpli
 - Install maven (`sudo apt install maven`)
 - You need exactly `Java version 14`, so download it [here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz), unpack it and manually setup the `PATH` and `JAVA_HOME` variables. For example, you may open command line and run these commands:
 ```
-  cd ~
-  wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
-  tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
-  PATH="$PWD/jdk-14.0.1/bin/:$PATH"
-  export JAVA_HOME="$PWD/jdk-14.0.1/
+cd ~
+wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
+PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+export JAVA_HOME="$PWD/jdk-14.0.1/"
 ```
 - Check `java` version `java -version`
 - Download project of [Python to EOLANG transpiler](https://github.com/polystat/py2eo) with source code (via `git clone` or downloading of `zip`)
