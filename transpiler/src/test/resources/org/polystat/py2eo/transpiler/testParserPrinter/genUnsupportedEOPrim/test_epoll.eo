@@ -1,0 +1,276 @@
+memory > xclient
+memory > xValueError
+memory > xAssertionError
+memory > xsocket
+memory > xselect
+memory > xopen
+memory > xint
+memory > xskt
+memory > xsorted
+memory > xe
+memory > xlen
+memory > xerrno
+memory > xstr
+memory > xhasattr
+memory > xtime
+memory > xOSError
+memory > xos
+memory > xep
+memory > x__file__
+memory > xunittest
+memory > xobject
+memory > xaddr
+memory > xserver
+memory > xTypeError
+memory > x__name__
+[] > test_epoll
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_control_and_wait
+        memory > xtest_unregister_closed
+        memory > xtest_create
+        memory > xtest_close
+        memory > xtest_add
+        memory > x_connected_pair
+        memory > xsetUp
+        memory > xtest_fromfd
+        memory > xtest_fd_non_inheritable
+        memory > xtearDown
+        memory > xtest_badcreate
+        memory > xtest_errors
+        memory > xtest_context_manager
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            ((((xhasattr)) ((xselect)) ("epoll")).not).if
+              (((unsupported)) (((((xunittest).xSkipTest)) ("test works only on Linux 2.6"))))
+            (((unsupported)) ((xOSError)))
+              bogusForceDataize.write ((((xselect).xepoll)) 0)
+              seq
+                (((xe).xerrno).eq ((xerrno).xENOSYS)).if
+                  (((unsupported)) (((((xunittest).xSkipTest)) ("kernel doesn't support epoll()"))))
+                (((unsupported)) 0)
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) (((xself).xserverSocket)) (((((xsocket).xcreate_server)) ((((unsupported)) ("127.0.0.1") (0))))))
+                        (((unsupported)) (((xself).xconnections)) ((((unsupported)) (((xself).xserverSocket)))))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) ((xskt)) (((xself).xconnections)))
+                        bogusForceDataize.write ((((xskt).xclose)) 0)
+                x_connected_pair.write
+                  [xself]
+                    memory > xclient
+                    seq > @
+                      seq
+                        xclient.write ((((xsocket).xsocket)) 0)
+                        bogusForceDataize.write ((((xclient).xsetblocking)) (FALSE))
+                        (((unsupported)) ((xOSError)))
+                          bogusForceDataize.write ((((xclient).xconnect)) ((((unsupported)) ("127.0.0.1") ((((unsupported)) ((((((xself).xserverSocket).xgetsockname)) 0)) (1))))))
+                          bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) (((xe).xargs)) (0))) (((xerrno).xEINPROGRESS)))
+                          (((unsupported)) ((((xAssertionError)) ("Connect should have raised EINPROGRESS"))))
+                        (((unsupported)) ((((unsupported)) ((xserver)) ((xaddr)))) ((((((xself).xserverSocket).xaccept)) 0)))
+                        bogusForceDataize.write (((((xself).xconnections).xextend)) ((((unsupported)) ((xclient)) ((xserver)))))
+                        (((unsupported)) ((((unsupported)) ((xclient)) ((xserver)))))
+                xtest_create.write
+                  [xself]
+                    memory > xep
+                    seq > @
+                      seq
+                        (((unsupported)) ((xOSError)))
+                          xep.write ((((xselect).xepoll)) (16))
+                          (((unsupported)) ((((xAssertionError)) ((((xstr)) ((xe)))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((xep).xfileno)) 0).greater 0)) (((((xep).xfileno)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((xep).xclosed).not)))
+                        bogusForceDataize.write ((((xep).xclose)) 0)
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((xep).xclosed)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xep).xfileno)))
+                        (((xhasattr)) ((xselect)) ("EPOLL_CLOEXEC")).if
+                          seq
+                            bogusForceDataize.write (((((((xselect).xepoll)) ((1.neg)) (((xselect).xEPOLL_CLOEXEC))).xclose)) 0)
+                            bogusForceDataize.write ((((((unsupported)) (((xselect).xepoll)) (((xselect).xEPOLL_CLOEXEC))).xclose)) 0)
+                            bogusForceDataize.write ((((((unsupported)) (((xselect).xepoll)) (0)).xclose)) 0)
+                xtest_badcreate.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xselect).xepoll)) (1) (2) (3))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xselect).xepoll)) ("foo"))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xselect).xepoll)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xselect).xepoll)) ((((unsupported)) 0)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xselect).xepoll)) ((((unsupported)) ("foo"))))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xselect).xepoll)) ((((unsupported)) 0)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xselect).xepoll)) (0))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xselect).xepoll)) ((2.neg)))
+                        (((unsupported)) (((xself).xassertRaises)) ((xValueError)) (((xselect).xepoll)) ((2.neg)))
+                        (((xhasattr)) ((xselect)) ("EPOLL_CLOEXEC")).if
+                          (((unsupported)) (((xself).xassertRaises)) ((xOSError)) (((xselect).xepoll)) (12356))
+                xtest_context_manager.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) (((((xselect).xepoll)) (16))) ((xep)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertGreater)) (((((xep).xfileno)) 0)) (0))
+                            bogusForceDataize.write ((((xself).xassertFalse)) (((xep).xclosed)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((xep).xclosed)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xep).xfileno)))
+                xtest_add.write
+                  [xself]
+                    memory > xep
+                    seq > @
+                      seq
+                        (((unsupported)) ((((unsupported)) ((xserver)) ((xclient)))) (((((xself).x_connected_pair)) 0)))
+                        xep.write ((((xselect).xepoll)) (2))
+                        (((unsupported)) 0)
+                          seq
+                            bogusForceDataize.write ((((xep).xregister)) (((((xserver).xfileno)) 0)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xep).xregister)) (((((xclient).xfileno)) 0)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                          bogusForceDataize.write ((((xep).xclose)) 0)
+                        xep.write ((((xselect).xepoll)) (2))
+                        (((unsupported)) 0)
+                          seq
+                            bogusForceDataize.write ((((xep).xregister)) ((xserver)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xep).xregister)) ((xclient)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                          bogusForceDataize.write ((((xep).xclose)) 0)
+                        xep.write ((((xselect).xepoll)) (2))
+                        (((unsupported)) 0)
+                          seq
+                            bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xep).xregister)) ((((xobject)) 0)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xep).xregister)) ("None: is there a None literal in the EO language?") ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xep).xregister)) ((1.neg)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xself).xassertRaises)) ((xOSError)) (((xep).xregister)) (10000) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xep).xregister)) ((xserver)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xself).xassertRaises)) ((xOSError)) (((xep).xregister)) ((xserver)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                          bogusForceDataize.write ((((xep).xclose)) 0)
+                xtest_fromfd.write
+                  [xself]
+                    memory > xevents
+                    memory > xep2
+                    memory > xevents2
+                    seq > @
+                      seq
+                        (((unsupported)) ((((unsupported)) ((xserver)) ((xclient)))) (((((xself).x_connected_pair)) 0)))
+                        (((unsupported)) (((((xselect).xepoll)) (2))) ((xep)))
+                          seq
+                            xep2.write (((((xselect).xepoll).xfromfd)) (((((xep).xfileno)) 0)))
+                            bogusForceDataize.write ((((xep2).xregister)) (((((xserver).xfileno)) 0)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            bogusForceDataize.write ((((xep2).xregister)) (((((xclient).xfileno)) 0)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))
+                            xevents.write ((((xep).xpoll)) (1) (4))
+                            xevents2.write ((((xep2).xpoll)) (0.9) (4))
+                            bogusForceDataize.write ((((xself).xassertEqual)) ((((xlen)) ((xevents)))) (2))
+                            bogusForceDataize.write ((((xself).xassertEqual)) ((((xlen)) ((xevents2)))) (2))
+                        (((unsupported)) ((xOSError)))
+                          bogusForceDataize.write ((((xep2).xpoll)) (1) (4))
+                          bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) (((xe).xargs)) (0))) (((xerrno).xEBADF)) ((xe)))
+                          bogusForceDataize.write ((((xself).xfail)) ("epoll on closed fd didn't raise EBADF"))
+                xtest_control_and_wait.write
+                  [xself]
+                    memory > xexpected
+                    memory > xthen
+                    memory > xep
+                    memory > xevents
+                    memory > xnow
+                    seq > @
+                      seq
+                        (((unsupported)) ((((unsupported)) ((xclient)) ((xserver)))) (((((xself).x_connected_pair)) 0)))
+                        xep.write ((((xselect).xepoll)) (16))
+                        bogusForceDataize.write ((((xep).xregister)) (((((xserver).xfileno)) 0)) (((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT)).or ((xselect).xEPOLLET))))
+                        bogusForceDataize.write ((((xep).xregister)) (((((xclient).xfileno)) 0)) (((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT)).or ((xselect).xEPOLLET))))
+                        xnow.write ((((xtime).xmonotonic)) 0)
+                        xevents.write ((((xep).xpoll)) (1) (4))
+                        xthen.write ((((xtime).xmonotonic)) 0)
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((xthen).sub (xnow)).greater 0.1)) (((xthen).sub (xnow))))
+                        xexpected.write (((unsupported)) ((((unsupported)) (((((xclient).xfileno)) 0)) (((xselect).xEPOLLOUT)))) ((((unsupported)) (((((xserver).xfileno)) 0)) (((xselect).xEPOLLOUT)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xsorted)) ((xevents)))) ((((xsorted)) ((xexpected)))))
+                        xevents.write (((unsupported)) (((xep).xpoll)) (0.1) (4))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((xevents)))
+                        bogusForceDataize.write ((((xclient).xsendall)) ("Hello!"))
+                        bogusForceDataize.write ((((xserver).xsendall)) ("world!!!"))
+                        xnow.write ((((xtime).xmonotonic)) 0)
+                        xevents.write ((((xep).xpoll)) (1.0) (4))
+                        xthen.write ((((xtime).xmonotonic)) 0)
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((xthen).sub (xnow)).greater 0.01)))
+                        xexpected.write (((unsupported)) ((((unsupported)) (((((xclient).xfileno)) 0)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))) ((((unsupported)) (((((xserver).xfileno)) 0)) ((((xselect).xEPOLLIN).or ((xselect).xEPOLLOUT))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xsorted)) ((xevents)))) ((((xsorted)) ((xexpected)))))
+                        bogusForceDataize.write ((((xep).xunregister)) (((((xclient).xfileno)) 0)))
+                        bogusForceDataize.write ((((xep).xmodify)) (((((xserver).xfileno)) 0)) (((xselect).xEPOLLOUT)))
+                        xnow.write ((((xtime).xmonotonic)) 0)
+                        xevents.write ((((xep).xpoll)) (1) (4))
+                        xthen.write ((((xtime).xmonotonic)) 0)
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((xthen).sub (xnow)).greater 0.01)))
+                        xexpected.write (((unsupported)) ((((unsupported)) (((((xserver).xfileno)) 0)) (((xselect).xEPOLLOUT)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xevents)) ((xexpected)))
+                xtest_errors.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xselect).xepoll)) ((2.neg)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) ((((((xselect).xepoll)) 0).xregister)) ((1.neg)) (((xselect).xEPOLLIN)))
+                xtest_unregister_closed.write
+                  [xself]
+                    memory > xfd
+                    memory > xthen
+                    memory > xep
+                    memory > xevents
+                    memory > xnow
+                    seq > @
+                      seq
+                        (((unsupported)) ((((unsupported)) ((xserver)) ((xclient)))) (((((xself).x_connected_pair)) 0)))
+                        xfd.write ((((xserver).xfileno)) 0)
+                        xep.write ((((xselect).xepoll)) (16))
+                        bogusForceDataize.write ((((xep).xregister)) ((xserver)))
+                        xnow.write ((((xtime).xmonotonic)) 0)
+                        xevents.write ((((xep).xpoll)) (1) (4))
+                        xthen.write ((((xtime).xmonotonic)) 0)
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((xthen).sub (xnow)).greater 0.01)))
+                        bogusForceDataize.write ((((xserver).xclose)) 0)
+                        bogusForceDataize.write ((((xep).xunregister)) ((xfd)))
+                xtest_close.write
+                  [xself]
+                    memory > xepoll
+                    memory > xopen_file
+                    memory > xfd
+                    seq > @
+                      seq
+                        xopen_file.write (((xopen)) ((x__file__)) ("rb"))
+                        bogusForceDataize.write ((((xself).xaddCleanup)) (((xopen_file).xclose)))
+                        xfd.write ((((xopen_file).xfileno)) 0)
+                        xepoll.write ((((xselect).xepoll)) 0)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)) (((((xepoll).xfileno)) 0)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((xepoll).xclosed)))
+                        bogusForceDataize.write ((((xepoll).xclose)) 0)
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((xepoll).xclosed)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xepoll).xfileno)))
+                        bogusForceDataize.write ((((xepoll).xclose)) 0)
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xepoll).xmodify)) ((xfd)) (((xselect).xEPOLLIN)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xepoll).xpoll)) (1.0))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xepoll).xregister)) ((xfd)) (((xselect).xEPOLLIN)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xepoll).xunregister)) ((xfd)))
+                xtest_fd_non_inheritable.write
+                  [xself]
+                    memory > xepoll
+                    seq > @
+                      seq
+                        xepoll.write ((((xselect).xepoll)) 0)
+                        bogusForceDataize.write ((((xself).xaddCleanup)) (((xepoll).xclose)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((((xos).xget_inheritable)) (((((xepoll).xfileno)) 0)))) (FALSE))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

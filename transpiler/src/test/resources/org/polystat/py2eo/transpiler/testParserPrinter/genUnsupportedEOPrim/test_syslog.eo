@@ -1,0 +1,67 @@
+memory > xsupport
+memory > xUnicodeEncodeError
+memory > xunittest
+memory > x__name__
+[] > test_syslog
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_log_upto
+        memory > xtest_openlog_noargs
+        memory > xtest_log_mask
+        memory > xsyslog
+        memory > xtest_openlog
+        memory > xtest_closelog
+        memory > xtest_syslog
+        memory > xtest_setlogmask
+        seq > @
+          seq
+            (((unsupported)) 0)
+            xsyslog.write ((((xsupport).ximport_module)) ("syslog"))
+            (((unsupported)) 0)
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xtest_openlog.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsyslog).xopenlog)) ("python"))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xUnicodeEncodeError)) (((xsyslog).xopenlog)) ("uD800"))
+                xtest_syslog.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsyslog).xopenlog)) ("python"))
+                        bogusForceDataize.write ((((xsyslog).xsyslog)) ("test message from python test_syslog"))
+                        bogusForceDataize.write ((((xsyslog).xsyslog)) (((xsyslog).xLOG_ERR)) ("test error from python test_syslog"))
+                xtest_closelog.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsyslog).xopenlog)) ("python"))
+                        bogusForceDataize.write ((((xsyslog).xcloselog)) 0)
+                xtest_setlogmask.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xsyslog).xsetlogmask)) (((xsyslog).xLOG_DEBUG)))
+                xtest_log_mask.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xsyslog).xLOG_MASK)) (((xsyslog).xLOG_INFO)))
+                xtest_log_upto.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xsyslog).xLOG_UPTO)) (((xsyslog).xLOG_INFO)))
+                xtest_openlog_noargs.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsyslog).xopenlog)) 0)
+                        bogusForceDataize.write ((((xsyslog).xsyslog)) ("test message from python test_syslog"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

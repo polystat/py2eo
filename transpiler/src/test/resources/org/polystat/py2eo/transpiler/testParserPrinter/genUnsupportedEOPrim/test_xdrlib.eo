@@ -1,0 +1,105 @@
+memory > xlist
+memory > xrange
+memory > xargs
+memory > xunittest
+memory > xEOFError
+memory > xxdrlib
+memory > x__name__
+[] > test_xdrlib
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_pack_int
+        memory > xsetUp
+        memory > xassertRaisesConversion
+        memory > xtest_xdr
+        memory > xtest_uhyper
+        memory > xtest_pack_uint
+        memory > xtest_float
+        memory > xtest_double
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) (((xunittest).xTestCase)))
+              xtest_xdr.write
+                [xself]
+                  memory > xdata
+                  memory > xup
+                  memory > xpos
+                  memory > xp
+                  memory > xs
+                  memory > xa
+                  seq > @
+                    seq
+                      xp.write ((((xxdrlib).xPacker)) 0)
+                      xs.write "hello world"
+                      xa.write (((unsupported)) ("what") ("is") ("hapnin") ("doctor"))
+                      bogusForceDataize.write ((((xp).xpack_int)) (42))
+                      bogusForceDataize.write ((((xp).xpack_int)) ((17.neg)))
+                      bogusForceDataize.write ((((xp).xpack_uint)) (9))
+                      bogusForceDataize.write ((((xp).xpack_bool)) (TRUE))
+                      bogusForceDataize.write ((((xp).xpack_bool)) (FALSE))
+                      bogusForceDataize.write ((((xp).xpack_uhyper)) (45))
+                      bogusForceDataize.write ((((xp).xpack_float)) (1.9))
+                      bogusForceDataize.write ((((xp).xpack_double)) (1.9))
+                      bogusForceDataize.write ((((xp).xpack_string)) ((xs)))
+                      bogusForceDataize.write ((((xp).xpack_list)) ((((xrange)) (5))) (((xp).xpack_uint)))
+                      bogusForceDataize.write ((((xp).xpack_array)) ((xa)) (((xp).xpack_string)))
+                      xdata.write ((((xp).xget_buffer)) 0)
+                      xup.write ((((xxdrlib).xUnpacker)) ((xdata)))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xget_position)) 0)) (0))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xunpack_int)) 0)) (42))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xunpack_int)) 0)) ((17.neg)))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xunpack_uint)) 0)) (9))
+                      bogusForceDataize.write ((((xself).xassertTrue)) ((((unsupported)) (((((xup).xunpack_bool)) 0)) (TRUE))))
+                      xpos.write ((((xup).xget_position)) 0)
+                      bogusForceDataize.write ((((xself).xassertTrue)) ((((unsupported)) (((((xup).xunpack_bool)) 0)) (FALSE))))
+                      bogusForceDataize.write ((((xup).xset_position)) ((xpos)))
+                      bogusForceDataize.write ((((xself).xassertTrue)) ((((unsupported)) (((((xup).xunpack_bool)) 0)) (FALSE))))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xunpack_uhyper)) 0)) (45))
+                      bogusForceDataize.write ((((xself).xassertAlmostEqual)) (((((xup).xunpack_float)) 0)) (1.9))
+                      bogusForceDataize.write ((((xself).xassertAlmostEqual)) (((((xup).xunpack_double)) 0)) (1.9))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xunpack_string)) 0)) ((xs)))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xunpack_list)) (((xup).xunpack_uint)))) ((((xlist)) ((((xrange)) (5))))))
+                      bogusForceDataize.write ((((xself).xassertEqual)) (((((xup).xunpack_array)) (((xup).xunpack_string)))) ((xa)))
+                      bogusForceDataize.write ((((xup).xdone)) 0)
+                      bogusForceDataize.write ((((xself).xassertRaises)) ((xEOFError)) (((xup).xunpack_uint)))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) (((xself).xpacker)) (((((xxdrlib).xPacker)) 0)))
+                xassertRaisesConversion.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) 0)
+                        bogusForceDataize.write ((((xself).xassertRaises)) (((xxdrlib).xConversionError)) ((((unsupported)) ((xargs)))))
+                xtest_pack_int.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)) ((((xself).xpacker).xpack_int)) ("string"))
+                xtest_pack_uint.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)) ((((xself).xpacker).xpack_uint)) ("string"))
+                xtest_float.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)) ((((xself).xpacker).xpack_float)) ("string"))
+                xtest_double.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)) ((((xself).xpacker).xpack_double)) ("string"))
+                xtest_uhyper.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)) ((((xself).xpacker).xpack_uhyper)) ("string"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)
