@@ -1,23 +1,20 @@
 package org.polystat.py2eo
 
-import org.junit.Assert._
+import org.junit.Assert.assertTrue
 import org.junit.{Ignore, Test}
-import org.junit.runners.Parameterized.Parameters
 import org.polystat.py2eo.Common.dfsFiles
-import org.polystat.py2eo.Expression._
 import org.scalatest.Tag
 import org.yaml.snakeyaml.Yaml
 
 import java.io.{File, FileInputStream, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Path, Paths}
-import scala.collection.immutable
-import scala.collection.immutable.HashMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
-import scala.sys.process._
+import scala.sys.process.{Process, ProcessLogger}
+
 
 object SlowTest extends Tag("SlowTest")
 class YamlItem(var testName: Path, var yaml: java.util.Map[String, Any])
@@ -36,7 +33,7 @@ class Tests {
   private val python = {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
-    assertTrue(0 == (s"python --version" ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    assertTrue(0 == (Process("python --version") ! ProcessLogger(stdout.append(_), stderr.append(_))))
     val pattern = "Python (\\d+)".r
     val Some(match1) = pattern.findFirstMatchIn(if (stderr.toString() == "") stdout.toString() else stderr.toString())
     if (match1.group(1) == "2") "python3" else "python"
@@ -88,7 +85,7 @@ class Tests {
     }
 
     println("Version of python is:")
-    s"$python --version" !
+    Process(s"$python --version") !
 
     // todo: test_named_expressions.py uses assignment expressions which are not supported.
     // test_os leads to a strange error with inode numbers on the rultor server only
@@ -172,7 +169,7 @@ class Tests {
       )
     )
     val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
-    assertTrue(0 == s"$python \"$runme\"".!)
+    assertTrue(0 == Process(python + " \"" + runme + "\"").!)
   }
 
   @Test def whileCheckTest():Unit = {
