@@ -173,15 +173,15 @@ class Tests {
   }
 
   @Test def whileCheckTest():Unit = {
-    simpleConstructionCheck("whileCheck")
+    simpleConstructionCheck(testsPrefix + "/simple_tests/whileCheck")
   }
 
   @Test def ifCheck():Unit = {
-    simpleConstructionCheck("ifCheck")
+    simpleConstructionCheck(testsPrefix + "/simple_tests/ifCheck")
   }
 
   @Test def assignCheck():Unit = {
-    simpleConstructionCheck("assignCheck")
+    simpleConstructionCheck(testsPrefix + "/simple_tests/assignCheck")
   }
 
   def simpleConstructionCheck(path:String): Unit = {
