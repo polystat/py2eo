@@ -3,7 +3,7 @@ package org.polystat.py2eo.checker
 import java.io.{File, FileWriter}
 import scala.sys.process.{Process, stringSeqToProcess}
 import org.polystat.py2eo.transpiler.Main.{debugPrinter, readFile}
-import org.polystat.py2eo.transpiler._
+import org.polystat.py2eo.transpiler.{Parse, PrintLinearizedMutableEOWithCage, PrintPython, SimplePass, Statement, Transpile}
 
 object Validator extends App {
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/"
