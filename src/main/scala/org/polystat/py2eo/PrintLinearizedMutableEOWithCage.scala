@@ -45,13 +45,23 @@ object PrintLinearizedMutableEOWithCage {
 
   def printSt(st : Statement) : Text =
     st match {
-      case SimpleObject(name, l, _) =>
-        ("write." ::
-          indent(name :: "[]" :: indent(
-            l.map{ case (name, _) => "cage > " + name } ++ (
-              "seq > @" :: indent(l.map{case (name, value) => s"$name.write " + printExpr(value)})
-              ))
-          )) :+ s"($name.@)"
+      case SimpleObject(name, decorates, l, _) =>
+        (
+          "write." ::
+          indent(
+            name :: "[]" :: indent(
+              l.map{ case (name, _) => "cage > " + name } ++
+              decorates.toList.map(e => s"${printExpr(e)} > base") ++
+              (
+                "seq > initFields" :: indent(
+                  l.map{case (name, value) => s"$name.write " + printExpr(value)} ++
+                  decorates.toList.map(x => "base")
+                )
+              ) ++
+              decorates.toList.map(x => "base.result > @")
+            )
+          )
+        ) :+ s"($name.initFields)"
       case NonLocal(_, _) => List()
       case f: FuncDef => List()
       case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if (seqOfFields(whom).isDefined &&

@@ -42,14 +42,14 @@ object ClosureWithCage {
           None, None, None, body1, Decorators(List()), HashMap(), isAsync, ann.pos
         )
         val mkClosure = SimpleObject(
-          name, (callme, Ident(tmpFun, ann.pos)) ::
+          name, None, (callme, Ident(tmpFun, ann.pos)) ::
           vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).
             map(z => ("clo" + z._1, Ident(z._1, ann.pos))).toList,
           ann.pos
         )
         Suite(List(f1, mkClosure), ann.pos)
       case ClassDef(name, List(), Suite(l, _), Decorators(List()), ann) =>
-        val mkObj = SimpleObject(name, l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos)
+        val mkObj = SimpleObject(name, None, l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos)
         val creator = FuncDef(
           name, List(), None, None, None,
           Suite(List(mkObj, Return(Some(Ident(name, ann.pos)), ann.pos)), ann.pos),
@@ -64,7 +64,8 @@ object ClosureWithCage {
       case Assign(List(lhs, rhs), ann) =>
         Assign(List(pe(lhs = true, lhs), pe(lhs = false, rhs)), ann.pos)
       case Return(x, ann) => Return(x.map(pe(false, _)), ann.pos)
-      case SimpleObject(name, fields, ann) => SimpleObject(name, fields.map(x => (x._1, pe(lhs = false, x._2))), ann.pos)
+      case SimpleObject(name, decorates, fields, ann) =>
+        SimpleObject(name, decorates.map(pe(false, _)), fields.map(x => (x._1, pe(lhs = false, x._2))), ann.pos)
       case Suite(l, ann) => Suite(l.map(closurizeInner(scope, _)), ann.pos)
       case Pass(_) | NonLocal(_, _) => st
     }
@@ -76,10 +77,12 @@ object ClosureWithCage {
     val st1 = procStatement(SimplePass.unSuite)(st, ns)
     procStatement(
       (st, ns) => st match {
-        case ClassDef(name, List(), Suite(l, _), Decorators(List()), ann) =>
+        case ClassDef(name, bases, Suite(l, _), Decorators(List()), ann) if bases.length <= 1 =>
           val mkObj = SimpleObject(
-            name,
-            l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos
+            name, bases match { case List() => None  case List(x) => Some(CallIndex(true, x._2, List(), x._2.ann.pos)) },
+            l.filter{ case Pass(_) => false case _ => true }
+              .map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)},
+            ann.pos
           )
           val creator = FuncDef(
             name, List(), None, None, None,

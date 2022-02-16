@@ -28,7 +28,7 @@ object Transpile {
         theFun,
         Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
       ), ann.pos)
-      debugPrinter(hacked, "afterUseCage")
+//      debugPrinter(hacked, "afterUseCage")
       val eoHacked = Suite(List(
         theFun,
         Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
@@ -37,7 +37,8 @@ object Transpile {
       (eoText.init.init :+ "        result").mkString("\n")
     }
     catch {
-      case _: MatchError | _: TranspilerException => {
+      case e: RuntimeException => {
+        println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
         val unsupportedExpr = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.mkUnsupportedExpr))(y._1, y._2)
         val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 

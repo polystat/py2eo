@@ -193,11 +193,20 @@ object PrintPython {
       case Raise(None, None, _) => indentPos("raise")
       case NonLocal(l, _) => indentPos("nonlocal %s".format(l.mkString(comma)))
       case Global(l, _) => indentPos("global %s".format(l.mkString(comma)))
-      case SimpleObject(name, fields, ann) =>
-        "%sclass %s: # %s\n%s".format(
-          indentAmount, name, s.ann,
+      case SimpleObject(name, decorates, fields, ann) =>
+        "%sclass %s%s: # %s\n%s".format(
+          indentAmount, name,
+          decorates match {
+            case Some(value) => s"(${printExpr(value)})"
+            case None => ""
+          },
+          s.ann,
             printSt(
-              Suite(fields.map(z => Assign(List(Ident(z._1, z._2.ann.pos), z._2), z._2.ann.pos)), ann.pos),
+              if (fields.nonEmpty) {
+                Suite(fields.map(z => Assign(List(Ident(z._1, z._2.ann.pos), z._2), z._2.ann.pos)), ann.pos)
+              } else {
+                Pass(ann.pos)
+              },
               indentIncrAmount
             )
         )

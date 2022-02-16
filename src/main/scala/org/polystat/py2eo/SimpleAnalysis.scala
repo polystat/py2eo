@@ -63,7 +63,7 @@ object SimpleAnalysis {
   def childrenS(s : Statement) : (List[Statement], List[(Boolean, T)]) = {
     def isRhs(e : T) = (false, e)
     s match {
-      case SimpleObject(_, fields, _) => (List(), fields.map(x => (false, x._2)))
+      case SimpleObject(_, decorates, fields, _) => (List(), fields.map(x => (false, x._2)) ++ decorates.map((false, _)))
       case With(cms, body, _, _) =>
         (List(body), cms.flatMap(x => (false, x._1) :: x._2.map(x => (true, x)).toList))
       case For(what, in, body, eelse, _, _) => (body :: eelse.toList, List((false, what), (false, in)))
@@ -133,7 +133,7 @@ object SimpleAnalysis {
         def add(name : String, ann : GeneralAnnotation) = add0(h, name, ann)
         st match {
           case ClassDef(name, _, _, _, ann) => (add(name, ann), false)
-          case SimpleObject(name, _, ann) => (add(name, ann), false)
+          case SimpleObject(name, _, _, ann) => (add(name, ann), false)
           case FuncDef(name, _, _, _, _, _, _, _, _, ann)  => (add(name, ann), false)
           case Assign(List(CollectionCons(_, _, _), _), _) =>
             throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")

@@ -381,12 +381,16 @@ object SimplePass {
         val (str, er) = procEA(rp._1)
         (Suite(str :+ CreateConst(name, er, ann.pos), ann.pos), rp._2)
 
-      case SimpleObject(name, fields, ann) => forceAllIfNecessary(f)(fields.map(x => (false, x._2)), ns) match {
-        case Right((l, ns)) =>
-          val obj = SimpleObject(name, l.zip(fields).map(x => (x._2._1, x._1._2)), ann.pos)
-          (Suite(l.map(_._1) :+ obj, ann.pos), ns)
-        case Left((l, ns)) => (SimpleObject(name, l.zip(fields).map(x => (x._2._1, x._1)), ann.pos), ns)
-      }
+      case SimpleObject(name, decorates, fields, ann) =>
+        forceAllIfNecessary(f)((decorates.toList.map(x => ("", x)) ++ fields).map(x => (false, x._2)), ns) match {
+          case Right((l, ns)) =>
+            val (l1, dec) = decorates match { case None => (l, None) case Some(_) => (l.tail, Some(l.head._2))}
+            val obj = SimpleObject(name, dec, l1.zip(fields).map(x => (x._2._1, x._1._2)), ann.pos)
+            (Suite(l.map(_._1) :+ obj, ann.pos), ns)
+          case Left((l, ns)) =>
+            val (l1, dec) = decorates match { case None => (l, None) case Some(_) => (l.tail, Some(l.head))}
+            (SimpleObject(name, dec, l1.zip(fields).map(x => (x._2._1, x._1)), ann.pos), ns)
+        }
 
       case Assign(List(e), ann) => forceAllIfNecessary(f)(List((false, e)), ns) match {
         case Left((l, ns)) => (Assign(l, ann.pos), ns)
@@ -469,7 +473,8 @@ object SimplePass {
         )
       case ClassDef(name, bases, body, decorators, ann) =>
         ClassDef(name, bases.map(x => (x._1, f(x._2))), pst(body), Decorators(decorators.l.map(f)), ann)
-      case SimpleObject(name, fields, ann) => SimpleObject(name, fields.map(x => (x._1, f(x._2))), ann)
+      case SimpleObject(name, decorates, fields, ann) =>
+        SimpleObject(name, decorates.map(f), fields.map(x => (x._1, f(x._2))), ann)
       case NonLocal(l, ann) => s
       case Global(l, ann) => s
       case ImportModule(what, as, ann) => s
@@ -663,8 +668,8 @@ object SimplePass {
           )
         case ClassDef(name, bases, body, decorators, ann) =>
           ClassDef(pref(name), bases.map(x => (x._1.map(pref), x._2)), body, decorators, ann)
-        case SimpleObject(name, fields, ann) =>
-          SimpleObject(pref(name), fields.map(x => (pref(x._1), x._2)), ann)
+        case SimpleObject(name, decorates, fields, ann) =>
+          SimpleObject(pref(name), decorates, fields.map(x => (pref(x._1), x._2)), ann)
         case NonLocal(l, ann) => NonLocal(l.map(pref), ann)
         case Global(l, ann) => Global(l.map(pref), ann)
         case ImportModule(what, as, ann) => ImportModule(what.map(pref), as.map(pref), ann)
