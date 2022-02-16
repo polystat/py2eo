@@ -1,0 +1,304 @@
+memory > xlist
+memory > xValueError
+memory > xstr
+memory > xbytearray
+memory > xKeyError
+memory > xsym
+memory > xsymtable
+memory > xSyntaxError
+memory > xunittest
+memory > xmemoryview
+memory > xlen
+memory > xsorted
+memory > xDeprecationWarning
+memory > xch
+memory > xe
+memory > xTypeError
+memory > x__name__
+[] > test_symtable
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xa_method
+        memory > xtest_symbol_lookup
+        memory > xtest_nonlocal
+        memory > xtest_free
+        memory > xtest_lineno
+        memory > xtest_imported
+        memory > xMine
+        memory > xtest_single
+        memory > xtest_eval
+        memory > xtest_exec
+        memory > xother_internal
+        memory > xtest_globals
+        memory > xtest_filename_correct
+        memory > xTEST_CODE
+        memory > xtest_optimized
+        memory > xtest_bytes
+        memory > xtest_annotated
+        memory > xtest_local
+        memory > xtest_type
+        memory > xtest_assigned
+        memory > xtest_namespaces
+        memory > xspam
+        memory > xtest_name
+        memory > xtest_children
+        memory > xtest_referenced
+        memory > xtop
+        memory > xtest_parameters
+        memory > xtest_nested
+        memory > xtest_symtable_repr
+        memory > xinternal
+        memory > xtest_function_info
+        memory > xfind_block
+        memory > xtest_class_info
+        memory > xfoo
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            xTEST_CODE.write (((unsupported)) 0)
+            xfind_block.write
+              [xblock xname]
+                seq > @
+                  (((unsupported)) ((xch)) (((((xblock).xget_children)) 0)))
+                    (((((xch).xget_name)) 0).eq (xname)).if
+                      (((unsupported)) ((xch)))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xtop.write ((((xsymtable).xsymtable)) ((xTEST_CODE)) ("?") ("exec"))
+                xMine.write (((xfind_block)) ((xtop)) ("Mine"))
+                xa_method.write (((xfind_block)) ((xMine)) ("a_method"))
+                xspam.write (((xfind_block)) ((xtop)) ("spam"))
+                xinternal.write (((xfind_block)) ((xspam)) ("internal"))
+                xother_internal.write (((xfind_block)) ((xspam)) ("other_internal"))
+                xfoo.write (((xfind_block)) ((xtop)) ("foo"))
+                xtest_type.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xtop).xget_type)) 0)) ("module"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xMine).xget_type)) 0)) ("class"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xa_method).xget_type)) 0)) ("function"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xspam).xget_type)) 0)) ("function"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xinternal).xget_type)) 0)) ("function"))
+                xtest_optimized.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xtop).xis_optimized)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xtop).xhas_exec)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((xself).xspam).xis_optimized)) 0)))
+                xtest_nested.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xtop).xis_nested)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xMine).xis_nested)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xspam).xis_nested)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((xself).xinternal).xis_nested)) 0)))
+                xtest_children.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((xself).xtop).xhas_children)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((xself).xMine).xhas_children)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xfoo).xhas_children)) 0)))
+                xtest_lineno.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xtop).xget_lineno)) 0)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xspam).xget_lineno)) 0)) (14))
+                xtest_function_info.write
+                  [xself]
+                    memory > xexpected
+                    memory > xfunc
+                    seq > @
+                      seq
+                        xfunc.write ((xself).xspam)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xsorted)) (((((xfunc).xget_parameters)) 0)))) ((((unsupported)) ("a") ("b") ("kw") ("var"))))
+                        xexpected.write (((unsupported)) ("a") ("b") ("internal") ("kw") ("other_internal") ("some_var") ("var") ("x"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xsorted)) (((((xfunc).xget_locals)) 0)))) ((xexpected)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xsorted)) (((((xfunc).xget_globals)) 0)))) ((((unsupported)) ("bar") ("glob") ("some_assigned_global_var"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xinternal).xget_frees)) 0)) ((((unsupported)) ("x"))))
+                xtest_globals.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("glob")).xis_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xspam).xlookup)) ("glob")).xis_declared_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("bar")).xis_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("bar")).xis_declared_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xinternal).xlookup)) ("x")).xis_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xMine).xlookup)) ("instance_var")).xis_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("bar")).xis_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("some_non_assigned_global_var")).xis_global)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("some_assigned_global_var")).xis_global)) 0)))
+                xtest_nonlocal.write
+                  [xself]
+                    memory > xexpected
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xspam).xlookup)) ("some_var")).xis_nonlocal)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xother_internal).xlookup)) ("some_var")).xis_nonlocal)) 0)))
+                        xexpected.write (((unsupported)) ("some_var"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xother_internal).xget_nonlocals)) 0)) ((xexpected)))
+                xtest_local.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("x")).xis_local)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xspam).xlookup)) ("bar")).xis_local)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("some_non_assigned_global_var")).xis_local)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("some_assigned_global_var")).xis_local)) 0)))
+                xtest_free.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xinternal).xlookup)) ("x")).xis_free)) 0)))
+                xtest_referenced.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xinternal).xlookup)) ("x")).xis_referenced)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("internal")).xis_referenced)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xspam).xlookup)) ("x")).xis_referenced)) 0)))
+                xtest_parameters.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) ((xsym)) ((((unsupported)) ("a") ("var") ("kw"))))
+                          bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ((xsym))).xis_parameter)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xspam).xlookup)) ("x")).xis_parameter)) 0)))
+                xtest_symbol_lookup.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xlen)) ((((((xself).xtop).xget_identifiers)) 0)))) ((((xlen)) ((((((xself).xtop).xget_symbols)) 0)))))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xKeyError)) ((((xself).xtop).xlookup)) ("not_here"))
+                xtest_namespaces.write
+                  [xself]
+                    memory > xns_test
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("Mine")).xis_namespace)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xMine).xlookup)) ("a_method")).xis_namespace)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("spam")).xis_namespace)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("internal")).xis_namespace)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("namespace_test")).xis_namespace)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xspam).xlookup)) ("x")).xis_namespace)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((unsupported)) (((((((((xself).xtop).xlookup)) ("spam")).xget_namespace)) 0)) (((xself).xspam)))))
+                        xns_test.write (((((xself).xtop).xlookup)) ("namespace_test"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xlen)) (((((xns_test).xget_namespaces)) 0)))) (2))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xValueError)) (((xns_test).xget_namespace)))
+                xtest_assigned.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("x")).xis_assigned)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xspam).xlookup)) ("bar")).xis_assigned)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("spam")).xis_assigned)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xMine).xlookup)) ("a_method")).xis_assigned)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((((((((xself).xinternal).xlookup)) ("x")).xis_assigned)) 0)))
+                xtest_annotated.write
+                  [xself]
+                    memory > xst2
+                    memory > xst6
+                    memory > xst3
+                    memory > xst4
+                    memory > xst1
+                    memory > xst5
+                    seq > @
+                      seq
+                        xst1.write ((((xsymtable).xsymtable)) ("def f():n    x: intn") ("test") ("exec"))
+                        xst2.write (((unsupported)) (((((xst1).xget_children)) 0)) (0))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((((xst2).xlookup)) ("x")).xis_local)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((((xst2).xlookup)) ("x")).xis_annotated)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((((xst2).xlookup)) ("x")).xis_global)) 0)))
+                        xst3.write ((((xsymtable).xsymtable)) ("def f():n    x = 1n") ("test") ("exec"))
+                        xst4.write (((unsupported)) (((((xst3).xget_children)) 0)) (0))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((((xst4).xlookup)) ("x")).xis_local)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((((xst4).xlookup)) ("x")).xis_annotated)) 0)))
+                        xst5.write ((((xsymtable).xsymtable)) ("global xnx: int") ("test") ("exec"))
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((((xst5).xlookup)) ("x")).xis_global)) 0)))
+                        xst6.write ((((xsymtable).xsymtable)) ("def g():n    x = 2n    def f():n        nonlocal xn    x: int") ("test") ("exec"))
+                xtest_imported.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertTrue)) (((((((((xself).xtop).xlookup)) ("sys")).xis_imported)) 0)))
+                xtest_name.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xtop).xget_name)) 0)) ("top"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xspam).xget_name)) 0)) ("spam"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((((((((xself).xspam).xlookup)) ("x")).xget_name)) 0)) ("x"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xMine).xget_name)) 0)) ("Mine"))
+                xtest_class_info.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xMine).xget_methods)) 0)) ((((unsupported)) ("a_method"))))
+                xtest_filename_correct.write
+                  [xself]
+                    memory > xcheckfilename
+                    seq > @
+                      seq
+                        xcheckfilename.write
+                          [xbrokencode xoffset]
+                            seq > @
+                              (((unsupported)) ((xSyntaxError)))
+                                bogusForceDataize.write ((((xsymtable).xsymtable)) ((xbrokencode)) ("spam") ("exec"))
+                                seq
+                                  bogusForceDataize.write ((((xself).xassertEqual)) (((xe).xfilename)) ("spam"))
+                                  bogusForceDataize.write ((((xself).xassertEqual)) (((xe).xlineno)) (1))
+                                  bogusForceDataize.write ((((xself).xassertEqual)) (((xe).xoffset)) ((xoffset)))
+                                bogusForceDataize.write ((((xself).xfail)) (("no SyntaxError for %r".mod (((unsupported)) ((xbrokencode))))))
+                        bogusForceDataize.write (((xcheckfilename)) ("def f(x): foo)(") (14))
+                        bogusForceDataize.write (((xcheckfilename)) ("def f(x): global x") (11))
+                        bogusForceDataize.write ((((xsymtable).xsymtable)) ("pass") ("spam") ("exec"))
+                        (((unsupported)) (((((xself).xassertWarns)) ((xDeprecationWarning)))) (((((xself).xassertRaises)) ((xTypeError)))))
+                          bogusForceDataize.write ((((xsymtable).xsymtable)) ("pass") ((((xbytearray)) ("spam"))) ("exec"))
+                        (((unsupported)) (((((xself).xassertWarns)) ((xDeprecationWarning)))))
+                          bogusForceDataize.write ((((xsymtable).xsymtable)) ("pass") ((((xmemoryview)) ("spam"))) ("exec"))
+                        (((unsupported)) (((((xself).xassertRaises)) ((xTypeError)))))
+                          bogusForceDataize.write ((((xsymtable).xsymtable)) ("pass") ((((xlist)) ("spam"))) ("exec"))
+                xtest_eval.write
+                  [xself]
+                    memory > xsymbols
+                    seq > @
+                      xsymbols.write ((((xsymtable).xsymtable)) ("42") ("?") ("eval"))
+                xtest_single.write
+                  [xself]
+                    memory > xsymbols
+                    seq > @
+                      xsymbols.write ((((xsymtable).xsymtable)) ("42") ("?") ("single"))
+                xtest_exec.write
+                  [xself]
+                    memory > xsymbols
+                    seq > @
+                      xsymbols.write ((((xsymtable).xsymtable)) ("def f(x): return x") ("?") ("exec"))
+                xtest_bytes.write
+                  [xself]
+                    memory > xcode
+                    memory > xtop
+                    seq > @
+                      seq
+                        xtop.write ((((xsymtable).xsymtable)) (((((xTEST_CODE).xencode)) ("utf8"))) ("?") ("exec"))
+                        bogusForceDataize.write ((((xself).xassertIsNotNone)) ((((xfind_block)) ((xtop)) ("Mine"))))
+                        xcode.write "# -*- coding: iso8859-15 -*-nclass xb4: passn"
+                        xtop.write ((((xsymtable).xsymtable)) ((xcode)) ("?") ("exec"))
+                        bogusForceDataize.write ((((xself).xassertIsNotNone)) ((((xfind_block)) ((xtop)) ("u017d"))))
+                xtest_symtable_repr.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xstr)) (((xself).xtop)))) ("<SymbolTable for module ?>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xstr)) (((xself).xspam)))) ("<Function SymbolTable for spam in ?>"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

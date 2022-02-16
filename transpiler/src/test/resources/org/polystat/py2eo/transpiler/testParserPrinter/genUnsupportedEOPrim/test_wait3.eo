@@ -1,0 +1,58 @@
+memory > xspid
+memory > xrusage
+memory > xos
+memory > xunittest
+memory > xstatus
+memory > x__name__
+memory > xreap_children
+memory > xForkWait
+memory > xhasattr
+memory > xtime
+[] > test_wait3
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtearDownModule
+        memory > xwait_impl
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            ((((xhasattr)) ((xos)) ("fork")).not).if
+              (((unsupported)) (((((xunittest).xSkipTest)) ("os.fork not defined"))))
+            ((((xhasattr)) ((xos)) ("wait3")).not).if
+              (((unsupported)) (((((xunittest).xSkipTest)) ("os.wait3 not defined"))))
+            (((unsupported)) ((xForkWait)))
+              xwait_impl.write
+                [xself xcpid]
+                  memory > xdeadline
+                  seq > @
+                    seq
+                      xdeadline.write (((((xtime).xmonotonic)) 0).add 10.0)
+                      while.
+                        (((((xtime).xmonotonic)) 0).leq (xdeadline))
+                        [unused]
+                          seq > @
+                            seq
+                              (((unsupported)) ((((unsupported)) ((xspid)) ((xstatus)) ((xrusage)))) (((((xos).xwait3)) (((xos).xWNOHANG)))))
+                              ((xspid).eq (xcpid)).if
+                                (((unsupported)) 0)
+                              bogusForceDataize.write ((((xtime).xsleep)) (0.1))
+                      bogusForceDataize.write ((((xself).xassertEqual)) ((xspid)) ((xcpid)))
+                      bogusForceDataize.write ((((xself).xassertEqual)) ((xstatus)) (0) (("cause = %d, exit = %d".mod (((unsupported)) (((xstatus).and 255)) ((((unsupported)) ((xstatus)) (8)))))))
+                      bogusForceDataize.write ((((xself).xassertTrue)) ((xrusage)))
+            xtearDownModule.write
+              []
+                seq > @
+                  bogusForceDataize.write (((xreap_children)) 0)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

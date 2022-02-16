@@ -1,0 +1,43 @@
+memory > xmultibytecodec_support
+memory > xunittest
+memory > x__name__
+[] > test_codecencodings_iso2022
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_chunkcoding
+        memory > xcodectests
+        memory > xCOMMON_CODEC_TESTS
+        memory > xencoding
+        memory > xtstring
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            xCOMMON_CODEC_TESTS.write (((unsupported)) ((((unsupported)) ("abxFFcd") ("replace") ("abuFFFDcd"))) ((((unsupported)) ("abx1Bdef") ("replace") ("abx1Bdef"))) ((((unsupported)) ("abx1B$def") ("replace") ("abuFFFD"))))
+            (((unsupported)) (((xmultibytecodec_support).xTestBase)) (((xunittest).xTestCase)))
+              seq
+                xencoding.write "iso2022_jp"
+                xtstring.write ((((xmultibytecodec_support).xload_teststring)) ("iso2022_jp"))
+                xcodectests.write ((xCOMMON_CODEC_TESTS).add (((unsupported)) ((((unsupported)) ("abx1BNdef") ("replace") ("abx1BNdef")))))
+            (((unsupported)) (((xmultibytecodec_support).xTestBase)) (((xunittest).xTestCase)))
+              seq
+                xencoding.write "iso2022_jp_2"
+                xtstring.write ((((xmultibytecodec_support).xload_teststring)) ("iso2022_jp"))
+                xcodectests.write ((xCOMMON_CODEC_TESTS).add (((unsupported)) ((((unsupported)) ("abx1BNdef") ("replace") ("abdef")))))
+            (((unsupported)) (((xmultibytecodec_support).xTestBase)) (((xunittest).xTestCase)))
+              seq
+                xencoding.write "iso2022_kr"
+                xtstring.write ((((xmultibytecodec_support).xload_teststring)) ("iso2022_kr"))
+                xcodectests.write ((xCOMMON_CODEC_TESTS).add (((unsupported)) ((((unsupported)) ("abx1BNdef") ("replace") ("abx1BNdef")))))
+                xtest_chunkcoding.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) 0)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

@@ -1,0 +1,177 @@
+memory > xTestGenericUnivNewlines
+memory > xTestCRLFNewlines
+memory > xTestMixedNewlines
+memory > xio
+memory > xCTest
+memory > xPyTest
+memory > xrepr
+memory > xhasattr
+memory > xx
+memory > xos
+memory > xunittest
+memory > xstaticmethod
+memory > xTestCRNewlines
+memory > xTestLFNewlines
+memory > xsupport
+memory > xsys
+memory > xfp
+memory > x__name__
+[] > test_univnewlines
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xFATX
+        memory > xDATA_SPLIT
+        memory > xpyio
+        memory > xWRITEMODE
+        memory > xDATA_TEMPLATE
+        memory > xopen
+        memory > xREADMODE
+        memory > xtest_tell
+        memory > xtest_readline
+        memory > xDATA
+        memory > xtearDown
+        memory > xDATA_LF
+        memory > xtest_seek
+        memory > xsetUp
+        memory > xNEWLINE
+        memory > xDATA_CR
+        memory > xDATA_CRLF
+        memory > xtest_readlines
+        memory > xtest_read
+        memory > xDATA_MIXED
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            ((((xhasattr)) (((xsys).xstdin)) ("newlines")).not).if
+              (((unsupported)) (((((xunittest).xSkipTest)) ("This Python does not have universal newline support"))))
+            xFATX.write ("x".mul (((unsupported)) (2) (14)))
+            xDATA_TEMPLATE.write (((unsupported)) ("line1=1") ((("line2='this is a very long line designed to go past any default ".add "buffer limits that exist in io.py but we also want to test ").add "the uncommon case, naturally.'")) ("def line3():pass") (("line4 = '%s'".mod (xFATX))))
+            xDATA_LF.write (((("n".xjoin)) ((xDATA_TEMPLATE))).add "n")
+            xDATA_CR.write (((("r".xjoin)) ((xDATA_TEMPLATE))).add "r")
+            xDATA_CRLF.write (((("rn".xjoin)) ((xDATA_TEMPLATE))).add "rn")
+            xDATA_MIXED.write (((("n".xjoin)) ((xDATA_TEMPLATE))).add "r")
+            xDATA_SPLIT.write (((unsupported)) (((xx).add "n")) ((xx)) ((xDATA_TEMPLATE)))
+            (((unsupported)) 0)
+              xopen.write ((xio).xopen)
+            (((unsupported)) 0)
+              xopen.write (((xstaticmethod)) (((xpyio).xopen)))
+            (((unsupported)) 0)
+              seq
+                xREADMODE.write "r"
+                xWRITEMODE.write "wb"
+                xsetUp.write
+                  [xself]
+                    memory > xdata
+                    seq > @
+                      seq
+                        xdata.write ((xself).xDATA)
+                        (((unsupported)) ("b") (((xself).xWRITEMODE))).if
+                          xdata.write ((((xdata).xencode)) ("ascii"))
+                        (((unsupported)) (((((xself).xopen)) (((xsupport).xTESTFN)) (((xself).xWRITEMODE)))) ((xfp)))
+                          bogusForceDataize.write ((((xfp).xwrite)) ((xdata)))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) 0)
+                        bogusForceDataize.write ((((xos).xunlink)) (((xsupport).xTESTFN)))
+                xtest_read.write
+                  [xself]
+                    memory > xdata
+                    seq > @
+                      seq
+                        (((unsupported)) (((((xself).xopen)) (((xsupport).xTESTFN)) (((xself).xREADMODE)))) ((xfp)))
+                          xdata.write ((((xfp).xread)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xdata)) ((xDATA_LF)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xrepr)) (((xfp).xnewlines)))) ((((xrepr)) (((xself).xNEWLINE)))))
+                xtest_readlines.write
+                  [xself]
+                    memory > xdata
+                    seq > @
+                      seq
+                        (((unsupported)) (((((xself).xopen)) (((xsupport).xTESTFN)) (((xself).xREADMODE)))) ((xfp)))
+                          xdata.write ((((xfp).xreadlines)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xdata)) ((xDATA_SPLIT)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xrepr)) (((xfp).xnewlines)))) ((((xrepr)) (((xself).xNEWLINE)))))
+                xtest_readline.write
+                  [xself]
+                    memory > xd
+                    memory > xdata
+                    seq > @
+                      seq
+                        (((unsupported)) (((((xself).xopen)) (((xsupport).xTESTFN)) (((xself).xREADMODE)))) ((xfp)))
+                          seq
+                            xdata.write (((unsupported)) 0)
+                            xd.write ((((xfp).xreadline)) 0)
+                            while.
+                              (xd)
+                              [unused]
+                                seq > @
+                                  seq
+                                    bogusForceDataize.write ((((xdata).xappend)) ((xd)))
+                                    xd.write ((((xfp).xreadline)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xdata)) ((xDATA_SPLIT)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xrepr)) (((xfp).xnewlines)))) ((((xrepr)) (((xself).xNEWLINE)))))
+                xtest_seek.write
+                  [xself]
+                    memory > xpos
+                    memory > xdata
+                    seq > @
+                      seq
+                        (((unsupported)) (((((xself).xopen)) (((xsupport).xTESTFN)) (((xself).xREADMODE)))) ((xfp)))
+                          seq
+                            bogusForceDataize.write ((((xfp).xreadline)) 0)
+                            xpos.write ((((xfp).xtell)) 0)
+                            xdata.write ((((xfp).xreadlines)) 0)
+                            bogusForceDataize.write ((((xself).xassertEqual)) ((xdata)) ((((unsupported)) ((xDATA_SPLIT)) ((((unsupported)) (1))))))
+                            bogusForceDataize.write ((((xfp).xseek)) ((xpos)))
+                            xdata.write ((((xfp).xreadlines)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xdata)) ((((unsupported)) ((xDATA_SPLIT)) ((((unsupported)) (1))))))
+            (((unsupported)) ((xTestGenericUnivNewlines)))
+              seq
+                xNEWLINE.write "r"
+                xDATA.write (xDATA_CR)
+            (((unsupported)) ((xCTest)) ((xTestCRNewlines)) (((xunittest).xTestCase)))
+            (((unsupported)) ((xPyTest)) ((xTestCRNewlines)) (((xunittest).xTestCase)))
+            (((unsupported)) ((xTestGenericUnivNewlines)))
+              seq
+                xNEWLINE.write "n"
+                xDATA.write (xDATA_LF)
+            (((unsupported)) ((xCTest)) ((xTestLFNewlines)) (((xunittest).xTestCase)))
+            (((unsupported)) ((xPyTest)) ((xTestLFNewlines)) (((xunittest).xTestCase)))
+            (((unsupported)) ((xTestGenericUnivNewlines)))
+              seq
+                xNEWLINE.write "rn"
+                xDATA.write (xDATA_CRLF)
+                xtest_tell.write
+                  [xself]
+                    memory > xpos
+                    memory > xdata
+                    seq > @
+                      seq
+                        (((unsupported)) (((((xself).xopen)) (((xsupport).xTESTFN)) (((xself).xREADMODE)))) ((xfp)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)) ((((xrepr)) (((xfp).xnewlines)))) ((((xrepr)) ("None: is there a None literal in the EO language?"))))
+                            xdata.write ((((xfp).xreadline)) 0)
+                            xpos.write ((((xfp).xtell)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xrepr)) (((xfp).xnewlines)))) ((((xrepr)) (((xself).xNEWLINE)))))
+            (((unsupported)) ((xCTest)) ((xTestCRLFNewlines)) (((xunittest).xTestCase)))
+            (((unsupported)) ((xPyTest)) ((xTestCRLFNewlines)) (((xunittest).xTestCase)))
+            (((unsupported)) ((xTestGenericUnivNewlines)))
+              seq
+                xNEWLINE.write (((unsupported)) ("r") ("n"))
+                xDATA.write (xDATA_MIXED)
+            (((unsupported)) ((xCTest)) ((xTestMixedNewlines)) (((xunittest).xTestCase)))
+            (((unsupported)) ((xPyTest)) ((xTestMixedNewlines)) (((xunittest).xTestCase)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

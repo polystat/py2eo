@@ -1,0 +1,63 @@
+memory > xRuntimeError
+memory > xStopIteration
+memory > xtype
+memory > xunittest
+memory > x__name__
+memory > xexc
+memory > xnext
+[] > test_generator_stop
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_stopiteration_wrapping
+        memory > xtest_stopiteration_wrapping_context
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xtest_stopiteration_wrapping.write
+                  [xself]
+                    memory > xg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            seq > @
+                              (((unsupported)) ((xStopIteration)))
+                        xg.write
+                          []
+                            seq > @
+                              (((unsupported)) ((((xf)) 0)))
+                        (((unsupported)) (((((xself).xassertRaisesRegex)) ((xRuntimeError)) ("generator raised StopIteration"))))
+                          bogusForceDataize.write (((xnext)) ((((xg)) 0)))
+                xtest_stopiteration_wrapping_context.write
+                  [xself]
+                    memory > xg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            seq > @
+                              (((unsupported)) ((xStopIteration)))
+                        xg.write
+                          []
+                            seq > @
+                              (((unsupported)) ((((xf)) 0)))
+                        (((unsupported)) ((xRuntimeError)))
+                          bogusForceDataize.write (((xnext)) ((((xg)) 0)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIs)) ((((xtype)) (((xexc).x__cause__)))) ((xStopIteration)))
+                            bogusForceDataize.write ((((xself).xassertIs)) ((((xtype)) (((xexc).x__context__)))) ((xStopIteration)))
+                            bogusForceDataize.write ((((xself).xassertTrue)) (((xexc).x__suppress_context__)))
+                          bogusForceDataize.write ((((xself).xfail)) ("__cause__, __context__, or __suppress_context__ were not properly set"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

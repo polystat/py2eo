@@ -1,0 +1,193 @@
+memory > xstdout
+memory > xsignal
+memory > xTestFileIOSignalInterrupt
+memory > xstderr_end
+memory > xTestTextIOSignalInterrupt
+memory > xtime
+memory > xsys
+memory > xstderr
+memory > xunittest
+memory > xstdout_end
+memory > xlen
+memory > x__name__
+memory > xselect
+memory > x_
+memory > xsubprocess
+memory > xos
+memory > xOSError
+memory > xTestBufferedIOSignalInterrupt
+[] > test_file_eintr
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_readall
+        memory > x_READING_CODE_TEMPLATE
+        memory > xtest_readline
+        memory > xtest_readlines
+        memory > xmodname
+        memory > xtearDown
+        memory > xsetUp
+        memory > x_generate_infile_setup_code
+        memory > x_test_reading
+        memory > xfail_with_process_info
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) (((((xunittest).xskipUnless)) ((((xos).xname).eq "posix")) ("tests requires a posix system."))))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) (((xself).x_process)) ("None: is there a None literal in the EO language?"))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      (((xself).x_process).and (((unsupported)) ((((((xself).x_process).xpoll)) 0)) ("None: is there a None literal in the EO language?"))).if
+                        (((unsupported)) ((xOSError)))
+                          bogusForceDataize.write (((((xself).x_process).xkill)) 0)
+                x_generate_infile_setup_code.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) 0)
+                        (((unsupported)) (("import %s as io ;infile = io.FileIO(sys.stdin.fileno(), \"rb\")".mod ((xself).xmodname))))
+                xfail_with_process_info.write
+                  [xself xwhy xstdout xstderr xcommunicate]
+                    seq > @
+                      (((unsupported)) 0)
+                        (((unsupported)) 0)
+                        (((unsupported)) ((((((xself).x_process).xpoll)) 0)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            bogusForceDataize.write ((((xtime).xsleep)) (0.1))
+                            (((unsupported)) ((xOSError)))
+                              bogusForceDataize.write (((((xself).x_process).xterminate)) 0)
+                        (xcommunicate).if
+                          seq
+                            (((unsupported)) ((((unsupported)) ((xstdout_end)) ((xstderr_end)))) ((((((xself).x_process).xcommunicate)) 0)))
+                            (((unsupported)) ((xstdout)) ((xstdout_end)))
+                            (((unsupported)) ((xstderr)) ((xstderr_end)))
+                        bogusForceDataize.write ((((xself).xfail)) (("Error from IO process %s:nSTDOUT:n%sSTDERR:n%sn".mod (((unsupported)) ((xwhy)) (((((xstdout).xdecode)) 0)) (((((xstderr).xdecode)) 0))))))
+                x_test_reading.write
+                  [xself xdata_to_write xread_and_verify_code]
+                    memory > xrlist
+                    memory > xsignal_line
+                    memory > xsignals_sent
+                    memory > xworm_sign
+                    memory > xinfile_setup_code
+                    seq > @
+                      seq
+                        (((unsupported)) 0)
+                        xinfile_setup_code.write ((((xself).x_generate_infile_setup_code)) 0)
+                        (((unsupported)) (((((xlen)) ((xdata_to_write))).less 512)) ("data_to_write must fit in pipe buf."))
+                        (((unsupported)) (((xself).x_process)) ((((unsupported)) (((xsubprocess).xPopen)) ((((unsupported)) (((xsys).xexecutable)) ("-u") ("-c") ((((((((((unsupported)) 0).add (xinfile_setup_code)).add " ;").add (((unsupported)) 0)).add (xread_and_verify_code)).add " ;").add "infile.close()")))) (((xsubprocess).xPIPE)) (((xsubprocess).xPIPE)) (((xsubprocess).xPIPE)))))
+                        xworm_sign.write ((((((xself).x_process).xstderr).xread)) ((((xlen)) ("Worm Sign!n"))))
+                        ((xworm_sign).neq "Worm Sign!n").if
+                          (((unsupported)) (((xself).xfail_with_process_info)) ("while awaiting a sign") ((xworm_sign)))
+                        bogusForceDataize.write ((((((xself).x_process).xstdin).xwrite)) ((xdata_to_write)))
+                        xsignals_sent.write 0
+                        xrlist.write (((unsupported)) 0)
+                        while.
+                          ((xrlist).not)
+                          [unused]
+                            seq > @
+                              seq
+                                (((unsupported)) ((((unsupported)) ((xrlist)) ((x_)) ((x_)))) (((((xselect).xselect)) ((((unsupported)) ((((xself).x_process).xstderr)))) ((((unsupported)) 0)) ((((unsupported)) 0)) (0.05))))
+                                bogusForceDataize.write (((((xself).x_process).xsend_signal)) (((xsignal).xSIGINT)))
+                                (((unsupported)) ((xsignals_sent)) (1))
+                                ((xsignals_sent).greater 200).if
+                                  seq
+                                    bogusForceDataize.write (((((xself).x_process).xkill)) 0)
+                                    bogusForceDataize.write ((((xself).xfail)) ("reader process failed to handle our signals."))
+                        xsignal_line.write ((((((xself).x_process).xstderr).xreadline)) 0)
+                        ((xsignal_line).neq "$n").if
+                          (((unsupported)) (((xself).xfail_with_process_info)) ("while awaiting signal") ((xsignal_line)))
+                        (((unsupported)) ((((unsupported)) ((xstdout)) ((xstderr)))) ((((unsupported)) ((((xself).x_process).xcommunicate)) ("n"))))
+                        (((xself).x_process).xreturncode).if
+                          (((unsupported)) (((xself).xfail_with_process_info)) (("exited rc=%d".mod (((xself).x_process).xreturncode))) ((xstdout)) ((xstderr)) (FALSE))
+                x_READING_CODE_TEMPLATE.write (((unsupported)) 0)
+                xtest_readline.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (((xself).x_test_reading)) ("hello, world!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("readline") ("hello, world!n"))))
+                xtest_readlines.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (((xself).x_test_reading)) ("hellonworld!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("readlines") ((((unsupported)) ("hellon") ("world!n"))))))
+                xtest_readall.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (((xself).x_test_reading)) ("hellonworld!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("readall") ("hellonworld!n"))))
+                        (((unsupported)) (((xself).x_test_reading)) ("hellonworld!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("read") ("hellonworld!n"))))
+            (((unsupported)) ((xTestFileIOSignalInterrupt)) (((xunittest).xTestCase)))
+              xmodname.write "_io"
+            (((unsupported)) ((xTestFileIOSignalInterrupt)) (((xunittest).xTestCase)))
+              xmodname.write "_pyio"
+            (((unsupported)) ((xTestFileIOSignalInterrupt)))
+              seq
+                x_generate_infile_setup_code.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (("import %s as io ;infile = io.open(sys.stdin.fileno(), \"rb\") ;assert isinstance(infile, io.BufferedReader)".mod ((xself).xmodname))))
+                xtest_readall.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (((xself).x_test_reading)) ("hellonworld!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("read") ("hellonworld!n"))))
+            (((unsupported)) ((xTestBufferedIOSignalInterrupt)) (((xunittest).xTestCase)))
+              xmodname.write "_io"
+            (((unsupported)) ((xTestBufferedIOSignalInterrupt)) (((xunittest).xTestCase)))
+              xmodname.write "_pyio"
+            (((unsupported)) ((xTestFileIOSignalInterrupt)))
+              seq
+                x_generate_infile_setup_code.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (("import %s as io ;infile = io.open(sys.stdin.fileno(), \"rt\", newline=None) ;assert isinstance(infile, io.TextIOWrapper)".mod ((xself).xmodname))))
+                xtest_readline.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (((xself).x_test_reading)) ("hello, world!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("readline") ("hello, world!n"))))
+                xtest_readlines.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (((xself).x_test_reading)) ("hellornworld!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("readlines") ((((unsupported)) ("hellon") ("world!n"))))))
+                xtest_readall.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)) (((xself).x_test_reading)) ("hellonworld!") ((((unsupported)) ((((xself).x_READING_CODE_TEMPLATE).xformat)) ("read") ("hellonworld!n"))))
+            (((unsupported)) ((xTestTextIOSignalInterrupt)) (((xunittest).xTestCase)))
+              xmodname.write "_io"
+            (((unsupported)) ((xTestTextIOSignalInterrupt)) (((xunittest).xTestCase)))
+              xmodname.write "_pyio"
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

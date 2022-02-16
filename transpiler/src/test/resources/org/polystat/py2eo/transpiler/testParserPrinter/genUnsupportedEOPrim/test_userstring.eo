@@ -1,0 +1,92 @@
+memory > xstr
+memory > xUserString
+memory > xustr3
+memory > xsuper
+memory > xargs
+memory > xgetattr
+memory > xkwargs
+memory > x__name__
+memory > xcm
+memory > xUnicodeError
+memory > xstring_tests
+memory > xunittest
+memory > xustr2
+[] > test_userstring
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_rmod
+        memory > xtest_encode_explicit_none_args
+        memory > xtest_encode_default_args
+        memory > xtype2test
+        memory > xcheckequal
+        memory > xcheckcall
+        memory > xcheckraises
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) (((xstring_tests).xCommonTest)) (((xstring_tests).xMixinStrUnicodeUserStringTest)) (((xunittest).xTestCase)))
+              seq
+                xtype2test.write (xUserString)
+                xcheckequal.write
+                  [xself xresult xobject xmethodname]
+                    memory > xrealresult
+                    seq > @
+                      (((unsupported)) 0)
+                        xresult.write ((((xself).xfixtype)) ((xresult)))
+                        xobject.write ((((xself).xfixtype)) ((xobject)))
+                        xrealresult.write (((((xgetattr)) ((xobject)) ((xmethodname)))) ((((unsupported)) ((xargs)))) ((((unsupported)) ((xkwargs)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xresult)) ((xrealresult)))
+                xcheckraises.write
+                  [xself xexc xobj xmethodname]
+                    seq > @
+                      (((unsupported)) 0)
+                        xobj.write ((((xself).xfixtype)) ((xobj)))
+                        (((unsupported)) (((((xself).xassertRaises)) ((xexc)))) ((xcm)))
+                          bogusForceDataize.write (((((xgetattr)) ((xobj)) ((xmethodname)))) ((((unsupported)) ((xargs)))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)) ((((xstr)) (((xcm).xexception)))) (""))
+                xcheckcall.write
+                  [xself xobject xmethodname]
+                    seq > @
+                      (((unsupported)) 0)
+                        xobject.write ((((xself).xfixtype)) ((xobject)))
+                        bogusForceDataize.write (((((xgetattr)) ((xobject)) ((xmethodname)))) ((((unsupported)) ((xargs)))))
+                xtest_rmod.write
+                  [xself]
+                    memory > xfmt2
+                    memory > x__rmod__
+                    memory > xstr3
+                    seq > @
+                      seq
+                        (((unsupported)) ((xUserString)))
+                        (((unsupported)) ((xustr2)))
+                          x__rmod__.write
+                            [xself xother]
+                              seq > @
+                                (((unsupported)) (((((((xsuper)) 0).x__rmod__)) ((xother)))))
+                        xfmt2.write (((xustr2)) ("value is %s"))
+                        xstr3.write (((xustr3)) ("TEST"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((xfmt2).mod (xstr3))) ("value is TEST"))
+                xtest_encode_default_args.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xcheckequal)) ("hello") ("hello") ("encode"))
+                        bogusForceDataize.write ((((xself).xcheckequal)) ("xf0xa3x91x96") ("U00023456") ("encode"))
+                        bogusForceDataize.write ((((xself).xcheckraises)) ((xUnicodeError)) ("ud800") ("encode"))
+                xtest_encode_explicit_none_args.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xcheckequal)) ("hello") ("hello") ("encode") ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xcheckequal)) ("xf0xa3x91x96") ("U00023456") ("encode") ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xcheckraises)) ((xUnicodeError)) ("ud800") ("encode") ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)
