@@ -37,6 +37,14 @@ This transpiler receives as input data python code. Then received code is simpli
 - Check output .eo file in `Transpiler Test/genCageEO/sample_test.eo`
 
 
+#### Command line arguments ####
+| Option  | Action |
+| ------------- | ------------- |
+| `-h,--help`  | Display help information  |
+| `-o`  | path to output .eo file  |
+| `-X,--debug`  | Produce execution debug output  |
+| `-v,--version`  | Display version information  |
+
 #### How to contribute? ####
 - This instruction is for `Ubuntu 20.04`
 - Check git version `git -version` or install it via `sudo apt install git`
