@@ -33,7 +33,7 @@ object Main {
 
           val moduleName = pyFile.getName.substring(0, pyFile.getName.lastIndexOf("."))
           val eoText = Transpile.transpile(db)(moduleName, readFile(pyFile))
-          writeFile(pyFile, if (outputFolderPath.nonEmpty) outputFolderPath + File.separator + "genCageEO" else "genCageEO",
+          writeFile(pyFile, if (outputFolderPath.nonEmpty) outputFolderPath else "genCageEO",
             ".eo", eoText, outputFolderPath.nonEmpty)
         } else {
           println("Provided path is not a file")
@@ -43,7 +43,7 @@ object Main {
       } else if (args.contains("--help") || args.contains("-h")) {
         println("usage: java -jar .\\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\\sample_test.py [options] \n\nOptions: \n" +
           "-h,--help \t\t\t Display help information\n" +
-          "-o     \t\t\t\t path to output .eo file\n" +
+          "-o     \t\t\t\t Path to output .eo file\n" +
           "-X,--debug     \t\t Produce execution debug output\n" +
           "-v,--version \t\t Display version information")
       } else {
