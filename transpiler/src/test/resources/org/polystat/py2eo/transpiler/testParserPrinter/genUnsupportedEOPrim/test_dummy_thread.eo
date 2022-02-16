@@ -1,0 +1,325 @@
+memory > xcm
+memory > xround
+memory > xcount
+memory > xrange
+memory > xqueue
+memory > xrandom
+memory > xprint
+memory > xsupport
+memory > xtuple
+memory > xmock
+memory > xRuntimeError
+memory > xKeyboardInterrupt
+memory > xrepr
+memory > xint
+memory > xException
+memory > xtime
+memory > xunittest
+memory > xSystemExit
+memory > xTypeError
+memory > x__name__
+[] > test_dummy_thread
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xDELAY
+        memory > xtest_uncond_acquire_return_val
+        memory > xtest_LockType_context_manager
+        memory > xtest_interrupt_in_main
+        memory > xtest_cond_acquire_fail
+        memory > xsetUp
+        memory > xtest_lock_representation
+        memory > xtest_ident
+        memory > xtest_interrupt_main
+        memory > xtest_cond_acquire_success
+        memory > xtest_args_not_tuple
+        memory > xtest_kwargs_not_dict
+        memory > xtest_exit
+        memory > xtest_arg_passing
+        memory > xtest_stack_size_not_None
+        memory > xtest_RaiseException
+        memory > xtest_multi_thread_creation
+        memory > xtest_uncond_acquire_blocking
+        memory > xtest_set_sentinel
+        memory > xtest_initlock
+        memory > xtest_improper_release
+        memory > xtest_SystemExit
+        memory > xtest_LockType
+        memory > xtest_release
+        memory > x_thread
+        memory > xtest_acquire_timeout
+        memory > xtest_stack_size_None
+        memory > xtest_uncond_acquire_success
+        memory > xtest_multiple_acquire
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            xDELAY.write 0
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                unsupported
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) (((xself).xlock)) (((((x_thread).xallocate_lock)) 0)))
+                xtest_initlock.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xlock).xlocked)) 0)) ("Lock object is not initialized unlocked."))
+                xtest_release.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xlock).xacquire)) 0)
+                        bogusForceDataize.write (((((xself).xlock).xrelease)) 0)
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xlock).xlocked)) 0)) ("Lock object did not release properly."))
+                xtest_LockType_context_manager.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) (((((x_thread).xLockType)) 0)))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xlock).xlocked)) 0)) ("Acquired Lock was not released"))
+                xtest_improper_release.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaises)) ((xRuntimeError)) ((((xself).xlock).xrelease)))
+                xtest_cond_acquire_success.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertTrue)) ((((((xself).xlock).xacquire)) (0))) ("Conditional acquiring of the lock failed."))
+                xtest_cond_acquire_fail.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xlock).xacquire)) (0))
+                        bogusForceDataize.write ((((xself).xassertFalse)) ((((((xself).xlock).xacquire)) (0))) ("Conditional acquiring of a locked lock incorrectly succeeded."))
+                xtest_uncond_acquire_success.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xlock).xacquire)) 0)
+                        bogusForceDataize.write ((((xself).xassertTrue)) ((((((xself).xlock).xlocked)) 0)) ("Uncondional locking failed."))
+                xtest_uncond_acquire_return_val.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIs)) ((((((xself).xlock).xacquire)) (1))) (TRUE) ("Unconditional locking did not return True."))
+                        bogusForceDataize.write ((((xself).xassertIs)) ((((((xself).xlock).xacquire)) 0)) (TRUE))
+                xtest_uncond_acquire_blocking.write
+                  [xself]
+                    memory > xdelay_unlock
+                    memory > xend_time
+                    memory > xstart_time
+                    seq > @
+                      seq
+                        xdelay_unlock.write
+                          [xto_unlock xdelay]
+                            seq > @
+                              seq
+                                unsupported
+                                bogusForceDataize.write ((((xtime).xsleep)) ((xdelay)))
+                                bogusForceDataize.write ((((xto_unlock).xrelease)) 0)
+                        bogusForceDataize.write (((((xself).xlock).xacquire)) 0)
+                        xstart_time.write (((xint)) (((((xtime).xmonotonic)) 0)))
+                        bogusForceDataize.write ((((x_thread).xstart_new_thread)) ((xdelay_unlock)) ((((unsupported)) (((xself).xlock)) ((xDELAY)))))
+                        ((xsupport).xverbose).if
+                          seq
+                            bogusForceDataize.write (((xprint)) 0)
+                            bogusForceDataize.write (((xprint)) (("*** Waiting for thread to release the lock (approx. %s sec.) ***".mod (xDELAY))))
+                        bogusForceDataize.write (((((xself).xlock).xacquire)) 0)
+                        xend_time.write (((xint)) (((((xtime).xmonotonic)) 0)))
+                        ((xsupport).xverbose).if
+                          bogusForceDataize.write (((xprint)) ("done"))
+                        bogusForceDataize.write ((((xself).xassertGreaterEqual)) (((xend_time).sub (xstart_time))) ((xDELAY)) ("Blocking by unconditional acquiring failed."))
+                xtest_acquire_timeout.write
+                  [xself xmock_sleep]
+                    memory > xretval
+                    seq > @
+                      (((unsupported)) 0)
+                        (((unsupported)) 0)
+                        bogusForceDataize.write (((((xself).xlock).xacquire)) 0)
+                        xretval.write (((unsupported)) ((((xself).xlock).xacquire)) (0) (1))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((xmock_sleep).xcalled)))
+                        bogusForceDataize.write ((((xmock_sleep).xassert_called_once_with)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xretval)) (FALSE))
+                xtest_lock_representation.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xlock).xacquire)) 0)
+                        bogusForceDataize.write ((((xself).xassertIn)) ("locked") ((((xrepr)) (((xself).xlock)))))
+                        bogusForceDataize.write (((((xself).xlock).xrelease)) 0)
+                        bogusForceDataize.write ((((xself).xassertIn)) ("unlocked") ((((xrepr)) (((xself).xlock)))))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                unsupported
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)) (((xself).xrlock)) (((((x_thread).xRLock)) 0)))
+                xtest_multiple_acquire.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIn)) ("unlocked") ((((xrepr)) (((xself).xrlock)))))
+                        bogusForceDataize.write (((((xself).xrlock).xacquire)) 0)
+                        bogusForceDataize.write (((((xself).xrlock).xacquire)) 0)
+                        bogusForceDataize.write ((((xself).xassertIn)) ("locked") ((((xrepr)) (((xself).xrlock)))))
+                        bogusForceDataize.write (((((xself).xrlock).xrelease)) 0)
+                        bogusForceDataize.write ((((xself).xassertIn)) ("locked") ((((xrepr)) (((xself).xrlock)))))
+                        bogusForceDataize.write (((((xself).xrlock).xrelease)) 0)
+                        bogusForceDataize.write ((((xself).xassertIn)) ("unlocked") ((((xrepr)) (((xself).xrlock)))))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xRuntimeError)) ((((xself).xrlock).xrelease)))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                unsupported
+                xtest_exit.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaises)) ((xSystemExit)) (((x_thread).xexit)))
+                xtest_ident.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIsInstance)) (((((x_thread).xget_ident)) 0)) ((xint)) ("_thread.get_ident() returned a non-integer"))
+                        bogusForceDataize.write ((((xself).xassertGreater)) (((((x_thread).xget_ident)) 0)) (0))
+                xtest_LockType.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertIsInstance)) (((((x_thread).xallocate_lock)) 0)) (((x_thread).xLockType)) ("_thread.LockType is not an instance of what is returned by _thread.allocate_lock()"))
+                xtest_set_sentinel.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertIsInstance)) (((((x_thread).x_set_sentinel)) 0)) (((x_thread).xLockType)) ("_thread._set_sentinel() did not return a LockType instance."))
+                xtest_interrupt_main.write
+                  [xself]
+                    memory > xcall_interrupt
+                    seq > @
+                      seq
+                        xcall_interrupt.write
+                          []
+                            seq > @
+                              bogusForceDataize.write ((((x_thread).xinterrupt_main)) 0)
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xKeyboardInterrupt)) (((x_thread).xstart_new_thread)) ((xcall_interrupt)) ((((xtuple)) 0)))
+                xtest_interrupt_in_main.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaises)) ((xKeyboardInterrupt)) (((x_thread).xinterrupt_main)))
+                xtest_stack_size_None.write
+                  [xself]
+                    memory > xretval
+                    seq > @
+                      seq
+                        xretval.write ((((x_thread).xstack_size)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xretval)) (0))
+                xtest_stack_size_not_None.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) (((((xself).xassertRaises)) (((x_thread).xerror)))) ((xcm)))
+                          bogusForceDataize.write ((((x_thread).xstack_size)) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((((xcm).xexception).xargs)) (0))) ("setting thread stack size not supported"))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                unsupported
+                xtest_arg_passing.write
+                  [xself]
+                    memory > xarg_tester
+                    memory > xtesting_queue
+                    memory > xresult
+                    seq > @
+                      seq
+                        xarg_tester.write
+                          [xqueue xarg1 xarg2]
+                            seq > @
+                              (((unsupported)) 0)
+                                unsupported
+                                bogusForceDataize.write ((((xqueue).xput)) ((((unsupported)) ((xarg1)) ((xarg2)))))
+                        xtesting_queue.write ((((xqueue).xQueue)) (1))
+                        bogusForceDataize.write ((((x_thread).xstart_new_thread)) ((xarg_tester)) ((((unsupported)) ((xtesting_queue)) (TRUE) (TRUE))))
+                        xresult.write ((((xtesting_queue).xget)) 0)
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((unsupported)) ((xresult)) (0)).and (((unsupported)) ((xresult)) (1)))) ("Argument passing for thread creation using tuple failed"))
+                        bogusForceDataize.write ((((x_thread).xstart_new_thread)) ((xarg_tester)) ((((xtuple)) 0)) ((((unsupported)) ("queue") ((xtesting_queue)) ("arg1") (TRUE) ("arg2") (TRUE))))
+                        xresult.write ((((xtesting_queue).xget)) 0)
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((unsupported)) ((xresult)) (0)).and (((unsupported)) ((xresult)) (1)))) ("Argument passing for thread creation using kwargs failed"))
+                        bogusForceDataize.write ((((x_thread).xstart_new_thread)) ((xarg_tester)) ((((unsupported)) ((xtesting_queue)) (TRUE))) ((((unsupported)) ("arg2") (TRUE))))
+                        xresult.write ((((xtesting_queue).xget)) 0)
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((((unsupported)) ((xresult)) (0)).and (((unsupported)) ((xresult)) (1)))) ("Argument passing for thread creation using both tuple and kwargs failed"))
+                xtest_multi_thread_creation.write
+                  [xself]
+                    memory > xqueue_mark
+                    memory > xtesting_queue
+                    memory > xthread_count
+                    memory > xlocal_delay
+                    seq > @
+                      seq
+                        xqueue_mark.write
+                          [xqueue xdelay]
+                            seq > @
+                              seq
+                                bogusForceDataize.write ((((xtime).xsleep)) ((xdelay)))
+                                bogusForceDataize.write ((((xqueue).xput)) (((((x_thread).xget_ident)) 0)))
+                        xthread_count.write 5
+                        xtesting_queue.write ((((xqueue).xQueue)) ((xthread_count)))
+                        ((xsupport).xverbose).if
+                          seq
+                            bogusForceDataize.write (((xprint)) 0)
+                            bogusForceDataize.write (((xprint)) (("*** Testing multiple thread creation (will take approx. %s to %s sec.) ***".mod (((unsupported)) ((xDELAY)) ((xthread_count))))))
+                        (((unsupported)) ((xcount)) ((((xrange)) ((xthread_count)))))
+                          seq
+                            (xDELAY).if
+                              xlocal_delay.write (((xround)) (((((xrandom).xrandom)) 0)) (1))
+                              xlocal_delay.write 0
+                            bogusForceDataize.write ((((x_thread).xstart_new_thread)) ((xqueue_mark)) ((((unsupported)) ((xtesting_queue)) ((xlocal_delay)))))
+                        bogusForceDataize.write ((((xtime).xsleep)) ((xDELAY)))
+                        ((xsupport).xverbose).if
+                          bogusForceDataize.write (((xprint)) ("done"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((((xtesting_queue).xqsize)) 0)) ((xthread_count)) (("Not all %s threads executed properly after %s sec.".mod (((unsupported)) ((xthread_count)) ((xDELAY))))))
+                xtest_args_not_tuple.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) 0)
+                        (((unsupported)) (((((xself).xassertRaises)) ((xTypeError)))) ((xcm)))
+                          bogusForceDataize.write ((((x_thread).xstart_new_thread)) (((((xmock).xMock)) 0)) ((((unsupported)) 0)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((((xcm).xexception).xargs)) (0))) ("2nd arg must be a tuple"))
+                xtest_kwargs_not_dict.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) 0)
+                        (((unsupported)) (((((xself).xassertRaises)) ((xTypeError)))) ((xcm)))
+                          (((unsupported)) (((x_thread).xstart_new_thread)) (((((xmock).xMock)) 0)) ((((xtuple)) 0)) ((((unsupported)) 0)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((((xcm).xexception).xargs)) (0))) ("3rd arg must be a dict"))
+                xtest_SystemExit.write
+                  [xself]
+                    memory > xfunc
+                    seq > @
+                      seq
+                        (((unsupported)) 0)
+                        xfunc.write (((unsupported)) (((xmock).xMock)) ((((xSystemExit)) 0)))
+                        (((unsupported)) ((xSystemExit)))
+                          bogusForceDataize.write ((((x_thread).xstart_new_thread)) ((xfunc)) ((((xtuple)) 0)))
+                          bogusForceDataize.write ((((xself).xfail)) ("start_new_thread raised SystemExit."))
+                xtest_RaiseException.write
+                  [xself xmock_print_exc]
+                    memory > xfunc
+                    seq > @
+                      (((unsupported)) 0)
+                        (((unsupported)) 0)
+                        xfunc.write (((unsupported)) (((xmock).xMock)) ((xException)))
+                        bogusForceDataize.write ((((x_thread).xstart_new_thread)) ((xfunc)) ((((xtuple)) 0)))
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((xmock_print_exc).xcalled)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

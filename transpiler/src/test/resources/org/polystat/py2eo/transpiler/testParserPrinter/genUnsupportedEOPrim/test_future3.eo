@@ -1,0 +1,50 @@
+memory > xunittest
+memory > x__name__
+[] > test_future3
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_nested_scopes
+        memory > xx
+        memory > xtest_true_div_as_default
+        memory > xtest_floor_div_operator
+        memory > xnester
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            xx.write 2
+            xnester.write
+              []
+                memory > xx
+                memory > xinner
+                seq > @
+                  seq
+                    xx.write 3
+                    xinner.write
+                      []
+                        seq > @
+                          (((unsupported)) ((xx)))
+                    (((unsupported)) ((((xinner)) 0)))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xtest_floor_div_operator.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) (7) (2))) (3))
+                xtest_true_div_as_default.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertAlmostEqual)) ((7.div 2)) (3.5))
+                xtest_nested_scopes.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)) ((((xnester)) 0)) (3))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

@@ -1,0 +1,270 @@
+memory > xscript_helper
+memory > xio
+memory > xrange
+memory > xZeroDivisionError
+memory > xprint
+memory > xw
+memory > xr
+memory > xSystemError
+memory > xatexit
+memory > xkwargs
+memory > xlen
+memory > xx
+memory > xi
+memory > xsupport
+memory > xsys
+memory > xargs
+memory > xos
+memory > xunittest
+memory > xSystemExit
+memory > xTypeError
+memory > x__name__
+[] > test_atexit
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_unregister
+        memory > xtest_exit
+        memory > xtest_raise_unnormalized
+        memory > xtest_callbacks_leak
+        memory > xtest_badargs
+        memory > xtest_shutdown
+        memory > xtest_args
+        memory > xtest_order
+        memory > xh1
+        memory > xtest_raise
+        memory > xtest_clear
+        memory > xtearDown
+        memory > xtest_callbacks_leak_refcycle
+        memory > xraise1
+        memory > xsetUp
+        memory > xh4
+        memory > xraise2
+        memory > xtest_callback_on_subinterpreter_teardown
+        memory > xexit
+        memory > xh3
+        memory > xtest_bound_methods
+        memory > xh2
+        memory > xtest_stress
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            xh1.write
+              []
+                seq > @
+                  bogusForceDataize.write (((xprint)) ("h1"))
+            xh2.write
+              []
+                seq > @
+                  bogusForceDataize.write (((xprint)) ("h2"))
+            xh3.write
+              []
+                seq > @
+                  bogusForceDataize.write (((xprint)) ("h3"))
+            xh4.write
+              []
+                seq > @
+                  (((unsupported)) 0)
+                    bogusForceDataize.write (((xprint)) ("h4") ((xargs)) ((xkwargs)))
+            xraise1.write
+              []
+                seq > @
+                  (((unsupported)) ((xTypeError)))
+            xraise2.write
+              []
+                seq > @
+                  (((unsupported)) ((xSystemError)))
+            xexit.write
+              []
+                seq > @
+                  (((unsupported)) ((xSystemExit)))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) (((xself).xsave_stdout)) (((xsys).xstdout)))
+                        (((unsupported)) (((xself).xsave_stderr)) (((xsys).xstderr)))
+                        (((unsupported)) (((xself).xstream)) (((((xio).xStringIO)) 0)))
+                        (((unsupported)) (((xsys).xstdout)) (((xsys).xstderr)) (((xself).xstream)))
+                        bogusForceDataize.write ((((xatexit).x_clear)) 0)
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) (((xsys).xstdout)) (((xself).xsave_stdout)))
+                        (((unsupported)) (((xsys).xstderr)) (((xself).xsave_stderr)))
+                        bogusForceDataize.write ((((xatexit).x_clear)) 0)
+                xtest_args.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xh1)))
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xh4)))
+                        (((unsupported)) (((xatexit).xregister)) ((xh4)) (4) ("abc"))
+                        bogusForceDataize.write ((((xatexit).x_run_exitfuncs)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xstream).xgetvalue)) 0)) ("h4 (4,) {'kw': 'abc'}nh4 () {}nh1n"))
+                xtest_badargs.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xatexit).xregister)) ((((unsupported)) (1))) (0) (0) ((((unsupported)) ((xx)) ((xx)) ((((unsupported)) (1) (2))))) (0) (0))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xatexit).x_run_exitfuncs)))
+                xtest_order.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xh1)))
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xh2)))
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xh3)))
+                        bogusForceDataize.write ((((xatexit).x_run_exitfuncs)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xstream).xgetvalue)) 0)) ("h3nh2nh1n"))
+                xtest_raise.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xraise1)))
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xraise2)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xTypeError)) (((xatexit).x_run_exitfuncs)))
+                xtest_raise_unnormalized.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xatexit).xregister)) ((((unsupported)) ((1.div 0)))))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xZeroDivisionError)) (((xatexit).x_run_exitfuncs)))
+                        bogusForceDataize.write ((((xself).xassertIn)) ("ZeroDivisionError") ((((((xself).xstream).xgetvalue)) 0)))
+                xtest_exit.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xexit)))
+                        bogusForceDataize.write ((((xself).xassertRaises)) ((xSystemExit)) (((xatexit).x_run_exitfuncs)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((((xself).xstream).xgetvalue)) 0)) (""))
+                xtest_stress.write
+                  [xself]
+                    memory > xinc
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((unsupported)) (0))
+                        xinc.write
+                          []
+                            seq > @
+                              (((unsupported)) ((((unsupported)) ((xa)) (0))) (1))
+                        (((unsupported)) ((xi)) ((((xrange)) (128))))
+                          bogusForceDataize.write ((((xatexit).xregister)) ((xinc)))
+                        bogusForceDataize.write ((((xatexit).x_run_exitfuncs)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((xa)) (0))) (128))
+                xtest_clear.write
+                  [xself]
+                    memory > xinc
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((unsupported)) (0))
+                        xinc.write
+                          []
+                            seq > @
+                              (((unsupported)) ((((unsupported)) ((xa)) (0))) (1))
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xinc)))
+                        bogusForceDataize.write ((((xatexit).x_clear)) 0)
+                        bogusForceDataize.write ((((xatexit).x_run_exitfuncs)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((xa)) (0))) (0))
+                xtest_unregister.write
+                  [xself]
+                    memory > xinc
+                    memory > xdec
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((unsupported)) (0))
+                        xinc.write
+                          []
+                            seq > @
+                              (((unsupported)) ((((unsupported)) ((xa)) (0))) (1))
+                        xdec.write
+                          []
+                            seq > @
+                              (((unsupported)) ((((unsupported)) ((xa)) (0))) (1))
+                        (((unsupported)) ((xi)) ((((xrange)) (4))))
+                          bogusForceDataize.write ((((xatexit).xregister)) ((xinc)))
+                        bogusForceDataize.write ((((xatexit).xregister)) ((xdec)))
+                        bogusForceDataize.write ((((xatexit).xunregister)) ((xinc)))
+                        bogusForceDataize.write ((((xatexit).x_run_exitfuncs)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((xa)) (0))) ((1.neg)))
+                xtest_bound_methods.write
+                  [xself]
+                    memory > xl
+                    seq > @
+                      seq
+                        xl.write (((unsupported)) 0)
+                        bogusForceDataize.write ((((xatexit).xregister)) (((xl).xappend)) (5))
+                        bogusForceDataize.write ((((xatexit).x_run_exitfuncs)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xl)) ((((unsupported)) (5))))
+                        bogusForceDataize.write ((((xatexit).xunregister)) (((xl).xappend)))
+                        bogusForceDataize.write ((((xatexit).x_run_exitfuncs)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xl)) ((((unsupported)) (5))))
+                xtest_shutdown.write
+                  [xself]
+                    memory > xcode
+                    memory > xres
+                    seq > @
+                      seq
+                        xcode.write (((unsupported)) 0)
+                        xres.write ((((xscript_helper).xassert_python_ok)) ("-c") ((xcode)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((((((((xres).xout).xdecode)) 0).xsplitlines)) 0)) ((((unsupported)) ("two") ("one"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((xres).xerr)))
+            (((unsupported)) (((xunittest).xTestCase)) (((xsupport).xcpython_only)))
+              seq
+                xtest_callbacks_leak.write
+                  [xself]
+                    memory > xn
+                    memory > xcode
+                    memory > xret
+                    seq > @
+                      seq
+                        xn.write ((((xatexit).x_ncallbacks)) 0)
+                        xcode.write (((unsupported)) 0)
+                        xret.write ((((xsupport).xrun_in_subinterp)) ((xcode)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xret)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((((xatexit).x_ncallbacks)) 0)) ((xn)))
+                xtest_callbacks_leak_refcycle.write
+                  [xself]
+                    memory > xn
+                    memory > xcode
+                    memory > xret
+                    seq > @
+                      seq
+                        xn.write ((((xatexit).x_ncallbacks)) 0)
+                        xcode.write (((unsupported)) 0)
+                        xret.write ((((xsupport).xrun_in_subinterp)) ((xcode)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xret)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((((xatexit).x_ncallbacks)) 0)) ((xn)))
+                xtest_callback_on_subinterpreter_teardown.write
+                  [xself]
+                    memory > xexpected
+                    memory > xcode
+                    memory > xret
+                    seq > @
+                      seq
+                        xexpected.write "The test has passed!"
+                        (((unsupported)) ((((unsupported)) ((xr)) ((xw)))) (((((xos).xpipe)) 0)))
+                        xcode.write ((((((unsupported)) 0).xformat)) ((xw)))
+                        xret.write ((((xsupport).xrun_in_subinterp)) ((xcode)))
+                        bogusForceDataize.write ((((xos).xclose)) ((xw)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((((xos).xread)) ((xr)) ((((xlen)) ((xexpected)))))) ((xexpected)))
+                        bogusForceDataize.write ((((xos).xclose)) ((xr)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)
