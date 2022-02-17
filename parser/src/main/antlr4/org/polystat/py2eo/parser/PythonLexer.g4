@@ -26,6 +26,8 @@ THE SOFTWARE.
  * Developed by : Robert Einhorn, robert.einhorn.hu@gmail.com
  */
 
+/* The file is taken from this repository https://github.com/RobEin/ANTLR4-Python-grammar-by-PEG */
+
 lexer grammar PythonLexer;
 
 options { superClass=PythonLexerBase; }
