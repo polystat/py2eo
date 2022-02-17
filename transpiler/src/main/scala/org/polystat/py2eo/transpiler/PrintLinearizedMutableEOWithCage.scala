@@ -40,17 +40,17 @@ object PrintLinearizedMutableEOWithCage {
     printTest(testName, st)
   }
 
-  def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
+  private def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
     case Field(whose, name, _) => seqOfFields(whose).map(_ :+ name)
 //    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
     case Ident(name, _) => Some(List(name))
     case _ => None
   }
 
-  def pe: T => String = printExpr
-  def isFun(f : Statement.T): Boolean = f match { case _: FuncDef => true case _ => false }
+  private def pe: T => String = printExpr
+  private def isFun(f : Statement.T): Boolean = f match { case _: FuncDef => true case _ => false }
 
-  def printSt(st : Statement.T) : Text =
+  private def printSt(st : Statement.T) : Text =
     st match {
       case SimpleObject(name, l, _) =>
         ("write." ::
@@ -127,7 +127,7 @@ object PrintLinearizedMutableEOWithCage {
       case Suite(l, _) => l.flatMap(printSt)
     }
 
-  def printFun(newName : String, preface : List[String], f : FuncDef) : Text = {
+  private def printFun(newName : String, preface : List[String], f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     val funs = SimpleAnalysis.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
