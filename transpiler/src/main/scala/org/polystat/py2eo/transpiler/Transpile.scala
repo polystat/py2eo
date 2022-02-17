@@ -32,7 +32,7 @@ object Transpile {
         theFun,
         Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
       ), ann.pos)
-      val eoText = PrintLinearizedMutableEOWithCage(moduleName, eoHacked)
+      val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
       (eoText.init.init :+ "        result").mkString("\n")
     }
     catch {

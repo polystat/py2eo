@@ -35,12 +35,7 @@ object PrintLinearizedMutableEOWithCage {
     }
   }
 
-  def apply(testName : String, st : Statement.T) : Text = {
-    HackName.count = 0 // todo: imperative style suddenly
-    printTest(testName, st)
-  }
-
-  private def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
+  def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
     case Field(whose, name, _) => seqOfFields(whose).map(_ :+ name)
 //    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
     case Ident(name, _) => Some(List(name))
@@ -163,6 +158,7 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printTest(testName : String, st : Statement.T) : Text = {
+    HackName.count = 0 // todo: imperative style suddenly
     println(s"doing $testName")
     val mkCopy = List(
       "[x] > mkCopy",
