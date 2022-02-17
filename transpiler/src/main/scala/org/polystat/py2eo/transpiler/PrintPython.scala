@@ -8,12 +8,17 @@ import org.polystat.py2eo.transpiler.Expression.{
   IfComprehension, ImagLiteral, IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice,
   Star, StringLiteral, T, Unop, Unops, UnsupportedExpr, Yield, YieldFrom
 }
+import org.polystat.py2eo.transpiler.Statement.{
+  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
+  If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
+  Unsupported, While, With
+}
 
 object PrintPython {
 
   def printExpr: T => String = printExprOrDecorator(noBracketsAround = false)(_)
 
-  def print(s: Statement): String = printSt(s, "")
+  def print(s: Statement.T): String = printSt(s, "")
 
   private def printComprehension(e : Comprehension) : String =
     e match {
@@ -95,7 +100,7 @@ object PrintPython {
     case None => emptyString
   }
 
-  private def printSt(s : Statement, indentAmount : String) : String = {
+  private def printSt(s : Statement.T, indentAmount : String) : String = {
     def async(isAsync : Boolean) = if (isAsync) "async " else emptyString
     val indentIncrAmount = indentAmount + "    "
     def indentPos(str : String) : String = "%s%s # %s".format(indentAmount, str, s.ann)
@@ -120,7 +125,7 @@ object PrintPython {
           indentAmount, async(isAsync), cmsString, s.ann, printSt(body, indentIncrAmount)
         )
       case If(conditioned, eelse, _) =>
-        def oneCase(keyword : String, p : (T, Statement)) = {
+        def oneCase(keyword : String, p : (T, Statement.T)) = {
           "%s%s (%s): # %s \n%s".format(
             indentAmount, keyword, printExpr(p._1), p._2.ann.toString,
             printSt(p._2, indentIncrAmount)

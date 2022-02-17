@@ -132,7 +132,7 @@ class Tests {
     val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
     val futures = test.map(test =>
       Future {
-        def db(s : Statement, str : String) = () // debugPrinter(test)(_, _)
+        def db(s : Statement.T, str : String) = () // debugPrinter(test)(_, _)
         val name = test.getName
         println(s"parsing $name")
         val eoText = try {
