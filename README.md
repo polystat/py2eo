@@ -68,4 +68,4 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
         b = 2
     ```
 - Run command `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\sample_test.py`
-- Check output `.eo` file in `./genCageEO/sample_test.eo` or in `path_to_output_folder/sample_test.eo` in case of usage `-o` command line parameter
+- Check output `.eo` file in `./genCageEO/sample_test.eo` 

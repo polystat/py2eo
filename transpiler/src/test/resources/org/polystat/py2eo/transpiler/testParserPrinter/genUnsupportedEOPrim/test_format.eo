@@ -1,0 +1,478 @@
+memory > xcm
+memory > xcomplex
+memory > xFakeBytes
+memory > xINT_MAX
+memory > xValueError
+memory > xstr
+memory > xAssertionError
+memory > xverbose
+memory > xbytearray
+memory > xMemoryError
+memory > xerr
+memory > xprint
+memory > xrepr
+memory > xOverflowError
+memory > xsys
+memory > xexc
+memory > xTestFailed
+memory > xtuple
+memory > xlocale
+memory > xfloat
+memory > xformat
+memory > xunittest
+memory > xobject
+memory > xmemoryview
+memory > xisinstance
+memory > xlen
+memory > xTypeError
+memory > x__name__
+[] > test_format
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_precision
+        memory > xtestcommon
+        memory > xtest_exc_common
+        memory > xtest_exc
+        memory > xtestformat
+        memory > xtest_locale
+        memory > xtest_nul
+        memory > xtest_str_format
+        memory > xtest_precision_c_limits
+        memory > xsupport
+        memory > xtest_bytes_and_bytearray_format
+        memory > xtest_common_format
+        memory > xtest_optimisations
+        memory > xtest_non_ascii
+        memory > xmaxsize
+        seq > @
+          seq
+            seq
+              (((unsupported)) 0)
+              (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            xmaxsize.write ((xsupport).xMAX_Py_ssize_t)
+            xtestformat.write
+              [xformatstr xargs xoutput xlimit xoverflowok]
+                memory > xresult
+                seq > @
+                  (((unsupported)) 0)
+                    (xverbose).if
+                      (xoutput).if
+                        (((unsupported)) ((xprint)) (((("{!a} % {!a} =? {!a} ...".xformat)) ((xformatstr)) ((xargs)) ((xoutput)))) (" "))
+                        (((unsupported)) ((xprint)) (((("{!a} % {!a} works? ...".xformat)) ((xformatstr)) ((xargs)))) (" "))
+                    (((unsupported)) ((xOverflowError)))
+                      xresult.write ((xformatstr).mod (xargs))
+                      seq
+                        ((xoverflowok).not).if
+                          (((unsupported)) 0)
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)) ("overflow (this is fine)"))
+                      (((xoutput).and (((unsupported)) ((xlimit)) ("None: is there a None literal in the EO language?"))).and ((xresult).neq (xoutput))).if
+                        seq
+                          (xverbose).if
+                            bogusForceDataize.write (((xprint)) ("no"))
+                          (((unsupported)) ((((xAssertionError)) (("%r %% %r == %r != %r".mod (((unsupported)) ((xformatstr)) ((xargs)) ((xresult)) ((xoutput))))))))
+                        (((xoutput).and (((unsupported)) ((xlimit)) ("None: is there a None literal in the EO language?"))).and (((((xlen)) ((xresult))).neq (((xlen)) ((xoutput)))).or ((((unsupported)) ((xresult)) ((((unsupported)) ((xlimit))))).neq (((unsupported)) ((xoutput)) ((((unsupported)) ((xlimit)))))))).if
+                          seq
+                            (xverbose).if
+                              bogusForceDataize.write (((xprint)) ("no"))
+                            bogusForceDataize.write (((xprint)) (("%s %% %s == %s != %s".mod (((unsupported)) ((((xrepr)) ((xformatstr)))) ((((xrepr)) ((xargs)))) ((((xrepr)) ((xresult)))) ((((xrepr)) ((xoutput))))))))
+                          (xverbose).if
+                            bogusForceDataize.write (((xprint)) ("yes"))
+            xtestcommon.write
+              [xformatstr xargs xoutput xlimit xoverflowok]
+                memory > xb_args
+                memory > xba_format
+                memory > xb_format
+                memory > xba_output
+                memory > xb_output
+                seq > @
+                  (((unsupported)) 0)
+                    (((xisinstance)) ((xformatstr)) ((xstr))).if
+                      seq
+                        bogusForceDataize.write (((xtestformat)) ((xformatstr)) ((xargs)) ((xoutput)) ((xlimit)) ((xoverflowok)))
+                        xb_format.write ((((xformatstr).xencode)) ("ascii"))
+                      xb_format.write (xformatstr)
+                    xba_format.write (((xbytearray)) ((xb_format)))
+                    xb_args.write (((unsupported)) 0)
+                    ((((xisinstance)) ((xargs)) ((xtuple))).not).if
+                      xargs.write (((unsupported)) ((xargs)))
+                    xb_args.write (((xtuple)) ((xargs)))
+                    (((unsupported)) ((xoutput)) ("None: is there a None literal in the EO language?")).if
+                      (((unsupported)) ((xb_output)) ((xba_output)) ("None: is there a None literal in the EO language?"))
+                      seq
+                        (((xisinstance)) ((xoutput)) ((xstr))).if
+                          xb_output.write ((((xoutput).xencode)) ("ascii"))
+                          xb_output.write (xoutput)
+                        xba_output.write (((xbytearray)) ((xb_output)))
+                    bogusForceDataize.write (((xtestformat)) ((xb_format)) ((xb_args)) ((xb_output)) ((xlimit)) ((xoverflowok)))
+                    bogusForceDataize.write (((xtestformat)) ((xba_format)) ((xb_args)) ((xba_output)) ((xlimit)) ((xoverflowok)))
+            xtest_exc.write
+              [xformatstr xargs xexception xexcmsg]
+                seq > @
+                  (((unsupported)) ((xexception)))
+                    bogusForceDataize.write (((xtestformat)) ((xformatstr)) ((xargs)))
+                    ((((xstr)) ((xexc))).eq (xexcmsg)).if
+                      (xverbose).if
+                        bogusForceDataize.write (((xprint)) ("yes"))
+                      seq
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)) ("no"))
+                        bogusForceDataize.write (((xprint)) ("Unexpected ") ((xexception)) (":") ((((xrepr)) ((((xstr)) ((xexc)))))))
+                    seq
+                      (xverbose).if
+                        bogusForceDataize.write (((xprint)) ("no"))
+                      bogusForceDataize.write (((xprint)) ("Unexpected exception"))
+                      (((unsupported)) 0)
+                    (((unsupported)) ((((xTestFailed)) (("did not get expected exception: %s".mod (xexcmsg))))))
+            xtest_exc_common.write
+              [xformatstr xargs xexception xexcmsg]
+                seq > @
+                  seq
+                    bogusForceDataize.write (((xtest_exc)) ((xformatstr)) ((xargs)) ((xexception)) ((xexcmsg)))
+                    bogusForceDataize.write (((xtest_exc)) (((((xformatstr).xencode)) ("ascii"))) ((xargs)) ((xexception)) ((xexcmsg)))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xtest_common_format.write
+                  [xself]
+                    memory > xbig
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xtestcommon)) ("%%") ((((unsupported)) 0)) ("%"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.1d") ((((unsupported)) (1))) ("1"))
+                        (((unsupported)) ((xtestcommon)) ("%.*d") ((((unsupported)) (((xsys).xmaxsize)) (1))) (TRUE))
+                        (((unsupported)) ((xtestcommon)) ("%.100d") ((((unsupported)) (1))) ("0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001") (TRUE))
+                        (((unsupported)) ((xtestcommon)) ("%#.117x") ((((unsupported)) (1))) ("0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001") (TRUE))
+                        (((unsupported)) ((xtestcommon)) ("%#.118x") ((((unsupported)) (1))) ("0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001") (TRUE))
+                        bogusForceDataize.write (((xtestcommon)) ("%f") ((((unsupported)) (1.0))) ("1.000000"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.*g") ((((unsupported)) (109) ((((((unsupported)) 0).neg).div (((unsupported)) 0))))))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.*g") ((((unsupported)) (110) ((((((unsupported)) 0).neg).div (((unsupported)) 0))))))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.*g") ((((unsupported)) (110) ((((((unsupported)) 0).neg).div (((unsupported)) 0))))))
+                        bogusForceDataize.write (((xtestcommon)) ("%12.*f") ((((unsupported)) (123456) (1.0))))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.*g") ((((unsupported)) (110) ((((((unsupported)) 0).neg).div (((unsupported)) 0))))))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.*G") ((((unsupported)) (110) ((((((unsupported)) 0).neg).div (((unsupported)) 0))))))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.*f") ((((unsupported)) (110) ((((((unsupported)) 0).neg).div (((unsupported)) 0))))))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.*F") ((((unsupported)) (110) ((((((unsupported)) 0).neg).div (((unsupported)) 0))))))
+                        bogusForceDataize.write (((xtestcommon)) ("%x") (10) ("a"))
+                        bogusForceDataize.write (((xtestcommon)) ("%x") ((((unsupported)) 0)) ("174876e800"))
+                        bogusForceDataize.write (((xtestcommon)) ("%o") (10) ("12"))
+                        bogusForceDataize.write (((xtestcommon)) ("%o") ((((unsupported)) 0)) ("1351035564000"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") (10) ("10"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") ((((unsupported)) 0)) ("100000000000"))
+                        xbig.write (((unsupported)) 0)
+                        bogusForceDataize.write (((xtestcommon)) ("%d") ((xbig)) ("123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") (((xbig).neg)) ("-123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%5d") (((xbig).neg)) ("-123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%31d") (((xbig).neg)) ("-123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%32d") (((xbig).neg)) (" -123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-32d") (((xbig).neg)) ("-123456789012345678901234567890 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%032d") (((xbig).neg)) ("-0123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-032d") (((xbig).neg)) ("-123456789012345678901234567890 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%034d") (((xbig).neg)) ("-000123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%034d") ((xbig)) ("0000123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%0+34d") ((xbig)) ("+000123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%+34d") ((xbig)) ("   +123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%34d") ((xbig)) ("    123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.2d") ((xbig)) ("123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.30d") ((xbig)) ("123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.31d") ((xbig)) ("0123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%32.31d") ((xbig)) (" 0123456789012345678901234567890"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") ((((xfloat)) ((xbig)))) ("123456________________________") (6))
+                        xbig.write (((unsupported)) 0)
+                        bogusForceDataize.write (((xtestcommon)) ("%x") ((xbig)) ("1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%x") (((xbig).neg)) ("-1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%5x") (((xbig).neg)) ("-1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%22x") (((xbig).neg)) ("-1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%23x") (((xbig).neg)) (" -1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-23x") (((xbig).neg)) ("-1234567890abcdef12345 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%023x") (((xbig).neg)) ("-01234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-023x") (((xbig).neg)) ("-1234567890abcdef12345 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%025x") (((xbig).neg)) ("-0001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%025x") ((xbig)) ("00001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%0+25x") ((xbig)) ("+0001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%+25x") ((xbig)) ("   +1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%25x") ((xbig)) ("    1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.2x") ((xbig)) ("1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.21x") ((xbig)) ("1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.22x") ((xbig)) ("01234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%23.22x") ((xbig)) (" 01234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-23.22x") ((xbig)) ("01234567890abcdef12345 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%X") ((xbig)) ("1234567890ABCDEF12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#X") ((xbig)) ("0X1234567890ABCDEF12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#x") ((xbig)) ("0x1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#x") (((xbig).neg)) ("-0x1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#27x") ((xbig)) ("    0x1234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#-27x") ((xbig)) ("0x1234567890abcdef12345    "))
+                        bogusForceDataize.write (((xtestcommon)) ("%#027x") ((xbig)) ("0x00001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.23x") ((xbig)) ("0x001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.23x") (((xbig).neg)) ("-0x001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#27.23x") ((xbig)) ("  0x001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#-27.23x") ((xbig)) ("0x001234567890abcdef12345  "))
+                        bogusForceDataize.write (((xtestcommon)) ("%#027.23x") ((xbig)) ("0x00001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#+.23x") ((xbig)) ("+0x001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%# .23x") ((xbig)) (" 0x001234567890abcdef12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#+.23X") ((xbig)) ("+0X001234567890ABCDEF12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#+027.23X") ((xbig)) ("+0X0001234567890ABCDEF12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%# 027.23X") ((xbig)) (" 0X0001234567890ABCDEF12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#+27.23X") ((xbig)) (" +0X001234567890ABCDEF12345"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#-+27.23x") ((xbig)) ("+0x001234567890abcdef12345 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%#- 27.23x") ((xbig)) (" 0x001234567890abcdef12345 "))
+                        xbig.write (((unsupported)) 0)
+                        bogusForceDataize.write (((xtestcommon)) ("%o") ((xbig)) ("12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%o") (((xbig).neg)) ("-12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%5o") (((xbig).neg)) ("-12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%33o") (((xbig).neg)) ("-12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%34o") (((xbig).neg)) (" -12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-34o") (((xbig).neg)) ("-12345670123456701234567012345670 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%034o") (((xbig).neg)) ("-012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-034o") (((xbig).neg)) ("-12345670123456701234567012345670 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%036o") (((xbig).neg)) ("-00012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%036o") ((xbig)) ("000012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%0+36o") ((xbig)) ("+00012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%+36o") ((xbig)) ("   +12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%36o") ((xbig)) ("    12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.2o") ((xbig)) ("12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.32o") ((xbig)) ("12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.33o") ((xbig)) ("012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%34.33o") ((xbig)) (" 012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-34.33o") ((xbig)) ("012345670123456701234567012345670 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%o") ((xbig)) ("12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#o") ((xbig)) ("0o12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#o") (((xbig).neg)) ("-0o12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#38o") ((xbig)) ("    0o12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#-38o") ((xbig)) ("0o12345670123456701234567012345670    "))
+                        bogusForceDataize.write (((xtestcommon)) ("%#038o") ((xbig)) ("0o000012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.34o") ((xbig)) ("0o0012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.34o") (((xbig).neg)) ("-0o0012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#38.34o") ((xbig)) ("  0o0012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#-38.34o") ((xbig)) ("0o0012345670123456701234567012345670  "))
+                        bogusForceDataize.write (((xtestcommon)) ("%#038.34o") ((xbig)) ("0o000012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#+.34o") ((xbig)) ("+0o0012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%# .34o") ((xbig)) (" 0o0012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#+38.34o") ((xbig)) (" +0o0012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#-+38.34o") ((xbig)) ("+0o0012345670123456701234567012345670 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%#- 38.34o") ((xbig)) (" 0o0012345670123456701234567012345670 "))
+                        bogusForceDataize.write (((xtestcommon)) ("%#+038.34o") ((xbig)) ("+0o00012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%# 038.34o") ((xbig)) (" 0o00012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%.33o") ((xbig)) ("012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.33o") ((xbig)) ("0o012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#.32o") ((xbig)) ("0o12345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%035.33o") ((xbig)) ("00012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%0#35.33o") ((xbig)) ("0o012345670123456701234567012345670"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") (42) ("42"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") ((42.neg)) ("-42"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") (42.0) ("42"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#x") (1) ("0x1"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#X") (1) ("0X1"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#o") (1) ("0o1"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#o") (0) ("0o0"))
+                        bogusForceDataize.write (((xtestcommon)) ("%o") (0) ("0"))
+                        bogusForceDataize.write (((xtestcommon)) ("%d") (0) ("0"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#x") (0) ("0x0"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#X") (0) ("0X0"))
+                        bogusForceDataize.write (((xtestcommon)) ("%x") (66) ("42"))
+                        bogusForceDataize.write (((xtestcommon)) ("%x") ((66.neg)) ("-42"))
+                        bogusForceDataize.write (((xtestcommon)) ("%o") (34) ("42"))
+                        bogusForceDataize.write (((xtestcommon)) ("%o") ((34.neg)) ("-42"))
+                        bogusForceDataize.write (((xtestcommon)) ("%g") (1.1) ("1.1"))
+                        bogusForceDataize.write (((xtestcommon)) ("%#g") (1.1) ("1.10000"))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)) ("Testing exceptions"))
+                        bogusForceDataize.write (((xtest_exc_common)) ("%") ((((unsupported)) 0)) ((xValueError)) ("incomplete format"))
+                        bogusForceDataize.write (((xtest_exc_common)) ("% %s") (1) ((xValueError)) ("unsupported format character '%' (0x25) at index 2"))
+                        bogusForceDataize.write (((xtest_exc_common)) ("%d") ("1") ((xTypeError)) ("%d format: a number is required, not str"))
+                        bogusForceDataize.write (((xtest_exc_common)) ("%d") ("1") ((xTypeError)) ("%d format: a number is required, not bytes"))
+                        bogusForceDataize.write (((xtest_exc_common)) ("%x") ("1") ((xTypeError)) ("%x format: an integer is required, not str"))
+                        bogusForceDataize.write (((xtest_exc_common)) ("%x") (3.14) ((xTypeError)) ("%x format: an integer is required, not float"))
+                xtest_str_format.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xtestformat)) ("%r") ("u0378") ((((unsupported)) 0)))
+                        bogusForceDataize.write (((xtestformat)) ("%a") ("u0378") ((((unsupported)) 0)))
+                        bogusForceDataize.write (((xtestformat)) ("%r") ("u0374") ("'u0374'"))
+                        bogusForceDataize.write (((xtestformat)) ("%a") ("u0374") ((((unsupported)) 0)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)) ("Testing exceptions"))
+                        bogusForceDataize.write (((xtest_exc)) ("abc %b") (1) ((xValueError)) ("unsupported format character 'b' (0x62) at index 5"))
+                        bogusForceDataize.write (((xtest_exc)) ("%g") ("1") ((xTypeError)) ("must be real number, not str"))
+                        bogusForceDataize.write (((xtest_exc)) ("no format") ("1") ((xTypeError)) ("not all arguments converted during string formatting"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ((1.neg)) ((xOverflowError)) ("%c arg not in range(0x110000)"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ((((xsys).xmaxunicode).add 1)) ((xOverflowError)) ("%c arg not in range(0x110000)"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") (3.14) ((xTypeError)) ("%c requires int or char"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ("ab") ((xTypeError)) ("%c requires int or char"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ("x") ((xTypeError)) ("%c requires int or char"))
+                        ((xmaxsize).eq ((((unsupported)) (2) (31)).sub 1)).if
+                          (((unsupported)) ((xMemoryError)))
+                            unsupported
+                            (((unsupported)) ((((xTestFailed)) ("\"%*d\"%(maxsize, -127) should fail"))))
+                xtest_bytes_and_bytearray_format.write
+                  [xself]
+                    memory > x__bytes__
+                    memory > xfb
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xtestcommon)) ("%c") (7) ("x07"))
+                        bogusForceDataize.write (((xtestcommon)) ("%c") ("Z") ("Z"))
+                        bogusForceDataize.write (((xtestcommon)) ("%c") ((((xbytearray)) ("Z"))) ("Z"))
+                        bogusForceDataize.write (((xtestcommon)) ("%5c") (65) ("    A"))
+                        bogusForceDataize.write (((xtestcommon)) ("%-5c") (65) ("A    "))
+                        (((unsupported)) ((xobject)))
+                          x__bytes__.write
+                            [xself]
+                              seq > @
+                                (((unsupported)) ("123"))
+                        xfb.write (((xFakeBytes)) 0)
+                        bogusForceDataize.write (((xtestcommon)) ("%b") ("abc") ("abc"))
+                        bogusForceDataize.write (((xtestcommon)) ("%b") ((((xbytearray)) ("def"))) ("def"))
+                        bogusForceDataize.write (((xtestcommon)) ("%b") ((xfb)) ("123"))
+                        bogusForceDataize.write (((xtestcommon)) ("%b") ((((xmemoryview)) ("abc"))) ("abc"))
+                        bogusForceDataize.write (((xtestcommon)) ("%s") ("abc") ("abc"))
+                        bogusForceDataize.write (((xtestcommon)) ("%s") ((((xbytearray)) ("def"))) ("def"))
+                        bogusForceDataize.write (((xtestcommon)) ("%s") ((xfb)) ("123"))
+                        bogusForceDataize.write (((xtestcommon)) ("%s") ((((xmemoryview)) ("abc"))) ("abc"))
+                        bogusForceDataize.write (((xtestcommon)) ("%a") (3.14) ("3.14"))
+                        bogusForceDataize.write (((xtestcommon)) ("%a") ("ghi") ("b'ghi'"))
+                        bogusForceDataize.write (((xtestcommon)) ("%a") ("jkl") ("'jkl'"))
+                        bogusForceDataize.write (((xtestcommon)) ("%a") ("u0544") ((((unsupported)) 0)))
+                        bogusForceDataize.write (((xtestcommon)) ("%r") (3.14) ("3.14"))
+                        bogusForceDataize.write (((xtestcommon)) ("%r") ("ghi") ("b'ghi'"))
+                        bogusForceDataize.write (((xtestcommon)) ("%r") ("jkl") ("'jkl'"))
+                        bogusForceDataize.write (((xtestcommon)) ("%r") ("u0544") ((((unsupported)) 0)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)) ("Testing exceptions"))
+                        bogusForceDataize.write (((xtest_exc)) ("%g") ("1") ((xTypeError)) ("float argument required, not str"))
+                        bogusForceDataize.write (((xtest_exc)) ("%g") ("1") ((xTypeError)) ("float argument required, not bytes"))
+                        bogusForceDataize.write (((xtest_exc)) ("no format") (7) ((xTypeError)) ("not all arguments converted during bytes formatting"))
+                        bogusForceDataize.write (((xtest_exc)) ("no format") ("1") ((xTypeError)) ("not all arguments converted during bytes formatting"))
+                        bogusForceDataize.write (((xtest_exc)) ("no format") ((((xbytearray)) ("1"))) ((xTypeError)) ("not all arguments converted during bytes formatting"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ((1.neg)) ((xOverflowError)) ("%c arg not in range(256)"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") (256) ((xOverflowError)) ("%c arg not in range(256)"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ((((unsupported)) (2) (128))) ((xOverflowError)) ("%c arg not in range(256)"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ("Za") ((xTypeError)) ("%c requires an integer in range(256) or a single byte"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") ("Y") ((xTypeError)) ("%c requires an integer in range(256) or a single byte"))
+                        bogusForceDataize.write (((xtest_exc)) ("%c") (3.14) ((xTypeError)) ("%c requires an integer in range(256) or a single byte"))
+                        bogusForceDataize.write (((xtest_exc)) ("%b") ("Xc") ((xTypeError)) ("%b requires a bytes-like object, or an object that implements __bytes__, not 'str'"))
+                        bogusForceDataize.write (((xtest_exc)) ("%s") ("Wd") ((xTypeError)) ("%b requires a bytes-like object, or an object that implements __bytes__, not 'str'"))
+                        ((xmaxsize).eq ((((unsupported)) (2) (31)).sub 1)).if
+                          (((unsupported)) ((xMemoryError)))
+                            unsupported
+                            (((unsupported)) ((((xTestFailed)) ("\"%*d\"%(maxsize, -127) should fail"))))
+                xtest_nul.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xtestcommon)) ("a0b") ((((unsupported)) 0)) ("a0b"))
+                        bogusForceDataize.write (((xtestcommon)) ("a%cb") ((((unsupported)) (0))) ("a0b"))
+                        bogusForceDataize.write (((xtestformat)) ("a%sb") ((((unsupported)) ("c0d"))) ("ac0db"))
+                        bogusForceDataize.write (((xtestcommon)) ("a%sb") ((((unsupported)) ("c0d"))) ("ac0db"))
+                xtest_non_ascii.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xtestformat)) ("u20ac=%f") ((((unsupported)) (1.0))) ("u20ac=1.000000"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ("abc") ("u2007<5"))) ("abcu2007u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) (123) ("u2007<5"))) ("123u2007u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) (12.3) ("u2007<6"))) ("12.3u2007u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((((unsupported)) 0)) ("u2007<4"))) ("0ju2007u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((1.add (((unsupported)) 0))) ("u2007<8"))) ("(1+2j)u2007u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ("abc") ("u2007>5"))) ("u2007u2007abc"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) (123) ("u2007>5"))) ("u2007u2007123"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) (12.3) ("u2007>6"))) ("u2007u200712.3"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((1.add (((unsupported)) 0))) ("u2007>8"))) ("u2007u2007(1+2j)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((((unsupported)) 0)) ("u2007>4"))) ("u2007u20070j"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ("abc") ("u2007^5"))) ("u2007abcu2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) (123) ("u2007^5"))) ("u2007123u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) (12.3) ("u2007^6"))) ("u200712.3u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((1.add (((unsupported)) 0))) ("u2007^8"))) ("u2007(1+2j)u2007"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((((unsupported)) 0)) ("u2007^4"))) ("u20070ju2007"))
+                xtest_locale.write
+                  [xself]
+                    memory > xoldloc
+                    memory > xpoint
+                    memory > xtext
+                    memory > xgrouping
+                    memory > xsep
+                    memory > xlocaleconv
+                    seq > @
+                      seq
+                        (((unsupported)) (((xlocale).xError)))
+                          seq
+                            xoldloc.write ((((xlocale).xsetlocale)) (((xlocale).xLC_ALL)))
+                            bogusForceDataize.write ((((xlocale).xsetlocale)) (((xlocale).xLC_ALL)) (""))
+                          bogusForceDataize.write ((((xself).xskipTest)) (((("Cannot set locale: {}".xformat)) ((xerr)))))
+                        (((unsupported)) 0)
+                          seq
+                            xlocaleconv.write ((((xlocale).xlocaleconv)) 0)
+                            xsep.write (((unsupported)) ((xlocaleconv)) ("thousands_sep"))
+                            xpoint.write (((unsupported)) ((xlocaleconv)) ("decimal_point"))
+                            xgrouping.write (((unsupported)) ((xlocaleconv)) ("grouping"))
+                            xtext.write (((xformat)) (123456789) ("n"))
+                            (xgrouping).if
+                              bogusForceDataize.write ((((xself).xassertIn)) ((xsep)) ((xtext)))
+                            bogusForceDataize.write ((((xself).xassertEqual)) (((((xtext).xreplace)) ((xsep)) (""))) ("123456789"))
+                            xtext.write (((xformat)) (1234.5) ("n"))
+                            (xgrouping).if
+                              bogusForceDataize.write ((((xself).xassertIn)) ((xsep)) ((xtext)))
+                            bogusForceDataize.write ((((xself).xassertIn)) ((xpoint)) ((xtext)))
+                            bogusForceDataize.write ((((xself).xassertEqual)) (((((xtext).xreplace)) ((xsep)) (""))) ((("1234".add (xpoint)).add "5")))
+                          bogusForceDataize.write ((((xlocale).xsetlocale)) (((xlocale).xLC_ALL)) ((xoldloc)))
+                xtest_optimisations.write
+                  [xself]
+                    memory > xtext
+                    seq > @
+                      (((unsupported)) 0)
+                        xtext.write "abcde"
+                        bogusForceDataize.write ((((xself).xassertIs)) (("%s".mod (xtext))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (("%.5s".mod (xtext))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (("%.10s".mod (xtext))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (("%1s".mod (xtext))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (("%5s".mod (xtext))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((("{0}".xformat)) ((xtext)))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((("{0:s}".xformat)) ((xtext)))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((("{0:.5s}".xformat)) ((xtext)))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((("{0:.10s}".xformat)) ((xtext)))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((("{0:1s}".xformat)) ((xtext)))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((("{0:5s}".xformat)) ((xtext)))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((xtext).mod (((unsupported)) 0))) ((xtext)))
+                        bogusForceDataize.write ((((xself).xassertIs)) (((((xtext).xformat)) 0)) ((xtext)))
+                xtest_precision.write
+                  [xself]
+                    memory > xc
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write 1.2
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((xf)) (".0f"))) ("1"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((xf)) (".3f"))) ("1.200"))
+                        (((unsupported)) (((((xself).xassertRaises)) ((xValueError)))) ((xcm)))
+                          bogusForceDataize.write (((xformat)) ((xf)) ((".%sf".mod (((xsys).xmaxsize).add 1))))
+                        xc.write (((xcomplex)) ((xf)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((xc)) (".0f"))) ("1+0j"))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xformat)) ((xc)) (".3f"))) ("1.200+0.000j"))
+                        (((unsupported)) (((((xself).xassertRaises)) ((xValueError)))) ((xcm)))
+                          bogusForceDataize.write (((xformat)) ((xc)) ((".%sf".mod (((xsys).xmaxsize).add 1))))
+                xtest_precision_c_limits.write
+                  [xself]
+                    memory > xc
+                    memory > xf
+                    seq > @
+                      (((unsupported)) 0)
+                        (((unsupported)) 0)
+                        xf.write 1.2
+                        (((unsupported)) (((((xself).xassertRaises)) ((xValueError)))) ((xcm)))
+                          bogusForceDataize.write (((xformat)) ((xf)) ((".%sf".mod ((xINT_MAX).add 1))))
+                        xc.write (((xcomplex)) ((xf)))
+                        (((unsupported)) (((((xself).xassertRaises)) ((xValueError)))) ((xcm)))
+                          bogusForceDataize.write (((xformat)) ((xc)) ((".%sf".mod ((xINT_MAX).add 1))))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

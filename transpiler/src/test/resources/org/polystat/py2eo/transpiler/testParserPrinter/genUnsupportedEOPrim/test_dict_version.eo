@@ -1,0 +1,218 @@
+memory > xAlwaysEqual
+memory > xKeyError
+memory > xkw
+memory > xset
+memory > xDict
+memory > xsupport
+memory > xDictVersionTests
+memory > xargs
+memory > xunittest
+memory > xobject
+memory > xdict
+memory > x__name__
+[] > test_dict_version
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnew_dict
+        memory > xtest_constructor
+        memory > x_testcapi
+        memory > xtest_pop
+        memory > xsetUp
+        memory > xtest_copy
+        memory > xtest_setitem_equal
+        memory > xcheck_version_dont_change
+        memory > xtest_setitem_same_value
+        memory > xcheck_version_changed
+        memory > xtest_delitem
+        memory > xtest_setdefault
+        memory > xcheck_version_unique
+        memory > xtest_update
+        memory > xtest_clear
+        memory > xtest_setitem
+        memory > xtest_popitem
+        memory > xtype2test
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            x_testcapi.write ((((xsupport).ximport_module)) ("_testcapi"))
+            (((unsupported)) (((xunittest).xTestCase)))
+              seq
+                xtype2test.write (xdict)
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)) (((xself).xseen_versions)) ((((xset)) 0)))
+                        (((unsupported)) (((xself).xdict)) ("None: is there a None literal in the EO language?"))
+                xcheck_version_unique.write
+                  [xself xmydict]
+                    memory > xversion
+                    seq > @
+                      seq
+                        xversion.write ((((x_testcapi).xdict_get_version)) ((xmydict)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)) ((xversion)) (((xself).xseen_versions)))
+                        bogusForceDataize.write (((((xself).xseen_versions).xadd)) ((xversion)))
+                xcheck_version_changed.write
+                  [xself xmydict xmethod]
+                    memory > xresult
+                    seq > @
+                      (((unsupported)) 0)
+                        xresult.write (((xmethod)) ((((unsupported)) ((xargs)))) ((((unsupported)) ((xkw)))))
+                        bogusForceDataize.write ((((xself).xcheck_version_unique)) ((xmydict)))
+                        (((unsupported)) ((xresult)))
+                xcheck_version_dont_change.write
+                  [xself xmydict xmethod]
+                    memory > xversion1
+                    memory > xresult
+                    memory > xversion2
+                    seq > @
+                      (((unsupported)) 0)
+                        xversion1.write ((((x_testcapi).xdict_get_version)) ((xmydict)))
+                        bogusForceDataize.write (((((xself).xseen_versions).xadd)) ((xversion1)))
+                        xresult.write (((xmethod)) ((((unsupported)) ((xargs)))) ((((unsupported)) ((xkw)))))
+                        xversion2.write ((((x_testcapi).xdict_get_version)) ((xmydict)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xversion2)) ((xversion1)) ("version changed"))
+                        (((unsupported)) ((xresult)))
+                xnew_dict.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      (((unsupported)) 0)
+                        xd.write ((((xself).xtype2test)) ((((unsupported)) ((xargs)))) ((((unsupported)) ((xkw)))))
+                        bogusForceDataize.write ((((xself).xcheck_version_unique)) ((xd)))
+                        (((unsupported)) ((xd)))
+                xtest_constructor.write
+                  [xself]
+                    memory > xempty2
+                    memory > xnonempty2
+                    memory > xempty3
+                    memory > xnonempty1
+                    memory > xempty1
+                    seq > @
+                      seq
+                        xempty1.write ((((xself).xnew_dict)) 0)
+                        xempty2.write ((((xself).xnew_dict)) 0)
+                        xempty3.write ((((xself).xnew_dict)) 0)
+                        xnonempty1.write (((unsupported)) (((xself).xnew_dict)) ("x"))
+                        xnonempty2.write (((unsupported)) (((xself).xnew_dict)) ("x") ("y"))
+                xtest_copy.write
+                  [xself]
+                    memory > xd
+                    memory > xd2
+                    seq > @
+                      seq
+                        xd.write (((unsupported)) (((xself).xnew_dict)) (1) (2))
+                        xd2.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xd).xcopy)))
+                        bogusForceDataize.write ((((xself).xcheck_version_unique)) ((xd2)))
+                xtest_setitem.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write ((((xself).xnew_dict)) 0)
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__setitem__)) ("x") ("x"))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__setitem__)) ("y") ("y"))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__setitem__)) ("x") (1))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__setitem__)) ("y") (2))
+                xtest_setitem_same_value.write
+                  [xself]
+                    memory > xd
+                    memory > xvalue
+                    memory > xd2
+                    seq > @
+                      seq
+                        xvalue.write (((xobject)) 0)
+                        xd.write ((((xself).xnew_dict)) 0)
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__setitem__)) ("key") ((xvalue)))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xd).x__setitem__)) ("key") ((xvalue)))
+                        (((unsupported)) (((xself).xcheck_version_dont_change)) ((xd)) (((xd).xupdate)) ((xvalue)))
+                        xd2.write (((unsupported)) (((xself).xnew_dict)) ((xvalue)))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xd).xupdate)) ((xd2)))
+                xtest_setitem_equal.write
+                  [xself]
+                    memory > xd
+                    memory > x__eq__
+                    memory > xd2
+                    memory > xvalue1
+                    memory > xvalue2
+                    seq > @
+                      seq
+                        (((unsupported)) 0)
+                          x__eq__.write
+                            [xself xother]
+                              seq > @
+                                (((unsupported)) (TRUE))
+                        xvalue1.write (((xAlwaysEqual)) 0)
+                        xvalue2.write (((xAlwaysEqual)) 0)
+                        bogusForceDataize.write ((((xself).xassertTrue)) (((xvalue1).eq (xvalue2))))
+                        bogusForceDataize.write ((((xself).xassertFalse)) (((xvalue1).neq (xvalue2))))
+                        xd.write ((((xself).xnew_dict)) 0)
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__setitem__)) ("key") ((xvalue1)))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__setitem__)) ("key") ((xvalue2)))
+                        (((unsupported)) (((xself).xcheck_version_changed)) ((xd)) (((xd).xupdate)) ((xvalue1)))
+                        xd2.write (((unsupported)) (((xself).xnew_dict)) ((xvalue2)))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).xupdate)) ((xd2)))
+                xtest_setdefault.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write ((((xself).xnew_dict)) 0)
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).xsetdefault)) ("key") ("value1"))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xd).xsetdefault)) ("key") ("value2"))
+                xtest_delitem.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((unsupported)) (((xself).xnew_dict)) ("value"))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).x__delitem__)) ("key"))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xself).xassertRaises)) ((xKeyError)) (((xd).x__delitem__)) ("key"))
+                xtest_pop.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((unsupported)) (((xself).xnew_dict)) ("value"))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).xpop)) ("key"))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xself).xassertRaises)) ((xKeyError)) (((xd).xpop)) ("key"))
+                xtest_popitem.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((unsupported)) (((xself).xnew_dict)) ("value"))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).xpopitem)))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xself).xassertRaises)) ((xKeyError)) (((xd).xpopitem)))
+                xtest_update.write
+                  [xself]
+                    memory > xd
+                    memory > xd2
+                    seq > @
+                      seq
+                        xd.write (((unsupported)) (((xself).xnew_dict)) ("value"))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xd).xupdate)))
+                        (((unsupported)) (((xself).xcheck_version_changed)) ((xd)) (((xd).xupdate)) ("new value"))
+                        xd2.write (((unsupported)) (((xself).xnew_dict)) ("value 3"))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).xupdate)) ((xd2)))
+                xtest_clear.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((unsupported)) (((xself).xnew_dict)) ("value"))
+                        bogusForceDataize.write ((((xself).xcheck_version_changed)) ((xd)) (((xd).xclear)))
+                        bogusForceDataize.write ((((xself).xcheck_version_dont_change)) ((xd)) (((xd).xclear)))
+            (((unsupported)) ((xdict)))
+            (((unsupported)) ((xDictVersionTests)))
+              xtype2test.write (xDict)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)

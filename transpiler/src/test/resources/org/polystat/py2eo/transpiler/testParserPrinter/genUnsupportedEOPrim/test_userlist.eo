@@ -1,0 +1,135 @@
+memory > xlist
+memory > xrange
+memory > xT
+memory > xtype
+memory > xi
+memory > xsuper
+memory > xunittest
+memory > xnext
+memory > xj
+memory > x__name__
+memory > xlist_tests
+memory > xstr
+memory > xiter
+memory > xUserList
+[] > test_userlist
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_mixedcmp
+        memory > xtest_getslice
+        memory > xtest_slice_type
+        memory > xtest_getitemoverwriteiter
+        memory > xtest_mixedadd
+        memory > xtest_radd_specials
+        memory > xtest_iadd
+        memory > xtype2test
+        memory > xtest_userlist_copy
+        memory > xtest_add_specials
+        seq > @
+          seq
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) 0)
+            (((unsupported)) (((xlist_tests).xCommonTest)))
+              seq
+                xtype2test.write (xUserList)
+                xtest_getslice.write
+                  [xself]
+                    memory > xl
+                    memory > xu
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)) 0).xtest_getslice)) 0)
+                        xl.write (((unsupported)) (0) (1) (2) (3) (4))
+                        xu.write ((((xself).xtype2test)) ((xl)))
+                        (((unsupported)) ((xi)) ((((xrange)) ((3.neg)) (6))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((xu)) ((((unsupported)) ((xi)))))) ((((unsupported)) ((xl)) ((((unsupported)) ((xi)))))))
+                            bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((xu)) ((((unsupported)) ((xi)))))) ((((unsupported)) ((xl)) ((((unsupported)) ((xi)))))))
+                            (((unsupported)) ((xj)) ((((xrange)) ((3.neg)) (6))))
+                              bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((xu)) ((((unsupported)) ((xi)) ((xj)))))) ((((unsupported)) ((xl)) ((((unsupported)) ((xi)) ((xj)))))))
+                xtest_slice_type.write
+                  [xself]
+                    memory > xl
+                    memory > xu
+                    seq > @
+                      seq
+                        xl.write (((unsupported)) (0) (1) (2) (3) (4))
+                        xu.write (((xUserList)) ((xl)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)) ((((unsupported)) ((xu)) ((((unsupported)) 0)))) (((xu).x__class__)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((unsupported)) ((xu)) ((((unsupported)) 0)))) ((xu)))
+                xtest_add_specials.write
+                  [xself]
+                    memory > xu2
+                    memory > xu
+                    seq > @
+                      seq
+                        xu.write (((xUserList)) ("spam"))
+                        xu2.write ((xu).add "eggs")
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xu2)) ((((xlist)) ("spameggs"))))
+                xtest_radd_specials.write
+                  [xself]
+                    memory > xu2
+                    memory > xu
+                    seq > @
+                      seq
+                        xu.write (((xUserList)) ("eggs"))
+                        xu2.write ("spam".add (xu))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xu2)) ((((xlist)) ("spameggs"))))
+                        xu2.write ((((xu).x__radd__)) ((((xUserList)) ("spam"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xu2)) ((((xlist)) ("spameggs"))))
+                xtest_iadd.write
+                  [xself]
+                    memory > xu
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)) 0).xtest_iadd)) 0)
+                        xu.write (((unsupported)) (0) (1))
+                        (((unsupported)) ((xu)) ((((xUserList)) ((((unsupported)) (0) (1))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xu)) ((((unsupported)) (0) (1) (0) (1))))
+                xtest_mixedcmp.write
+                  [xself]
+                    memory > xu
+                    seq > @
+                      seq
+                        xu.write ((((xself).xtype2test)) ((((unsupported)) (0) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xu)) ((((unsupported)) (0) (1))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)) ((xu)) ((((unsupported)) (0))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)) ((xu)) ((((unsupported)) (0) (2))))
+                xtest_mixedadd.write
+                  [xself]
+                    memory > xu
+                    seq > @
+                      seq
+                        xu.write ((((xself).xtype2test)) ((((unsupported)) (0) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((xu).add (((unsupported)) 0))) ((xu)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) (((xu).add (((unsupported)) (2)))) ((((unsupported)) (0) (1) (2))))
+                xtest_getitemoverwriteiter.write
+                  [xself]
+                    memory > x__getitem__
+                    seq > @
+                      seq
+                        (((unsupported)) (((xself).xtype2test)))
+                          x__getitem__.write
+                            [xself xkey]
+                              seq > @
+                                (((unsupported)) (((((xstr)) ((xkey))).add "!!!")))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xnext)) ((((xiter)) ((((xT)) ((((unsupported)) (1) (2))))))))) ("0!!!"))
+                xtest_userlist_copy.write
+                  [xself]
+                    memory > xv
+                    memory > xu
+                    seq > @
+                      seq
+                        xu.write ((((xself).xtype2test)) ((((unsupported)) (6) (8) (1) (9) (1))))
+                        xv.write ((((xu).xcopy)) 0)
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((xu)) ((xv)))
+                        bogusForceDataize.write ((((xself).xassertEqual)) ((((xtype)) ((xu)))) ((((xtype)) ((xv)))))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)) 0)
