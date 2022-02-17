@@ -34,8 +34,16 @@ This transpiler receives as input data python code. Then received code is simpli
     ```
 - Open command line and move to the folder `Transpiler Test`
 - Run command `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\sample_test.py`
-- Check output .eo file in `Transpiler Test/genCageEO/sample_test.eo`
+- Check output .eo file in `Transpiler Test/genCageEO/sample_test.eo` or in `path_to_output_folder/sample_test.eo` in case of usage `-o` command line parameter
 
+
+#### Command line arguments ####
+| Option  | Action |
+| ------------- | ------------- |
+| `-h,--help`  | Display help information  |
+| `-o`  | path to output .eo file  |
+| `-X,--debug`  | Produce execution debug output  |
+| `-v,--version`  | Display version information  |
 
 #### How to contribute? ####
 - This instruction is for `Ubuntu 20.04`
