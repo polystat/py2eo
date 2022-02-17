@@ -27,12 +27,17 @@ object PrintLinearizedMutableEOWithCage {
   )
 
   // todo: imperative style suddenly
-  object HackName {
+  private object HackName {
     var count : Int = 0
     def apply(): String = {
       count = count + 1
       "tmp" + count
     }
+  }
+
+  def apply(testName : String, st : Statement.T) : Text = {
+    PrintLinearizedMutableEOWithCage.HackName.count = 0 // todo: imperative style suddenly
+    printTest(testName, st)
   }
 
   def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
@@ -158,6 +163,7 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printTest(testName : String, st : Statement.T) : Text = {
+    PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style
     println(s"doing $testName")
     val mkCopy = List(
       "[x] > mkCopy",

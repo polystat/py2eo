@@ -28,11 +28,9 @@ object Validator extends App {
     val mutatedAST = mutation(SimplePass.simplifyIf(Parse(test, db), ns)._1, ns)
     val mutatedPy = PrintPython.print(mutatedAST._1)
 
-    PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style
     val originalEOText = Transpile.transpile(db)(test.getName, readFile(test))
     val fstName = writeFile("before", "mutations", ".eo", originalEOText)
 
-    PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style
     val mutatedEOText = Transpile.transpile(db)(test.getName, mutatedPy)
     val sndName = writeFile("after", "mutations", ".eo", mutatedEOText)
 
