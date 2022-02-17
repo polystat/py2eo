@@ -8,6 +8,9 @@ import org.polystat.py2eo.transpiler.Expression.{
   Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar, Field,
   GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
+import org.polystat.py2eo.transpiler.Statement.{
+  Assign, Break, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite, While
+}
 
 object PrintLinearizedMutableEOWithCage {
 
@@ -40,9 +43,9 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def pe: T => String = printExpr
-  def isFun(f : Statement): Boolean = f match { case _: FuncDef => true case _ => false }
+  def isFun(f : Statement.T): Boolean = f match { case _: FuncDef => true case _ => false }
 
-  def printSt(st : Statement) : Text =
+  def printSt(st : Statement.T) : Text =
     st match {
       case SimpleObject(name, l, _) =>
         ("write." ::
@@ -154,7 +157,7 @@ object PrintLinearizedMutableEOWithCage {
     )
   }
 
-  def printTest(testName : String, st : Statement) : Text = {
+  def printTest(testName : String, st : Statement.T) : Text = {
     println(s"doing $testName")
     val mkCopy = List(
       "[x] > mkCopy",

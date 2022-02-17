@@ -298,55 +298,56 @@ object ArgKind extends Enumeration {
   val Positional, Keyword, PosOrKeyword = Value
 }
 
-sealed trait Statement {
-  val ann : GeneralAnnotation
-}
+object Statement {
+  sealed trait T {
+    val ann: GeneralAnnotation
+  }
 
-import org.polystat.py2eo.transpiler.Expression.{T => ET}
+  import org.polystat.py2eo.transpiler.Expression.{T => ET}
+  case class If(conditioned: List[(ET, T)], eelse: Option[T], ann: GeneralAnnotation) extends T
+  case class IfSimple(cond: ET, yes: T, no: T, ann: GeneralAnnotation) extends T
+  case class While(cond: ET, body: T, eelse: Option[T], ann: GeneralAnnotation) extends T
+  case class For(what: ET, in: ET, body: T, eelse: Option[T], isAsync: Boolean, ann: GeneralAnnotation) extends T
+  case class Suite(l: List[T], ann: GeneralAnnotation) extends T
+  case class AugAssign(op: AugOps.T, lhs: ET, rhs: ET, ann: GeneralAnnotation) extends T
+  case class AnnAssign(lhs: ET, rhsAnn: ET, rhs: Option[ET], ann: GeneralAnnotation) extends T
+  case class Assign(l: List[ET], ann: GeneralAnnotation) extends T
+  case class CreateConst(name: String, value: ET, ann: GeneralAnnotation) extends T
+  case class Pass(ann: GeneralAnnotation) extends T
+  case class Break(ann: GeneralAnnotation) extends T
+  case class Continue(ann: GeneralAnnotation) extends T
+  case class Return(x: Option[ET], ann: GeneralAnnotation) extends T
+  case class Assert(what: ET, param: Option[ET], ann: GeneralAnnotation) extends T {
+    def this(x: ET, ann: GeneralAnnotation) = this(x, None, ann)
+  }
+  case class Raise(e: Option[ET], from: Option[ET], ann: GeneralAnnotation) extends T
+  case class Del(l: ET, ann: GeneralAnnotation) extends T
+  case class Decorators(l: List[ET])
+  case class FuncDef(name: String, args: List[Expression.Parameter], otherPositional: Option[(String, Option[ET])],
+                     otherKeyword: Option[(String, Option[ET])], returnAnnotation: Option[ET], body: T, decorators: Decorators,
+                     accessibleIdents: HashMap[String, (VarScope.T, GeneralAnnotation)], isAsync: Boolean, ann: GeneralAnnotation) extends T
 
-case class If(conditioned : List[(ET, Statement)], eelse : Option[Statement], ann : GeneralAnnotation) extends Statement
-case class IfSimple(cond : ET, yes : Statement, no : Statement, ann : GeneralAnnotation) extends Statement
-case class While(cond : ET, body : Statement, eelse : Option[Statement], ann : GeneralAnnotation) extends Statement
-case class For(what : ET, in : ET, body : Statement, eelse : Option[Statement], isAsync : Boolean, ann : GeneralAnnotation) extends Statement
-case class Suite(l : List[Statement], ann : GeneralAnnotation) extends Statement
-case class AugAssign(op : AugOps.T, lhs : ET, rhs : ET, ann : GeneralAnnotation) extends Statement
-case class AnnAssign(lhs : ET, rhsAnn : ET, rhs : Option[ET], ann : GeneralAnnotation) extends Statement
-case class Assign(l : List[ET], ann : GeneralAnnotation) extends Statement
-case class CreateConst(name : String, value : ET, ann : GeneralAnnotation) extends Statement
-case class Pass(ann : GeneralAnnotation) extends Statement
-case class Break(ann : GeneralAnnotation) extends Statement
-case class Continue(ann : GeneralAnnotation) extends Statement
-case class Return(x : Option[ET], ann : GeneralAnnotation) extends Statement
-case class Assert(what : ET, param : Option[ET], ann : GeneralAnnotation) extends Statement {
-  def this(x : ET, ann : GeneralAnnotation) = this(x, None, ann)
-}
-case class Raise(e : Option[ET], from : Option[ET], ann : GeneralAnnotation) extends Statement
-case class Del(l : ET, ann : GeneralAnnotation) extends Statement
-case class Decorators(l : List[ET])
-case class FuncDef(name : String, args : List[Expression.Parameter], otherPositional : Option[(String, Option[ET])],
-         otherKeyword : Option[(String, Option[ET])], returnAnnotation : Option[ET], body : Statement, decorators: Decorators,
-         accessibleIdents : HashMap[String, (VarScope.T, GeneralAnnotation)], isAsync : Boolean, ann : GeneralAnnotation) extends Statement
+  case class ClassDef(name: String, bases: List[(Option[String], ET)], body: T, decorators: Decorators, ann: GeneralAnnotation) extends T
 
-case class ClassDef(name : String, bases : List[(Option[String], ET)], body : Statement, decorators: Decorators, ann : GeneralAnnotation) extends Statement
+  // this cannot be expressed explicitly in python, but in EO
+  case class SimpleObject(name: String, fields: List[(String, ET)], ann: GeneralAnnotation) extends T
 
-// this cannot be expressed explicitly in python, but in EO
-case class SimpleObject(name : String, fields : List[(String, ET)], ann : GeneralAnnotation) extends Statement
-
-case class NonLocal(l : List[String], ann : GeneralAnnotation) extends Statement
-case class Global(l : List[String], ann : GeneralAnnotation) extends Statement
-case class ImportModule(what : List[String], as : Option[String], ann : GeneralAnnotation) extends Statement
-case class ImportAllSymbols(from : List[String], ann : GeneralAnnotation) extends Statement
-case class ImportSymbol(from : List[String], what : String, as : Option[String], ann : GeneralAnnotation) extends Statement
-case class With(cms : List[(ET, Option[ET])], body : Statement, isAsync : Boolean, ann : GeneralAnnotation) extends Statement
-case class Try(ttry : Statement, excepts : List[(Option[(ET, Option[String])], Statement)],
-               eelse : Option[Statement], ffinally : Option[Statement], ann : GeneralAnnotation) extends Statement
-class Unsupported(original0 : Statement, declareVars0 : List[String],
-                  es0 : List[(Boolean, Expression.T)], sts0 : List[Statement], ann0 : GeneralAnnotation) extends Statement {
-  val original: Statement = original0
-  val declareVars: List[String] = declareVars0
-  val es: List[(Boolean, ET)] = es0
-  val sts: List[Statement] = sts0
-  val ann: GeneralAnnotation = ann0
-  def this(original : Statement, declareVars : List[String], ann : GeneralAnnotation) =
-    this(original, declareVars, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1, ann)
+  case class NonLocal(l: List[String], ann: GeneralAnnotation) extends T
+  case class Global(l: List[String], ann: GeneralAnnotation) extends T
+  case class ImportModule(what: List[String], as: Option[String], ann: GeneralAnnotation) extends T
+  case class ImportAllSymbols(from: List[String], ann: GeneralAnnotation) extends T
+  case class ImportSymbol(from: List[String], what: String, as: Option[String], ann: GeneralAnnotation) extends T
+  case class With(cms: List[(ET, Option[ET])], body: T, isAsync: Boolean, ann: GeneralAnnotation) extends T
+  case class Try(ttry: T, excepts: List[(Option[(ET, Option[String])], T)],
+                 eelse: Option[T], ffinally: Option[T], ann: GeneralAnnotation) extends T
+  class Unsupported(original0: T, declareVars0: List[String],
+                    es0: List[(Boolean, Expression.T)], sts0: List[T], ann0: GeneralAnnotation) extends T {
+    val original: T = original0
+    val declareVars: List[String] = declareVars0
+    val es: List[(Boolean, ET)] = es0
+    val sts: List[T] = sts0
+    val ann: GeneralAnnotation = ann0
+    def this(original: T, declareVars: List[String], ann: GeneralAnnotation) =
+      this(original, declareVars, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1, ann)
+  }
 }

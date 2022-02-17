@@ -10,6 +10,11 @@ import org.polystat.py2eo.transpiler.Expression.{
   LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, Unop, UnsupportedExpr,
   Yield, YieldFrom
 }
+import org.polystat.py2eo.transpiler.Statement.{
+  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
+  If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
+  Unsupported, While, With
+}
 
 object SimpleAnalysis {
 
@@ -59,7 +64,7 @@ object SimpleAnalysis {
     childrenE(e).foldLeft(acc)(f)
   }
 
-  def childrenS(s : Statement) : (List[Statement], List[(Boolean, T)]) = {
+  def childrenS(s : Statement.T) : (List[Statement.T], List[(Boolean, T)]) = {
     def isRhs(e : T) = (false, e)
     s match {
       case SimpleObject(_, fields, _) => (List(), fields.map(x => (false, x._2)))
@@ -92,7 +97,7 @@ object SimpleAnalysis {
     }
   }
 
-  def foldSE[A](f : (A, T) => A, mayVisit : Statement => Boolean)(acc0 : A, s : Statement) : A = {
+  def foldSE[A](f : (A, T) => A, mayVisit : Statement.T => Boolean)(acc0 : A, s : Statement.T) : A = {
     if (mayVisit(s)) {
       val (ls, le) = childrenS(s)
       val acc = le.map(_._2).foldLeft(acc0)(foldEE(f))
@@ -103,7 +108,7 @@ object SimpleAnalysis {
   }
 
   // almost a typical fold, but f may disallow it to visit children of certain nodes
-  def foldSS[A](f : (A, Statement) => (A, Boolean))(acc0 : A, s : Statement) : A = {
+  def foldSS[A](f : (A, Statement.T) => (A, Boolean))(acc0 : A, s : Statement.T) : A = {
     val (acc, procChildren) = f(acc0, s)
     if (!procChildren) acc else {
       val (ls, _) = childrenS(s)
@@ -111,10 +116,10 @@ object SimpleAnalysis {
     }
   }
 
-  private def classifyVariablesAssignedInFunctionBody(args : List[Parameter], body : Statement)
+  private def classifyVariablesAssignedInFunctionBody(args : List[Parameter], body : Statement.T)
   : HashMap[String, (VarScope.T, GeneralAnnotation)] = {
     type H = HashMap[String, (VarScope.T, GeneralAnnotation)]
-    def dontVisitOtherBlocks(s : Statement) : Boolean = s match {
+    def dontVisitOtherBlocks(s : Statement.T) : Boolean = s match {
       case FuncDef(_, _, _, _, _, _, _, _, _, _) | ClassDef(_, _, _, _, _) => false
       case _ => true
     }
@@ -167,7 +172,7 @@ object SimpleAnalysis {
     )
   }
 
-  def computeAccessibleIdents(s : Statement) : Statement = {
+  def computeAccessibleIdents(s : Statement.T) : Statement.T = {
     SimplePass.procStatementGeneral(
       (s, ns) => s match {
         case f : FuncDef => (computeAccessibleIdentsF(HashMap(), f), ns, false)
@@ -176,7 +181,7 @@ object SimpleAnalysis {
     )(s, new SimplePass.Names())._1
   }
 
-  private def assertStatementIsSimplified(acc : Unit, s : Statement) : (Unit, Boolean) = s match {
+  private def assertStatementIsSimplified(acc : Unit, s : Statement.T) : (Unit, Boolean) = s match {
     case
       IfSimple(_, _, _, _) | While(_, _, _, _) | Suite(_, _) | Assign(List(_), _)
       | Return(_, _) | FuncDef(_, _, _, _, _, _, Decorators(List()), _, _, _)
@@ -199,7 +204,7 @@ object SimpleAnalysis {
     case _ => ()
   }
 
-  def checkIsSimplified(s : Statement) : Unit = {
+  def checkIsSimplified(s : Statement.T) : Unit = {
     foldSS(assertStatementIsSimplified)((), s)
     foldSE(assertExpressionIsSimplified, _ => true)((), s)
   }

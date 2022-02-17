@@ -2,16 +2,16 @@ package org.polystat.py2eo.transpiler
 
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
-
 import org.polystat.py2eo.transpiler.Common.TranspilerException
 import org.polystat.py2eo.transpiler.Expression.{CallIndex, Ident}
+import org.polystat.py2eo.transpiler.Statement.{Assert, Decorators, FuncDef, Return, Suite}
 
 object Transpile {
 
   /// [debugPrinter(statement, stageName)]
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
-  def transpile(debugPrinter : (Statement, String) => Unit)(moduleName : String, pythonCode : String) : String = {
+  def transpile(debugPrinter : (Statement.T, String) => Unit)(moduleName : String, pythonCode : String) : String = {
     val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(Parse(pythonCode, debugPrinter), new SimplePass.Names())
     val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y0._1, y0._2)
     val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)

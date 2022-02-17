@@ -55,7 +55,7 @@ object Main {
     }
   }
 
-  def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
+  def debugPrinter(module: File)(s: Statement.T, dirSuffix: String): Unit = {
     writeFile(module, dirSuffix, ".py", PrintPython.print(s))
   }
 

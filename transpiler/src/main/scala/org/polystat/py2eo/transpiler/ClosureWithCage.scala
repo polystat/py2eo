@@ -2,6 +2,7 @@ package org.polystat.py2eo.transpiler
 
 import Expression.{CallIndex, Field, Ident}
 import SimplePass.{Names, procExpr, procStatement}
+import org.polystat.py2eo.transpiler.Statement.{Assign, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite}
 
 import scala.collection.immutable.HashMap
 
@@ -9,7 +10,7 @@ object ClosureWithCage {
 
   val callme = "callme"
 
-  private def closurizeInner(scope : String => (VarScope.T, GeneralAnnotation), st : Statement) : Statement = {
+  private def closurizeInner(scope : String => (VarScope.T, GeneralAnnotation), st : Statement.T) : Statement.T = {
     def pe(lhs : Boolean, e : Expression.T) = {
       val (Left(result), _) = procExpr(
         (_, e, ns) => {
@@ -70,9 +71,9 @@ object ClosureWithCage {
     }
   }
 
-  def closurize(st : Statement) : Statement = closurizeInner(_ => (VarScope.Global, new GeneralAnnotation()), st)
+  def closurize(st : Statement.T) : Statement.T = closurizeInner(_ => (VarScope.Global, new GeneralAnnotation()), st)
 
-  def declassifyOnly(st : Statement, ns : Names) : (Statement, Names) = {
+  def declassifyOnly(st : Statement.T, ns : Names) : (Statement.T, Names) = {
     val st1 = procStatement(SimplePass.unSuite)(st, ns)
     procStatement(
       (st, ns) => st match {
