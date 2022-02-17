@@ -186,7 +186,7 @@ object SimpleAnalysis {
       (acc, true)
     case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.seqOfFields(lhs).isDefined  => (acc, true)
     case ClassDef(_, List(), body, Decorators(List()), _) =>{
-      val (Suite(defs, _), _) = SimplePass.procStatement(SimplePass.unSuite)(body, SimplePass.Names(HashMap()))
+      val (Suite(defs, _)) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
       assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })
       (acc, true)
     }

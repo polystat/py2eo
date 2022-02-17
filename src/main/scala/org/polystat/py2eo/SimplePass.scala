@@ -103,6 +103,9 @@ object SimplePass {
   def procStatement(f: (Statement, Names) => (Statement, Names))(s0: Statement, ns0: Names): (Statement, Names) =
     procStatementGeneral((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
 
+  def simpleProcStatement(f : Statement => Statement)(s : Statement) : Statement = {
+    procStatement((st, ns) => (f(st), ns))(s, Names(HashMap()))._1
+  }
 
   // all the forcing code is only needed to keep computation order if we transform an expression to a statement:
   // x = h(f(), g()) cannot be transformed to, say, z = g(); x = h(f(), z), because f() must be computed first, so
@@ -565,7 +568,7 @@ object SimplePass {
     e1
   }
 
-  def unSuite(s : Statement, ns : Names) : (Statement, Names) = {
+  def unSuite(s : Statement) : (Statement) = {
     @tailrec
     def inner(s : Statement) : Statement = s match {
       case Suite(l, ann) =>
@@ -578,7 +581,7 @@ object SimplePass {
       case _ => s
     }
 //    println(s"$s \n -> $s1")
-    (inner(s), ns)
+    (inner(s))
   }
 
   // translate an expression to something like a three register code in order to extract each function call with
@@ -723,13 +726,28 @@ object SimplePass {
 
   }
 
+  // explicitly substitute the self to each method call
+  // todo: does not work if a class method is returned as a function and then called
+  def simpleSyntacticMethodCall(lhs : Boolean, e : T, ns : Names) : (EAfterPass, Names) = {
+    if (!lhs) {
+      e match {
+        case CallIndex(true, what@Field(obj@Ident(_, _), fname, fann), args, ann) =>
+          (Left(CallIndex(true, what, (None, obj) :: args, ann.pos)), ns)
+        case CallIndex(isCall, Field(_, _, _), args, ann) => ??? // todo: must be implemented as above, but a bit more complicated
+        case x => (Left(x), ns)
+      }
+    } else {
+      (Left(e), ns)
+    }
+  }
+
   var needToChange = true
 
   def changeIdentifierName(expression: T): T =
     expression match {
-    case Ident(name, ann) if needToChange => needToChange = false; Ident(name + "2", ann.pos)
-    case e: T => e
-  }
+      case Ident(name, ann) if needToChange => needToChange = false; Ident(name + "2", ann.pos)
+      case e: T => e
+    }
 
   def allTheGeneralPasses(debugPrinter: (Statement, String) => Unit, s: Statement, ns: Names): (Statement, SimplePass.Names) = {
     val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)

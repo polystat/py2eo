@@ -1,7 +1,7 @@
 package org.polystat.py2eo
 
 import Expression.{CallIndex, Field, Ident}
-import SimplePass.{Names, procExpr, procStatement}
+import SimplePass.{Names, procExpr, procStatement, simpleProcStatement}
 
 import scala.collection.immutable.HashMap
 
@@ -72,27 +72,5 @@ object ClosureWithCage {
   }
 
   def closurize(st : Statement) : Statement = closurizeInner(_ => (VarScope.Global, new GeneralAnnotation()), st)
-
-  def declassifyOnly(st : Statement, ns : Names) : (Statement, Names) = {
-    val st1 = procStatement(SimplePass.unSuite)(st, ns)
-    procStatement(
-      (st, ns) => st match {
-        case ClassDef(name, bases, Suite(l, _), Decorators(List()), ann) if bases.length <= 1 =>
-          val mkObj = SimpleObject(
-            name, bases match { case List() => None  case List(x) => Some(CallIndex(true, x._2, List(), x._2.ann.pos)) },
-            l.filter{ case Pass(_) => false case _ => true }
-              .map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)},
-            ann.pos
-          )
-          val creator = FuncDef(
-            name, List(), None, None, None,
-            Suite(List(mkObj, Return(Some(Ident(name, ann.pos)), ann.pos)), ann.pos),
-            Decorators(List()), HashMap(), isAsync = false, ann
-          )
-          (creator, ns)
-        case _ => (st, ns)
-      }
-    )(st1._1, st1._2)
-  }
 
 }

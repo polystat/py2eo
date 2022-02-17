@@ -45,25 +45,35 @@ object PrintLinearizedMutableEOWithCage {
 
   def printSt(st : Statement) : Text =
     st match {
-      case SimpleObject(name, decorates, l, _) =>
-        (
-          "write." ::
+      case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
+        val Suite(l0, _) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
+        val l = l0.filter{ case Pass(_) => false case _ => true }
+        val decorates = bases.headOption.map(_._2)
+          s"[unused] > $name" ::
           indent(
-            name :: "[]" :: indent(
-              l.map{ case (name, _) => "cage > " + name } ++
-              decorates.toList.map(e => s"${printExpr(e)} > base") ++
-              (
-                "seq > initFields" :: indent(
-                  l.map{case (name, value) => s"$name.write " + printExpr(value)} ++
-                  decorates.toList.map(x => "base")
-                )
-              ) ++
-              decorates.toList.map(x => "base.result > @")
-            )
+            (
+              "[] > result" :: indent(
+                l.map{
+                  case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
+                  case f : FuncDef => s"cage > ${f.name}"
+                } ++
+                decorates.toList.map(e => s"${printExpr(e)} > base") ++
+                (
+                  "seq > initFields" :: indent(
+                    l.flatMap{
+                      case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
+                      case f : FuncDef =>
+                        "write." :: indent(f.name :: printFun(List(), f))
+                    } ++
+                    decorates.toList.map(x => "base")
+                  )
+                ) ++
+                decorates.toList.map(x => "base.result > @")
+              )
+            ) :+ "result.initFields > @"
           )
-        ) :+ s"($name.initFields)"
       case NonLocal(_, _) => List()
-      case f: FuncDef => List()
+      case f: FuncDef => printFun(List(), f)
       case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if (seqOfFields(whom).isDefined &&
         seqOfFields(lhs).isDefined) =>
         //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
@@ -130,7 +140,7 @@ object PrintLinearizedMutableEOWithCage {
       case Suite(l, _) => l.flatMap(printSt)
     }
 
-  def printFun(newName : String, preface : List[String], f : FuncDef) : Text = {
+  def printFun(preface : List[String], f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     val funs = SimpleAnalysis.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
@@ -138,23 +148,24 @@ object PrintLinearizedMutableEOWithCage {
     })(List(), f.body)
     val funNames = funs.map { f: FuncDef => f.name }.toSet
     val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > ${parm.name}")
-    val memories = f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
-      map(x => s"cage > ${x._1}").toList
-    val innerFuns = funs.flatMap { f: FuncDef => printFun(f.name, List(), f) }
+    val memories =
+      f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
+      map(x => s"cage > ${x._1}").toList ++
+      funs.map { f: FuncDef => s"cage > ${f.name}" }
 
     val args1 = f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
       argname + "NotCopied" }.mkString(" ")
     // todo: empty arg list hack
     val args2 = if (args1.isEmpty) "unused" else args1
-    s"[$args2] > $newName" :: indent(
+    s"[$args2]" :: indent(
       preface ++ (
         "cage > result" ::
         "cage > tmp" ::
-        argCopies ++ memories ++ innerFuns ++ (
+        argCopies ++ memories ++ (
           "goto > @" :: indent(
             s"[$returnLabel]" :: indent(
               "seq > @" :: indent(
-                ("stdout \"" + newName + "\\n\"") ::
+                ("stdout \"" + f.name + "\\n\"") ::
                 f.args.map(parm => s"${parm.name}.<") ++
                 (printSt(f.body) :+ "123")
               )
@@ -175,7 +186,8 @@ object PrintLinearizedMutableEOWithCage {
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
-    headers ++ printFun(theTest.name, mkCopy, theTest)
+    val hack = printFun(mkCopy, theTest)
+    headers ++ (s"[unused] > ${theTest.name}" :: hack.tail)
   }
 
 

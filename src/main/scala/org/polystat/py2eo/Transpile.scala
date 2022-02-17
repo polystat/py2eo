@@ -19,16 +19,18 @@ object Transpile {
     val y = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.xPrefixInExpr))(y2._1, y2._2)
 
     try {
+      val methodCall = SimplePass.procExprInStatement(
+        SimplePass.procExpr(SimplePass.simpleSyntacticMethodCall))(y._1, y._2)
+      debugPrinter(methodCall._1, "methodCall")
       val textractAllCalls = SimplePass.procExprInStatement(
-        SimplePass.procExpr(SimplePass.extractAllCalls))(y._1, y._2)
+        SimplePass.procExpr(SimplePass.extractAllCalls))(methodCall._1, methodCall._2)
       debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
-      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) =
-        ClosureWithCage.declassifyOnly(textractAllCalls._1, textractAllCalls._2)._1
+      val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
       val hacked = Suite(List(
         theFun,
         Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
       ), ann.pos)
-//      debugPrinter(hacked, "afterUseCage")
+      debugPrinter(hacked, "afterUseCage")
       val eoHacked = Suite(List(
         theFun,
         Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
@@ -39,6 +41,7 @@ object Transpile {
     catch {
       case e: RuntimeException => {
         println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
+        throw e
         val unsupportedExpr = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.mkUnsupportedExpr))(y._1, y._2)
         val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 
