@@ -25,7 +25,7 @@ object Validator extends App {
     SimplePass.needToChange = true
 
     val ns = new SimplePass.Names()
-    val mutatedAST = mutation(SimplePass.simplifyIf(Parse.parse(test, db), ns)._1, ns)
+    val mutatedAST = mutation(SimplePass.simplifyIf(Parse(test, db), ns)._1, ns)
     val mutatedPy = PrintPython.print(mutatedAST._1)
 
     PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style

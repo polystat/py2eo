@@ -12,7 +12,7 @@ object Transpile {
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
   def transpile(debugPrinter : (Statement, String) => Unit)(moduleName : String, pythonCode : String) : String = {
-    val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(Parse.parse(pythonCode, debugPrinter), new SimplePass.Names())
+    val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(Parse(pythonCode, debugPrinter), new SimplePass.Names())
     val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y0._1, y0._2)
     val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)
     val y = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.xPrefixInExpr))(y2._1, y2._2)
