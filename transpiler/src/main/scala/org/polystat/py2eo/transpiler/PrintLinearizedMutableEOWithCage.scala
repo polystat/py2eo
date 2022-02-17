@@ -36,7 +36,7 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def apply(testName : String, st : Statement.T) : Text = {
-    PrintLinearizedMutableEOWithCage.HackName.count = 0 // todo: imperative style suddenly
+    HackName.count = 0 // todo: imperative style suddenly
     printTest(testName, st)
   }
 
@@ -163,7 +163,6 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printTest(testName : String, st : Statement.T) : Text = {
-    PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style
     println(s"doing $testName")
     val mkCopy = List(
       "[x] > mkCopy",
