@@ -55,7 +55,7 @@ class Tests {
     val test = new File(testsPrefix + "/" + name + ".py")
     def db = debugPrinter(test)(_, _)
 
-    SimplePass.allTheGeneralPasses(db, Parse.parse(test, db), new SimplePass.Names())
+    SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
   @Test def parserPrinterOnCPython(): Unit = {
