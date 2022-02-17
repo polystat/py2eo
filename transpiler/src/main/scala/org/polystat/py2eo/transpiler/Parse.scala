@@ -15,13 +15,16 @@ object Parse {
     parse(s.mkString, debugPrinter)
   }
 
-  def parse(input : String, debugPrinter: (Statement, String) => Unit): Statement = {
+  def parse(input : String): Statement = {
     val inputStream = new ANTLRInputStream(input)
     val lexer = new PythonLexer(inputStream)
     val tokenStream = new CommonTokenStream(lexer)
     val parser = new PythonParser(tokenStream)
-    val e = parser.file()
-    val t = MapStatements.mapFile(e)
+    MapStatements.mapFile(parser.file)
+  }
+
+  def parse(input : String, debugPrinter: (Statement, String) => Unit): Statement = {
+    val t = parse(input)
     debugPrinter(t, "afterParser")
     t
   }
