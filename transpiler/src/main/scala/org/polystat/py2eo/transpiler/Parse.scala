@@ -9,25 +9,25 @@ import org.polystat.py2eo.parser.{PythonLexer, PythonParser}
 
 object Parse {
 
-  def parse(file: File, debugPrinter: (Statement, String) => Unit): Statement = {
-    assert(file.getName.endsWith(".py"))
-    val input = Source.fromFile(file)
-    parse(input.mkString, debugPrinter)
-  }
-
-  def parse(input: String, debugPrinter: (Statement, String) => Unit): Statement = {
-    val stmt = parse(input)
+  def apply(file: File, debugPrinter: (Statement, String) => Unit): Statement = {
+    val stmt = Parse(file)
     debugPrinter(stmt, "afterParser")
     stmt
   }
 
-  def parse(file: File): Statement = {
-    assert(file.getName.endsWith(".py"))
-    val input = Source.fromFile(file)
-    parse(input.mkString)
+  def apply(input: String, debugPrinter: (Statement, String) => Unit): Statement = {
+    val stmt = Parse(input)
+    debugPrinter(stmt, "afterParser")
+    stmt
   }
 
-  def parse(input: String): Statement = {
+  def apply(file: File): Statement = {
+    assert(file.getName.endsWith(".py"))
+    val input = Source.fromFile(file)
+    Parse(input.mkString)
+  }
+
+  def apply(input: String): Statement = {
     val inputStream = new ANTLRInputStream(input)
     val lexer = new PythonLexer(inputStream)
     val tokenStream = new CommonTokenStream(lexer)
