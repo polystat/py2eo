@@ -2,13 +2,6 @@ package org.polystat.py2eo.parser
 
 import scala.collection.immutable.HashMap
 
-import org.polystat.py2eo.parser.PythonParser.{
-  Annotated_rhsContext, Class_def_rawContext, Compound_stmtContext, DecoratorsContext, Del_targetContext,
-  Del_targetsContext, Dotted_nameContext, Elif_stmtContext, Except_blockContext, FileContext, Function_defContext,
-  Import_fromContext, Import_nameContext, ParamContext, Param_maybe_defaultContext, Param_no_defaultContext,
-  Param_with_defaultContext, Simple_stmtContext, Single_targetContext, Slash_no_defaultContext,
-  Slash_with_defaultContext, Star_expressionsContext, StatementContext
-}
 import org.polystat.py2eo.parser.MapExpressions.ASTMapperException
 import org.polystat.py2eo.parser.Expression.{CallIndex, CollectionCons, CollectionKind, Field, Ident, Parameter, T => ET}
 import org.polystat.py2eo.parser.Statement.{
@@ -22,19 +15,21 @@ import org.polystat.py2eo.parser.MapExpressions.{
 
 object MapStatements {
 
-  def mapFile(c: FileContext): Statement.T =
+  def mapFile(c: PythonParser.FileContext): Statement.T =
     if (c.statements() == null) Pass(ga(c)) else mapStatements(c.statements())
 
   def mapStatements(context: PythonParser.StatementsContext): Statement.T =
     Suite(toList(context.statement()).map(mapStatement), ga(context))
 
-  def mapStatement(c: StatementContext): Statement.T = {
-    if (c.compound_stmt() != null) mapCompoundStmt(c.compound_stmt()) else {
+  def mapStatement(c: PythonParser.StatementContext): Statement.T = {
+    if (c.compound_stmt() != null) {
+      mapCompoundStmt(c.compound_stmt())
+    } else {
       Suite(mapSimpleStmts(c.simple_stmts()), ga(c))
     }
   }
 
-  def mapCompoundStmt(c: Compound_stmtContext): Statement.T = {
+  def mapCompoundStmt(c: PythonParser.Compound_stmtContext): Statement.T = {
     if (c.function_def() != null) {
       mapFunctionDef(c.function_def())
     } else if (c.if_stmt() != null) {
@@ -64,7 +59,7 @@ object MapStatements {
     ga(context)
   )
 
-  def mapExceptBlock(c: Except_blockContext): (Option[(Expression.T, Option[String])], Statement.T) = (
+  def mapExceptBlock(c: PythonParser.Except_blockContext): (Option[(Expression.T, Option[String])], Statement.T) = (
     Option(c.expression()).map(c1 => (mapExpression(c1), Option(c.NAME()).map(_.getText))),
     mapBlock(c.block())
   )
@@ -93,12 +88,12 @@ object MapStatements {
     mapClassDefRaw(mapDecorators(context.decorators()))(context.class_def_raw())
   }
 
-  def mapClassDefRaw(d: Decorators)(c: Class_def_rawContext): ClassDef = {
+  def mapClassDefRaw(d: Decorators)(c: PythonParser.Class_def_rawContext): ClassDef = {
     val bases = if (c.arguments() != null) MapExpressions.mapArgs(c.arguments().args()) else List()
     ClassDef(c.NAME().getText, bases, mapBlock(c.block()), d, ga(c))
   }
 
-  def mapElifStmt(c: Elif_stmtContext): (List[(ET, Statement.T)], Option[Statement.T]) = {
+  def mapElifStmt(c: PythonParser.Elif_stmtContext): (List[(ET, Statement.T)], Option[Statement.T]) = {
     if (c.elif_stmt() != null) {
       val (l, last) = mapElifStmt(c.elif_stmt())
       ((mapNamedExpression(c.named_expression()), mapBlock(c.block())) :: l, last)
@@ -130,35 +125,39 @@ object MapStatements {
       ga(context)
     )
 
-  def mapParam(c: ParamContext): (String, Option[ET]) =
+  def mapParam(c: PythonParser.ParamContext): (String, Option[ET]) =
     (c.NAME().getText, Option(c.annotation()).map(x => mapExpression(x.expression())))
 
-  def mapParamMaybeDefault(kind: ArgKind.T)(c: Param_maybe_defaultContext): Parameter = {
+  def mapParamMaybeDefault(kind: ArgKind.T)(c: PythonParser.Param_maybe_defaultContext): Parameter = {
     val (name, typeAnn) = mapParam(c.param())
     val default = Option(c.default_assignment()).map(x => mapExpression(x.expression()))
     Parameter(name, kind, typeAnn, default, ga(c))
   }
 
-  def mapParamWithDefault(kind: ArgKind.T)(c: Param_with_defaultContext): Parameter = {
+  def mapParamWithDefault(kind: ArgKind.T)(c: PythonParser.Param_with_defaultContext): Parameter = {
     val (name, typeAnn) = mapParam(c.param())
     val default = Some(mapExpression(c.default_assignment().expression()))
     Parameter(name, kind, typeAnn, default, ga(c))
   }
 
-  def mapParamNoDefault(kind: ArgKind.T)(c: Param_no_defaultContext): Parameter = {
+  def mapParamNoDefault(kind: ArgKind.T)(c: PythonParser.Param_no_defaultContext): Parameter = {
     val (name, typeAnn) = mapParam(c.param())
     Parameter(name, kind, typeAnn, None, ga(c))
   }
 
-  def mapSlashNoDefault(c: Slash_no_defaultContext): List[Parameter] = {
-    if (c == null) List() else {
+  def mapSlashNoDefault(c: PythonParser.Slash_no_defaultContext): List[Parameter] = {
+    if (c == null) {
+      List()
+    } else {
       val l = toListNullable(c.param_no_default())
       l.map(mapParamNoDefault(ArgKind.Positional))
     }
   }
 
-  def mapSlashWithDefault(c: Slash_with_defaultContext): List[Parameter] = {
-    if (c == null) List() else {
+  def mapSlashWithDefault(c: PythonParser.Slash_with_defaultContext): List[Parameter] = {
+    if (c == null) {
+      List()
+    } else {
       toListNullable(c.param_no_default()).map(mapParamNoDefault(ArgKind.Positional)) ++
         toListNullable(c.param_with_default()).map(mapParamWithDefault(ArgKind.Positional))
     }
@@ -193,11 +192,11 @@ object MapStatements {
     )
   }
 
-  def mapDecorators(c: DecoratorsContext): Decorators = {
+  def mapDecorators(c: PythonParser.DecoratorsContext): Decorators = {
     Decorators(if (c == null) List() else toList(c.named_expression()).map(MapExpressions.mapNamedExpression))
   }
 
-  def mapFunctionDef(c: Function_defContext): FuncDef =
+  def mapFunctionDef(c: PythonParser.Function_defContext): FuncDef =
     mapFunctionDefRaw(mapDecorators(c.decorators()))(c.function_def_raw())
 
   def mapBlock(context: PythonParser.BlockContext): Statement.T = {
@@ -214,7 +213,7 @@ object MapStatements {
   def mapSimpleStmts(context: PythonParser.Simple_stmtsContext): List[Statement.T] =
     toList(context.simple_stmt()).map(mapSimpleStmt)
 
-  def mapSimpleStmt(c: Simple_stmtContext): Statement.T = {
+  def mapSimpleStmt(c: PythonParser.Simple_stmtContext): Statement.T = {
     if (c.assignment() != null) mapAssignment(c.assignment()) else if (c.star_expressions() != null) {
       val l = MapExpressions.mapStarExpressions(c.star_expressions())
       Assign(List(
@@ -247,9 +246,9 @@ object MapStatements {
     }
   }
 
-  def mapDelTargets(c: Del_targetsContext): List[ET] = toList(c.del_target()).map(mapDelTarget)
+  def mapDelTargets(c: PythonParser.Del_targetsContext): List[ET] = toList(c.del_target()).map(mapDelTarget)
 
-  def mapDelTarget(c: Del_targetContext): ET = {
+  def mapDelTarget(c: PythonParser.Del_targetContext): ET = {
     if (c.NAME() != null) {
       Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c))
     } else if (c.slices() != null) {
@@ -260,7 +259,11 @@ object MapStatements {
   }
 
   def mapDelTAtom(context: PythonParser.Del_t_atomContext): ET = {
-    if (context.NAME() != null) Ident(context.NAME().getText, ga(context)) else if (context.del_target() != null) mapDelTarget(context.del_target()) else {
+    if (context.NAME() != null) {
+      Ident(context.NAME().getText, ga(context))
+    } else if (context.del_target() != null) {
+      mapDelTarget(context.del_target())
+    } else {
       CollectionCons(
         if (context.OPEN_BRACK() != null) CollectionKind.List else CollectionKind.Tuple,
         if (context.del_targets() != null) mapDelTargets(context.del_targets()) else List(),
@@ -295,13 +298,17 @@ object MapStatements {
     }
   }
 
-  def mapDottedName(c: Dotted_nameContext): List[String] = {
-    if (c == null) List() else if (c.dotted_name() != null) mapDottedName(c.dotted_name()) :+ c.NAME().getText else {
+  def mapDottedName(c: PythonParser.Dotted_nameContext): List[String] = {
+    if (c == null) {
+      List()
+    } else if (c.dotted_name() != null) {
+      mapDottedName(c.dotted_name()) :+ c.NAME().getText
+    } else {
       List(c.NAME().getText)
     }
   }
 
-  def mapImportName(c: Import_nameContext): Statement.T = {
+  def mapImportName(c: PythonParser.Import_nameContext): Statement.T = {
     Suite(
       toList(c.dotted_as_names().dotted_as_name()).map(
         c => ImportModule(mapDottedName(c.dotted_name()), Option(c.NAME()).map(_.getText), ga(c))
@@ -310,10 +317,12 @@ object MapStatements {
     )
   }
 
-  def mapImportFrom(c: Import_fromContext): Statement.T = {
+  def mapImportFrom(c: PythonParser.Import_fromContext): Statement.T = {
     val nprefixDots = c.ELLIPSIS().size() * 3 + c.DOT().size()
     val from = List.fill(nprefixDots)("") ++ mapDottedName(c.dotted_name())
-    if (c.import_from_targets().STAR() != null) ImportAllSymbols(from, ga(c)) else {
+    if (c.import_from_targets().STAR() != null) {
+      ImportAllSymbols(from, ga(c))
+    } else {
       Suite(
         toList(c.import_from_targets().import_from_as_names().import_from_as_name()).map(
           c => ImportSymbol(from, c.NAME(0).getText, Option(c.NAME(1)).map(_.getText), ga(c))
@@ -331,13 +340,15 @@ object MapStatements {
     Return(Option(context.star_expressions()).map(mapStarExpressions2Expression), ga(context))
   }
 
-  def mapStarExpressions2Expression(c: Star_expressionsContext): ET = {
-    if (c.COMMA().size() == 0) mapStarExpression(c.star_expression(0)) else {
+  def mapStarExpressions2Expression(c: PythonParser.Star_expressionsContext): ET = {
+    if (c.COMMA().size() == 0) {
+      mapStarExpression(c.star_expression(0))
+    } else {
       CollectionCons(CollectionKind.Tuple, mapStarExpressions(c), ga(c))
     }
   }
 
-  def mapAnnotatedRhs(c: Annotated_rhsContext): ET = {
+  def mapAnnotatedRhs(c: PythonParser.Annotated_rhsContext): ET = {
     if (c.yield_expr() != null) {
       mapYieldExpr(c.yield_expr())
     } else {
@@ -346,12 +357,14 @@ object MapStatements {
   }
 
   def mapSingleSubscriptAttributeTarget(context: PythonParser.Single_subscript_attribute_targetContext): ET = {
-    if (context.NAME() != null) Field(mapTPrimary(context.t_primary()), context.NAME().getText, ga(context)) else {
+    if (context.NAME() != null) {
+      Field(mapTPrimary(context.t_primary()), context.NAME().getText, ga(context))
+    } else {
       CallIndex(false, mapTPrimary(context.t_primary()), List((None, mapSlices(context.slices()))), ga(context))
     }
   }
 
-  def mapSingleTarget(c: Single_targetContext): ET = {
+  def mapSingleTarget(c: PythonParser.Single_targetContext): ET = {
     if (c.single_subscript_attribute_target() != null) {
       mapSingleSubscriptAttributeTarget(c.single_subscript_attribute_target())
     } else if (c.NAME() != null) {
