@@ -19,14 +19,14 @@ object Validator extends App {
     outName
   }
 
-  def validate(test: File, mutation: (Statement, SimplePass.Names) => (Statement, SimplePass.Names)): Unit = {
-    def db: (Statement, String) => Unit = debugPrinter(test)(_, _)
+  def validate(test: File, mutation: (Statement.T, SimplePass.Names) => (Statement.T, SimplePass.Names)): Unit = {
+    def db: (Statement.T, String) => Unit = debugPrinter(test)(_, _)
 
     SimplePass.needToChange = true
 
     val ns = new SimplePass.Names()
-    val mutatedAST = mutation(SimplePass.simplifyIf(Parse.parse(test, db), ns)._1, ns)
-    val mutatedPy = PrintPython.printSt(mutatedAST._1, "")
+    val mutatedAST = mutation(SimplePass.simplifyIf(Parse(test, db), ns)._1, ns)
+    val mutatedPy = PrintPython.print(mutatedAST._1)
 
     PrintLinearizedMutableEOWithCage.HackName.count = 0 // TODO: fix non-functional style
     val originalEOText = Transpile.transpile(db)(test.getName, readFile(test))
@@ -39,7 +39,7 @@ object Validator extends App {
     Seq("diff", fstName, sndName).!
   }
 
-  def validateDir(prefix: String, mutation: (Statement, SimplePass.Names) => (Statement, SimplePass.Names)): Unit = {
+  def validateDir(prefix: String, mutation: (Statement.T, SimplePass.Names) => (Statement.T, SimplePass.Names)): Unit = {
     val test = new File(prefix)
 
     for (file <- test.listFiles()) if (file.getName.endsWith(".py")) validate(file, mutation)
@@ -50,7 +50,7 @@ object Validator extends App {
     these ++ these.filter(_.isDirectory).flatMap(recursiveListFiles)
   }
 
-  def validateCPython(mutation: (Statement, SimplePass.Names) => (Statement, SimplePass.Names)): Unit = {
+  def validateCPython(mutation: (Statement.T, SimplePass.Names) => (Statement.T, SimplePass.Names)): Unit = {
     val dirName = testsPrefix + "mutations/validateCPython"
     val cpython = new File(dirName)
     if (!cpython.exists()) {

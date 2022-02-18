@@ -2,13 +2,17 @@ package org.polystat.py2eo.transpiler
 
 import scala.annotation.tailrec
 import scala.collection.immutable.HashMap
-
 import org.polystat.py2eo.transpiler.Expression.{
   AnonFun, Assignment, Await, Binop, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons, CollectionKind,
-  Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar, EllipsisLiteral, Field,
-  ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension, LazyLAnd, LazyLOr, NoneLiteral,
-  Parameter, Slice, Star, StringLiteral, T, Unop, Unops, Yield, YieldFrom, FloatLiteral, ImagLiteral, IntLiteral,
-  SimpleComparison, UnsupportedExpr
+  Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar, EllipsisLiteral, Field, FloatLiteral,
+  ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension, ImagLiteral, IntLiteral,
+  LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, Unop, Unops,
+  UnsupportedExpr, Yield, YieldFrom
+}
+import org.polystat.py2eo.transpiler.Statement.{
+  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
+  If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
+  Unsupported, While, With
 }
 
 object SimplePass {
@@ -34,15 +38,15 @@ object SimplePass {
 
   }
 
-  def procStatementGeneral(f: (Statement, Names) => (Statement, Names, Boolean))(s0: Statement, ns0: Names): (Statement, Names) = {
+  def procStatementGeneral(f: (Statement.T, Names) => (Statement.T, Names, Boolean))(s0: Statement.T, ns0: Names): (Statement.T, Names) = {
     def pst = procStatementGeneral(f)(_, _)
 
-    def pstl[T](extract: T => Statement, l: List[T], ns: Names) =
-      l.foldLeft((List[Statement](), ns))((acc, st) => {
+    def pstl[T](extract: T => Statement.T, l: List[T], ns: Names) =
+      l.foldLeft((List[Statement.T](), ns))((acc, st) => {
         val xst = pst(extract(st), acc._2)
         (acc._1 :+ xst._1, xst._2)
       })
-    def procElse(s : Option[Statement]) = s match { case None => Pass(s0.ann) case Some(s) => s }
+    def procElse(s : Option[Statement.T]) = s match { case None => Pass(s0.ann) case Some(s) => s }
     val (s, ns, visitChildren) = f(s0, ns0)
 
     val nochange = (s, ns)
@@ -50,7 +54,7 @@ object SimplePass {
     if (!visitChildren) nochange else {
       s match {
         case If(conditioned, eelse, ann) =>
-          val xconditioned = pstl[(T, Statement)](_._2, conditioned, ns)
+          val xconditioned = pstl[(T, Statement.T)](_._2, conditioned, ns)
           val xelse = pst(procElse(eelse), xconditioned._2)
           (If(conditioned.map(_._1).zip(xconditioned._1), Some(xelse._1), ann.pos), xelse._2)
         case IfSimple(cond, yes, no, ann) =>
@@ -66,10 +70,10 @@ object SimplePass {
           val xelse = pst(procElse(eelse), xbody._2)
           (For(what, in, xbody._1, Some(xelse._1), isAsync, ann.pos), xelse._2)
         case Suite(l, ann) =>
-          val xl = pstl[Statement](x => x, l, ns)
+          val xl = pstl[Statement.T](x => x, l, ns)
           (Suite(xl._1, ann.pos), xl._2)
         case u: Unsupported =>
-          val xl = pstl[Statement](x => x, u.sts, ns)
+          val xl = pstl[Statement.T](x => x, u.sts, ns)
           (new Unsupported(u.original, u.declareVars, u.es, xl._1, u.ann.pos), xl._2)
 
         case With(cms, body, isAsync, ann) =>
@@ -77,7 +81,7 @@ object SimplePass {
           (With(cms, xbody._1, isAsync, ann.pos), xbody._2)
         case Try(ttry, excepts, eelse, ffinally, ann) =>
           val xtry = pst(ttry, ns)
-          val xex = pstl[(Option[(T, Option[String])], Statement)](_._2, excepts, xtry._2)
+          val xex = pstl[(Option[(T, Option[String])], Statement.T)](_._2, excepts, xtry._2)
           val xelse = pst(procElse(eelse), xex._2)
           val xfinally = pst(procElse(ffinally), xelse._2)
           (Try(xtry._1, excepts.map(_._1).zip(xex._1), Some(xelse._1), Some(xfinally._1), ann.pos), xfinally._2)
@@ -100,28 +104,28 @@ object SimplePass {
     }
   }
 
-  def procStatement(f: (Statement, Names) => (Statement, Names))(s0: Statement, ns0: Names): (Statement, Names) =
+  def procStatement(f: (Statement.T, Names) => (Statement.T, Names))(s0: Statement.T, ns0: Names): (Statement.T, Names) =
     procStatementGeneral((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
 
 
   // all the forcing code is only needed to keep computation order if we transform an expression to a statement:
   // x = h(f(), g()) cannot be transformed to, say, z = g(); x = h(f(), z), because f() must be computed first, so
   // it must be transformed to z0 = f(); z = g(); x = h(z0, z) or not be transformed at all
-  type EAfterPass = Either[T, (Statement, Ident)]
+  type EAfterPass = Either[T, (Statement.T, Ident)]
 
-  def forceSt(e: T, ns: Names): ((Statement, Ident), Names) = {
+  def forceSt(e: T, ns: Names): ((Statement.T, Ident), Names) = {
     val (lhsName, ns1) = ns("lhs")
     val l = Ident(lhsName, e.ann.pos)
     ((Assign(List(l, e), e.ann.pos), l), ns1)
   }
 
-  def forceSt2(e: EAfterPass, ns: Names): ((Statement, Ident), Names) = e match {
+  def forceSt2(e: EAfterPass, ns: Names): ((Statement.T, Ident), Names) = e match {
     case Left(e) => forceSt(e, ns)
     case Right(value) => (value, ns)
   }
 
   def forceAllIfNecessary(f: (Boolean, T, Names) => (EAfterPass, Names))
-                         (l: List[(Boolean, T)], ns: Names): Either[(List[T], Names), (List[(Statement, Ident)], Names)] = {
+                         (l: List[(Boolean, T)], ns: Names): Either[(List[T], Names), (List[(Statement.T, Ident)], Names)] = {
     val (l1, ns1) = l.foldLeft((List[EAfterPass](), ns))((acc, e) => {
       val xe = procExpr(f)(e._1, e._2, acc._2)
       (acc._1 :+ xe._1, xe._2)
@@ -129,7 +133,7 @@ object SimplePass {
     val hasStatement = l1.exists(_.isRight)
     if (!hasStatement) Left(l1.map { case Left(value) => value }, ns1) else {
       Right(
-        l1.foldLeft((List[(Statement, Ident)](), ns1))((acc, x) => x match {
+        l1.foldLeft((List[(Statement.T, Ident)](), ns1))((acc, x) => x match {
           case Left(value) =>
             val (p, ns) = forceSt(value, acc._2)
             (acc._1 :+ p, ns)
@@ -284,16 +288,16 @@ object SimplePass {
       CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
   }
 
-  def procExprInStatement(f: (Boolean, T, Names) => (EAfterPass, Names))(s: Statement, ns: Names): (Statement, Names) = {
+  def procExprInStatement(f: (Boolean, T, Names) => (EAfterPass, Names))(s: Statement.T, ns: Names): (Statement.T, Names) = {
     def pst = procExprInStatement(f)(_, _)
-    def pstl(l: List[Statement], ns: Names) =
-      l.foldLeft((List[Statement](), ns))((acc, st) => {
+    def pstl(l: List[Statement.T], ns: Names) =
+      l.foldLeft((List[Statement.T](), ns))((acc, st) => {
         val (st1, ns1) = pst(st, acc._2)
         (acc._1 :+ st1, ns1)
       })
 
-    def procEA(x: EAfterPass): (List[Statement], T) = x match {
-      case Left(value) => (List[Statement](), value)
+    def procEA(x: EAfterPass): (List[Statement.T], T) = x match {
+      case Left(value) => (List[Statement.T](), value)
       case Right(value) => (List(value._1), value._2)
     }
 
@@ -597,7 +601,7 @@ object SimplePass {
     (st1, ns1)
   }
 
-  def simplifyIf(s: Statement, ns: Names): (Statement, Names) = s match {
+  def simplifyIf(s: Statement.T, ns: Names): (Statement.T, Names) = s match {
     case If(List((cond, yes)), Some(no), ann) => (IfSimple(cond, yes, no, ann.pos), ns)
     case If(List((cond, yes)), None, ann) => (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
     case If((cond, yes) :: t, eelse, ann) =>
@@ -615,7 +619,7 @@ object SimplePass {
     case _ => (s, ns)
   }
 
-  def mkUnsupported(s: Statement, ns: Names): (Statement, Names) = (s match {
+  def mkUnsupported(s: Statement.T, ns: Names): (Statement.T, Names) = (s match {
     case Assign(List(_), _) => s
     case Assign(List(Ident(_, _), _), _) => s
     case Assign(l, ann) => new Unsupported(s, l.init.flatMap { case Ident(s, _) => List(s) case _ => List() }, ann.pos)
@@ -673,9 +677,9 @@ object SimplePass {
     e1
   }
 
-  def unSuite(s : Statement, ns : Names) : (Statement, Names) = {
+  def unSuite(s : Statement.T, ns : Names) : (Statement.T, Names) = {
     @tailrec
-    def inner(s : Statement) : Statement = s match {
+    def inner(s : Statement.T) : Statement.T = s match {
       case Suite(l, ann) =>
         val l1 = l.flatMap{ case Suite(l, _) => l case s : Any => List(s) }
         if (!l1.exists{ case Suite(l, _) => true case _ => false }) {
@@ -761,7 +765,7 @@ object SimplePass {
     }
   }
 
-  def xPrefixInStatement(x : Statement, ns : Names) : (Statement, Names) = {
+  def xPrefixInStatement(x : Statement.T, ns : Names) : (Statement.T, Names) = {
     def pref(s : String) = s"x$s"
     (
       x match {
@@ -793,7 +797,7 @@ object SimplePass {
     )
   }
 
-  def simplifyInheritance(s: Statement, ns: Names): (Statement, Names) = {
+  def simplifyInheritance(s: Statement.T, ns: Names): (Statement.T, Names) = {
 
     def simplifyInheritance: (Boolean, T, Names) => (EAfterPass, Names) = procExpr({
       case (false, Field(obj, name, ann), ns) =>
@@ -806,7 +810,7 @@ object SimplePass {
       case (_, e, ns) => (Left(e), ns)
     })
 
-    def explicitBases(s: Statement, ns: Names): (Statement, Names) = s match {
+    def explicitBases(s: Statement.T, ns: Names): (Statement.T, Names) = s match {
       case ClassDef(name, bases0, body, decorators, ann) =>
         val (newBody, ns1) = explicitBases(body, ns)
         val basesPos = if (bases0.isEmpty) ann.pos else GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
@@ -839,7 +843,7 @@ object SimplePass {
     case e: T => e
   }
 
-  def allTheGeneralPasses(debugPrinter: (Statement, String) => Unit, s: Statement, ns: Names): (Statement, SimplePass.Names) = {
+  def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: Names): (Statement.T, SimplePass.Names) = {
     val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")
 

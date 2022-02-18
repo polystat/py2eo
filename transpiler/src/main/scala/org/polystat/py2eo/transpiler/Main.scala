@@ -55,9 +55,8 @@ object Main {
     }
   }
 
-  def debugPrinter(module: File)(s: Statement, dirSuffix: String): Unit = {
-    val what = PrintPython.printSt(s, "")
-    writeFile(module, dirSuffix, ".py", what)
+  def debugPrinter(module: File)(s: Statement.T, dirSuffix: String): Unit = {
+    writeFile(module, dirSuffix, ".py", PrintPython.print(s))
   }
 
   def readFile(f: File): String = {

@@ -8,8 +8,17 @@ import org.polystat.py2eo.transpiler.Expression.{
   IfComprehension, ImagLiteral, IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice,
   Star, StringLiteral, T, Unop, Unops, UnsupportedExpr, Yield, YieldFrom
 }
+import org.polystat.py2eo.transpiler.Statement.{
+  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
+  If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
+  Unsupported, While, With
+}
 
 object PrintPython {
+
+  def printExpr: T => String = printExprOrDecorator(noBracketsAround = false)(_)
+
+  def print(s: Statement.T): String = printSt(s, "")
 
   private def printComprehension(e : Comprehension) : String =
     e match {
@@ -23,9 +32,7 @@ object PrintPython {
     case Right(value) =>  "**%s".format(printExpr(value))
   }
 
-  def printExpr : T => String = printExprOrDecorator(false)(_)
-
-  def printExprOrDecorator(noBracketsAround : Boolean)(e : T) : String = {
+  private def printExprOrDecorator(noBracketsAround : Boolean)(e : T) : String = {
     def brak(s : String, open : String, close : String) = s"$open$s$close"
     def around(s : String) = if (noBracketsAround) s else brak(s, "(", ")")
     def rnd(s : String) = brak(s, "(", ")")
@@ -88,12 +95,12 @@ object PrintPython {
     }
   }
 
-  def option2string[T](x : Option[T]): String = x match {
+  private def option2string[T](x : Option[T]): String = x match {
     case Some(value) => value.toString
     case None => emptyString
   }
 
-  def printSt(s : Statement, indentAmount : String) : String = {
+  private def printSt(s : Statement.T, indentAmount : String) : String = {
     def async(isAsync : Boolean) = if (isAsync) "async " else emptyString
     val indentIncrAmount = indentAmount + "    "
     def indentPos(str : String) : String = "%s%s # %s".format(indentAmount, str, s.ann)
@@ -118,7 +125,7 @@ object PrintPython {
           indentAmount, async(isAsync), cmsString, s.ann, printSt(body, indentIncrAmount)
         )
       case If(conditioned, eelse, _) =>
-        def oneCase(keyword : String, p : (T, Statement)) = {
+        def oneCase(keyword : String, p : (T, Statement.T)) = {
           "%s%s (%s): # %s \n%s".format(
             indentAmount, keyword, printExpr(p._1), p._2.ann.toString,
             printSt(p._2, indentIncrAmount)
@@ -232,7 +239,7 @@ object PrintPython {
     }
   }
 
-  def printArgs(args : List[Parameter], otherPositional : Option[(String, Option[T])],
+  private def printArgs(args : List[Parameter], otherPositional : Option[(String, Option[T])],
                 otherKeyword : Option[(String, Option[T])]) : String = {
     val positionalOnly = args.filter(_.kind == ArgKind.Positional)
     val posOrKeyword = args.filter(_.kind == ArgKind.PosOrKeyword)

@@ -12,6 +12,10 @@ import org.polystat.py2eo.parser.PythonParser.{
 }
 import org.polystat.py2eo.transpiler.Common.ASTMapperException
 import org.polystat.py2eo.transpiler.Expression.{CallIndex, CollectionCons, CollectionKind, Field, Ident, Parameter, T => ET}
+import org.polystat.py2eo.transpiler.Statement.{
+  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, Decorators, Del, For, FuncDef, Global, If,
+  ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, Suite, Try, While, With
+}
 import org.polystat.py2eo.transpiler.MapExpressions.{
   ga, mapExpression, mapNamedExpression, mapSlices, mapStarExpression, mapStarExpressions, mapStarTarget,
   mapStarTargets, mapTPrimary, mapYieldExpr, toList, toListNullable
@@ -19,18 +23,18 @@ import org.polystat.py2eo.transpiler.MapExpressions.{
 
 object MapStatements {
 
-  def mapFile(c : FileContext) : Statement =
+  def mapFile(c : FileContext) : Statement.T =
     if (c.statements() == null) Pass(ga(c)) else mapStatements(c.statements())
 
-  def mapStatements(context: PythonParser.StatementsContext) : Statement =
+  def mapStatements(context: PythonParser.StatementsContext) : Statement.T =
     Suite(toList(context.statement()).map(mapStatement), ga(context))
 
-  def mapStatement(c : StatementContext) : Statement = {
+  def mapStatement(c : StatementContext) : Statement.T = {
     if (c.compound_stmt() != null) mapCompoundStmt(c.compound_stmt()) else
     { Suite(mapSimpleStmts(c.simple_stmts()), ga(c)) }
   }
 
-  def mapCompoundStmt(c : Compound_stmtContext) : Statement = {
+  def mapCompoundStmt(c : Compound_stmtContext) : Statement.T = {
     if (c.function_def() != null) mapFunctionDef(c.function_def()) else
     if (c.if_stmt() != null) mapIfStmt(c.if_stmt()) else
     if (c.class_def() != null) mapClassDef(c.class_def()) else
@@ -50,7 +54,7 @@ object MapStatements {
     ga(context)
   )
 
-  def mapExceptBlock(c : Except_blockContext): (Option[(Expression.T, Option[String])], Statement) = (
+  def mapExceptBlock(c : Except_blockContext): (Option[(Expression.T, Option[String])], Statement.T) = (
     Option(c.expression()).map(c1 => (mapExpression(c1), Option(c.NAME()).map(_.getText))),
     mapBlock(c.block())
   )
@@ -84,7 +88,7 @@ object MapStatements {
     ClassDef(c.NAME().getText, bases, mapBlock(c.block()), d, ga(c))
   }
 
-  def mapElifStmt(c : Elif_stmtContext) : (List[(ET, Statement)], Option[Statement]) = {
+  def mapElifStmt(c : Elif_stmtContext) : (List[(ET, Statement.T)], Option[Statement.T]) = {
     if (c.elif_stmt() != null) {
       val (l, last) = mapElifStmt(c.elif_stmt())
       ((mapNamedExpression(c.named_expression()), mapBlock(c.block())) :: l, last)
@@ -186,7 +190,7 @@ object MapStatements {
   def mapFunctionDef(c : Function_defContext) : FuncDef =
     mapFunctionDefRaw(mapDecorators(c.decorators()))(c.function_def_raw())
 
-  def mapBlock(context: PythonParser.BlockContext) : Statement = {
+  def mapBlock(context: PythonParser.BlockContext) : Statement.T = {
     Suite (
       if (context.simple_stmts() != null) {
         mapSimpleStmts(context.simple_stmts())
@@ -197,10 +201,10 @@ object MapStatements {
     )
   }
 
-  def mapSimpleStmts(context: PythonParser.Simple_stmtsContext) : List[Statement] =
+  def mapSimpleStmts(context: PythonParser.Simple_stmtsContext) : List[Statement.T] =
     toList(context.simple_stmt()).map(mapSimpleStmt)
 
-  def mapSimpleStmt(c : Simple_stmtContext) : Statement = {
+  def mapSimpleStmt(c : Simple_stmtContext) : Statement.T = {
     if (c.assignment() != null) mapAssignment(c.assignment()) else
     if (c.star_expressions() != null) {
       val l = MapExpressions.mapStarExpressions(c.star_expressions())
@@ -274,7 +278,7 @@ object MapStatements {
     }
   }
 
-  def mapImportName(c : Import_nameContext) : Statement = {
+  def mapImportName(c : Import_nameContext) : Statement.T = {
     Suite(
       toList(c.dotted_as_names().dotted_as_name()).map(
         c => ImportModule(mapDottedName(c.dotted_name()), Option(c.NAME()).map(_.getText), ga(c))
@@ -283,7 +287,7 @@ object MapStatements {
     )
   }
 
-  def mapImportFrom(c : Import_fromContext) : Statement = {
+  def mapImportFrom(c : Import_fromContext) : Statement.T = {
     val nprefixDots = c.ELLIPSIS().size() * 3 + c.DOT().size()
     val from = List.fill(nprefixDots)("") ++ mapDottedName(c.dotted_name())
     if (c.import_from_targets().STAR() != null) ImportAllSymbols(from, ga(c)) else {
@@ -296,7 +300,7 @@ object MapStatements {
     }
   }
 
-  def mapImportStmt(context: PythonParser.Import_stmtContext) : Statement = {
+  def mapImportStmt(context: PythonParser.Import_stmtContext) : Statement.T = {
     if (context.import_from() != null) mapImportFrom(context.import_from()) else mapImportName(context.import_name())
   }
 
@@ -328,7 +332,7 @@ object MapStatements {
     { mapSingleTarget(c.single_target()) }
   }
 
-  def mapAssignment(context: PythonParser.AssignmentContext) : Statement = {
+  def mapAssignment(context: PythonParser.AssignmentContext) : Statement.T = {
     if (context.NAME() != null) {
       AnnAssign(
         Ident(context.NAME().getText, new GeneralAnnotation(context.NAME().getSymbol)),

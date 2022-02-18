@@ -1,0 +1,22 @@
+disabled: True
+python: |
+  # no exception happens in this test
+  def t1():
+
+    value = 0
+
+    class CM:
+      def __enter__(self):
+        nonlocal value
+        value += 1
+        return 10
+      def __exit__(self, a, b, c):
+        nonlocal value
+        value += 100
+
+    with CM() as z:
+      value += z
+
+    return value == 111
+
+  #assert t1()

@@ -5,6 +5,9 @@ import org.polystat.py2eo.transpiler.Expression.{
   IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
   UnsupportedExpr
 }
+import org.polystat.py2eo.transpiler.Statement.{
+  Assign, Decorators, FuncDef, IfSimple, ImportAllSymbols, ImportModule, Pass, SimpleObject, Suite, Unsupported, While
+}
 import org.polystat.py2eo.transpiler.Common.{crb, orb, space}
 
 object PrintEO {
@@ -81,8 +84,8 @@ object PrintEO {
 
   def indent(l : Text): List[String] = l.map(Ident + _)
 
-  def printSt(st : Statement) : Text = {
-    def s(x : Statement) = printSt(x)
+  def printSt(st : Statement.T) : Text = {
+    def s(x : Statement.T) = printSt(x)
 
     st match {
       case SimpleObject(name, l, _) =>
@@ -138,7 +141,7 @@ object PrintEO {
     ""
   )
 
-  def printSt(moduleName : String, st : Statement, hackPreface : Text) : Text = {
+  def printSt(moduleName : String, st : Statement.T, hackPreface : Text) : Text = {
     hackPreface ++
     List(
       "[] > " + moduleName,
@@ -152,6 +155,6 @@ object PrintEO {
     indent(indent(printSt(st)))
   }
 
-  def printTest(moduleName : String, st : Statement, hackPreface : Text) : Text =
+  def printTest(moduleName : String, st : Statement.T, hackPreface : Text) : Text =
     standardTestPreface ++ printSt(moduleName, st, hackPreface)
 }
