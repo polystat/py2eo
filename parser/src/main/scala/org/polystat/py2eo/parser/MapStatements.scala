@@ -35,7 +35,23 @@ object MapStatements {
   }
 
   def mapCompoundStmt(c: Compound_stmtContext): Statement.T = {
-    if (c.function_def() != null) mapFunctionDef(c.function_def()) else if (c.if_stmt() != null) mapIfStmt(c.if_stmt()) else if (c.class_def() != null) mapClassDef(c.class_def()) else if (c.with_stmt() != null) mapWithStmt(c.with_stmt()) else if (c.for_stmt() != null) mapForStmt(c.for_stmt()) else if (c.try_stmt() != null) mapTryStmt(c.try_stmt()) else if (c.while_stmt() != null) mapWhileStmt(c.while_stmt()) else if (c.match_stmt() != null) ??? else {
+    if (c.function_def() != null) {
+      mapFunctionDef(c.function_def())
+    } else if (c.if_stmt() != null) {
+      mapIfStmt(c.if_stmt())
+    } else if (c.class_def() != null) {
+      mapClassDef(c.class_def())
+    } else if (c.with_stmt() != null) {
+      mapWithStmt(c.with_stmt())
+    } else if (c.for_stmt() != null) {
+      mapForStmt(c.for_stmt())
+    } else if (c.try_stmt() != null) {
+      mapTryStmt(c.try_stmt())
+    } else if (c.while_stmt() != null) {
+      mapWhileStmt(c.while_stmt())
+    } else if (c.match_stmt() != null) {
+      ???
+    } else {
       throw new ASTMapperException("mapCompoundStmt")
     }
   }
@@ -204,7 +220,29 @@ object MapStatements {
       Assign(List(
         if (c.star_expressions().COMMA().size() > 1) CollectionCons(CollectionKind.Tuple, l, ga(c)) else l.head
       ), ga(c))
-    } else if (c.return_stmt() != null) mapReturnStmt(c.return_stmt()) else if (c.import_stmt() != null) mapImportStmt(c.import_stmt()) else if (c.raise_stmt() != null) mapRaiseStmt(c.raise_stmt()) else if (c.PASS() != null) Pass(ga(c)) else if (c.del_stmt() != null) mapDelStmt(c.del_stmt()) else if (c.yield_stmt() != null) mapYieldStmt(c.yield_stmt()) else if (c.assert_stmt() != null) mapAssertStmt(c.assert_stmt()) else if (c.BREAK() != null) Break(ga(c)) else if (c.CONTINUE() != null) Continue(ga(c)) else if (c.global_stmt() != null) mapGlobalStmt(c.global_stmt()) else if (c.nonlocal_stmt() != null) mapNonlocalStmt(c.nonlocal_stmt()) else {
+    } else if (c.return_stmt() != null) {
+      mapReturnStmt(c.return_stmt())
+    } else if (c.import_stmt() != null) {
+      mapImportStmt(c.import_stmt())
+    } else if (c.raise_stmt() != null) {
+      mapRaiseStmt(c.raise_stmt())
+    } else if (c.PASS() != null) {
+      Pass(ga(c))
+    } else if (c.del_stmt() != null) {
+      mapDelStmt(c.del_stmt())
+    } else if (c.yield_stmt() != null) {
+      mapYieldStmt(c.yield_stmt())
+    } else if (c.assert_stmt() != null) {
+      mapAssertStmt(c.assert_stmt())
+    } else if (c.BREAK() != null) {
+      Break(ga(c))
+    } else if (c.CONTINUE() != null) {
+      Continue(ga(c))
+    } else if (c.global_stmt() != null) {
+      mapGlobalStmt(c.global_stmt())
+    } else if (c.nonlocal_stmt() != null) {
+      mapNonlocalStmt(c.nonlocal_stmt())
+    } else {
       throw new ASTMapperException("mapSimpleStmt")
     }
   }
@@ -212,7 +250,11 @@ object MapStatements {
   def mapDelTargets(c: Del_targetsContext): List[ET] = toList(c.del_target()).map(mapDelTarget)
 
   def mapDelTarget(c: Del_targetContext): ET = {
-    if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)) else {
+    if (c.NAME() != null) {
+      Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c))
+    } else if (c.slices() != null) {
+      CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c))
+    } else {
       mapDelTAtom(c.del_t_atom())
     }
   }
@@ -310,7 +352,11 @@ object MapStatements {
   }
 
   def mapSingleTarget(c: Single_targetContext): ET = {
-    if (c.single_subscript_attribute_target() != null) mapSingleSubscriptAttributeTarget(c.single_subscript_attribute_target()) else if (c.NAME() != null) Ident(c.NAME().getText, ga(c)) else {
+    if (c.single_subscript_attribute_target() != null) {
+      mapSingleSubscriptAttributeTarget(c.single_subscript_attribute_target())
+    } else if (c.NAME() != null) {
+      Ident(c.NAME().getText, ga(c))
+    } else {
       mapSingleTarget(c.single_target())
     }
   }

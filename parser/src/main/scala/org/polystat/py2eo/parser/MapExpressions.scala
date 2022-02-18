@@ -21,7 +21,7 @@ import scala.collection.JavaConverters.asScala
 
 object MapExpressions {
 
-  class ASTMapperException(reason : String) extends Exception(reason)
+  class ASTMapperException(reason: String) extends Exception(reason)
 
   def ga(c: ParserRuleContext): GeneralAnnotation = new GeneralAnnotation(c)
 
@@ -70,7 +70,25 @@ object MapExpressions {
       val l = toList(context.compare_op_bitwise_or_pair())
       val l1 = l.map(
         c => {
-          if (c.eq_bitwise_or() != null) (Compops.Eq, mapBitwiseOr(c.eq_bitwise_or().bitwise_or())) else if (c.noteq_bitwise_or() != null) (Compops.Neq, mapBitwiseOr(c.noteq_bitwise_or().bitwise_or())) else if (c.lte_bitwise_or() != null) (Compops.Le, mapBitwiseOr(c.lte_bitwise_or().bitwise_or())) else if (c.lt_bitwise_or() != null) (Compops.Lt, mapBitwiseOr(c.lt_bitwise_or().bitwise_or())) else if (c.gte_bitwise_or() != null) (Compops.Ge, mapBitwiseOr(c.gte_bitwise_or().bitwise_or())) else if (c.gt_bitwise_or() != null) (Compops.Gt, mapBitwiseOr(c.gt_bitwise_or().bitwise_or())) else if (c.notin_bitwise_or() != null) (Compops.NotIn, mapBitwiseOr(c.notin_bitwise_or().bitwise_or())) else if (c.in_bitwise_or() != null) (Compops.In, mapBitwiseOr(c.in_bitwise_or().bitwise_or())) else if (c.isnot_bitwise_or() != null) (Compops.IsNot, mapBitwiseOr(c.isnot_bitwise_or().bitwise_or())) else if (c.is_bitwise_or() != null) {
+          if (c.eq_bitwise_or() != null) {
+            (Compops.Eq, mapBitwiseOr(c.eq_bitwise_or().bitwise_or()))
+          } else if (c.noteq_bitwise_or() != null) {
+            (Compops.Neq, mapBitwiseOr(c.noteq_bitwise_or().bitwise_or()))
+          } else if (c.lte_bitwise_or() != null) {
+            (Compops.Le, mapBitwiseOr(c.lte_bitwise_or().bitwise_or()))
+          } else if (c.lt_bitwise_or() != null) {
+            (Compops.Lt, mapBitwiseOr(c.lt_bitwise_or().bitwise_or()))
+          } else if (c.gte_bitwise_or() != null) {
+            (Compops.Ge, mapBitwiseOr(c.gte_bitwise_or().bitwise_or()))
+          } else if (c.gt_bitwise_or() != null) {
+            (Compops.Gt, mapBitwiseOr(c.gt_bitwise_or().bitwise_or()))
+          } else if (c.notin_bitwise_or() != null) {
+            (Compops.NotIn, mapBitwiseOr(c.notin_bitwise_or().bitwise_or()))
+          } else if (c.in_bitwise_or() != null) {
+            (Compops.In, mapBitwiseOr(c.in_bitwise_or().bitwise_or()))
+          } else if (c.isnot_bitwise_or() != null) {
+            (Compops.IsNot, mapBitwiseOr(c.isnot_bitwise_or().bitwise_or()))
+          } else if (c.is_bitwise_or() != null) {
             (Compops.Is, mapBitwiseOr(c.is_bitwise_or().bitwise_or()))
           } else {
             throw new ASTMapperException("Unsupported comparison operation?")
@@ -142,7 +160,13 @@ object MapExpressions {
   }
 
   def mapFactor(context: PythonParser.FactorContext): T = {
-    if (context.PLUS() != null) Unop(Unops.Plus, mapFactor(context.factor()), ga(context)) else if (context.MINUS() != null) Unop(Unops.Minus, mapFactor(context.factor()), ga(context)) else if (context.TILDE() != null) Unop(Unops.Neg, mapFactor(context.factor()), ga(context)) else {
+    if (context.PLUS() != null) {
+      Unop(Unops.Plus, mapFactor(context.factor()), ga(context))
+    } else if (context.MINUS() != null) {
+      Unop(Unops.Minus, mapFactor(context.factor()), ga(context))
+    } else if (context.TILDE() != null) {
+      Unop(Unops.Neg, mapFactor(context.factor()), ga(context))
+    } else {
       mapPower(context.power())
     }
   }
@@ -186,20 +210,60 @@ object MapExpressions {
   }
 
   def mapAtom(context: PythonParser.AtomContext): T = {
-    if (context.NAME() != null) Ident(context.NAME().getText, ga(context)) else if (context.TRUE() != null) BoolLiteral(true, ga(context)) else if (context.FALSE() != null) BoolLiteral(false, ga(context)) else if (context.NONE() != null) NoneLiteral(ga(context)) else if (context.strings() != null) StringLiteral(toList(context.strings().STRING()).map(_.getText), ga(context)) else if (context.NUMBER() != null) string2num(context.NUMBER().getText, context) else if (context.tuple() != null) mapTuple(context.tuple()) else if (context.group() != null) {
-      if (context.group().yield_expr() != null) mapYieldExpr(context.group().yield_expr()) else if (context.group().named_expression() != null) mapNamedExpression(context.group().named_expression()) else {
+    if (context.NAME() != null) {
+      Ident(context.NAME().getText, ga(context))
+    } else if (context.TRUE() != null) {
+      BoolLiteral(true, ga(context))
+    } else if (context.FALSE() != null) {
+      BoolLiteral(false, ga(context))
+    } else if (context.NONE() != null) {
+      NoneLiteral(ga(context))
+    } else if (context.strings() != null) {
+      StringLiteral(toList(context.strings().STRING()).map(_.getText), ga(context))
+    } else if (context.NUMBER() != null) {
+      string2num(context.NUMBER().getText, context)
+    } else if (context.tuple() != null) {
+      mapTuple(context.tuple())
+    } else if (context.group() != null) {
+      if (context.group().yield_expr() != null) {
+        mapYieldExpr(context.group().yield_expr())
+      } else if (context.group().named_expression() != null) {
+        mapNamedExpression(context.group().named_expression())
+      } else {
         throw new ASTMapperException("context.group problem")
       }
-    } else if (context.genexp() != null) mapGenexp(context.genexp()) else if (context.list() != null) mapList(context.list()) else if (context.listcomp() != null) mapListcomp(context.listcomp()) else if (context.dict() != null) mapDict(context.dict()) else if (context.set() != null) mapSet(context.set()) else if (context.dictcomp() != null) mapDictcomp(context.dictcomp()) else if (context.setcomp() != null) mapSetcomp(context.setcomp()) else if (context.ELLIPSIS() != null) EllipsisLiteral(ga(context)) else {
+    } else if (context.genexp() != null) {
+      mapGenexp(context.genexp())
+    } else if (context.list() != null) {
+      mapList(context.list())
+    } else if (context.listcomp() != null) {
+      mapListcomp(context.listcomp())
+    } else if (context.dict() != null) {
+      mapDict(context.dict())
+    } else if (context.set() != null) {
+      mapSet(context.set())
+    } else if (context.dictcomp() != null) {
+      mapDictcomp(context.dictcomp())
+    } else if (context.setcomp() != null) {
+      mapSetcomp(context.setcomp())
+    } else if (context.ELLIPSIS() != null) {
+      EllipsisLiteral(ga(context))
+    } else {
       throw new ASTMapperException("wrong alternative in mapAtom")
     }
   }
 
   def mapYieldExpr(context: PythonParser.Yield_exprContext): T = {
-    if (context.FROM() != null) YieldFrom(mapExpression(context.expression()), ga(context)) else if (context.star_expressions() == null) Yield(None, ga(context)) else {
+    if (context.FROM() != null) {
+      YieldFrom(mapExpression(context.expression()), ga(context))
+    } else if (context.star_expressions() == null) {
+      Yield(None, ga(context))
+    } else {
       val l = mapStarExpressions(context.star_expressions())
       Yield(Some(
-        if (context.star_expressions().COMMA().size() == 0) l.head else {
+        if (context.star_expressions().COMMA().size() == 0) {
+          l.head
+        } else {
           CollectionCons(CollectionKind.Tuple, l, ga(context))
         }
       ), ga(context))
@@ -317,8 +381,20 @@ object MapExpressions {
   }
 
   def mapStarAtom(context: PythonParser.Star_atomContext): T = {
-    if (context.NAME() != null) Ident(context.NAME().getText, ga(context)) else if (context.target_with_star_atom() != null) mapTargetWithStarAtom(context.target_with_star_atom()) else if (context.star_targets_tuple_seq() != null) mapStarTargetsTupleSeq(context.star_targets_tuple_seq()) else {
-      if (context.OPEN_PAREN() != null) CollectionCons(CollectionKind.Tuple, List(), ga(context)) else if (context.star_targets_list_seq() != null) mapStarTargetsListSeq(context.star_targets_list_seq()) else if (context.OPEN_BRACK() != null) CollectionCons(CollectionKind.List, List(), ga(context)) else {
+    if (context.NAME() != null) {
+      Ident(context.NAME().getText, ga(context))
+    } else if (context.target_with_star_atom() != null) {
+      mapTargetWithStarAtom(context.target_with_star_atom())
+    } else if (context.star_targets_tuple_seq() != null) {
+      mapStarTargetsTupleSeq(context.star_targets_tuple_seq())
+    } else {
+      if (context.OPEN_PAREN() != null) {
+        CollectionCons(CollectionKind.Tuple, List(), ga(context))
+      } else if (context.star_targets_list_seq() != null) {
+        mapStarTargetsListSeq(context.star_targets_list_seq())
+      } else if (context.OPEN_BRACK() != null) {
+        CollectionCons(CollectionKind.List, List(), ga(context))
+      } else {
         throw new ASTMapperException("mapStarAtom")
       }
     }
@@ -420,13 +496,21 @@ object MapExpressions {
   }
 
   def mapTPrimary(c: T_primaryContext): T = {
-    if (c.NAME() != null) Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c)) else if (c.slices() != null) CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c)) else if (c.genexp() != null) mapGenexp(c.genexp()) else if (c.arguments() != null) {
+    if (c.NAME() != null) {
+      Field(mapTPrimary(c.t_primary()), c.NAME().getText, ga(c))
+    } else if (c.slices() != null) {
+      CallIndex(false, mapTPrimary(c.t_primary()), List((None, mapSlices(c.slices()))), ga(c))
+    } else if (c.genexp() != null) {
+      mapGenexp(c.genexp())
+    } else if (c.arguments() != null) {
       CallIndex(
         true, mapTPrimary(c.t_primary()),
         if (c.arguments() == null) List() else mapArgs(c.arguments().args()),
         ga(c)
       )
-    } else if (c.atom() != null) mapAtom(c.atom()) else {
+    } else if (c.atom() != null) {
+      mapAtom(c.atom())
+    } else {
       CallIndex(true, mapTPrimary(c.t_primary()), List(), ga(c))
     }
   }
@@ -438,7 +522,11 @@ object MapExpressions {
   }
 
   def mapArg(c: ArgContext): T = {
-    if (c.starred_expression() != null) mapStarredExpression(c.starred_expression()) else if (c.assignment_expression() != null) mapAssignmentExpression(c.assignment_expression()) else {
+    if (c.starred_expression() != null) {
+      mapStarredExpression(c.starred_expression())
+    } else if (c.assignment_expression() != null) {
+      mapAssignmentExpression(c.assignment_expression())
+    } else {
       mapExpression(c.expression())
     }
   }
@@ -481,7 +569,13 @@ object MapExpressions {
           x.substring(2, x.length).foldLeft(BigInt(0))((acc, ch) => {
             if (ch != '_') {
               acc * 16 + (
-                if (ch >= '0' && ch <= '9') ch.toInt - '0'.toInt else if (ch >= 'a' && ch <= 'f') ch.toInt - 'a'.toInt + 10 else if (ch >= 'A' && ch <= 'F') ch.toInt - 'A'.toInt + 10 else {
+                if (ch >= '0' && ch <= '9') {
+                  ch.toInt - '0'.toInt
+                } else if (ch >= 'a' && ch <= 'f') {
+                  ch.toInt - 'a'.toInt + 10
+                } else if (ch >= 'A' && ch <= 'F') {
+                  ch.toInt - 'A'.toInt + 10
+                } else {
                   throw new NumberFormatException()
                 }
                 )
