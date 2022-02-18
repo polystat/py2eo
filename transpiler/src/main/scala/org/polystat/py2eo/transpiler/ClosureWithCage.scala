@@ -1,8 +1,9 @@
 package org.polystat.py2eo.transpiler
 
-import Expression.{CallIndex, Field, Ident}
+import org.polystat.py2eo.parser.Expression.{CallIndex, Field, Ident}
 import SimplePass.{Names, procExpr, procStatement}
-import org.polystat.py2eo.transpiler.Statement.{Assign, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite}
+import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement, VarScope}
+import org.polystat.py2eo.parser.Statement.{Assign, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite}
 
 import scala.collection.immutable.HashMap
 

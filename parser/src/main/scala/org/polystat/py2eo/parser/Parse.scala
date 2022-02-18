@@ -1,12 +1,9 @@
-package org.polystat.py2eo.transpiler
+package org.polystat.py2eo.parser
 
 import java.io.File
 import scala.io.Source
 
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.ANTLRInputStream
-import org.polystat.py2eo.parser.{PythonLexer, PythonParser}
-import org.polystat.py2eo.transpiler.Statement
+import org.antlr.v4.runtime.{ANTLRInputStream, CommonTokenStream}
 
 object Parse {
 

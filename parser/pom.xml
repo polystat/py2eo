@@ -12,7 +12,7 @@
     <name>parser</name>
     <packaging>jar</packaging>
     <properties>
-        <antlr4.version>4.9.2</antlr4.version>
+        <antlr4.version>4.9.3</antlr4.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -23,9 +23,15 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.antlr</groupId>
@@ -44,6 +50,25 @@
                         <argument>-visitor</argument>
                     </arguments>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.scala-tools</groupId>
+                <artifactId>maven-scala-plugin</artifactId>
+                <version>2.15.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <args>
+                                <arg>-dependencyfile</arg>
+                                <arg>${project.build.directory}/.scala_dependencies</arg>
+                            </args>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
