@@ -1,14 +1,14 @@
 package org.polystat.py2eo.transpiler
 
 import scala.collection.immutable.HashMap
-
 import PrintEO.{Text, indent, printExpr}
+import org.polystat.py2eo.parser.{ArgKind, Expression, Statement, VarScope}
 import org.polystat.py2eo.transpiler.Common.GeneratorException
-import org.polystat.py2eo.transpiler.Expression.{
+import org.polystat.py2eo.parser.Expression.{
   Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar, Field,
   GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
-import org.polystat.py2eo.transpiler.Statement.{
+import org.polystat.py2eo.parser.Statement.{
   Assign, Break, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite, While
 }
 

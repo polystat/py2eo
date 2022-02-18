@@ -1,8 +1,8 @@
 package org.polystat.py2eo.transpiler
 
 import java.io.File
-
-import Expression.{CallIndex, Ident, StringLiteral}
+import org.polystat.py2eo.parser.Expression.{CallIndex, Ident, StringLiteral}
+import org.polystat.py2eo.parser.Parse
 
 object FindBadConstructs extends App {
   val dir = new File(".")

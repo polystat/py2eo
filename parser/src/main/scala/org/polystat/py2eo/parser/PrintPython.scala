@@ -1,14 +1,13 @@
-package org.polystat.py2eo.transpiler
+package org.polystat.py2eo.parser
 
-import org.polystat.py2eo.transpiler.Common.{comma, dot, emptyString, lineFeed, space}
-import org.polystat.py2eo.transpiler.Expression.{
+import org.polystat.py2eo.parser.Expression.{
   AnonFun, Assignment, Await, Binop, Binops, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons,
   CollectionKind, Compops, Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar,
   EllipsisLiteral, Field, FloatLiteral, ForComprehension, FreakingComparison, GeneratorComprehension, Ident,
   IfComprehension, ImagLiteral, IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice,
   Star, StringLiteral, T, Unop, Unops, UnsupportedExpr, Yield, YieldFrom
 }
-import org.polystat.py2eo.transpiler.Statement.{
+import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
   If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
   Unsupported, While, With
@@ -16,27 +15,37 @@ import org.polystat.py2eo.transpiler.Statement.{
 
 object PrintPython {
 
+  val space = " "
+  val comma = ", "
+  val lineFeed = "\n"
+  val dot = "."
+  val emptyString = ""
+
   def printExpr: T => String = printExprOrDecorator(noBracketsAround = false)(_)
 
   def print(s: Statement.T): String = printSt(s, "")
 
-  private def printComprehension(e : Comprehension) : String =
+  private def printComprehension(e: Comprehension): String =
     e match {
-      case f : ForComprehension =>
+      case f: ForComprehension =>
         "%sfor %s in %s".format(if (f.isAsync) "async " else "", printExpr(f.what), printExpr(f.in))
-      case x : IfComprehension => "if %s".format(printExpr(x.cond))
+      case x: IfComprehension => "if %s".format(printExpr(x.cond))
     }
 
-  private def printDictElt(x : DictEltDoubleStar) = x match {
-    case Left(value) =>  "%s : %s".format(printExpr(value._1), printExpr(value._2))
-    case Right(value) =>  "**%s".format(printExpr(value))
+  private def printDictElt(x: DictEltDoubleStar) = x match {
+    case Left(value) => "%s : %s".format(printExpr(value._1), printExpr(value._2))
+    case Right(value) => "**%s".format(printExpr(value))
   }
 
-  private def printExprOrDecorator(noBracketsAround : Boolean)(e : T) : String = {
-    def brak(s : String, open : String, close : String) = s"$open$s$close"
-    def around(s : String) = if (noBracketsAround) s else brak(s, "(", ")")
-    def rnd(s : String) = brak(s, "(", ")")
-    def sqr(s : String) : String = brak(s, "[", "]")
+  private def printExprOrDecorator(noBracketsAround: Boolean)(e: T): String = {
+    def brak(s: String, open: String, close: String) = s"$open$s$close"
+
+    def around(s: String) = if (noBracketsAround) s else brak(s, "(", ")")
+
+    def rnd(s: String) = brak(s, "(", ")")
+
+    def sqr(s: String): String = brak(s, "[", "]")
+
     e match {
       case Assignment(ident, rhs, _) => around(s"$ident := ${printExpr(rhs)}")
       case Await(what, _) => around("await %s".format(printExpr(what)))
@@ -61,23 +70,24 @@ object PrintPython {
       case Star(e, _) => "*%s".format(printExpr(e))
       case DoubleStar(e, _) => "**%s".format(printExpr(e))
       case Slice(from, to, by, _) =>
-        def procBound(b : Option[T]) = b match {
+        def procBound(b: Option[T]) = b match {
           case None => emptyString
           case Some(e) => printExpr(e)
         }
+
         "%s:%s:%s".format(procBound(from), procBound(to), procBound(by))
       case CallIndex(false, whom, List((_, CollectionCons(CollectionKind.Tuple, l, _))), _) if l.nonEmpty =>
         "%s[%s%s]".format(printExpr(whom), l.map(printExpr).mkString(comma), if (l.size == 1) "," else emptyString)
-      case CallIndex(isCall, whom, args, _) => printExpr(whom) + (if (isCall) rnd _ else sqr _)(
-        args.map{case (None, e) => printExpr(e)  case (Some(keyword), e) => s"$keyword=${printExpr(e)}"}.mkString(comma)
+      case CallIndex(isCall, whom, args, _) => printExpr(whom) + (if (isCall) rnd _ else sqr _) (
+        args.map { case (None, e) => printExpr(e) case (Some(keyword), e) => s"$keyword=${printExpr(e)}" }.mkString(comma)
       )
       case Field(whose, name, _) => "%s.%s".format(printExpr(whose), name)
       case Cond(cond, yes, no, _) => "%s if %s else %s".format(printExpr(yes), printExpr(cond), printExpr(no))
       case AnonFun(args, otherPositional, otherKeyword, body, _) =>
-         around("lambda %s : %s").format(
-           printArgs(args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None))),
-           printExpr(body)
-         )
+        around("lambda %s : %s").format(
+          printArgs(args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None))),
+          printExpr(body)
+        )
       case CollectionCons(kind, l, _) =>
         val braks = CollectionKind.toBraks(kind)
         brak("%s%s".format(l.map(printExpr).mkString(comma), if (l.size == 1) "," else emptyString), braks._1, braks._2)
@@ -90,24 +100,28 @@ object PrintPython {
       case DictComprehension(base, l, _) =>
         "{%s %s}".format(printDictElt(base), l.map(printComprehension).mkString(space))
       case Yield(Some(e), _) => around("yield %s".format(printExpr(e)))
-      case Yield(None, _) =>  around("yield")
+      case Yield(None, _) => around("yield")
       case YieldFrom(e, _) => around("yield from %s").format(printExpr(e))
     }
   }
 
-  private def option2string[T](x : Option[T]): String = x match {
+  private def option2string[T](x: Option[T]): String = x match {
     case Some(value) => value.toString
     case None => emptyString
   }
 
-  private def printSt(s : Statement.T, indentAmount : String) : String = {
-    def async(isAsync : Boolean) = if (isAsync) "async " else emptyString
+  private def printSt(s: Statement.T, indentAmount: String): String = {
+    def async(isAsync: Boolean) = if (isAsync) "async " else emptyString
+
     val indentIncrAmount = indentAmount + "    "
-    def indentPos(str : String) : String = "%s%s # %s".format(indentAmount, str, s.ann)
+
+    def indentPos(str: String): String = "%s%s # %s".format(indentAmount, str, s.ann)
+
     def printDecorators(decorators: Decorators) =
       decorators.l.map(z => "%s@%s\n".format(indentAmount, printExprOrDecorator(true)(z))).mkString(emptyString)
+
     s match {
-      case u : Unsupported => indentPos("Unsupported:%s\n%s".format(
+      case u: Unsupported => indentPos("Unsupported:%s\n%s".format(
         u.es.map(x => printExpr(x._2)).mkString(comma),
         u.sts.map(printSt(_, indentIncrAmount)).mkString(lineFeed)
       ))
@@ -125,12 +139,13 @@ object PrintPython {
           indentAmount, async(isAsync), cmsString, s.ann, printSt(body, indentIncrAmount)
         )
       case If(conditioned, eelse, _) =>
-        def oneCase(keyword : String, p : (T, Statement.T)) = {
+        def oneCase(keyword: String, p: (T, Statement.T)) = {
           "%s%s (%s): # %s \n%s".format(
             indentAmount, keyword, printExpr(p._1), p._2.ann.toString,
             printSt(p._2, indentIncrAmount)
           )
         }
+
         val iif :: elifs = conditioned
         val elseString = eelse match {
           case Some(eelse) => "%selse: # %s\n%s".format(indentAmount, eelse.ann.toString, printSt(eelse, indentIncrAmount))
@@ -184,7 +199,7 @@ object PrintPython {
       case AnnAssign(lhs, rhsAnn, rhs, _) =>
         "%s%s : %s%s".format(
           indentAmount, printExpr(lhs), printExpr(rhsAnn),
-          rhs match { case None => emptyString case Some(e) => " = %s".format(printExpr(e))}
+          rhs match { case None => emptyString case Some(e) => " = %s".format(printExpr(e)) }
         )
       case CreateConst(name, value, ann) =>
         printSt(Assign(List(Ident(name, value.ann.pos), value), ann.pos.pos), indentAmount)
@@ -202,10 +217,10 @@ object PrintPython {
       case SimpleObject(name, fields, ann) =>
         "%sclass %s: # %s\n%s".format(
           indentAmount, name, s.ann,
-            printSt(
-              Suite(fields.map(z => Assign(List(Ident(z._1, z._2.ann.pos), z._2), z._2.ann.pos)), ann.pos),
-              indentIncrAmount
-            )
+          printSt(
+            Suite(fields.map(z => Assign(List(Ident(z._1, z._2.ann.pos), z._2), z._2.ann.pos)), ann.pos),
+            indentIncrAmount
+          )
         )
       case ClassDef(name, bases, body, decorators, _) =>
         "%s%sclass %s(%s): # %s\n%s".format(
@@ -223,7 +238,10 @@ object PrintPython {
           printSt(body, indentIncrAmount)
         )
       case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, _, isAsync, _) =>
-        val retAnn = returnAnnotation match { case None => emptyString case Some(e) => " -> " + printExpr(e) }
+        val retAnn = returnAnnotation match {
+          case None => emptyString
+          case Some(e) => " -> " + printExpr(e)
+        }
         "%s%s%sdef %s(%s)%s: # %s\n%s".format(
           printDecorators(decorators),
           indentAmount, async(isAsync), name,
@@ -231,30 +249,42 @@ object PrintPython {
           printSt(body, indentIncrAmount)
         )
       case ImportModule(what, as, _) =>
-        indentPos("import %s%s".format(what.mkString(dot), as match { case None => emptyString case Some(x) => s" as $x"}))
+        indentPos("import %s%s".format(what.mkString(dot), as match { case None => emptyString case Some(x) => s" as $x" }))
       case ImportSymbol(from, what, as0, _) =>
-        val as = as0 match { case None => emptyString case Some(s) => s" as $s" }
+        val as = as0 match {
+          case None => emptyString
+          case Some(s) => s" as $s"
+        }
         indentPos(s"from ${from.mkString(dot)} import $what$as")
       case ImportAllSymbols(from, _) => indentPos(s"from ${from.mkString(dot)} import *")
     }
   }
 
-  private def printArgs(args : List[Parameter], otherPositional : Option[(String, Option[T])],
-                otherKeyword : Option[(String, Option[T])]) : String = {
+  private def printArgs(args: List[Parameter], otherPositional: Option[(String, Option[T])],
+                        otherKeyword: Option[(String, Option[T])]): String = {
     val positionalOnly = args.filter(_.kind == ArgKind.Positional)
     val posOrKeyword = args.filter(_.kind == ArgKind.PosOrKeyword)
     val keywordOnly = args.filter(_.kind == ArgKind.Keyword)
     assert(positionalOnly ++ posOrKeyword ++ keywordOnly == args)
-    def f(pref : String, z : Option[(String, Option[T])]) : List[String] =
+
+    def f(pref: String, z: Option[(String, Option[T])]): List[String] =
       z match {
         case Some((name, None)) => List(pref + name)
         case Some((name, Some(typAnn))) => List(pref + name + " : " + printExpr(typAnn))
         case None => if (pref != "*" || keywordOnly.isEmpty) List() else List(pref)
       }
-    def printArg(x : Parameter) =
+
+    def printArg(x: Parameter) =
       x.name +
-        (x.paramAnn match { case None => emptyString case Some(value) => " : " + printExpr(value)}) +
-        (x.default match { case None => emptyString case Some(default) => " = " + printExpr(default)})
+        (x.paramAnn match {
+          case None => emptyString
+          case Some(value) => " : " + printExpr(value)
+        }) +
+        (x.default match {
+          case None => emptyString
+          case Some(default) => " = " + printExpr(default)
+        })
+
     val argstring = positionalOnly.map(printArg) ++
       (if (positionalOnly.isEmpty) List() else List("/")) ++
       posOrKeyword.map(printArg) ++ f("*", otherPositional) ++
