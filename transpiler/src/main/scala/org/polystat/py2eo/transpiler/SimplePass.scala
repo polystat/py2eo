@@ -447,7 +447,7 @@ object SimplePass {
     case List(x) => Some(x)
   }
 
-  def simpleProcExprInStatementAcc[Acc](f: (Acc, T) => (Acc, T))(acc : Acc, s: Statement): (Acc, Statement) = {
+  def simpleProcExprInStatementAcc[Acc](f: (Acc, T) => (Acc, T))(acc : Acc, s: Statement.T): (Acc, Statement.T) = {
     def fl(acc : Acc, l : List[T]) = l.foldLeft((acc, List[T]()))(
       (acc, e) => {
         val v = f(acc._1, e)
@@ -458,14 +458,14 @@ object SimplePass {
       val v = fl(acc, o.toList)
       (v._1, list2option(v._2))
     }
-    def pst(acc : Acc, s : Statement) : (Acc, Statement) = simpleProcExprInStatementAcc(f)(acc, s)
-    def pstl(acc : Acc, l : List[Statement]) : (Acc, List[Statement]) = l.foldLeft((acc, List[Statement]()))(
+    def pst(acc : Acc, s : Statement.T) : (Acc, Statement.T) = simpleProcExprInStatementAcc(f)(acc, s)
+    def pstl(acc : Acc, l : List[Statement.T]) : (Acc, List[Statement.T]) = l.foldLeft((acc, List[Statement.T]()))(
       (acc, st) => {
         val v = simpleProcExprInStatementAcc(f)(acc._1, st)
         (v._1, acc._2 :+ v._2)
       }
     )
-    def psto(acc : Acc, o : Option[Statement]) : (Acc, Option[Statement]) = {
+    def psto(acc : Acc, o : Option[Statement.T]) : (Acc, Option[Statement.T]) = {
       val v = pstl(acc, o.toList)
       (v._1, list2option(v._2))
     }
@@ -575,7 +575,7 @@ object SimplePass {
         (acc2, With(cms1, body1, isAsync, ann))
       case Try(ttry, excepts, eelse, ffinally, ann) =>
         val (acc1, ttry1) = pst(acc, ttry)
-        val (acc2, excepts1) = excepts.foldLeft((acc1, List[(Option[(T, Option[String])], Statement)]()))(
+        val (acc2, excepts1) = excepts.foldLeft((acc1, List[(Option[(T, Option[String])], Statement.T)]()))(
           (acc, x) => {
             val (acc1, a) = fo(acc._1, x._1.map(_._1))
             val (acc2, b) = pst(acc1, x._2)
@@ -596,7 +596,7 @@ object SimplePass {
     }
   }
 
-  def simpleProcExprInStatement(f : T => T)(s : Statement, ns : Names) : (Statement, Names) = {
+  def simpleProcExprInStatement(f : T => T)(s : Statement.T, ns : Names) : (Statement.T, Names) = {
     val (ns1, st1) = simpleProcExprInStatementAcc[Names]((ns, e) => (ns, f(e)))(ns, s)
     (st1, ns1)
   }
