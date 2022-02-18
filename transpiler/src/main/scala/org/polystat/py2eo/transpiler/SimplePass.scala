@@ -38,10 +38,10 @@ object SimplePass {
 
   }
 
-  def procStatementGeneral(f: (Statement.T, Names) => (Statement.T, Names, Boolean))(s0: Statement.T, ns0: Names): (Statement.T, Names) = {
+  def procStatementGeneral[Acc](f: (Statement.T, Acc) => (Statement.T, Acc, Boolean))(s0: Statement.T, ns0: Acc): (Statement.T, Acc) = {
     def pst = procStatementGeneral(f)(_, _)
 
-    def pstl[T](extract: T => Statement.T, l: List[T], ns: Names) =
+    def pstl[T](extract: T => Statement.T, l: List[T], ns: Acc) =
       l.foldLeft((List[Statement.T](), ns))((acc, st) => {
         val xst = pst(extract(st), acc._2)
         (acc._1 :+ xst._1, xst._2)
@@ -105,7 +105,7 @@ object SimplePass {
   }
 
   def procStatement(f: (Statement.T, Names) => (Statement.T, Names))(s0: Statement.T, ns0: Names): (Statement.T, Names) =
-    procStatementGeneral((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
+    procStatementGeneral[Names]((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
 
 
   // all the forcing code is only needed to keep computation order if we transform an expression to a statement:

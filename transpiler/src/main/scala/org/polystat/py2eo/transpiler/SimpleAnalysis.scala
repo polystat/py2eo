@@ -1,7 +1,6 @@
 package org.polystat.py2eo.transpiler
 
 import scala.collection.immutable.HashMap
-
 import org.polystat.py2eo.transpiler.Common.ASTAnalysisException
 import org.polystat.py2eo.transpiler.Expression.{
   AnonFun, Assignment, Await, Binop, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons, Comprehension,
@@ -10,6 +9,7 @@ import org.polystat.py2eo.transpiler.Expression.{
   LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, Unop, UnsupportedExpr,
   Yield, YieldFrom
 }
+import org.polystat.py2eo.transpiler.SimplePass.Names
 import org.polystat.py2eo.transpiler.Statement.{
   AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
   If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
@@ -160,7 +160,7 @@ object SimpleAnalysis {
       x => if (x._2._1 == VarScope.Local || x._2._1 == VarScope.Arg) (x._1, (VarScope.ImplicitNonLocal, x._2._2)) else x
     )
     val merged = v.foldLeft(vUpper)((acc, z) => acc.+(z))
-    val (body, _) = SimplePass.procStatementGeneral(
+    val (body, _) = SimplePass.procStatementGeneral[Names](
       (s, ns) => s match {
         case f : FuncDef => (computeAccessibleIdentsF(merged, f), ns, false)
         case _ => (s, ns, true)
@@ -173,7 +173,7 @@ object SimpleAnalysis {
   }
 
   def computeAccessibleIdents(s : Statement.T) : Statement.T = {
-    SimplePass.procStatementGeneral(
+    SimplePass.procStatementGeneral[Names](
       (s, ns) => s match {
         case f : FuncDef => (computeAccessibleIdentsF(HashMap(), f), ns, false)
         case _ => (s, ns, true)
