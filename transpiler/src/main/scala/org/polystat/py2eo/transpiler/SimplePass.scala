@@ -438,50 +438,163 @@ object SimplePass {
     }
   }
 
-  def simpleProcExprInStatement(f: T => T)(s: Statement, ns: Names): (Statement, Names) = {
-    def pst(s : Statement) : Statement = simpleProcExprInStatement(f)(s, ns)._1
-    val s1 = s match {
-      case If(conditioned, eelse, ann) => If(conditioned.map(x => (f(x._1), pst(x._2))), eelse.map(pst), ann)
-      case IfSimple(cond, yes, no, ann) => IfSimple(f(cond), pst(yes), pst(no), ann)
-      case While(cond, body, eelse, ann) => While(f(cond), pst(body), eelse.map(pst), ann)
-      case For(what, in, body, eelse, isAsync, ann) => For(f(what), f(in), pst(body), eelse.map(pst), isAsync, ann)
-      case Suite(l, ann) => Suite(l.map(pst), ann)
-      case AugAssign(op, lhs, rhs, ann) => AugAssign(op, f(lhs), f(rhs), ann)
-      case AnnAssign(lhs, rhsAnn, rhs, ann) => AnnAssign(f(lhs), f(rhsAnn), rhs.map(f), ann)
-      case Assign(l, ann) => Assign(l.map(f), ann)
-      case CreateConst(name, value, ann) => CreateConst(name, f(value), ann)
-      case Pass(ann) => s
-      case Break(ann) => s
-      case Continue(ann) => s
-      case Return(x, ann) => Return(x.map(f), ann)
-      case Assert(what, param, ann) => Assert(f(what), param.map(f), ann)
-      case Raise(e, from, ann) => Raise(e.map(f), from.map(f), ann)
-      case Del(l, ann) => Del(f(l), ann)
+  def list2option[T](l : List[T]) : Option[T] = l match {
+    case List() => None
+    case List(x) => Some(x)
+  }
+
+  def simpleProcExprInStatementAcc[Acc](f: (Acc, T) => (Acc, T))(acc : Acc, s: Statement): (Acc, Statement) = {
+    def fl(acc : Acc, l : List[T]) = l.foldLeft((acc, List[T]()))(
+      (acc, e) => {
+        val v = f(acc._1, e)
+        (v._1, acc._2 :+ v._2)
+      }
+    )
+    def fo(acc : Acc, o : Option[T]) : (Acc, Option[T]) = {
+      val v = fl(acc, o.toList)
+      (v._1, list2option(v._2))
+    }
+    def pst(acc : Acc, s : Statement) : (Acc, Statement) = simpleProcExprInStatementAcc(f)(acc, s)
+    def pstl(acc : Acc, l : List[Statement]) : (Acc, List[Statement]) = l.foldLeft((acc, List[Statement]()))(
+      (acc, st) => {
+        val v = simpleProcExprInStatementAcc(f)(acc._1, st)
+        (v._1, acc._2 :+ v._2)
+      }
+    )
+    def psto(acc : Acc, o : Option[Statement]) : (Acc, Option[Statement]) = {
+      val v = pstl(acc, o.toList)
+      (v._1, list2option(v._2))
+    }
+    s match {
+      case If(conditioned, eelse, ann) =>
+        val (acc1, conds) = fl(acc, conditioned.map(_._1))
+        val (acc2, sts) = pstl(acc1, conditioned.map(_._2))
+        val (acc3, eelse1) = psto(acc2, eelse)
+        (acc3, If(conds.zip(sts), eelse1, ann))
+      case IfSimple(cond, yes, no, ann) =>
+        val (acc1, cond1) = f(acc, cond)
+        val (acc2, yes1) = pst(acc1, yes)
+        val (acc3, no1) = pst(acc2, no)
+        (acc3, IfSimple(cond1, yes1, no1, ann))
+      case While(cond, body, eelse, ann) =>
+        val (acc1, cond1) = f(acc, cond)
+        val (acc2, body1) = pst(acc1, body)
+        val (acc3, eelse1) = psto(acc2, eelse)
+        (acc3, While(cond1, body1, eelse1, ann))
+      case For(what, in, body, eelse, isAsync, ann) =>
+        val (acc1, List(what1, in1)) = fl(acc, List(what, in))
+        val (acc2, body1) = pst(acc1, body)
+        val (acc3, eelse1) = psto(acc2, eelse)
+        (acc3, For(what1, in1, body1, eelse1, isAsync, ann))
+      case Suite(l, ann) =>
+        val (acc1, l1) = pstl(acc, l)
+        (acc1, Suite(l1, ann))
+      case AugAssign(op, lhs, rhs, ann) =>
+        val (acc1, List(lhs1, rhs1)) = fl(acc, List(lhs, rhs))
+        (acc1, AugAssign(op, lhs1, rhs1, ann))
+      case AnnAssign(lhs, rhsAnn, rhs, ann) =>
+        val (acc1, List(lhs1, rhsAnn1)) = fl(acc, List(lhs, rhsAnn))
+        val (acc2, rhs1) = fo(acc1, rhs)
+        (acc2, AnnAssign((lhs1), (rhsAnn1), rhs1, ann))
+      case Assign(l, ann) =>
+        val (acc1, l1) = fl(acc, l)
+        (acc1, Assign(l1, ann))
+      case CreateConst(name, value, ann) =>
+        val (acc1, value1) = f(acc, value)
+        (acc1, CreateConst(name, value1, ann))
+      case Pass(ann) => (acc, s)
+      case Break(ann) => (acc, s)
+      case Continue(ann) => (acc, s)
+      case Return(x, ann) =>
+        val (acc1, x1) = fo(acc, x)
+        (acc1, Return(x1, ann))
+      case Assert(what, param, ann) =>
+        val (acc1, what1) = f(acc, what)
+        val (acc2, param1) = fo(acc1, param)
+        (acc2, Assert(what1, param1, ann))
+      case Raise(e, from, ann) =>
+        val (acc1, e1) = fo(acc, e)
+        val (acc2, from1) = fo(acc1, from)
+        (acc2, Raise(e1, from1, ann))
+      case Del(l, ann) =>
+        val (acc1, l1) = f(acc, l)
+        (acc1, Del((l1), ann))
       case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, accessibleIdents, isAsync, ann) =>
-        FuncDef(
-          name,
-          args.map(p => p.withAnnDefault(p.paramAnn.map(f), p.default.map(f))),
-          otherPositional.map(x => (x._1, x._2.map(f))),
-          otherKeyword.map(x => (x._1, x._2.map(f))),
-          returnAnnotation.map(f),
-          pst(body), Decorators(decorators.l.map(f)),
-          HashMap(), isAsync, ann
+        val (acc1, args1) = args.foldLeft((acc, List[Parameter]()))(
+          (acc, p) => {
+            val (acc1, ann1) = fo(acc._1, p.paramAnn)
+            val (acc2, default1) = fo(acc1, p.default)
+            (acc2, acc._2 :+ p.withAnnDefault(ann1, default1))
+          }
+        )
+
+        def inner(acc: Acc, x: Option[(String, Option[T])]) = x match {
+          case Some((s, value)) =>
+            val (acc1, value1) = fo(acc, value)
+            (acc1, Some(s, value1))
+          case None => (acc, None)
+        }
+
+        val (acc2, otherPositional1) = inner(acc1, otherPositional)
+        val (acc3, otherKeyword1) = inner(acc2, otherKeyword)
+        val (acc4, returnAnnotation1) = fo(acc3, returnAnnotation)
+        val (acc5, body1) = pst(acc4, body)
+        val (acc6, dec1) = fl(acc5, decorators.l)
+        (acc6,
+          FuncDef(
+            name, args1, otherPositional1, otherKeyword1, returnAnnotation1,
+            body1, Decorators(dec1), HashMap(), isAsync, ann
+          )
         )
       case ClassDef(name, bases, body, decorators, ann) =>
-        ClassDef(name, bases.map(x => (x._1, f(x._2))), pst(body), Decorators(decorators.l.map(f)), ann)
-      case SimpleObject(name, fields, ann) => SimpleObject(name, fields.map(x => (x._1, f(x._2))), ann)
-      case NonLocal(l, ann) => s
-      case Global(l, ann) => s
-      case ImportModule(what, as, ann) => s
-      case ImportAllSymbols(from, ann) => s
-      case ImportSymbol(from, what, as, ann) => s
-      case With(cms, body, isAsync, ann) => With(cms.map(x => (f(x._1), x._2.map(f))), pst(body), isAsync, ann)
+        val (acc1, bases1) = fl(acc, bases.map(_._2))
+        val (acc2, body1) = pst(acc1, body)
+        val (acc6, dec1) = fl(acc2, decorators.l)
+        (acc6, ClassDef(name, bases.map(_._1).zip(bases1), body1, Decorators(dec1), ann))
+      case SimpleObject(name, fields, ann) =>
+        val (acc1, fields1) = fl(acc, fields.map(_._2))
+        (acc1, SimpleObject(name, fields.map(_._1).zip(fields1), ann))
+      case NonLocal(l, ann) => (acc, s)
+      case Global(l, ann) => (acc, s)
+      case ImportModule(what, as, ann) => (acc, s)
+      case ImportAllSymbols(from, ann) => (acc, s)
+      case ImportSymbol(from, what, as, ann) => (acc, s)
+      case With(cms, body, isAsync, ann) =>
+        val (acc1, cms1) = cms.foldLeft((acc, List[(T, Option[T])]()))(
+          (acc, x) => {
+            val (acc1, e1) = f(acc._1, x._1)
+            val (acc2, e2) = fo(acc1, x._2)
+            (acc2, acc._2 :+ (e1, e2))
+          }
+        )
+        val (acc2, body1) = pst(acc1, body)
+        (acc2, With(cms1, body1, isAsync, ann))
       case Try(ttry, excepts, eelse, ffinally, ann) =>
-        Try(pst(ttry), excepts.map(x => (x._1.map(x => (f(x._1), x._2)), pst(x._2))), eelse.map(pst), ffinally.map(pst), ann)
+        val (acc1, ttry1) = pst(acc, ttry)
+        val (acc2, excepts1) = excepts.foldLeft((acc1, List[(Option[(T, Option[String])], Statement)]()))(
+          (acc, x) => {
+            val (acc1, a) = fo(acc._1, x._1.map(_._1))
+            val (acc2, b) = pst(acc1, x._2)
+            (acc2, acc._2 :+ (a.zip(x._1.map(_._2)), b))
+          }
+        )
+        val (acc3, eelse1) = psto(acc2, eelse)
+        val (acc4, ffinally1) = psto(acc3, ffinally)
+        (acc4, Try(ttry1, excepts1, eelse1, ffinally1, ann))
       case uns: Unsupported =>
-        new Unsupported(pst(uns.original), uns.declareVars, uns.es.map(x => (x._1, f(x._2))), uns.sts.map(pst), uns.ann)
+        val (acc1, orig1) = pst(acc, uns.original)
+        val (acc2, es1) = fl(acc1, uns.es.map(_._2))
+        val (acc3, sts1) = pstl(acc2, uns.sts)
+        (
+          acc3,
+          new Unsupported(orig1, uns.declareVars, uns.es.map(_._1).zip(es1), sts1, uns.ann)
+        )
     }
-    (s1, ns)
+  }
+
+  def simpleProcExprInStatement(f : T => T)(s : Statement, ns : Names) : (Statement, Names) = {
+    val (ns1, st1) = simpleProcExprInStatementAcc[Names]((ns, e) => (ns, f(e)))(ns, s)
+    (st1, ns1)
   }
 
   def simplifyIf(s: Statement, ns: Names): (Statement, Names) = s match {
