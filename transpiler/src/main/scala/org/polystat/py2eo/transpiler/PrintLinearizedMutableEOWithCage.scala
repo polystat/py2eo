@@ -27,7 +27,7 @@ object PrintLinearizedMutableEOWithCage {
   )
 
   // todo: imperative style suddenly
-  object HackName {
+  private object HackName {
     var count : Int = 0
     def apply(): String = {
       count = count + 1
@@ -42,10 +42,10 @@ object PrintLinearizedMutableEOWithCage {
     case _ => None
   }
 
-  def pe: T => String = printExpr
-  def isFun(f : Statement.T): Boolean = f match { case _: FuncDef => true case _ => false }
+  private def pe: T => String = printExpr
+  private def isFun(f : Statement.T): Boolean = f match { case _: FuncDef => true case _ => false }
 
-  def printSt(st : Statement.T) : Text =
+  private def printSt(st : Statement.T) : Text =
     st match {
       case SimpleObject(name, l, _) =>
         ("write." ::
@@ -122,7 +122,7 @@ object PrintLinearizedMutableEOWithCage {
       case Suite(l, _) => l.flatMap(printSt)
     }
 
-  def printFun(newName : String, preface : List[String], f : FuncDef) : Text = {
+  private def printFun(newName : String, preface : List[String], f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     val funs = SimpleAnalysis.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
@@ -158,6 +158,7 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printTest(testName : String, st : Statement.T) : Text = {
+    HackName.count = 0 // todo: imperative style suddenly
     println(s"doing $testName")
     val mkCopy = List(
       "[x] > mkCopy",
