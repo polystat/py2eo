@@ -49,31 +49,33 @@ object PrintLinearizedMutableEOWithCage {
         val Suite(l0, _) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
         val decorates = bases.headOption.map(_._2)
-          s"[unused] > $name" ::
-          indent(
-            (
-              "[] > result" :: indent(
-                l.map{
-                  case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
-                  case f : FuncDef => s"cage > ${f.name}"
-                } ++
-                decorates.toList.map(e => s"${printExpr(e)} > base") ++
-                (
-                  "seq > initFields" :: indent(
-                    l.flatMap{
-                      case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
-                      case f : FuncDef =>
-                        "write." :: indent(f.name :: printFun(List(), f))
-                    } ++
-                    decorates.toList.map(x => "base")
-                  )
-                ) ++
-                decorates.toList.map(x => "base.result > @")
-              )
-            ) :+ "result.initFields > @"
+          s"[] > $name" :: indent(
+            "[unused] > apply" ::
+            indent(
+              (
+                "[] > result" :: indent(
+                  l.map{
+                    case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
+                    case f : FuncDef => s"cage > ${f.name}"
+                  } ++
+                  decorates.toList.map(e => s"${printExpr(e)} > base") ++
+                  (
+                    "seq > initFields" :: indent(
+                      l.flatMap{
+                        case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
+                        case f : FuncDef =>
+                          "write." :: indent(f.name :: printFun(List(), f))
+                      } ++
+                      decorates.toList.map(x => "base")
+                    )
+                  ) ++
+                  decorates.toList.map(x => "base.result > @")
+                )
+              ) :+ "result.initFields > @"
+            )
           )
       case NonLocal(_, _) => List()
-      case f: FuncDef => printFun(List(), f)
+      case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
       case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if (seqOfFields(whom).isDefined &&
         seqOfFields(lhs).isDefined) =>
         //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
@@ -157,17 +159,19 @@ object PrintLinearizedMutableEOWithCage {
       argname + "NotCopied" }.mkString(" ")
     // todo: empty arg list hack
     val args2 = if (args1.isEmpty) "unused" else args1
-    s"[$args2]" :: indent(
-      preface ++ (
-        "cage > result" ::
-        "cage > tmp" ::
-        argCopies ++ memories ++ (
-          "goto > @" :: indent(
-            s"[$returnLabel]" :: indent(
-              "seq > @" :: indent(
-                ("stdout \"" + f.name + "\\n\"") ::
-                f.args.map(parm => s"${parm.name}.<") ++
-                (printSt(f.body) :+ "123")
+    "[]" :: indent(
+      s"[$args2] > apply" :: indent(
+        preface ++ (
+          "cage > result" ::
+          "cage > tmp" ::
+          argCopies ++ memories ++ (
+            "goto > @" :: indent(
+              s"[$returnLabel]" :: indent(
+                "seq > @" :: indent(
+                  ("stdout \"" + f.name + "\\n\"") ::
+                  f.args.map(parm => s"${parm.name}.<") ++
+                  (printSt(f.body) :+ "123")
+                )
               )
             )
           )
