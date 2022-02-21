@@ -1,233 +1,73 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.polystat</groupId>
-  <artifactId>py2eo</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>${project.artifactId}</name>
-  <description>Python to EO translator</description>
-  <inceptionYear>2010</inceptionYear>
-  <licenses>
-    <license>
-      <name>MIT</name>
-    </license>
-  </licenses>
-  
-  <parent>
-    <groupId>com.jcabi</groupId>
-    <artifactId>parent</artifactId>
-    <version>0.56.0</version>
-  </parent>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.polystat</groupId>
+    <artifactId>py2eo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
+        <java.version>14</java.version>
+        <encoding>UTF-8</encoding>
+        <scala.version>2.13.6</scala.version>
+        <antlr.version>4.9.2</antlr.version>
+    </properties>
+    <packaging>pom</packaging>
+    <name>py2eo</name>
+    <modules>
+        <module>parser</module>
+        <module>transpiler</module>
+        <module>checker</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.cactoos</groupId>
+            <artifactId>cactoos</artifactId>
+            <version>0.50</version>
+        </dependency>
+    </dependencies>
 
-  <properties>
-    <maven.compiler.source>14</maven.compiler.source>
-    <maven.compiler.target>14</maven.compiler.target>
-    <java.version>14</java.version>
-    <encoding>UTF-8</encoding>
-    <scala.version>2.13.6</scala.version>
-	<antlr.version>4.9.2</antlr.version>
-  </properties>
-
-<!--
-  <repositories>
-    <repository>
-      <id>scala-tools.org</id>
-      <name>Scala-Tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-releases</url>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>scala-tools.org</id>
-      <name>Scala-Tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-releases</url>
-    </pluginRepository>
-  </pluginRepositories>
--->
-  <dependencies>
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
-    </dependency>
-	<dependency>
-		<groupId>org.antlr</groupId>
-		<artifactId>antlr4-runtime</artifactId>
-		<version>${antlr.version}</version>
-		<type>jar</type>
-		<scope>compile</scope>
-	</dependency>
-	
-    <!-- Test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-		<groupId>org.scalatest</groupId>
-		<artifactId>scalatest_2.13</artifactId>
-		<version>3.2.10</version>
-	</dependency>
-	  <dependency>
-		  <groupId>org.yaml</groupId>
-		  <artifactId>snakeyaml</artifactId>
-		  <version>1.29</version>
-	  </dependency>
-
-	  <dependency>
-		  <groupId>org.cactoos</groupId>
-		  <artifactId>cactoos</artifactId>
-		  <version>0.50</version>
-	  </dependency>
-
-  </dependencies>
-
-  <build>
-    <sourceDirectory>src/main/scala</sourceDirectory>
-    <testSourceDirectory>src/test/scala</testSourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
-        <version>2.15.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-            <configuration>
-              <args>
-                <arg>-dependencyfile</arg>
-                <arg>${project.build.directory}/.scala_dependencies</arg>
-              </args>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <useFile>false</useFile>
-          <!-- If you have classpath issue like NoDefClassError,... -->
-          <!-- useManifestOnlyJar>false</useManifestOnlyJar -->
-          <includes>
-            <include>**/Test*.*</include>
-            <include>**/*Suite.*</include>
-          </includes>
-        </configuration>
-      </plugin>
-	  <plugin>
-		<groupId>org.antlr</groupId>
-		<artifactId>antlr4-maven-plugin</artifactId>
-		<version>${antlr.version}</version>
-		<configuration>
-		    <sourceDirectory>${project.basedir}/src/main/antlr4</sourceDirectory>
-		    <includes>
-                <include>PythonLexer.g4</include>
-                <include>PythonParser.g4</include>
-					</includes>
-					<visitor>true</visitor>
-					<listener>true</listener>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>antlr4</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<skip>${skipTests}</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>org.polystat.py2eo.Main</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<configuration>
-					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-				</configuration>
-			</plugin>
+    <build>
+        <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <workingDirectory>${project.basedir}</workingDirectory>
-                            <executable>java</executable>
-                            <arguments>
-                                <argument>-jar</argument>
-                                <argument>${project.build.directory}/scalastyle_2.13-1.5.1-assembly.jar</argument>
-                                <argument>-c</argument>
-                                <argument>${project.basedir}/scalastyle_config.xml</argument>
-                                <argument>${project.basedir}/src/</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0</version>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>download-single</goal>
-                        </goals>
-                        <configuration>
-                            <url>https://repo1.maven.org/maven2/com/beautiful-scala/scalastyle_2.13/1.5.1/</url>
-                            <fromFile>scalastyle_2.13-1.5.1-assembly.jar</fromFile>
-                            <toFile>${project.build.directory}/scalastyle_2.13-1.5.1-assembly.jar</toFile>
-                        </configuration>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <source>14</source>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.polystat.py2eo.transpiler.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <configuration>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                 </configuration>
             </plugin>
-		</plugins>
-  </build>
+        </plugins>
+    </build>
 </project>
