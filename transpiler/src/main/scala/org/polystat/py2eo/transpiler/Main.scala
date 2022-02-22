@@ -1,5 +1,7 @@
 package org.polystat.py2eo.transpiler
 
+import org.polystat.py2eo.parser.{PrintPython, Statement}
+
 import java.io.{File, FileWriter}
 import java.nio.file.{Files, Paths}
 import scala.io.Source

@@ -2,15 +2,16 @@ package org.polystat.py2eo.transpiler
 
 import scala.collection.immutable.HashMap
 import org.polystat.py2eo.transpiler.Common.ASTAnalysisException
-import org.polystat.py2eo.transpiler.Expression.{
+import org.polystat.py2eo.parser.Expression.{
   AnonFun, Assignment, Await, Binop, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons, Comprehension,
   Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar, EllipsisLiteral, Field, FloatLiteral,
   ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension, ImagLiteral, IntLiteral,
   LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, Unop, UnsupportedExpr,
   Yield, YieldFrom
 }
+import org.polystat.py2eo.parser.{GeneralAnnotation, PrintPython, Statement, VarScope}
 import org.polystat.py2eo.transpiler.SimplePass.Names
-import org.polystat.py2eo.transpiler.Statement.{
+import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
   If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
   Unsupported, While, With

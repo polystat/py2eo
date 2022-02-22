@@ -1,11 +1,12 @@
 package org.polystat.py2eo.transpiler
 
-import org.polystat.py2eo.transpiler.Expression.{
+import org.polystat.py2eo.parser.Expression.{
   Binop, Binops, BoolLiteral, CallIndex, CollectionCons, Compops, Cond, Field, FloatLiteral, FreakingComparison,
   IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
   UnsupportedExpr
 }
-import org.polystat.py2eo.transpiler.Statement.{
+import org.polystat.py2eo.parser.{Expression, GeneralAnnotation, Statement, VarScope}
+import org.polystat.py2eo.parser.Statement.{
   Assign, Decorators, FuncDef, IfSimple, ImportAllSymbols, ImportModule, Pass, SimpleObject, Suite, Unsupported, While
 }
 import org.polystat.py2eo.transpiler.Common.{crb, orb, space}

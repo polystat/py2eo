@@ -1,4 +1,4 @@
-package org.polystat.py2eo.transpiler
+package org.polystat.py2eo.parser
 
 import scala.collection.immutable.HashMap
 import org.antlr.v4.runtime.{ParserRuleContext, Token}
@@ -166,12 +166,7 @@ object Expression {
                      otherKeyword : Option[String], body : T, ann : GeneralAnnotation) extends T
   case class Yield(l : Option[T], ann : GeneralAnnotation) extends T
   case class YieldFrom(e : T, ann : GeneralAnnotation) extends T
-  class UnsupportedExpr(original0 : T, children0 : List[T], ann0 : GeneralAnnotation) extends T {
-    val original: T = original0
-    val children: List[T] = children0
-    val ann: GeneralAnnotation = ann0
-    def this(original : T) = this(original, SimpleAnalysis.childrenE(original), original.ann.pos)
-  }
+  case class UnsupportedExpr(original : T, children : List[T], ann : GeneralAnnotation) extends T
   object UnsupportedExpr {
     def unapply(e : UnsupportedExpr): Option[(T, List[T])] = Some((e.original, e.children))
   }
@@ -303,7 +298,7 @@ object Statement {
     val ann: GeneralAnnotation
   }
 
-  import org.polystat.py2eo.transpiler.Expression.{T => ET}
+  import Expression.{T => ET}
   case class If(conditioned: List[(ET, T)], eelse: Option[T], ann: GeneralAnnotation) extends T
   case class IfSimple(cond: ET, yes: T, no: T, ann: GeneralAnnotation) extends T
   case class While(cond: ET, body: T, eelse: Option[T], ann: GeneralAnnotation) extends T
@@ -340,14 +335,6 @@ object Statement {
   case class With(cms: List[(ET, Option[ET])], body: T, isAsync: Boolean, ann: GeneralAnnotation) extends T
   case class Try(ttry: T, excepts: List[(Option[(ET, Option[String])], T)],
                  eelse: Option[T], ffinally: Option[T], ann: GeneralAnnotation) extends T
-  class Unsupported(original0: T, declareVars0: List[String],
-                    es0: List[(Boolean, Expression.T)], sts0: List[T], ann0: GeneralAnnotation) extends T {
-    val original: T = original0
-    val declareVars: List[String] = declareVars0
-    val es: List[(Boolean, ET)] = es0
-    val sts: List[T] = sts0
-    val ann: GeneralAnnotation = ann0
-    def this(original: T, declareVars: List[String], ann: GeneralAnnotation) =
-      this(original, declareVars, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1, ann)
-  }
+  case class Unsupported(original: T, declareVars: List[String],
+                    es: List[(Boolean, Expression.T)], sts: List[T], ann: GeneralAnnotation) extends T
 }
