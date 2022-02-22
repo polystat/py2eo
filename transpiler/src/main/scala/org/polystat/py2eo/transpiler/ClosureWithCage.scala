@@ -1,7 +1,7 @@
 package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{CallIndex, Field, Ident}
-import SimplePass.{Names, procExpr, procStatement}
+import SimplePass.{Names, NamesU, procExpr, procStatement}
 import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement, VarScope}
 import org.polystat.py2eo.parser.Statement.{Assign, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite}
 
@@ -14,7 +14,7 @@ object ClosureWithCage {
   private def closurizeInner(scope : String => (VarScope.T, GeneralAnnotation), st : Statement.T) : Statement.T = {
     def pe(lhs : Boolean, e : Expression.T) = {
       val (Left(result), _) = procExpr(
-        (_, e, ns) => {
+        (_, e, ns : NamesU) => {
           e match {
             case Ident(name, ann)  =>
               val vartype = scope(name)._1
@@ -29,7 +29,7 @@ object ClosureWithCage {
             case _ => (Left(e), ns)
           }
         }
-      )(lhs, e, Names(HashMap()))
+      )(lhs, e, Names(HashMap(), ()))
       result
     }
     st match {
@@ -74,7 +74,7 @@ object ClosureWithCage {
 
   def closurize(st : Statement.T) : Statement.T = closurizeInner(_ => (VarScope.Global, new GeneralAnnotation()), st)
 
-  def declassifyOnly(st : Statement.T, ns : Names) : (Statement.T, Names) = {
+  def declassifyOnly(st : Statement.T, ns : NamesU) : (Statement.T, NamesU) = {
     val st1 = procStatement(SimplePass.unSuite)(st, ns)
     procStatement(
       (st, ns) => st match {
