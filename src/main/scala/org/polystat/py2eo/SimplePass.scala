@@ -734,7 +734,7 @@ object SimplePass {
         case CallIndex(true, what@Field(obj@Ident(_, _), fname, fann), args, ann) =>
           (Left(CallIndex(true, what, (None, obj) :: args, ann.pos)), ns)
         case CallIndex(isCall, Field(_, _, _), args, ann) => ??? // todo: must be implemented as above, but a bit more complicated
-        case x => (Left(x), ns)
+        case x : Any => (Left(x), ns)
       }
     } else {
       (Left(e), ns)

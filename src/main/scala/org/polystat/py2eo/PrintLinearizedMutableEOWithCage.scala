@@ -49,29 +49,32 @@ object PrintLinearizedMutableEOWithCage {
         val Suite(l0, _) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
         val decorates = bases.headOption.map(_._2)
-          s"[] > $name" :: indent(
-            "[unused] > apply" ::
-            indent(
-              (
-                "[] > result" :: indent(
-                  l.map{
-                    case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
-                    case f : FuncDef => s"cage > ${f.name}"
-                  } ++
-                  decorates.toList.map(e => s"${printExpr(e)} > base") ++
-                  (
-                    "seq > initFields" :: indent(
-                      l.flatMap{
-                        case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
-                        case f : FuncDef =>
-                          "write." :: indent(f.name :: printFun(List(), f))
-                      } ++
-                      decorates.toList.map(x => "base")
-                    )
-                  ) ++
-                  decorates.toList.map(x => "base.result > @")
-                )
-              ) :+ "result.initFields > @"
+          "write." :: indent(
+            name ::
+            "[]" :: indent(
+              "[unused] > apply" ::
+              indent(
+                (
+                  "[] > result" :: indent(
+                    l.map{
+                      case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
+                      case f : FuncDef => s"cage > ${f.name}"
+                    } ++
+                    decorates.toList.map(e => s"${printExpr(e)}.apply 0 > base") ++
+                    (
+                      "seq > initFields" :: indent(
+                        l.flatMap{
+                          case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
+                          case f : FuncDef =>
+                            "write." :: indent(f.name :: printFun(List(), f))
+                        } ++
+                        decorates.toList.map(x => "base")
+                      )
+                    ) ++
+                    decorates.toList.map(x => "base.result > @")
+                  )
+                ) :+ "result.initFields > @"
+              )
             )
           )
       case NonLocal(_, _) => List()
