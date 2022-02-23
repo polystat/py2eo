@@ -39,9 +39,9 @@ object Transpile {
       (eoText.init.init :+ "          result" :+ "  apply 0 > @").mkString("\n")
     }
     catch {
-      case e: RuntimeException => {
-        println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
-        throw e
+      case e: Throwable => {
+//        println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
+//        throw e
         val unsupportedExpr = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.mkUnsupportedExpr))(y._1, y._2)
         val unsupportedSt = SimplePass.procStatement(SimplePass.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 
