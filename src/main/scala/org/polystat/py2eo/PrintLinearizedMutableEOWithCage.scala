@@ -149,6 +149,7 @@ object PrintLinearizedMutableEOWithCage {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     val funs = SimpleAnalysis.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
+      case _ : ClassDef => (l, false)
       case _ => (l, true)
     })(List(), f.body)
     val funNames = funs.map { f: FuncDef => f.name }.toSet
