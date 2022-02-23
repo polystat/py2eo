@@ -9,7 +9,7 @@ import org.polystat.py2eo.parser.Expression.{
   GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
 import org.polystat.py2eo.parser.Statement.{
-  Assign, Break, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite, While
+  Assign, Break, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite, While, ClassDef
 }
 
 object PrintLinearizedMutableEOWithCage {

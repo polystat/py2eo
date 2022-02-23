@@ -108,8 +108,8 @@ object SimplePass {
   def procStatement(f: (Statement.T, NamesU) => (Statement.T, NamesU))(s0: Statement.T, ns0: NamesU): (Statement.T, NamesU) =
     procStatementGeneral[NamesU]((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
 
-  def simpleProcStatement(f : Statement => Statement)(s : Statement) : Statement = {
-    procStatement((st, ns) => (f(st), ns))(s, Names(HashMap()))._1
+  def simpleProcStatement(f : Statement.T => Statement.T)(s : Statement.T) : Statement.T = {
+    procStatement((st, ns) => (f(st), ns))(s, Names(HashMap(), ()))._1
   }
 
   // all the forcing code is only needed to keep computation order if we transform an expression to a statement:
@@ -551,22 +551,29 @@ object SimplePass {
           )
         )
       case ClassDef(name, bases, body, decorators, ann) =>
-        ClassDef(name, bases.map(x => (x._1, f(x._2))), pst(body), Decorators(decorators.l.map(f)), ann)
-      case SimpleObject(name, decorates, fields, ann) =>
-        SimpleObject(name, decorates.map(f), fields.map(x => (x._1, f(x._2))), ann)
-      case NonLocal(l, ann) => s
-      case Global(l, ann) => s
-      case ImportModule(what, as, ann) => s
-      case ImportAllSymbols(from, ann) => s
-      case ImportSymbol(from, what, as, ann) => s
-      case With(cms, body, isAsync, ann) => With(cms.map(x => (f(x._1), x._2.map(f))), pst(body), isAsync, ann)
         val (acc1, bases1) = fl(acc, bases.map(_._2))
         val (acc2, body1) = pst(acc1, body)
         val (acc6, dec1) = fl(acc2, decorators.l)
         (acc6, ClassDef(name, bases.map(_._1).zip(bases1), body1, Decorators(dec1), ann))
-      case SimpleObject(name, fields, ann) =>
+      case SimpleObject(name, decorates, fields, ann) =>
         val (acc1, fields1) = fl(acc, fields.map(_._2))
-        (acc1, SimpleObject(name, fields.map(_._1).zip(fields1), ann))
+        val (acc2, dec1) = fo(acc1, decorates)
+        (acc2, SimpleObject(name, dec1, fields.map(_._1).zip(fields1), ann))
+      case NonLocal(l, ann) => (acc, s)
+      case Global(l, ann) => (acc, s)
+      case ImportModule(what, as, ann) => (acc, s)
+      case ImportAllSymbols(from, ann) => (acc, s)
+      case ImportSymbol(from, what, as, ann) => (acc, s)
+      case With(cms, body, isAsync, ann) =>
+        val (acc1, cms1) = cms.foldLeft((acc, List[(T, Option[T])]()))(
+          (acc, x) => {
+            val (acc1, e1) = f(acc._1, x._1)
+            val (acc2, e2) = fo(acc1, x._2)
+            (acc2, acc._2 :+ (e1, e2))
+          }
+        )
+        val (acc2, body1) = pst(acc1, body)
+        (acc2, With(cms1, body1, isAsync, ann))
       case NonLocal(l, ann) => (acc, s)
       case Global(l, ann) => (acc, s)
       case ImportModule(what, as, ann) => (acc, s)
@@ -694,7 +701,7 @@ object SimplePass {
     e1
   }
 
-  def unSuite(s : Statement) : (Statement) = {
+  def unSuite(s : Statement.T) : (Statement.T) = {
     @tailrec
     def inner(s : Statement.T) : Statement.T = s match {
       case Suite(l, ann) =>
@@ -854,7 +861,7 @@ object SimplePass {
 
   // explicitly substitute the self to each method call
   // todo: does not work if a class method is returned as a function and then called
-  def simpleSyntacticMethodCall(lhs : Boolean, e : T, ns : Names) : (EAfterPass, Names) = {
+  def simpleSyntacticMethodCall(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
     if (!lhs) {
       e match {
         case CallIndex(true, what@Field(obj@Ident(_, _), fname, fann), args, ann) =>
