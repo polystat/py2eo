@@ -66,6 +66,10 @@ class Tests {
     useCageHolder(new File(testsPrefix + "/simplestDerivedClass.yaml"))
   }
 
+  @Test def virtualMethodCallTest(): Unit = {
+    useCageHolder(new File(testsPrefix + "/virtualMethodCall.yaml"))
+  }
+
   @Test def myListTest(): Unit = {
     useCageHolder(new File(testsPrefix + "/myList.yaml"))
   }
