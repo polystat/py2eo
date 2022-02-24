@@ -1,84 +1,108 @@
 package org.polystat.py2eo.checker
 
-import java.io.{File, FileInputStream, FileWriter}
-import scala.sys.process.stringSeqToProcess
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
+import java.io.{File, FileInputStream, FileWriter}
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.{Files, Paths}
+import scala.sys.process.Process
+
 object Checker extends App {
-  private val testsPrefix = System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker"
+
+  private val resourcesPrefix = System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker/"
+  private val runEOPath = resourcesPrefix + "runEO/"
+
+  case class TestResult(name: String, transpiles: Boolean, compiles: Boolean, runs: Boolean)
+
+  def check(path: String, mutation: Mutator.Mutation.Value): Array[TestResult] = {
+    val file = new File(path)
+    if (file.isDirectory) {
+      for {dirItem <- file.listFiles() if dirItem.getName.endsWith(".yaml")} yield check(dirItem, mutation)
+    } else {
+      Array(check(file, mutation))
+    }
+  }
+
+  private def check(test: File, mutation: Mutator.Mutation.Value): TestResult = {
+    val (moduleName, python) = yaml2python(test)
+    val db = debugPrinter(test)(_, _)
+    val mutatedPyText = Mutator.mutate(python, mutation, 1)
+
+    // Catching exceptions from parser and mapper
+    try {
+      // No need for compiling original texts for now
+      // val originalEOText = Transpile.transpile(db)(moduleName, python)
+      // val fstName = writeFile("before", "mutations", ".eo", originalEOText)
+
+      val mutatedEOText = Transpile.transpile(db)(cropExtension(moduleName), mutatedPyText)
+      val resultFileName = writeFile("after", "mutations", ".eo", mutatedEOText)
+
+      if (!compileEO(resultFileName)) {
+        TestResult(moduleName, transpiles = true, compiles = false, runs = false)
+      } else {
+        TestResult(moduleName, transpiles = true, compiles = true, runs = runEO(resultFileName))
+      }
+    }
+    catch {
+      case _: Exception =>
+        TestResult(moduleName, transpiles = false, compiles = false, runs = false)
+    }
+
+  }
 
   private def writeFile(name: String, dirSuffix: String, fileSuffix: String, what: String): String = {
-    val outPath = testsPrefix + "/" + dirSuffix
+    val outPath = resourcesPrefix + "/" + dirSuffix
     val d = new File(outPath)
     if (!d.exists()) d.mkdir()
     val outName = outPath + "/" + name + fileSuffix
     val output = new FileWriter(outName)
     output.write(what)
     output.close()
-    outName
+
+    name + fileSuffix
   }
 
-  def compileEO(filename: String): Boolean = {
-    // moveTest
-    // try compiling
-    // remove test
+  private def compileEO(filename: String): Boolean = {
+    val originalPath = resourcesPrefix + "mutations/" + filename
+
+    val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + filename), REPLACE_EXISTING)
+    val ret = Process("mvn clean test", new File(runEOPath)).! == 0
+
+    Files.delete(result)
+
+    ret
   }
 
-  def runEO(filename: String): Boolean = {
-    // renameTest
-    compileEO()
-    // removeTest
+  private def runEO(filename: String): Boolean = {
+    val originalPath = resourcesPrefix + "mutations/" + filename
+
+    val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + "Test.eo"), REPLACE_EXISTING)
+    val ret = Process("mvn clean test", new File(runEOPath)).! == 0
+
+    Files.delete(result)
+
+    ret
   }
 
-  case class TestResult(transpiles: Boolean, compiles: Boolean, runs: Boolean)
-
-  def check(test: File, mutation: Mutator.Mutation.Value): TestResult = {
-
-    def yaml2python(f : File): (String, String) = {
-      val yaml = new Yaml()
-      val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-      (f.getName, map.get("python"))
-    }
-
-    val (moduleName, python) = yaml2python(test)
-    val db = debugPrinter(test)(_, _)
-    val mutatedPyText = Mutator.mutate(python, mutation, 1)
-
-    try {
-      Transpile.transpile(db)(moduleName, mutatedPyText)
-    }
-    catch {
-      case _: Exception => TestResult(transpiles = false, compiles = false, runs = false)
-    }
-
-    val originalEOText = Transpile.transpile(db)(moduleName, python)
-    val fstName = writeFile("before", "mutations", ".eo", originalEOText)
-
-    val mutatedEOText = Transpile.transpile(db)(moduleName, mutatedPyText)
-    val sndName = writeFile("after", "mutations", ".eo", mutatedEOText)
-
-    //Seq("diff", fstName, sndName).!
-
-    if (!compileEO(sndName)) {
-      TestResult(transpiles = true, compiles = false, runs = false)
-    } else {
-      TestResult(transpiles = true, compiles = true, runs = runEO(sndName))
-    }
-
+  private def yaml2python(f: File): (String, String) = {
+    val yaml = new Yaml()
+    val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
+    (f.getName, map.get("python"))
   }
 
-  private def checkDir(prefix: String, mutation: Mutator.Mutation.Value): Array[TestResult] = {
-    val test = new File(prefix)
-    for {file <- test.listFiles() if file.getName.endsWith(".yaml") } yield check(file, mutation)
+  private def cropExtension(s: String): String = {
+    s.substring(0, s.lastIndexOf("."))
   }
 
-  private val testsDir = System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker/"
   private val nameMutation = Mutator.Mutation.nameMutation
   private val literalMutation = Mutator.Mutation.literalMutation
 
-  checkDir(testsDir + "simple-tests/assign", nameMutation)
-  checkDir(testsDir + "simple-tests/while", nameMutation)
-  checkDir(testsDir + "simple-tests/if", nameMutation)
+  val arr = check(resourcesPrefix + "simple-tests/assign", nameMutation) ++
+    //check(resourcesPrefix + "simple-tests/while", nameMutation) ++
+    check(resourcesPrefix + "simple-tests/if", nameMutation)
+
+  println("| testname | transpiles | compiles | runs |")
+  for (TestResult(name, transpiles, compiles, runs) <- arr) println(s"| $name | $transpiles | $compiles | $runs |")
 }
