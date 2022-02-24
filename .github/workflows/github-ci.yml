@@ -70,16 +70,15 @@ jobs:
 
       - name: download polystat 
         run: wget https://repo.maven.apache.org/maven2/org/polystat/polystat/0.4.0/polystat-0.4.0-jar-with-dependencies.jar
-      - name: translate python
+      - name: translate python and analysis
         run: |
           java -jar ./transpiler-0.0.1-SNAPSHOT-jar-with-dependencies.jar ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.py &&
-          java -jar ./transpiler-0.0.1-SNAPSHOT-jar-with-dependencies.jar ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/unexpectedRecursion.py
-      - name: analysis
-        run: |
           cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/genCageEO/test.eo ./transpiler/src/test.eo && 
           cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/goto.eo ./transpiler/src/goto.eo && 
           java -jar ./polystat-0.4.0-jar-with-dependencies.jar ./transpiler/src ./temp --sarif &&
-          cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/genCageEO/unexpectedRecursion.eo ./transpiler/src/test.eo && 
+          cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/unexpectedRecursion.py ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.py &&
+          java -jar ./transpiler-0.0.1-SNAPSHOT-jar-with-dependencies.jar ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.py &&
+          cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/genCageEO/test.eo ./transpiler/src/test.eo && 
           cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/goto.eo ./transpiler/src/goto.eo && 
           java -jar ./polystat-0.4.0-jar-with-dependencies.jar ./transpiler/src ./temp --sarif
       - name: upload artifacts
