@@ -6,15 +6,15 @@ import org.polystat.py2eo.parser.Expression.{
   AnonFun, Assignment, Await, Binop, BoolLiteral, CallIndex, CollectionComprehension, CollectionCons, Comprehension,
   Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar, EllipsisLiteral, Field, FloatLiteral,
   ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension, ImagLiteral, IntLiteral,
-  LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, Unop, UnsupportedExpr,
-  Yield, YieldFrom
+  LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, Unop,
+  UnsupportedExpr, Yield, YieldFrom
 }
 import org.polystat.py2eo.parser.{GeneralAnnotation, PrintPython, Statement, VarScope}
-import org.polystat.py2eo.transpiler.SimplePass.Names
+import org.polystat.py2eo.transpiler.SimplePass.{Names, NamesU}
 import org.polystat.py2eo.parser.Statement.{
-  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef, Global,
-  If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try,
-  Unsupported, While, With
+  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef,
+  Global, If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject,
+  Suite, Try, Unsupported, While, With
 }
 
 object SimpleAnalysis {
@@ -68,7 +68,7 @@ object SimpleAnalysis {
   def childrenS(s : Statement.T) : (List[Statement.T], List[(Boolean, T)]) = {
     def isRhs(e : T) = (false, e)
     s match {
-      case SimpleObject(_, fields, _) => (List(), fields.map(x => (false, x._2)))
+      case SimpleObject(_, decorates, fields, _) => (List(), fields.map(x => (false, x._2)) ++ decorates.map((false, _)))
       case With(cms, body, _, _) =>
         (List(body), cms.flatMap(x => (false, x._1) :: x._2.map(x => (true, x)).toList))
       case For(what, in, body, eelse, _, _) => (body :: eelse.toList, List((false, what), (false, in)))
@@ -138,7 +138,7 @@ object SimpleAnalysis {
         def add(name : String, ann : GeneralAnnotation) = add0(h, name, ann)
         st match {
           case ClassDef(name, _, _, _, ann) => (add(name, ann), false)
-          case SimpleObject(name, _, ann) => (add(name, ann), false)
+          case SimpleObject(name, _, _, ann) => (add(name, ann), false)
           case FuncDef(name, _, _, _, _, _, _, _, _, ann)  => (add(name, ann), false)
           case Assign(List(CollectionCons(_, _, _), _), _) =>
             throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")
@@ -161,7 +161,7 @@ object SimpleAnalysis {
       x => if (x._2._1 == VarScope.Local || x._2._1 == VarScope.Arg) (x._1, (VarScope.ImplicitNonLocal, x._2._2)) else x
     )
     val merged = v.foldLeft(vUpper)((acc, z) => acc.+(z))
-    val (body, _) = SimplePass.procStatementGeneral[Names](
+    val (body, _) = SimplePass.procStatementGeneral[NamesU](
       (s, ns) => s match {
         case f : FuncDef => (computeAccessibleIdentsF(merged, f), ns, false)
         case _ => (s, ns, true)
@@ -174,7 +174,7 @@ object SimpleAnalysis {
   }
 
   def computeAccessibleIdents(s : Statement.T) : Statement.T = {
-    SimplePass.procStatementGeneral[Names](
+    SimplePass.procStatementGeneral[NamesU](
       (s, ns) => s match {
         case f : FuncDef => (computeAccessibleIdentsF(HashMap(), f), ns, false)
         case _ => (s, ns, true)
@@ -191,7 +191,7 @@ object SimpleAnalysis {
       (acc, true)
     case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.seqOfFields(lhs).isDefined  => (acc, true)
     case ClassDef(_, List(), body, Decorators(List()), _) =>{
-      val (Suite(defs, _), _) = SimplePass.procStatement(SimplePass.unSuite)(body, SimplePass.Names(HashMap()))
+      val (Suite(defs, _)) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
       assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })
       (acc, true)
     }

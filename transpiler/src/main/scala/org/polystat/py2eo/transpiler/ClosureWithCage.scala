@@ -1,7 +1,7 @@
 package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{CallIndex, Field, Ident}
-import SimplePass.{Names, procExpr, procStatement}
+import SimplePass.{Names, NamesU, procExpr, procStatement, simpleProcStatement}
 import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement, VarScope}
 import org.polystat.py2eo.parser.Statement.{Assign, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite}
 
@@ -14,7 +14,7 @@ object ClosureWithCage {
   private def closurizeInner(scope : String => (VarScope.T, GeneralAnnotation), st : Statement.T) : Statement.T = {
     def pe(lhs : Boolean, e : Expression.T) = {
       val (Left(result), _) = procExpr(
-        (_, e, ns) => {
+        (_, e, ns : NamesU) => {
           e match {
             case Ident(name, ann)  =>
               val vartype = scope(name)._1
@@ -29,7 +29,7 @@ object ClosureWithCage {
             case _ => (Left(e), ns)
           }
         }
-      )(lhs, e, Names(HashMap()))
+      )(lhs, e, Names(HashMap(), ()))
       result
     }
     st match {
@@ -44,14 +44,14 @@ object ClosureWithCage {
           None, None, None, body1, Decorators(List()), HashMap(), isAsync, ann.pos
         )
         val mkClosure = SimpleObject(
-          name, (callme, Ident(tmpFun, ann.pos)) ::
+          name, None, (callme, Ident(tmpFun, ann.pos)) ::
           vars.filter(x => x._2._1 != VarScope.Global && x._2._1 != VarScope.Local && x._2._1 != VarScope.Arg).
             map(z => ("clo" + z._1, Ident(z._1, ann.pos))).toList,
           ann.pos
         )
         Suite(List(f1, mkClosure), ann.pos)
       case ClassDef(name, List(), Suite(l, _), Decorators(List()), ann) =>
-        val mkObj = SimpleObject(name, l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos)
+        val mkObj = SimpleObject(name, None, l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos)
         val creator = FuncDef(
           name, List(), None, None, None,
           Suite(List(mkObj, Return(Some(Ident(name, ann.pos)), ann.pos)), ann.pos),
@@ -66,32 +66,13 @@ object ClosureWithCage {
       case Assign(List(lhs, rhs), ann) =>
         Assign(List(pe(lhs = true, lhs), pe(lhs = false, rhs)), ann.pos)
       case Return(x, ann) => Return(x.map(pe(false, _)), ann.pos)
-      case SimpleObject(name, fields, ann) => SimpleObject(name, fields.map(x => (x._1, pe(lhs = false, x._2))), ann.pos)
+      case SimpleObject(name, decorates, fields, ann) =>
+        SimpleObject(name, decorates.map(pe(false, _)), fields.map(x => (x._1, pe(lhs = false, x._2))), ann.pos)
       case Suite(l, ann) => Suite(l.map(closurizeInner(scope, _)), ann.pos)
       case Pass(_) | NonLocal(_, _) => st
     }
   }
 
   def closurize(st : Statement.T) : Statement.T = closurizeInner(_ => (VarScope.Global, new GeneralAnnotation()), st)
-
-  def declassifyOnly(st : Statement.T, ns : Names) : (Statement.T, Names) = {
-    val st1 = procStatement(SimplePass.unSuite)(st, ns)
-    procStatement(
-      (st, ns) => st match {
-        case ClassDef(name, List(), Suite(l, _), Decorators(List()), ann) =>
-          val mkObj = SimpleObject(
-            name,
-            l.map{case Assign(List(Ident(fieldName, _), rhs), _) => (fieldName, rhs)}, ann.pos
-          )
-          val creator = FuncDef(
-            name, List(), None, None, None,
-            Suite(List(mkObj, Return(Some(Ident(name, ann.pos)), ann.pos)), ann.pos),
-            Decorators(List()), HashMap(), isAsync = false, ann
-          )
-          (creator, ns)
-        case _ => (st, ns)
-      }
-    )(st1._1, st1._2)
-  }
 
 }
