@@ -874,14 +874,6 @@ object SimplePass {
     }
   }
 
-  var needToChange = true
-
-  def changeIdentifierName(expression: T): T =
-    expression match {
-      case Ident(name, ann) if needToChange => needToChange = false; Ident(name + "2", ann.pos)
-      case e: T => e
-    }
-
   def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
     val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")
@@ -889,8 +881,8 @@ object SimplePass {
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
-//    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
-//    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
+    //    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
+    //    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
 
     tsimplifyIf
   }
