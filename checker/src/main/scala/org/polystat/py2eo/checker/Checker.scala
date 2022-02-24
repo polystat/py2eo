@@ -103,6 +103,18 @@ object Checker extends App {
     //check(resourcesPrefix + "simple-tests/while", nameMutation) ++
     check(resourcesPrefix + "simple-tests/if", nameMutation)
 
-  println("| testname | transpiles | compiles | runs |")
-  for (TestResult(name, transpiles, compiles, runs) <- arr) println(s"| $name | $transpiles | $compiles | $runs |")
+  println("Run results for first name mutation:")
+  println("+---------------+------------+----------+-------+")
+  println("|   test name   | transpiles | compiles | runs  |")
+  println("+---------------+------------+----------+-------+")
+  for (TestResult(name, transpiles, compiles, runs) <- arr) {
+    // TODO: calculate longest test name and format table for it
+    print(s"| ${name + " ".repeat(13 - name.length)} |")
+    print(s" ${if (transpiles) "true " else "false"}      |")
+    print(s" ${if (compiles) "true " else "false"}    |")
+    println(s" ${if (runs) "true " else "false"} |")
+  }
+
+  println("+---------------+------------+----------+-------+")
+
 }
