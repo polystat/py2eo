@@ -68,7 +68,7 @@ object Main {
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String, otherLocation: Boolean = false): String = {
     val moduleName = test.getName.substring(0, test.getName.lastIndexOf("."))
-    val outPath = if (!otherLocation) test.getParentFile.getPath + "/" + dirSuffix else dirSuffix
+    val outPath = if (!otherLocation) test.getAbsoluteFile.getParentFile.getPath + "/" + dirSuffix else dirSuffix
     val d = new File(outPath)
     if (!d.exists()) d.mkdir()
     val outName = outPath + "/" + moduleName + fileSuffix
