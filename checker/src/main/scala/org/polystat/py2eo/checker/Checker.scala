@@ -9,14 +9,38 @@ import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Paths}
 import scala.sys.process.Process
 
-object Checker extends App {
+object Checker {
 
   private val resourcesPrefix = System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker/"
   private val runEOPath = resourcesPrefix + "runEO/"
 
   case class TestResult(name: String, transpiles: Boolean, compiles: Boolean, runs: Boolean)
 
-  def check(path: String, mutation: Mutator.Mutation.Value): Array[TestResult] = {
+  def main(args: Array[String]): Unit = {
+    val nameMutation = Mutator.Mutation.nameMutation
+    val literalMutation = Mutator.Mutation.literalMutation
+
+    val arr = check(resourcesPrefix + "simple-tests/assign", nameMutation) ++
+      //check(resourcesPrefix + "simple-tests/while", nameMutation) ++
+      check(resourcesPrefix + "simple-tests/if", nameMutation)
+
+    println("Run results for first name mutation:")
+    println("+---------------+------------+----------+-------+")
+    println("|   test name   | transpiles | compiles | runs  |")
+    println("+---------------+------------+----------+-------+")
+    for (TestResult(name, transpiles, compiles, runs) <- arr) {
+      // TODO: calculate longest test name and format table for it
+      print(s"| ${name + " ".repeat(13 - name.length)} |")
+      print(s" ${if (transpiles) "true " else "false"}      |")
+      print(s" ${if (compiles) "true " else "false"}    |")
+      println(s" ${if (runs) "true " else "false"} |")
+    }
+
+    println("+---------------+------------+----------+-------+")
+
+  }
+
+  private def check(path: String, mutation: Mutator.Mutation.Value): Array[TestResult] = {
     val file = new File(path)
     if (file.isDirectory) {
       for {dirItem <- file.listFiles() if dirItem.getName.endsWith(".yaml")} yield check(dirItem, mutation)
@@ -95,26 +119,5 @@ object Checker extends App {
   private def cropExtension(s: String): String = {
     s.substring(0, s.lastIndexOf("."))
   }
-
-  private val nameMutation = Mutator.Mutation.nameMutation
-  private val literalMutation = Mutator.Mutation.literalMutation
-
-  val arr = check(resourcesPrefix + "simple-tests/assign", nameMutation) ++
-    //check(resourcesPrefix + "simple-tests/while", nameMutation) ++
-    check(resourcesPrefix + "simple-tests/if", nameMutation)
-
-  println("Run results for first name mutation:")
-  println("+---------------+------------+----------+-------+")
-  println("|   test name   | transpiles | compiles | runs  |")
-  println("+---------------+------------+----------+-------+")
-  for (TestResult(name, transpiles, compiles, runs) <- arr) {
-    // TODO: calculate longest test name and format table for it
-    print(s"| ${name + " ".repeat(13 - name.length)} |")
-    print(s" ${if (transpiles) "true " else "false"}      |")
-    print(s" ${if (compiles) "true " else "false"}    |")
-    println(s" ${if (runs) "true " else "false"} |")
-  }
-
-  println("+---------------+------------+----------+-------+")
 
 }
