@@ -26,7 +26,7 @@ object Main {
       }
 
       if (pyFilePath.nonEmpty) {
-        val pyFile = new File(args(0))
+        val pyFile = new File(pyFilePath)
 
         if (pyFile.isFile && pyFile.getName.endsWith(".py")) {
           println(s"Working with file ${pyFile.getAbsolutePath}")
