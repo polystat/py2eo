@@ -15,16 +15,17 @@ import scala.sys.process.Process
 object Checker {
 
   private val resourcesPath = Path(System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker/")
+  private val mutationsPath = resourcesPath/"mutationTests"
   private val runEOPath = resourcesPath/"runEO"
 
   def main(args: Array[String]): Unit = {
 
     // Creating temp directory for mutation results
-    (resourcesPath/"mutationTests").createDirectory()
+    mutationsPath.createDirectory()
 
-    val arr = check(resourcesPath/"simple-tests"/"assign", Iterator(nameMutation)) ++
+    val arr = check(resourcesPath/"simple-tests"/"assign", Iterator(nameMutation, literalMutation)) ++
       //check(resourcesPath + "simple-tests/while", Iterator(nameMutation)) ++
-      check(resourcesPath/"simple-tests"/"if", Iterator(nameMutation)).buffered
+      check(resourcesPath/"simple-tests"/"if", Iterator(nameMutation, literalMutation)).buffered
 
     println(arr.toList)
 
@@ -81,7 +82,7 @@ object Checker {
   }
 
   private def compile(filename: String): Boolean = {
-    val originalPath = resourcesPath + "mutationTests/" + filename
+    val originalPath = mutationsPath + filename
 
     val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + File.separator + filename), REPLACE_EXISTING)
     val ret = Process("mvn clean test", runEOPath.jfile).! == 0
@@ -92,7 +93,7 @@ object Checker {
   }
 
   private def run(filename: String): CompilingResult = {
-    val originalPath = resourcesPath + "mutationTests/" + filename
+    val originalPath = mutationsPath + filename
 
     val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + File.separator + "Test.eo"), REPLACE_EXISTING)
     val ret = Process("mvn clean test", runEOPath.jfile).! == 0
@@ -103,11 +104,12 @@ object Checker {
   }
 
   private def writeFile(name: String, what: String): String = {
-    val output = new FileWriter(resourcesPath + "mutationTests" + File.separator + name + ".eo")
+    val filename = name + ".eo"
+    val output = new FileWriter(mutationsPath + File.separator + filename)
     output.write(what)
     output.close()
 
-    name + ".eo"
+    filename
   }
 
   private def yaml2python(f: File): (String, String) = {
