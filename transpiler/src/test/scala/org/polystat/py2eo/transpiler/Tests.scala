@@ -159,8 +159,8 @@ class Tests {
           z.python
         )
       )
-      val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
-        assertTrue(0 == Process(python + " \"" + runme + "\"").!)
+  //    val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
+    //    assertTrue(0 == Process(python + " \"" + runme + "\"").!)
     }
   }
 

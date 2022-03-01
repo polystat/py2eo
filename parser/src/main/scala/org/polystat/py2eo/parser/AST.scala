@@ -325,7 +325,7 @@ object Statement {
   case class ClassDef(name: String, bases: List[(Option[String], ET)], body: T, decorators: Decorators, ann: GeneralAnnotation) extends T
 
   // this cannot be expressed explicitly in python, but in EO
-  case class SimpleObject(name: String, fields: List[(String, ET)], ann: GeneralAnnotation) extends T
+  case class SimpleObject(name: String, decorates : Option[ET], fields: List[(String, ET)], ann: GeneralAnnotation) extends T
 
   case class NonLocal(l: List[String], ann: GeneralAnnotation) extends T
   case class Global(l: List[String], ann: GeneralAnnotation) extends T

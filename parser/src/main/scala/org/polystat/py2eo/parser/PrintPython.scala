@@ -74,7 +74,6 @@ object PrintPython {
           case None => emptyString
           case Some(e) => printExpr(e)
         }
-
         "%s:%s:%s".format(procBound(from), procBound(to), procBound(by))
       case CallIndex(false, whom, List((_, CollectionCons(CollectionKind.Tuple, l, _))), _) if l.nonEmpty =>
         "%s[%s%s]".format(printExpr(whom), l.map(printExpr).mkString(comma), if (l.size == 1) "," else emptyString)
@@ -114,12 +113,9 @@ object PrintPython {
     def async(isAsync: Boolean) = if (isAsync) "async " else emptyString
 
     val indentIncrAmount = indentAmount + "    "
-
-    def indentPos(str: String): String = "%s%s # %s".format(indentAmount, str, s.ann)
-
+    def indentPos(str : String) : String = "%s%s # %s".format(indentAmount, str, s.ann)
     def printDecorators(decorators: Decorators) =
       decorators.l.map(z => "%s@%s\n".format(indentAmount, printExprOrDecorator(true)(z))).mkString(emptyString)
-
     s match {
       case u: Unsupported => indentPos("Unsupported:%s\n%s".format(
         u.es.map(x => printExpr(x._2)).mkString(comma),
@@ -145,7 +141,6 @@ object PrintPython {
             printSt(p._2, indentIncrAmount)
           )
         }
-
         val iif :: elifs = conditioned
         val elseString = eelse match {
           case Some(eelse) => "%selse: # %s\n%s".format(indentAmount, eelse.ann.toString, printSt(eelse, indentIncrAmount))
@@ -214,11 +209,20 @@ object PrintPython {
       case Raise(None, None, _) => indentPos("raise")
       case NonLocal(l, _) => indentPos("nonlocal %s".format(l.mkString(comma)))
       case Global(l, _) => indentPos("global %s".format(l.mkString(comma)))
-      case SimpleObject(name, fields, ann) =>
-        "%sclass %s: # %s\n%s".format(
-          indentAmount, name, s.ann,
-          printSt(
-            Suite(fields.map(z => Assign(List(Ident(z._1, z._2.ann.pos), z._2), z._2.ann.pos)), ann.pos),
+      case SimpleObject(name, decorates, fields, ann) =>
+        "%sclass %s%s: # %s\n%s".format(
+          indentAmount, name,
+          decorates match {
+            case Some(value) => s"(${printExpr(value)})"
+            case None => ""
+          },
+          s.ann,
+            printSt(
+              if (fields.nonEmpty) {
+                Suite(fields.map(z => Assign(List(Ident(z._1, z._2.ann.pos), z._2), z._2.ann.pos)), ann.pos)
+              } else {
+                Pass(ann.pos)
+              },
             indentIncrAmount
           )
         )
@@ -266,8 +270,7 @@ object PrintPython {
     val posOrKeyword = args.filter(_.kind == ArgKind.PosOrKeyword)
     val keywordOnly = args.filter(_.kind == ArgKind.Keyword)
     assert(positionalOnly ++ posOrKeyword ++ keywordOnly == args)
-
-    def f(pref: String, z: Option[(String, Option[T])]): List[String] =
+    def f(pref : String, z : Option[(String, Option[T])]) : List[String] =
       z match {
         case Some((name, None)) => List(pref + name)
         case Some((name, Some(typAnn))) => List(pref + name + " : " + printExpr(typAnn))

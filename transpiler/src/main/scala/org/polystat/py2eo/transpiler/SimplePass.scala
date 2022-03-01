@@ -108,6 +108,9 @@ object SimplePass {
   def procStatement(f: (Statement.T, NamesU) => (Statement.T, NamesU))(s0: Statement.T, ns0: NamesU): (Statement.T, NamesU) =
     procStatementGeneral[NamesU]((st, ns) => { val z = f(st, ns); (z._1, z._2, true)})(s0, ns0)
 
+  def simpleProcStatement(f : Statement.T => Statement.T)(s : Statement.T) : Statement.T = {
+    procStatement((st, ns) => (f(st), ns))(s, Names(HashMap(), ()))._1
+  }
 
   // all the forcing code is only needed to keep computation order if we transform an expression to a statement:
   // x = h(f(), g()) cannot be transformed to, say, z = g(); x = h(f(), z), because f() must be computed first, so
@@ -378,12 +381,16 @@ object SimplePass {
         val (str, er) = procEA(rp._1)
         (Suite(str :+ CreateConst(name, er, ann.pos), ann.pos), rp._2)
 
-      case SimpleObject(name, fields, ann) => forceAllIfNecessary(f)(fields.map(x => (false, x._2)), ns) match {
-        case Right((l, ns)) =>
-          val obj = SimpleObject(name, l.zip(fields).map(x => (x._2._1, x._1._2)), ann.pos)
-          (Suite(l.map(_._1) :+ obj, ann.pos), ns)
-        case Left((l, ns)) => (SimpleObject(name, l.zip(fields).map(x => (x._2._1, x._1)), ann.pos), ns)
-      }
+      case SimpleObject(name, decorates, fields, ann) =>
+        forceAllIfNecessary(f)((decorates.toList.map(x => ("", x)) ++ fields).map(x => (false, x._2)), ns) match {
+          case Right((l, ns)) =>
+            val (l1, dec) = decorates match { case None => (l, None) case Some(_) => (l.tail, Some(l.head._2))}
+            val obj = SimpleObject(name, dec, l1.zip(fields).map(x => (x._2._1, x._1._2)), ann.pos)
+            (Suite(l.map(_._1) :+ obj, ann.pos), ns)
+          case Left((l, ns)) =>
+            val (l1, dec) = decorates match { case None => (l, None) case Some(_) => (l.tail, Some(l.head))}
+            (SimpleObject(name, dec, l1.zip(fields).map(x => (x._2._1, x._1)), ann.pos), ns)
+        }
 
       case Assign(List(e), ann) => forceAllIfNecessary(f)(List((false, e)), ns) match {
         case Left((l, ns)) => (Assign(l, ann.pos), ns)
@@ -548,9 +555,25 @@ object SimplePass {
         val (acc2, body1) = pst(acc1, body)
         val (acc6, dec1) = fl(acc2, decorators.l)
         (acc6, ClassDef(name, bases.map(_._1).zip(bases1), body1, Decorators(dec1), ann))
-      case SimpleObject(name, fields, ann) =>
+      case SimpleObject(name, decorates, fields, ann) =>
         val (acc1, fields1) = fl(acc, fields.map(_._2))
-        (acc1, SimpleObject(name, fields.map(_._1).zip(fields1), ann))
+        val (acc2, dec1) = fo(acc1, decorates)
+        (acc2, SimpleObject(name, dec1, fields.map(_._1).zip(fields1), ann))
+      case NonLocal(l, ann) => (acc, s)
+      case Global(l, ann) => (acc, s)
+      case ImportModule(what, as, ann) => (acc, s)
+      case ImportAllSymbols(from, ann) => (acc, s)
+      case ImportSymbol(from, what, as, ann) => (acc, s)
+      case With(cms, body, isAsync, ann) =>
+        val (acc1, cms1) = cms.foldLeft((acc, List[(T, Option[T])]()))(
+          (acc, x) => {
+            val (acc1, e1) = f(acc._1, x._1)
+            val (acc2, e2) = fo(acc1, x._2)
+            (acc2, acc._2 :+ (e1, e2))
+          }
+        )
+        val (acc2, body1) = pst(acc1, body)
+        (acc2, With(cms1, body1, isAsync, ann))
       case NonLocal(l, ann) => (acc, s)
       case Global(l, ann) => (acc, s)
       case ImportModule(what, as, ann) => (acc, s)
@@ -678,7 +701,7 @@ object SimplePass {
     e1
   }
 
-  def unSuite(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = {
+  def unSuite(s : Statement.T) : (Statement.T) = {
     @tailrec
     def inner(s : Statement.T) : Statement.T = s match {
       case Suite(l, ann) =>
@@ -691,7 +714,7 @@ object SimplePass {
       case _ => s
     }
 //    println(s"$s \n -> $s1")
-    (inner(s), ns)
+    (inner(s))
   }
 
   // translate an expression to something like a three register code in order to extract each function call with
@@ -781,8 +804,8 @@ object SimplePass {
           )
         case ClassDef(name, bases, body, decorators, ann) =>
           ClassDef(pref(name), bases.map(x => (x._1.map(pref), x._2)), body, decorators, ann)
-        case SimpleObject(name, fields, ann) =>
-          SimpleObject(pref(name), fields.map(x => (pref(x._1), x._2)), ann)
+        case SimpleObject(name, decorates, fields, ann) =>
+          SimpleObject(pref(name), decorates, fields.map(x => (pref(x._1), x._2)), ann)
         case NonLocal(l, ann) => NonLocal(l.map(pref), ann)
         case Global(l, ann) => Global(l.map(pref), ann)
         case ImportModule(what, as, ann) => ImportModule(what.map(pref), as.map(pref), ann)
@@ -836,12 +859,19 @@ object SimplePass {
 
   }
 
-  var needToChange = true
-
-  def changeIdentifierName(expression: T): T =
-    expression match {
-    case Ident(name, ann) if needToChange => needToChange = false; Ident(name + "2", ann.pos)
-    case e: T => e
+  // explicitly substitute the self to each method call
+  // todo: does not work if a class method is returned as a function and then called
+  def simpleSyntacticMethodCall(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
+    if (!lhs) {
+      e match {
+        case CallIndex(true, what@Field(obj@Ident(_, _), fname, fann), args, ann) =>
+          (Left(CallIndex(true, what, (None, obj) :: args, ann.pos)), ns)
+        case CallIndex(isCall, Field(_, _, _), args, ann) => ??? // todo: must be implemented as above, but a bit more complicated
+        case x : Any => (Left(x), ns)
+      }
+    } else {
+      (Left(e), ns)
+    }
   }
 
   def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
@@ -851,8 +881,8 @@ object SimplePass {
     val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
-//    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
-//    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
+    //    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
+    //    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
 
     tsimplifyIf
   }

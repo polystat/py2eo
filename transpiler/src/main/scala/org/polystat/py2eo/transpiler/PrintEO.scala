@@ -15,7 +15,7 @@ object PrintEO {
 
   val Ident = "  "
   val unsupported = "unsupported"
-  val seq = "seq > @"
+  val decoratesSeq = "seq > @"
   type Text = List[String]
 
   def binop(op : Binops.T): String = op match {
@@ -76,7 +76,7 @@ object PrintEO {
       case Field(whose, name, _) => orb + e(whose) + "." + name + crb
       case Cond(cond, yes, no, _) => orb + e(cond) + ".if " + e(yes) + space + e(no) + crb
       case CallIndex(true, whom, args, _)  =>
-        "((" + e(whom) + crb +
+        "((" + e(whom) + crb + ".apply" +
           // todo: empty arg list hack
           (if (args.isEmpty) " 0" else (args.map{case (None, ee) => " (" + e(ee) + crb}.mkString(""))) +
         crb
@@ -89,13 +89,18 @@ object PrintEO {
     def s(x : Statement.T) = printSt(x)
 
     st match {
-      case SimpleObject(name, l, _) =>
-        ("write." ::
-          indent(name :: "[]" :: indent(
-            l.map{ case (name, _) => "cage > " + name } ++ (
-              seq :: indent(l.map{case (name, value) => s"$name.write " + printExpr(value)})
-              ))
-          )) :+ s"($name.@)"
+      case SimpleObject(name, decorates, l, _) =>
+        (
+          "write." ::
+            indent(
+              name :: "[]" :: indent(
+                l.map{ case (name, _) => "cage > " + name } ++ (
+                  "seq > initFields" :: indent(l.map{case (name, value) => s"$name.write " + printExpr(value)})
+                  ) ++
+                  decorates.toList.map(e => s"${printExpr(e)} > @")
+              )
+            )
+          ) :+ s"($name.initFields)"
       case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List() // todo: a quick hack
       case Pass(_) => List()
       case IfSimple(cond, yes, no, _) =>
@@ -118,14 +123,14 @@ object PrintEO {
       case While(cond, body, Some(Pass(_)), _) =>
         List("while.",
           Ident + printExpr(cond),
-        ) ++ indent("[unused]" :: indent(seq :: indent(printSt(body))))
+        ) ++ indent("[unused]" :: indent(decoratesSeq :: indent(printSt(body))))
       case FuncDef(name, args, None, None, None, body, Decorators(List()), h, false, _) =>
         val locals = h.filter(z => z._2._1 == VarScope.Local).keys
         val args1 = args.map{ case Parameter(argname, _, None, None, _) => argname }.mkString(space)
         val body1 = printSt(body)
         List(s"$name.write") ++
           indent(s"[$args1]" ::
-            indent(locals.map(name => s"memory > $name").toList ++ List(seq) ++ indent(body1)))
+            indent(locals.map(name => s"memory > $name").toList ++ List(decoratesSeq) ++ indent(body1)))
       case u : Unsupported =>
         val e1 = CallIndex(true, Expression.Ident(unsupported, new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(e1)
@@ -151,7 +156,7 @@ object PrintEO {
       Ident + "memory > bogusForceDataize",
       Ident + "memory > xbogusForceDataize",
       Ident + "memory > xhack",
-      Ident + seq
+      Ident + decoratesSeq
     ) ++
     indent(indent(printSt(st)))
   }
