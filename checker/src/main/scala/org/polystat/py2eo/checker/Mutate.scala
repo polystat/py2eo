@@ -2,14 +2,22 @@ package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.parser.{Expression, Parse, PrintPython, Statement}
 import org.polystat.py2eo.transpiler.SimplePass
+import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 
-object Mutator {
+object Mutate {
 
   object Mutation extends Enumeration {
-    type T = Value
+    type Mutation = Value
     val nameMutation, literalMutation = Value
   }
 
+  def apply(input: String, mutation: Mutation, occurrenceNumber: Int): String = {
+    mutation match {
+      case Mutation.nameMutation => PrintPython.print(mutateNames(Parse(input), occurrenceNumber))
+      case Mutation.literalMutation => PrintPython.print(mutateLiteral(Parse(input), occurrenceNumber))
+      case _ => throw new IllegalArgumentException
+    }
+  }
 
   private def mutateLiteral(s: Statement.T, acc: Int): Statement.T = {
     def mutateLiteralHelper(acc: Int, expr: Expression.T): (Int, Expression.T) = expr match {
@@ -30,15 +38,6 @@ object Mutator {
     }
 
     SimplePass.simpleProcExprInStatementAcc[Int](mutateNamesHelper)(acc, s)._2
-  }
-
-
-  def mutate(input: String, mutation: Mutation.T, occurrenceNumber: Int): String = {
-    mutation match {
-      case Mutation.nameMutation => PrintPython.print(mutateNames(Parse(input), occurrenceNumber))
-      case Mutation.literalMutation => PrintPython.print(mutateLiteral(Parse(input), occurrenceNumber))
-      case _ => throw new IllegalArgumentException
-    }
   }
 
 }
