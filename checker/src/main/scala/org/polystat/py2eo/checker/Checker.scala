@@ -26,7 +26,7 @@ object Checker {
     mutationsPath.createDirectory()
 
     val mutationList = List(nameMutation, literalMutation)
-    val res = check(resourcesPath / "simple-tests", mutationList)
+    val res = check(args(0), mutationList)
 
     generateHTML(htmlPath, mutationList, res)
     generateSummary(summaryPath, mutationList, res)
