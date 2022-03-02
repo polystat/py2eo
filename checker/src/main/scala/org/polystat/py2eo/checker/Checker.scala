@@ -1,33 +1,33 @@
 package org.polystat.py2eo.checker
 
+import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiles, failed, passes, transpiles}
+import org.polystat.py2eo.checker.Mutate.Mutation.{Mutation, literalMutation, nameMutation}
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
-import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, transpiles, compiles, failed, passes, timeout}
-import org.polystat.py2eo.checker.Mutate.Mutation.{Mutation, nameMutation, literalMutation}
 
 import java.io.{FileInputStream, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Paths}
-import scala.reflect.io.{Path, File}
+import scala.reflect.io.{File, Path}
 import scala.sys.process.Process
 
 object Checker {
 
-  private val resourcesPath = Path(System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker/")
-  private val mutationsPath = resourcesPath/"mutationTests"
-  private val runEOPath = resourcesPath/"runEO"
+  private val resourcesPath = Path(System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker")
+  private val mutationsPath = resourcesPath / "mutationTests"
+  private val runEOPath = resourcesPath / "runEO"
+  private val htmlPath = mutationsPath / "index.html"
 
   def main(args: Array[String]): Unit = {
 
     // Creating temp directory for mutation results
     mutationsPath.createDirectory()
 
-    val arr = check(resourcesPath/"simple-tests"/"assign", Iterator(nameMutation, literalMutation)) ++
-      //check(resourcesPath + "simple-tests/while", Iterator(nameMutation)) ++
-      check(resourcesPath/"simple-tests"/"if", Iterator(nameMutation, literalMutation)).buffered
+    val mutationList = List(nameMutation, literalMutation)
 
-    println(arr.toList)
+    val arr = check(resourcesPath / "simple-tests", mutationList)
+    generateHTML(htmlPath, mutationList, arr)
 
   }
 
@@ -44,45 +44,39 @@ object Checker {
     }
   }
 
-  case class TestResult(name: String, results: Iterator[CompilingResult])
+  case class TestResult(name: String, results: List[CompilingResult])
 
-  private def check(path: Path, mutations: Iterator[Mutation]): Iterator[TestResult] = {
+  private def check(path: Path, mutations: List[Mutation]): List[TestResult] = {
     if (path.isDirectory) {
-      (for {file <- path.toDirectory.list} yield check(file, mutations)).flatten
-    } else if (path.name.endsWith(".yaml")) { // TODO: use of File.extension?
-      Iterator(check(path.toFile, mutations))
+      (for {file <- path.toDirectory.list.toList} yield check(file, mutations)).flatten
+    } else if (path.extension == "yaml") {
+      List(check(path.toFile, mutations))
     } else {
-      Iterator.empty
+      List.empty
     }
   }
 
-  private def check(test: File, mutations: Iterator[Mutation]): TestResult = {
-    val (moduleName, python) = yaml2python(test)
-    val db = debugPrinter(test.jfile)(_, _)
-
-    // Need to transpile original file to get diffs
-    val origName = writeFile(moduleName, Transpile.transpile(db)(moduleName, python))
-    TestResult(moduleName, for {mutation <- mutations} yield check(test, mutation))
+  private def check(test: File, mutations: List[Mutation]): TestResult = {
+    TestResult(test.stripExtension, for {mutation <- mutations} yield check(test, mutation))
   }
 
   private def check(test: File, mutation: Mutation): CompilingResult = {
-    val (moduleName, python) = yaml2python(test)
+    val python = parseYaml(test)
     val db = debugPrinter(test.jfile)(_, _)
     val mutatedPyText = Mutate(python, mutation, 1)
 
     // Catching exceptions from parser and mapper
     try {
-      val mutatedEOText = Transpile.transpile(db)(moduleName, mutatedPyText)
+      val mutatedEOText = Transpile.transpile(db)(test.stripExtension, mutatedPyText)
       val resultFileName = writeFile("after" + mutation, mutatedEOText)
       if (!compile(resultFileName)) transpiles else run(resultFileName)
-    }
-    catch {
+    } catch {
       case _: Exception => failed
     }
   }
 
   private def compile(filename: String): Boolean = {
-    val originalPath = mutationsPath + filename
+    val originalPath = mutationsPath + File.separator + filename
 
     val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + File.separator + filename), REPLACE_EXISTING)
     val ret = Process("mvn clean test", runEOPath.jfile).! == 0
@@ -93,7 +87,7 @@ object Checker {
   }
 
   private def run(filename: String): CompilingResult = {
-    val originalPath = mutationsPath + filename
+    val originalPath = mutationsPath + File.separator + filename
 
     val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + File.separator + "Test.eo"), REPLACE_EXISTING)
     val ret = Process("mvn clean test", runEOPath.jfile).! == 0
@@ -112,14 +106,28 @@ object Checker {
     filename
   }
 
-  private def yaml2python(f: File): (String, String) = {
-    def cropExtension(s: String): String = {
-      s.substring(0, s.lastIndexOf("."))
+  private def parseYaml(path: Path): String = {
+    val yaml = new Yaml()
+    yaml.load[java.util.Map[String, String]](new FileInputStream(path.jfile)).get("python")
+  }
+
+  private def generateHTML(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
+    path.createFile()
+
+    val output = new FileWriter(path.jfile)
+
+    output.write("<table>\n  <tr>\n    <th>\n      Test name\n    </th>\n")
+    output.write(mutations.mkString("    <th>\n      ", "\n    </th>\n    <th>\n      ", "\n    </th>\n  </tr>\n"))
+
+    for (tableRow <- table) {
+      output.write(s"  <tr>\n    <th>\n      ${tableRow.name}\n    </th>\n")
+      output.write(tableRow.results.mkString("    <th>\n      ", "\n    </th>\n    <th>\n      ", "\n    </th>\n"))
+      output.write("  </tr>\n")
     }
 
-    val yaml = new Yaml()
-    val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f.jfile))
-    (cropExtension(f.name), map.get("python"))
+    output.write("</table>\n")
+
+    output.close()
   }
 
 }

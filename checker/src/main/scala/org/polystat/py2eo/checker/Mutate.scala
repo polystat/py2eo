@@ -9,6 +9,11 @@ object Mutate {
   object Mutation extends Enumeration {
     type Mutation = Value
     val nameMutation, literalMutation = Value
+
+    override def toString(): String = this match {
+      case Mutation.nameMutation => "Name mutation"
+      case Mutation.literalMutation => "Literal mutation"
+    }
   }
 
   def apply(input: String, mutation: Mutation, occurrenceNumber: Int): String = {
