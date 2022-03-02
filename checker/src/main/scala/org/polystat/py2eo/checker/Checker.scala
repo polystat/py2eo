@@ -164,7 +164,7 @@ object Checker {
     val unexpectedResults = for {mutation <- mutations}
       yield table.count(row => row.results.getOrElse(mutation, failed) == expectedResult(mutation))
 
-    output.write(unexpectedResults.mkString(s"<tr><th>Sensitive tests</th><th>", "</th><th>", "</th></tr>\n"))
+    output.write(unexpectedResults.mkString("<tr><th>Sensitive tests</th><th>", "</th><th>", "</th></tr>\n"))
 
     output.write("</table>\n")
     output.close()
