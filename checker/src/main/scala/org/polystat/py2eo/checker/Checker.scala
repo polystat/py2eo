@@ -44,7 +44,9 @@ object Checker {
     }
   }
 
-  case class TestResult(name: String, results: List[CompilingResult])
+  case class TestResult(name: String, results: List[CompilingResult]) {
+    override def toString: String = s"<tr><th>$name</th>${results.mkString("<th>", "</th><th>", "</th>")}</tr>\n"
+  }
 
   private def check(path: Path, mutations: List[Mutation]): List[TestResult] = {
     if (path.isDirectory) {
@@ -116,15 +118,9 @@ object Checker {
 
     val output = new FileWriter(path.jfile)
 
-    output.write("<table>\n  <tr>\n    <th>\n      Test name\n    </th>\n")
-    output.write(mutations.mkString("    <th>\n      ", "\n    </th>\n    <th>\n      ", "\n    </th>\n  </tr>\n"))
-
-    for (tableRow <- table) {
-      output.write(s"  <tr>\n    <th>\n      ${tableRow.name}\n    </th>\n")
-      output.write(tableRow.results.mkString("    <th>\n      ", "\n    </th>\n    <th>\n      ", "\n    </th>\n"))
-      output.write("  </tr>\n")
-    }
-
+    output.write("<table>\n")
+    output.write(s"<tr><th>Test name</th>${mutations.mkString("<th>", "</th><th>", "</th></tr>\n")}")
+    for (tableRow <- table) output.write(tableRow.toString)
     output.write("</table>\n")
 
     output.close()
