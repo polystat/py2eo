@@ -6,7 +6,7 @@ import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
-import java.io.{FileInputStream, FileOutputStream, FileWriter}
+import java.io.{FileInputStream, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Paths}
 import scala.reflect.io.{File, Path}
@@ -24,7 +24,7 @@ object Checker {
     mutationsPath.createDirectory()
 
     val mutationList = List(nameMutation, literalMutation)
-    val arr = check(resourcesPath / "simple-tests", mutationList)
+    val arr = check(resourcesPath / "simple-tests" / "assign", mutationList)
 
     generateHTML(htmlPath, mutationList, arr)
   }
@@ -42,9 +42,7 @@ object Checker {
     }
   }
 
-  case class TestResult(name: String, results: List[CompilingResult]) {
-    def toHTMLRow: String = results.mkString(s"<tr><th>$name</th><th>", "</th><th>", "</th></tr>\n")
-  }
+  case class TestResult(name: String, results: Map[Mutation, CompilingResult])
 
   private def check(path: Path, mutations: List[Mutation]): List[TestResult] = {
     if (path.isDirectory) {
@@ -59,25 +57,23 @@ object Checker {
   private def check(test: File, mutations: List[Mutation]): TestResult = {
     val db = debugPrinter(test.jfile)(_, _)
     val EOText = Transpile.transpile(db)(test.stripExtension, parseYaml(test))
-    val resultFileName = writeFile(test.stripExtension, EOText)
+    writeFile(test.stripExtension, EOText)
 
-    val ret = TestResult(test.stripExtension, for {mutation <- mutations} yield check(test, mutation))
+    val resultList = for {mutation <- mutations} yield check(test, mutation)
 
-    File(resultFileName).delete()
-
-    ret
+    TestResult(test.stripExtension, resultList.toMap[Mutation, CompilingResult])
   }
 
-  private def check(test: File, mutation: Mutation): CompilingResult = {
+  private def check(test: File, mutation: Mutation): (Mutation, CompilingResult) = {
     val mutatedPyText = Mutate(parseYaml(test), mutation, 1)
 
     // Catching exceptions from parser and mapper
-    try {
+    val ret = try {
       val db = debugPrinter(test.jfile)(_, _)
       val mutatedEOText = Transpile.transpile(db)(test.stripExtension, mutatedPyText)
       val resultFileName = writeFile(s"${test.stripExtension}-$mutation", mutatedEOText)
 
-      val diffPath = mutationsPath / s"${test.stripExtension}-$mutation-diff.html"
+      val diffPath = mutationsPath / diffName(test, mutation)
       // Process(s"diff ${test.changeExtension("eo").name} $resultFileName", mutationsPath.jfile).!
 
       // Java zone: had troubles with redirecting scala.sys.Process output to file
@@ -92,6 +88,8 @@ object Checker {
     } catch {
       case _: Exception => failed
     }
+
+    (mutation, ret)
   }
 
   private def compile(filename: String): Boolean = {
@@ -130,14 +128,21 @@ object Checker {
     yaml.load[java.util.Map[String, String]](new FileInputStream(path.jfile)).get("python")
   }
 
+  private def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
+
   private def generateHTML(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
-    val output = new FileWriter(path.createFile(failIfExists = false).jfile)
+    val output = new FileWriter(path.createFile().jfile)
 
     output.write("<table>\n")
     output.write(mutations.mkString("<tr><th>Test name</th><th>", "</th><th>", "</th></tr>\n"))
-    for (row <- table) output.write(row.toHTMLRow)
-    output.write("</table>\n")
+    for (row <- table) {
+      val rowStrings = for {mutation <- mutations}
+        yield s"<p><a href=\"${diffName(row.name, mutation)}\">${row.results.getOrElse(mutation, failed)}</a></p>"
 
+      output.write(rowStrings.mkString(s"<tr><th>${row.name}</th><th>", "</th><th>", "</th></tr>\n"))
+    }
+
+    output.write("</table>\n")
     output.close()
   }
 
