@@ -45,7 +45,7 @@ object Checker {
   }
 
   case class TestResult(name: String, results: List[CompilingResult]) {
-    override def toString: String = s"<tr><th>$name</th>${results.mkString("<th>", "</th><th>", "</th>")}</tr>\n"
+    def toHTML: String = results.mkString(s"<tr><th>$name</th><th>", "</th><th>", "</th></tr>\n")
   }
 
   private def check(path: Path, mutations: List[Mutation]): List[TestResult] = {
@@ -114,13 +114,11 @@ object Checker {
   }
 
   private def generateHTML(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
-    path.createFile()
-
-    val output = new FileWriter(path.jfile)
+    val output = new FileWriter(path.createFile().jfile)
 
     output.write("<table>\n")
-    output.write(s"<tr><th>Test name</th>${mutations.mkString("<th>", "</th><th>", "</th></tr>\n")}")
-    for (tableRow <- table) output.write(tableRow.toString)
+    output.write(mutations.mkString("<tr><th>Test name</th><th>", "</th><th>", "</th></tr>\n"))
+    for (tableRow <- table) output.write(tableRow.toHTML)
     output.write("</table>\n")
 
     output.close()
