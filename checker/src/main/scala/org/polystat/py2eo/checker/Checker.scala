@@ -1,6 +1,7 @@
 package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiles, failed, passes, transpiles}
+import org.polystat.py2eo.checker.Mutate.Mutation
 import org.polystat.py2eo.checker.Mutate.Mutation.{Mutation, literalMutation, nameMutation}
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
@@ -18,15 +19,17 @@ object Checker {
   private val mutationsPath = resourcesPath / "mutationTests"
   private val runEOPath = resourcesPath / "runEO"
   private val htmlPath = mutationsPath / "index.html"
+  private val summaryPath = mutationsPath / "summary.html"
 
   def main(args: Array[String]): Unit = {
     // Creating temp directory for mutation results
     mutationsPath.createDirectory()
 
     val mutationList = List(nameMutation, literalMutation)
-    val arr = check(resourcesPath / "simple-tests" / "assign", mutationList)
+    val res = check(resourcesPath / "simple-tests", mutationList)
 
-    generateHTML(htmlPath, mutationList, arr)
+    generateHTML(htmlPath, mutationList, res)
+    generateSummary(summaryPath, mutationList, res)
   }
 
   object CompilingResult extends Enumeration {
@@ -133,6 +136,7 @@ object Checker {
   private def generateHTML(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
     val output = new FileWriter(path.createFile().jfile)
 
+    output.write(s"<p><a href=\"summary.html\">summary</a></p>")
     output.write("<table>\n")
     output.write(mutations.mkString("<tr><th>Test name</th><th>", "</th><th>", "</th></tr>\n"))
     for (row <- table) {
@@ -141,6 +145,26 @@ object Checker {
 
       output.write(rowStrings.mkString(s"<tr><th>${row.name}</th><th>", "</th><th>", "</th></tr>\n"))
     }
+
+    output.write("</table>\n")
+    output.close()
+  }
+
+  private def generateSummary(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
+    def expectedResult(mutation: Mutation): CompilingResult = mutation match {
+      case Mutation.nameMutation => transpiles
+      case Mutation.literalMutation => transpiles
+    }
+
+    val output = new FileWriter(path.createFile().jfile)
+
+    output.write("<table>\n")
+    output.write(mutations.mkString("<tr><th></th><th>", "</th><th>", "</th></tr>\n"))
+
+    val unexpectedResults = for {mutation <- mutations}
+      yield table.count(row => row.results.getOrElse(mutation, failed) == expectedResult(mutation))
+
+    output.write(unexpectedResults.mkString(s"<tr><th>Sensitive tests</th><th>", "</th><th>", "</th></tr>\n"))
 
     output.write("</table>\n")
     output.close()
