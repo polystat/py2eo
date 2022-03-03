@@ -2,7 +2,10 @@ package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiles, failed, passes, transpiles}
 import org.polystat.py2eo.checker.Mutate.Mutation
-import org.polystat.py2eo.checker.Mutate.Mutation.{Mutation, literalMutation, nameMutation}
+import org.polystat.py2eo.checker.Mutate.Mutation.{
+  Mutation, nameMutation, literalMutation, operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
+  literalToIdentifier
+}
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
@@ -25,8 +28,13 @@ object Checker {
     // Creating temp directory for mutation results
     mutationsPath.createDirectory()
 
-    val mutationList = List(nameMutation, literalMutation)
-    val res = check(args(0), mutationList)
+    val mutationList = List(
+      nameMutation, literalMutation, operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
+      literalToIdentifier
+    )
+
+    val path = if (args.isEmpty) resourcesPath / "simple-tests" else Path(args(0))
+    val res = check(path, mutationList)
 
     generateHTML(htmlPath, mutationList, res)
     generateSummary(summaryPath, mutationList, res)
