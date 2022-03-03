@@ -29,6 +29,7 @@ object Mutate {
       case Mutation.operatorMutation => input.replace('+', '-')
       case Mutation.reverseBoolMutation => input.replace("true", "false")
       case Mutation.breakToContinue => input.replace("break", "continue")
+      case Mutation.breakSyntax => input.replace("def", "df")
       case Mutation.literalToIdentifier => input.replace("False", "false")
       case _ => throw new IllegalArgumentException
     }

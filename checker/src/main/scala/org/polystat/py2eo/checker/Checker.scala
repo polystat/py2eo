@@ -161,7 +161,12 @@ object Checker {
   private def generateSummary(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
     def expectedResult(mutation: Mutation): CompilingResult = mutation match {
       case Mutation.nameMutation => transpiles
-      case Mutation.literalMutation => transpiles
+      case Mutation.literalMutation => compiles
+      case Mutation.operatorMutation => compiles
+      case Mutation.reverseBoolMutation => compiles
+      case Mutation.breakToContinue => compiles
+      case Mutation.breakSyntax => failed
+      case Mutation.literalToIdentifier => transpiles
     }
 
     val output = new FileWriter(path.createFile().jfile)
