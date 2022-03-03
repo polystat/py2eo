@@ -1,2 +1,0 @@
-def theTest():
-    return True
