@@ -1,11 +1,7 @@
 package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiles, failed, passes, transpiles}
-import org.polystat.py2eo.checker.Mutate.Mutation
-import org.polystat.py2eo.checker.Mutate.Mutation.{
-  Mutation, nameMutation, literalMutation, operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
-  literalToIdentifier
-}
+import org.polystat.py2eo.checker.Mutate.Mutation.{Mutation, literalMutation, nameMutation}
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
@@ -24,20 +20,22 @@ object Checker {
   private val htmlPath = mutationsPath / "index.html"
   private val summaryPath = mutationsPath / "summary.html"
 
+  private val headPath = resourcesPath / "html" / "head.html"
+
   def main(args: Array[String]): Unit = {
     // Creating temp directory for mutation results
     mutationsPath.createDirectory()
 
     val mutationList = List(
-      nameMutation, literalMutation, operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
-      literalToIdentifier
+      nameMutation, literalMutation, /*operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
+      literalToIdentifier*/
     )
 
-    val path = if (args.isEmpty) resourcesPath / "simple-tests" else Path(args(0))
+    val path = if (args.isEmpty) resourcesPath / "simple-tests" / "assign" else Path(args(0))
     val res = check(path, mutationList)
 
-    generateHTML(htmlPath, mutationList, res)
-    generateSummary(summaryPath, mutationList, res)
+    htmlPath.createFile().writeAll(generateHTML(res))
+    //generateSummary(summaryPath, mutationList, res)
   }
 
   object CompilingResult extends Enumeration {
@@ -141,24 +139,29 @@ object Checker {
 
   private def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
 
-  private def generateHTML(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
-    val output = new FileWriter(path.createFile().jfile)
+  private def generateHTML(testResults: List[TestResult]): String = {
+    val mutations = testResults.head.results.keys
 
-    output.write(s"<p><a href=\"summary.html\">summary</a></p>")
-    output.write("<table>\n")
-    output.write(mutations.mkString("<tr><th>Test name</th><th>", "</th><th>", "</th></tr>\n"))
-    for (row <- table) {
-      val rowStrings = for {mutation <- mutations}
-        yield s"<p><a href=\"${diffName(row.name, mutation)}\">${row.results.getOrElse(mutation, failed)}</a></p>"
+    val header = mutations.mkString("<tr>\n<th class=\"sorter\">Program</th>\n<th class=\"sorter data\">", "</th>\n<th class=\"sorter data\">", "</th>\n</tr>\n")
 
-      output.write(rowStrings.mkString(s"<tr><th>${row.name}</th><th>", "</th><th>", "</th></tr>\n"))
+    val body = for {test <- testResults} yield {
+      val name = test.name
+      val row = for {mutation <- mutations} yield {
+        val link = diffName(name, mutation)
+        val stage = test.results.getOrElse(mutation, failed)
+
+        s"<td class=\"data\"><a href=\"$link\">$stage</a></td>"
+      }
+
+      row.mkString(s"<tr>\n<th class=\"left\">$name</th>\n", "\n", "\n</tr>")
     }
 
-    output.write("</table>\n")
-    output.close()
+    val table = "<table id=programs>\n" + header + body.mkString("\n") + "</table>\n"
+
+    "<html>\n" + headPath.toFile.slurp + "<body>\n" + table + "</body>\n" + "</html>\n"
   }
 
-  private def generateSummary(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
+  /*private def generateSummary(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
     def expectedResult(mutation: Mutation): CompilingResult = mutation match {
       case Mutation.nameMutation => transpiles
       case Mutation.literalMutation => compiles
@@ -182,5 +185,5 @@ object Checker {
     output.write("</table>\n")
     output.close()
   }
-
+*/
 }
