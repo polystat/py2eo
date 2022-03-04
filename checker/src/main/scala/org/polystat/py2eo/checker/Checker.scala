@@ -1,7 +1,10 @@
 package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiles, failed, passes, transpiles}
-import org.polystat.py2eo.checker.Mutate.Mutation.{Mutation, literalMutation, nameMutation}
+import org.polystat.py2eo.checker.Mutate.Mutation.{
+  Mutation, breakSyntax, breakToContinue, literalMutation, literalToIdentifier, nameMutation, operatorMutation,
+  reverseBoolMutation
+}
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
@@ -26,8 +29,8 @@ object Checker {
     mutationsPath.createDirectory()
 
     val mutationList = List(
-      nameMutation, literalMutation, /*operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
-      literalToIdentifier*/
+      nameMutation, literalMutation, operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
+      literalToIdentifier
     )
 
     val path = if (args.isEmpty) resourcesPath / "simple-tests" / "assign" else Path(args(0))
@@ -156,7 +159,7 @@ object Checker {
     }
 
     val table = s"<table id=programs>\n$header${body.mkString}</table>\n"
-    
+
     s"<html lang=\"en-US\">\n$head<body>\n$table</body>\n</html>\n"
   }
 
