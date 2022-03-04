@@ -142,7 +142,8 @@ object Checker {
   private def generateHTML(testResults: List[TestResult]): String = {
     val mutations = testResults.head.results.keys
 
-    val header = mutations.mkString("<tr>\n<th class=\"sorter\">Program</th>\n<th class=\"sorter data\">", "</th>\n<th class=\"sorter data\">", "</th>\n</tr>\n")
+    val header = (for {mutation <- mutations} yield s"<th class=\"sorter data\">$mutation</th>\n")
+      .mkString(s"<tr>\n<th class=\"sorter\">Test</th>\n", "", "</tr>\n")
 
     val body = for {test <- testResults} yield {
       val name = test.name
@@ -150,15 +151,15 @@ object Checker {
         val link = diffName(name, mutation)
         val stage = test.results.getOrElse(mutation, failed)
 
-        s"<td class=\"data\"><a href=\"$link\">$stage</a></td>"
+        s"<td class=\"data\"><a href=\"$link\">$stage</a></td>\n"
       }
 
-      row.mkString(s"<tr>\n<th class=\"left\">$name</th>\n", "\n", "\n</tr>")
+      row.mkString(s"<tr>\n<th class=\"left\">$name</th>\n", "", "</tr>\n")
     }
 
-    val table = "<table id=programs>\n" + header + body.mkString("\n") + "</table>\n"
+    val table = "<table id=programs>\n" + header + body.mkString + "</table>\n"
 
-    "<html>\n" + headPath.toFile.slurp + "<body>\n" + table + "</body>\n" + "</html>\n"
+    "<html lang=\"en-US\">\n" + headPath.toFile.slurp + "<body>\n" + table + "</body>\n" + "</html>\n"
   }
 
   /*private def generateSummary(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
