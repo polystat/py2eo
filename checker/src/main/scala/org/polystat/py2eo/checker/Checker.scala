@@ -18,12 +18,11 @@ object Checker {
   private val mutationsPath = resourcesPath / "mutationTests"
   private val runEOPath = resourcesPath / "runEO"
   private val htmlPath = mutationsPath / "index.html"
-  private val summaryPath = mutationsPath / "summary.html"
 
-  private val headPath = resourcesPath / "html" / "head.html"
+  private val head = (resourcesPath / "html" / "head.html").toFile.slurp
 
   def main(args: Array[String]): Unit = {
-    // Creating temp directory for mutation results
+
     mutationsPath.createDirectory()
 
     val mutationList = List(
@@ -35,7 +34,6 @@ object Checker {
     val res = check(path, mutationList)
 
     htmlPath.createFile().writeAll(generateHTML(res))
-    //generateSummary(summaryPath, mutationList, res)
   }
 
   object CompilingResult extends Enumeration {
@@ -143,7 +141,7 @@ object Checker {
     val mutations = testResults.head.results.keys
 
     val header = (for {mutation <- mutations} yield s"<th class=\"sorter data\">$mutation</th>\n")
-      .mkString(s"<tr>\n<th class=\"sorter\">Test</th>\n", "", "</tr>\n")
+      .mkString("<tr>\n<th class=\"sorter\">Test</th>\n", "", "</tr>\n")
 
     val body = for {test <- testResults} yield {
       val name = test.name
@@ -154,37 +152,12 @@ object Checker {
         s"<td class=\"data\"><a href=\"$link\">$stage</a></td>\n"
       }
 
-      row.mkString(s"<tr>\n<th class=\"left\">$name</th>\n", "", "</tr>\n")
+      s"<tr>\n<th class=\"left\">$name</th>\n${row.mkString}</tr>\n"
     }
 
-    val table = "<table id=programs>\n" + header + body.mkString + "</table>\n"
-
-    "<html lang=\"en-US\">\n" + headPath.toFile.slurp + "<body>\n" + table + "</body>\n" + "</html>\n"
+    val table = s"<table id=programs>\n$header${body.mkString}</table>\n"
+    
+    s"<html lang=\"en-US\">\n$head<body>\n$table</body>\n</html>\n"
   }
 
-  /*private def generateSummary(path: Path, mutations: List[Mutation], table: List[TestResult]): Unit = {
-    def expectedResult(mutation: Mutation): CompilingResult = mutation match {
-      case Mutation.nameMutation => transpiles
-      case Mutation.literalMutation => compiles
-      case Mutation.operatorMutation => compiles
-      case Mutation.reverseBoolMutation => compiles
-      case Mutation.breakToContinue => compiles
-      case Mutation.breakSyntax => failed
-      case Mutation.literalToIdentifier => transpiles
-    }
-
-    val output = new FileWriter(path.createFile().jfile)
-
-    output.write("<table>\n")
-    output.write(mutations.mkString("<tr><th></th><th>", "</th><th>", "</th></tr>\n"))
-
-    val unexpectedResults = for {mutation <- mutations}
-      yield table.count(row => row.results.getOrElse(mutation, failed) == expectedResult(mutation))
-
-    output.write(unexpectedResults.mkString("<tr><th>Sensitive tests</th><th>", "</th><th>", "</th></tr>\n"))
-
-    output.write("</table>\n")
-    output.close()
-  }
-*/
 }
