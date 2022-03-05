@@ -69,16 +69,17 @@ object Checker {
     val EOText = Transpile.transpile(db)(test.stripExtension, parseYaml(test))
     writeFile(test.stripExtension, EOText)
 
-    val resultList = for {mutation <- mutations} yield check(test, mutation)
+    val resultList = for {mutation <- mutations} yield (mutation, check(test, mutation))
 
     TestResult(test.stripExtension, resultList.toMap[Mutation, CompilingResult])
   }
 
-  private def check(test: File, mutation: Mutation): (Mutation, CompilingResult) = {
-    val mutatedPyText = Mutate(parseYaml(test), mutation, 1)
+  private def check(test: File, mutation: Mutation): CompilingResult = {
+    val originalPyText = parseYaml(test)
+    val mutatedPyText = Mutate(originalPyText, mutation, 1)
 
     // Catching exceptions from parser and mapper
-    val ret = try {
+    try {
       val db = debugPrinter(test.jfile)(_, _)
       val mutatedEOText = Transpile.transpile(db)(test.stripExtension, mutatedPyText)
       val resultFileName = writeFile(s"${test.stripExtension}-$mutation", mutatedEOText)
@@ -98,8 +99,6 @@ object Checker {
     } catch {
       case _: Exception => failed
     }
-
-    (mutation, ret)
   }
 
   private def compile(filename: String): Boolean = {
