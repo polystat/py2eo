@@ -20,9 +20,9 @@ object Checker {
   private val resourcesPath = Path(System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker")
   private val mutationsPath = resourcesPath / "mutationTests"
   private val runEOPath = resourcesPath / "runEO"
-  private val htmlPath = mutationsPath / "index.html"
 
-  private val head = (resourcesPath / "html" / "head.html").toFile.slurp
+  private val html = File(mutationsPath / "index.html")
+  private val head = File(resourcesPath / "html" / "head.html").slurp
 
   def main(args: Array[String]): Unit = {
 
@@ -33,10 +33,10 @@ object Checker {
       literalToIdentifier
     )
 
-    val path = if (args.isEmpty) resourcesPath / "simple-tests" / "assign" else Path(args(0))
+    val path = if (args.isEmpty) resourcesPath / "simple-tests" else Path(args(0))
     val res = check(path, mutationList)
 
-    htmlPath.createFile().writeAll(generateHTML(res))
+    html.writeAll(generateHTML(res))
   }
 
   object CompilingResult extends Enumeration {
