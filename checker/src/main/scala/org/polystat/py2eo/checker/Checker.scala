@@ -1,120 +1,165 @@
 package org.polystat.py2eo.checker
 
+import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiles, failed, passes, transpiles}
+import org.polystat.py2eo.checker.Mutate.Mutation.{
+  Mutation, breakSyntax, breakToContinue, literalMutation, literalToIdentifier, nameMutation, operatorMutation,
+  reverseBoolMutation
+}
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
-import java.io.{File, FileInputStream, FileWriter}
+import java.io.{FileInputStream, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Paths}
+import scala.reflect.io.{File, Path}
 import scala.sys.process.Process
 
-object Checker extends App {
+object Checker {
 
-  private val resourcesPrefix = System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker/"
-  private val runEOPath = resourcesPrefix + "runEO/"
+  private val resourcesPath = Path(System.getProperty("user.dir") + "/checker/src/test/resources/org/polystat/py2eo/checker")
+  private val mutationsPath = resourcesPath / "mutationTests"
+  private val runEOPath = resourcesPath / "runEO"
 
-  case class TestResult(name: String, transpiles: Boolean, compiles: Boolean, runs: Boolean)
+  private val html = File(mutationsPath / "index.html")
+  private val head = File(resourcesPath / "html" / "head.html").slurp
 
-  def check(path: String, mutation: Mutator.Mutation.Value): Array[TestResult] = {
-    val file = new File(path)
-    if (file.isDirectory) {
-      for {dirItem <- file.listFiles() if dirItem.getName.endsWith(".yaml")} yield check(dirItem, mutation)
-    } else {
-      Array(check(file, mutation))
+  def main(args: Array[String]): Unit = {
+
+    mutationsPath.createDirectory()
+
+    val mutationList = List(
+      nameMutation, literalMutation, operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
+      literalToIdentifier
+    )
+
+    val path = if (args.isEmpty) resourcesPath / "simple-tests" else Path(args(0))
+    val res = check(path, mutationList)
+
+    html.writeAll(generateHTML(res))
+  }
+
+  object CompilingResult extends Enumeration {
+    type CompilingResult = Value
+    val failed, transpiles, compiles, passes, timeout = Value
+
+    override def toString(): String = this match {
+      case CompilingResult.failed => "failed"
+      case CompilingResult.transpiles => "transpiles"
+      case CompilingResult.compiles => "compiles"
+      case CompilingResult.passes => "passes"
+      case CompilingResult.timeout => "timeout"
     }
   }
 
-  private def check(test: File, mutation: Mutator.Mutation.Value): TestResult = {
-    val (moduleName, python) = yaml2python(test)
-    val db = debugPrinter(test)(_, _)
-    val mutatedPyText = Mutator.mutate(python, mutation, 1)
+  case class TestResult(name: String, results: Map[Mutation, CompilingResult])
+
+  private def check(path: Path, mutations: List[Mutation]): List[TestResult] = {
+    if (path.isDirectory) {
+      (for {file <- path.toDirectory.list.toList} yield check(file, mutations)).flatten
+    } else if (path.extension == "yaml") {
+      List(check(path.toFile, mutations))
+    } else {
+      List.empty
+    }
+  }
+
+  private def check(test: File, mutations: List[Mutation]): TestResult = {
+    val db = debugPrinter(test.jfile)(_, _)
+    val EOText = Transpile.transpile(db)(test.stripExtension, parseYaml(test))
+    writeFile(test.stripExtension, EOText)
+
+    val resultList = for {mutation <- mutations} yield (mutation, check(test, mutation))
+
+    TestResult(test.stripExtension, resultList.toMap[Mutation, CompilingResult])
+  }
+
+  private def check(test: File, mutation: Mutation): CompilingResult = {
+    val originalPyText = parseYaml(test)
+    val mutatedPyText = Mutate(originalPyText, mutation, 1)
 
     // Catching exceptions from parser and mapper
     try {
-      // No need for compiling original texts for now
-      // val originalEOText = Transpile.transpile(db)(moduleName, python)
-      // val fstName = writeFile("before", "mutations", ".eo", originalEOText)
+      val db = debugPrinter(test.jfile)(_, _)
+      val mutatedEOText = Transpile.transpile(db)(test.stripExtension, mutatedPyText)
+      val resultFileName = writeFile(s"${test.stripExtension}-$mutation", mutatedEOText)
 
-      val mutatedEOText = Transpile.transpile(db)(cropExtension(moduleName), mutatedPyText)
-      val resultFileName = writeFile("after", "mutations", ".eo", mutatedEOText)
+      val diffPath = mutationsPath / diffName(test, mutation)
+      // Process(s"diff ${test.changeExtension("eo").name} $resultFileName", mutationsPath.jfile).!
 
-      if (!compileEO(resultFileName)) {
-        TestResult(moduleName, transpiles = true, compiles = false, runs = false)
-      } else {
-        TestResult(moduleName, transpiles = true, compiles = true, runs = runEO(resultFileName))
-      }
+      // Java zone: had troubles with redirecting scala.sys.Process output to file
+      // TODO: migrate to scala.sys.Process
+      val processBuilder = new ProcessBuilder("diff", test.changeExtension("eo").name, resultFileName)
+      processBuilder.directory(mutationsPath.jfile)
+      processBuilder.redirectOutput(diffPath.jfile)
+      processBuilder.start()
+
+      // TODO: actually need to get rid of old eo-files in that directory
+      if (!compile(resultFileName)) transpiles else run(resultFileName)
+    } catch {
+      case _: Exception => failed
     }
-    catch {
-      case _: Exception =>
-        TestResult(moduleName, transpiles = false, compiles = false, runs = false)
-    }
-
   }
 
-  private def writeFile(name: String, dirSuffix: String, fileSuffix: String, what: String): String = {
-    val outPath = resourcesPrefix + "/" + dirSuffix
-    val d = new File(outPath)
-    if (!d.exists()) d.mkdir()
-    val outName = outPath + "/" + name + fileSuffix
-    val output = new FileWriter(outName)
+  private def compile(filename: String): Boolean = {
+    val originalPath = mutationsPath + File.separator + filename
+
+    val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + File.separator + filename), REPLACE_EXISTING)
+    val ret = Process("mvn clean test", runEOPath.jfile).! == 0
+
+    Files.delete(result)
+
+    ret
+  }
+
+  private def run(filename: String): CompilingResult = {
+    val originalPath = mutationsPath + File.separator + filename
+
+    val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + File.separator + "Test.eo"), REPLACE_EXISTING)
+    val ret = Process("mvn clean test", runEOPath.jfile).! == 0
+
+    Files.delete(result)
+
+    if (ret) passes else compiles
+  }
+
+  private def writeFile(name: String, what: String): String = {
+    val filename = name + ".eo"
+    val output = new FileWriter(mutationsPath + File.separator + filename)
     output.write(what)
     output.close()
 
-    name + fileSuffix
+    filename
   }
 
-  private def compileEO(filename: String): Boolean = {
-    val originalPath = resourcesPrefix + "mutations/" + filename
-
-    val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + filename), REPLACE_EXISTING)
-    val ret = Process("mvn clean test", new File(runEOPath)).! == 0
-
-    Files.delete(result)
-
-    ret
-  }
-
-  private def runEO(filename: String): Boolean = {
-    val originalPath = resourcesPrefix + "mutations/" + filename
-
-    val result = Files.copy(Paths.get(originalPath), Paths.get(runEOPath + "Test.eo"), REPLACE_EXISTING)
-    val ret = Process("mvn clean test", new File(runEOPath)).! == 0
-
-    Files.delete(result)
-
-    ret
-  }
-
-  private def yaml2python(f: File): (String, String) = {
+  private def parseYaml(path: Path): String = {
     val yaml = new Yaml()
-    val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    (f.getName, map.get("python"))
+    yaml.load[java.util.Map[String, String]](new FileInputStream(path.jfile)).get("python")
   }
 
-  private def cropExtension(s: String): String = {
-    s.substring(0, s.lastIndexOf("."))
+  private def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
+
+  private def generateHTML(testResults: List[TestResult]): String = {
+    val mutations = testResults.head.results.keys
+
+    val header = (for {mutation <- mutations} yield s"<th class=\"sorter data\">$mutation</th>\n")
+      .mkString("<tr>\n<th class=\"sorter\">Test</th>\n", "", "</tr>\n")
+
+    val body = for {test <- testResults} yield {
+      val name = test.name
+      val row = for {mutation <- mutations} yield {
+        val link = diffName(name, mutation)
+        val stage = test.results.getOrElse(mutation, failed)
+
+        s"<td class=\"data\"><a href=\"$link\">$stage</a></td>\n"
+      }
+
+      s"<tr>\n<th class=\"left\">$name</th>\n${row.mkString}</tr>\n"
+    }
+
+    val table = s"<table id=programs>\n$header${body.mkString}</table>\n"
+
+    s"<html lang=\"en-US\">\n$head<body>\n$table</body>\n</html>\n"
   }
-
-  private val nameMutation = Mutator.Mutation.nameMutation
-  private val literalMutation = Mutator.Mutation.literalMutation
-
-  val arr = check(resourcesPrefix + "simple-tests/assign", nameMutation) ++
-    //check(resourcesPrefix + "simple-tests/while", nameMutation) ++
-    check(resourcesPrefix + "simple-tests/if", nameMutation)
-
-  println("Run results for first name mutation:")
-  println("+---------------+------------+----------+-------+")
-  println("|   test name   | transpiles | compiles | runs  |")
-  println("+---------------+------------+----------+-------+")
-  for (TestResult(name, transpiles, compiles, runs) <- arr) {
-    // TODO: calculate longest test name and format table for it
-    print(s"| ${name + " ".repeat(13 - name.length)} |")
-    print(s" ${if (transpiles) "true " else "false"}      |")
-    print(s" ${if (compiles) "true " else "false"}    |")
-    println(s" ${if (runs) "true " else "false"} |")
-  }
-
-  println("+---------------+------------+----------+-------+")
 
 }
