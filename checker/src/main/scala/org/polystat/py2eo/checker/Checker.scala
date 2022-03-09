@@ -134,6 +134,16 @@ object Checker {
 
   private def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
 
+  private def expected(mutation: Mutation): CompilingResult = mutation match {
+    case Mutation.nameMutation => transpiled
+    case Mutation.literalMutation => transpiled
+    case Mutation.operatorMutation => transpiled
+    case Mutation.reverseBoolMutation => transpiled
+    case Mutation.breakToContinue => transpiled
+    case Mutation.breakSyntax => failed
+    case Mutation.literalToIdentifier => transpiled
+  }
+
   private def generateHTML(testResults: List[TestResult]): String = {
     val mutations = testResults.head.results.keys.toList
 
@@ -145,12 +155,10 @@ object Checker {
       val row = for {mutation <- mutations} yield {
         val link = diffName(name, mutation)
         val stage = test.results.getOrElse(mutation, failed)
+        val kind = if (stage == invalid) "" else if (stage == expected(mutation)) "expected " else "unexpected "
+        val data = if (stage == invalid || stage == failed) stage.toString else s"<a href=\"$link\">$stage</a>"
 
-        if (stage == invalid || stage == failed) {
-          s"<td class=\"data\">$stage</td>\n"
-        } else {
-          s"<td class=\"data\"><a href=\"$link\">$stage</a></td>\n"
-        }
+        s"<td class=\"${kind}data\">$data</td>\n"
       }
 
       s"<tr>\n<th class=\"left\">$name</th>\n${row.mkString}</tr>\n"
