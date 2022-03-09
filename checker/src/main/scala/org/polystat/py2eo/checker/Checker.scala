@@ -1,6 +1,6 @@
 package org.polystat.py2eo.checker
 
-import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiles, failed, passes, transpiles}
+import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, invalid, compiled, failed, passed, transpiled}
 import org.polystat.py2eo.checker.Mutate.Mutation.{
   Mutation, breakSyntax, breakToContinue, literalMutation, literalToIdentifier, nameMutation, operatorMutation,
   reverseBoolMutation
@@ -41,14 +41,15 @@ object Checker {
 
   object CompilingResult extends Enumeration {
     type CompilingResult = Value
-    val failed, transpiles, compiles, passes, timeout = Value
+    val invalid, failed, transpiled, compiled, passed, timeout = Value
 
     override def toString(): String = this match {
-      case CompilingResult.failed => "failed"
-      case CompilingResult.transpiles => "transpiles"
-      case CompilingResult.compiles => "compiles"
-      case CompilingResult.passes => "passes"
-      case CompilingResult.timeout => "timeout"
+      case `invalid` => "n/a"
+      case `failed` => "failed"
+      case `transpiled` => "transpiles"
+      case `compiled` => "compiles"
+      case `passed` => "passes"
+      case `timeout` => "timeout"
     }
   }
 
@@ -56,7 +57,7 @@ object Checker {
 
   private def check(path: Path, mutations: List[Mutation]): List[TestResult] = {
     if (path.isDirectory) {
-      (for {file <- path.toDirectory.list.toList} yield check(file, mutations)).flatten
+      path.toDirectory.list.toList.flatMap(item => check(item, mutations))
     } else if (path.extension == "yaml") {
       List(check(path.toFile, mutations))
     } else {
@@ -78,8 +79,9 @@ object Checker {
     val originalPyText = parseYaml(test)
     val mutatedPyText = Mutate(originalPyText, mutation, 1)
 
-    // Catching exceptions from parser and mapper
-    try {
+    if (mutatedPyText equals originalPyText) {
+      invalid
+    } else try {
       val db = debugPrinter(test.jfile)(_, _)
       val mutatedEOText = Transpile.transpile(db)(test.stripExtension, mutatedPyText)
       val resultFileName = writeFile(s"${test.stripExtension}-$mutation", mutatedEOText)
@@ -95,7 +97,7 @@ object Checker {
       processBuilder.start()
 
       // TODO: actually need to get rid of old eo-files in that directory
-      if (!compile(resultFileName)) transpiles else run(resultFileName)
+      if (!compile(resultFileName)) transpiled else run(resultFileName)
     } catch {
       case _: Exception => failed
     }
@@ -120,7 +122,7 @@ object Checker {
 
     Files.delete(result)
 
-    if (ret) passes else compiles
+    if (ret) passed else compiled
   }
 
   private def writeFile(name: String, what: String): String = {
@@ -142,7 +144,7 @@ object Checker {
   private def generateHTML(testResults: List[TestResult]): String = {
     val mutations = testResults.head.results.keys
 
-    val header = (for {mutation <- mutations} yield s"<th class=\"sorter data\">$mutation</th>\n")
+    val header = (for {mutation <- mutations} yield s"<th class=\"sorter data\">${mutation.toString}</th>\n")
       .mkString("<tr>\n<th class=\"sorter\">Test</th>\n", "", "</tr>\n")
 
     val body = for {test <- testResults} yield {
@@ -151,7 +153,11 @@ object Checker {
         val link = diffName(name, mutation)
         val stage = test.results.getOrElse(mutation, failed)
 
-        s"<td class=\"data\"><a href=\"$link\">$stage</a></td>\n"
+        if (stage == invalid || stage == failed) {
+          s"<td class=\"data\">$stage</td>\n"
+        } else {
+          s"<td class=\"data\"><a href=\"$link\">${stage.toString}</a></td>\n"
+        }
       }
 
       s"<tr>\n<th class=\"left\">$name</th>\n${row.mkString}</tr>\n"
