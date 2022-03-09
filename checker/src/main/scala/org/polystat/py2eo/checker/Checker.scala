@@ -1,10 +1,8 @@
 package org.polystat.py2eo.checker
 
-import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, invalid, compiled, failed, passed, transpiled}
-import org.polystat.py2eo.checker.Mutate.Mutation.{
-  Mutation, breakSyntax, breakToContinue, literalMutation, literalToIdentifier, nameMutation, operatorMutation,
-  reverseBoolMutation
-}
+import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiled, failed, invalid, passed, transpiled}
+import org.polystat.py2eo.checker.Mutate.Mutation
+import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 import org.polystat.py2eo.transpiler.Main.debugPrinter
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
@@ -28,13 +26,8 @@ object Checker {
 
     mutationsPath.createDirectory()
 
-    val mutationList = List(
-      nameMutation, literalMutation, operatorMutation, reverseBoolMutation, breakToContinue, breakSyntax,
-      literalToIdentifier
-    )
-
     val path = if (args.isEmpty) resourcesPath / "simple-tests" else Path(args(0))
-    val res = check(path, mutationList)
+    val res = check(path, Mutation.values)
 
     html.writeAll(generateHTML(res))
   }
@@ -55,7 +48,7 @@ object Checker {
 
   case class TestResult(name: String, results: Map[Mutation, CompilingResult])
 
-  private def check(path: Path, mutations: List[Mutation]): List[TestResult] = {
+  private def check(path: Path, mutations: Iterable[Mutation]): List[TestResult] = {
     if (path.isDirectory) {
       path.toDirectory.list.toList.flatMap(item => check(item, mutations))
     } else if (path.extension == "yaml") {
@@ -65,7 +58,7 @@ object Checker {
     }
   }
 
-  private def check(test: File, mutations: List[Mutation]): TestResult = {
+  private def check(test: File, mutations: Iterable[Mutation]): TestResult = {
     val db = debugPrinter(test.jfile)(_, _)
     val EOText = Transpile.transpile(db)(test.stripExtension, parseYaml(test))
     writeFile(test.stripExtension, EOText)
@@ -142,9 +135,9 @@ object Checker {
   private def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
 
   private def generateHTML(testResults: List[TestResult]): String = {
-    val mutations = testResults.head.results.keys
+    val mutations = testResults.head.results.keys.toList
 
-    val header = (for {mutation <- mutations} yield s"<th class=\"sorter data\">${mutation.toString}</th>\n")
+    val header = (for {mutation <- mutations} yield s"<th class=\"sorter data\">$mutation</th>\n")
       .mkString("<tr>\n<th class=\"sorter\">Test</th>\n", "", "</tr>\n")
 
     val body = for {test <- testResults} yield {
@@ -156,7 +149,7 @@ object Checker {
         if (stage == invalid || stage == failed) {
           s"<td class=\"data\">$stage</td>\n"
         } else {
-          s"<td class=\"data\"><a href=\"$link\">${stage.toString}</a></td>\n"
+          s"<td class=\"data\"><a href=\"$link\">$stage</a></td>\n"
         }
       }
 
