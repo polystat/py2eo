@@ -10,6 +10,10 @@ import org.polystat.py2eo.parser.Statement.{Assert, Decorators, FuncDef, Return,
 
 object Transpile {
 
+  def apply(moduleName: String, pythonCode: String): String = {
+    transpile((_: Any, _: Any) => {})(moduleName, pythonCode)
+  }
+
   /// [debugPrinter(statement, stageName)]
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
