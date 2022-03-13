@@ -4,13 +4,8 @@ import scala.collection.immutable.HashMap
 import PrintEO.{Text, indent, printExpr}
 import org.polystat.py2eo.parser.{ArgKind, Expression, Statement, VarScope}
 import org.polystat.py2eo.transpiler.Common.GeneratorException
-import org.polystat.py2eo.parser.Expression.{
-  Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar, Field,
-  GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
-}
-import org.polystat.py2eo.parser.Statement.{
-  Assign, Break, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite, While, ClassDef
-}
+import org.polystat.py2eo.parser.Expression.{Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar, Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral}
+import org.polystat.py2eo.parser.Statement.{Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Raise, Return, SimpleObject, Suite, Try, While}
 
 object PrintLinearizedMutableEOWithCage {
 
@@ -145,6 +140,20 @@ object PrintLinearizedMutableEOWithCage {
 
       case Pass(_) => List()
       case Suite(l, _) => l.flatMap(printSt)
+
+      case Raise(None, None, ann) => List("raiseme.forward TRUE")
+
+      case Try(ttry, List((None, exc)), Some(Pass(_)), Some(Pass(_)), ann) =>
+        "if." :: indent(
+          "goto" :: indent(
+            "[raiseme]" :: indent(
+              "seq > @" :: indent(
+                printSt(ttry) :+ "raiseme.forward FALSE"
+              )
+            )
+          ) ++
+          ("seq" :: (indent(printSt(exc)) :+ "0"))
+        )
     }
 
   private def printFun(preface : List[String], f : FuncDef) : Text = {
@@ -161,10 +170,8 @@ object PrintLinearizedMutableEOWithCage {
       map(x => s"cage > ${x._1}").toList ++
       funs.map { f: FuncDef => s"cage > ${f.name}" }
 
-    val args1 = f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
-      argname + "NotCopied" }.mkString(" ")
-    // todo: empty arg list hack
-    val args2 = if (args1.isEmpty) "unused" else args1
+    val args2 = ("raiseme" :: f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
+      argname + "NotCopied" }).mkString(" ")
     "[]" :: indent(
       s"[$args2] > apply" :: indent(
         preface ++ (

@@ -59,6 +59,7 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -178,6 +179,10 @@ class Tests {
 
   @Test def classCheck():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/class")
+  }
+
+  @Test def exceptionsCheck():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/exceptions")
   }
 
   def simpleConstructionCheck(path:String): Unit = {
