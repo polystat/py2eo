@@ -54,17 +54,21 @@ object PrintLinearizedMutableEOWithCage {
           "write." :: indent(
             name ::
             "[]" :: indent(
+              "newUID.apply 0 > xid" ::
               "[unused] > apply" ::
               indent(
                 (
-                  "[] > result" :: indent(
+                  "[] > result" ::
+                  indent(
                     l.map{
                       case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
                       case f : FuncDef => s"cage > ${f.name}"
                     } ++
                     decorates.toList.map(e => s"${printExpr(e)}.apply 0 > base") ++
                     (
-                      "seq > initFields" :: indent(
+                      s"$name > xclass" ::
+                      "seq > initFields" ::
+                      indent(
                         l.flatMap{
                           case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
                           case f : FuncDef =>
@@ -146,19 +150,21 @@ object PrintLinearizedMutableEOWithCage {
       case Pass(_) => List()
       case Suite(l, _) => l.flatMap(printSt)
 
-      case Raise(None, None, ann) => List("raiseme.forward TRUE")
+      case Raise(None, None, ann) => List("raiseme.forward raiseEmpty")
+      case Raise(Some(e), None, _) => List("raiseme.forward %s".format(pe(e)))
 
       case Try(ttry, List((None, exc)), Some(Pass(_)), Some(Pass(_)), ann) =>
-        "if." :: indent(
+        "write." :: indent(
+          "xcurrent-exception" ::
           "goto" :: indent(
             "[raiseme]" :: indent(
               "seq > @" :: indent(
-                printSt(ttry) :+ "raiseme.forward FALSE"
+                printSt(ttry) :+ "raiseme.forward raiseNothing"
               )
             )
-          ) ++
-          ("seq" :: (indent(printSt(exc)) :+ "0"))
-        )
+          )
+        ) ++
+        ("seq" :: (indent(printSt(exc))))
     }
 
   private def printFun(preface : List[String], f : FuncDef) : Text = {
@@ -204,7 +210,19 @@ object PrintLinearizedMutableEOWithCage {
     val mkCopy = List(
       "[x] > mkCopy",
       "  x' > copy",
-      "  copy.< > @"
+      "  copy.< > @",
+      "[] > newUID",
+      "  memory > cur",
+      "  seq > apply",
+      "    cur.write (cur.is-empty.if 2 (cur.add 1))",
+      "    cur",
+      "[] > raiseEmpty",
+      "  [] > xclass",
+      "    1 > xid",
+      "[] > raiseNothing",
+      "  [] > xclass",
+      "    0 > xid",
+      "cage > xcurrent-exception"
     )
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),

@@ -18,7 +18,6 @@ import scala.sys.process.{Process, ProcessLogger}
 
 
 object SlowTest extends Tag("SlowTest")
-class YamlItem(var testName: Path, var yaml: java.util.Map[String, Any])
 
 class Tests {
   // the script to convert python files to .yaml containers. Use it to add new big files
@@ -45,7 +44,7 @@ class Tests {
   def yaml2python(f : File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    YamlTest(map.get("python"), map.containsKey("disabled") && map.get("disabled") != "True")
+    YamlTest(map.get("python"), map.containsKey("disabled"))
   }
 
   def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
