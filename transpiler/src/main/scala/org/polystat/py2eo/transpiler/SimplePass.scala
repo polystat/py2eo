@@ -822,7 +822,8 @@ object SimplePass {
   }
 
   // change a list of different except clauses to just one parameterless except with clauses implemented as ifelseif
-  // todo: exception object compatibility is not fully implemented ("or a tuple containing an item that is the class or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
+  // todo: exception object compatibility is not fully implemented ("or a tuple containing an item that is the class
+  //  or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
   // todo: also must implement named exceptions and del of those a the end of an except clause
   // todo: also must rethrow an exception if it is not catched
   def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
