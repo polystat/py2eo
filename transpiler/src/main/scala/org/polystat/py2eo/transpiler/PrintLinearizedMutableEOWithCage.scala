@@ -5,11 +5,11 @@ import PrintEO.{Text, indent, printExpr}
 import org.polystat.py2eo.parser.{ArgKind, Expression, Statement, VarScope}
 import org.polystat.py2eo.transpiler.Common.GeneratorException
 import org.polystat.py2eo.parser.Expression.{
-  Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar, Field,
-  GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
+  Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar,
+  Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
 import org.polystat.py2eo.parser.Statement.{
-  Assign, Break, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite, While, ClassDef
+  Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Raise, Return, Suite, Try, While
 }
 
 object PrintLinearizedMutableEOWithCage {
@@ -54,17 +54,21 @@ object PrintLinearizedMutableEOWithCage {
           "write." :: indent(
             name ::
             "[]" :: indent(
+              "newUID.apply 0 > xid" ::
               "[unused] > apply" ::
               indent(
                 (
-                  "[] > result" :: indent(
+                  "[] > result" ::
+                  indent(
                     l.map{
                       case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
                       case f : FuncDef => s"cage > ${f.name}"
                     } ++
                     decorates.toList.map(e => s"${printExpr(e)}.apply 0 > base") ++
                     (
-                      "seq > initFields" :: indent(
+                      s"$name > xclass" ::
+                      "seq > initFields" ::
+                      indent(
                         l.flatMap{
                           case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
                           case f : FuncDef =>
@@ -145,6 +149,22 @@ object PrintLinearizedMutableEOWithCage {
 
       case Pass(_) => List()
       case Suite(l, _) => l.flatMap(printSt)
+
+      case Raise(None, None, ann) => List("raiseme.forward raiseEmpty")
+      case Raise(Some(e), None, _) => List("raiseme.forward %s".format(pe(e)))
+
+      case Try(ttry, List((None, exc)), Some(Pass(_)), Some(Pass(_)), ann) =>
+        "write." :: indent(
+          "xcurrent-exception" ::
+          "goto" :: indent(
+            "[raiseme]" :: indent(
+              "seq > @" :: indent(
+                printSt(ttry) :+ "raiseme.forward raiseNothing"
+              )
+            )
+          )
+        ) ++
+        ("seq" :: (indent(printSt(exc))))
     }
 
   private def printFun(preface : List[String], f : FuncDef) : Text = {
@@ -161,10 +181,8 @@ object PrintLinearizedMutableEOWithCage {
       map(x => s"cage > ${x._1}").toList ++
       funs.map { f: FuncDef => s"cage > ${f.name}" }
 
-    val args1 = f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
-      argname + "NotCopied" }.mkString(" ")
-    // todo: empty arg list hack
-    val args2 = if (args1.isEmpty) "unused" else args1
+    val args2 = ("raiseme" :: f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
+      argname + "NotCopied" }).mkString(" ")
     "[]" :: indent(
       s"[$args2] > apply" :: indent(
         preface ++ (
@@ -192,7 +210,19 @@ object PrintLinearizedMutableEOWithCage {
     val mkCopy = List(
       "[x] > mkCopy",
       "  x' > copy",
-      "  copy.< > @"
+      "  copy.< > @",
+      "[] > newUID",
+      "  memory > cur",
+      "  seq > apply",
+      "    cur.write (cur.is-empty.if 2 (cur.add 1))",
+      "    cur",
+      "[] > raiseEmpty",
+      "  [] > xclass",
+      "    1 > xid",
+      "[] > raiseNothing",
+      "  [] > xclass",
+      "    0 > xid",
+      "cage > xcurrent-exception"
     )
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),

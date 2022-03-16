@@ -7,7 +7,7 @@ import org.polystat.py2eo.parser.Expression.{
   Comprehension, Cond, DictComprehension, DictCons, DictEltDoubleStar, DoubleStar, EllipsisLiteral, Field, FloatLiteral,
   ForComprehension, FreakingComparison, GeneratorComprehension, Ident, IfComprehension, ImagLiteral, IntLiteral,
   LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, Unop, Unops,
-  UnsupportedExpr, Yield, YieldFrom
+  UnsupportedExpr, Yield, YieldFrom, Compops
 }
 import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement}
 import org.polystat.py2eo.parser.Statement.{
@@ -819,6 +819,34 @@ object SimplePass {
       }
       , ns
     )
+  }
+
+  // change a list of different except clauses to just one parameterless except with clauses implemented as ifelseif
+  // todo: exception object compatibility is not fully implemented ("or a tuple containing an item that is the class
+  //  or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
+  // todo: also must implement named exceptions and del of those a the end of an except clause
+  // todo: also must rethrow an exception if it is not catched
+  def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case Try(ttry, List((None, _)), eelse, ffinally, _) => (s, ns)
+    case Try(ttry, excepts, eelse, ffinally, ann) =>
+      val ex1 = excepts.map(
+        x => {
+          val body = x._2
+          (
+            SimpleComparison(Compops.Eq,
+              Field(Field(Ident("current-exception", ann.pos), "class", ann.pos), "id", ann.pos),
+              x._1 match {
+                case Some((e, None)) => Field(e, "id", ann.pos)
+                case None => IntLiteral(1, ann.pos)
+              },
+              ann.pos
+            ),
+            body
+          )
+        }
+      )
+      (Try(ttry, List((None, If(ex1, Some(Pass(ann.pos)), ann.pos))), eelse, ffinally, ann.pos), ns)
+    case _ => (s, ns)
   }
 
   def simplifyInheritance(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
