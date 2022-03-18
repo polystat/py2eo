@@ -1,6 +1,6 @@
 package org.polystat.py2eo.checker
 
-import org.polystat.py2eo.checker.Checker.CompilingResult.{CompilingResult, compiled, failed, invalid, passed, transpiled}
+import org.polystat.py2eo.checker.Checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 import org.polystat.py2eo.transpiler.Transpile
@@ -58,9 +58,9 @@ object Checker {
     type CompilingResult = Value
     val invalid: Value = Value("n/a")
     val failed: Value = Value("failed")
-    val transpiled: Value = Value("transpiles")
-    val compiled: Value = Value("compiles")
-    val passed: Value = Value("passes")
+    val transpiled: Value = Value("transpiled")
+    val compiled: Value = Value("compiled")
+    val passed: Value = Value("passed")
     val timeout: Value = Value("timeout")
   }
 
@@ -90,7 +90,7 @@ object Checker {
     val mutant = Mutate(original, mutation, 1)
 
     if (mutant equals original) {
-      invalid
+      CompilingResult.invalid
     } else try {
       val originalFile = File(outputPath / test.changeExtension("eo").name)
       val mutatedFile = File(outputPath / s"${test.stripExtension}-$mutation")
@@ -103,9 +103,9 @@ object Checker {
       diffFile.writeAll(diff.mkString("\n"))
 
       // TODO: actually need to get rid of old eo-files in that directory
-      if (!compile(mutatedFile)) transpiled else run(mutatedFile)
+      if (!compile(mutatedFile)) CompilingResult.transpiled else run(mutatedFile)
     } catch {
-      case _: Exception => failed
+      case _: Exception => CompilingResult.failed
     }
   }
 
@@ -124,7 +124,7 @@ object Checker {
 
     Files.delete(result)
 
-    if (ret) passed else compiled
+    if (ret) CompilingResult.passed else CompilingResult.compiled
   }
 
   private def parseYaml(file: File): String = {
@@ -134,13 +134,13 @@ object Checker {
   private def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
 
   private def expected(mutation: Mutation): CompilingResult = mutation match {
-    case Mutation.nameMutation => transpiled
-    case Mutation.literalMutation => compiled
-    case Mutation.operatorMutation => transpiled
-    case Mutation.reverseBoolMutation => transpiled
-    case Mutation.breakToContinue => transpiled
-    case Mutation.breakSyntax => failed
-    case Mutation.literalToIdentifier => transpiled
+    case Mutation.nameMutation => CompilingResult.transpiled
+    case Mutation.literalMutation => CompilingResult.compiled
+    case Mutation.operatorMutation => CompilingResult.transpiled
+    case Mutation.reverseBoolMutation => CompilingResult.transpiled
+    case Mutation.breakToContinue => CompilingResult.transpiled
+    case Mutation.breakSyntax => CompilingResult.failed
+    case Mutation.literalToIdentifier => CompilingResult.transpiled
   }
 
   private def generateHTML(testResults: List[TestResult]): String = {
@@ -153,11 +153,23 @@ object Checker {
       val name = test.name
       val row = for {mutation <- mutations} yield {
         val link = diffName(name, mutation)
-        val stage = test.results.getOrElse(mutation, failed)
-        val kind = if (stage == invalid) "" else if (stage == expected(mutation)) "expected " else "unexpected "
-        val data = if (stage == invalid || stage == failed) stage.toString else s"<a href=\"$link\">$stage</a>"
+        val stage = test.results(mutation)
 
-        s"<td class=\"${kind}data\">$data</td>\n"
+        val kind = if (stage == CompilingResult.invalid) {
+          "data"
+        } else if (stage == expected(mutation)) {
+          "expected data"
+        } else {
+          "unexpected data"
+        }
+
+        val data = if (stage == CompilingResult.invalid || stage == CompilingResult.failed) {
+          stage.toString
+        } else {
+          s"<a href=\"$link\">$stage</a>"
+        }
+
+        s"<td class=\"${kind}\">$data</td>\n"
       }
 
       s"<tr>\n<th class=\"left\">$name</th>\n${row.mkString}</tr>\n"
