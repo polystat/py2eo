@@ -1,0 +1,52 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > assign-1
+  [raiseme] > apply
+    [x] > mkCopy
+      x' > copy
+      copy.< > @
+    [] > newUID
+      memory > cur
+      seq > apply
+        cur.write (cur.is-empty.if 2 (cur.add 1))
+        cur
+    [] > raiseEmpty
+      [] > xclass
+        1 > xid
+    [] > raiseNothing
+      [] > xclass
+        0 > xid
+    cage > xcurrent-exception
+    cage > result
+    cage > tmp
+    cage > xassignTest1
+    goto > @
+      [returnLabel]
+        seq > @
+          stdout "assign-1\n"
+          write.
+            xassignTest1
+            []
+              [raiseme] > apply
+                cage > result
+                cage > tmp
+                cage > xb
+                cage > xa
+                goto > @
+                  [returnLabel]
+                    seq > @
+                      stdout "xassignTest1\n"
+                      (xa).write (1)
+                      (xb).write (3)
+                      (result).write (TRUE)
+                      returnLabel.forward 0
+                      123
+          tmp.write (((xassignTest1)).apply raiseme)
+          (tmp.@)
+          (result).write (tmp.result)
+          result
+  apply 0 > @
