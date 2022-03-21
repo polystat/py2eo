@@ -1,0 +1,118 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > simplest-derived-class
+  [raiseme] > apply
+    [x] > mkCopy
+      x' > copy
+      copy.< > @
+    [] > newUID
+      memory > cur
+      seq > apply
+        cur.write (cur.is-empty.if 2 (cur.add 1))
+        cur
+    [] > raiseEmpty
+      [] > xclass
+        1 > xid
+    [] > raiseNothing
+      [] > xclass
+        0 > xid
+    cage > xcurrent-exception
+    cage > result
+    cage > tmp
+    cage > xmyC
+    goto > @
+      [returnLabel]
+        seq > @
+          stdout "simplest-derived-class\n"
+          write.
+            xmyC
+            []
+              [raiseme] > apply
+                cage > result
+                cage > tmp
+                cage > lhs0
+                cage > xd
+                cage > e1
+                cage > xo
+                cage > xc
+                cage > e4
+                cage > lhs2
+                cage > e3
+                cage > e2
+                goto > @
+                  [returnLabel]
+                    seq > @
+                      stdout "xmyC\n"
+                      write.
+                        xc
+                        []
+                          newUID.apply 0 > xid
+                          [unused] > apply
+                            [] > result
+                              cage > xvalue
+                              cage > xgetValue
+                              xc > xclass
+                              seq > initFields
+                                xvalue.write 11
+                                write.
+                                  xgetValue
+                                  []
+                                    [raiseme xselfNotCopied] > apply
+                                      cage > result
+                                      cage > tmp
+                                      xselfNotCopied' > xself
+                                      cage > e0
+                                      goto > @
+                                        [returnLabel]
+                                          seq > @
+                                            stdout "xgetValue\n"
+                                            xself.<
+                                            mkCopy (xself.xvalue) > tmp1
+                                            (e0).write (tmp1.copy)
+                                            mkCopy (e0) > tmp2
+                                            (result).write (tmp2.copy)
+                                            returnLabel.forward 0
+                                            123
+                            result.initFields > @
+                      write.
+                        xd
+                        []
+                          newUID.apply 0 > xid
+                          [unused] > apply
+                            [] > result
+                              (xc).apply 0 > base
+                              xd > xclass
+                              seq > initFields
+                                base
+                              base.result > @
+                            result.initFields > @
+                      tmp.write (((xd)).apply raiseme)
+                      (tmp.@)
+                      (e1).write (tmp.result)
+                      mkCopy (e1) > tmp3
+                      (xo).write (tmp3.copy)
+                      mkCopy (xo.xgetValue) > tmp4
+                      (e2).write (tmp4.copy)
+                      mkCopy (xo) > tmp5
+                      (lhs0).write (tmp5.copy)
+                      tmp.write (((e2)).apply raiseme ((lhs0)))
+                      (tmp.@)
+                      (e3).write (tmp.result)
+                      (lhs2).write (11)
+                      [] > tmp6
+                        memory > dddata
+                        dddata.write (((e3).eq (lhs2))) > @
+                      (e4).write (tmp6.dddata)
+                      mkCopy (e4) > tmp7
+                      (result).write (tmp7.copy)
+                      returnLabel.forward 0
+                      123
+          tmp.write (((xmyC)).apply raiseme)
+          (tmp.@)
+          (result).write (tmp.result)
+          result
+  apply 0 > @
