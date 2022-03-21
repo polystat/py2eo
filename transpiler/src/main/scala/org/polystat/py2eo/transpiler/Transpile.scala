@@ -18,16 +18,18 @@ object Transpile {
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
   def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): String = {
-    val ym1 = SimplePass.procStatement(SimplePass.simplifyExcepts)(Parse(pythonCode, debugPrinter), new SimplePass.Names())
-    debugPrinter(ym1._1, "afterRmExcepts")
-    val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(ym1._1, ym1._2)
+    val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(Parse(pythonCode, debugPrinter), new SimplePass.Names())
     val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y0._1, y0._2)
     val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)
     val y = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.xPrefixInExpr))(y2._1, y2._2)
 
     try {
+      val rmExcepts = SimplePass.procStatement(SimplePass.simplifyExcepts)(y._1, y._2)
+      debugPrinter(rmExcepts._1, "afterRmExcepts")
+      val simIf = SimplePass.procStatement(SimplePass.simplifyIf)(rmExcepts._1, rmExcepts._2)
+      debugPrinter(simIf._1, "simplifyIf")
       val methodCall = SimplePass.procExprInStatement(
-        SimplePass.procExpr(SimplePass.simpleSyntacticMethodCall))(y._1, y._2)
+        SimplePass.procExpr(SimplePass.simpleSyntacticMethodCall))(simIf._1, simIf._2)
       debugPrinter(methodCall._1, "methodCall")
       val textractAllCalls = SimplePass.procExprInStatement(
         SimplePass.procExpr(SimplePass.extractAllCalls))(methodCall._1, methodCall._2)
