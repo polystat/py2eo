@@ -56,13 +56,13 @@ file_input : (  stmt | NEWLINE )* EOF; // *** NEWLINE must be after the stmt (th
 
 package org.polystat.py2eo.parser;
 
-import java.util.Stack;
-import java.util.LinkedList;
-
 import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.CommonToken;
+
+import java.util.LinkedList;
+import java.util.Stack;
 
 public abstract class PythonLexerBase extends Lexer {
     protected PythonLexerBase(CharStream input) {
@@ -105,17 +105,29 @@ public abstract class PythonLexerBase extends Lexer {
             setCurrentAndFollowingTokens();
             handleStartOfInput();
             switch (_curToken.getType()) {
-                case PythonLexer.OPEN_PAREN, PythonLexer.OPEN_BRACK, PythonLexer.OPEN_BRACE -> {
+                case PythonLexer.OPEN_PAREN:
+                case PythonLexer.OPEN_BRACK:
+                case PythonLexer.OPEN_BRACE: {
                     _opened++;
                     addPendingToken(_curToken);
+                    break;
                 }
-                case PythonLexer.CLOSE_PAREN, PythonLexer.CLOSE_BRACK, PythonLexer.CLOSE_BRACE -> {
+                case PythonLexer.CLOSE_PAREN:
+                case PythonLexer.CLOSE_BRACK:
+                case PythonLexer.CLOSE_BRACE: {
                     _opened--;
                     addPendingToken(_curToken);
+                    break;
                 }
-                case PythonLexer.NEWLINE -> handleNEWLINE_Token();
-                case EOF -> handleEOF_token();
-                default -> addPendingToken(_curToken); // add the current token to the token stream
+                case PythonLexer.NEWLINE:
+                    handleNEWLINE_Token();
+                    break;
+                case EOF:
+                    handleEOF_token();
+                    break;
+                default:
+                    addPendingToken(_curToken); // add the current token to the token stream
+                    break;
             }
         }
     }
@@ -156,11 +168,19 @@ public abstract class PythonLexerBase extends Lexer {
         if (!_pendingTokens.isEmpty()) { // there is a token before the first statement
             Token prevToken = _pendingTokens.peekLast();
             // make sure the previous token contains space or tab
-            boolean containsSpaceOrTab = switch (prevToken.getType()) {
-                case PythonLexer.WS -> true;
-                case PythonLexer.NEWLINE -> getIndentationLength(prevToken.getText()) > 0;
-                default -> false; // the rest can be only a LINE_JOINING token (COMMENT token cannot be)
-            };
+            boolean containsSpaceOrTab;
+            switch (prevToken.getType()) {
+                case PythonLexer.WS:
+                    containsSpaceOrTab = true;
+                    break;
+                case PythonLexer.NEWLINE:
+                    containsSpaceOrTab = getIndentationLength(prevToken.getText()) > 0;
+                    break;
+                default:
+                    containsSpaceOrTab = false; // the rest can be only a LINE_JOINING token (COMMENT token cannot be)
+                    break;
+            }
+
             if (containsSpaceOrTab) { // there is an indentation before the first statement (input starts with indentation)
                 // insert an INDENT token before the first statement to raise an 'unexpected indent' error later by the parser
                 createAndAddPendingToken(PythonLexer.INDENT, _curToken); // insert before the _curToken
@@ -173,10 +193,14 @@ public abstract class PythonLexerBase extends Lexer {
             switch (_ffgToken.getType()) { // the next token type after the current NEWLINE token
                 //*** https://docs.python.org/3/reference/lexical_analysis.html#blank-lines
                 //   We're on a blank line or before a comment, We need to ignore (hide) the current NEWLINE token
-                case PythonLexer.NEWLINE, PythonLexer.COMMENT -> hideAndAddCurrentTokenToPendingTokens();
-                default -> {
+                case PythonLexer.NEWLINE:
+                case PythonLexer.COMMENT:
+                    hideAndAddCurrentTokenToPendingTokens();
+                    break;
+                default: {
                     addPendingToken(_curToken); // add the current NEWLINE token to the token stream
                     insertIndentDedentTokens();
+                    break;
                 }
             }
         } else { // We're in implicit line joining, We need to ignore (hide) the current NEWLINE token
@@ -214,10 +238,14 @@ public abstract class PythonLexerBase extends Lexer {
 
     private void insertTrailingTokens() {
         switch (_lastPendingTokenType) {
-            case PythonLexer.NEWLINE, PythonLexer.DEDENT -> { // no need for a trailing NEWLINE token
+            case PythonLexer.NEWLINE:
+            case PythonLexer.DEDENT: {
+                break; // no need for a trailing NEWLINE token
             }
-            default -> createAndAddPendingToken(PythonLexer.NEWLINE, _ffgToken); // insert before the _ffgToken
-            //         insert an extra trailing NEWLINE token that serves as the end of the last statement
+            default:
+                createAndAddPendingToken(PythonLexer.NEWLINE, _ffgToken); // insert before the _ffgToken
+                //         insert an extra trailing NEWLINE token that serves as the end of the last statement
+                break;
         }
 
         while (_indentLengths.size() > 1) { // Now insert as much trailing DEDENT tokens as needed to the token stream
@@ -267,13 +295,15 @@ public abstract class PythonLexerBase extends Lexer {
         int length = 0;
         for (int i = 0; i < textOfMatchedNEWLINE.length(); i++) {
             switch (textOfMatchedNEWLINE.charAt(i)) {
-                case ' ' -> { // A normal space char
+                case ' ': { // A normal space char
                     _wasSpaceIndentation = true;
                     length++;
+                    break;
                 }
-                case '\t' -> {
+                case '\t': {
                     _wasTabIndentation = true;
                     length += 8 - (length % 8);
+                    break;
                 }
             }
         }
