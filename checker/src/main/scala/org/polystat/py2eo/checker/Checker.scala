@@ -141,6 +141,7 @@ object Checker {
     case Mutation.breakToContinue => CompilingResult.transpiled
     case Mutation.breakSyntax => CompilingResult.failed
     case Mutation.literalToIdentifier => CompilingResult.transpiled
+    case Mutation.removeBrackets => CompilingResult.transpiled
   }
 
   private def generateHTML(testResults: List[TestResult]): String = {
