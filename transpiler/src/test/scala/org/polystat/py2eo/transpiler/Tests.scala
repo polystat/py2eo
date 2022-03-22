@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.Yaml
 
 import java.io.{File, FileInputStream}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.{Files, Path, Paths}
+import java.nio.file.{Files, Paths}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -28,7 +28,7 @@ class Tests {
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
   private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
-  import Main.{writeFile, readFile, debugPrinter}
+  import Main.{debugPrinter, readFile, writeFile}
 
   private val python = {
     val stdout = new StringBuilder()
@@ -58,6 +58,7 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -181,6 +182,30 @@ class Tests {
 
   @Test def exceptionsCheck():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/exceptions")
+  }
+
+  @Test def conversion():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/arithmetic-conversion")
+  }
+
+  @Test def assert():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/assert")
+  }
+
+  @Test def expressionStatement():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/expression-statement")
+  }
+
+  @Test def expressionStatement():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/annotated-assignment")
+  }
+
+  @Test def expressionStatement():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/function-def")
+  }
+
+  @Test def expressionStatement():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/import")
   }
 
   def simpleConstructionCheck(path:String): Unit = {
