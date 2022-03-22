@@ -188,24 +188,28 @@ class Tests {
     simpleConstructionCheck(testsPrefix + "/simple-tests/arithmetic-conversion")
   }
 
-  @Test def assert():Unit = {
+  @Test def assertTest():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/assert")
   }
 
-  @Test def expressionStatement():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/expression-statement")
-  }
-
-  @Test def expressionStatement():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/annotated-assignment")
-  }
-
-  @Test def expressionStatement():Unit = {
+  @Test def functionDefTest():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/function-def")
   }
 
-  @Test def expressionStatement():Unit = {
+  @Test def importTest():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/import")
+  }
+
+  @Test def annotatedAssignTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/annotated-assignment")
+  }
+
+  @Test def expressionStatementTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/expression-statement")
+  }
+
+  @Test def returnTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/return")
   }
 
   def simpleConstructionCheck(path:String): Unit = {
