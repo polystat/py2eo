@@ -44,7 +44,7 @@ class Tests {
   def yaml2python(f : File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    YamlTest(map.get("python"), map.get("disabled").asInstanceOf[Boolean])
+    YamlTest(map.get("python"), map.containsKey("disabled"))
   }
 
   def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
