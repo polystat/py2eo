@@ -1,6 +1,6 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.assertTrue
+import org.junit.Assert.{assertTrue, fail}
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.parser.{Parse, Statement}
 import org.polystat.py2eo.transpiler.Common.dfsFiles
@@ -44,7 +44,7 @@ class Tests {
   def yaml2python(f : File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    YamlTest(map.get("python"), map.containsKey("disabled"))
+    YamlTest(map.get("python"), map.get("disabled").asInstanceOf[Boolean])
   }
 
   def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
@@ -58,6 +58,7 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -151,13 +152,21 @@ class Tests {
   def useCageHolder(test : File): Unit = {
     def db = debugPrinter(test)(_, _)
     val z = yaml2python(test)
+
     if (!z.disabled) {
-      writeFile(
-        test, "genCageEO", ".eo", Transpile.transpile(db)(
-          test.getName.replace(".yaml", ""),
-          z.python
+      try {
+        writeFile(
+          test, "genCageEO", ".eo", Transpile.transpile(db)(
+            test.getName.replace(".yaml", ""),
+            z.python
+          )
         )
-      )
+      }catch {
+        case e : Throwable =>
+          println(s"failed to transpile ${test.getName}: ${e.toString}")
+          fail(e.getLocalizedMessage)
+      }
+
   //    val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
     //    assertTrue(0 == Process(python + " \"" + runme + "\"").!)
     }
@@ -209,6 +218,10 @@ class Tests {
 
   @Test def returnTest():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/return")
+  }
+
+  @Test def comprehensionTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/comprehension-expression")
   }
 
   def simpleConstructionCheck(path:String): Unit = {
