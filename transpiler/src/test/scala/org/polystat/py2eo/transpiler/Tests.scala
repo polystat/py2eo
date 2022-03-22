@@ -58,6 +58,7 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -151,7 +152,9 @@ class Tests {
   def useCageHolder(test : File): Unit = {
     def db = debugPrinter(test)(_, _)
     val z = yaml2python(test)
+    println(s"${test.getName}")
     if (!z.disabled) {
+      println(s"working with file ${test.getName}")
       writeFile(
         test, "genCageEO", ".eo", Transpile.transpile(db)(
           test.getName.replace(".yaml", ""),
