@@ -10,17 +10,21 @@ import org.polystat.py2eo.parser.Statement.{Assert, Decorators, FuncDef, Return,
 
 object Transpile {
 
-  def apply(moduleName: String, pythonCode: String): String = {
-    transpile((_: Any, _: Any) => {})(moduleName, pythonCode)
+  def apply(moduleName: String, pythonCode: String): Option[String] = {
+    transpileOption((_, _) => ())(moduleName, pythonCode)
+  }
+
+  def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): String = {
+    transpileOption(debugPrinter)(moduleName, pythonCode).getOrElse("Not Supported: input file syntax is not python 3.8")
   }
 
   /// [debugPrinter(statement, stageName)]
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
-  def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): String = {
+  def transpileOption(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): Option[String] = {
     val parsed = try { Some(Parse(pythonCode, debugPrinter)) } catch { case _ : Any => None }
-    parsed match {
-      case Some(parsed) =>
+    parsed.map(
+      parsed => {
         val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(parsed, new SimplePass.Names())
         val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y0._1, y0._2)
         val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)
@@ -95,8 +99,8 @@ object Transpile {
 
           }
         }
-      case None => "Not Supported: input file syntax is not python 3.8"
-    }
+      }
+    )
   }
 
 }
