@@ -8,16 +8,16 @@ object Mutate {
 
   object Mutation extends Enumeration {
     type Mutation = Value
-    val nameMutation: Mutation = Value("Name mutation")
-    val literalMutation: Mutation = Value("Literal mutation")
-    val operatorMutation: Mutation = Value("Operator mutation")
-    val reverseBoolMutation: Mutation = Value("Reverse bool literal")
-    val breakToContinue: Mutation = Value("Break -> Continue")
-    val breakSyntax: Mutation = Value("def -> df")
-    val literalToIdentifier: Mutation = Value("False -> false")
-    val removeBrackets: Mutation = Value("Remove brackets")
-    val addExcessParam: Mutation = Value("Add excess parameter")
-    val swapParam: Mutation = Value("Swap param")
+    val nameMutation: Mutation = Value("Name-mutation")
+    val literalMutation: Mutation = Value("Literal-mutation")
+    val operatorMutation: Mutation = Value("Operator-mutation")
+    val reverseBoolMutation: Mutation = Value("Reverse-bool-literal")
+    val breakToContinue: Mutation = Value("Break-to-Continue")
+    val breakSyntax: Mutation = Value("def-to-df")
+    val literalToIdentifier: Mutation = Value("False-to-false")
+    val removeBrackets: Mutation = Value("Remove-brackets")
+    val addExcessParam: Mutation = Value("Add-excess-parameter")
+    val swapParam: Mutation = Value("Swap-param")
   }
 
   def apply(input: String, mutation: Mutation, occurrenceNumber: Int): String = {
