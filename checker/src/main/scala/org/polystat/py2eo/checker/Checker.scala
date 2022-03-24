@@ -77,7 +77,7 @@ object Checker {
   }
 
   private def check(test: File, outputPath: Path, mutations: Iterable[Mutation]): TestResult = {
-    val EOText = Transpile(test.stripExtension, parseYaml(test))
+    val EOText = Transpile(test.stripExtension, parseYaml(test)).get // TODO: check for value
     File(outputPath / test.changeExtension("eo").name).writeAll(EOText)
 
     val resultList = for {mutation <- mutations} yield (mutation, check(test, outputPath, mutation))
@@ -91,21 +91,23 @@ object Checker {
 
     if (mutant equals original) {
       CompilingResult.invalid
-    } else try {
+    } else {
       val originalFile = File(outputPath / test.changeExtension("eo").name)
       val mutatedFile = File(outputPath / s"${test.stripExtension}-$mutation")
       val diffFile = File(outputPath / diffName(test, mutation))
 
-      val mutatedEOText = Transpile(test.stripExtension, mutant)
-      mutatedFile.writeAll(mutatedEOText)
+      Transpile(test.stripExtension, mutant) match {
+        case Some(transpiled) =>
+          mutatedFile.writeAll(transpiled)
 
-      val diff = Process(s"diff $originalFile $mutatedFile", outputPath.jfile).lazyLines_!
-      diffFile.writeAll(diff.mkString("\n"))
+          val diff = Process(s"diff $originalFile $mutatedFile", outputPath.jfile).lazyLines_!
+          diffFile.writeAll(diff.mkString("\n"))
 
-      // TODO: actually need to get rid of old eo-files in that directory
-      if (!compile(mutatedFile)) CompilingResult.transpiled else run(mutatedFile)
-    } catch {
-      case _: Exception => CompilingResult.failed
+          // TODO: actually need to get rid of old eo-files in that directory
+          if (!compile(mutatedFile)) CompilingResult.transpiled else run(mutatedFile)
+
+        case None => CompilingResult.failed
+      }
     }
   }
 
