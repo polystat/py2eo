@@ -235,7 +235,7 @@ class Tests {
     simpleConstructionCheck(testsPrefix + "/simple-tests/list")
   }
 
-  @Test def listTest():Unit = {
+  @Test def setTest():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/set")
   }
 
