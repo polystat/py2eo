@@ -239,6 +239,10 @@ class Tests {
     simpleConstructionCheck(testsPrefix + "/simple-tests/set")
   }
 
+  @Test def attributeRefsTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/attribute-reference")
+  }
+
   def simpleConstructionCheck(path:String): Unit = {
     val testHolder = new File(path)
     if (testHolder.exists && testHolder.isDirectory) {
