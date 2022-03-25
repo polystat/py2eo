@@ -243,6 +243,10 @@ class Tests {
     simpleConstructionCheck(testsPrefix + "/simple-tests/attribute-reference")
   }
 
+  @Test def lambdaTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/lambda")
+  }
+
   def simpleConstructionCheck(path:String): Unit = {
     val testHolder = new File(path)
     if (testHolder.exists && testHolder.isDirectory) {
