@@ -223,6 +223,30 @@ class Tests {
     simpleConstructionCheck(testsPrefix + "/simple-tests/comprehension-expression")
   }
 
+  @Test def dictionaryTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/dictionary")
+  }
+
+  @Test def generatorTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/generator-expression")
+  }
+
+  @Test def listTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/list")
+  }
+
+  @Test def setTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/set")
+  }
+
+  @Test def attributeRefsTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/attribute-reference")
+  }
+
+  @Test def lambdaTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/lambda")
+  }
+
   def simpleConstructionCheck(path:String): Unit = {
     val testHolder = new File(path)
     if (testHolder.exists && testHolder.isDirectory) {
