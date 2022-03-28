@@ -6,7 +6,7 @@ import scala.collection.immutable
 import scala.collection.immutable.HashMap
 import org.polystat.py2eo.transpiler.Common.TranspilerException
 import org.polystat.py2eo.parser.Expression.{CallIndex, Ident}
-import org.polystat.py2eo.parser.Statement.{Assert, Decorators, FuncDef, Return, Suite}
+import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef, Return, Suite}
 
 object Transpile {
 
@@ -33,15 +33,17 @@ object Transpile {
       val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
       val hacked = Suite(List(
         theFun,
-        Assert(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos), None, ann.pos)
+        Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+        Assert(Ident("assertMe", ann.pos), None, ann.pos)
       ), ann.pos)
       debugPrinter(hacked, "afterUseCage")
       val eoHacked = Suite(List(
         theFun,
-        Return(Some(CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos)
+        Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+        Return(Some(Ident("assertMe", ann.pos)), ann.pos)
       ), ann.pos)
       val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
-      (eoText.init.init :+ "  (goto (apply)) > @").mkString("\n")
+      (eoText.init :+ "  (goto (apply)).result > @").mkString("\n")
     }
     catch {
       case e: Throwable => {
