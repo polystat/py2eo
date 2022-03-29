@@ -55,32 +55,34 @@ object PrintLinearizedMutableEOWithCage {
             name ::
             "[]" :: indent(
               "newUID.apply 0 > xid" ::
-              "[stackUp] > apply" ::
+              "[] > apply" ::
               indent(
-                (
-                  "[] > result" ::
-                  indent(
-                    l.map{
-                      case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
-                      case f : FuncDef => s"cage > ${f.name}"
-                    } ++
-                    decorates.toList.map(e => s"${printExpr(e)}.apply 0 > base") ++
-                    (
-                      s"$name > xclass" ::
-                      "seq > initFields" ::
-                      indent(
-                        l.flatMap{
-                          case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
-                          case f : FuncDef =>
-                            "write." :: indent(f.name :: printFun(List(), f))
-                        } ++
-                        decorates.toList.map(x => "base") :+
-                        "stackUp.forward return"
-                      )
-                    ) ++
-                    decorates.toList.map(x => "base.result > @")
-                  )
-                ) :+ "result.initFields > @"
+                "[stackUp] > @" ::
+                indent(
+                  (
+                    "[] > result" ::
+                    indent(
+                      l.map{
+                        case Assign(List(Ident(fieldName, _), rhs), _) => s"cage > $fieldName"
+                        case f : FuncDef => s"cage > ${f.name}"
+                      } ++
+                      decorates.toList.map(e => s"goto ((${printExpr(e)}.apply).@) > base") ++
+                      (
+                        s"$name > xclass" ::
+                        "seq > initFields" ::
+                        indent(
+                          l.flatMap{
+                            case Assign(List(Ident(name, _), rhs), _) => List(s"$name.write ${printExpr(rhs)}")
+                            case f : FuncDef =>
+                              "write." :: indent(f.name :: printFun(List(), f))
+                          } ++
+                          decorates.toList.map(x => "base.result.xclass.xid")
+                        )
+                      ) ++
+                      decorates.toList.map(x => "base.result > @")
+                    )
+                  ) :+ "seq (result.initFields) (stackUp.forward (return result)) > @"
+                )
               )
             )
           )

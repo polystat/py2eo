@@ -43,7 +43,7 @@ object Transpile {
         Return(Some(Ident("assertMe", ann.pos)), ann.pos)
       ), ann.pos)
       val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
-      (eoText.init :+ "  (goto (apply)).result > @").mkString("\n")
+      (eoText.init :+ "  (goto (apply.@)).result > @").mkString("\n")
     }
     catch {
       case e: Throwable => {
