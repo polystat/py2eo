@@ -131,7 +131,7 @@ object PrintLinearizedMutableEOWithCage {
       case Return(e, ann) => e match {
         case Some(value) =>
           List(s"stackUp.forward (return ${pe(value)})")
-        case None => List(s"stackUp.forward (return 0)")
+        case None => List("stackUp.forward (return 0)")
       }
       case IfSimple(cond, yes, no, _) =>
         val stsY = printSt(yes)
