@@ -113,12 +113,23 @@ object Check {
   private def run(file: File): CompilingResult = {
     val test = Files.copy(file.jfile.toPath, File(runEOPath / "Test.eo").jfile.toPath, REPLACE_EXISTING)
 
-    val process = new ProcessBuilder("mvn clean test").directory(runEOPath.jfile).start
-    process.waitFor(40, TimeUnit.SECONDS)
+    // Dunno why, but it doesn't work without it
+    val dir = new java.io.File(runEOPath.jfile.getPath)
+
+    val process = new ProcessBuilder("mvn clean test").directory(dir).start
+    val ret = process.waitFor(40, TimeUnit.SECONDS)
 
     Files delete test
 
-    if (process.exitValue == 0) CompilingResult.passed else CompilingResult.compiled
+    if (ret) {
+      if (process.exitValue == 0) {
+        CompilingResult.passed
+      } else {
+        CompilingResult.compiled
+      }
+    } else {
+      CompilingResult.timeout
+    }
   }
 
   private def parseYaml(file: File): String = {
