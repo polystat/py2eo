@@ -1,6 +1,6 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.assertTrue
+import org.junit.Assert.{assertTrue, fail}
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.parser.{Parse, Statement}
 import org.polystat.py2eo.transpiler.Common.dfsFiles
@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.Yaml
 
 import java.io.{File, FileInputStream}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.{Files, Path, Paths}
+import java.nio.file.{Files, Paths}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -28,7 +28,7 @@ class Tests {
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
   private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
-  import Main.{writeFile, readFile, debugPrinter}
+  import Main.{debugPrinter, readFile, writeFile}
 
   private val python = {
     val stdout = new StringBuilder()
@@ -152,13 +152,21 @@ class Tests {
   def useCageHolder(test : File): Unit = {
     def db = debugPrinter(test)(_, _)
     val z = yaml2python(test)
+
     if (!z.disabled) {
-      writeFile(
-        test, "genCageEO", ".eo", Transpile.transpile(db)(
-          test.getName.replace(".yaml", ""),
-          z.python
+      try {
+        writeFile(
+          test, "genCageEO", ".eo", Transpile.transpile(db)(
+            test.getName.replace(".yaml", ""),
+            z.python
+          )
         )
-      )
+      }catch {
+        case e : Throwable =>
+          println(s"failed to transpile ${test.getName}: ${e.toString}")
+          fail(e.getLocalizedMessage)
+      }
+
   //    val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
     //    assertTrue(0 == Process(python + " \"" + runme + "\"").!)
     }
@@ -182,6 +190,62 @@ class Tests {
 
   @Test def exceptionsCheck():Unit = {
     simpleConstructionCheck(testsPrefix + "/simple-tests/exceptions")
+  }
+
+  @Test def conversion():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/arithmetic-conversion")
+  }
+
+  @Test def assertTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/assert")
+  }
+
+  @Test def functionDefTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/function-def")
+  }
+
+  @Test def importTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/import")
+  }
+
+  @Test def annotatedAssignTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/annotated-assignment")
+  }
+
+  @Test def expressionStatementTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/expression-statement")
+  }
+
+  @Test def returnTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/return")
+  }
+
+  @Test def comprehensionTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/comprehension-expression")
+  }
+
+  @Test def dictionaryTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/dictionary")
+  }
+
+  @Test def generatorTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/generator-expression")
+  }
+
+  @Test def listTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/list")
+  }
+
+  @Test def setTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/set")
+  }
+
+  @Test def attributeRefsTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/attribute-reference")
+  }
+
+  @Test def lambdaTest():Unit = {
+    simpleConstructionCheck(testsPrefix + "/simple-tests/lambda")
   }
 
   def simpleConstructionCheck(path:String): Unit = {

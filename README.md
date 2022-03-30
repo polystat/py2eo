@@ -69,3 +69,6 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
     ```
 - Run command `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\sample_test.py`
 - Check output `.eo` file in `./genCageEO/sample_test.eo` 
+
+#### Checker ####
+This repository's CI includes checker - a tool that reduces project testing time using input test mutations. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
