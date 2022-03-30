@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.Yaml
 
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.util.concurrent.TimeUnit
 import scala.language.postfixOps
 import scala.reflect.io.{Directory, File, Path}
 import scala.sys.error
@@ -33,7 +34,7 @@ object Check {
     if (res isEmpty) {
       error("Provided tests directory doesn't contain .yaml files")
     } else {
-      Write(outputPath, res)
+      Write(outputPath, res, mutations)
     }
   }
 
@@ -52,13 +53,13 @@ object Check {
     case Mutation.swapParam => CompilingResult.transpiled
   }
 
-  private def check(inputPath: Path, outputPath: Path, mutations: Iterable[Mutation]): List[TestResult] = {
-    if (inputPath.isDirectory) {
-      inputPath.toDirectory.list.toList.flatMap(item => check(item, outputPath, mutations))
+  private def check(inputPath: Path, outputPath: Path, mutations: Iterable[Mutation]): Iterator[TestResult] = {
+    if (inputPath isDirectory) {
+      inputPath.toDirectory.list flatMap (item => check(item, outputPath, mutations))
     } else if (inputPath.extension == "yaml") {
-      List(check(inputPath.toFile, outputPath, mutations))
+      Iterator(check(inputPath toFile, outputPath, mutations))
     } else {
-      List.empty
+      Iterator empty
     }
   }
 
@@ -110,17 +111,19 @@ object Check {
   }
 
   private def run(file: File): CompilingResult = {
-    val result = Files.copy(file.jfile.toPath, File(runEOPath / "Test.eo").jfile.toPath, REPLACE_EXISTING)
-    val ret = Process("mvn clean test", runEOPath.jfile).! == 0
+    val test = Files.copy(file.jfile.toPath, File(runEOPath / "Test.eo").jfile.toPath, REPLACE_EXISTING)
 
-    Files delete result
+    val process = new ProcessBuilder("mvn clean test").directory(runEOPath.jfile).start
+    process.waitFor(40, TimeUnit.SECONDS)
 
-    if (ret) CompilingResult.passed else CompilingResult.compiled
+    Files delete test
+
+    if (process.exitValue == 0) CompilingResult.passed else CompilingResult.compiled
   }
 
   private def parseYaml(file: File): String = {
     val input = file slurp
-    val map = new Yaml().load[java.util.Map[String, String]](input)
+    val map = new Yaml load[java.util.Map[String, String]] input
 
     map get "python"
   }
