@@ -113,7 +113,7 @@ object Check {
   private def run(file: File): CompilingResult = {
     val test = Files.copy(file.jfile.toPath, File(runEOPath / "Test.eo").jfile.toPath, REPLACE_EXISTING)
 
-    // Dunno why, but it doesn't work without it
+    // Dunno why but it doesn't work without this line
     val dir = new java.io.File(runEOPath.jfile.getPath)
 
     val process = new ProcessBuilder("mvn clean test").directory(dir).start
