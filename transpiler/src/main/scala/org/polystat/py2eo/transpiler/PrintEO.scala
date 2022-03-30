@@ -78,7 +78,7 @@ object PrintEO {
       case CallIndex(true, whom, args, _)  =>
         "((" + e(whom) + crb + ".apply" +
           // todo: empty arg list hack
-          ((" raiseme" :: args.map{case (None, ee) => " (" + e(ee) + crb}).mkString("")) +
+          ((args.map{case (None, ee) => " (" + e(ee) + crb}).mkString("")) +
         crb
     }
   }
