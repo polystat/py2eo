@@ -40,9 +40,16 @@ object Write {
   /** Returns table row */
   private def row(test: TestResult, mutations: Iterable[Mutation]): String = {
     lazy val name = test.name
-    lazy val cells = mutations.toList map (mutation => cell(mutation, name, test results mutation))
+    test.results match {
+      case Left(stage) =>
+        lazy val colspan = mutations.size
+        lazy val str = s"<td colspan=\"$colspan\" class=\"data\">Original test $stage</td>"
+        s"<tr>\n<th class=\"left\">$name</th>\n$str</tr>\n"
 
-    s"<tr>\n<th class=\"left\">$name</th>\n${cells mkString}</tr>\n"
+      case Right(results) =>
+        lazy val cells = mutations.toList map (mutation => cell(mutation, name, results(mutation)))
+        s"<tr>\n<th class=\"left\">$name</th>\n${cells mkString}</tr>\n"
+    }
   }
 
   /** Returns table cell with test result */

@@ -64,12 +64,25 @@ object Check {
   }
 
   private def check(test: File, outputPath: Path, mutations: Iterable[Mutation]): TestResult = {
-    val EOText = Transpile(test.stripExtension, parseYaml(test)).get // TODO: check for value
-    File(outputPath / test.changeExtension("eo").name).writeAll(EOText)
+    Transpile(test.stripExtension, parseYaml(test)) match {
+      case None => TestResult(test.stripExtension, Left(CompilingResult.failed))
+      case Some(transpiled) =>
+        val file = File(outputPath / test.changeExtension("eo").name)
+        file writeAll transpiled
 
-    val resultList = for {mutation <- mutations} yield (mutation, check(test, outputPath, mutation))
+        val originalResult = if (!compile(file)) {
+          CompilingResult.transpiled
+        } else {
+          run(file)
+        }
 
-    TestResult(test.stripExtension, resultList.toMap[Mutation, CompilingResult])
+        if (originalResult == CompilingResult.passed) {
+          val resultList = for {mutation <- mutations} yield (mutation, check(test, outputPath, mutation))
+          TestResult(test.stripExtension, Right(resultList.toMap[Mutation, CompilingResult]))
+        } else {
+          TestResult(test.stripExtension, Left(originalResult))
+        }
+    }
   }
 
   private def check(test: File, outputPath: Path, mutation: Mutation): CompilingResult = {
@@ -80,6 +93,7 @@ object Check {
       CompilingResult.invalid
     } else {
       Transpile(test.stripExtension, mutant) match {
+        case None => CompilingResult.failed
         case Some(transpiled) =>
           val originalFile = File(outputPath / test.changeExtension("eo").name)
           val mutatedFile = File(outputPath / s"${test.stripExtension}-$mutation")
@@ -90,13 +104,7 @@ object Check {
           diffFile.writeAll(diff.mkString("\n"))
 
           // TODO: actually need to get rid of old eo-files in that directory
-          if (!compile(mutatedFile)) {
-            CompilingResult.transpiled
-          } else {
-            run(mutatedFile)
-          }
-
-        case None => CompilingResult.failed
+          if (!compile(mutatedFile)) CompilingResult.transpiled else run(mutatedFile)
       }
     }
   }

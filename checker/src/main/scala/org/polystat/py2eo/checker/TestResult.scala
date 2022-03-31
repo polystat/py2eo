@@ -13,4 +13,4 @@ object CompilingResult extends Enumeration {
   val timeout: Value = Value("timeout")
 }
 
-case class TestResult(name: String, results: Map[Mutation, CompilingResult])
+case class TestResult(name: String, results: Either[CompilingResult, Map[Mutation, CompilingResult]])
