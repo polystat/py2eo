@@ -7,10 +7,8 @@ object CompilingResult extends Enumeration {
   type CompilingResult = Value
   val invalid: Value = Value("n/a")
   val failed: Value = Value("failed")
-  val transpiled: Value = Value("transpiled")
-  val compiled: Value = Value("compiled")
+  val nodiff: Value = Value("no diff")
   val passed: Value = Value("passed")
-  val timeout: Value = Value("timeout")
 }
 
-case class TestResult(name: String, results: Either[CompilingResult, Map[Mutation, CompilingResult]])
+case class TestResult(name: String, results: Option[Map[Mutation, CompilingResult]])
