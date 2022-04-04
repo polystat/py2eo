@@ -1,0 +1,86 @@
+memory > xscript_helper
+memory > xrc
+memory > xSyntaxError2
+memory > xexec
+memory > xeval
+memory > xmsg
+memory > xerr
+memory > xexcinfo
+memory > xtemp_dir
+memory > xsupport
+memory > xSyntaxError
+memory > xunittest
+memory > x__name__
+memory > xstr
+memory > xout
+[] > test_eof
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_line_continuation_EOF_from_file_bpo2180
+        memory > xtest_EOFS
+        memory > xtest_EOFC
+        memory > xtest_line_continuation_EOF
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_EOFC.write
+                  [xself]
+                    memory > xexpect
+                    seq > @
+                      seq
+                        xexpect.write "EOL while scanning string literal (<string>, line 1)"
+                        (((unsupported)).apply ((xSyntaxError2)))
+                          bogusForceDataize.write (((xeval)).apply ((((unsupported)).apply)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xmsg)))) ((xexpect)))
+                          (((unsupported)).apply (((xsupport).xTestFailed)))
+                xtest_EOFS.write
+                  [xself]
+                    memory > xexpect
+                    seq > @
+                      seq
+                        xexpect.write "EOF while scanning triple-quoted string literal (<string>, line 1)"
+                        (((unsupported)).apply ((xSyntaxError)))
+                          bogusForceDataize.write (((xeval)).apply ("'''this is a test"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xmsg)))) ((xexpect)))
+                          (((unsupported)).apply (((xsupport).xTestFailed)))
+                xtest_line_continuation_EOF.write
+                  [xself]
+                    memory > xexpect
+                    seq > @
+                      seq
+                        unsupported
+                        xexpect.write "unexpected EOF while parsing (<string>, line 1)"
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSyntaxError)))) ((xexcinfo)))
+                          bogusForceDataize.write (((xexec)).apply ("x = 5\\"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply (((xexcinfo).xexception)))) ((xexpect)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSyntaxError)))) ((xexcinfo)))
+                          bogusForceDataize.write (((xexec)).apply ("\\"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply (((xexcinfo).xexception)))) ((xexpect)))
+                xtest_line_continuation_EOF_from_file_bpo2180.write
+                  [xself]
+                    memory > xfile_name
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xsupport).xtemp_dir)).apply)) ((xtemp_dir)))
+                          seq
+                            xfile_name.write ((((xscript_helper).xmake_script)).apply ((xtemp_dir)) ("foo") ("\\"))
+                            (((unsupported)).apply ((((unsupported)).apply ((xrc)) ((xout)) ((xerr)))) (((((xscript_helper).xassert_python_failure)).apply ((xfile_name)))))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("unexpected EOF while parsing") ((xerr)))
+                            xfile_name.write ((((xscript_helper).xmake_script)).apply ((xtemp_dir)) ("foo") ("y = 6\\"))
+                            (((unsupported)).apply ((((unsupported)).apply ((xrc)) ((xout)) ((xerr)))) (((((xscript_helper).xassert_python_failure)).apply ((xfile_name)))))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("unexpected EOF while parsing") ((xerr)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

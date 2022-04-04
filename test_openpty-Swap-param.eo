@@ -1,0 +1,36 @@
+memory > xslave
+memory > xmaster
+memory > xhasattr
+memory > xos
+memory > xunittest
+memory > x__name__
+[] > test_openpty
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            ((((xhasattr)).apply ((xos)) ("openpty")).not).if
+              (((unsupported)).apply (((((xunittest).xSkipTest)).apply ("os.openpty() not available."))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              xtest.write
+                [xself]
+                  seq > @
+                    seq
+                      (((unsupported)).apply ((((unsupported)).apply ((xmaster)) ((xslave)))) (((((xos).xopenpty)).apply)))
+                      bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xos).xclose)) ((xmaster)))
+                      bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xos).xclose)) ((xslave)))
+                      (((((xos).xisatty)).apply ((xslave))).not).if
+                        bogusForceDataize.write ((((xself).xfail)).apply ("Slave-end of pty is not a terminal."))
+                      bogusForceDataize.write ((((xos).xwrite)).apply ((xslave)) ("Ping!"))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xos).xread)).apply ((xmaster)) (1024))) ("Ping!"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

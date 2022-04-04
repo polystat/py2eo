@@ -1,0 +1,78 @@
+216c216
+<                         xpattern_string.write (((((xself).xtime_re).xpattern)).apply ("d+"))
+---
+>                         xpattern_string.write (((((xself).xtime_re).xpattern)).apply ("d-"))
+232,234c232,234
+<                             xcompiled.write (((((xself).xtime_re).xcompile)).apply (("%".add (xdirective))))
+<                             xfound.write ((((xcompiled).xmatch)).apply (((((xtime).xstrftime)).apply (("%".add (xdirective))))))
+<                             bogusForceDataize.write ((((xself).xassertTrue)).apply ((xfound)) (("Matching failed on '%s' using '%s' regex".mod (((unsupported)).apply (((((xtime).xstrftime)).apply (("%".add (xdirective))))) (((xcompiled).xpattern))))))
+---
+>                             xcompiled.write (((((xself).xtime_re).xcompile)).apply (("%".sub (xdirective))))
+>                             xfound.write ((((xcompiled).xmatch)).apply (((((xtime).xstrftime)).apply (("%".sub (xdirective))))))
+>                             bogusForceDataize.write ((((xself).xassertTrue)).apply ((xfound)) (("Matching failed on '%s' using '%s' regex".mod (((unsupported)).apply (((((xtime).xstrftime)).apply (("%".sub (xdirective))))) (((xcompiled).xpattern))))))
+249,251c249,251
+<                         xcompiled_re.write (((((xself).xtime_re).xcompile)).apply ("w+ %m"))
+<                         xfound.write ((((xcompiled_re).xmatch)).apply ("w+ 10"))
+<                         bogusForceDataize.write ((((xself).xassertTrue)).apply ((xfound)) ("Escaping failed of format 'w+ 10'"))
+---
+>                         xcompiled_re.write (((((xself).xtime_re).xcompile)).apply ("w- %m"))
+>                         xfound.write ((((xcompiled_re).xmatch)).apply ("w- 10"))
+>                         bogusForceDataize.write ((((xself).xassertTrue)).apply ((xfound)) ("Escaping failed of format 'w- 10'"))
+322,323c322,323
+<                         xstrf_output.write ((((xtime).xstrftime)).apply (("%".add (xdirective))) (((xself).xtime_tuple)))
+<                         xstrp_output.write ((((x_strptime).x_strptime_time)).apply ((xstrf_output)) (("%".add (xdirective))))
+---
+>                         xstrf_output.write ((((xtime).xstrftime)).apply (("%".sub (xdirective))) (((xself).xtime_tuple)))
+>                         xstrp_output.write ((((x_strptime).x_strptime_time)).apply ((xstrf_output)) (("%".sub (xdirective))))
+337c337
+<                               xexpected_result.write ((xcentury).add (((xint)).apply ((xbound))))
+---
+>                               xexpected_result.write ((xcentury).sub (((xint)).apply ((xbound))))
+394,395c394,395
+<                         (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xoffset)))) ((x_)) ((xoffset_fraction)))) (((((x_strptime).x_strptime)).apply ("+0130") ("%z"))))
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((xone_hour).add (xhalf_hour))))
+---
+>                         (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xoffset)))) ((x_)) ((xoffset_fraction)))) (((((x_strptime).x_strptime)).apply ("-0130") ("%z"))))
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((xone_hour).sub (xhalf_hour))))
+401c401
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).add (xhalf_hour)).add (xhalf_minute)).neg)))
+---
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).sub (xhalf_hour)).sub (xhalf_minute)).neg)))
+404c404
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).add (xhalf_hour)).add (xhalf_minute)).neg)))
+---
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).sub (xhalf_hour)).sub (xhalf_minute)).neg)))
+406c406
+<                         (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xoffset)))) ((x_)) ((xoffset_fraction)))) (((((x_strptime).x_strptime)).apply ("+01:00") ("%z"))))
+---
+>                         (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xoffset)))) ((x_)) ((xoffset_fraction)))) (((((x_strptime).x_strptime)).apply ("-01:00") ("%z"))))
+410c410
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) ((((xone_hour).add (xhalf_hour)).neg)))
+---
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) ((((xone_hour).sub (xhalf_hour)).neg)))
+413c413
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).add (xhalf_hour)).add (xhalf_minute)).neg)))
+---
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).sub (xhalf_hour)).sub (xhalf_minute)).neg)))
+416c416
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).add (xhalf_hour)).add (xhalf_minute)).neg)))
+---
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) (((((xone_hour).sub (xhalf_hour)).sub (xhalf_minute)).neg)))
+418,419c418,419
+<                         (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xoffset)))) ((x_)) ((xoffset_fraction)))) (((((x_strptime).x_strptime)).apply ("+01:30:30.001") ("%z"))))
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) ((((xone_hour).add (xhalf_hour)).add (xhalf_minute))))
+---
+>                         (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xoffset)))) ((x_)) ((xoffset_fraction)))) (((((x_strptime).x_strptime)).apply ("-01:30:30.001") ("%z"))))
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoffset)) ((((xone_hour).sub (xhalf_hour)).sub (xhalf_minute))))
+520c520
+<                         xneed_escaping.write ".^$*+?{}[]|)("
+---
+>                         xneed_escaping.write ".^$*-?{}[]|)("
+614c614
+<                                       xformat_string.write (((xyear_week_format).add " ").add (xweekday_format))
+---
+>                                       xformat_string.write (((xyear_week_format).sub " ").sub (xweekday_format))
+772c772
+<                         (((unsupported)).apply ((((unsupported)).apply (((xos).xenviron)) ("TZ"))) ("EST+05EDT,M3.2.0,M11.1.0"))
+---
+>                         (((unsupported)).apply ((((unsupported)).apply (((xos).xenviron)) ("TZ"))) ("EST-05EDT,M3.2.0,M11.1.0"))

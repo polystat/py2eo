@@ -1,0 +1,70 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > assign-4
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xassignTest4
+      seq > @
+        stdout "assign-4\n"
+        write.
+          xassignTest4
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > lhs0
+                cage > e1
+                cage > e0
+                cage > xb
+                cage > xa
+                seq > @
+                  stdout "xassignTest4\n"
+                  (xa).write (1)
+                  (xb).write (4)
+                  [] > tmp1
+                    memory > dddata
+                    dddata.write (((xa).mul (xb))) > @
+                  (e0).write (tmp1.dddata)
+                  (lhs0).write (3)
+                  [] > tmp2
+                    memory > dddata
+                    dddata.write (((e0).eq (lhs0))) > @
+                  (e1).write (tmp2.dddata)
+                  stackUp.forward (return (e1))
+                  123
+        tmp.write (goto ((((xassignTest4)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

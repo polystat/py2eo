@@ -1,0 +1,182 @@
+memory > xlist
+memory > xAssertionError
+memory > xcall
+memory > xdedent
+memory > xmock
+memory > xExitStack
+memory > xunittest
+memory > xEOFError
+memory > xlen
+memory > x__name__
+memory > xsupport
+memory > xsys
+[] > test_code_module
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_banner
+        memory > xsetUp
+        memory > xtest_syntax_error
+        memory > xcode
+        memory > xtest_ps2
+        memory > xtest_cause_tb
+        memory > xtest_context_tb
+        memory > xtest_exit_msg
+        memory > xtest_ps1
+        memory > xmock_sys
+        memory > xtest_console_stderr
+        memory > xtest_sysexcepthook
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcode.write ((((xsupport).ximport_module)).apply ("code"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xconsole)) (((((xcode).xInteractiveConsole)).apply)))
+                        bogusForceDataize.write ((((xself).xmock_sys)).apply)
+                xmock_sys.write
+                  [xself]
+                    memory > xprepatch
+                    memory > xstack
+                    seq > @
+                      seq
+                        unsupported
+                        xstack.write (((xExitStack)).apply)
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xstack).xclose)))
+                        (((unsupported)).apply (((xself).xinfunc)) (((((xstack).xenter_context)).apply ((((unsupported)).apply (((xmock).xpatch)) ("code.input") (TRUE))))))
+                        (((unsupported)).apply (((xself).xstdout)) (((((xstack).xenter_context)).apply (((((xmock).xpatch)).apply ("code.sys.stdout"))))))
+                        (((unsupported)).apply (((xself).xstderr)) (((((xstack).xenter_context)).apply (((((xmock).xpatch)).apply ("code.sys.stderr"))))))
+                        xprepatch.write (((unsupported)).apply (((xmock).xpatch)) ("code.sys") (((xcode).xsys)) (((xcode).xsys)))
+                        (((unsupported)).apply (((xself).xsysmod)) (((((xstack).xenter_context)).apply ((xprepatch)))))
+                        (((unsupported)).apply (((xsys).xexcepthook)) (((xsys).x__excepthook__))).if
+                          (((unsupported)).apply ((((xself).xsysmod).xexcepthook)) ((((xself).xsysmod).x__excepthook__)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xself).xsysmod).xps1)))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xself).xsysmod).xps2)))))))
+                xtest_ps1.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((xEOFError)).apply ("Finished"))))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xsysmod).xps1)) (">>> "))
+                        (((unsupported)).apply ((((xself).xsysmod).xps1)) ("custom1> "))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xsysmod).xps1)) ("custom1> "))
+                xtest_ps2.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((xEOFError)).apply ("Finished"))))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xsysmod).xps2)) ("... "))
+                        (((unsupported)).apply ((((xself).xsysmod).xps1)) ("custom2> "))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xsysmod).xps1)) ("custom2> "))
+                xtest_console_stderr.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((unsupported)).apply ("'antioch'") ("") ((((xEOFError)).apply ("Finished"))))))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        (((unsupported)).apply ((xcall)) ((((xlist)).apply ((((xself).xstdout).xmethod_calls)))))
+                          (((unsupported)).apply ("antioch") (((("".xjoin)).apply ((((unsupported)).apply ((xcall)) (1)))))).if
+                            (((unsupported)).apply)
+                          (((unsupported)).apply ((((xAssertionError)).apply ("no console stdout"))))
+                xtest_syntax_error.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((unsupported)).apply ("undefined") ((((xEOFError)).apply ("Finished"))))))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        (((unsupported)).apply ((xcall)) ((((xself).xstderr).xmethod_calls)))
+                          (((unsupported)).apply ("NameError") (((("".xjoin)).apply ((((unsupported)).apply ((xcall)) (1)))))).if
+                            (((unsupported)).apply)
+                          (((unsupported)).apply ((((xAssertionError)).apply ("No syntax error from console"))))
+                xtest_sysexcepthook.write
+                  [xself]
+                    memory > xhook
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((unsupported)).apply ("raise ValueError('')") ((((xEOFError)).apply ("Finished"))))))
+                        xhook.write ((((xmock).xMock)).apply)
+                        (((unsupported)).apply ((((xself).xsysmod).xexcepthook)) ((xhook)))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xhook).xcalled)))
+                xtest_banner.write
+                  [xself]
+                    memory > xbanner_call
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((xEOFError)).apply ("Finished"))))
+                        (((unsupported)).apply ((((xself).xconsole).xinteract)) ("Foo"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xself).xstderr).xmethod_calls)))) (3))
+                        xbanner_call.write (((unsupported)).apply ((((xself).xstderr).xmethod_calls)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xbanner_call)) ((((unsupported)).apply ("write") ((((unsupported)).apply ("Foon"))) ((((unsupported)).apply)))))
+                        bogusForceDataize.write (((((xself).xstderr).xreset_mock)).apply)
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((xEOFError)).apply ("Finished"))))
+                        (((unsupported)).apply ((((xself).xconsole).xinteract)) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xself).xstderr).xmethod_calls)))) (2))
+                xtest_exit_msg.write
+                  [xself]
+                    memory > xerr_msg
+                    memory > xexpected
+                    memory > xmessage
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((xEOFError)).apply ("Finished"))))
+                        (((unsupported)).apply ((((xself).xconsole).xinteract)) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xself).xstderr).xmethod_calls)))) (2))
+                        xerr_msg.write (((unsupported)).apply ((((xself).xstderr).xmethod_calls)) (1))
+                        xexpected.write "now exiting InteractiveConsole...n"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xerr_msg)) ((((unsupported)).apply ("write") ((((unsupported)).apply ((xexpected)))) ((((unsupported)).apply)))))
+                        bogusForceDataize.write (((((xself).xstderr).xreset_mock)).apply)
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((xEOFError)).apply ("Finished"))))
+                        (((unsupported)).apply ((((xself).xconsole).xinteract)) ("") (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xself).xstderr).xmethod_calls)))) (1))
+                        bogusForceDataize.write (((((xself).xstderr).xreset_mock)).apply)
+                        xmessage.write "bye! N{GREEK SMALL LETTER ZETA}N{CYRILLIC SMALL LETTER ZHE}"
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((xEOFError)).apply ("Finished"))))
+                        (((unsupported)).apply ((((xself).xconsole).xinteract)) ("") ((xmessage)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xself).xstderr).xmethod_calls)))) (2))
+                        xerr_msg.write (((unsupported)).apply ((((xself).xstderr).xmethod_calls)) (1))
+                        xexpected.write ((xmessage).add "n")
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xerr_msg)) ((((unsupported)).apply ("write") ((((unsupported)).apply ((xexpected)))) ((((unsupported)).apply)))))
+                xtest_cause_tb.write
+                  [xself]
+                    memory > xexpected
+                    memory > xoutput
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((unsupported)).apply ("raise ValueError('') from AttributeError") ((((xEOFError)).apply ("Finished"))))))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        xoutput.write ((("".xjoin)).apply ((((unsupported)).apply (((("".xjoin)).apply ((((unsupported)).apply ((xcall)) (1))))) ((xcall)) ((((xself).xstderr).xmethod_calls)))))
+                        xexpected.write (((xdedent)).apply ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xexpected)) ((xoutput)))
+                xtest_context_tb.write
+                  [xself]
+                    memory > xexpected
+                    memory > xoutput
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xinfunc).xside_effect)) ((((unsupported)).apply ("try: hamnexcept: eggsn") ((((xEOFError)).apply ("Finished"))))))
+                        bogusForceDataize.write (((((xself).xconsole).xinteract)).apply)
+                        xoutput.write ((("".xjoin)).apply ((((unsupported)).apply (((("".xjoin)).apply ((((unsupported)).apply ((xcall)) (1))))) ((xcall)) ((((xself).xstderr).xmethod_calls)))))
+                        xexpected.write (((xdedent)).apply ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xexpected)) ((xoutput)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

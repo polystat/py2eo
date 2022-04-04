@@ -1,0 +1,33 @@
+memory > xprint
+[] > def-3
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xmy_decorator
+        memory > xsay_whee
+        seq > @
+          seq
+            xmy_decorator.write
+              [xfunc]
+                memory > xwrapper
+                seq > @
+                  seq
+                    xwrapper.write
+                      []
+                        seq > @
+                          seq
+                            bogusForceDataize.write (((xprint)).apply ("Something is happening before the function is called."))
+                            bogusForceDataize.write (((xfunc)).apply)
+                            bogusForceDataize.write (((xprint)).apply ("Something is happening after the function is called."))
+                    (((unsupported)).apply ((xwrapper)))
+            xsay_whee.write
+              []
+                seq > @
+                  (((unsupported)).apply)
+                    bogusForceDataize.write (((xprint)).apply ("Whee!"))
+                    (((unsupported)).apply (TRUE))

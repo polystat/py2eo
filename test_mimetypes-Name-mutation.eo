@@ -1,0 +1,374 @@
+memory > xcm
+memory > xio
+memory > xoutput
+memory > xpathlib
+memory > xset
+memory > x_bootlocale
+memory > xlocale
+memory > xargs
+memory > xdirectory
+memory > xknownfiles2
+memory > xsupport
+memory > xsys
+memory > xsetattr
+memory > xunittest
+memory > xSystemExit
+memory > xmimetypes
+memory > x__name__
+[] > test_mimetypes
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_init_reinitializes
+        memory > xtest_help_option
+        memory > xtest_file_parsing
+        memory > xtest_preferred_extension
+        memory > xtest_data_urls
+        memory > xtest_invalid_option
+        memory > xtest_init_stability
+        memory > xtest_guess_type
+        memory > xtearDown
+        memory > xsetUpModule
+        memory > xtest__all__
+        memory > xtest_non_standard_types
+        memory > xtest_path_like_ob
+        memory > xtest_keywords_args_api
+        memory > xtest_guess_extension
+        memory > xtest_default_data
+        memory > xtest_registry_parsing
+        memory > xtest_read_mime_types
+        memory > xtearDownModule
+        memory > xsetUp
+        memory > xtest_guess_all_types
+        memory > xtest_filename_with_url_delimiters
+        memory > xtest_encoding
+        memory > xmimetypes_cmd
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xsetUpModule.write
+              []
+                memory > xknownfiles
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xknownfiles.write ((xmimetypes).xknownfiles)
+                    (((unsupported)).apply (((xmimetypes).xknownfiles)) ((((unsupported)).apply)))
+                    (((unsupported)).apply (((xmimetypes).xinited)) (FALSE))
+                    bogusForceDataize.write ((((xmimetypes).x_default_mime_types)).apply)
+            xtearDownModule.write
+              []
+                seq > @
+                  (((unsupported)).apply (((xmimetypes).xknownfiles)) ((xknownfiles2)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xdb)) (((((xmimetypes).xMimeTypes)).apply)))
+                xtest_default_data.write
+                  [xself]
+                    memory > xeq
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.html"))) ((((unsupported)).apply ("text/html") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.HTML"))) ((((unsupported)).apply ("text/html") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.tgz"))) ((((unsupported)).apply ("application/x-tar") ("gzip"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.tar.gz"))) ((((unsupported)).apply ("application/x-tar") ("gzip"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.tar.Z"))) ((((unsupported)).apply ("application/x-tar") ("compress"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.tar.bz2"))) ((((unsupported)).apply ("application/x-tar") ("bzip2"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.tar.xz"))) ((((unsupported)).apply ("application/x-tar") ("xz"))))
+                xtest_data_urls.write
+                  [xself]
+                    memory > xeq
+                    memory > xguess_type
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        xguess_type.write (((xself).xdb).xguess_type)
+                        bogusForceDataize.write (((xeq)).apply ((((xguess_type)).apply ("data:invalidDataWithoutComma"))) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((xguess_type)).apply ("data:,thisIsTextPlain"))) ((((unsupported)).apply ("text/plain") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((xguess_type)).apply ("data:;base64,thisIsTextPlain"))) ((((unsupported)).apply ("text/plain") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((xguess_type)).apply ("data:text/x-foo,thisIsTextXFoo"))) ((((unsupported)).apply ("text/x-foo") ("None: is there a None literal in the EO language?"))))
+                xtest_file_parsing.write
+                  [xself]
+                    memory > xsio
+                    memory > xeq
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        xsio.write ((((xio).xStringIO)).apply ("x-application/x-unittest pyunitn"))
+                        bogusForceDataize.write (((((xself).xdb).xreadfp)).apply ((xsio)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.pyunit"))) ((((unsupported)).apply ("x-application/x-unittest") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_extension)).apply ("x-application/x-unittest"))) (".pyunit"))
+                xtest_read_mime_types.write
+                  [xself]
+                    memory > xfile
+                    memory > xeq
+                    memory > xmime_dict
+                    memory > xdata
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xmimetypes).xread_mime_types)).apply ("non-existent"))))
+                        (((unsupported)).apply (((((xsupport).xtemp_dir)).apply)) ((xdirectory)))
+                          seq
+                            xdata.write "x-application/x-unittest pyunitn"
+                            xfile.write ((((xpathlib).xPath)).apply ((xdirectory)) ("sample.mimetype"))
+                            bogusForceDataize.write ((((xfile).xwrite_text)).apply ((xdata)))
+                            xmime_dict.write ((((xmimetypes).xread_mime_types)).apply ((xfile)))
+                            bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((xmime_dict)) (".pyunit"))) ("x-application/x-unittest"))
+                        (((unsupported)).apply (((((xsupport).xtemp_dir)).apply)) ((xdirectory)))
+                          seq
+                            xdata.write "application/no-mans-land  Franu00E7ais"
+                            xfile.write ((((xpathlib).xPath)).apply ((xdirectory)) ("sample.mimetype"))
+                            (((unsupported)).apply (((xfile).xwrite_text)) ((xdata)) ("utf-8"))
+                            (((unsupported)).apply)
+                            (((unsupported)).apply (((((xsupport).xswap_attr)).apply ((x_bootlocale)) ("getpreferredencoding") ((((unsupported)).apply ("ASCII"))))))
+                              xmime_dict.write ((((xmimetypes).xread_mime_types)).apply ((xfile)))
+                            bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((xmime_dict)) (".Français"))) ("application/no-mans-land"))
+                xtest_non_standard_types.write
+                  [xself]
+                    memory > xeq
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((((xself).xdb).xguess_type)) ("foo.xul") (TRUE))) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((((xself).xdb).xguess_extension)) ("image/jpg") (TRUE))) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((((xself).xdb).xguess_type)) ("foo.xul") (FALSE))) ((((unsupported)).apply ("text/xul") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((((xself).xdb).xguess_type)) ("foo.XUL") (FALSE))) ((((unsupported)).apply ("text/xul") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((((xself).xdb).xguess_type)) ("foo.invalid") (FALSE))) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((((xself).xdb).xguess_extension)) ("image/jpg") (FALSE))) (".jpg"))
+                        bogusForceDataize.write (((xeq)).apply ((((unsupported)).apply ((((xself).xdb).xguess_extension)) ("image/JPG") (FALSE))) (".jpg"))
+                xtest_filename_with_url_delimiters.write
+                  [xself]
+                    memory > xeq
+                    memory > xgzip_expected
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        xgzip_expected.write (((unsupported)).apply ("application/x-tar") ("gzip"))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply (";1.tar.gz"))) ((xgzip_expected)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("?1.tar.gz"))) ((xgzip_expected)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("#1.tar.gz"))) ((xgzip_expected)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("#1#.tar.gz"))) ((xgzip_expected)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply (";1#.tar.gz"))) ((xgzip_expected)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply (";&1=123;?.tar.gz"))) ((xgzip_expected)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("?k1=v1&k2=v2.tar.gz"))) ((xgzip_expected)))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply (" \"`;b&b&c |.tar.gz"))) ((xgzip_expected)))
+                xtest_guess_all_types.write
+                  [xself]
+                    memory > xeq
+                    memory > xunless
+                    memory > xall
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        xunless.write ((xself).xassertTrue)
+                        xall.write (((xset)).apply ((((unsupported)).apply ((((xself).xdb).xguess_all_extensions)) ("text/plain") (TRUE))))
+                        bogusForceDataize.write (((xunless)).apply (((xall).geq (((xset)).apply ((((unsupported)).apply (".bat") (".c") (".h") (".ksh") (".pl") (".txt")))))))
+                        xall.write (((unsupported)).apply ((((xself).xdb).xguess_all_extensions)) ("image/jpg") (FALSE))
+                        bogusForceDataize.write ((((xall).xsort)).apply)
+                        bogusForceDataize.write (((xeq)).apply ((xall)) ((((unsupported)).apply (".jpg"))))
+                        xall.write (((unsupported)).apply ((((xself).xdb).xguess_all_extensions)) ("image/jpg") (TRUE))
+                        bogusForceDataize.write (((xeq)).apply ((xall)) ((((unsupported)).apply)))
+                xtest_encoding.write
+                  [xself]
+                    memory > xgetpreferredencoding
+                    memory > xexts
+                    memory > xmimes
+                    memory > xfilename
+                    seq > @
+                      seq
+                        xgetpreferredencoding.write ((xlocale).xgetpreferredencoding)
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply ((xsetattr)) ((xlocale)) ("getpreferredencoding") ((xgetpreferredencoding)))
+                        (((unsupported)).apply (((xlocale).xgetpreferredencoding)) ((((unsupported)).apply ("ascii"))))
+                        xfilename.write ((((xsupport).xfindfile)).apply ("mime.types"))
+                        xmimes.write ((((xmimetypes).xMimeTypes)).apply ((((unsupported)).apply ((xfilename)))))
+                        xexts.write (((unsupported)).apply (((xmimes).xguess_all_extensions)) ("application/vnd.geocube+xml") (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xexts)) ((((unsupported)).apply (".g3") (".gxb3"))))
+                xtest_init_reinitializes.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xmimetypes).xadd_type)).apply ("foo/bar") (".foobar"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("foo/bar"))) (".foobar"))
+                        bogusForceDataize.write ((((xmimetypes).xinit)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("foo/bar"))) ("None: is there a None literal in the EO language?"))
+                xtest_preferred_extension.write
+                  [xself]
+                    memory > xcheck_extensions
+                    seq > @
+                      seq
+                        xcheck_extensions.write
+                          []
+                            seq > @
+                              seq
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/octet-stream"))) (".bin"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/postscript"))) (".ps"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/vnd.apple.mpegurl"))) (".m3u"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/vnd.ms-excel"))) (".xls"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/vnd.ms-powerpoint"))) (".ppt"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/x-texinfo"))) (".texi"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/x-troff"))) (".roff"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("application/xml"))) (".xsl"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("audio/mpeg"))) (".mp3"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("image/jpeg"))) (".jpg"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("image/tiff"))) (".tiff"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("message/rfc822"))) (".eml"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("text/html"))) (".html"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("text/plain"))) (".txt"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("video/mpeg"))) (".mpeg"))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmimetypes).xguess_extension)).apply ("video/quicktime"))) (".mov"))
+                        bogusForceDataize.write (((xcheck_extensions)).apply)
+                        bogusForceDataize.write ((((xmimetypes).xinit)).apply)
+                        bogusForceDataize.write (((xcheck_extensions)).apply)
+                xtest_init_stability.write
+                  [xself]
+                    memory > xencodings_map
+                    memory > xcommon_types
+                    memory > xtypes_map
+                    memory > xsuffix_map
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xmimetypes).xinit)).apply)
+                        xsuffix_map.write ((xmimetypes).xsuffix_map)
+                        xencodings_map.write ((xmimetypes).xencodings_map)
+                        xtypes_map.write ((xmimetypes).xtypes_map)
+                        xcommon_types.write ((xmimetypes).xcommon_types)
+                        bogusForceDataize.write ((((xmimetypes).xinit)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNot)).apply ((xsuffix_map)) (((xmimetypes).xsuffix_map)))
+                        bogusForceDataize.write ((((xself).xassertIsNot)).apply ((xencodings_map)) (((xmimetypes).xencodings_map)))
+                        bogusForceDataize.write ((((xself).xassertIsNot)).apply ((xtypes_map)) (((xmimetypes).xtypes_map)))
+                        bogusForceDataize.write ((((xself).xassertIsNot)).apply ((xcommon_types)) (((xmimetypes).xcommon_types)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xsuffix_map)) (((xmimetypes).xsuffix_map)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xencodings_map)) (((xmimetypes).xencodings_map)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xtypes_map)) (((xmimetypes).xtypes_map)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcommon_types)) (((xmimetypes).xcommon_types)))
+                xtest_path_like_ob.write
+                  [xself]
+                    memory > xfilename
+                    memory > xexpected
+                    memory > xpath_dir
+                    memory > xfilepath
+                    memory > xfilepath_with_abs_dir
+                    memory > xfilepath_relative
+                    seq > @
+                      seq
+                        xfilename.write "LICENSE.txt"
+                        xfilepath.write ((((xpathlib).xPath)).apply ((xfilename)))
+                        xfilepath_with_abs_dir.write ((((xpathlib).xPath)).apply (("/dir/".add (xfilename))))
+                        xfilepath_relative.write ((((xpathlib).xPath)).apply (("../dir/".add (xfilename))))
+                        xpath_dir.write ((((xpathlib).xPath)).apply ("./"))
+                        xexpected.write (((((xself).xdb).xguess_type)).apply ((xfilename)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xdb).xguess_type)).apply ((xfilepath)))) ((xexpected)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xdb).xguess_type)).apply ((xfilepath_with_abs_dir)))) ((xexpected)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xdb).xguess_type)).apply ((xfilepath_relative)))) ((xexpected)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xdb).xguess_type)).apply ((xpath_dir)))) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                xtest_keywords_args_api.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xdb).xguess_type)) ("foo.html") (TRUE))) ((((unsupported)).apply ("text/html") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xdb).xguess_all_extensions)) ("image/jpg") (TRUE))) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xdb).xguess_extension)) ("image/jpg") (FALSE))) (".jpg"))
+            (((unsupported)).apply (((xunittest).xTestCase)) (((((xunittest).xskipUnless)).apply ((((((xsys).xplatform).xstartswith)).apply ("win"))) ("Windows only"))))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xoriginal_types_map)) ((((((xmimetypes).xtypes_map).xcopy)).apply)))
+                        bogusForceDataize.write (((((xmimetypes).xtypes_map).xclear)).apply)
+                        bogusForceDataize.write ((((xmimetypes).xinit)).apply)
+                        (((unsupported)).apply (((xself).xdb)) (((((xmimetypes).xMimeTypes)).apply)))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xmimetypes).xtypes_map).xclear)).apply)
+                        bogusForceDataize.write (((((xmimetypes).xtypes_map).xupdate)).apply (((xself).xoriginal_types_map)))
+                xtest_registry_parsing.write
+                  [xself]
+                    memory > xeq
+                    seq > @
+                      (((unsupported)).apply)
+                        xeq.write ((xself).xassertEqual)
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("foo.txt"))) ((((unsupported)).apply ("text/plain") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("image.jpg"))) ((((unsupported)).apply ("image/jpeg") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write (((xeq)).apply ((((((xself).xdb).xguess_type)).apply ("image.png"))) ((((unsupported)).apply ("image/png") ("None: is there a None literal in the EO language?"))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              xtest__all__.write
+                [xself]
+                  seq > @
+                    bogusForceDataize.write ((((xsupport).xcheck__all__)).apply ((xself)) ((xmimetypes)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xmimetypes_cmd.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xsupport).xpatch)).apply ((xself)) ((xsys)) ("argv") ((((unsupported)).apply (((xsys).xexecutable)) ((((unsupported)).apply ((xargs)))))))
+                        (((unsupported)).apply (((((xsupport).xcaptured_stdout)).apply)) ((xoutput)))
+                          seq
+                            bogusForceDataize.write ((((xmimetypes).x_main)).apply)
+                            (((unsupported)).apply ((((((((xoutput).xgetvalue)).apply).xstrip)).apply)))
+                xtest_help_option.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).xpatch)).apply ((xself)) ((xsys)) ("argv") ((((unsupported)).apply (((xsys).xexecutable)) ("-h"))))
+                        (((unsupported)).apply (((((xsupport).xcaptured_stdout)).apply)) ((xoutput)))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))) ((xcm)))
+                            bogusForceDataize.write ((((xmimetypes).x_main)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Usage: mimetypes.py") (((((xoutput).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xcode)) (0))
+                xtest_invalid_option.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).xpatch)).apply ((xself)) ((xsys)) ("argv") ((((unsupported)).apply (((xsys).xexecutable)) ("--invalid"))))
+                        (((unsupported)).apply (((((xsupport).xcaptured_stdout)).apply)) ((xoutput)))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))) ((xcm)))
+                            bogusForceDataize.write ((((xmimetypes).x_main)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Usage: mimetypes.py") (((((xoutput).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xcode)) (1))
+                xtest_guess_extension.write
+                  [xself]
+                    memory > xextension
+                    memory > xeq
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        xextension.write ((((xself).xmimetypes_cmd)).apply ("-l") ("-e") ("image/jpg"))
+                        bogusForceDataize.write (((xeq)).apply ((xextension)) (".jpg"))
+                        xextension.write ((((xself).xmimetypes_cmd)).apply ("-e") ("image/jpg"))
+                        bogusForceDataize.write (((xeq)).apply ((xextension)) ("I don't know anything about type image/jpg"))
+                        xextension.write ((((xself).xmimetypes_cmd)).apply ("-e") ("image/jpeg"))
+                        bogusForceDataize.write (((xeq)).apply ((xextension)) (".jpg"))
+                xtest_guess_type.write
+                  [xself]
+                    memory > xeq
+                    memory > xtype_info
+                    seq > @
+                      seq
+                        xeq.write ((xself).xassertEqual)
+                        xtype_info.write ((((xself).xmimetypes_cmd)).apply ("-l") ("foo.pic"))
+                        bogusForceDataize.write (((xeq)).apply ((xtype_info)) ("type: image/pict encoding: None"))
+                        xtype_info.write ((((xself).xmimetypes_cmd)).apply ("foo.pic"))
+                        bogusForceDataize.write (((xeq)).apply ((xtype_info)) ("I don't know anything about type foo.pic"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

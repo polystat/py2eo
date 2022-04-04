@@ -1,0 +1,82 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > if-12
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xconditionalCheck11
+      seq > @
+        stdout "if-12\n"
+        write.
+          xconditionalCheck11
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > lhs0
+                cage > e1
+                cage > lhs1
+                cage > e0
+                cage > xc
+                cage > xb2
+                cage > xa
+                seq > @
+                  stdout "xconditionalCheck11\n"
+                  (xa).write (4)
+                  (xb2).write (2)
+                  [] > tmp1
+                    memory > dddata
+                    dddata.write (((xa).leq (xb))) > @
+                  (e0).write (tmp1.dddata)
+                  (e0).if
+                    seq
+                      (lhs0).write (42)
+                      TRUE
+                    seq
+                      (lhs1).write (43)
+                      mkCopy (lhs1) > tmp2
+                      (lhs0).write (tmp2.copy)
+                      TRUE
+                  mkCopy (lhs0) > tmp3
+                  (xc).write (tmp3.copy)
+                  [] > tmp4
+                    memory > dddata
+                    dddata.write (((xc).eq 43)) > @
+                  (e1).write (tmp4.dddata)
+                  stackUp.forward (return (e1))
+                  123
+        tmp.write (goto ((((xconditionalCheck11)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

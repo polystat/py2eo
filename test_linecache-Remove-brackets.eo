@@ -1,0 +1,295 @@
+memory > xUnicodeDecodeError
+memory > xtempfile
+memory > xglobals
+memory > xos
+memory > xSyntaxError
+memory > xTempFile
+memory > xindex
+memory > xenumerate
+memory > xfile
+memory > xlinecache
+memory > xMemoryError
+memory > xfn
+memory > xentry
+memory > xGetLineTestsGoodData
+memory > xopen
+memory > xGetLineTestsBadData
+memory > xsuper
+memory > xtokenize
+memory > xsupport
+memory > x__file__
+memory > xunittest
+memory > xsource
+memory > xline
+memory > xlen
+memory > xfp
+memory > xTypeError
+memory > x__name__
+[] > test_linecache
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_lazycache_provide_after_failed_lookup
+        memory > xtest_lazycache_check
+        memory > xtest_memoryerror
+        memory > xtest_lazycache_no_globals
+        memory > xSOURCE_1
+        memory > xTEST_PATH
+        memory > xtest_lazycache_already_cached
+        memory > xtest_lazycache_bad_filename
+        memory > xfile_list
+        memory > xMODULES
+        memory > xtest_lazycache_smoke
+        memory > xMODULE_PATH
+        memory > xSOURCE_3
+        memory > xtest_clearcache
+        memory > xtest_checkcache
+        memory > xtest_no_ending_newline
+        memory > xEMPTY
+        memory > xFILENAME
+        memory > xtest_getlines
+        memory > xsetUp
+        memory > xSOURCE_2
+        memory > xINVALID_NAME
+        memory > xtest_getline
+        memory > xNONEXISTENT_FILENAME
+        memory > xfile_byte_string
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xFILENAME.write ((xlinecache).x__file__)
+            xNONEXISTENT_FILENAME.write ((xFILENAME).add ".missing")
+            xINVALID_NAME.write "!@$)(!@#_1"
+            xEMPTY.write ""
+            xTEST_PATH.write (((((xos).xpath).xdirname)).apply ((x__file__)))
+            xMODULES.write ("linecache abc".xsplit)
+            xMODULE_PATH.write (((((xos).xpath).xdirname)).apply ((xFILENAME)))
+            xSOURCE_1.write (((unsupported)).apply)
+            xSOURCE_2.write (((unsupported)).apply)
+            xSOURCE_3.write (((unsupported)).apply)
+            (((unsupported)).apply)
+              xsetUp.write
+                [xself]
+                  seq > @
+                    seq
+                      unsupported
+                      (((unsupported)).apply ((((unsupported)).apply (((xtempfile).xNamedTemporaryFile)) (FALSE))) ((xfp)))
+                        seq
+                          (((unsupported)).apply (((xself).xfile_name)) (((xfp).xname)))
+                          bogusForceDataize.write ((((xfp).xwrite)).apply (((xself).xfile_byte_string)))
+                      bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xsupport).xunlink)) (((xself).xfile_name)))
+            (((unsupported)).apply ((xTempFile)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xfile_byte_string)) ((((((("".xjoin)).apply (((xself).xfile_list))).xencode)).apply ("utf-8"))))
+                        unsupported
+                xtest_getline.write
+                  [xself]
+                    memory > xcached_line
+                    seq > @
+                      (((unsupported)).apply (((((xtokenize).xopen)).apply (((xself).xfile_name)))) ((xfp)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xline)))) ((((xenumerate)).apply ((xfp)))))
+                          seq
+                            (((((xline).xendswith)).apply ("n")).not).if
+                              (((unsupported)).apply ((xline)) ("n"))
+                            xcached_line.write ((((xlinecache).xgetline)).apply (((xself).xfile_name)) (((xindex).add 1)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xline)) ((xcached_line)))
+                xtest_getlines.write
+                  [xself]
+                    memory > xlines
+                    seq > @
+                      seq
+                        xlines.write ((((xlinecache).xgetlines)).apply (((xself).xfile_name)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlines)) (((xself).xfile_list)))
+            (((unsupported)).apply ((xTempFile)))
+              seq
+                xtest_getline.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaises)).apply ((((unsupported)).apply ((xSyntaxError)) ((xUnicodeDecodeError)))) (((xlinecache).xgetline)) (((xself).xfile_name)) (1))
+                xtest_getlines.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaises)).apply ((((unsupported)).apply ((xSyntaxError)) ((xUnicodeDecodeError)))) (((xlinecache).xgetlines)) (((xself).xfile_name)))
+            (((unsupported)).apply ((xGetLineTestsGoodData)) (((xunittest).xTestCase)))
+              xfile_list.write (((unsupported)).apply)
+            (((unsupported)).apply ((xGetLineTestsGoodData)) (((xunittest).xTestCase)))
+              xfile_list.write (((unsupported)).apply ("n"))
+            (((unsupported)).apply ((xGetLineTestsGoodData)) (((xunittest).xTestCase)))
+              xfile_list.write (((unsupported)).apply ("án") ("bn") ("abcdefn") ("ááááán"))
+            (((unsupported)).apply ((xGetLineTestsBadData)) (((xunittest).xTestCase)))
+              xfile_byte_string.write "x80abc"
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_getline.write
+                  [xself]
+                    memory > xgetline
+                    memory > xempty
+                    memory > xfilename
+                    seq > @
+                      seq
+                        xgetline.write ((xlinecache).xgetline)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgetline)).apply ((xFILENAME)) ((((unsupported)).apply (2) (15))))) ((xEMPTY)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgetline)).apply ((xFILENAME)) ((1.neg)))) ((xEMPTY)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((xgetline)) ((xFILENAME)) (1.1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgetline)).apply ((xEMPTY)) (1))) ((xEMPTY)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgetline)).apply ((xINVALID_NAME)) (1))) ((xEMPTY)))
+                        (((unsupported)).apply ((xentry)) ((xMODULES)))
+                          seq
+                            xfilename.write ((((((xos).xpath).xjoin)).apply ((xMODULE_PATH)) ((xentry))).add ".py")
+                            (((unsupported)).apply ((((xopen)).apply ((xfilename)))) ((xfile)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xline)))) ((((xenumerate)).apply ((xfile)))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((xline)) ((((xgetline)).apply ((xfilename)) (((xindex).add 1)))))
+                        xempty.write ((((xlinecache).xgetlines)).apply ("a/b/c/__init__.py"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xempty)) ((((unsupported)).apply)))
+                xtest_no_ending_newline.write
+                  [xself]
+                    memory > xlines
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xsupport).xunlink)) (((xsupport).xTESTFN)))
+                        (((unsupported)).apply ((((xopen)).apply (((xsupport).xTESTFN)) ("w"))) ((xfp)))
+                          bogusForceDataize.write ((((xfp).xwrite)).apply ((xSOURCE_3)))
+                        xlines.write ((((xlinecache).xgetlines)).apply (((xsupport).xTESTFN)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlines)) ((((unsupported)).apply ("n") ("def f:n") ("    return 3n"))))
+                xtest_clearcache.write
+                  [xself]
+                    memory > xcached
+                    memory > xcached_empty
+                    memory > xfilename
+                    seq > @
+                      seq
+                        xcached.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xentry)) ((xMODULES)))
+                          seq
+                            xfilename.write ((((((xos).xpath).xjoin)).apply ((xMODULE_PATH)) ((xentry))).add ".py")
+                            bogusForceDataize.write ((((xcached).xappend)).apply ((xfilename)))
+                            bogusForceDataize.write ((((xlinecache).xgetline)).apply ((xfilename)) (1))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xcached)) ((((unsupported)).apply)))
+                        xcached_empty.write (((unsupported)).apply ((xfn)) ((xfn)) ((xcached)) ((((unsupported)).apply ((xfn)) (((xlinecache).xcache)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcached_empty)) ((((unsupported)).apply)))
+                        unsupported
+                        xcached_empty.write (((unsupported)).apply ((xfn)) ((xfn)) ((xcached)) ((((unsupported)).apply ((xfn)) (((xlinecache).xcache)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcached_empty)) ((((unsupported)).apply)))
+                xtest_checkcache.write
+                  [xself]
+                    memory > xgetline
+                    memory > xsource_list
+                    memory > xsource_name
+                    seq > @
+                      seq
+                        xgetline.write ((xlinecache).xgetline)
+                        xsource_name.write (((xsupport).xTESTFN).add ".py")
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xsupport).xunlink)) ((xsource_name)))
+                        (((unsupported)).apply ((((xopen)).apply ((xsource_name)) ("w"))) ((xsource)))
+                          bogusForceDataize.write ((((xsource).xwrite)).apply ((xSOURCE_1)))
+                        bogusForceDataize.write (((xgetline)).apply ((xsource_name)) (1))
+                        xsource_list.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((xopen)).apply ((xsource_name)))) ((xsource)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xline)))) ((((xenumerate)).apply ((xsource)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xline)) ((((xgetline)).apply ((xsource_name)) (((xindex).add 1)))))
+                              bogusForceDataize.write ((((xsource_list).xappend)).apply ((xline)))
+                        (((unsupported)).apply ((((xopen)).apply ((xsource_name)) ("w"))) ((xsource)))
+                          bogusForceDataize.write ((((xsource).xwrite)).apply ((xSOURCE_2)))
+                        bogusForceDataize.write ((((xlinecache).xcheckcache)).apply ("dummy"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xline)))) ((((xenumerate)).apply ((xsource_list)))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xline)) ((((xgetline)).apply ((xsource_name)) (((xindex).add 1)))))
+                        bogusForceDataize.write ((((xlinecache).xcheckcache)).apply ((xsource_name)))
+                        (((unsupported)).apply ((((xopen)).apply ((xsource_name)))) ((xsource)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xline)))) ((((xenumerate)).apply ((xsource)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xline)) ((((xgetline)).apply ((xsource_name)) (((xindex).add 1)))))
+                              bogusForceDataize.write ((((xsource_list).xappend)).apply ((xline)))
+                xtest_lazycache_no_globals.write
+                  [xself]
+                    memory > xlines
+                    seq > @
+                      seq
+                        xlines.write ((((xlinecache).xgetlines)).apply ((xFILENAME)))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (FALSE) (((((xlinecache).xlazycache)).apply ((xFILENAME)) ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlines)) (((((xlinecache).xgetlines)).apply ((xFILENAME)))))
+                xtest_lazycache_smoke.write
+                  [xself]
+                    memory > xlines
+                    seq > @
+                      seq
+                        xlines.write ((((xlinecache).xgetlines)).apply ((xNONEXISTENT_FILENAME)) ((xglobals)))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (TRUE) (((((xlinecache).xlazycache)).apply ((xNONEXISTENT_FILENAME)) ((xglobals)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (1) ((((xlen)).apply ((((unsupported)).apply (((xlinecache).xcache)) ((xNONEXISTENT_FILENAME)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlines)) (((((xlinecache).xgetlines)).apply ((xNONEXISTENT_FILENAME)))))
+                xtest_lazycache_provide_after_failed_lookup.write
+                  [xself]
+                    memory > xlines
+                    seq > @
+                      seq
+                        unsupported
+                        xlines.write ((((xlinecache).xgetlines)).apply ((xNONEXISTENT_FILENAME)) ((xglobals)))
+                        unsupported
+                        bogusForceDataize.write ((((xlinecache).xgetlines)).apply ((xNONEXISTENT_FILENAME)))
+                        bogusForceDataize.write ((((xlinecache).xlazycache)).apply ((xNONEXISTENT_FILENAME)) ((xglobals)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlines)) (((((xlinecache).xupdatecache)).apply ((xNONEXISTENT_FILENAME)))))
+                xtest_lazycache_check.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xlinecache).xlazycache)).apply ((xNONEXISTENT_FILENAME)) ((xglobals)))
+                        unsupported
+                xtest_lazycache_bad_filename.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (FALSE) (((((xlinecache).xlazycache)).apply ("") ((xglobals)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (FALSE) (((((xlinecache).xlazycache)).apply ("<foo>") ((xglobals)))))
+                xtest_lazycache_already_cached.write
+                  [xself]
+                    memory > xlines
+                    seq > @
+                      seq
+                        unsupported
+                        xlines.write ((((xlinecache).xgetlines)).apply ((xNONEXISTENT_FILENAME)) ((xglobals)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (FALSE) (((((xlinecache).xlazycache)).apply ((xNONEXISTENT_FILENAME)) ((xglobals)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (4) ((((xlen)).apply ((((unsupported)).apply (((xlinecache).xcache)) ((xNONEXISTENT_FILENAME)))))))
+                xtest_memoryerror.write
+                  [xself]
+                    memory > xlines2
+                    memory > xlines3
+                    memory > xraise_memoryerror
+                    memory > xlines
+                    seq > @
+                      seq
+                        xlines.write ((((xlinecache).xgetlines)).apply ((xFILENAME)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((xlines)))
+                        xraise_memoryerror.write
+                          []
+                            seq > @
+                              (((unsupported)).apply)
+                                (((unsupported)).apply ((xMemoryError)))
+                        (((unsupported)).apply (((((xsupport).xswap_attr)).apply ((xlinecache)) ("updatecache") ((xraise_memoryerror)))))
+                          xlines2.write ((((xlinecache).xgetlines)).apply ((xFILENAME)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlines2)) ((xlines)))
+                        unsupported
+                        (((unsupported)).apply (((((xsupport).xswap_attr)).apply ((xlinecache)) ("updatecache") ((xraise_memoryerror)))))
+                          xlines3.write ((((xlinecache).xgetlines)).apply ((xFILENAME)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlines3)) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlinecache).xgetlines)).apply ((xFILENAME)))) ((xlines)))
+            ((x__name__).eq "__main__").if
+              unsupported

@@ -1,0 +1,109 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > def-5
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xmy_decorator
+      seq > @
+        stdout "def-5\n"
+        write.
+          xmy_decorator
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > e4
+                cage > lhs4
+                cage > e5
+                cage > xfactorial
+                seq > @
+                  stdout "xmy_decorator\n"
+                  write.
+                    xfactorial
+                    []
+                      [xnNotCopied] > apply
+                        [stackUp] > @
+                          cage > tmp
+                          xnNotCopied' > xn
+                          cage > lhs0
+                          cage > e1
+                          cage > e0
+                          cage > lhs2
+                          cage > e3
+                          cage > e2
+                          seq > @
+                            stdout "xfactorial\n"
+                            xn.<
+                            [] > tmp1
+                              memory > dddata
+                              dddata.write (((xn).less 2)) > @
+                            (e3).write (tmp1.dddata)
+                            (e3).if
+                              seq
+                                stackUp.forward (return 1)
+                                TRUE
+                              seq
+                                mkCopy (xn) > tmp2
+                                (lhs2).write (tmp2.copy)
+                                mkCopy (xfactorial) > tmp3
+                                (lhs0).write (tmp3.copy)
+                                [] > tmp4
+                                  memory > dddata
+                                  dddata.write (((xn).sub 1)) > @
+                                (e0).write (tmp4.dddata)
+                                tmp.write (goto ((((lhs0)).apply ((e0))).@))
+                                (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                                (e1).write (tmp.result)
+                                [] > tmp5
+                                  memory > dddata
+                                  dddata.write (((lhs2).mul (e1))) > @
+                                (e2).write (tmp5.dddata)
+                                stackUp.forward (return (e2))
+                                TRUE
+                            123
+                  tmp.write (goto ((((xfactorial)).apply (5)).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e4).write (tmp.result)
+                  (lhs4).write (120)
+                  [] > tmp6
+                    memory > dddata
+                    dddata.write (((e4).eq (lhs4))) > @
+                  (e5).write (tmp6.dddata)
+                  stackUp.forward (return (e5))
+                  123
+        tmp.write (goto ((((xmy_decorator)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

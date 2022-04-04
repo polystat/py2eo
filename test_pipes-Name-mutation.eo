@@ -1,0 +1,255 @@
+memory > xrun_unittest
+memory > xValueError
+memory > xs_command
+memory > xpipes
+memory > xreap_children
+memory > xopen
+memory > xunlink
+memory > xid
+memory > xf
+memory > xstring
+memory > xrepr
+memory > xTESTFN
+memory > xos
+memory > xSimplePipeTests
+memory > xshutil
+memory > xunittest
+memory > xTypeError
+memory > x__name__
+[] > test_pipes
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xs_command2
+        memory > xtestSimplePipe2
+        memory > xtestSimplePipe1
+        memory > xtestEmptyPipeline3
+        memory > xtestBadAppendOptions
+        memory > xtestClone
+        memory > xtestWriteOpenSource
+        memory > xtearDown
+        memory > xtestReadOpenSink
+        memory > xtest_main
+        memory > xtestEmptyPipeline2
+        memory > xTESTFN2
+        memory > xtestRepr
+        memory > xtestEmptyPipeline1
+        memory > xtestBadPrependOptions
+        memory > xtestBadOpenMode
+        memory > xtestSimplePipe3
+        memory > xtestSetDebug
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((xos).xname).neq "posix").if
+              (((unsupported)).apply (((((xunittest).xSkipTest)).apply ("pipes module only works on posix"))))
+            xTESTFN2.write ((xTESTFN).add "2")
+            xs_command2.write ("tr %s %s".mod (((unsupported)).apply (((xstring).xascii_lowercase)) (((xstring).xascii_uppercase))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xf)) ((((unsupported)).apply ((xTESTFN)) ((xTESTFN2)))))
+                        bogusForceDataize.write (((xunlink)).apply ((xf)))
+                xtestSimplePipe1.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xshutil).xwhich)).apply ("tr"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("tr is not available"))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xappend)).apply ((xs_command)) (((xpipes).xSTDIN_STDOUT)))
+                        (((unsupported)).apply (((((xt).xopen)).apply ((xTESTFN)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply ("hello world #1"))
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN)))) ((xf)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xread)).apply)) ("HELLO WORLD #1"))
+                xtestSimplePipe2.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xshutil).xwhich)).apply ("tr"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("tr is not available"))
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply ("hello world #2"))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xappend)).apply (((xs_command).add " < $IN > $OUT")) (((xpipes).xFILEIN_FILEOUT)))
+                        bogusForceDataize.write ((((xt).xcopy)).apply ((xTESTFN)) ((xTESTFN2)))
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN2)))) ((xf)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xread)).apply)) ("HELLO WORLD #2"))
+                xtestSimplePipe3.write
+                  [xself]
+                    memory > xt
+                    memory > xf
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xshutil).xwhich)).apply ("tr"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("tr is not available"))
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply ("hello world #2"))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xappend)).apply (((xs_command).add " < $IN")) (((xpipes).xFILEIN_STDOUT)))
+                        xf.write ((((xt).xopen)).apply ((xTESTFN)) ("r"))
+                        (((unsupported)).apply)
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xread)).apply)) ("HELLO WORLD #2"))
+                          bogusForceDataize.write ((((xf).xclose)).apply)
+                xtestEmptyPipeline1.write
+                  [xself]
+                    memory > xt
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write "empty pipeline test COPY"
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply ((xd)))
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN2)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply (""))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xcopy)).apply ((xTESTFN)) ((xTESTFN2)))
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN2)))) ((xf)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xread)).apply)) ((xd)))
+                xtestEmptyPipeline2.write
+                  [xself]
+                    memory > xt
+                    memory > xd
+                    memory > xf
+                    seq > @
+                      seq
+                        xd.write "empty pipeline test READ"
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply ((xd)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        xf.write ((((xt).xopen)).apply ((xTESTFN)) ("r"))
+                        (((unsupported)).apply)
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xread)).apply)) ((xd)))
+                          bogusForceDataize.write ((((xf).xclose)).apply)
+                xtestEmptyPipeline3.write
+                  [xself]
+                    memory > xt
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write "empty pipeline test WRITE"
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        (((unsupported)).apply (((((xt).xopen)).apply ((xTESTFN)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply ((xd)))
+                        (((unsupported)).apply ((((xopen)).apply ((xTESTFN)))) ((xf)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xread)).apply)) ((xd)))
+                xtestRepr.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xt)))) ("<Template instance, steps=[]>"))
+                        bogusForceDataize.write ((((xt).xappend)).apply ("tr a-z A-Z") (((xpipes).xSTDIN_STDOUT)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xt)))) ("<Template instance, steps=[('tr a-z A-Z', '--')]>"))
+                xtestSetDebug.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xdebug)).apply (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xt).xdebugging)) (FALSE))
+                        bogusForceDataize.write ((((xt).xdebug)).apply (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xt).xdebugging)) (TRUE))
+                xtestReadOpenSink.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xappend)).apply ("boguscmd") (((xpipes).xSINK)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xopen)) ("bogusfile") ("r"))
+                xtestWriteOpenSource.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xprepend)).apply ("boguscmd") (((xpipes).xSOURCE)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xopen)) ("bogusfile") ("w"))
+                xtestBadAppendOptions.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) (((xt).xappend)) (7) (((xpipes).xSTDIN_STDOUT)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xappend)) ("boguscmd") ("xx"))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xappend)) ("boguscmd") (((xpipes).xSOURCE)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xappend)).apply ("boguscmd") (((xpipes).xSINK)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xappend)) ("boguscmd") (((xpipes).xSINK)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xappend)) ("boguscmd $OUT") (((xpipes).xFILEIN_FILEOUT)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xappend)) ("boguscmd") (((xpipes).xFILEIN_STDOUT)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xappend)) ("boguscmd $IN") (((xpipes).xFILEIN_FILEOUT)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xappend)) ("boguscmd") (((xpipes).xSTDIN_FILEOUT)))
+                xtestBadPrependOptions.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) (((xt).xprepend)) (7) (((xpipes).xSTDIN_STDOUT)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xprepend)) ("tr a-z A-Z") ("xx"))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xprepend)) ("boguscmd") (((xpipes).xSINK)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xprepend)).apply ("boguscmd") (((xpipes).xSOURCE)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xprepend)) ("boguscmd") (((xpipes).xSOURCE)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xprepend)) ("boguscmd $OUT") (((xpipes).xFILEIN_FILEOUT)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xprepend)) ("boguscmd") (((xpipes).xFILEIN_STDOUT)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xprepend)) ("boguscmd $IN") (((xpipes).xFILEIN_FILEOUT)))
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xprepend)) ("boguscmd") (((xpipes).xSTDIN_FILEOUT)))
+                xtestBadOpenMode.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xt).xopen)) ("bogusfile") ("x"))
+                xtestClone.write
+                  [xself]
+                    memory > xt
+                    memory > xu
+                    seq > @
+                      seq
+                        xt.write ((((xpipes).xTemplate)).apply)
+                        bogusForceDataize.write ((((xt).xappend)).apply ("tr a-z A-Z") (((xpipes).xSTDIN_STDOUT)))
+                        xu.write ((((xt).xclone)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xid)).apply ((xt)))) ((((xid)).apply ((xu)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xt).xsteps)) (((xu).xsteps)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xid)).apply (((xt).xsteps)))) ((((xid)).apply (((xu).xsteps)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xt).xdebugging)) (((xu).xdebugging)))
+            xtest_main.write
+              []
+                seq > @
+                  seq
+                    bogusForceDataize.write (((xrun_unittest)).apply ((xSimplePipeTests)))
+                    bogusForceDataize.write (((xreap_children)).apply)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write (((xtest_main)).apply)

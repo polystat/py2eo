@@ -1,0 +1,172 @@
+memory > xsamplecmdclass
+memory > xValueError
+memory > xio
+memory > xint
+memory > xsimplecmd
+memory > xi
+memory > xunittest
+memory > x__name__
+memory > xcmd
+memory > xprint
+memory > xtest_cmd
+memory > xsupport
+memory > xsys
+memory > xlen
+memory > xTestAlternateInput
+[] > test_cmd
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xhelp_add
+        memory > xcompletedefault
+        memory > xtest_main
+        memory > xtest_coverage
+        memory > xdo_exit
+        memory > xdo_add
+        memory > xpreloop
+        memory > xdo_EOF
+        memory > xdo_print
+        memory > xpostloop
+        memory > xtest_file_with_missing_final_nl
+        memory > xdo_shell
+        memory > xcomplete_command
+        memory > xtest_input_reset_at_EOF
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xcmd).xCmd)))
+              seq
+                (((unsupported)).apply)
+                xpreloop.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((xprint)).apply ("Hello from preloop"))
+                xpostloop.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((xprint)).apply ("Hello from postloop"))
+                xcompletedefault.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((xprint)).apply ("This is the completedefault method"))
+                xcomplete_command.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((xprint)).apply ("complete command"))
+                xdo_shell.write
+                  [xself xs]
+                    seq > @
+                xdo_add.write
+                  [xself xs]
+                    memory > xl
+                    seq > @
+                      seq
+                        xl.write ((xs).xsplit)
+                        ((((xlen)).apply ((xl))).neq 2).if
+                          seq
+                            bogusForceDataize.write (((xprint)).apply ("*** invalid number of arguments"))
+                            (((unsupported)).apply)
+                        (((unsupported)).apply ((xValueError)))
+                          xl.write (((unsupported)).apply ((((xint)).apply ((xi)))) ((xi)) ((xl)))
+                          seq
+                            bogusForceDataize.write (((xprint)).apply ("*** arguments should be numbers"))
+                            (((unsupported)).apply)
+                        bogusForceDataize.write (((xprint)).apply (((((unsupported)).apply ((xl)) (0)).add (((unsupported)).apply ((xl)) (1)))))
+                xhelp_add.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xprint)).apply ("help text for add"))
+                        (((unsupported)).apply)
+                xdo_exit.write
+                  [xself xarg]
+                    seq > @
+                      (((unsupported)).apply (TRUE))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                (((unsupported)).apply (((xcmd).xCmd)))
+                  seq
+                    xdo_print.write
+                      [xself xargs]
+                        seq > @
+                          (((unsupported)).apply ((xprint)) ((xargs)) (((xself).xstdout)))
+                    xdo_EOF.write
+                      [xself xargs]
+                        seq > @
+                          (((unsupported)).apply (TRUE))
+                (((unsupported)).apply ((xsimplecmd)))
+                  xdo_EOF.write
+                    [xself xargs]
+                      seq > @
+                        seq
+                          (((unsupported)).apply ((xprint)) ("*** Unknown syntax: EOF") (((xself).xstdout)))
+                          (((unsupported)).apply (TRUE))
+                xtest_file_with_missing_final_nl.write
+                  [xself]
+                    memory > xinput
+                    memory > xcmd
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xinput.write ((((xio).xStringIO)).apply ("print testnprint test2"))
+                        xoutput.write ((xio).xStringIO)
+                        xcmd.write (((unsupported)).apply (((xself).xsimplecmd)) ((xinput)) ((xoutput)))
+                        (((unsupported)).apply (((xcmd).xuse_rawinput)) (FALSE))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertMultiLineEqual)).apply (((xoutput).xgetvalue)) ("(Cmd) testn(Cmd) test2n(Cmd) "))
+                xtest_input_reset_at_EOF.write
+                  [xself]
+                    memory > xinput
+                    memory > xcmd
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xinput.write ((((xio).xStringIO)).apply ("print testnprint test2"))
+                        xoutput.write ((xio).xStringIO)
+                        xcmd.write (((unsupported)).apply (((xself).xsimplecmd2)) ((xinput)) ((xoutput)))
+                        (((unsupported)).apply (((xcmd).xuse_rawinput)) (FALSE))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertMultiLineEqual)).apply (((xoutput).xgetvalue)) ("(Cmd) testn(Cmd) test2n(Cmd) *** Unknown syntax: EOFn"))
+                        xinput.write ((((xio).xStringIO)).apply ("print nn"))
+                        xoutput.write ((xio).xStringIO)
+                        (((unsupported)).apply (((xcmd).xstdin)) ((xinput)))
+                        (((unsupported)).apply (((xcmd).xstdout)) ((xoutput)))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertMultiLineEqual)).apply (((xoutput).xgetvalue)) ("(Cmd) n(Cmd) n(Cmd) *** Unknown syntax: EOFn"))
+            xtest_main.write
+              [xverbose]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    bogusForceDataize.write ((((xsupport).xrun_doctest)).apply ((xtest_cmd)) ((xverbose)))
+                    bogusForceDataize.write ((((xsupport).xrun_unittest)).apply ((xTestAlternateInput)))
+            xtest_coverage.write
+              [xcoverdir]
+                memory > xtrace
+                memory > xr
+                memory > xtracer
+                seq > @
+                  seq
+                    xtrace.write ((((xsupport).ximport_module)).apply ("trace"))
+                    xtracer.write (((unsupported)).apply (((xtrace).xTrace)) ((((unsupported)).apply (((xsys).xbase_prefix)) (((xsys).xbase_exec_prefix)))) (0) (1))
+                    bogusForceDataize.write ((((xtracer).xrun)).apply ("import importlib; importlib.reload(cmd); test_main"))
+                    xr.write ((xtracer).xresults)
+                    bogusForceDataize.write (((xprint)).apply ("Writing coverage results..."))
+                    (((unsupported)).apply (((xr).xwrite_results)) (TRUE) (TRUE) ((xcoverdir)))
+            ((x__name__).eq "__main__").if
+              (((unsupported)).apply ("-c") (((xsys).xargv))).if
+                bogusForceDataize.write (((xtest_coverage)).apply ("/tmp/cmd.cover"))
+                (((unsupported)).apply ("-i") (((xsys).xargv))).if
+                  unsupported
+                  unsupported

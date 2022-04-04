@@ -1,0 +1,552 @@
+memory > xcm
+memory > xzipapp
+memory > xz
+memory > xstat
+memory > xtempfile
+memory > xmain
+memory > xpathlib
+memory > xlen
+memory > xstr
+memory > xio
+memory > xf
+memory > xset
+memory > xSystemExit
+memory > xname
+memory > xunittest
+memory > xzipfile
+memory > x__name__
+[] > test_zipapp
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xmake_archive
+        memory > xtest_create_archive_with_compression
+        memory > xtest_custom_interpreter
+        memory > xtest_remove_shebang
+        memory > xtest_main_and_main_py
+        memory > xtest_create_archive_with_pathlib
+        memory > xtest_read_from_pathobj
+        memory > xtest_default_no_shebang
+        memory > xtest_info_command
+        memory > xtest_create_archive_with_subdirs
+        memory > xtest_content_of_copied_archive
+        memory > xtest_read_shebang
+        memory > xtest_main_written
+        memory > xtest_modify_shebang
+        memory > xtest_main_only_written_once
+        memory > xtest_shebang_is_executable
+        memory > xtest_cmdline_copy_inplace
+        memory > xtest_pack_to_fileobj
+        memory > xtest_create_archive_filter_exclude_dir
+        memory > xtest_no_main
+        memory > xsetUp
+        memory > xtest_read_missing_shebang
+        memory > xtest_write_shebang_to_fileobj
+        memory > xtest_read_from_fileobj
+        memory > xtest_main_validation
+        memory > xtest_info_error
+        memory > xtest_create_archive_with_filter
+        memory > xtest_create_archive_default_target
+        memory > xtest_cmdline_create
+        memory > xtest_no_shebang_is_not_executable
+        memory > xtest_create_archive
+        memory > xtest_cmdline_copy
+        memory > xtest_cmdline_copy_change_main
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                unsupported
+                xsetUp.write
+                  [xself]
+                    memory > xtmpdir
+                    seq > @
+                      seq
+                        xtmpdir.write ((((xtempfile).xTemporaryDirectory)).apply)
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xtmpdir).xcleanup)))
+                        (((unsupported)).apply (((xself).xtmpdir)) (((((xpathlib).xPath)).apply (((xtmpdir).xname)))))
+                xtest_create_archive.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xtarget).xis_file)).apply)))
+                xtest_create_archive_with_pathlib.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((xsource)) ((xtarget)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xtarget).xis_file)).apply)))
+                xtest_create_archive_with_subdirs.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        bogusForceDataize.write (((((xsource).div "foo").xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "bar").xmkdir)).apply)
+                        bogusForceDataize.write ((((((xsource).div "foo").div "__init__.py").xtouch)).apply)
+                        xtarget.write ((((xio).xBytesIO)).apply)
+                        bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((((xstr)).apply ((xsource)))) ((xtarget)))
+                        bogusForceDataize.write ((((xtarget).xseek)).apply (0))
+                        (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((xtarget)) ("r"))) ((xz)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("foo/") (((((xz).xnamelist)).apply)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("bar/") (((((xz).xnamelist)).apply)))
+                xtest_create_archive_with_filter.write
+                  [xself]
+                    memory > xtarget
+                    memory > xskip_pyc_files
+                    memory > xsource
+                    seq > @
+                      seq
+                        xskip_pyc_files.write
+                          [xpath]
+                            seq > @
+                              (((unsupported)).apply ((((xpath).xsuffix).neq ".pyc")))
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        bogusForceDataize.write (((((xsource).div "test.py").xtouch)).apply)
+                        bogusForceDataize.write (((((xsource).div "test.pyc").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((xsource)) ((xtarget)) ((xskip_pyc_files)))
+                        (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((xtarget)) ("r"))) ((xz)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("__main__.py") (((((xz).xnamelist)).apply)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("test.py") (((((xz).xnamelist)).apply)))
+                            bogusForceDataize.write ((((xself).xassertNotIn)).apply ("test.pyc") (((((xz).xnamelist)).apply)))
+                xtest_create_archive_filter_exclude_dir.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    memory > xskip_dummy_dir
+                    seq > @
+                      seq
+                        xskip_dummy_dir.write
+                          [xpath]
+                            seq > @
+                              (((unsupported)).apply (((((unsupported)).apply (((xpath).xparts)) (0)).neq "dummy")))
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        bogusForceDataize.write (((((xsource).div "test.py").xtouch)).apply)
+                        bogusForceDataize.write (((((xsource).div "dummy").xmkdir)).apply)
+                        bogusForceDataize.write ((((((xsource).div "dummy").div "test2.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((xsource)) ((xtarget)) ((xskip_dummy_dir)))
+                        (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((xtarget)) ("r"))) ((xz)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((((xz).xnamelist)).apply)))) (2))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("__main__.py") (((((xz).xnamelist)).apply)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("test.py") (((((xz).xnamelist)).apply)))
+                xtest_create_archive_default_target.write
+                  [xself]
+                    memory > xexpected_target
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((((xstr)).apply ((xsource)))))
+                        xexpected_target.write (((xself).xtmpdir).div "source.pyz")
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xexpected_target).xis_file)).apply)))
+                xtest_create_archive_with_compression.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      (((unsupported)).apply)
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        bogusForceDataize.write (((((xsource).div "test.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((xsource)) ((xtarget)) (TRUE))
+                        (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((xtarget)) ("r"))) ((xz)))
+                          (((unsupported)).apply ((xname)) ((((unsupported)).apply ("__main__.py") ("test.py"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xz).xgetinfo)).apply ((xname))).xcompress_type)) (((xzipfile).xZIP_DEFLATED)))
+                xtest_no_main.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "foo.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply (((xzipapp).xZipAppError)))))
+                          bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))))
+                xtest_main_and_main_py.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply (((xzipapp).xZipAppError)))))
+                          (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("pkg.mod:fn"))
+                xtest_main_written.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "foo.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("pkg.mod:fn"))
+                        (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((((xstr)).apply ((xtarget)))) ("r"))) ((xz)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("__main__.py") (((((xz).xnamelist)).apply)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("pkg.mod.fn()") (((((xz).xread)).apply ("__main__.py"))))
+                xtest_main_only_written_once.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "foo.py").xtouch)).apply)
+                        bogusForceDataize.write (((((xsource).div "bar.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("pkg.mod:fn"))
+                        (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((((xstr)).apply ((xtarget)))) ("r"))) ((xz)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (1) ((((((((xz).xnamelist)).apply).xcount)).apply ("__main__.py"))))
+                xtest_main_validation.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    memory > xproblems
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        xproblems.write (((unsupported)).apply ("") ("foo") ("foo:") (":bar") ("12:bar") ("a.b.c.:d") (".a:b") ("a:b.") ("a:.b") ("a:silly name"))
+                        (((unsupported)).apply ((xmain)) ((xproblems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xmain)))))
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply (((xzipapp).xZipAppError)))))
+                              (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ((xmain)))
+                xtest_default_no_shebang.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))))
+                        (((unsupported)).apply (((((xtarget).xopen)).apply ("rb"))) ((xf)))
+                          bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((((xf).xread)).apply (2))) ("#!"))
+                xtest_custom_interpreter.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("python"))
+                        (((unsupported)).apply (((((xtarget).xopen)).apply ("rb"))) ((xf)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xread)).apply (2))) ("#!"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("pythonn") (((((xf).xreadline)).apply)))
+                xtest_pack_to_fileobj.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write ((((xio).xBytesIO)).apply)
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((xtarget)) ("python"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((((xtarget).xgetvalue)).apply).xstartswith)).apply ("#!pythonn"))))
+                xtest_read_shebang.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("python"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xzipapp).xget_interpreter)).apply ((((xstr)).apply ((xtarget)))))) ("python"))
+                xtest_read_missing_shebang.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xzipapp).xget_interpreter)).apply ((((xstr)).apply ((xtarget)))))) ("None: is there a None literal in the EO language?"))
+                xtest_modify_shebang.write
+                  [xself]
+                    memory > xtarget
+                    memory > xnew_target
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("python"))
+                        xnew_target.write (((xself).xtmpdir).div "changed.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xtarget)))) ((((xstr)).apply ((xnew_target)))) ("python2.7"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xzipapp).xget_interpreter)).apply ((((xstr)).apply ((xnew_target)))))) ("python2.7"))
+                xtest_write_shebang_to_fileobj.write
+                  [xself]
+                    memory > xtarget
+                    memory > xnew_target
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("python"))
+                        xnew_target.write ((((xio).xBytesIO)).apply)
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xtarget)))) ((xnew_target)) ("python2.7"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((((xnew_target).xgetvalue)).apply).xstartswith)).apply ("#!python2.7n"))))
+                xtest_read_from_pathobj.write
+                  [xself]
+                    memory > xtarget2
+                    memory > xtarget1
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget1.write (((xself).xtmpdir).div "target1.pyz")
+                        xtarget2.write (((xself).xtmpdir).div "target2.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((xsource)) ((xtarget1)) ("python"))
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((xtarget1)) ((xtarget2)) ("python2.7"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xzipapp).xget_interpreter)).apply ((xtarget2)))) ("python2.7"))
+                xtest_read_from_fileobj.write
+                  [xself]
+                    memory > xtarget
+                    memory > xnew_target
+                    memory > xsource
+                    memory > xtemp_archive
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        xtemp_archive.write ((((xio).xBytesIO)).apply)
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((xtemp_archive)) ("python"))
+                        xnew_target.write ((((xio).xBytesIO)).apply)
+                        bogusForceDataize.write ((((xtemp_archive).xseek)).apply (0))
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((xtemp_archive)) ((xnew_target)) ("python2.7"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((((xnew_target).xgetvalue)).apply).xstartswith)).apply ("#!python2.7n"))))
+                xtest_remove_shebang.write
+                  [xself]
+                    memory > xtarget
+                    memory > xnew_target
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("python"))
+                        xnew_target.write (((xself).xtmpdir).div "changed.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xtarget)))) ((((xstr)).apply ((xnew_target)))) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xzipapp).xget_interpreter)).apply ((((xstr)).apply ((xnew_target)))))) ("None: is there a None literal in the EO language?"))
+                xtest_content_of_copied_archive.write
+                  [xself]
+                    memory > xtarget
+                    memory > xnew_target
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write ((((xio).xBytesIO)).apply)
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((xtarget)) ("python"))
+                        xnew_target.write ((((xio).xBytesIO)).apply)
+                        bogusForceDataize.write ((((xtarget).xseek)).apply (0))
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((xtarget)) ((xnew_target)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xnew_target).xseek)).apply (0))
+                        (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((xnew_target)) ("r"))) ((xz)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xset)).apply (((((xz).xnamelist)).apply)))) ((((unsupported)).apply ("__main__.py"))))
+                xtest_shebang_is_executable.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      (((unsupported)).apply)
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("python"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((xtarget).xstat)).apply).xst_mode).and ((xstat).xS_IEXEC))))
+                xtest_no_shebang_is_not_executable.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      (((unsupported)).apply)
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        (((unsupported)).apply (((xzipapp).xcreate_archive)) ((((xstr)).apply ((xsource)))) ((((xstr)).apply ((xtarget)))) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((((xtarget).xstat)).apply).xst_mode).and ((xstat).xS_IEXEC))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                unsupported
+                xsetUp.write
+                  [xself]
+                    memory > xtmpdir
+                    seq > @
+                      seq
+                        xtmpdir.write ((((xtempfile).xTemporaryDirectory)).apply)
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xtmpdir).xcleanup)))
+                        (((unsupported)).apply (((xself).xtmpdir)) (((((xpathlib).xPath)).apply (((xtmpdir).xname)))))
+                xmake_archive.write
+                  [xself]
+                    memory > xtarget
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xtarget.write (((xself).xtmpdir).div "source.pyz")
+                        bogusForceDataize.write ((((xzipapp).xcreate_archive)).apply ((xsource)) ((xtarget)))
+                        (((unsupported)).apply ((xtarget)))
+                xtest_cmdline_create.write
+                  [xself]
+                    memory > xtarget
+                    memory > xargs
+                    memory > xsource
+                    seq > @
+                      seq
+                        xsource.write (((xself).xtmpdir).div "source")
+                        bogusForceDataize.write ((((xsource).xmkdir)).apply)
+                        bogusForceDataize.write (((((xsource).div "__main__.py").xtouch)).apply)
+                        xargs.write (((unsupported)).apply ((((xstr)).apply ((xsource)))))
+                        bogusForceDataize.write ((((xzipapp).xmain)).apply ((xargs)))
+                        xtarget.write ((((xsource).xwith_suffix)).apply (".pyz"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xtarget).xis_file)).apply)))
+                xtest_cmdline_copy.write
+                  [xself]
+                    memory > xtarget
+                    memory > xargs
+                    memory > xoriginal
+                    seq > @
+                      seq
+                        xoriginal.write ((((xself).xmake_archive)).apply)
+                        xtarget.write (((xself).xtmpdir).div "target.pyz")
+                        xargs.write (((unsupported)).apply ((((xstr)).apply ((xoriginal)))) ("-o") ((((xstr)).apply ((xtarget)))))
+                        bogusForceDataize.write ((((xzipapp).xmain)).apply ((xargs)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xtarget).xis_file)).apply)))
+                xtest_cmdline_copy_inplace.write
+                  [xself]
+                    memory > xtarget
+                    memory > xargs
+                    memory > xoriginal
+                    seq > @
+                      seq
+                        xoriginal.write ((((xself).xmake_archive)).apply)
+                        xtarget.write (((xself).xtmpdir).div "target.pyz")
+                        xargs.write (((unsupported)).apply ((((xstr)).apply ((xoriginal)))) ("-o") ((((xstr)).apply ((xoriginal)))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))) ((xcm)))
+                          bogusForceDataize.write ((((xzipapp).xmain)).apply ((xargs)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xcm).xexception).xcode)))
+                xtest_cmdline_copy_change_main.write
+                  [xself]
+                    memory > xtarget
+                    memory > xargs
+                    memory > xoriginal
+                    seq > @
+                      seq
+                        xoriginal.write ((((xself).xmake_archive)).apply)
+                        xtarget.write (((xself).xtmpdir).div "target.pyz")
+                        xargs.write (((unsupported)).apply ((((xstr)).apply ((xoriginal)))) ("-o") ((((xstr)).apply ((xtarget)))) ("-m") ("foo:bar"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))) ((xcm)))
+                          bogusForceDataize.write ((((xzipapp).xmain)).apply ((xargs)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xcm).xexception).xcode)))
+                xtest_info_command.write
+                  [xself xmock_stdout]
+                    memory > xtarget
+                    memory > xargs
+                    seq > @
+                      (((unsupported)).apply)
+                        xtarget.write ((((xself).xmake_archive)).apply)
+                        xargs.write (((unsupported)).apply ((((xstr)).apply ((xtarget)))) ("--info"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))) ((xcm)))
+                          bogusForceDataize.write ((((xzipapp).xmain)).apply ((xargs)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xcode)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmock_stdout).xgetvalue)).apply)) ("Interpreter: <none>n"))
+                xtest_info_error.write
+                  [xself]
+                    memory > xtarget
+                    memory > xargs
+                    seq > @
+                      seq
+                        xtarget.write (((xself).xtmpdir).div "dummy.pyz")
+                        xargs.write (((unsupported)).apply ((((xstr)).apply ((xtarget)))) ("--info"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))) ((xcm)))
+                          bogusForceDataize.write ((((xzipapp).xmain)).apply ((xargs)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xcm).xexception).xcode)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

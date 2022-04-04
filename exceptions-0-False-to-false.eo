@@ -1,0 +1,68 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > exceptions-0
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xte0
+      seq > @
+        stdout "exceptions-0\n"
+        write.
+          xte0
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                seq > @
+                  stdout "xte0\n"
+                  write.
+                    xcurrent-exception
+                    goto
+                      [stackUp]
+                        seq > @
+                          stackUp.forward raiseEmpty
+                          stackUp.forward raiseNothing
+                  seq
+                    stackUp.forward (return TRUE)
+                    if.
+                      xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
+                      seq
+                      0
+                    (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
+                  stackUp.forward (return (xfalse))
+                  123
+        tmp.write (goto ((((xte0)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

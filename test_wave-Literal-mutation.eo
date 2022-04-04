@@ -1,0 +1,197 @@
+memory > xWaveTest
+memory > xbyteswap
+memory > xbytes
+memory > xunittest
+memory > x__name__
+memory > xaudiotests
+memory > xio
+memory > xstruct
+memory > xsupport
+memory > xsys
+memory > xEOFError
+memory > xwave
+[] > test_wave
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest__all__
+        memory > xtest_read_wrong_sample_width
+        memory > xtest_read_not_wave
+        memory > xtest_read_no_chunks
+        memory > xframerate
+        memory > xsndfilename
+        memory > xnframes
+        memory > xtest_read_wrong_number_of_channels
+        memory > xtest_read_wrong_form
+        memory > xmodule
+        memory > xsndfilenframes
+        memory > xtest_read_no_riff_chunk
+        memory > xsampwidth
+        memory > xtest_read_no_data_chunk
+        memory > xcompname
+        memory > xframes
+        memory > xtest_read_no_fmt_no_data_chunk
+        memory > xtest_read_no_fmt_chunk
+        memory > xcomptype
+        memory > xnchannels
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xaudiotests).xAudioWriteTests)) (((xaudiotests).xAudioTestsWithSourceFile)))
+              xmodule.write (xwave)
+            (((unsupported)).apply ((xWaveTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm8.wav"
+                xsndfilenframes.write 3307
+                xnchannels.write 3
+                xsampwidth.write 2
+                xframerate.write 11026
+                xnframes.write 49
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+            (((unsupported)).apply ((xWaveTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm16.wav"
+                xsndfilenframes.write 3308
+                xnchannels.write 3
+                xsampwidth.write 3
+                xframerate.write 11026
+                xnframes.write 49
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+                (((xsys).xbyteorder).neq "big").if
+                  xframes.write (((xbyteswap)).apply ((xframes)) (2))
+            (((unsupported)).apply ((xWaveTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm24.wav"
+                xsndfilenframes.write 3308
+                xnchannels.write 3
+                xsampwidth.write 4
+                xframerate.write 11026
+                xnframes.write 49
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+                (((xsys).xbyteorder).neq "big").if
+                  xframes.write (((xbyteswap)).apply ((xframes)) (3))
+            (((unsupported)).apply ((xWaveTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm32.wav"
+                xsndfilenframes.write 3308
+                xnchannels.write 3
+                xsampwidth.write 5
+                xframerate.write 11026
+                xnframes.write 49
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+                (((xsys).xbyteorder).neq "big").if
+                  xframes.write (((xbyteswap)).apply ((xframes)) (4))
+            (((unsupported)).apply (((xaudiotests).xAudioMiscTests)) (((xunittest).xTestCase)))
+              seq
+                xmodule.write (xwave)
+                xtest__all__.write
+                  [xself]
+                    memory > xblacklist
+                    seq > @
+                      seq
+                        xblacklist.write (((unsupported)).apply ("WAVE_FORMAT_PCM"))
+                        (((unsupported)).apply (((xsupport).xcheck__all__)) ((xself)) ((xwave)) ((xblacklist)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_read_no_chunks.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write "SPAM"
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xEOFError)))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_no_riff_chunk.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write ("SPAM".add ((((xstruct).xpack)).apply ("<L") (0)))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("file does not start with RIFF id"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_not_wave.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write (("RIFF".add ((((xstruct).xpack)).apply ("<L") (4))).add "SPAM")
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("not a WAVE file"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_no_fmt_no_data_chunk.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write (("RIFF".add ((((xstruct).xpack)).apply ("<L") (4))).add "WAVE")
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("fmt chunk and/or data chunk missing"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_no_data_chunk.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write (("RIFF".add ((((xstruct).xpack)).apply ("<L") (28))).add "WAVE")
+                        (((unsupported)).apply ((xb)) (("fmt ".add ((((xstruct).xpack)).apply ("<LHHLLHH") (16) (1) (1) (11025) (11025) (1) (8)))))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("fmt chunk and/or data chunk missing"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_no_fmt_chunk.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write (("RIFF".add ((((xstruct).xpack)).apply ("<L") (12))).add "WAVE")
+                        (((unsupported)).apply ((xb)) (("data".add ((((xstruct).xpack)).apply ("<L") (0)))))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("data chunk before fmt chunk"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_wrong_form.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write (("RIFF".add ((((xstruct).xpack)).apply ("<L") (36))).add "WAVE")
+                        (((unsupported)).apply ((xb)) (("fmt ".add ((((xstruct).xpack)).apply ("<LHHLLHH") (16) (2) (1) (11025) (11025) (1) (1)))))
+                        (((unsupported)).apply ((xb)) (("data".add ((((xstruct).xpack)).apply ("<L") (0)))))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("unknown format: 2"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_wrong_number_of_channels.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write (("RIFF".add ((((xstruct).xpack)).apply ("<L") (36))).add "WAVE")
+                        (((unsupported)).apply ((xb)) (("fmt ".add ((((xstruct).xpack)).apply ("<LHHLLHH") (16) (1) (0) (11025) (11025) (1) (8)))))
+                        (((unsupported)).apply ((xb)) (("data".add ((((xstruct).xpack)).apply ("<L") (0)))))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("bad # of channels"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_wrong_sample_width.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write (("RIFF".add ((((xstruct).xpack)).apply ("<L") (36))).add "WAVE")
+                        (((unsupported)).apply ((xb)) (("fmt ".add ((((xstruct).xpack)).apply ("<LHHLLHH") (16) (1) (1) (11025) (11025) (1) (0)))))
+                        (((unsupported)).apply ((xb)) (("data".add ((((xstruct).xpack)).apply ("<L") (0)))))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xwave).xError)) ("bad sample width"))))
+                          bogusForceDataize.write ((((xwave).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

@@ -1,0 +1,627 @@
+memory > xd
+memory > xopname
+memory > xlist
+memory > xValueError
+memory > xt
+memory > xb
+memory > xdis
+memory > xcmp_op
+memory > xrepr
+memory > xhasattr
+memory > xx
+memory > xcompile
+memory > xtuple
+memory > xe
+memory > xy
+memory > xinstr
+memory > xmin
+memory > xc
+memory > xfrozenset
+memory > xBytecodeTestCase
+memory > xfunc
+memory > xrange
+memory > xmax
+memory > xbaz
+memory > xunittest
+memory > xelem
+memory > xline
+memory > xfoo
+memory > xlen
+memory > x__name__
+memory > xa
+[] > test_peepholer
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_folding_of_binops_on_constants
+        memory > xtest_global_as_constant
+        memory > xtest_pack_unpack
+        memory > xtest_trailing_nops
+        memory > xtest_elim_jump_to_uncond_jump
+        memory > xtest_folding_of_lists_of_constants
+        memory > xtest_if_with_if_expression
+        memory > xcount_instr_recursively
+        memory > xtest_while_one
+        memory > xcheck_lnotab
+        memory > xtest_iterate_literal_list
+        memory > xtest_in_literal_list
+        memory > xtest_constant_folding
+        memory > xtest_elim_jump_to_return
+        memory > xtest_folding_of_sets_of_constants
+        memory > xtest_elim_extra_return
+        memory > xtest_elim_inversion_of_is_or_in
+        memory > xtest_binary_subscr_on_unicode
+        memory > xtest_elim_jump_after_return2
+        memory > xtest_bug_11510
+        memory > xtest_elim_jump_to_uncond_jump3
+        memory > xtest_folding_of_unaryops_on_constants
+        memory > xcheck_jump_targets
+        memory > xtest_make_function_doesnt_bail
+        memory > xtest_elim_jump_after_return1
+        memory > xtest_unot
+        memory > xtest_elim_jump_to_uncond_jump2
+        memory > xtest_condition_with_binop_with_bools
+        memory > xtest_folding_of_tuples_of_constants
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcount_instr_recursively.write
+              [xf xopname]
+                memory > xcount
+                seq > @
+                  seq
+                    xcount.write 0
+                    (((unsupported)).apply ((xinstr)) (((((xdis).xget_instructions)).apply ((xf)))))
+                      (((xinstr).xopname).eq (xopname)).if
+                        (((unsupported)).apply ((xcount)) (1))
+                    (((xhasattr)).apply ((xf)) ("__code__")).if
+                      xf.write ((xf).x__code__)
+                    (((unsupported)).apply ((xc)) (((xf).xco_consts)))
+                      (((xhasattr)).apply ((xc)) ("co_code")).if
+                        (((unsupported)).apply ((xcount)) ((((xcount_instr_recursively)).apply ((xc)) ((xopname)))))
+                    (((unsupported)).apply ((xcount)))
+            (((unsupported)).apply ((xBytecodeTestCase)))
+              seq
+                xcheck_jump_targets.write
+                  [xself xcode]
+                    memory > xtgt
+                    memory > xinstructions
+                    memory > xtargets
+                    seq > @
+                      seq
+                        xinstructions.write (((xlist)).apply (((((xdis).xget_instructions)).apply ((xcode)))))
+                        xtargets.write (((unsupported)).apply (((xinstr).xoffset)) ((xinstr)) ((xinstr)) ((xinstructions)))
+                        (((unsupported)).apply ((xinstr)) ((xinstructions)))
+                          seq
+                            (((unsupported)).apply ("JUMP_") (((xinstr).xopname))).if
+                              (((unsupported)).apply)
+                            xtgt.write (((unsupported)).apply ((xtargets)) (((xinstr).xargval)))
+                            (((unsupported)).apply (((xtgt).xopname)) ((((unsupported)).apply ("JUMP_ABSOLUTE") ("JUMP_FORWARD")))).if
+                              bogusForceDataize.write ((((xself).xfail)).apply ("{instr.opname} at {instr.offset} jumps to {tgt.opname} at {tgt.offset}"))
+                            ((((unsupported)).apply (((xinstr).xopname)) ((((unsupported)).apply ("JUMP_ABSOLUTE") ("JUMP_FORWARD")))).and (((xtgt).xopname).eq "RETURN_VALUE")).if
+                              bogusForceDataize.write ((((xself).xfail)).apply ("{instr.opname} at {instr.offset} jumps to {tgt.opname} at {tgt.offset}"))
+                            ((((unsupported)).apply ("_OR_POP") (((xinstr).xopname))).and (((unsupported)).apply ("JUMP_IF_") (((xtgt).xopname)))).if
+                              bogusForceDataize.write ((((xself).xfail)).apply ("{instr.opname} at {instr.offset} jumps to {tgt.opname} at {tgt.offset}"))
+                xcheck_lnotab.write
+                  [xself xcode]
+                    memory > xmax_bytecode
+                    memory > xlnotab
+                    memory > xmin_bytecode
+                    seq > @
+                      seq
+                        unsupported
+                        xcode.write ((((xdis).x_get_code_object)).apply ((xcode)))
+                        xlnotab.write (((xlist)).apply (((((xdis).xfindlinestarts)).apply ((xcode)))))
+                        xmin_bytecode.write (((xmin)).apply ((((unsupported)).apply ((((unsupported)).apply ((xt)) (0))) ((xt)) ((xlnotab)))))
+                        xmax_bytecode.write (((xmax)).apply ((((unsupported)).apply ((((unsupported)).apply ((xt)) (0))) ((xt)) ((xlnotab)))))
+                        bogusForceDataize.write ((((xself).xassertGreaterEqual)).apply ((xmin_bytecode)) (0))
+                        bogusForceDataize.write ((((xself).xassertLess)).apply ((xmax_bytecode)) ((((xlen)).apply (((xcode).xco_code)))))
+                xtest_unot.write
+                  [xself]
+                    memory > xunot
+                    seq > @
+                      seq
+                        xunot.write
+                          [xx]
+                            seq > @
+                              (((xx).eq 2).not).if
+                                (((unsupported)).apply ((((unsupported)).apply ((xx)))))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xunot)) ("UNARY_NOT"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xunot)) ("POP_JUMP_IF_FALSE"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xunot)) ("POP_JUMP_IF_TRUE"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xunot)))
+                xtest_elim_inversion_of_is_or_in.write
+                  [xself]
+                    memory > xcode
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xcmp_op)))) ((((unsupported)).apply ((((unsupported)).apply ("not a is b") ("is not"))) ((((unsupported)).apply ("not a in b") ("not in"))) ((((unsupported)).apply ("not a is not b") ("is"))) ((((unsupported)).apply ("not a not in b") ("in"))))))
+                        seq
+                          xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                          bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("COMPARE_OP") ((xcmp_op)))
+                          bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                xtest_global_as_constant.write
+                  [xself]
+                    memory > xh
+                    memory > xg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            memory > xx
+                            seq > @
+                              seq
+                                xx.write "None: is there a None literal in the EO language?"
+                                xx.write "None: is there a None literal in the EO language?"
+                                (((unsupported)).apply ((xx)))
+                        xg.write
+                          []
+                            memory > xx
+                            seq > @
+                              seq
+                                xx.write TRUE
+                                (((unsupported)).apply ((xx)))
+                        xh.write
+                          []
+                            memory > xx
+                            seq > @
+                              seq
+                                xx.write FALSE
+                                (((unsupported)).apply ((xx)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xfunc)) ((xelem)))) ((((unsupported)).apply ((((unsupported)).apply ((xf)) ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((xg)) (TRUE))) ((((unsupported)).apply ((xh)) (FALSE))))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xfunc)) ("LOAD_GLOBAL"))
+                            bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xfunc)) ("LOAD_CONST") ((xelem)))
+                            bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xfunc)))
+                        xf.write
+                          []
+                            seq > @
+                              seq
+                                unsupported
+                                (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("LOAD_GLOBAL"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xf)) ("LOAD_CONST") ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_while_one.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            seq > @
+                              seq
+                                while.
+                                  1
+                                  [unused]
+                                    seq > @
+                                (((unsupported)).apply ((xlist)))
+                        (((unsupported)).apply ((xelem)) ((((unsupported)).apply ("LOAD_CONST") ("POP_JUMP_IF_FALSE"))))
+                          bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ((xelem)))
+                        (((unsupported)).apply ((xelem)) ((((unsupported)).apply ("JUMP_ABSOLUTE"))))
+                          bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xf)) ((xelem)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_pack_unpack.write
+                  [xself]
+                    memory > xcode
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xelem)))) ((((unsupported)).apply ((((unsupported)).apply ("a, = a,") ("LOAD_CONST"))) ((((unsupported)).apply ("a, b = a, b") ("ROT_TWO"))) ((((unsupported)).apply ("a, b, c = a, b, c") ("ROT_THREE"))))))
+                        seq
+                          xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                          bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ((xelem)))
+                          bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BUILD_TUPLE"))
+                          bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("UNPACK_TUPLE"))
+                          bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                xtest_folding_of_tuples_of_constants.write
+                  [xself]
+                    memory > xcode
+                    memory > xcrater
+                    memory > xload_consts
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xelem)))) ((((unsupported)).apply ((((unsupported)).apply ("a = 1,2,3") ((((unsupported)).apply (1) (2) (3))))) ((((unsupported)).apply ("(\"a\",\"b\",\"c\")") ((((unsupported)).apply ("a") ("b") ("c"))))) ((((unsupported)).apply ("a,b,c = 1,2,3") ((((unsupported)).apply (1) (2) (3))))) ((((unsupported)).apply ("(None, 1, None)") ((((unsupported)).apply ("None: is there a None literal in the EO language?") (1) ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ("((1, 2), 3, 4)") ((((unsupported)).apply ((((unsupported)).apply (1) (2))) (3) (4))))))))
+                          seq
+                            xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                            bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ((xelem)))
+                            bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BUILD_TUPLE"))
+                            bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ((((xrepr)).apply ((((xtuple)).apply ((((xrange)).apply (10000))))))) ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BUILD_TUPLE"))
+                        xload_consts.write (((unsupported)).apply ((xinstr)) ((xinstr)) (((((xdis).xget_instructions)).apply ((xcode)))) ((((xinstr).xopname).eq "LOAD_CONST")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xload_consts)))) (2))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcrater.write
+                          []
+                            seq > @
+                              (((unsupported)).apply (((((unsupported)).apply (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9) (0) (1) (2) (3) (4) (5) (6) (7) (8) (9)).neg)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcrater)))
+                xtest_folding_of_lists_of_constants.write
+                  [xself]
+                    memory > xcode
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xelem)))) ((((unsupported)).apply ((((unsupported)).apply ("a in [1,2,3]") ((((unsupported)).apply (1) (2) (3))))) ((((unsupported)).apply ("a not in [\"a\",\"b\",\"c\"]") ((((unsupported)).apply ("a") ("b") ("c"))))) ((((unsupported)).apply ("a in [None, 1, None]") ((((unsupported)).apply ("None: is there a None literal in the EO language?") (1) ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ("a not in [(1, 2), 3, 4]") ((((unsupported)).apply ((((unsupported)).apply (1) (2))) (3) (4))))))))
+                        seq
+                          xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                          bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ((xelem)))
+                          bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BUILD_LIST"))
+                          bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                xtest_folding_of_sets_of_constants.write
+                  [xself]
+                    memory > xcode
+                    memory > xg
+                    memory > xf
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xelem)))) ((((unsupported)).apply ((((unsupported)).apply ("a in {1,2,3}") ((((xfrozenset)).apply ((((unsupported)).apply (1) (2) (3))))))) ((((unsupported)).apply ("a not in {\"a\",\"b\",\"c\"}") ((((xfrozenset)).apply ((((unsupported)).apply ("a") ("c") ("b"))))))) ((((unsupported)).apply ("a in {None, 1, None}") ((((xfrozenset)).apply ((((unsupported)).apply (1) ("None: is there a None literal in the EO language?"))))))) ((((unsupported)).apply ("a not in {(1, 2), 3, 4}") ((((xfrozenset)).apply ((((unsupported)).apply ((((unsupported)).apply (1) (2))) (3) (4))))))) ((((unsupported)).apply ("a in {1, 2, 3, 3, 2, 1}") ((((xfrozenset)).apply ((((unsupported)).apply (1) (2) (3))))))))))
+                          seq
+                            xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                            bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BUILD_SET"))
+                            bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ((xelem)))
+                            bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xf.write
+                          [xa]
+                            seq > @
+                              (((unsupported)).apply ((((unsupported)).apply ((xa)) ((((unsupported)).apply (1) (2) (3))))))
+                        xg.write
+                          [xa]
+                            seq > @
+                              (((unsupported)).apply ((((unsupported)).apply ((xa)) ((((unsupported)).apply (1) (2) (3))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xf)).apply (3))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf)).apply (4)).not)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xg)).apply (3)).not)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xg)).apply (4))))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xg)))
+                xtest_folding_of_binops_on_constants.write
+                  [xself]
+                    memory > xcode
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xelem)))) ((((unsupported)).apply ((((unsupported)).apply ("a = 2-3-4") (9))) ((((unsupported)).apply ("\"@\"*4") ("@@@@"))) ((((unsupported)).apply ("a=\"abc\" - \"def\"") ("abcdef"))) ((((unsupported)).apply ("a = 3**4") (81))) ((((unsupported)).apply ("a = 3*4") (12))) ((((unsupported)).apply ("a = 13//4") (3))) ((((unsupported)).apply ("a = 14%4") (2))) ((((unsupported)).apply ("a = 2-3") (5))) ((((unsupported)).apply ("a = 13-4") (9))) ((((unsupported)).apply ("a = (12,13)[1]") (13))) ((((unsupported)).apply ("a = 13 << 2") (52))) ((((unsupported)).apply ("a = 13 >> 2") (3))) ((((unsupported)).apply ("a = 13 & 7") (5))) ((((unsupported)).apply ("a = 13 ^ 7") (10))) ((((unsupported)).apply ("a = 13 | 7") (15))))))
+                          seq
+                            xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                            bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ((xelem)))
+                            (((unsupported)).apply ((xinstr)) (((((xdis).xget_instructions)).apply ((xcode)))))
+                              bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xinstr).xopname).xstartswith)).apply ("BINARY_"))))
+                            bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ("a=2-\"b\"") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") (2))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ("b"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ("a=\"x\"*10000") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") (10000))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (("x".mul 10000)) (((xcode).xco_consts)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ("a=1<<1000") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") (1000))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ((((unsupported)).apply (1) (1000))) (((xcode).xco_consts)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ("a=2**1000") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") (1000))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ((((unsupported)).apply (2) (1000))) (((xcode).xco_consts)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                xtest_binary_subscr_on_unicode.write
+                  [xself]
+                    memory > xcode
+                    seq > @
+                      seq
+                        xcode.write (((xcompile)).apply ("\"foo\"[0]") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ("f"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BINARY_SUBSCR"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ("\"u0061uffff\"[1]") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ("uffff"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BINARY_SUBSCR"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ("\"U00012345\"[0]") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ("U00012345"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xcode)) ("BINARY_SUBSCR"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xcode.write (((xcompile)).apply ("\"fuu\"[10]") ("") ("single"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("BINARY_SUBSCR"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                xtest_folding_of_unaryops_on_constants.write
+                  [xself]
+                    memory > xcode
+                    memory > xnegzero
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xelem)))) ((((unsupported)).apply ((((unsupported)).apply ("-0.5") ((0.5.neg)))) ((((unsupported)).apply ("-0.0") ((0.0.neg)))) ((((unsupported)).apply ("-(1.0-1.0)") ((0.0.neg)))) ((((unsupported)).apply ("-0") (0))) ((((unsupported)).apply ("~-2") (1))) ((((unsupported)).apply ("-1") (1))))))
+                          seq
+                            xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                            bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ((xelem)))
+                            (((unsupported)).apply ((xinstr)) (((((xdis).xget_instructions)).apply ((xcode)))))
+                              bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xinstr).xopname).xstartswith)).apply ("UNARY_"))))
+                            bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                        xnegzero.write
+                          []
+                            seq > @
+                              (((unsupported)).apply (((1.0.sub 1.0).neg)))
+                        (((unsupported)).apply ((xinstr)) (((((xdis).xget_instructions)).apply ((xnegzero)))))
+                          bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xinstr).xopname).xstartswith)).apply ("UNARY_"))))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xnegzero)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xline)) ((xelem)) ((xopname)))) ((((unsupported)).apply ((((unsupported)).apply ("-\"abc\"") ("abc") ("UNARY_NEGATIVE"))) ((((unsupported)).apply ("~\"abc\"") ("abc") ("UNARY_INVERT"))))))
+                          seq
+                            xcode.write (((xcompile)).apply ((xline)) ("") ("single"))
+                            bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ("LOAD_CONST") ((xelem)))
+                            bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xcode)) ((xopname)))
+                            bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                xtest_elim_extra_return.write
+                  [xself]
+                    memory > xreturns
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          [xx]
+                            seq > @
+                              (((unsupported)).apply ((xx)))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("LOAD_CONST") ("None: is there a None literal in the EO language?"))
+                        xreturns.write (((unsupported)).apply ((xinstr)) ((xinstr)) (((((xdis).xget_instructions)).apply ((xf)))) ((((xinstr).xopname).eq "RETURN_VALUE")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xreturns)))) (1))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_elim_jump_to_return.write
+                  [xself]
+                    memory > xreturns
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          [xcond xtrue_value xfalse_value]
+                            seq > @
+                              (((unsupported)).apply (((xcond).if (xtrue_value) (xfalse_value))))
+                        bogusForceDataize.write ((((xself).xcheck_jump_targets)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("JUMP_FORWARD"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("JUMP_ABSOLUTE"))
+                        xreturns.write (((unsupported)).apply ((xinstr)) ((xinstr)) (((((xdis).xget_instructions)).apply ((xf)))) ((((xinstr).xopname).eq "RETURN_VALUE")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xreturns)))) (2))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_elim_jump_to_uncond_jump.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            seq > @
+                              (xa).if
+                                ((xc).or (xd)).if
+                                  bogusForceDataize.write (((xfoo)).apply)
+                                bogusForceDataize.write (((xbaz)).apply)
+                        bogusForceDataize.write ((((xself).xcheck_jump_targets)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_elim_jump_to_uncond_jump2.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            memory > xa
+                            seq > @
+                              while.
+                                (xa)
+                                [unused]
+                                  seq > @
+                                    ((xc).or (xd)).if
+                                      xa.write (((xfoo)).apply)
+                        bogusForceDataize.write ((((xself).xcheck_jump_targets)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_elim_jump_to_uncond_jump3.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          [xa xb xc]
+                            seq > @
+                              (((unsupported)).apply ((((xa).and (xb)).and (xc))))
+                        bogusForceDataize.write ((((xself).xcheck_jump_targets)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcount_instr_recursively)).apply ((xf)) ("JUMP_IF_FALSE_OR_POP"))) (2))
+                        xf.write
+                          [xa xb xc]
+                            seq > @
+                              (((unsupported)).apply ((((xa).or (xb)).or (xc))))
+                        bogusForceDataize.write ((((xself).xcheck_jump_targets)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcount_instr_recursively)).apply ((xf)) ("JUMP_IF_TRUE_OR_POP"))) (2))
+                        xf.write
+                          [xa xb xc]
+                            seq > @
+                              (((unsupported)).apply ((((xa).and (xb)).or (xc))))
+                        bogusForceDataize.write ((((xself).xcheck_jump_targets)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("JUMP_IF_FALSE_OR_POP"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xf)) ("JUMP_IF_TRUE_OR_POP"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xf)) ("POP_JUMP_IF_FALSE"))
+                        xf.write
+                          [xa xb xc]
+                            seq > @
+                              (((unsupported)).apply ((((xa).or (xb)).and (xc))))
+                        bogusForceDataize.write ((((xself).xcheck_jump_targets)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("JUMP_IF_TRUE_OR_POP"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xf)) ("JUMP_IF_FALSE_OR_POP"))
+                        bogusForceDataize.write ((((xself).xassertInBytecode)).apply ((xf)) ("POP_JUMP_IF_TRUE"))
+                xtest_elim_jump_after_return1.write
+                  [xself]
+                    memory > xreturns
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          [xcond1 xcond2]
+                            seq > @
+                              seq
+                                (xcond1).if
+                                  (((unsupported)).apply (1))
+                                (xcond2).if
+                                  (((unsupported)).apply (2))
+                                while.
+                                  1
+                                  [unused]
+                                    seq > @
+                                      (((unsupported)).apply (3))
+                                while.
+                                  1
+                                  [unused]
+                                    seq > @
+                                      seq
+                                        (xcond1).if
+                                          (((unsupported)).apply (4))
+                                        (((unsupported)).apply (5))
+                                (((unsupported)).apply (6))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("JUMP_FORWARD"))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("JUMP_ABSOLUTE"))
+                        xreturns.write (((unsupported)).apply ((xinstr)) ((xinstr)) (((((xdis).xget_instructions)).apply ((xf)))) ((((xinstr).xopname).eq "RETURN_VALUE")))
+                        bogusForceDataize.write ((((xself).xassertLessEqual)).apply ((((xlen)).apply ((xreturns)))) (6))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_elim_jump_after_return2.write
+                  [xself]
+                    memory > xreturns
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          [xcond1 xcond2]
+                            seq > @
+                              while.
+                                1
+                                [unused]
+                                  seq > @
+                                    (xcond1).if
+                                      (((unsupported)).apply (4))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("JUMP_FORWARD"))
+                        xreturns.write (((unsupported)).apply ((xinstr)) ((xinstr)) (((((xdis).xget_instructions)).apply ((xf)))) ((((xinstr).xopname).eq "JUMP_ABSOLUTE")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xreturns)))) (1))
+                        xreturns.write (((unsupported)).apply ((xinstr)) ((xinstr)) (((((xdis).xget_instructions)).apply ((xf)))) ((((xinstr).xopname).eq "RETURN_VALUE")))
+                        bogusForceDataize.write ((((xself).xassertLessEqual)).apply ((((xlen)).apply ((xreturns)))) (2))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_make_function_doesnt_bail.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            memory > xg
+                            seq > @
+                              seq
+                                xg.write
+                                  []
+                                    seq > @
+                                      (((unsupported)).apply)
+                                (((unsupported)).apply ((xg)))
+                        bogusForceDataize.write ((((xself).xassertNotInBytecode)).apply ((xf)) ("BINARY_ADD"))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_constant_folding.write
+                  [xself]
+                    memory > xexprs
+                    memory > xcode
+                    seq > @
+                      seq
+                        xexprs.write (((unsupported)).apply ("3 * -5") ("-3 * 5") ("2 * (3 * 4)") ("(2 * 3) * 4") ("(-1, 2, 3)") ("(1, -2, 3)") ("(1, 2, -3)") ("(1, 2, -3) * 6") ("lambda x: x in {(3 * -5) - (-1 - 6), (1, -2, 3) * 2, None}"))
+                        (((unsupported)).apply ((xe)) ((xexprs)))
+                          seq
+                            xcode.write (((xcompile)).apply ((xe)) ("") ("single"))
+                            (((unsupported)).apply ((xinstr)) (((((xdis).xget_instructions)).apply ((xcode)))))
+                              seq
+                                bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xinstr).xopname).xstartswith)).apply ("UNARY_"))))
+                                bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xinstr).xopname).xstartswith)).apply ("BINARY_"))))
+                                bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xinstr).xopname).xstartswith)).apply ("BUILD_"))))
+                            bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcode)))
+                xtest_in_literal_list.write
+                  [xself]
+                    memory > xcontaintest
+                    seq > @
+                      seq
+                        xcontaintest.write
+                          []
+                            seq > @
+                              (((unsupported)).apply ((((unsupported)).apply ((xx)) ((((unsupported)).apply ((xa)) ((xb)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcount_instr_recursively)).apply ((xcontaintest)) ("BUILD_LIST"))) (0))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xcontaintest)))
+                xtest_iterate_literal_list.write
+                  [xself]
+                    memory > xforloop
+                    seq > @
+                      seq
+                        xforloop.write
+                          []
+                            seq > @
+                              (((unsupported)).apply ((xx)) ((((unsupported)).apply ((xa)) ((xb)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcount_instr_recursively)).apply ((xforloop)) ("BUILD_LIST"))) (0))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xforloop)))
+                xtest_condition_with_binop_with_bools.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          []
+                            seq > @
+                              seq
+                                (TRUE.or FALSE).if
+                                  (((unsupported)).apply (1))
+                                (((unsupported)).apply (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xf)).apply)) (1))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_if_with_if_expression.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          [xx]
+                            seq > @
+                              seq
+                                ((xx).if TRUE FALSE).if
+                                  (((unsupported)).apply (TRUE))
+                                (((unsupported)).apply (FALSE))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xf)).apply (TRUE))))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+                xtest_trailing_nops.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write
+                          [xx]
+                            seq > @
+                              seq
+                                while.
+                                  1
+                                  [unused]
+                                    seq > @
+                                      (((unsupported)).apply (3))
+                                while.
+                                  1
+                                  [unused]
+                                    seq > @
+                                      (((unsupported)).apply (5))
+                                (((unsupported)).apply (6))
+                        bogusForceDataize.write ((((xself).xcheck_lnotab)).apply ((xf)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              xtest_bug_11510.write
+                [xself]
+                  memory > xf
+                  seq > @
+                    seq
+                      xf.write
+                        []
+                          seq > @
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xx)) ((xy)))) ((((unsupported)).apply (1) (1))))
+                              (((unsupported)).apply ((((unsupported)).apply ((xx)) ((xy)))))
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                        bogusForceDataize.write (((xf)).apply)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

@@ -1,0 +1,335 @@
+memory > xcm
+memory > xround
+memory > xBasicThreadTest
+memory > xValueError
+memory > xstr
+memory > xrange
+memory > xBarrier
+memory > xlock_tests
+memory > xrandom
+memory > xprint
+memory > xtss
+memory > xtime
+memory > xi
+memory > xsupport
+memory > xweakref
+memory > xunittest
+memory > x__name__
+memory > xOSError
+memory > xos
+[] > test_thread
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_forkinthread
+        memory > xtest_nt_and_posix_stack_size
+        memory > xNUMTASKS
+        memory > xsetUp
+        memory > xtask
+        memory > xPOLL_SLEEP
+        memory > xverbose_print
+        memory > x__init__
+        memory > xlocktype
+        memory > xthread
+        memory > xtearDown
+        memory > xtest_unraisable_exception
+        memory > x_print_mutex
+        memory > xNUMTRIPS
+        memory > xtest_starting_threads
+        memory > xtest_barrier
+        memory > xnewtask
+        memory > xtask2
+        memory > xenter
+        memory > xtest_stack_size
+        memory > xtest__count
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xNUMTASKS.write 10
+            xNUMTRIPS.write 3
+            xPOLL_SLEEP.write 0.010
+            x_print_mutex.write ((((xthread).xallocate_lock)).apply)
+            xverbose_print.write
+              [xarg]
+                seq > @
+                  seq
+                    unsupported
+                    ((xsupport).xverbose).if
+                      (((unsupported)).apply ((x_print_mutex)))
+                        bogusForceDataize.write (((xprint)).apply ((xarg)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              xsetUp.write
+                [xself]
+                  memory > xkey
+                  seq > @
+                    seq
+                      (((unsupported)).apply (((xself).xdone_mutex)) (((((xthread).xallocate_lock)).apply)))
+                      bogusForceDataize.write (((((xself).xdone_mutex).xacquire)).apply)
+                      (((unsupported)).apply (((xself).xrunning_mutex)) (((((xthread).xallocate_lock)).apply)))
+                      (((unsupported)).apply (((xself).xrandom_mutex)) (((((xthread).xallocate_lock)).apply)))
+                      (((unsupported)).apply (((xself).xcreated)) (0))
+                      (((unsupported)).apply (((xself).xrunning)) (0))
+                      (((unsupported)).apply (((xself).xnext_ident)) (0))
+                      xkey.write ((((xsupport).xthreading_setup)).apply)
+                      bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xsupport).xthreading_cleanup)) ((((unsupported)).apply ((xkey)))))
+            (((unsupported)).apply ((xBasicThreadTest)))
+              seq
+                xnewtask.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xrunning_mutex)))
+                        seq
+                          (((unsupported)).apply (((xself).xnext_ident)) (1))
+                          bogusForceDataize.write (((xverbose_print)).apply (("creating task %s".mod ((xself).xnext_ident))))
+                          bogusForceDataize.write ((((xthread).xstart_new_thread)).apply (((xself).xtask)) ((((unsupported)).apply (((xself).xnext_ident)))))
+                          (((unsupported)).apply (((xself).xcreated)) (1))
+                          (((unsupported)).apply (((xself).xrunning)) (1))
+                xtask.write
+                  [xself xident]
+                    memory > xdelay
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xrandom_mutex)))
+                          xdelay.write (((((xrandom).xrandom)).apply).div 10000.0)
+                        bogusForceDataize.write (((xverbose_print)).apply (("task %s will run for %sus".mod (((unsupported)).apply ((xident)) ((((xround)).apply (((xdelay).mul (((unsupported)).apply)))))))))
+                        bogusForceDataize.write ((((xtime).xsleep)).apply ((xdelay)))
+                        bogusForceDataize.write (((xverbose_print)).apply (("task %s done".mod (xident))))
+                        (((unsupported)).apply (((xself).xrunning_mutex)))
+                          seq
+                            (((unsupported)).apply (((xself).xrunning)) (1))
+                            ((((xself).xcreated).eq (xNUMTASKS)).and (((xself).xrunning).eq 0)).if
+                              bogusForceDataize.write (((((xself).xdone_mutex).xrelease)).apply)
+                xtest_starting_threads.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xsupport).xwait_threads_exit)).apply)))
+                        seq
+                          (((unsupported)).apply ((xi)) ((((xrange)).apply ((xNUMTASKS)))))
+                            bogusForceDataize.write ((((xself).xnewtask)).apply)
+                          bogusForceDataize.write (((xverbose_print)).apply ("waiting for tasks to complete..."))
+                          bogusForceDataize.write (((((xself).xdone_mutex).xacquire)).apply)
+                          bogusForceDataize.write (((xverbose_print)).apply ("all tasks done"))
+                xtest_stack_size.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xthread).xstack_size)).apply)) (0) ("initial stack size is not 0"))
+                        bogusForceDataize.write ((((xthread).xstack_size)).apply (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xthread).xstack_size)).apply)) (0) ("stack_size not reset to default"))
+                xtest_nt_and_posix_stack_size.write
+                  [xself]
+                    memory > xfail_msg
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xValueError)) (((xthread).xerror)))
+                          bogusForceDataize.write ((((xthread).xstack_size)).apply (4096))
+                          bogusForceDataize.write (((xverbose_print)).apply ("caught expected ValueError setting stack_size(4096)"))
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("platform does not support changing thread stack size"))
+                        xfail_msg.write "stack_size(%d) failed - should succeed"
+                        (((unsupported)).apply ((xtss)) ((((unsupported)).apply (262144) (1048576) (0))))
+                          seq
+                            bogusForceDataize.write ((((xthread).xstack_size)).apply ((xtss)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xthread).xstack_size)).apply)) ((xtss)) (((xfail_msg).mod (xtss))))
+                            bogusForceDataize.write (((xverbose_print)).apply (("successfully set stack_size(%d)".mod (xtss))))
+                        (((unsupported)).apply ((xtss)) ((((unsupported)).apply (262144) (1048576))))
+                          seq
+                            bogusForceDataize.write (((xverbose_print)).apply (("trying stack_size = (%d)".mod (xtss))))
+                            (((unsupported)).apply (((xself).xnext_ident)) (0))
+                            (((unsupported)).apply (((xself).xcreated)) (0))
+                            (((unsupported)).apply (((((xsupport).xwait_threads_exit)).apply)))
+                              seq
+                                (((unsupported)).apply ((xi)) ((((xrange)).apply ((xNUMTASKS)))))
+                                  bogusForceDataize.write ((((xself).xnewtask)).apply)
+                                bogusForceDataize.write (((xverbose_print)).apply ("waiting for all tasks to complete"))
+                                bogusForceDataize.write (((((xself).xdone_mutex).xacquire)).apply)
+                                bogusForceDataize.write (((xverbose_print)).apply ("all tasks done"))
+                        bogusForceDataize.write ((((xthread).xstack_size)).apply (0))
+                xtest__count.write
+                  [xself]
+                    memory > xstarted
+                    memory > xorig
+                    memory > xwr
+                    memory > xmut
+                    memory > xtask
+                    memory > xdone
+                    seq > @
+                      seq
+                        xorig.write ((((xthread).x_count)).apply)
+                        xmut.write ((((xthread).xallocate_lock)).apply)
+                        bogusForceDataize.write ((((xmut).xacquire)).apply)
+                        xstarted.write (((unsupported)).apply)
+                        xtask.write
+                          []
+                            seq > @
+                              seq
+                                bogusForceDataize.write ((((xstarted).xappend)).apply ("None: is there a None literal in the EO language?"))
+                                bogusForceDataize.write ((((xmut).xacquire)).apply)
+                                bogusForceDataize.write ((((xmut).xrelease)).apply)
+                        (((unsupported)).apply (((((xsupport).xwait_threads_exit)).apply)))
+                          seq
+                            bogusForceDataize.write ((((xthread).xstart_new_thread)).apply ((xtask)) ((((unsupported)).apply)))
+                            while.
+                              ((xstarted).not)
+                              [unused]
+                                seq > @
+                                  bogusForceDataize.write ((((xtime).xsleep)).apply ((xPOLL_SLEEP)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xthread).x_count)).apply)) (((xorig).sub 1)))
+                            bogusForceDataize.write ((((xmut).xrelease)).apply)
+                            xdone.write (((unsupported)).apply)
+                            xwr.write ((((xweakref).xref)).apply ((xtask)) ((((unsupported)).apply (((((xdone).xappend)).apply ("None: is there a None literal in the EO language?"))))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xtask)))))
+                            while.
+                              ((xdone).not)
+                              [unused]
+                                seq > @
+                                  bogusForceDataize.write ((((xtime).xsleep)).apply ((xPOLL_SLEEP)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xthread).x_count)).apply)) ((xorig)))
+                xtest_unraisable_exception.write
+                  [xself]
+                    memory > xtask
+                    memory > xstarted
+                    seq > @
+                      seq
+                        xtask.write
+                          []
+                            seq > @
+                              seq
+                                bogusForceDataize.write ((((xstarted).xrelease)).apply)
+                                (((unsupported)).apply ((((xValueError)).apply ("task failed"))))
+                        xstarted.write ((((xthread).xallocate_lock)).apply)
+                        (((unsupported)).apply (((((xsupport).xcatch_unraisable_exception)).apply)) ((xcm)))
+                          seq
+                            (((unsupported)).apply (((((xsupport).xwait_threads_exit)).apply)))
+                              seq
+                                bogusForceDataize.write ((((xstarted).xacquire)).apply)
+                                bogusForceDataize.write ((((xthread).xstart_new_thread)).apply ((xtask)) ((((unsupported)).apply)))
+                                bogusForceDataize.write ((((xstarted).xacquire)).apply)
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((((xcm).xunraisable).xexc_value)))) ("task failed"))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply ((((xcm).xunraisable).xobject)) ((xtask)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xunraisable).xerr_msg)) ("Exception ignored in thread started by"))
+                            bogusForceDataize.write ((((xself).xassertIsNotNone)).apply ((((xcm).xunraisable).xexc_traceback)))
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xnum_threads]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xnum_threads)) ((xnum_threads)))
+                        (((unsupported)).apply (((xself).xwaiting)) (0))
+                        (((unsupported)).apply (((xself).xcheckin_mutex)) (((((xthread).xallocate_lock)).apply)))
+                        (((unsupported)).apply (((xself).xcheckout_mutex)) (((((xthread).xallocate_lock)).apply)))
+                        bogusForceDataize.write (((((xself).xcheckout_mutex).xacquire)).apply)
+                xenter.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xcheckin_mutex).xacquire)).apply)
+                        (((unsupported)).apply (((xself).xwaiting)) ((((xself).xwaiting).sub 1)))
+                        (((xself).xwaiting).eq ((xself).xnum_threads)).if
+                          seq
+                            (((unsupported)).apply (((xself).xwaiting)) ((((xself).xnum_threads).sub 1)))
+                            bogusForceDataize.write (((((xself).xcheckout_mutex).xrelease)).apply)
+                            (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xcheckin_mutex).xrelease)).apply)
+                        bogusForceDataize.write (((((xself).xcheckout_mutex).xacquire)).apply)
+                        (((unsupported)).apply (((xself).xwaiting)) ((((xself).xwaiting).sub 1)))
+                        (((xself).xwaiting).eq 0).if
+                          seq
+                            bogusForceDataize.write (((((xself).xcheckin_mutex).xrelease)).apply)
+                            (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xcheckout_mutex).xrelease)).apply)
+            (((unsupported)).apply ((xBasicThreadTest)))
+              seq
+                xtest_barrier.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xsupport).xwait_threads_exit)).apply)))
+                        seq
+                          (((unsupported)).apply (((xself).xbar)) ((((xBarrier)).apply ((xNUMTASKS)))))
+                          (((unsupported)).apply (((xself).xrunning)) ((xNUMTASKS)))
+                          (((unsupported)).apply ((xi)) ((((xrange)).apply ((xNUMTASKS)))))
+                            bogusForceDataize.write ((((xthread).xstart_new_thread)).apply (((xself).xtask2)) ((((unsupported)).apply ((xi)))))
+                          bogusForceDataize.write (((xverbose_print)).apply ("waiting for tasks to end"))
+                          bogusForceDataize.write (((((xself).xdone_mutex).xacquire)).apply)
+                          bogusForceDataize.write (((xverbose_print)).apply ("tasks done"))
+                xtask2.write
+                  [xself xident]
+                    memory > xdelay
+                    memory > xfinished
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply ((xNUMTRIPS)))))
+                          seq
+                            ((xident).eq 0).if
+                              xdelay.write 0
+                              (((unsupported)).apply (((xself).xrandom_mutex)))
+                                xdelay.write (((((xrandom).xrandom)).apply).div 10000.0)
+                            bogusForceDataize.write (((xverbose_print)).apply (("task %s will run for %sus".mod (((unsupported)).apply ((xident)) ((((xround)).apply (((xdelay).mul (((unsupported)).apply)))))))))
+                            bogusForceDataize.write ((((xtime).xsleep)).apply ((xdelay)))
+                            bogusForceDataize.write (((xverbose_print)).apply (("task %s entering %s".mod (((unsupported)).apply ((xident)) ((xi))))))
+                            bogusForceDataize.write (((((xself).xbar).xenter)).apply)
+                            bogusForceDataize.write (((xverbose_print)).apply (("task %s leaving barrier".mod (xident))))
+                        (((unsupported)).apply (((xself).xrunning_mutex)))
+                          seq
+                            (((unsupported)).apply (((xself).xrunning)) (1))
+                            xfinished.write (((xself).xrunning).eq 0)
+                        (xfinished).if
+                          bogusForceDataize.write (((((xself).xdone_mutex).xrelease)).apply)
+            (((unsupported)).apply (((xlock_tests).xLockTests)))
+              xlocktype.write ((xthread).xallocate_lock)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xread_fd)) (((xself).xwrite_fd)))) (((((xos).xpipe)).apply)))
+                xtest_forkinthread.write
+                  [xself]
+                    memory > xthread1
+                    memory > xstatus
+                    seq > @
+                      (((unsupported)).apply)
+                        xstatus.write "not set"
+                        xthread1.write
+                          []
+                            memory > xpid
+                            seq > @
+                              seq
+                                (((unsupported)).apply)
+                                xpid.write ((((xos).xfork)).apply)
+                                ((xpid).eq 0).if
+                                  (((unsupported)).apply)
+                                    seq
+                                      bogusForceDataize.write ((((xos).xclose)).apply (((xself).xread_fd)))
+                                      bogusForceDataize.write ((((xos).xwrite)).apply (((xself).xwrite_fd)) ("OK"))
+                                    bogusForceDataize.write ((((xos).x_exit)).apply (0))
+                                  seq
+                                    bogusForceDataize.write ((((xos).xclose)).apply (((xself).xwrite_fd)))
+                                    (((unsupported)).apply ((((unsupported)).apply ((xpid)) ((xstatus)))) (((((xos).xwaitpid)).apply ((xpid)) (0))))
+                        (((unsupported)).apply (((((xsupport).xwait_threads_exit)).apply)))
+                          seq
+                            bogusForceDataize.write ((((xthread).xstart_new_thread)).apply ((xthread1)) ((((unsupported)).apply)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xos).xread)).apply (((xself).xread_fd)) (2))) ("OK") ("Unable to fork() in thread"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xstatus)) (0))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xOSError)))
+                          bogusForceDataize.write ((((xos).xclose)).apply (((xself).xread_fd)))
+                        (((unsupported)).apply ((xOSError)))
+                          bogusForceDataize.write ((((xos).xclose)).apply (((xself).xwrite_fd)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

@@ -1,0 +1,265 @@
+memory > xrun_unittest
+memory > xINT_MAX
+memory > xBadFile
+memory > xINT_MIN
+memory > xopen
+memory > xprint
+memory > xrepr
+memory > xunittest
+memory > xAttributeError2
+memory > xAttributeError
+memory > xValueError
+memory > ximport_module
+memory > x_testcapi
+memory > xverbose
+memory > xProcess
+memory > xOverflowError
+memory > xstruct
+memory > xsys
+memory > xTestFcntl
+memory > xunlink
+memory > xTESTFN
+memory > xos
+memory > xBlockingIOError
+memory > xTypeError
+memory > x__name__
+[] > test_fcntl
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xfileno
+        memory > xtest_fcntl_64_bit
+        memory > xtest_fcntl_bad_file_overflow
+        memory > xtry_lockf_on_other_process_fail
+        memory > xtest_main
+        memory > xtest_flock
+        memory > xtest_fcntl_file_descriptor
+        memory > xfcntl
+        memory > xtest_lockf_share
+        memory > xlockdata
+        memory > xtest_lockf_exclusive
+        memory > xtearDown
+        memory > xsetUp
+        memory > xget_lockdata
+        memory > xtry_lockf_on_other_process
+        memory > xtest_flock_overflow
+        memory > xtest_fcntl_bad_file
+        memory > xtest_fcntl_fileno
+        memory > x__init__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xfcntl.write (((ximport_module)).apply ("fcntl"))
+            xget_lockdata.write
+              []
+                memory > xlockdata
+                memory > xoff_t
+                memory > xpid_t
+                memory > xstart_len
+                seq > @
+                  seq
+                    (((unsupported)).apply ((xAttributeError2)))
+                      unsupported
+                      xstart_len.write "ll"
+                      xstart_len.write "qq"
+                    ((((((xsys).xplatform).xstartswith)).apply ((((unsupported)).apply ("netbsd") ("freebsd") ("openbsd")))).or (((xsys).xplatform).eq "darwin")).if
+                      seq
+                        (((((xstruct).xcalcsize)).apply ("l")).eq 8).if
+                          seq
+                            xoff_t.write "l"
+                            xpid_t.write "i"
+                          seq
+                            xoff_t.write "lxxxx"
+                            xpid_t.write "l"
+                        xlockdata.write ((((xstruct).xpack)).apply (((((xoff_t).add (xoff_t)).add (xpid_t)).add "hh")) (0) (0) (0) (((xfcntl).xF_WRLCK)) (0))
+                      (((((xsys).xplatform).xstartswith)).apply ("gnukfreebsd")).if
+                        xlockdata.write ((((xstruct).xpack)).apply ("qqihhi") (0) (0) (0) (((xfcntl).xF_WRLCK)) (0) (0))
+                        (((unsupported)).apply (((xsys).xplatform)) ((((unsupported)).apply ("hp-uxB") ("unixware7")))).if
+                          xlockdata.write ((((xstruct).xpack)).apply ("hhlllii") (((xfcntl).xF_WRLCK)) (0) (0) (0) (0) (0) (0))
+                          xlockdata.write ((((xstruct).xpack)).apply ((("hh".add (xstart_len)).add "hh")) (((xfcntl).xF_WRLCK)) (0) (0) (0) (0) (0))
+                    (xlockdata).if
+                      (xverbose).if
+                        bogusForceDataize.write (((xprint)).apply ("struct.pack: ") ((((xrepr)).apply ((xlockdata)))))
+                    (((unsupported)).apply ((xlockdata)))
+            xlockdata.write (((xget_lockdata)).apply)
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xfn]
+                    seq > @
+                      (((unsupported)).apply (((xself).xfn)) ((xfn)))
+                xfileno.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xfn)))
+            xtry_lockf_on_other_process_fail.write
+              [xfname xcmd]
+                memory > xf
+                seq > @
+                  seq
+                    xf.write (((xopen)).apply ((xfname)) ("wb+"))
+                    (((unsupported)).apply ((xBlockingIOError)))
+                      bogusForceDataize.write ((((xfcntl).xlockf)).apply ((xf)) ((xcmd)))
+                      bogusForceDataize.write ((((xf).xclose)).apply)
+            xtry_lockf_on_other_process.write
+              [xfname xcmd]
+                memory > xf
+                seq > @
+                  seq
+                    xf.write (((xopen)).apply ((xfname)) ("wb+"))
+                    bogusForceDataize.write ((((xfcntl).xlockf)).apply ((xf)) ((xcmd)))
+                    bogusForceDataize.write ((((xfcntl).xlockf)).apply ((xf)) (((xfcntl).xLOCK_UN)))
+                    bogusForceDataize.write ((((xf).xclose)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xf)) ("None: is there a None literal in the EO language?"))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((xself).xf).and ((((xself).xf).xclosed).not)).if
+                          bogusForceDataize.write (((((xself).xf).xclose)).apply)
+                        bogusForceDataize.write (((xunlink)).apply ((xTESTFN)))
+                xtest_fcntl_fileno.write
+                  [xself]
+                    memory > xrv
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xf)) ((((xopen)).apply ((xTESTFN)) ("wb"))))
+                        xrv.write ((((xfcntl).xfcntl)).apply ((((((xself).xf).xfileno)).apply)) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("Status from fcntl with O_NONBLOCK: ") ((xrv)))
+                        xrv.write ((((xfcntl).xfcntl)).apply ((((((xself).xf).xfileno)).apply)) (((xfcntl).xF_SETLKW)) ((xlockdata)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("String from fcntl with F_SETLKW: ") ((((xrepr)).apply ((xrv)))))
+                        bogusForceDataize.write (((((xself).xf).xclose)).apply)
+                xtest_fcntl_file_descriptor.write
+                  [xself]
+                    memory > xrv
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xf)) ((((xopen)).apply ((xTESTFN)) ("wb"))))
+                        xrv.write ((((xfcntl).xfcntl)).apply (((xself).xf)) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("Status from fcntl with O_NONBLOCK: ") ((xrv)))
+                        xrv.write ((((xfcntl).xfcntl)).apply (((xself).xf)) (((xfcntl).xF_SETLKW)) ((xlockdata)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("String from fcntl with F_SETLKW: ") ((((xrepr)).apply ((xrv)))))
+                        bogusForceDataize.write (((((xself).xf).xclose)).apply)
+                xtest_fcntl_bad_file.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply ((1.neg)) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply ((((xBadFile)).apply ((1.neg)))) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply ("spam") (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply ((((xBadFile)).apply ("spam"))) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                xtest_fcntl_bad_file_overflow.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOverflowError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply (((xINT_MAX).add 1)) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOverflowError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply ((((xBadFile)).apply (((xINT_MAX).add 1)))) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOverflowError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply (((xINT_MIN).sub 1)) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOverflowError)))))
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply ((((xBadFile)).apply (((xINT_MIN).sub 1)))) (((xfcntl).xF_SETFL)) (((xos).xO_NONBLOCK)))
+                xtest_fcntl_64_bit.write
+                  [xself]
+                    memory > xflags
+                    memory > xfd
+                    memory > xcmd
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xAttributeError)))
+                          seq
+                            xcmd.write ((xfcntl).xF_NOTIFY)
+                            xflags.write ((xfcntl).xDN_MULTISHOT)
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("F_NOTIFY or DN_MULTISHOT unavailable"))
+                        xfd.write ((((xos).xopen)).apply ((((((xos).xpath).xdirname)).apply ((((((xos).xpath).xabspath)).apply ((xTESTFN)))))) (((xos).xO_RDONLY)))
+                        (((unsupported)).apply)
+                          bogusForceDataize.write ((((xfcntl).xfcntl)).apply ((xfd)) ((xcmd)) ((xflags)))
+                          bogusForceDataize.write ((((xos).xclose)).apply ((xfd)))
+                xtest_flock.write
+                  [xself]
+                    memory > xfileno
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xf)) ((((xopen)).apply ((xTESTFN)) ("wb+"))))
+                        xfileno.write (((((xself).xf).xfileno)).apply)
+                        bogusForceDataize.write ((((xfcntl).xflock)).apply ((xfileno)) (((xfcntl).xLOCK_SH)))
+                        bogusForceDataize.write ((((xfcntl).xflock)).apply ((xfileno)) (((xfcntl).xLOCK_UN)))
+                        bogusForceDataize.write ((((xfcntl).xflock)).apply (((xself).xf)) ((((xfcntl).xLOCK_SH).or ((xfcntl).xLOCK_NB))))
+                        bogusForceDataize.write ((((xfcntl).xflock)).apply (((xself).xf)) (((xfcntl).xLOCK_UN)))
+                        bogusForceDataize.write ((((xfcntl).xflock)).apply ((xfileno)) (((xfcntl).xLOCK_EX)))
+                        bogusForceDataize.write ((((xfcntl).xflock)).apply ((xfileno)) (((xfcntl).xLOCK_UN)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xfcntl).xflock)) ((1.neg)) (((xfcntl).xLOCK_SH)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) (((xfcntl).xflock)) ("spam") (((xfcntl).xLOCK_SH)))
+                xtest_lockf_exclusive.write
+                  [xself]
+                    memory > xp
+                    memory > xcmd
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xf)) ((((xopen)).apply ((xTESTFN)) ("wb+"))))
+                        xcmd.write (((xfcntl).xLOCK_EX).or ((xfcntl).xLOCK_NB))
+                        bogusForceDataize.write ((((xfcntl).xlockf)).apply (((xself).xf)) ((xcmd)))
+                        xp.write (((unsupported)).apply ((xProcess)) ((xtry_lockf_on_other_process_fail)) ((((unsupported)).apply ((xTESTFN)) ((xcmd)))))
+                        bogusForceDataize.write ((((xp).xstart)).apply)
+                        bogusForceDataize.write ((((xp).xjoin)).apply)
+                        bogusForceDataize.write ((((xfcntl).xlockf)).apply (((xself).xf)) (((xfcntl).xLOCK_UN)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp).xexitcode)) (0))
+                xtest_lockf_share.write
+                  [xself]
+                    memory > xp
+                    memory > xcmd
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xf)) ((((xopen)).apply ((xTESTFN)) ("wb+"))))
+                        xcmd.write (((xfcntl).xLOCK_SH).or ((xfcntl).xLOCK_NB))
+                        bogusForceDataize.write ((((xfcntl).xlockf)).apply (((xself).xf)) ((xcmd)))
+                        xp.write (((unsupported)).apply ((xProcess)) ((xtry_lockf_on_other_process)) ((((unsupported)).apply ((xTESTFN)) ((xcmd)))))
+                        bogusForceDataize.write ((((xp).xstart)).apply)
+                        bogusForceDataize.write ((((xp).xjoin)).apply)
+                        bogusForceDataize.write ((((xfcntl).xlockf)).apply (((xself).xf)) (((xfcntl).xLOCK_UN)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp).xexitcode)) (0))
+                xtest_flock_overflow.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xOverflowError)) (((xfcntl).xflock)) ((((x_testcapi).xINT_MAX).add 1)) (((xfcntl).xLOCK_SH)))
+            xtest_main.write
+              []
+                seq > @
+                  bogusForceDataize.write (((xrun_unittest)).apply ((xTestFcntl)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write (((xtest_main)).apply)

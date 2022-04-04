@@ -1,0 +1,180 @@
+memory > xk
+memory > xcopy
+memory > xc
+memory > xlist
+memory > xstr
+memory > xentry_list
+memory > xtest
+memory > xopen
+memory > xm
+memory > xDeprecationWarning
+memory > xos
+memory > xv
+memory > xe
+memory > xunittest
+memory > xenv
+memory > xdict
+memory > x__name__
+memory > xmcf
+memory > xtc
+memory > xentry
+memory > xmailcap
+[] > test_mailcap
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_test
+        memory > xtest_listmailcapfiles
+        memory > xMAILCAPDICT
+        memory > xMAILCAPFILE
+        memory > xtest_mock_getcaps
+        memory > xtest_system_mailcap
+        memory > xtest_findmatch
+        memory > xtest_readmailcapfile
+        memory > xtest_subst
+        memory > xMAILCAPDICT_DEPRECATED
+        memory > x_run_cases
+        memory > xtest_lookup
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xMAILCAPFILE.write (((((xtest).xsupport).xfindfile)).apply ("mailcap.txt"))
+            xMAILCAPDICT.write (((unsupported)).apply ("application/x-movie") ((((unsupported)).apply ((((unsupported)).apply ("compose") ("moviemaker %s") ("x11-bitmap") ("\"/usr/lib/Zmail/bitmaps/movie.xbm\"") ("description") ("\"Movie\"") ("view") ("movieplayer %s") ("lineno") (4))))) ("application/*") ((((unsupported)).apply ((((unsupported)).apply ("copiousoutput") ("") ("view") ((((unsupported)).apply)) ("lineno") (5))))) ("audio/basic") ((((unsupported)).apply ((((unsupported)).apply ("edit") ("audiocompose %s") ("compose") ("audiocompose %s") ("description") ("\"An audio fragment\"") ("view") ("showaudio %s") ("lineno") (6))))) ("video/mpeg") ((((unsupported)).apply ((((unsupported)).apply ("view") ("mpeg_play %s") ("lineno") (13))))) ("application/postscript") ((((unsupported)).apply ((((unsupported)).apply ("needsterminal") ("") ("view") ("ps-to-terminal %s") ("lineno") (1))) ((((unsupported)).apply ("compose") ("idraw %s") ("view") ("ps-to-terminal %s") ("lineno") (2))))) ("application/x-dvi") ((((unsupported)).apply ((((unsupported)).apply ("view") ("xdvi %s") ("lineno") (3))))) ("message/external-body") ((((unsupported)).apply ((((unsupported)).apply ("composetyped") ("extcompose %s") ("description") ("\"A reference to data stored in an external location\"") ("needsterminal") ("") ("view") ("showexternal %s %{access-type} %{name} %{site}     %{directory} %{mode} %{server}") ("lineno") (10))))) ("text/richtext") ((((unsupported)).apply ((((unsupported)).apply ("test") ("test \"`echo     %{charset} | tr '[A-Z]' '[a-z]'`\"  = iso-8859-8") ("copiousoutput") ("") ("view") ("shownonascii iso-8859-8 -e richtext -p %s") ("lineno") (11))))) ("image/x-xwindowdump") ((((unsupported)).apply ((((unsupported)).apply ("view") ("display %s") ("lineno") (9))))) ("audio/*") ((((unsupported)).apply ((((unsupported)).apply ("view") ("/usr/local/bin/showaudio %t") ("lineno") (7))))) ("video/*") ((((unsupported)).apply ((((unsupported)).apply ("view") ("animate %s") ("lineno") (12))))) ("application/frame") ((((unsupported)).apply ((((unsupported)).apply ("print") ("\"cat %s | lp\"") ("view") ("showframe %s") ("lineno") (0))))) ("image/rgb") ((((unsupported)).apply ((((unsupported)).apply ("view") ("display %s") ("lineno") (8))))))
+            xMAILCAPDICT_DEPRECATED.write ((((xcopy).xdeepcopy)).apply ((xMAILCAPDICT)))
+            (((unsupported)).apply ((xentry_list)) (((((xMAILCAPDICT_DEPRECATED).xvalues)).apply)))
+              (((unsupported)).apply ((xentry)) ((xentry_list)))
+                bogusForceDataize.write ((((xentry).xpop)).apply ("lineno"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_listmailcapfiles.write
+                  [xself]
+                    memory > xenv_mailcaps
+                    memory > xmcfiles
+                    seq > @
+                      seq
+                        xmcfiles.write ((((xmailcap).xlistmailcapfiles)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xmcfiles)) ((xlist)))
+                        (((unsupported)).apply ((xm)) ((xmcfiles)))
+                          bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xm)) ((xstr)))
+                        (((unsupported)).apply ((((((xtest).xsupport).xEnvironmentVarGuard)).apply)) ((xenv)))
+                          (((unsupported)).apply ("MAILCAPS") ((xenv))).if
+                            xenv_mailcaps.write ((((((unsupported)).apply ((xenv)) ("MAILCAPS")).xsplit)).apply (((xos).xpathsep)))
+                            seq
+                              xenv_mailcaps.write (((unsupported)).apply ("/testdir1/.mailcap") ("/testdir2/mailcap"))
+                              (((unsupported)).apply ((((unsupported)).apply ((xenv)) ("MAILCAPS"))) ((((((xos).xpathsep).xjoin)).apply ((xenv_mailcaps)))))
+                              xmcfiles.write ((((xmailcap).xlistmailcapfiles)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xenv_mailcaps)) ((xmcfiles)))
+                xtest_readmailcapfile.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xopen)).apply ((xMAILCAPFILE)) ("r"))) ((xmcf)))
+                          (((unsupported)).apply (((((xself).xassertWarns)).apply ((xDeprecationWarning)))))
+                            xd.write ((((xmailcap).xreadmailcapfile)).apply ((xmcf)))
+                        bogusForceDataize.write ((((xself).xassertDictEqual)).apply ((xd)) ((xMAILCAPDICT_DEPRECATED)))
+                xtest_lookup.write
+                  [xself]
+                    memory > xactual
+                    memory > xexpected
+                    memory > xkey
+                    seq > @
+                      seq
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("view") ("animate %s") ("lineno") (12))) ((((unsupported)).apply ("view") ("mpeg_play %s") ("lineno") (13))))
+                        xactual.write ((((xmailcap).xlookup)).apply ((xMAILCAPDICT)) ("video/mpeg"))
+                        bogusForceDataize.write ((((xself).xassertListEqual)).apply ((xexpected)) ((xactual)))
+                        xkey.write "compose"
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("edit") ("audiocompose %s") ("compose") ("audiocompose %s") ("description") ("\"An audio fragment\"") ("view") ("showaudio %s") ("lineno") (6))))
+                        xactual.write ((((xmailcap).xlookup)).apply ((xMAILCAPDICT)) ("audio/basic") ((xkey)))
+                        bogusForceDataize.write ((((xself).xassertListEqual)).apply ((xexpected)) ((xactual)))
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("view") ("mpeg_play %s"))) ((((unsupported)).apply ("view") ("animate %s"))))
+                        xactual.write ((((xmailcap).xlookup)).apply ((xMAILCAPDICT_DEPRECATED)) ("video/mpeg"))
+                        bogusForceDataize.write ((((xself).xassertListEqual)).apply ((xexpected)) ((xactual)))
+                xtest_subst.write
+                  [xself]
+                    memory > xplist
+                    memory > xtest_cases
+                    seq > @
+                      seq
+                        xplist.write (((unsupported)).apply ("id=1") ("number=2") ("total=3"))
+                        xtest_cases.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ("") ("audio/*") ("foo.txt"))) (""))) ((((unsupported)).apply ((((unsupported)).apply ("echo foo") ("audio/*") ("foo.txt"))) ("echo foo"))) ((((unsupported)).apply ((((unsupported)).apply ("echo %s") ("audio/*") ("foo.txt"))) ("echo foo.txt"))) ((((unsupported)).apply ((((unsupported)).apply ("echo %t") ("audio/*") ("foo.txt"))) ("echo audio/*"))) ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply)) ("audio/*") ("foo.txt"))) ("echo %t"))) ((((unsupported)).apply ((((unsupported)).apply ("echo foo") ("audio/*") ("foo.txt") ((xplist)))) ("echo foo"))) ((((unsupported)).apply ((((unsupported)).apply ("echo %{total}") ("audio/*") ("foo.txt") ((xplist)))) ("echo 3"))))
+                        (((unsupported)).apply ((xtc)) ((xtest_cases)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmailcap).xsubst)).apply ((((unsupported)).apply ((((unsupported)).apply ((xtc)) (0))))))) ((((unsupported)).apply ((xtc)) (1))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_mock_getcaps.write
+                  [xself]
+                    memory > xcaps
+                    seq > @
+                      (((unsupported)).apply ((((((xtest).xsupport).xEnvironmentVarGuard)).apply)) ((xenv)))
+                        seq
+                          (((unsupported)).apply ((((unsupported)).apply ((xenv)) ("MAILCAPS"))) ((xMAILCAPFILE)))
+                          xcaps.write ((((xmailcap).xgetcaps)).apply)
+                          bogusForceDataize.write ((((xself).xassertDictEqual)).apply ((xcaps)) ((xMAILCAPDICT)))
+                xtest_system_mailcap.write
+                  [xself]
+                    memory > xcaps
+                    memory > xexistingmcfiles
+                    memory > xmailcapfiles
+                    seq > @
+                      seq
+                        xcaps.write ((((xmailcap).xgetcaps)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xcaps)) ((xdict)))
+                        xmailcapfiles.write ((((xmailcap).xlistmailcapfiles)).apply)
+                        xexistingmcfiles.write (((unsupported)).apply ((xmcf)) ((xmcf)) ((xmailcapfiles)) ((((((xos).xpath).xexists)).apply ((xmcf)))))
+                        (xexistingmcfiles).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xk)) ((xv)))) (((((xcaps).xitems)).apply)))
+                            seq
+                              bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xk)) ((xstr)))
+                              bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xv)) ((xlist)))
+                              (((unsupported)).apply ((xe)) ((xv)))
+                                bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xe)) ((xdict)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply)) ((xcaps)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_findmatch.write
+                  [xself]
+                    memory > xaudio_basic_entry
+                    memory > xc
+                    memory > xvideo_entry
+                    memory > xaudio_entry
+                    memory > xmessage_entry
+                    memory > xfname
+                    memory > xplist
+                    memory > xcases
+                    seq > @
+                      seq
+                        xc.write (xMAILCAPDICT)
+                        xfname.write "foo.txt"
+                        xplist.write (((unsupported)).apply ("access-type=default") ("name=john") ("site=python.org") ("directory=/tmp") ("mode=foo") ("server=bar"))
+                        xaudio_basic_entry.write (((unsupported)).apply ("edit") ("audiocompose %s") ("compose") ("audiocompose %s") ("description") ("\"An audio fragment\"") ("view") ("showaudio %s") ("lineno") (6))
+                        xaudio_entry.write (((unsupported)).apply ("view") ("/usr/local/bin/showaudio %t") ("lineno") (7))
+                        xvideo_entry.write (((unsupported)).apply ("view") ("animate %s") ("lineno") (12))
+                        xmessage_entry.write (((unsupported)).apply ("composetyped") ("extcompose %s") ("description") ("\"A reference to data stored in an external location\"") ("needsterminal") ("") ("view") ("showexternal %s %{access-type} %{name} %{site}     %{directory} %{mode} %{server}") ("lineno") (10))
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply)) ("video/mpeg"))) ((((unsupported)).apply)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("foo/bar"))) ((((unsupported)).apply)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("video/mpeg"))) ((((unsupported)).apply)) ((((unsupported)).apply ("animate /dev/null") ((xvideo_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("audio/basic") ("edit"))) ((((unsupported)).apply)) ((((unsupported)).apply ("audiocompose /dev/null") ((xaudio_basic_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("audio/basic") ("compose"))) ((((unsupported)).apply)) ((((unsupported)).apply ("audiocompose /dev/null") ((xaudio_basic_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("audio/basic") ("description"))) ((((unsupported)).apply)) ((((unsupported)).apply ("\"An audio fragment\"") ((xaudio_basic_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("audio/basic") ("foobar"))) ((((unsupported)).apply)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("video/*"))) ((((unsupported)).apply ("filename") ((xfname)))) ((((unsupported)).apply (("animate %s".mod (xfname))) ((xvideo_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("audio/basic") ("compose"))) ((((unsupported)).apply ("filename") ((xfname)))) ((((unsupported)).apply (("audiocompose %s".mod (xfname))) ((xaudio_basic_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("audio/basic"))) ((((unsupported)).apply ("key") ("description") ("filename") ((xfname)))) ((((unsupported)).apply ("\"An audio fragment\"") ((xaudio_basic_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("audio/*"))) ((((unsupported)).apply ("filename") ((xfname)))) ((((unsupported)).apply ("/usr/local/bin/showaudio audio/*") ((xaudio_entry)))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("message/external-body"))) ((((unsupported)).apply ("plist") ((xplist)))) ((((unsupported)).apply ("showexternal /dev/null default john python.org     /tmp foo bar") ((xmessage_entry)))))))
+                        bogusForceDataize.write ((((xself).x_run_cases)).apply ((xcases)))
+                xtest_test.write
+                  [xself]
+                    memory > xcaps
+                    memory > xcases
+                    seq > @
+                      (((unsupported)).apply)
+                        xcaps.write (((unsupported)).apply ("test/pass") ((((unsupported)).apply ((((unsupported)).apply ("test") ("test 1 -eq 1"))))) ("test/fail") ((((unsupported)).apply ((((unsupported)).apply ("test") ("test 1 -eq 0"))))))
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xcaps)) ("test/pass") ("test"))) ((((unsupported)).apply)) ((((unsupported)).apply ("test 1 -eq 1") ((((unsupported)).apply ("test") ("test 1 -eq 1"))))))) ((((unsupported)).apply ((((unsupported)).apply ((xcaps)) ("test/fail") ("test"))) ((((unsupported)).apply)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))))
+                        bogusForceDataize.write ((((xself).x_run_cases)).apply ((xcases)))
+                x_run_cases.write
+                  [xself xcases]
+                    seq > @
+                      (((unsupported)).apply ((xc)) ((xcases)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmailcap).xfindmatch)).apply ((((unsupported)).apply ((((unsupported)).apply ((xc)) (0))))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) (1))))))) ((((unsupported)).apply ((xc)) (2))))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

@@ -1,0 +1,122 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > my-list
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xmyLi
+      seq > @
+        stdout "my-list\n"
+        write.
+          xmyLi
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > e1
+                cage > e5
+                cage > lhs1
+                cage > xc
+                cage > e4
+                cage > e3
+                cage > xlst
+                cage > e2
+                cage > xco
+                seq > @
+                  stdout "xmyLi\n"
+                  write.
+                    xc
+                    []
+                      newUID.apply 0 > xid
+                      [] > apply
+                        [stackUp] > @
+                          [] > result
+                            cage > xhead
+                            cage > xtail2
+                            xc > xclass
+                            seq > initFields
+                              xhead.write "None: is there a None literal in the EO language?"
+                              xtail2.write "None: is there a None literal in the EO language?"
+                          seq (result.initFields) (stackUp.forward (return result)) > @
+                  write.
+                    xco
+                    []
+                      [xheadNotCopied xtailNotCopied] > apply
+                        [stackUp] > @
+                          cage > tmp
+                          xheadNotCopied' > xhead
+                          xtailNotCopied' > xtail
+                          cage > xo
+                          cage > e0
+                          seq > @
+                            stdout "xco\n"
+                            xhead.<
+                            xtail.<
+                            tmp.write (goto ((((xc)).apply).@))
+                            (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                            (e0).write (tmp.result)
+                            mkCopy (e0) > tmp1
+                            (xo).write (tmp1.copy)
+                            mkCopy (xhead) > tmp2
+                            ((xo).xhead).write (tmp2.copy)
+                            mkCopy (xtail) > tmp3
+                            ((xo).xtail).write (tmp3.copy)
+                            stackUp.forward (return (xo))
+                            123
+                  (xlst).write ("None: is there a None literal in the EO language?")
+                  tmp.write (goto ((((xco)).apply (1) ((xlst))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e1).write (tmp.result)
+                  mkCopy (e1) > tmp4
+                  (xlst).write (tmp4.copy)
+                  tmp.write (goto ((((xco)).apply (2) ((xlst))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e2).write (tmp.result)
+                  mkCopy (e2) > tmp5
+                  (xlst).write (tmp5.copy)
+                  mkCopy (xlst.xtail) > tmp6
+                  (e3).write (tmp6.copy)
+                  mkCopy (e3.xhead) > tmp7
+                  (e4).write (tmp7.copy)
+                  (lhs1).write (1)
+                  [] > tmp8
+                    memory > dddata
+                    dddata.write (((e4).eq (lhs1))) > @
+                  (e5).write (tmp8.dddata)
+                  stackUp.forward (return (e5))
+                  123
+        tmp.write (goto ((((xmyLi)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

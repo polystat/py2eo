@@ -1,0 +1,134 @@
+memory > xfalse
+memory > xsmtplib
+memory > xsocket
+memory > xException
+memory > xsupport
+memory > xe
+memory > xunittest
+memory > x__name__
+[] > test_smtpnet
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck_ssl_verifiy
+        memory > xremotePort
+        memory > xtest_connect_using_sslcontext_verified
+        memory > xtestServer
+        memory > xssl
+        memory > xtest_connect
+        memory > xtest_connect_using_sslcontext
+        memory > xtest_connect_starttls
+        memory > xtest_connect_default_port
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xssl.write ((((xsupport).ximport_module)).apply ("ssl"))
+            bogusForceDataize.write ((((xsupport).xrequires)).apply ("network"))
+            xcheck_ssl_verifiy.write
+              [xhost xport]
+                memory > xcontext
+                memory > xsock
+                seq > @
+                  seq
+                    xcontext.write ((((xssl).xcreate_default_context)).apply)
+                    (((unsupported)).apply (((((xsocket).xcreate_connection)).apply ((((unsupported)).apply ((xhost)) ((xport)))))) ((xsock)))
+                      (((unsupported)).apply ((xException)))
+                        xsock.write (((unsupported)).apply (((xcontext).xwrap_socket)) ((xsock)) ((xhost)))
+                        (((unsupported)).apply ((xfalse)))
+                        seq
+                          bogusForceDataize.write ((((xsock).xclose)).apply)
+                          (((unsupported)).apply (TRUE))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtestServer.write "smtp.gmail.com"
+                xremotePort.write 587
+                xtest_connect_starttls.write
+                  [xself]
+                    memory > xserver
+                    memory > xcontext
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).xget_attribute)).apply ((xsmtplib)) ("SMTP_SSL"))
+                        xcontext.write ((((xssl).xSSLContext)).apply (((xssl).xPROTOCOL_TLS_CLIENT)))
+                        (((unsupported)).apply (((xcontext).xcheck_hostname)) ((xfalse)))
+                        (((unsupported)).apply (((xcontext).xverify_mode)) (((xssl).xCERT_NONE)))
+                        (((unsupported)).apply (((((xsupport).xtransient_internet)).apply (((xself).xtestServer)))))
+                          seq
+                            xserver.write ((((xsmtplib).xSMTP)).apply (((xself).xtestServer)) (((xself).xremotePort)))
+                            (((unsupported)).apply (((xsmtplib).xSMTPException)))
+                              (((unsupported)).apply (((xserver).xstarttls)) ((xcontext)))
+                              ((((unsupported)).apply (((xe).xargs)) (0)).eq "STARTTLS extension not supported by server.").if
+                                bogusForceDataize.write ((((xunittest).xskip)).apply ((((unsupported)).apply (((xe).xargs)) (0))))
+                                (((unsupported)).apply)
+                            bogusForceDataize.write ((((xserver).xehlo)).apply)
+                            bogusForceDataize.write ((((xserver).xquit)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtestServer.write "smtp.gmail.com"
+                xremotePort.write 465
+                xtest_connect.write
+                  [xself]
+                    memory > xserver
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).xget_attribute)).apply ((xsmtplib)) ("SMTP_SSL"))
+                        (((unsupported)).apply (((((xsupport).xtransient_internet)).apply (((xself).xtestServer)))))
+                          seq
+                            xserver.write ((((xsmtplib).xSMTP_SSL)).apply (((xself).xtestServer)) (((xself).xremotePort)))
+                            bogusForceDataize.write ((((xserver).xehlo)).apply)
+                            bogusForceDataize.write ((((xserver).xquit)).apply)
+                xtest_connect_default_port.write
+                  [xself]
+                    memory > xserver
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).xget_attribute)).apply ((xsmtplib)) ("SMTP_SSL"))
+                        (((unsupported)).apply (((((xsupport).xtransient_internet)).apply (((xself).xtestServer)))))
+                          seq
+                            xserver.write ((((xsmtplib).xSMTP_SSL)).apply (((xself).xtestServer)))
+                            bogusForceDataize.write ((((xserver).xehlo)).apply)
+                            bogusForceDataize.write ((((xserver).xquit)).apply)
+                xtest_connect_using_sslcontext.write
+                  [xself]
+                    memory > xserver
+                    memory > xcontext
+                    seq > @
+                      seq
+                        xcontext.write ((((xssl).xSSLContext)).apply (((xssl).xPROTOCOL_TLS_CLIENT)))
+                        (((unsupported)).apply (((xcontext).xcheck_hostname)) ((xfalse)))
+                        (((unsupported)).apply (((xcontext).xverify_mode)) (((xssl).xCERT_NONE)))
+                        bogusForceDataize.write ((((xsupport).xget_attribute)).apply ((xsmtplib)) ("SMTP_SSL"))
+                        (((unsupported)).apply (((((xsupport).xtransient_internet)).apply (((xself).xtestServer)))))
+                          seq
+                            xserver.write (((unsupported)).apply (((xsmtplib).xSMTP_SSL)) (((xself).xtestServer)) (((xself).xremotePort)) ((xcontext)))
+                            bogusForceDataize.write ((((xserver).xehlo)).apply)
+                            bogusForceDataize.write ((((xserver).xquit)).apply)
+                xtest_connect_using_sslcontext_verified.write
+                  [xself]
+                    memory > xserver
+                    memory > xcan_verify
+                    memory > xcontext
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xsupport).xtransient_internet)).apply (((xself).xtestServer)))))
+                          seq
+                            xcan_verify.write (((xcheck_ssl_verifiy)).apply (((xself).xtestServer)) (((xself).xremotePort)))
+                            ((xcan_verify).not).if
+                              bogusForceDataize.write ((((xself).xskipTest)).apply ("SSL certificate can't be verified"))
+                        bogusForceDataize.write ((((xsupport).xget_attribute)).apply ((xsmtplib)) ("SMTP_SSL"))
+                        xcontext.write ((((xssl).xcreate_default_context)).apply)
+                        (((unsupported)).apply (((((xsupport).xtransient_internet)).apply (((xself).xtestServer)))))
+                          seq
+                            xserver.write (((unsupported)).apply (((xsmtplib).xSMTP_SSL)) (((xself).xtestServer)) (((xself).xremotePort)) ((xcontext)))
+                            bogusForceDataize.write ((((xserver).xehlo)).apply)
+                            bogusForceDataize.write ((((xserver).xquit)).apply)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

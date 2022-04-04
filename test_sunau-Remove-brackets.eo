@@ -1,0 +1,153 @@
+memory > xsunau
+memory > xSunauTest
+memory > xbyteswap
+memory > xbytes
+memory > xunittest
+memory > xEOFError
+memory > x__name__
+memory > xaudiotests
+memory > xio
+memory > xstruct
+memory > xsys
+[] > test_sunau
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_read_too_small_header
+        memory > xtest_read_wrong_encoding
+        memory > xframerate
+        memory > xsndfilename
+        memory > xnframes
+        memory > xtest_read_wrong_number_of_channels
+        memory > xmodule
+        memory > xsndfilenframes
+        memory > xsampwidth
+        memory > xcompname
+        memory > xtest_read_too_large_header
+        memory > xframes
+        memory > xtest_read_bad_magic_number
+        memory > xcomptype
+        memory > xnchannels
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xaudiotests).xAudioWriteTests)) (((xaudiotests).xAudioTestsWithSourceFile)))
+              xmodule.write (xsunau)
+            (((unsupported)).apply ((xSunauTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm8.au"
+                xsndfilenframes.write 3307
+                xnchannels.write 2
+                xsampwidth.write 1
+                xframerate.write 11025
+                xnframes.write 48
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+            (((unsupported)).apply ((xSunauTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm16.au"
+                xsndfilenframes.write 3307
+                xnchannels.write 2
+                xsampwidth.write 2
+                xframerate.write 11025
+                xnframes.write 48
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+            (((unsupported)).apply ((xSunauTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm24.au"
+                xsndfilenframes.write 3307
+                xnchannels.write 2
+                xsampwidth.write 3
+                xframerate.write 11025
+                xnframes.write 48
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+            (((unsupported)).apply ((xSunauTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-pcm32.au"
+                xsndfilenframes.write 3307
+                xnchannels.write 2
+                xsampwidth.write 4
+                xframerate.write 11025
+                xnframes.write 48
+                xcomptype.write "NONE"
+                xcompname.write "not compressed"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+            (((unsupported)).apply ((xSunauTest)) (((xunittest).xTestCase)))
+              seq
+                xsndfilename.write "pluck-ulaw.au"
+                xsndfilenframes.write 3307
+                xnchannels.write 2
+                xsampwidth.write 2
+                xframerate.write 11025
+                xnframes.write 48
+                xcomptype.write "ULAW"
+                xcompname.write "CCITT G.711 u-law"
+                xframes.write ((((xbytes).xfromhex)).apply ((((unsupported)).apply)))
+                (((xsys).xbyteorder).neq "big").if
+                  xframes.write (((xbyteswap)).apply ((xframes)) (2))
+            (((unsupported)).apply (((xaudiotests).xAudioMiscTests)) (((xunittest).xTestCase)))
+              xmodule.write (xsunau)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_read_bad_magic_number.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write "SPA"
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xEOFError)))))
+                          bogusForceDataize.write ((((xsunau).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                        xb.write "SPAM"
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xsunau).xError)) ("bad magic number"))))
+                          bogusForceDataize.write ((((xsunau).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_too_small_header.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write ((((xstruct).xpack)).apply (">LLLLL") (((xsunau).xAUDIO_FILE_MAGIC)) (20) (0) (((xsunau).xAUDIO_FILE_ENCODING_LINEAR_8)) (11025))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xsunau).xError)) ("header size too small"))))
+                          bogusForceDataize.write ((((xsunau).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_too_large_header.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write ((((xstruct).xpack)).apply (">LLLLLL") (((xsunau).xAUDIO_FILE_MAGIC)) (124) (0) (((xsunau).xAUDIO_FILE_ENCODING_LINEAR_8)) (11025) (1))
+                        (((unsupported)).apply ((xb)) (("0".mul 100)))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xsunau).xError)) ("header size ridiculously large"))))
+                          bogusForceDataize.write ((((xsunau).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_wrong_encoding.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write ((((xstruct).xpack)).apply (">LLLLLL") (((xsunau).xAUDIO_FILE_MAGIC)) (24) (0) (0) (11025) (1))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xsunau).xError)) ("encoding not (yet) supported"))))
+                          bogusForceDataize.write ((((xsunau).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+                xtest_read_wrong_number_of_channels.write
+                  [xself]
+                    memory > xb
+                    seq > @
+                      seq
+                        xb.write ((((xstruct).xpack)).apply (">LLLLLL") (((xsunau).xAUDIO_FILE_MAGIC)) (24) (0) (((xsunau).xAUDIO_FILE_ENCODING_LINEAR_8)) (11025) (0))
+                        (((unsupported)).apply (((((xself).xassertRaisesRegex)).apply (((xsunau).xError)) ("bad # of channels"))))
+                          bogusForceDataize.write ((((xsunau).xopen)).apply (((((xio).xBytesIO)).apply ((xb)))))
+            ((x__name__).eq "__main__").if
+              unsupported

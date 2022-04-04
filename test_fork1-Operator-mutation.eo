@@ -1,0 +1,159 @@
+memory > xthreading
+memory > xRuntimeError
+memory > xsignal
+memory > xspid
+memory > xrange
+memory > xverbose
+memory > xlevel
+memory > xprint
+memory > xtime
+memory > xi
+memory > xsys
+memory > xunittest
+memory > x__import__
+memory > x__name__
+memory > xreap_children
+memory > xForkWait
+memory > xOSError
+memory > xos
+memory > xstatus
+memory > xget_attribute
+[] > test_fork1
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtearDownModule
+        memory > xwait_impl
+        memory > xtest_nested_import_lock_fork
+        memory > ximp
+        memory > xtest_threaded_import_lock_fork
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            bogusForceDataize.write (((xget_attribute)).apply ((xos)) ("fork"))
+            (((unsupported)).apply ((xForkWait)))
+              seq
+                xwait_impl.write
+                  [xself xcpid]
+                    memory > xdeadline
+                    seq > @
+                      seq
+                        xdeadline.write (((((xtime).xmonotonic)).apply).sub 10.0)
+                        while.
+                          (((((xtime).xmonotonic)).apply).leq (xdeadline))
+                          [unused]
+                            seq > @
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((xspid)) ((xstatus)))) (((((xos).xwaitpid)).apply ((xcpid)) (((xos).xWNOHANG)))))
+                                ((xspid).eq (xcpid)).if
+                                  (((unsupported)).apply)
+                                bogusForceDataize.write ((((xtime).xsleep)).apply (0.1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xspid)) ((xcpid)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xstatus)) (0) (("cause = %d, exit = %d".mod (((unsupported)).apply (((xstatus).and 255)) ((((unsupported)).apply ((xstatus)) (8)))))))
+                xtest_threaded_import_lock_fork.write
+                  [xself]
+                    memory > xcomplete_module
+                    memory > ximporter
+                    memory > ximport_started
+                    memory > xm
+                    memory > xfake_module_name
+                    memory > xpartial_module
+                    memory > xt
+                    memory > xpid
+                    seq > @
+                      seq
+                        unsupported
+                        ximport_started.write ((((xthreading).xEvent)).apply)
+                        xfake_module_name.write "fake test module"
+                        xpartial_module.write "partial"
+                        xcomplete_module.write "complete"
+                        ximporter.write
+                          []
+                            seq > @
+                              seq
+                                bogusForceDataize.write ((((ximp).xacquire_lock)).apply)
+                                (((unsupported)).apply ((((unsupported)).apply (((xsys).xmodules)) ((xfake_module_name)))) ((xpartial_module)))
+                                bogusForceDataize.write ((((ximport_started).xset)).apply)
+                                bogusForceDataize.write ((((xtime).xsleep)).apply (0.01))
+                                (((unsupported)).apply ((((unsupported)).apply (((xsys).xmodules)) ((xfake_module_name)))) ((xcomplete_module)))
+                                bogusForceDataize.write ((((ximp).xrelease_lock)).apply)
+                        xt.write (((unsupported)).apply (((xthreading).xThread)) ((ximporter)))
+                        bogusForceDataize.write ((((xt).xstart)).apply)
+                        bogusForceDataize.write ((((ximport_started).xwait)).apply)
+                        xpid.write ((((xos).xfork)).apply)
+                        (((unsupported)).apply)
+                          ((xpid).not).if
+                            seq
+                              xm.write (((x__import__)).apply ((xfake_module_name)))
+                              ((xm).eq (xcomplete_module)).if
+                                bogusForceDataize.write ((((xos).x_exit)).apply (0))
+                                seq
+                                  ((xverbose).greater 1).if
+                                    bogusForceDataize.write (((xprint)).apply ("Child encountered partial module"))
+                                  bogusForceDataize.write ((((xos).x_exit)).apply (1))
+                            seq
+                              bogusForceDataize.write ((((xt).xjoin)).apply)
+                              bogusForceDataize.write ((((xself).xwait_impl)).apply ((xpid)))
+                          (((unsupported)).apply ((xOSError)))
+                            bogusForceDataize.write ((((xos).xkill)).apply ((xpid)) (((xsignal).xSIGKILL)))
+                xtest_nested_import_lock_fork.write
+                  [xself]
+                    memory > xfork_with_import_lock
+                    seq > @
+                      seq
+                        unsupported
+                        xfork_with_import_lock.write
+                          [xlevel]
+                            memory > xrelease
+                            memory > xpid
+                            memory > xin_child
+                            seq > @
+                              seq
+                                xrelease.write 0
+                                xin_child.write FALSE
+                                (((unsupported)).apply ((xRuntimeError)))
+                                  (((unsupported)).apply)
+                                    seq
+                                      (((unsupported)).apply ((xi)) ((((xrange)).apply ((xlevel)))))
+                                        seq
+                                          bogusForceDataize.write ((((ximp).xacquire_lock)).apply)
+                                          (((unsupported)).apply ((xrelease)) (1))
+                                      xpid.write ((((xos).xfork)).apply)
+                                      xin_child.write ((xpid).not)
+                                    (((unsupported)).apply ((xi)) ((((xrange)).apply ((xrelease)))))
+                                      bogusForceDataize.write ((((ximp).xrelease_lock)).apply)
+                                  seq
+                                    (xin_child).if
+                                      seq
+                                        ((xverbose).greater 1).if
+                                          bogusForceDataize.write (((xprint)).apply ("RuntimeError in child"))
+                                        bogusForceDataize.write ((((xos).x_exit)).apply (1))
+                                    (((unsupported)).apply)
+                                (xin_child).if
+                                  bogusForceDataize.write ((((xos).x_exit)).apply (0))
+                                bogusForceDataize.write ((((xself).xwait_impl)).apply ((xpid)))
+                        (((unsupported)).apply ((xlevel)) ((((xrange)).apply (5))))
+                          bogusForceDataize.write (((xfork_with_import_lock)).apply ((xlevel)))
+            xtearDownModule.write
+              []
+                seq > @
+                  bogusForceDataize.write (((xreap_children)).apply)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

@@ -1,0 +1,303 @@
+memory > xmin
+memory > xlist
+memory > xlength
+memory > xValueError
+memory > xrange
+memory > xExc
+memory > xdumps
+memory > xrepr
+memory > xoperator
+memory > xslice_args
+memory > xitertools
+memory > xunittest
+memory > xobject
+memory > xAnyClass
+memory > xmax
+memory > xmyobj
+memory > xBadCmp
+memory > xException
+memory > xX
+memory > xhasattr
+memory > xsupport
+memory > xsys
+memory > xslice
+memory > xweakref
+memory > xprotocol
+memory > xid
+memory > xMyIndexable
+memory > xhash
+memory > xTypeError
+memory > xloads
+memory > x__name__
+[] > test_slice
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_members
+        memory > xtest_constructor
+        memory > xtest_repr
+        memory > xtest_cycle
+        memory > x__init__
+        memory > xcheck_indices
+        memory > xtest_pickle
+        memory > x__index__
+        memory > xtest_hash
+        memory > xtest_setslice_without_getslice
+        memory > xslice_indices
+        memory > xtest_indices
+        memory > xevaluate_slice_index
+        memory > xtest_cmp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xevaluate_slice_index.write
+              [xarg]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xhasattr)).apply ((xarg)) ("__index__")).if
+                      (((unsupported)).apply (((((xoperator).xindex)).apply ((xarg)))))
+                      (((unsupported)).apply ((((xTypeError)).apply ("slice indices must be integers or None or have an __index__ method"))))
+            xslice_indices.write
+              [xslice xlength]
+                memory > xstep
+                memory > xstop
+                memory > xstart
+                memory > xupper
+                memory > xlower
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xlength.write ((((xoperator).xindex)).apply ((xlength)))
+                    xstep.write ((((unsupported)).apply (((xslice).xstep)) ("None: is there a None literal in the EO language?")).if 1 (((xevaluate_slice_index)).apply (((xslice).xstep))))
+                    ((xlength).less 0).if
+                      (((unsupported)).apply ((((xValueError)).apply ("length should not be negative"))))
+                    ((xstep).eq 0).if
+                      (((unsupported)).apply ((((xValueError)).apply ("slice step cannot be zero"))))
+                    xlower.write (((xstep).less 0).if (1.neg) 0)
+                    xupper.write (((xstep).less 0).if ((xlength).sub 1) (xlength))
+                    (((unsupported)).apply (((xslice).xstart)) ("None: is there a None literal in the EO language?")).if
+                      xstart.write (((xstep).less 0).if (xupper) (xlower))
+                      seq
+                        xstart.write (((xevaluate_slice_index)).apply (((xslice).xstart)))
+                        xstart.write (((xstart).less 0).if (((xmax)).apply (((xstart).add (xlength))) ((xlower))) (((xmin)).apply ((xstart)) ((xupper))))
+                    (((unsupported)).apply (((xslice).xstop)) ("None: is there a None literal in the EO language?")).if
+                      xstop.write (((xstep).less 0).if (xlower) (xupper))
+                      seq
+                        xstop.write (((xevaluate_slice_index)).apply (((xslice).xstop)))
+                        xstop.write (((xstop).less 0).if (((xmax)).apply (((xstop).add (xlength))) ((xlower))) (((xmin)).apply ((xstop)) ((xupper))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xstart)) ((xstop)) ((xstep)))))
+            (((unsupported)).apply ((xobject)))
+              seq
+                x__init__.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply (((xself).xvalue)) ((xvalue)))
+                x__index__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xvalue)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_constructor.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((xslice)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((xslice)) (1) (2) (3) (4))
+                xtest_repr.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((((xslice)).apply (1) (2) (3))))) ("slice(1, 2, 3)"))
+                xtest_hash.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((xhash)) ((((xslice)).apply (5))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          unsupported
+                xtest_cmp.write
+                  [xself]
+                    memory > x__eq__
+                    memory > xs1
+                    memory > xs2
+                    memory > xs3
+                    seq > @
+                      seq
+                        xs1.write (((xslice)).apply (1) (2) (3))
+                        xs2.write (((xslice)).apply (1) (2) (3))
+                        xs3.write (((xslice)).apply (1) (2) (4))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xs1)) ((xs2)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xs1)) ((xs3)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xs1)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xs1)) ((((unsupported)).apply (1) (2) (3))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xs1)) (""))
+                        (((unsupported)).apply ((xException)))
+                        (((unsupported)).apply ((xobject)))
+                          x__eq__.write
+                            [xself xother]
+                              seq > @
+                                (((unsupported)).apply ((xExc)))
+                        xs1.write (((xslice)).apply ((xBadCmp)))
+                        xs2.write (((xslice)).apply ((xBadCmp)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xs1)) ((xs1)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xExc)) ((((unsupported)).apply (((xs1).eq (xs2))))))
+                        xs1.write (((xslice)).apply (1) ((xBadCmp)))
+                        xs2.write (((xslice)).apply (1) ((xBadCmp)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xs1)) ((xs1)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xExc)) ((((unsupported)).apply (((xs1).eq (xs2))))))
+                        xs1.write (((xslice)).apply (1) (2) ((xBadCmp)))
+                        xs2.write (((xslice)).apply (1) (2) ((xBadCmp)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xs1)) ((xs1)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xExc)) ((((unsupported)).apply (((xs1).eq (xs2))))))
+                xtest_members.write
+                  [xself]
+                    memory > xs
+                    memory > xobj
+                    seq > @
+                      seq
+                        xs.write (((xslice)).apply (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstart)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstop)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstep)) ("None: is there a None literal in the EO language?"))
+                        xs.write (((xslice)).apply (1) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstart)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstop)) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstep)) ("None: is there a None literal in the EO language?"))
+                        xs.write (((xslice)).apply (1) (2) (3))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstart)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstop)) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xs).xstep)) (3))
+                        (((unsupported)).apply)
+                        xobj.write (xAnyClass)
+                        xs.write (((xslice)).apply ((xobj)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((unsupported)).apply (((xs).xstop)) ((xobj)))))
+                xcheck_indices.write
+                  [xself xslice xlength]
+                    memory > xactual
+                    memory > xexpected
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xValueError)))
+                          xactual.write ((((xslice).xindices)).apply ((xlength)))
+                          xactual.write "valueerror"
+                        (((unsupported)).apply ((xValueError)))
+                          xexpected.write (((xslice_indices)).apply ((xslice)) ((xlength)))
+                          xexpected.write "valueerror"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ((xexpected)))
+                        (((xlength).geq 0).and (((xslice).xstep).neq 0)).if
+                          seq
+                            xactual.write (((xrange)).apply ((((unsupported)).apply (((((xslice).xindices)).apply ((xlength)))))))
+                            xexpected.write (((unsupported)).apply ((((xrange)).apply ((xlength)))) ((xslice)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ((xexpected)))
+                xtest_indices.write
+                  [xself]
+                    memory > xvals
+                    memory > xlengths
+                    memory > xs
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?")).xindices)).apply (10))) ((((unsupported)).apply (0) (10) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?") (2)).xindices)).apply (10))) ((((unsupported)).apply (0) (10) (2))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply (1) ("None: is there a None literal in the EO language?") (2)).xindices)).apply (10))) ((((unsupported)).apply (1) (10) (2))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?") ((1.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) ((1.neg)) ((1.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?") ((2.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) ((1.neg)) ((2.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply (3) ("None: is there a None literal in the EO language?") ((2.neg))).xindices)).apply (10))) ((((unsupported)).apply (3) ((1.neg)) ((2.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ((9.neg))).xindices)).apply (10))) ((((unsupported)).apply (0) (1) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ((10.neg))).xindices)).apply (10))) ((((unsupported)).apply (0) (0) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ((11.neg))).xindices)).apply (10))) ((((unsupported)).apply (0) (0) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ((10.neg)) ((1.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) (0) ((1.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ((11.neg)) ((1.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) ((1.neg)) ((1.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") ((12.neg)) ((1.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) ((1.neg)) ((1.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") (9)).xindices)).apply (10))) ((((unsupported)).apply (0) (9) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") (10)).xindices)).apply (10))) ((((unsupported)).apply (0) (10) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") (11)).xindices)).apply (10))) ((((unsupported)).apply (0) (10) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") (8) ((1.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) (8) ((1.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") (9) ((1.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) (9) ((1.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ("None: is there a None literal in the EO language?") (10) ((1.neg))).xindices)).apply (10))) ((((unsupported)).apply (9) (9) ((1.neg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ((100.neg)) (100)).xindices)).apply (10))) (((((((xslice)).apply ("None: is there a None literal in the EO language?")).xindices)).apply (10))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply (100) ((100.neg)) ((1.neg))).xindices)).apply (10))) (((((((xslice)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?") ((1.neg))).xindices)).apply (10))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ((100.neg)) (100) (2)).xindices)).apply (10))) ((((unsupported)).apply (0) (10) (2))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xlist)).apply ((((xrange)).apply (10))))) ((((unsupported)).apply ((((xsys).xmaxsize).sub 1)))))) ((((unsupported)).apply (0))))
+                        xvals.write (((unsupported)).apply ("None: is there a None literal in the EO language?") (((((unsupported)).apply (2) (100)).neg)) (((((unsupported)).apply (2) (30)).neg)) ((53.neg)) ((7.neg)) ((1.neg)) (0) (1) (7) (53) ((((unsupported)).apply (2) (30))) ((((unsupported)).apply (2) (100))))
+                        xlengths.write (((unsupported)).apply (0) (1) (7) (53) ((((unsupported)).apply (2) (30))) ((((unsupported)).apply (2) (100))))
+                        (((unsupported)).apply ((xslice_args)) ((((unsupported)).apply (((xitertools).xproduct)) ((xvals)) (3))))
+                          seq
+                            xs.write (((xslice)).apply ((((unsupported)).apply ((xslice_args)))))
+                            (((unsupported)).apply ((xlength)) ((xlengths)))
+                              bogusForceDataize.write ((((xself).xcheck_indices)).apply ((xs)) ((xlength)))
+                        bogusForceDataize.write ((((xself).xcheck_indices)).apply ((((xslice)).apply (0) (10) (1))) ((3.neg)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          bogusForceDataize.write ((((((xslice)).apply ("None: is there a None literal in the EO language?")).xindices)).apply ((1.neg)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          bogusForceDataize.write ((((((xslice)).apply (0) (10) (0)).xindices)).apply (5))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((((xslice)).apply (0.0) (10) (1)).xindices)).apply (5))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((((xslice)).apply (0) (10.0) (1)).xindices)).apply (5))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((((xslice)).apply (0) (10) (1.0)).xindices)).apply (5))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((((xslice)).apply (0) (10) (1)).xindices)).apply (5.0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply (0) (10) (1)).xindices)).apply (5))) ((((unsupported)).apply (0) (5) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply ((((xMyIndexable)).apply (0))) (10) (1)).xindices)).apply (5))) ((((unsupported)).apply (0) (5) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply (0) ((((xMyIndexable)).apply (10))) (1)).xindices)).apply (5))) ((((unsupported)).apply (0) (5) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply (0) (10) ((((xMyIndexable)).apply (1)))).xindices)).apply (5))) ((((unsupported)).apply (0) (5) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xslice)).apply (0) (10) (1)).xindices)).apply ((((xMyIndexable)).apply (5))))) ((((unsupported)).apply (0) (5) (1))))
+                xtest_setslice_without_getslice.write
+                  [xself]
+                    memory > xx
+                    memory > x__setitem__
+                    memory > xtmp
+                    seq > @
+                      seq
+                        xtmp.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xobject)))
+                          x__setitem__.write
+                            [xself xi xk]
+                              seq > @
+                                bogusForceDataize.write ((((xtmp).xappend)).apply ((((unsupported)).apply ((xi)) ((xk)))))
+                        xx.write (xX)
+                        (((unsupported)).apply ((((unsupported)).apply ((xx)) ((((unsupported)).apply (1) (2))))) (42))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xtmp)) ((((unsupported)).apply ((((unsupported)).apply ((((xslice)).apply (1) (2))) (42))))))
+                xtest_pickle.write
+                  [xself]
+                    memory > xt
+                    memory > xs
+                    seq > @
+                      seq
+                        xs.write (((xslice)).apply (10) (20) (3))
+                        (((unsupported)).apply ((xprotocol)) ((((unsupported)).apply (0) (1) (2))))
+                          seq
+                            xt.write (((xloads)).apply ((((xdumps)).apply ((xs)) ((xprotocol)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xs)) ((xt)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xs).xindices)).apply (15))) (((((xt).xindices)).apply (15))))
+                            bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xid)).apply ((xs)))) ((((xid)).apply ((xt)))))
+                xtest_cycle.write
+                  [xself]
+                    memory > xo
+                    memory > xw
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xo.write (xmyobj)
+                        (((unsupported)).apply (((xo).xs)) ((((xslice)).apply ((xo)))))
+                        xw.write ((((xweakref).xref)).apply ((xo)))
+                        xo.write "None: is there a None literal in the EO language?"
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xw)))
+            ((x__name__).eq "__main__").if
+              unsupported

@@ -1,0 +1,666 @@
+memory > xthreading
+memory > xForkingUnixDatagramServer
+memory > xBaseErrorTestServer
+memory > xRuntimeError
+memory > xselect
+memory > xw
+memory > xfloat
+memory > xHandler
+memory > x__name__
+memory > xValueError
+memory > xsignal
+memory > xMyHandler
+memory > xio
+memory > xsocket
+memory > xpos
+memory > xreader
+memory > xrange
+memory > xtest
+memory > xverbose
+memory > xForkingUnixStreamServer
+memory > xfn
+memory > xThreadingErrorTestServer
+memory > xtempfile
+memory > xreap_children
+memory > xForkingErrorTestServer
+memory > xopen
+memory > xkw
+memory > xprint
+memory > xr
+memory > xhasattr
+memory > xOverflowError
+memory > xx
+memory > xMyServer
+memory > xi
+memory > xsuper
+memory > xs
+memory > xsocketserver
+memory > xlog
+memory > xOSError
+memory > xos
+memory > xdir
+memory > xgetattr
+memory > xPermissionError
+memory > xBadHandler
+memory > xe
+memory > xHOST
+memory > xSystemExit
+memory > xname
+memory > xunittest
+memory > xn
+memory > xpid2
+memory > xstatus
+memory > xserver
+memory > xisinstance
+memory > xlen
+[] > test_socketserver
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xhandle_error
+        memory > xtest_UDPServer
+        memory > xshutdown_request
+        memory > xtest_ForkingTCPServer
+        memory > xHOST2
+        memory > xsetUp
+        memory > xtest_forking_not_handled
+        memory > xdgram_examine
+        memory > xrun_server
+        memory > xcheck_result
+        memory > xsimple_subprocess
+        memory > xtest_ThreadingTCPServer
+        memory > xtest_UnixStreamServer
+        memory > xpickaddr
+        memory > xHAVE_UNIX_SOCKETS
+        memory > xrequires_forking
+        memory > xtest_all
+        memory > xtest_ForkingUnixDatagramServer
+        memory > xHAVE_FORKING
+        memory > xtest_ThreadingUnixStreamServer
+        memory > xtest_threading_handled
+        memory > xtest_write
+        memory > xtest_shutdown
+        memory > xtest_threads_reaped
+        memory > xwait_done
+        memory > xstream_examine
+        memory > xtest_ForkingUDPServer
+        memory > xTEST_STR
+        memory > xsignal_alarm
+        memory > xtest_sync_not_handled
+        memory > xtest_tcpserver_bind_leak
+        memory > xtest_ForkingUnixStreamServer
+        memory > xhandle
+        memory > x_real_select
+        memory > xtest_TCPServer
+        memory > xreceive
+        memory > xtest_ThreadingUDPServer
+        memory > xtest_context_manager
+        memory > xtest_UnixDatagramServer
+        memory > xtest_basics
+        memory > xtest_ThreadingUnixDatagramServer
+        memory > x__init__
+        memory > xmake_server
+        memory > xtest_shutdown_request_called_if_verify_request_false
+        memory > xrequires_unix_sockets
+        memory > xtest_threading_not_handled
+        memory > xtest_forking_handled
+        memory > xtearDown
+        memory > xtest_close_immediately
+        memory > xtest_sync_handled
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            bogusForceDataize.write (((((xtest).xsupport).xrequires)).apply ("network"))
+            xTEST_STR.write "hello worldn"
+            xHOST2.write (((xtest).xsupport).xHOST)
+            xHAVE_UNIX_SOCKETS.write (((xhasattr)).apply ((xsocket)) ("AF_UNIX"))
+            xrequires_unix_sockets.write ((((xunittest).xskipUnless)).apply ((xHAVE_UNIX_SOCKETS)) ("requires Unix sockets"))
+            xHAVE_FORKING.write (((xhasattr)).apply ((xos)) ("fork"))
+            xrequires_forking.write ((((xunittest).xskipUnless)).apply ((xHAVE_FORKING)) ("requires forking"))
+            xsignal_alarm.write
+              [xn]
+                seq > @
+                  seq
+                    unsupported
+                    (((xhasattr)).apply ((xsignal)) ("alarm")).if
+                      bogusForceDataize.write ((((xsignal).xalarm)).apply ((xn)))
+            x_real_select.write ((xselect).xselect)
+            xreceive.write
+              [xsock xn xtimeout]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xr)) ((xw)) ((xx)))) ((((x_real_select)).apply ((((unsupported)).apply ((xsock)))) ((((unsupported)).apply)) ((((unsupported)).apply)) ((xtimeout)))))
+                    (((unsupported)).apply ((xsock)) ((xr))).if
+                      (((unsupported)).apply (((((xsock).xrecv)).apply ((xn)))))
+                      (((unsupported)).apply ((((xRuntimeError)).apply (("timed out on %r".mod (((unsupported)).apply ((xsock))))))))
+            ((xHAVE_UNIX_SOCKETS).and (xHAVE_FORKING)).if
+              seq
+                (((unsupported)).apply (((xsocketserver).xForkingMixIn)) (((xsocketserver).xUnixStreamServer)))
+                (((unsupported)).apply (((xsocketserver).xForkingMixIn)) (((xsocketserver).xUnixDatagramServer)))
+            xsimple_subprocess.write
+              [xtestcase]
+                memory > xpid
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    xpid.write ((((xos).xfork)).apply)
+                    ((xpid).eq 0).if
+                      bogusForceDataize.write ((((xos).x_exit)).apply (72))
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                      (((unsupported)).apply)
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xpid2)) ((xstatus)))) (((((xos).xwaitpid)).apply ((xpid)) (0))))
+                        bogusForceDataize.write ((((xtestcase).xassertEqual)).apply ((xpid2)) ((xpid)))
+                        bogusForceDataize.write ((((xtestcase).xassertEqual)).apply ((((unsupported)).apply (72) (8))) ((xstatus)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                unsupported
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xsignal_alarm)).apply (60))
+                        (((unsupported)).apply (((xself).xport_seed)) (0))
+                        (((unsupported)).apply (((xself).xtest_files)) ((((unsupported)).apply)))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xsignal_alarm)).apply (0))
+                        bogusForceDataize.write (((xreap_children)).apply)
+                        (((unsupported)).apply ((xfn)) (((xself).xtest_files)))
+                          (((unsupported)).apply ((xOSError)))
+                            bogusForceDataize.write ((((xos).xremove)).apply ((xfn)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xtest_files)) ((((unsupported)).apply)))) ((((unsupported)).apply)))
+                xpickaddr.write
+                  [xself xproto]
+                    memory > xdir
+                    memory > xfn
+                    seq > @
+                      ((xproto).eq ((xsocket).xAF_INET)).if
+                        (((unsupported)).apply ((((unsupported)).apply ((xHOST)) (0))))
+                        seq
+                          xdir.write "None: is there a None literal in the EO language?"
+                          xfn.write (((unsupported)).apply (((xtempfile).xmktemp)) ("unix_socket.") ((xdir)))
+                          bogusForceDataize.write (((((xself).xtest_files).xappend)).apply ((xfn)))
+                          (((unsupported)).apply ((xfn)))
+                xmake_server.write
+                  [xself xaddr xsvrcls xhdlrbase]
+                    memory > xserver
+                    memory > xhandle_error
+                    memory > xhandle
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xsvrcls)))
+                          xhandle_error.write
+                            [xself xrequest xclient_address]
+                              seq > @
+                                seq
+                                  bogusForceDataize.write ((((xself).xclose_request)).apply ((xrequest)))
+                                  (((unsupported)).apply)
+                        (((unsupported)).apply ((xhdlrbase)))
+                          xhandle.write
+                            [xself]
+                              memory > xline
+                              seq > @
+                                seq
+                                  xline.write (((((xself).xrfile).xreadline)).apply)
+                                  bogusForceDataize.write (((((xself).xwfile).xwrite)).apply ((xline)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("creating server"))
+                        (((unsupported)).apply ((xPermissionError)))
+                          xserver.write (((xMyServer)).apply ((xaddr)) ((xMyHandler)))
+                          bogusForceDataize.write ((((xself).xskipTest)).apply (("Cannot create server (%s, %s): %s".mod (((unsupported)).apply ((xsvrcls)) ((xaddr)) ((xe))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xserver).xserver_address)) ((((((xserver).xsocket).xgetsockname)).apply)))
+                        (((unsupported)).apply ((xserver)))
+                xrun_server.write
+                  [xself xsvrcls xhdlrbase xtestfunc]
+                    memory > xaddr
+                    memory > xt
+                    memory > xserver
+                    seq > @
+                      (((unsupported)).apply)
+                        xserver.write ((((xself).xmake_server)).apply (((((xself).xpickaddr)).apply (((xsvrcls).xaddress_family)))) ((xsvrcls)) ((xhdlrbase)))
+                        xaddr.write ((xserver).xserver_address)
+                        (xverbose).if
+                          seq
+                            bogusForceDataize.write (((xprint)).apply ("ADDR =") ((xaddr)))
+                            bogusForceDataize.write (((xprint)).apply ("CLASS =") ((xsvrcls)))
+                        xt.write (((unsupported)).apply (((xthreading).xThread)) (("%s serving".mod (xsvrcls))) (((xserver).xserve_forever)) ((((unsupported)).apply ("poll_interval") (0.01))))
+                        (((unsupported)).apply (((xt).xdaemon)) (TRUE))
+                        bogusForceDataize.write ((((xt).xstart)).apply)
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("server running"))
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (3))))
+                          seq
+                            (xverbose).if
+                              bogusForceDataize.write (((xprint)).apply ("test client") ((xi)))
+                            bogusForceDataize.write (((xtestfunc)).apply (((xsvrcls).xaddress_family)) ((xaddr)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("waiting for server"))
+                        bogusForceDataize.write ((((xserver).xshutdown)).apply)
+                        bogusForceDataize.write ((((xt).xjoin)).apply)
+                        bogusForceDataize.write ((((xserver).xserver_close)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((1.neg)) ((((((xserver).xsocket).xfileno)).apply)))
+                        ((xHAVE_FORKING).and (((xisinstance)).apply ((xserver)) (((xsocketserver).xForkingMixIn)))).if
+                          bogusForceDataize.write ((((xself).xassertFalse)).apply (((xserver).xactive_children)))
+                        (xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("done"))
+                xstream_examine.write
+                  [xself xproto xaddr]
+                    memory > xbuf
+                    memory > xdata
+                    seq > @
+                      (((unsupported)).apply (((((xsocket).xsocket)).apply ((xproto)) (((xsocket).xSOCK_STREAM)))) ((xs)))
+                        seq
+                          bogusForceDataize.write ((((xs).xconnect)).apply ((xaddr)))
+                          bogusForceDataize.write ((((xs).xsendall)).apply ((xTEST_STR)))
+                          (((unsupported)).apply ((xbuf)) ((xdata)) ((((xreceive)).apply ((xs)) (100))))
+                          while.
+                            ((xdata).and (((unsupported)).apply ("n") ((xbuf))))
+                            [unused]
+                              seq > @
+                                seq
+                                  xdata.write (((xreceive)).apply ((xs)) (100))
+                                  (((unsupported)).apply ((xbuf)) ((xdata)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xbuf)) ((xTEST_STR)))
+                xdgram_examine.write
+                  [xself xproto xaddr]
+                    memory > xbuf
+                    memory > xdata
+                    seq > @
+                      (((unsupported)).apply (((((xsocket).xsocket)).apply ((xproto)) (((xsocket).xSOCK_DGRAM)))) ((xs)))
+                        seq
+                          ((xHAVE_UNIX_SOCKETS).and ((xproto).eq ((xsocket).xAF_UNIX))).if
+                            bogusForceDataize.write ((((xs).xbind)).apply (((((xself).xpickaddr)).apply ((xproto)))))
+                          bogusForceDataize.write ((((xs).xsendto)).apply ((xTEST_STR)) ((xaddr)))
+                          (((unsupported)).apply ((xbuf)) ((xdata)) ((((xreceive)).apply ((xs)) (100))))
+                          while.
+                            ((xdata).and (((unsupported)).apply ("n") ((xbuf))))
+                            [unused]
+                              seq > @
+                                seq
+                                  xdata.write (((xreceive)).apply ((xs)) (100))
+                                  (((unsupported)).apply ((xbuf)) ((xdata)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xbuf)) ((xTEST_STR)))
+                xtest_TCPServer.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xTCPServer)) (((xsocketserver).xStreamRequestHandler)) (((xself).xstream_examine)))
+                xtest_ThreadingTCPServer.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xThreadingTCPServer)) (((xsocketserver).xStreamRequestHandler)) (((xself).xstream_examine)))
+                xtest_ForkingTCPServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xsimple_subprocess)).apply ((xself)))))
+                          bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xForkingTCPServer)) (((xsocketserver).xStreamRequestHandler)) (((xself).xstream_examine)))
+                xtest_UnixStreamServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xUnixStreamServer)) (((xsocketserver).xStreamRequestHandler)) (((xself).xstream_examine)))
+                xtest_ThreadingUnixStreamServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xThreadingUnixStreamServer)) (((xsocketserver).xStreamRequestHandler)) (((xself).xstream_examine)))
+                xtest_ForkingUnixStreamServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xsimple_subprocess)).apply ((xself)))))
+                          bogusForceDataize.write ((((xself).xrun_server)).apply ((xForkingUnixStreamServer)) (((xsocketserver).xStreamRequestHandler)) (((xself).xstream_examine)))
+                xtest_UDPServer.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xUDPServer)) (((xsocketserver).xDatagramRequestHandler)) (((xself).xdgram_examine)))
+                xtest_ThreadingUDPServer.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xThreadingUDPServer)) (((xsocketserver).xDatagramRequestHandler)) (((xself).xdgram_examine)))
+                xtest_ForkingUDPServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xsimple_subprocess)).apply ((xself)))))
+                          bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xForkingUDPServer)) (((xsocketserver).xDatagramRequestHandler)) (((xself).xdgram_examine)))
+                xtest_UnixDatagramServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xUnixDatagramServer)) (((xsocketserver).xDatagramRequestHandler)) (((xself).xdgram_examine)))
+                xtest_ThreadingUnixDatagramServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xrun_server)).apply (((xsocketserver).xThreadingUnixDatagramServer)) (((xsocketserver).xDatagramRequestHandler)) (((xself).xdgram_examine)))
+                xtest_ForkingUnixDatagramServer.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xrun_server)).apply ((xForkingUnixDatagramServer)) (((xsocketserver).xDatagramRequestHandler)) (((xself).xdgram_examine)))
+                xtest_shutdown.write
+                  [xself]
+                    memory > xt
+                    memory > xs
+                    memory > xthreads
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xsocketserver).xTCPServer)))
+                        (((unsupported)).apply (((xsocketserver).xStreamRequestHandler)))
+                        xthreads.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (20))))
+                          seq
+                            xs.write (((xMyServer)).apply ((((unsupported)).apply ((xHOST)) (0))) ((xMyHandler)))
+                            xt.write (((unsupported)).apply (((xthreading).xThread)) ("MyServer serving") (((xs).xserve_forever)) ((((unsupported)).apply ("poll_interval") (0.01))))
+                            (((unsupported)).apply (((xt).xdaemon)) (TRUE))
+                            bogusForceDataize.write ((((xthreads).xappend)).apply ((((unsupported)).apply ((xt)) ((xs)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xt)) ((xs)))) ((xthreads)))
+                          seq
+                            bogusForceDataize.write ((((xt).xstart)).apply)
+                            bogusForceDataize.write ((((xs).xshutdown)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xt)) ((xs)))) ((xthreads)))
+                          seq
+                            bogusForceDataize.write ((((xt).xjoin)).apply)
+                            bogusForceDataize.write ((((xs).xserver_close)).apply)
+                xtest_close_immediately.write
+                  [xself]
+                    memory > xserver
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xsocketserver).xThreadingMixIn)) (((xsocketserver).xTCPServer)))
+                        xserver.write (((xMyServer)).apply ((((unsupported)).apply ((xHOST)) (0))) ((((unsupported)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xserver).xserver_close)).apply)
+                xtest_tcpserver_bind_leak.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xi)) ((((xrange)).apply (1024))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOverflowError)))))
+                          bogusForceDataize.write ((((xsocketserver).xTCPServer)).apply ((((unsupported)).apply ((xHOST)) ((1.neg)))) (((xsocketserver).xStreamRequestHandler)))
+                xtest_context_manager.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xsocketserver).xTCPServer)).apply ((((unsupported)).apply ((xHOST)) (0))) (((xsocketserver).xStreamRequestHandler)))) ((xserver)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((1.neg)) ((((((xserver).xsocket).xfileno)).apply)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xtest).xsupport).xunlink)).apply ((((xtest).xsupport).xTESTFN)))
+                xtest_sync_handled.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xBaseErrorTestServer)).apply ((xValueError)))
+                        (((unsupported)).apply (((xself).xcheck_result)) (TRUE))
+                xtest_sync_not_handled.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))))
+                          bogusForceDataize.write (((xBaseErrorTestServer)).apply ((xSystemExit)))
+                        (((unsupported)).apply (((xself).xcheck_result)) (FALSE))
+                xtest_threading_handled.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xThreadingErrorTestServer)).apply ((xValueError)))
+                        (((unsupported)).apply (((xself).xcheck_result)) (TRUE))
+                xtest_threading_not_handled.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xThreadingErrorTestServer)).apply ((xSystemExit)))
+                        (((unsupported)).apply (((xself).xcheck_result)) (FALSE))
+                xtest_forking_handled.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((xForkingErrorTestServer)).apply ((xValueError)))
+                        (((unsupported)).apply (((xself).xcheck_result)) (TRUE))
+                xtest_forking_not_handled.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((xForkingErrorTestServer)).apply ((xSystemExit)))
+                        (((unsupported)).apply (((xself).xcheck_result)) (FALSE))
+                xcheck_result.write
+                  [xself xhandled]
+                    memory > xexpected
+                    seq > @
+                      (((unsupported)).apply ((((xopen)).apply ((((xtest).xsupport).xTESTFN)))) ((xlog)))
+                        seq
+                          xexpected.write ("Handler calledn".add ("Error handledn".mul (xhandled)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlog).xread)).apply)) ((xexpected)))
+            (((unsupported)).apply (((xsocketserver).xTCPServer)))
+              seq
+                x__init__.write
+                  [xself xexception]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xexception)) ((xexception)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xHOST)) (0))) ((xBadHandler)))
+                        (((unsupported)).apply (((((xsocket).xcreate_connection)).apply (((xself).xserver_address)))))
+                        (((unsupported)).apply)
+                          bogusForceDataize.write ((((xself).xhandle_request)).apply)
+                          bogusForceDataize.write ((((xself).xserver_close)).apply)
+                        bogusForceDataize.write ((((xself).xwait_done)).apply)
+                xhandle_error.write
+                  [xself xrequest xclient_address]
+                    seq > @
+                      (((unsupported)).apply ((((xopen)).apply ((((xtest).xsupport).xTESTFN)) ("a"))) ((xlog)))
+                        bogusForceDataize.write ((((xlog).xwrite)).apply ("Error handledn"))
+                xwait_done.write
+                  [xself]
+                    seq > @
+            (((unsupported)).apply (((xsocketserver).xBaseRequestHandler)))
+              xhandle.write
+                [xself]
+                  seq > @
+                    seq
+                      (((unsupported)).apply ((((xopen)).apply ((((xtest).xsupport).xTESTFN)) ("a"))) ((xlog)))
+                        bogusForceDataize.write ((((xlog).xwrite)).apply ("Handler calledn"))
+                      (((unsupported)).apply ((((((xself).xserver).xexception)).apply ("Test error"))))
+            (((unsupported)).apply (((xsocketserver).xThreadingMixIn)) ((xBaseErrorTestServer)))
+              seq
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xdone)) (((((xthreading).xEvent)).apply)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xpos)))) ((((unsupported)).apply ((xkw)))))
+                xshutdown_request.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).xshutdown_request)).apply ((((unsupported)).apply ((xpos)))) ((((unsupported)).apply ((xkw)))))
+                        bogusForceDataize.write (((((xself).xdone).xset)).apply)
+                xwait_done.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xdone).xwait)).apply)
+            (xHAVE_FORKING).if
+              (((unsupported)).apply (((xsocketserver).xForkingMixIn)) ((xBaseErrorTestServer)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_basics.write
+                  [xself]
+                    memory > xs
+                    memory > xserver
+                    memory > xhandle
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xsocketserver).xStreamRequestHandler)))
+                          xhandle.write
+                            [xself]
+                              seq > @
+                                seq
+                                  (((unsupported)).apply ((((xself).xserver).xwfile)) (((xself).xwfile)))
+                                  (((unsupported)).apply ((((xself).xserver).xwfile_fileno)) ((((((xself).xwfile).xfileno)).apply)))
+                                  (((unsupported)).apply ((((xself).xserver).xrequest_fileno)) ((((((xself).xrequest).xfileno)).apply)))
+                        xserver.write ((((xsocketserver).xTCPServer)).apply ((((unsupported)).apply ((xHOST)) (0))) ((xHandler)))
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xserver).xserver_close)))
+                        xs.write ((((xsocket).xsocket)).apply (((xserver).xaddress_family)) (((xsocket).xSOCK_STREAM)) (((xsocket).xIPPROTO_TCP)))
+                        (((unsupported)).apply ((xs)))
+                          bogusForceDataize.write ((((xs).xconnect)).apply (((xserver).xserver_address)))
+                        bogusForceDataize.write ((((xserver).xhandle_request)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xserver).xwfile)) (((xio).xBufferedIOBase)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xserver).xwfile_fileno)) (((xserver).xrequest_fileno)))
+                xtest_write.write
+                  [xself]
+                    memory > xrun_client
+                    memory > xresponse1
+                    memory > xmain_thread
+                    memory > xsignal_handler
+                    memory > xhandle
+                    memory > xpthread_kill
+                    memory > xreceived2
+                    memory > xoriginal
+                    memory > xserver
+                    memory > xbackground
+                    memory > xinterrupted
+                    seq > @
+                      seq
+                        xpthread_kill.write (((((xtest).xsupport).xget_attribute)).apply ((xsignal)) ("pthread_kill"))
+                        (((unsupported)).apply (((xsocketserver).xStreamRequestHandler)))
+                          xhandle.write
+                            [xself]
+                              memory > xbig_chunk
+                              seq > @
+                                seq
+                                  (((unsupported)).apply ((((xself).xserver).xsent1)) ((((((xself).xwfile).xwrite)).apply ("write datan"))))
+                                  (((unsupported)).apply ((((xself).xserver).xreceived)) ((((((xself).xrfile).xreadline)).apply)))
+                                  xbig_chunk.write ("0".mul (((xtest).xsupport).xSOCK_MAX_SIZE))
+                                  (((unsupported)).apply ((((xself).xserver).xsent2)) ((((((xself).xwfile).xwrite)).apply ((xbig_chunk)))))
+                        xserver.write ((((xsocketserver).xTCPServer)).apply ((((unsupported)).apply ((xHOST)) (0))) ((xHandler)))
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xserver).xserver_close)))
+                        xinterrupted.write ((((xthreading).xEvent)).apply)
+                        xsignal_handler.write
+                          [xsignum xframe]
+                            seq > @
+                              bogusForceDataize.write ((((xinterrupted).xset)).apply)
+                        xoriginal.write ((((xsignal).xsignal)).apply (((xsignal).xSIGUSR1)) ((xsignal_handler)))
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xsignal).xsignal)) (((xsignal).xSIGUSR1)) ((xoriginal)))
+                        xresponse1.write "None: is there a None literal in the EO language?"
+                        xreceived2.write "None: is there a None literal in the EO language?"
+                        xmain_thread.write ((((xthreading).xget_ident)).apply)
+                        xrun_client.write
+                          []
+                            memory > xs
+                            memory > xresponse1
+                            memory > xreceived2
+                            seq > @
+                              seq
+                                xs.write ((((xsocket).xsocket)).apply (((xserver).xaddress_family)) (((xsocket).xSOCK_STREAM)) (((xsocket).xIPPROTO_TCP)))
+                                (((unsupported)).apply ((xs)) (((((xs).xmakefile)).apply ("rb"))) ((xreader)))
+                                  seq
+                                    bogusForceDataize.write ((((xs).xconnect)).apply (((xserver).xserver_address)))
+                                    (((unsupported)).apply)
+                                    xresponse1.write ((((xreader).xreadline)).apply)
+                                    bogusForceDataize.write ((((xs).xsendall)).apply ("client responsen"))
+                                    bogusForceDataize.write ((((xreader).xread)).apply (100))
+                                    while.
+                                      TRUE
+                                      [unused]
+                                        seq > @
+                                          seq
+                                            bogusForceDataize.write (((xpthread_kill)).apply ((xmain_thread)) (((xsignal).xSIGUSR1)))
+                                            (((unsupported)).apply (((xinterrupted).xwait)) ((((xfloat)).apply (1)))).if
+                                              (((unsupported)).apply)
+                                    (((unsupported)).apply)
+                                    xreceived2.write (((xlen)).apply (((((xreader).xread)).apply)))
+                        xbackground.write (((unsupported)).apply (((xthreading).xThread)) ((xrun_client)))
+                        bogusForceDataize.write ((((xbackground).xstart)).apply)
+                        bogusForceDataize.write ((((xserver).xhandle_request)).apply)
+                        bogusForceDataize.write ((((xbackground).xjoin)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xserver).xsent1)) ((((xlen)).apply ((xresponse1)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresponse1)) ("write datan"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xserver).xreceived)) ("client responsen"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xserver).xsent2)) ((((xtest).xsupport).xSOCK_MAX_SIZE)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xreceived2)) (((((xtest).xsupport).xSOCK_MAX_SIZE).sub 100)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_all.write
+                  [xself]
+                    memory > xexpected
+                    memory > xmod_object
+                    seq > @
+                      seq
+                        xexpected.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xname)) ((((xdir)).apply ((xsocketserver)))))
+                          (((((xname).xstartswith)).apply ("_")).not).if
+                            seq
+                              xmod_object.write (((xgetattr)).apply ((xsocketserver)) ((xname)))
+                              ((((xgetattr)).apply ((xmod_object)) ("__module__") ("None: is there a None literal in the EO language?")).eq "socketserver").if
+                                bogusForceDataize.write ((((xexpected).xappend)).apply ((xname)))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((xsocketserver).x__all__)) ((xexpected)))
+                xtest_shutdown_request_called_if_verify_request_false.write
+                  [xself]
+                    memory > xshutdown_called
+                    memory > xshutdown_request
+                    memory > xverify_request
+                    memory > xs
+                    memory > xserver
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xsocketserver).xTCPServer)))
+                          seq
+                            xverify_request.write
+                              [xself xrequest xclient_address]
+                                seq > @
+                                  (((unsupported)).apply (FALSE))
+                            xshutdown_called.write 0
+                            xshutdown_request.write
+                              [xself xrequest]
+                                seq > @
+                                  seq
+                                    (((unsupported)).apply (((xself).xshutdown_called)) (1))
+                                    bogusForceDataize.write (((((xsocketserver).xTCPServer).xshutdown_request)).apply ((xself)) ((xrequest)))
+                        xserver.write (((xMyServer)).apply ((((unsupported)).apply ((xHOST)) (0))) (((xsocketserver).xStreamRequestHandler)))
+                        xs.write ((((xsocket).xsocket)).apply (((xserver).xaddress_family)) (((xsocket).xSOCK_STREAM)))
+                        bogusForceDataize.write ((((xs).xconnect)).apply (((xserver).xserver_address)))
+                        bogusForceDataize.write ((((xs).xclose)).apply)
+                        bogusForceDataize.write ((((xserver).xhandle_request)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xserver).xshutdown_called)) (1))
+                        bogusForceDataize.write ((((xserver).xserver_close)).apply)
+                xtest_threads_reaped.write
+                  [xself]
+                    memory > xserver
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xsocketserver).xThreadingMixIn)) (((xsocketserver).xTCPServer)))
+                        xserver.write (((xMyServer)).apply ((((unsupported)).apply ((xHOST)) (0))) (((xsocketserver).xStreamRequestHandler)))
+                        (((unsupported)).apply ((xn)) ((((xrange)).apply (10))))
+                          (((unsupported)).apply (((((xsocket).xcreate_connection)).apply (((xserver).xserver_address)))))
+                            bogusForceDataize.write ((((xserver).xhandle_request)).apply)
+                        bogusForceDataize.write ((((xself).xassertLess)).apply ((((xlen)).apply (((xserver).x_threads)))) (10))
+                        bogusForceDataize.write ((((xserver).xserver_close)).apply)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

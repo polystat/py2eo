@@ -1,0 +1,99 @@
+memory > xfalse
+memory > xValueError
+memory > xsocket
+memory > xurllib
+memory > xtempfile
+memory > xspam
+memory > xunittest
+memory > x__name__
+[] > test_urllib_response
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_addinfourl
+        memory > xtest_addinfo
+        memory > xtest_with
+        memory > xtearDown
+        memory > xsetUp
+        memory > xtest_addclosehook
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsock)) (((((xsocket).xsocket)).apply (((xsocket).xAF_INET)) (((xsocket).xSOCK_STREAM)))))
+                        (((unsupported)).apply (((xself).xfp)) ((((((xself).xsock).xmakefile)).apply ("rb"))))
+                        (((unsupported)).apply (((xself).xtest_headers)) ((((unsupported)).apply ("Host") ("www.python.org") ("Connection") ("close"))))
+                xtest_with.write
+                  [xself]
+                    memory > xaddbase
+                    memory > xf
+                    seq > @
+                      seq
+                        xaddbase.write (((((xurllib).xresponse).xaddbase)).apply (((xself).xfp)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xaddbase)) (((xtempfile).x_TemporaryFileWrapper)))
+                        xf.write
+                          []
+                            seq > @
+                              (((unsupported)).apply ((xaddbase)) ((xspam)))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xself).xfp).xclosed)))
+                        bogusForceDataize.write (((xf)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xself).xfp).xclosed)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) ((xf)))
+                xtest_addclosehook.write
+                  [xself]
+                    memory > xclosehook
+                    memory > xclosehook_called
+                    seq > @
+                      seq
+                        xclosehook_called.write (xfalse)
+                        xclosehook.write
+                          []
+                            memory > xclosehook_called
+                            seq > @
+                              seq
+                                (((unsupported)).apply)
+                                xclosehook_called.write TRUE
+                        xclosehook.write (((((xurllib).xresponse).xaddclosehook)).apply (((xself).xfp)) ((xclosehook)))
+                        bogusForceDataize.write ((((xclosehook).xclose)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xself).xfp).xclosed)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((xclosehook_called)))
+                xtest_addinfo.write
+                  [xself]
+                    memory > xinfo
+                    seq > @
+                      seq
+                        xinfo.write (((((xurllib).xresponse).xaddinfo)).apply (((xself).xfp)) (((xself).xtest_headers)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xinfo).xinfo)).apply)) (((xself).xtest_headers)))
+                xtest_addinfourl.write
+                  [xself]
+                    memory > xcode
+                    memory > xinfourl
+                    memory > xurl
+                    seq > @
+                      seq
+                        xurl.write "http://www.python.org"
+                        xcode.write 200
+                        xinfourl.write (((((xurllib).xresponse).xaddinfourl)).apply (((xself).xfp)) (((xself).xtest_headers)) ((xurl)) ((xcode)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xinfourl).xinfo)).apply)) (((xself).xtest_headers)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xinfourl).xgeturl)).apply)) ((xurl)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xinfourl).xgetcode)).apply)) ((xcode)))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xsock).xclose)).apply)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

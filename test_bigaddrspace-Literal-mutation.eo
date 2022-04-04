@@ -1,0 +1,116 @@
+memory > xcm
+memory > xMemoryError
+memory > xint
+memory > xOverflowError
+memory > xBytesTest
+memory > xlen
+memory > x__name__
+memory > xMAX_Py_ssize_t
+memory > xoperator
+memory > xsupport
+memory > xsys
+memory > xunittest
+memory > xStrTest
+[] > test_bigaddrspace
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_optimized_concat
+        memory > xtest_main
+        memory > xtest_repeat
+        memory > xtest_concat
+        memory > xunicodesize
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_concat.write
+                  [xself]
+                    memory > xx
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xx.write ("x".mul ((xMAX_Py_ssize_t).sub 128))
+                            bogusForceDataize.write ((((xself).xassertRaises)).apply ((xOverflowError)) (((xoperator).xadd)) ((xx)) (("x".mul 128)))
+                          xx.write "None: is there a None literal in the EO language?"
+                xtest_optimized_concat.write
+                  [xself]
+                    memory > xx
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xx.write ("x".mul ((xMAX_Py_ssize_t).sub 128))
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOverflowError)))) ((xcm)))
+                              xx.write ((xx).add ("x".mul 128))
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOverflowError)))) ((xcm)))
+                              (((unsupported)).apply ((xx)) (("x".mul 128)))
+                          xx.write "None: is there a None literal in the EO language?"
+                xtest_repeat.write
+                  [xself]
+                    memory > xx
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xx.write ("x".mul ((xMAX_Py_ssize_t).sub 128))
+                            bogusForceDataize.write ((((xself).xassertRaises)).apply ((xOverflowError)) (((xoperator).xmul)) ((xx)) (128))
+                          xx.write "None: is there a None literal in the EO language?"
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xunicodesize.write ((((xsys).xmaxunicode).less 65536).if 2 4)
+                xtest_concat.write
+                  [xself]
+                    memory > xx
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xx.write ("x".mul (((xint)).apply ((((unsupported)).apply ((xMAX_Py_ssize_t)) ((1.1.mul ((xself).xunicodesize)))))))
+                            bogusForceDataize.write ((((xself).xassertRaises)).apply ((xMemoryError)) (((xoperator).xadd)) ((xx)) ((xx)))
+                          xx.write "None: is there a None literal in the EO language?"
+                xtest_optimized_concat.write
+                  [xself]
+                    memory > xx
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xx.write ("x".mul (((xint)).apply ((((unsupported)).apply ((xMAX_Py_ssize_t)) ((1.1.mul ((xself).xunicodesize)))))))
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xMemoryError)))) ((xcm)))
+                              xx.write ((xx).add (xx))
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xMemoryError)))) ((xcm)))
+                              (((unsupported)).apply ((xx)) ((xx)))
+                          xx.write "None: is there a None literal in the EO language?"
+                xtest_repeat.write
+                  [xself]
+                    memory > xx
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xx.write ("x".mul (((xint)).apply ((((unsupported)).apply ((xMAX_Py_ssize_t)) ((1.1.mul ((xself).xunicodesize)))))))
+                            bogusForceDataize.write ((((xself).xassertRaises)).apply ((xMemoryError)) (((xoperator).xmul)) ((xx)) (2))
+                          xx.write "None: is there a None literal in the EO language?"
+            xtest_main.write
+              []
+                seq > @
+                  bogusForceDataize.write ((((xsupport).xrun_unittest)).apply ((xBytesTest)) ((xStrTest)))
+            ((x__name__).eq "__main__").if
+              seq
+                ((((xlen)).apply (((xsys).xargv))).greater 1).if
+                  bogusForceDataize.write ((((xsupport).xset_memlimit)).apply ((((unsupported)).apply (((xsys).xargv)) (1))))
+                bogusForceDataize.write (((xtest_main)).apply)

@@ -1,0 +1,125 @@
+memory > x__builtins__
+memory > xtempfile
+memory > xkw
+memory > xhasattr
+memory > xsys
+memory > x__import__
+memory > xNameError
+memory > x__name__
+memory > xRuntimeError
+memory > xmodule_name
+memory > xcache_from_source
+memory > xcompiled_path
+memory > xrandom
+memory > xopen
+memory > xf
+memory > xstring
+memory > xargs
+memory > xos
+memory > xdir
+memory > xcreate_empty_file
+memory > xgetattr
+memory > xSyntaxError
+memory > xshutil
+memory > xunittest
+[] > test_pkgimport
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrewrite_file
+        memory > xsetUp
+        memory > xremove_modules
+        memory > x__init__
+        memory > xtest_package_import__semantics
+        memory > xtearDown
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xpackage_name)) ("PACKAGE_"))
+                        while.
+                          (((unsupported)).apply (((xself).xpackage_name)) (((xsys).xmodules)))
+                          [unused]
+                            seq > @
+                              (((unsupported)).apply (((xself).xpackage_name)) (((((xrandom).xchoose)).apply (((xstring).xascii_letters)))))
+                        (((unsupported)).apply (((xself).xmodule_name)) ((((xself).xpackage_name).add ".foo")))
+                        bogusForceDataize.write (((((xunittest).xTestCase).x__init__)).apply ((xself)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkw)))))
+                xremove_modules.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xmodule_name)) ((((unsupported)).apply (((xself).xpackage_name)) (((xself).xmodule_name)))))
+                        (((unsupported)).apply ((xmodule_name)) (((xsys).xmodules))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xsys).xmodules)) ((xmodule_name)))))))))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xtest_dir)) (((((xtempfile).xmkdtemp)).apply)))
+                        bogusForceDataize.write (((((xsys).xpath).xappend)).apply (((xself).xtest_dir)))
+                        (((unsupported)).apply (((xself).xpackage_dir)) ((((((xos).xpath).xjoin)).apply (((xself).xtest_dir)) (((xself).xpackage_name)))))
+                        bogusForceDataize.write ((((xos).xmkdir)).apply (((xself).xpackage_dir)))
+                        bogusForceDataize.write (((xcreate_empty_file)).apply ((((((xos).xpath).xjoin)).apply (((xself).xpackage_dir)) ("__init__.py"))))
+                        (((unsupported)).apply (((xself).xmodule_path)) ((((((xos).xpath).xjoin)).apply (((xself).xpackage_dir)) ("foo.py"))))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xshutil).xrmtree)).apply (((xself).xtest_dir)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((((xsys).xpath).xcount)).apply (((xself).xtest_dir)))) (0))
+                        bogusForceDataize.write (((((xsys).xpath).xremove)).apply (((xself).xtest_dir)))
+                        bogusForceDataize.write ((((xself).xremove_modules)).apply)
+                xrewrite_file.write
+                  [xself xcontents]
+                    memory > xcompiled_path2
+                    seq > @
+                      seq
+                        xcompiled_path2.write (((xcache_from_source)).apply (((xself).xmodule_path)))
+                        (((((xos).xpath).xexists)).apply ((xcompiled_path))).if
+                          bogusForceDataize.write ((((xos).xremove)).apply ((xcompiled_path)))
+                        (((unsupported)).apply ((((xopen)).apply (((xself).xmodule_path)) ("w"))) ((xf)))
+                          bogusForceDataize.write ((((xf).xwrite)).apply ((xcontents)))
+                xtest_package_import__semantics.write
+                  [xself]
+                    memory > xmodule
+                    memory > xvar
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xrewrite_file)).apply ("for"))
+                        (((unsupported)).apply ((xSyntaxError)))
+                          bogusForceDataize.write (((x__import__)).apply (((xself).xmodule_name)))
+                          (((unsupported)).apply ((((xRuntimeError)).apply ("Failed to induce SyntaxError"))))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (((xself).xmodule_name)) (((xsys).xmodules)))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xhasattr)).apply ((((unsupported)).apply (((xsys).xmodules)) (((xself).xpackage_name)))) ("foo"))))
+                        xvar.write "a"
+                        while.
+                          (((unsupported)).apply ((xvar)) ((((xdir)).apply ((x__builtins__)))))
+                          [unused]
+                            seq > @
+                              (((unsupported)).apply ((xvar)) (((((xrandom).xchoose)).apply (((xstring).xascii_letters)))))
+                        bogusForceDataize.write ((((xself).xrewrite_file)).apply ((xvar)))
+                        (((unsupported)).apply ((xNameError)))
+                          bogusForceDataize.write (((x__import__)).apply (((xself).xmodule_name)))
+                          (((unsupported)).apply ((((xRuntimeError)).apply ("Failed to induce NameError."))))
+                        bogusForceDataize.write ((((xself).xrewrite_file)).apply (("%s = 1".mod (xvar))))
+                        xmodule.write ((((x__import__)).apply (((xself).xmodule_name))).xfoo)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgetattr)).apply ((xmodule)) ((xvar)))) (1))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

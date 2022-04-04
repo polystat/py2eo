@@ -1,0 +1,50 @@
+memory > xevg
+memory > xstr
+memory > xEnvironmentVarGuard
+memory > xsys
+memory > xsubprocess
+memory > xunittest
+memory > xsysconfig
+memory > x__name__
+[] > test_osx_env
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_pythonexecutable_sets_sys_executable
+        memory > x_check_sys
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)) (((((xunittest).xskipUnless)).apply (((((xsys).xplatform).eq "darwin").and ((((xsysconfig).xget_config_var)).apply ("WITH_NEXT_FRAMEWORK")))) ("unnecessary on this platform"))))
+              seq
+                x_check_sys.write
+                  [xself xev xcond xsv xval]
+                    memory > xsubpc
+                    memory > xrc
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xEnvironmentVarGuard)) ((xevg)))
+                          seq
+                            xsubpc.write (((unsupported)).apply ((((xstr)).apply (((xsys).xexecutable)))) ("-c") (("import sys; sys.exit(2 if \"%s\" %s %s else 3)".mod (((unsupported)).apply ((xval)) ((xcond)) ((xsv))))))
+                            bogusForceDataize.write ((((xevg).xunset)).apply ((xev)))
+                            xrc.write ((((xsubprocess).xcall)).apply ((xsubpc)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xrc)) (3) (("expected %s not %s %s".mod (((unsupported)).apply ((xev)) ((xcond)) ((xsv))))))
+                            bogusForceDataize.write ((((xevg).xset)).apply ((xev)) ((xval)))
+                            xrc.write ((((xsubprocess).xcall)).apply ((xsubpc)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xrc)) (2) (("expected %s %s %s".mod (((unsupported)).apply ((xev)) ((xcond)) ((xsv))))))
+                xtest_pythonexecutable_sets_sys_executable.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).x_check_sys)).apply ("PYTHONEXECUTABLE") ("==") ("sys.executable"))
+            ((x__name__).eq "__main__").if
+              unsupported

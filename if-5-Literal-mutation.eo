@@ -1,0 +1,69 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > if-5
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xconditionalCheck5
+      seq > @
+        stdout "if-5\n"
+        write.
+          xconditionalCheck5
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > e0
+                cage > xb
+                cage > xa
+                seq > @
+                  stdout "xconditionalCheck5\n"
+                  (xa).write (4)
+                  (xb).write (3)
+                  [] > tmp1
+                    memory > dddata
+                    dddata.write (((xa).geq (xb))) > @
+                  (e0).write (tmp1.dddata)
+                  (e0).if
+                    seq
+                      stackUp.forward (return TRUE)
+                      TRUE
+                    seq
+                      stackUp.forward (return FALSE)
+                      TRUE
+                  123
+        tmp.write (goto ((((xconditionalCheck5)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

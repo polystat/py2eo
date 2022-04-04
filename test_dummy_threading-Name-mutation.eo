@@ -1,0 +1,92 @@
+memory > xrunning2
+memory > xsema
+memory > xrange
+memory > xprint
+memory > xtime
+memory > xi
+memory > xsupport
+memory > xrunning
+memory > xunittest
+memory > xmutex
+memory > x__name__
+[] > test_dummy_threading
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUp
+        memory > x_threading
+        memory > xtest_tasks
+        memory > xrun
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                (((unsupported)).apply (((x_threading).xThread)))
+                  xrun.write
+                    [xself]
+                      memory > xdelay
+                      seq > @
+                        seq
+                          (((unsupported)).apply)
+                          (((unsupported)).apply)
+                          (((unsupported)).apply)
+                          xdelay.write 0
+                          ((xsupport).xverbose).if
+                            bogusForceDataize.write (((xprint)).apply ("task") (((xself).xname)) ("will run for") ((xdelay)) ("sec"))
+                          bogusForceDataize.write ((((xsema).xacquire)).apply)
+                          bogusForceDataize.write ((((xmutex).xacquire)).apply)
+                          (((unsupported)).apply ((xrunning2)) (1))
+                          ((xsupport).xverbose).if
+                            bogusForceDataize.write (((xprint)).apply ((xrunning)) ("tasks are running"))
+                          bogusForceDataize.write ((((xmutex).xrelease)).apply)
+                          bogusForceDataize.write ((((xtime).xsleep)).apply ((xdelay)))
+                          ((xsupport).xverbose).if
+                            bogusForceDataize.write (((xprint)).apply ("task") (((xself).xname)) ("done"))
+                          bogusForceDataize.write ((((xmutex).xacquire)).apply)
+                          (((unsupported)).apply ((xrunning)) (1))
+                          ((xsupport).xverbose).if
+                            bogusForceDataize.write (((xprint)).apply (((xself).xname)) ("is finished.") ((xrunning)) ("tasks are running"))
+                          bogusForceDataize.write ((((xmutex).xrelease)).apply)
+                          bogusForceDataize.write ((((xsema).xrelease)).apply)
+                xsetUp.write
+                  [xself]
+                    memory > xsema
+                    memory > xrunning
+                    memory > xmutex
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xnumtasks)) (10))
+                        (((unsupported)).apply)
+                        xsema.write (((unsupported)).apply (((x_threading).xBoundedSemaphore)) (3))
+                        (((unsupported)).apply)
+                        xmutex.write ((((x_threading).xRLock)).apply)
+                        (((unsupported)).apply)
+                        xrunning.write 0
+                        (((unsupported)).apply (((xself).xthreads)) ((((unsupported)).apply)))
+                xtest_tasks.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (((xself).xnumtasks)))))
+                          seq
+                            xt.write (((unsupported)).apply (((xself).xTestThread)) (("<thread %d>".mod (xi))))
+                            bogusForceDataize.write (((((xself).xthreads).xappend)).apply ((xt)))
+                            bogusForceDataize.write ((((xt).xstart)).apply)
+                        ((xsupport).xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("waiting for all tasks to complete"))
+                        (((unsupported)).apply ((xt)) (((xself).xthreads)))
+                          bogusForceDataize.write ((((xt).xjoin)).apply)
+                        ((xsupport).xverbose).if
+                          bogusForceDataize.write (((xprint)).apply ("all tasks done"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

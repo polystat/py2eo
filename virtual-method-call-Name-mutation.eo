@@ -1,0 +1,175 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > virtual-method-call
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xmyC
+      seq > @
+        stdout "virtual-method-call\n"
+        write.
+          xmyC
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > e6
+                cage > xd
+                cage > e7
+                cage > xc
+                cage > e4
+                cage > lhs6
+                cage > xo2
+                cage > lhs4
+                cage > e5
+                seq > @
+                  stdout "xmyC\n"
+                  write.
+                    xc
+                    []
+                      newUID.apply 0 > xid
+                      [] > apply
+                        [stackUp] > @
+                          [] > result
+                            cage > xh
+                            cage > xg
+                            xc > xclass
+                            seq > initFields
+                              write.
+                                xh
+                                []
+                                  [xselfNotCopied] > apply
+                                    [stackUp] > @
+                                      cage > tmp
+                                      xselfNotCopied' > xself
+                                      seq > @
+                                        stdout "xh\n"
+                                        xself.<
+                                        stackUp.forward (return 1)
+                                        123
+                              write.
+                                xg
+                                []
+                                  [xselfNotCopied] > apply
+                                    [stackUp] > @
+                                      cage > tmp
+                                      xselfNotCopied' > xself
+                                      cage > lhs0
+                                      cage > e1
+                                      cage > e0
+                                      seq > @
+                                        stdout "xg\n"
+                                        xself.<
+                                        mkCopy (xself.xh) > tmp1
+                                        (e0).write (tmp1.copy)
+                                        mkCopy (xself) > tmp2
+                                        (lhs0).write (tmp2.copy)
+                                        tmp.write (goto ((((e0)).apply ((lhs0))).@))
+                                        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                                        (e1).write (tmp.result)
+                                        stackUp.forward (return (e1))
+                                        123
+                          seq (result.initFields) (stackUp.forward (return result)) > @
+                  write.
+                    xd
+                    []
+                      newUID.apply 0 > xid
+                      [] > apply
+                        [stackUp] > @
+                          [] > result
+                            cage > xh
+                            cage > xf
+                            goto (((xc).apply).@) > base
+                            xd > xclass
+                            seq > initFields
+                              write.
+                                xh
+                                []
+                                  [xselfNotCopied] > apply
+                                    [stackUp] > @
+                                      cage > tmp
+                                      xselfNotCopied' > xself
+                                      seq > @
+                                        stdout "xh\n"
+                                        xself.<
+                                        stackUp.forward (return 2)
+                                        123
+                              write.
+                                xf
+                                []
+                                  [xselfNotCopied] > apply
+                                    [stackUp] > @
+                                      cage > tmp
+                                      xselfNotCopied' > xself
+                                      cage > lhs2
+                                      cage > e3
+                                      cage > e2
+                                      seq > @
+                                        stdout "xf\n"
+                                        xself.<
+                                        mkCopy (xself.xg) > tmp3
+                                        (e2).write (tmp3.copy)
+                                        mkCopy (xself) > tmp4
+                                        (lhs2).write (tmp4.copy)
+                                        tmp.write (goto ((((e2)).apply ((lhs2))).@))
+                                        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                                        (e3).write (tmp.result)
+                                        stackUp.forward (return (e3))
+                                        123
+                              base.result.xclass.xid
+                            base.result > @
+                          seq (result.initFields) (stackUp.forward (return result)) > @
+                  tmp.write (goto ((((xd)).apply).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e4).write (tmp.result)
+                  mkCopy (e4) > tmp5
+                  (xo2).write (tmp5.copy)
+                  mkCopy (xo.xf) > tmp6
+                  (e5).write (tmp6.copy)
+                  mkCopy (xo) > tmp7
+                  (lhs4).write (tmp7.copy)
+                  tmp.write (goto ((((e5)).apply ((lhs4))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e6).write (tmp.result)
+                  (lhs6).write (2)
+                  [] > tmp8
+                    memory > dddata
+                    dddata.write (((e6).eq (lhs6))) > @
+                  (e7).write (tmp8.dddata)
+                  stackUp.forward (return (e7))
+                  123
+        tmp.write (goto ((((xmyC)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

@@ -1,0 +1,24 @@
+423c423
+<                         bogusForceDataize.write ((((xself).xassertRegex)).apply ((xerr)) ("_testcapimodule.c:[0-9]+: _Py_NegativeRefcount: Assertion failed: object has negative ref count"))
+---
+>                         bogusForceDataize.write ((((xself).xassertRegex)).apply ((xerr)) ("_testcapimodule.c:[0-9]-: _Py_NegativeRefcount: Assertion failed: object has negative ref count"))
+533c533
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply (((xnew_type_refcnt).add 1)) (((xA).xrefcnt_in_del)))
+---
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply (((xnew_type_refcnt).sub 1)) (((xA).xrefcnt_in_del)))
+562c562
+<                         bogusForceDataize.write ((((xself).xassertEqual)).apply (((xnew_type_refcnt).add 1)) ((((x_testcapi).xHeapCTypeSubclass).xrefcnt_in_del)))
+---
+>                         bogusForceDataize.write ((((xself).xassertEqual)).apply (((xnew_type_refcnt).sub 1)) ((((x_testcapi).xHeapCTypeSubclass).xrefcnt_in_del)))
+750c750
+<                 xPTR_REGEX.write "(?:0x)?[0-9a-fA-F]+"
+---
+>                 xPTR_REGEX.write "(?:0x)?[0-9a-fA-F]-"
+768c768
+<                         xregex.write "Debug memory block at address p={ptr}: API 'm'n    16 bytes originally requestedn    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.n    The [0-9] pad bytes at tail={ptr} are not all FORBIDDENBYTE (0x[0-9a-f]{{2}}):n        at tail+0: 0x78 *** OUCHn        at tail+1: 0xfdn        at tail+2: 0xfdn        .*n(    The block was made by call #[0-9]+ to debug malloc/realloc.n)?    Data at p: cd cd cd .*nnEnable tracemalloc to get the memory block allocation tracebacknnFatal Python error: bad trailing pad byte"
+---
+>                         xregex.write "Debug memory block at address p={ptr}: API 'm'n    16 bytes originally requestedn    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.n    The [0-9] pad bytes at tail={ptr} are not all FORBIDDENBYTE (0x[0-9a-f]{{2}}):n        at tail-0: 0x78 *** OUCHn        at tail-1: 0xfdn        at tail-2: 0xfdn        .*n(    The block was made by call #[0-9]- to debug malloc/realloc.n)?    Data at p: cd cd cd .*nnEnable tracemalloc to get the memory block allocation tracebacknnFatal Python error: bad trailing pad byte"
+779c779
+<                         xregex.write "Debug memory block at address p={ptr}: API 'm'n    16 bytes originally requestedn    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.n    The [0-9] pad bytes at tail={ptr} are FORBIDDENBYTE, as expected.n(    The block was made by call #[0-9]+ to debug malloc/realloc.n)?    Data at p: cd cd cd .*nnEnable tracemalloc to get the memory block allocation tracebacknnFatal Python error: bad ID: Allocated using API 'm', verified using API 'r'n"
+---
+>                         xregex.write "Debug memory block at address p={ptr}: API 'm'n    16 bytes originally requestedn    The [0-9] pad bytes at p-[0-9] are FORBIDDENBYTE, as expected.n    The [0-9] pad bytes at tail={ptr} are FORBIDDENBYTE, as expected.n(    The block was made by call #[0-9]- to debug malloc/realloc.n)?    Data at p: cd cd cd .*nnEnable tracemalloc to get the memory block allocation tracebacknnFatal Python error: bad ID: Allocated using API 'm', verified using API 'r'n"

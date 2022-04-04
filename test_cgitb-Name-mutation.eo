@@ -1,0 +1,100 @@
+memory > xassert_python_failure
+memory > xrc
+memory > xstr
+memory > xcgitb
+memory > xerr
+memory > xtemp_dir
+memory > xrepr
+memory > xsys
+memory > xunittest
+memory > xValueError2
+memory > x__name__
+memory > xValueError
+memory > xtracedir
+[] > test_cgitb
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_syshook_no_logdir_default_format
+        memory > xtest_blanks
+        memory > xtest_syshook_no_logdir_text_format
+        memory > xtest_fonts
+        memory > xtest_html
+        memory > xtest_text
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_fonts.write
+                  [xself]
+                    memory > xtext
+                    seq > @
+                      seq
+                        xtext.write "Hello Robbie!"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcgitb).xsmall)).apply ((xtext)))) (((("<small>{}</small>".xformat)).apply ((xtext)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcgitb).xstrong)).apply ((xtext)))) (((("<strong>{}</strong>".xformat)).apply ((xtext)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcgitb).xgrey)).apply ((xtext)))) (((("<font color=\"#909090\">{}</font>".xformat)).apply ((xtext)))))
+                xtest_blanks.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcgitb).xsmall)).apply (""))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcgitb).xstrong)).apply (""))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcgitb).xgrey)).apply (""))) (""))
+                xtest_html.write
+                  [xself]
+                    memory > xhtml
+                    seq > @
+                      (((unsupported)).apply ((xValueError2)))
+                        (((unsupported)).apply ((((xValueError)).apply ("Hello World"))))
+                        seq
+                          xhtml.write ((((xcgitb).xhtml)).apply (((((xsys).xexc_info)).apply)))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply ("ValueError") ((xhtml)))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply ((((xstr)).apply ((xerr)))) ((xhtml)))
+                xtest_text.write
+                  [xself]
+                    memory > xtext
+                    seq > @
+                      (((unsupported)).apply ((xValueError)))
+                        (((unsupported)).apply ((((xValueError)).apply ("Hello World"))))
+                        seq
+                          xtext.write ((((xcgitb).xtext)).apply (((((xsys).xexc_info)).apply)))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply ("ValueError") ((xtext)))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply ("Hello World") ((xtext)))
+                xtest_syshook_no_logdir_default_format.write
+                  [xself]
+                    memory > xout
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xtemp_dir)).apply)) ((xtracedir)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xrc)) ((xout)) ((xerr)))) ((((xassert_python_failure)).apply ("-c") (("import cgitb; cgitb.enable(logdir=%s); raise ValueError(\"Hello World\")".mod (((xrepr)).apply ((xtracedir))))))))
+                        xout.write ((((xout).xdecode)).apply (((((xsys).xgetfilesystemencoding)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("ValueError") ((xout)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Hello World") ((xout)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<strong>&lt;module&gt;</strong>") ((xout)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<p>") ((xout)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("</p>") ((xout)))
+                xtest_syshook_no_logdir_text_format.write
+                  [xself]
+                    memory > xout
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xtemp_dir)).apply)) ((xtracedir)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xrc)) ((xout)) ((xerr)))) ((((xassert_python_failure)).apply ("-c") (("import cgitb; cgitb.enable(format=\"text\", logdir=%s); raise ValueError(\"Hello World\")".mod (((xrepr)).apply ((xtracedir))))))))
+                        xout.write ((((xout).xdecode)).apply (((((xsys).xgetfilesystemencoding)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("ValueError") ((xout)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Hello World") ((xout)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("<p>") ((xout)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("</p>") ((xout)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

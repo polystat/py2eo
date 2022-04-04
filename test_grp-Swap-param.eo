@@ -1,0 +1,157 @@
+memory > xlist
+memory > xValueError
+memory > xstr
+memory > xg
+memory > xrange
+memory > xmem
+memory > xIndexError
+memory > xKeyError
+memory > xp
+memory > xint
+memory > xi
+memory > xsupport
+memory > xe
+memory > xn
+memory > xlen
+memory > xDeprecationWarning
+memory > xfloat
+memory > xchr
+memory > xord
+memory > xunittest
+memory > xTypeError
+memory > x__name__
+[] > test_grp
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_values_extended
+        memory > xtest_noninteger_gid
+        memory > xtest_errors
+        memory > xtest_values
+        memory > xcheck_value
+        memory > xgrp
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xgrp.write ((((xsupport).ximport_module)).apply ("grp"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xcheck_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (4) ((((xlen)).apply ((xvalue)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xvalue)) (0))) (((xvalue).xgr_name)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xvalue).xgr_name)) ((xstr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xvalue)) (1))) (((xvalue).xgr_passwd)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xvalue).xgr_passwd)) ((xstr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xvalue)) (2))) (((xvalue).xgr_gid)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xvalue).xgr_gid)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xvalue)) (3))) (((xvalue).xgr_mem)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xvalue).xgr_mem)) ((xlist)))
+                xtest_values.write
+                  [xself]
+                    memory > xentries
+                    seq > @
+                      seq
+                        xentries.write ((((xgrp).xgetgrall)).apply)
+                        (((unsupported)).apply ((xe)) ((xentries)))
+                          bogusForceDataize.write ((((xself).xcheck_value)).apply ((xe)))
+                xtest_values_extended.write
+                  [xself]
+                    memory > xname
+                    memory > xe2
+                    memory > xentries
+                    seq > @
+                      seq
+                        xentries.write ((((xgrp).xgetgrall)).apply)
+                        ((((xlen)).apply ((xentries))).greater 1000).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("huge group file, extended test skipped"))
+                        (((unsupported)).apply ((xe)) ((xentries)))
+                          seq
+                            xe2.write ((((xgrp).xgetgrgid)).apply (((xe).xgr_gid)))
+                            bogusForceDataize.write ((((xself).xcheck_value)).apply ((xe2)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((xe2).xgr_gid)) (((xe).xgr_gid)))
+                            xname.write ((xe).xgr_name)
+                            (((((xname).xstartswith)).apply ("+")).or ((((xname).xstartswith)).apply ("-"))).if
+                              (((unsupported)).apply)
+                            xe2.write ((((xgrp).xgetgrnam)).apply ((xname)))
+                            bogusForceDataize.write ((((xself).xcheck_value)).apply ((xe2)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xe2).xgr_name).xlower)).apply)) (((((xname).xlower)).apply)))
+                xtest_errors.write
+                  [xself]
+                    memory > xfakename
+                    memory > xbynames
+                    memory > xchars
+                    memory > xfakegid
+                    memory > xbygids
+                    memory > xnamei
+                    memory > xallnames
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) (((xgrp).xgetgrgid)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) (((xgrp).xgetgrnam)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) (((xgrp).xgetgrall)) (42))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xValueError)) (((xgrp).xgetgrnam)) ("ax00b"))
+                        xbynames.write (((unsupported)).apply)
+                        xbygids.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xn)) ((xp)) ((xg)) ((xmem)))) (((((xgrp).xgetgrall)).apply)))
+                          seq
+                            (((xn).not).or ((xn).eq "+")).if
+                              (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xbynames)) ((xn)))) ((xg)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xbygids)) ((xg)))) ((xn)))
+                        xallnames.write (((xlist)).apply (((((xbynames).xkeys)).apply)))
+                        xnamei.write 0
+                        xfakename.write (((unsupported)).apply ((xallnames)) ((xnamei)))
+                        while.
+                          (((unsupported)).apply ((xfakename)) ((xbynames)))
+                          [unused]
+                            seq > @
+                              seq
+                                xchars.write (((xlist)).apply ((xfakename)))
+                                (((unsupported)).apply ((xi)) ((((xrange)).apply ((((xlen)).apply ((xchars)))))))
+                                  ((((unsupported)).apply ((xchars)) ((xi))).eq "z").if
+                                    seq
+                                      (((unsupported)).apply ((((unsupported)).apply ((xchars)) ((xi)))) ("A"))
+                                      (((unsupported)).apply)
+                                    ((((unsupported)).apply ((xchars)) ((xi))).eq "Z").if
+                                      (((unsupported)).apply)
+                                      seq
+                                        (((unsupported)).apply ((((unsupported)).apply ((xchars)) ((xi)))) ((((xchr)).apply (((((xord)).apply ((((unsupported)).apply ((xchars)) ((xi))))).add 1)))))
+                                        (((unsupported)).apply)
+                                  seq
+                                    xnamei.write ((xnamei).add 1)
+                                    (((unsupported)).apply ((xIndexError)))
+                                      xfakename.write (((unsupported)).apply ((xallnames)) ((xnamei)))
+                                      (((unsupported)).apply)
+                                xfakename.write ((("".xjoin)).apply ((xchars)))
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xKeyError)) (((xgrp).xgetgrnam)) ((xfakename)))
+                        xfakegid.write 4127
+                        while.
+                          (((unsupported)).apply ((xfakegid)) ((xbygids)))
+                          [unused]
+                            seq > @
+                              xfakegid.write (((xfakegid).mul 3).mod 65536)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xKeyError)) (((xgrp).xgetgrgid)) ((xfakegid)))
+                xtest_noninteger_gid.write
+                  [xself]
+                    memory > xgid
+                    memory > xentries
+                    seq > @
+                      seq
+                        xentries.write ((((xgrp).xgetgrall)).apply)
+                        ((xentries).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("no groups"))
+                        xgid.write (((unsupported)).apply ((((unsupported)).apply ((xentries)) (0))) (2))
+                        bogusForceDataize.write ((((xself).xassertWarns)).apply ((xDeprecationWarning)) (((xgrp).xgetgrgid)) ((((xfloat)).apply ((xgid)))))
+                        bogusForceDataize.write ((((xself).xassertWarns)).apply ((xDeprecationWarning)) (((xgrp).xgetgrgid)) ((((xstr)).apply ((xgid)))))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

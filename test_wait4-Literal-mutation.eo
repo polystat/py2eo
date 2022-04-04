@@ -1,0 +1,63 @@
+memory > xspid
+memory > xrusage
+memory > xtime
+memory > xsys
+memory > xos
+memory > xunittest
+memory > x__name__
+memory > xreap_children
+memory > xForkWait
+memory > xstatus
+memory > xget_attribute
+[] > test_wait4
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtearDownModule
+        memory > xwait_impl
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            bogusForceDataize.write (((xget_attribute)).apply ((xos)) ("fork"))
+            bogusForceDataize.write (((xget_attribute)).apply ((xos)) ("wait4"))
+            (((unsupported)).apply ((xForkWait)))
+              xwait_impl.write
+                [xself xcpid]
+                  memory > xdeadline
+                  memory > xoption
+                  seq > @
+                    seq
+                      xoption.write ((xos).xWNOHANG)
+                      (((((xsys).xplatform).xstartswith)).apply ("aix")).if
+                        xoption.write 0
+                      xdeadline.write (((((xtime).xmonotonic)).apply).add 10.0)
+                      while.
+                        (((((xtime).xmonotonic)).apply).leq (xdeadline))
+                        [unused]
+                          seq > @
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xspid)) ((xstatus)) ((xrusage)))) (((((xos).xwait4)).apply ((xcpid)) ((xoption)))))
+                              ((xspid).eq (xcpid)).if
+                                (((unsupported)).apply)
+                              bogusForceDataize.write ((((xtime).xsleep)).apply (0.1))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xspid)) ((xcpid)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xstatus)) (0) (("cause = %d, exit = %d".mod (((unsupported)).apply (((xstatus).and 255)) ((((unsupported)).apply ((xstatus)) (8)))))))
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((xrusage)))
+            xtearDownModule.write
+              []
+                seq > @
+                  bogusForceDataize.write (((xreap_children)).apply)
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)

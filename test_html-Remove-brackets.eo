@@ -1,0 +1,109 @@
+memory > xnum
+memory > xchar
+memory > xs
+memory > xcp
+memory > x__name__
+memory > xx
+memory > xend
+memory > xch
+memory > xe
+memory > xhtml
+memory > xformat
+memory > xzip
+memory > xunittest
+[] > test_html
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_escape
+        memory > xtest_unescape
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_escape.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xhtml).xescape)).apply ("'<script>\"&foo;\"</script>'"))) ("&#x27;&lt;script&gt;&quot;&amp;foo;&quot;&lt;/script&gt;&#x27;"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xhtml).xescape)).apply ("'<script>\"&foo;\"</script>'") (FALSE))) ("'&lt;script&gt;\"&amp;foo;\"&lt;/script&gt;'"))
+                xtest_unescape.write
+                  [xself]
+                    memory > xerrmsg
+                    memory > xformats
+                    memory > xcheck_num
+                    memory > xcheck
+                    memory > xnumeric_formats
+                    seq > @
+                      seq
+                        xnumeric_formats.write (((unsupported)).apply ("&#%d") ("&#%d;") ("&#x%x") ("&#x%x;"))
+                        xerrmsg.write "unescape(%r) should have returned %r"
+                        xcheck.write
+                          [xtext xexpected]
+                            seq > @
+                              (((unsupported)).apply (((xself).xassertEqual)) (((((xhtml).xunescape)).apply ((xtext)))) ((xexpected)) (((xerrmsg).mod (((unsupported)).apply ((xtext)) ((xexpected))))))
+                        xcheck_num.write
+                          [xnum xexpected]
+                            memory > xtext
+                            seq > @
+                              (((unsupported)).apply ((xformat)) ((xnumeric_formats)))
+                                seq
+                                  xtext.write ((xformat).mod (xnum))
+                                  (((unsupported)).apply (((xself).xassertEqual)) (((((xhtml).xunescape)).apply ((xtext)))) ((xexpected)) (((xerrmsg).mod (((unsupported)).apply ((xtext)) ((xexpected))))))
+                        bogusForceDataize.write (((xcheck)).apply ("no character references") ("no character references"))
+                        bogusForceDataize.write (((xcheck)).apply ("&n&t& &&") ("&n&t& &&"))
+                        bogusForceDataize.write (((xcheck)).apply ("&0 &9 &a &0; &9; &a;") ("&0 &9 &a &0; &9; &a;"))
+                        (((unsupported)).apply ((xx)) ((((unsupported)).apply ("&") ("&#") ("&#x") ("&#X") ("&#y") ("&#xy") ("&#Xy"))))
+                          seq
+                            bogusForceDataize.write (((xcheck)).apply ((xx)) ((xx)))
+                            bogusForceDataize.write (((xcheck)).apply (((xx).add ";")) (((xx).add ";")))
+                        xformats.write (((unsupported)).apply ("&#%d") ("&#%07d") ("&#%d;") ("&#%07d;") ("&#x%x") ("&#x%06x") ("&#x%x;") ("&#x%06x;") ("&#x%X") ("&#x%06X") ("&#X%x;") ("&#X%06x;"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xnum)) ((xchar)))) ((((xzip)).apply ((((unsupported)).apply (65) (97) (34) (38) (9731) (1053236))) ((((unsupported)).apply ("A") ("a") ("\"") ("&") ("u2603") ("U00101234"))))))
+                          (((unsupported)).apply ((xs)) ((xformats)))
+                            seq
+                              bogusForceDataize.write (((xcheck)).apply (((xs).mod (xnum))) ((xchar)))
+                              (((unsupported)).apply ((xend)) ((((unsupported)).apply (" ") ("X"))))
+                                bogusForceDataize.write (((xcheck)).apply ((((xs).add (xend)).mod (xnum))) (((xchar).add (xend))))
+                        (((unsupported)).apply ((xcp)) ((((unsupported)).apply (55296) (56064) (56320) (57343) (1114112))))
+                          bogusForceDataize.write (((xcheck_num)).apply ((xcp)) ("uFFFD"))
+                        (((unsupported)).apply ((xcp)) ((((unsupported)).apply (1) (11) (14) (127) (65534) (65535) (1114110) (1114111))))
+                          bogusForceDataize.write (((xcheck_num)).apply ((xcp)) (""))
+                        (((unsupported)).apply ((((unsupported)).apply ((xnum)) ((xch)))) ((((xzip)).apply ((((unsupported)).apply (13) (128) (149) (157))) ("ru20acu2022x9d"))))
+                          bogusForceDataize.write (((xcheck_num)).apply ((xnum)) ((xch)))
+                        bogusForceDataize.write (((xcheck_num)).apply (0) ("uFFFD"))
+                        bogusForceDataize.write (((xcheck_num)).apply (9) ("t"))
+                        bogusForceDataize.write (((xcheck_num)).apply ((((unsupported)).apply)) ("uFFFD"))
+                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&quot;;") ("&#34;;") ("&#x22;;") ("&#X22;;"))))
+                          bogusForceDataize.write (((xcheck)).apply ((xe)) ("\";"))
+                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&quot;quot;") ("&#34;quot;") ("&#x22;quot;") ("&#X22;quot;"))))
+                          bogusForceDataize.write (((xcheck)).apply ((xe)) ("\"quot;"))
+                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&quot") ("&#34") ("&#x22") ("&#X22"))))
+                          seq
+                            bogusForceDataize.write (((xcheck)).apply (((xe).mul 3)) ("\"\"\""))
+                            bogusForceDataize.write (((xcheck)).apply ((((xe).add ";").mul 3)) ("\"\"\""))
+                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&amp") ("&amp;") ("&AMP") ("&AMP;"))))
+                          bogusForceDataize.write (((xcheck)).apply ((xe)) ("&"))
+                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&Amp") ("&Amp;"))))
+                          bogusForceDataize.write (((xcheck)).apply ((xe)) ((xe)))
+                        bogusForceDataize.write (((xcheck)).apply ("&svadilfari;") ("&svadilfari;"))
+                        bogusForceDataize.write (((xcheck)).apply ("&notit") ("¬it"))
+                        bogusForceDataize.write (((xcheck)).apply ("&notit;") ("¬it;"))
+                        bogusForceDataize.write (((xcheck)).apply ("&notin") ("¬in"))
+                        bogusForceDataize.write (((xcheck)).apply ("&notin;") ("∉"))
+                        bogusForceDataize.write (((xcheck)).apply ("&notReallyAnExistingNamedCharacterReference;") ("¬ReallyAnExistingNamedCharacterReference;"))
+                        bogusForceDataize.write (((xcheck)).apply ("&CounterClockwiseContourIntegral;") ("∳"))
+                        bogusForceDataize.write (((xcheck)).apply ("&acE;") ("u223Eu0333"))
+                        bogusForceDataize.write (((xcheck)).apply ("&acE") ("&acE"))
+                        bogusForceDataize.write (((xcheck)).apply (("&#123; ".mul 1050)) (("{ ".mul 1050)))
+                        bogusForceDataize.write (((xcheck)).apply ("&Eacuteric&Eacute;ric&alphacentauri&alpha;centauri") ("ÉricÉric&alphacentauriαcentauri"))
+                        bogusForceDataize.write (((xcheck)).apply ("&co;") ("&co;"))
+            ((x__name__).eq "__main__").if
+              unsupported

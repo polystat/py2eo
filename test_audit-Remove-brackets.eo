@@ -1,0 +1,166 @@
+memory > xevent
+memory > xp
+memory > xprint
+memory > xhasattr
+memory > xunittest
+memory > xevents
+memory > xline
+memory > x__name__
+memory > xsupport
+memory > xsys
+memory > xstderr
+memory > xreturncode
+memory > xargs
+memory > xsubprocess
+[] > test_audit
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_unraisablehook
+        memory > xAUDIT_TESTS_PY
+        memory > xrun_python
+        memory > xdo_test
+        memory > xtest_block_add_hook_baseexception
+        memory > xtest_cantrace
+        memory > xtest_open
+        memory > xtest_excepthook
+        memory > xtest_basic
+        memory > xtest_mmap
+        memory > xtest_pickle
+        memory > xtest_gc
+        memory > xtest_monkeypatch
+        memory > xtest_winreg
+        memory > xtest_block_add_hook
+        memory > xtest_socket
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((((xhasattr)).apply ((xsys)) ("addaudithook")).not).or ((((xhasattr)).apply ((xsys)) ("audit")).not)).if
+              (((unsupported)).apply (((((xunittest).xSkipTest)).apply ("test only relevant when sys.audit is available"))))
+            xAUDIT_TESTS_PY.write ((((xsupport).xfindfile)).apply ("audit-tests.py"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xdo_test.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xsubprocess).xPopen)) ((((unsupported)).apply (((xsys).xexecutable)) ("-X utf8") ((xAUDIT_TESTS_PY)) ((((unsupported)).apply ((xargs)))))) ("utf-8") (((xsubprocess).xPIPE)) (((xsubprocess).xPIPE)))) ((xp)))
+                          seq
+                            unsupported
+                            bogusForceDataize.write (((((xsys).xstdout).xwritelines)).apply (((xp).xstdout)))
+                            bogusForceDataize.write (((((xsys).xstderr).xwritelines)).apply (((xp).xstderr)))
+                            ((xp).xreturncode).if
+                              bogusForceDataize.write ((((xself).xfail)).apply (((("".xjoin)).apply (((xp).xstderr)))))
+                xrun_python.write
+                  [xself]
+                    memory > xevents
+                    seq > @
+                      (((unsupported)).apply)
+                        xevents.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xsubprocess).xPopen)) ((((unsupported)).apply (((xsys).xexecutable)) ("-X utf8") ((xAUDIT_TESTS_PY)) ((((unsupported)).apply ((xargs)))))) ("utf-8") (((xsubprocess).xPIPE)) (((xsubprocess).xPIPE)))) ((xp)))
+                          seq
+                            unsupported
+                            bogusForceDataize.write (((((xsys).xstderr).xwritelines)).apply (((xp).xstderr)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xp).xreturncode)) ((((unsupported)).apply ((((((xline).xstrip).xpartition)).apply (" "))) ((xline)) (((xp).xstdout)))) (((("".xjoin)).apply (((xp).xstderr)))))))
+                xtest_basic.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdo_test)).apply ("test_basic"))
+                xtest_block_add_hook.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdo_test)).apply ("test_block_add_hook"))
+                xtest_block_add_hook_baseexception.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdo_test)).apply ("test_block_add_hook_baseexception"))
+                xtest_pickle.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).ximport_module)).apply ("pickle"))
+                        bogusForceDataize.write ((((xself).xdo_test)).apply ("test_pickle"))
+                xtest_monkeypatch.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdo_test)).apply ("test_monkeypatch"))
+                xtest_open.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdo_test)).apply ("test_open") (((xsupport).xTESTFN)))
+                xtest_cantrace.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdo_test)).apply ("test_cantrace"))
+                xtest_mmap.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdo_test)).apply ("test_mmap"))
+                xtest_excepthook.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xreturncode)) ((xevents)) ((xstderr)))) (((((xself).xrun_python)).apply ("test_excepthook"))))
+                        ((xreturncode).not).if
+                          bogusForceDataize.write ((((xself).xfail)).apply ("Expected fatal exceptionn{stderr}"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ("sys.excepthook") (" ") ("RuntimeError('fatal-error')"))))) ((xevents)))
+                xtest_unraisablehook.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xreturncode)) ((xevents)) ((xstderr)))) (((((xself).xrun_python)).apply ("test_unraisablehook"))))
+                        (xreturncode).if
+                          bogusForceDataize.write ((((xself).xfail)).apply ((xstderr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevents)) (0))) (0))) ("sys.unraisablehook"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevents)) (0))) (2))) ("RuntimeError('nonfatal-error') Exception ignored for audit hook test"))
+                xtest_winreg.write
+                  [xself]
+                    memory > xexpected
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).ximport_module)).apply ("winreg"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xreturncode)) ((xevents)) ((xstderr)))) (((((xself).xrun_python)).apply ("test_winreg"))))
+                        (xreturncode).if
+                          bogusForceDataize.write ((((xself).xfail)).apply ((xstderr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevents)) (0))) (0))) ("winreg.OpenKey"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevents)) (1))) (0))) ("winreg.OpenKey/result"))
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ((xevents)) (1))) (2))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((xexpected)))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ("winreg.EnumKey") (" ") ("{expected} 0"))) ((((unsupported)).apply ((xevents)) (2))))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ("winreg.EnumKey") (" ") ("{expected} 10000"))) ((((unsupported)).apply ((xevents)) (3))))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ("winreg.PyHKEY.Detach") (" ") ((xexpected)))) ((((unsupported)).apply ((xevents)) (4))))
+                xtest_socket.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsupport).ximport_module)).apply ("socket"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xreturncode)) ((xevents)) ((xstderr)))) (((((xself).xrun_python)).apply ("test_socket"))))
+                        (xreturncode).if
+                          bogusForceDataize.write ((((xself).xfail)).apply ((xstderr)))
+                        ((xsupport).xverbose).if
+                          (((unsupported)).apply ((xprint)) ((((unsupported)).apply ((xevents)))) ("n"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevents)) (0))) (0))) ("socket.gethostname"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevents)) (1))) (0))) ("socket.__new__"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevents)) (2))) (0))) ("socket.bind"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((unsupported)).apply ((((unsupported)).apply ((xevents)) (2))) (2)).xendswith)).apply ("('127.0.0.1', 8080)"))))
+                xtest_gc.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xreturncode)) ((xevents)) ((xstderr)))) (((((xself).xrun_python)).apply ("test_gc"))))
+                        (xreturncode).if
+                          bogusForceDataize.write ((((xself).xfail)).apply ((xstderr)))
+                        ((xsupport).xverbose).if
+                          (((unsupported)).apply ((xprint)) ((((unsupported)).apply ((xevents)))) ("n"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xevent)) (0))) ((xevent)) ((xevents)))) ((((unsupported)).apply ("gc.get_objects") ("gc.get_referrers") ("gc.get_referents"))))
+            ((x__name__).eq "__main__").if
+              unsupported

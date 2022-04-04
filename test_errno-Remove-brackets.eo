@@ -1,0 +1,49 @@
+memory > xattribute
+memory > xvalue
+memory > xhasattr
+memory > xgetattr
+memory > xunittest
+memory > xfrozenset
+memory > xerrno
+memory > x__name__
+memory > xerror_code
+[] > test_errno
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_using_errorcode
+        memory > xstd_c_errors
+        memory > xtest_attributes_in_errorcode
+        memory > xtest_for_improper_attributes
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xstd_c_errors.write (((xfrozenset)).apply ((((unsupported)).apply ("EDOM") ("ERANGE"))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_for_improper_attributes.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xerror_code)) ((xstd_c_errors)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xhasattr)).apply ((xerrno)) ((xerror_code)))) (("errno is missing %s".mod (xerror_code))))
+                xtest_using_errorcode.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xvalue)) ((((xerrno).xerrorcode).xvalues)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xhasattr)).apply ((xerrno)) ((xvalue)))) (("no %s attr in errno".mod (xvalue))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              xtest_attributes_in_errorcode.write
+                [xself]
+                  seq > @
+                    (((unsupported)).apply ((xattribute)) ((((xerrno).x__dict__).xkeys)))
+                      ((xattribute).xisupper).if
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((xgetattr)).apply ((xerrno)) ((xattribute)))) (((xerrno).xerrorcode)) (("no %s attr in errno.errorcode".mod (xattribute))))
+            ((x__name__).eq "__main__").if
+              unsupported

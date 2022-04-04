@@ -1,0 +1,96 @@
+memory > xsys
+memory > xunittest
+memory > xdict
+memory > xdedent
+memory > xkw
+memory > xargs
+memory > xsubprocess
+memory > xos
+memory > xkill_python
+memory > xSuppressCrashReport
+memory > x__name__
+[] > test_repl
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_multiline_string_parsing
+        memory > xtest_no_memory
+        memory > xtest_close_stdin
+        memory > xspawn_repl
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xspawn_repl.write
+              [xstdout xstderr]
+                memory > xenv
+                memory > xcmd_line
+                memory > xstdin_fname
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xstdin_fname.write (((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply (((xsys).xexecutable)))) ("<stdin>"))
+                    xcmd_line.write (((unsupported)).apply ((xstdin_fname)) ("-E") ("-i"))
+                    bogusForceDataize.write ((((xcmd_line).xextend)).apply ((xargs)))
+                    xenv.write ((((xkw).xsetdefault)).apply ("env") ((((xdict)).apply (((xos).xenviron)))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xenv)) ("TERM"))) ("vt100"))
+                    (((unsupported)).apply ((((unsupported)).apply (((xsubprocess).xPopen)) ((xcmd_line)) (((xsys).xexecutable)) (TRUE) (((xsubprocess).xPIPE)) ((xstdout)) ((xstderr)) ((((unsupported)).apply ((xkw)))))))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_no_memory.write
+                  [xself]
+                    memory > xuser_input
+                    memory > xp
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xuser_input.write (((unsupported)).apply)
+                        xuser_input.write (((xdedent)).apply ((xuser_input)))
+                        xp.write (xspawn_repl)
+                        (((unsupported)).apply ((xSuppressCrashReport)))
+                          bogusForceDataize.write (((((xp).xstdin).xwrite)).apply ((xuser_input)))
+                        xoutput.write (((xkill_python)).apply ((xp)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("After the exception.") ((xoutput)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (((xp).xreturncode)) ((((unsupported)).apply (1) (120))))
+                xtest_multiline_string_parsing.write
+                  [xself]
+                    memory > xuser_input
+                    memory > xp
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xuser_input.write (((unsupported)).apply)
+                        xuser_input.write (((xdedent)).apply ((xuser_input)))
+                        xp.write (xspawn_repl)
+                        bogusForceDataize.write (((((xp).xstdin).xwrite)).apply ((xuser_input)))
+                        xoutput.write (((xkill_python)).apply ((xp)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp).xreturncode)) (0))
+                xtest_close_stdin.write
+                  [xself]
+                    memory > xuser_input
+                    memory > xprocess
+                    memory > xoutput
+                    memory > xprepare_repl
+                    seq > @
+                      seq
+                        xuser_input.write (((xdedent)).apply ((((unsupported)).apply)))
+                        xprepare_repl.write (((xdedent)).apply ((((unsupported)).apply)))
+                        xprocess.write (((xspawn_repl)).apply ("-c") ((xprepare_repl)))
+                        xoutput.write (((unsupported)).apply (((((xprocess).xcommunicate)).apply ((xuser_input)))) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xprocess).xreturncode)) (0))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("before close") ((xoutput)))
+            ((x__name__).eq "__main__").if
+              unsupported

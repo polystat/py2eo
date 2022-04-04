@@ -1,0 +1,106 @@
+memory > xlist
+memory > xrange
+memory > xs
+memory > xargs
+memory > xunittest
+memory > xEOFError
+memory > xxdrlib
+memory > x__name__
+[] > test_xdrlib
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_pack_int
+        memory > xsetUp
+        memory > xassertRaisesConversion
+        memory > xtest_xdr
+        memory > xtest_uhyper
+        memory > xtest_pack_uint
+        memory > xtest_float
+        memory > xtest_double
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              xtest_xdr.write
+                [xself]
+                  memory > xdata
+                  memory > xup
+                  memory > xpos
+                  memory > xp
+                  memory > xs2
+                  memory > xa
+                  seq > @
+                    seq
+                      xp.write ((((xxdrlib).xPacker)).apply)
+                      xs2.write "hello world"
+                      xa.write (((unsupported)).apply ("what") ("is") ("hapnin") ("doctor"))
+                      bogusForceDataize.write ((((xp).xpack_int)).apply (42))
+                      bogusForceDataize.write ((((xp).xpack_int)).apply ((17.neg)))
+                      bogusForceDataize.write ((((xp).xpack_uint)).apply (9))
+                      bogusForceDataize.write ((((xp).xpack_bool)).apply (TRUE))
+                      bogusForceDataize.write ((((xp).xpack_bool)).apply (FALSE))
+                      bogusForceDataize.write ((((xp).xpack_uhyper)).apply (45))
+                      bogusForceDataize.write ((((xp).xpack_float)).apply (1.9))
+                      bogusForceDataize.write ((((xp).xpack_double)).apply (1.9))
+                      bogusForceDataize.write ((((xp).xpack_string)).apply ((xs)))
+                      bogusForceDataize.write ((((xp).xpack_list)).apply ((((xrange)).apply (5))) (((xp).xpack_uint)))
+                      bogusForceDataize.write ((((xp).xpack_array)).apply ((xa)) (((xp).xpack_string)))
+                      xdata.write ((((xp).xget_buffer)).apply)
+                      xup.write ((((xxdrlib).xUnpacker)).apply ((xdata)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xget_position)).apply)) (0))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xunpack_int)).apply)) (42))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xunpack_int)).apply)) ((17.neg)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xunpack_uint)).apply)) (9))
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((unsupported)).apply (((((xup).xunpack_bool)).apply)) (TRUE))))
+                      xpos.write ((((xup).xget_position)).apply)
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((unsupported)).apply (((((xup).xunpack_bool)).apply)) (FALSE))))
+                      bogusForceDataize.write ((((xup).xset_position)).apply ((xpos)))
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((unsupported)).apply (((((xup).xunpack_bool)).apply)) (FALSE))))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xunpack_uhyper)).apply)) (45))
+                      bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((((xup).xunpack_float)).apply)) (1.9))
+                      bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((((xup).xunpack_double)).apply)) (1.9))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xunpack_string)).apply)) ((xs)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xunpack_list)).apply (((xup).xunpack_uint)))) ((((xlist)).apply ((((xrange)).apply (5))))))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xup).xunpack_array)).apply (((xup).xunpack_string)))) ((xa)))
+                      bogusForceDataize.write ((((xup).xdone)).apply)
+                      bogusForceDataize.write ((((xself).xassertRaises)).apply ((xEOFError)) (((xup).xunpack_uint)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xpacker)) (((((xxdrlib).xPacker)).apply)))
+                xassertRaisesConversion.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertRaises)).apply (((xxdrlib).xConversionError)) ((((unsupported)).apply ((xargs)))))
+                xtest_pack_int.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)).apply ((((xself).xpacker).xpack_int)) ("string"))
+                xtest_pack_uint.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)).apply ((((xself).xpacker).xpack_uint)) ("string"))
+                xtest_float.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)).apply ((((xself).xpacker).xpack_float)) ("string"))
+                xtest_double.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)).apply ((((xself).xpacker).xpack_double)) ("string"))
+                xtest_uhyper.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertRaisesConversion)).apply ((((xself).xpacker).xpack_uhyper)) ("string"))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write ((((xunittest).xmain)).apply)
