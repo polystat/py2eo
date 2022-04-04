@@ -42,11 +42,9 @@ class TestsSimple(path: jl.String) {
       }catch {
         case e : Throwable =>
           println(s"failed to transpile ${test.getName}: ${e.toString}")
+
           fail(e.getLocalizedMessage)
       }
-
-      //    val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
-      //    assertTrue(0 == Process(python + " \"" + runme + "\"").!)
     }
   }
 
@@ -58,9 +56,10 @@ class TestsSimple(path: jl.String) {
 object TestsSimple {
   @Parameters def parameters: ju.Collection[Array[jl.String]] = {
     val resFolder = getClass.getResource("").getFile
+    val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
 
     val res = collection.mutable.ArrayBuffer[String]()
-    val simpleTestsFolder = new File(resFolder + File.separator + "simple-tests/")
+    val simpleTestsFolder = new File(testsPrefix + File.separator + "simple-tests" + File.separator)
     Files.walk(simpleTestsFolder.toPath).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
       val testHolder = new File(p.toString)
       try {
