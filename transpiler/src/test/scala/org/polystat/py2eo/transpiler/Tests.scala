@@ -4,7 +4,6 @@ import org.junit.Assert.{assertTrue, fail}
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.parser.{Parse, Statement}
 import org.polystat.py2eo.transpiler.Common.dfsFiles
-import org.scalatest.Tag
 import org.yaml.snakeyaml.Yaml
 
 import java.io.{File, FileInputStream}
@@ -17,8 +16,6 @@ import scala.language.postfixOps
 import scala.sys.process.{Process, ProcessLogger}
 
 
-object SlowTest extends Tag("SlowTest")
-
 class Tests {
   // the script to convert python files to .yaml containers. Use it to add new big files
   // for i in *.py; do perl -e 'print "python: |\n"; while (<>) { print "  $_" } ' < $i > ${i%.py}.yaml; done
@@ -26,7 +23,6 @@ class Tests {
   val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
-  private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
   import Main.{debugPrinter, readFile, writeFile}
 
@@ -58,6 +54,7 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)

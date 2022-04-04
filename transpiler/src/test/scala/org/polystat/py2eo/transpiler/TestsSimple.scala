@@ -61,7 +61,7 @@ object TestsSimple {
     val resFolder = getClass.getResource("").getFile
 
     val res = collection.mutable.ArrayBuffer[String]()
-    val simpleTestsFolder = new File(resFolder + File.separator + "simple-tests")
+    val simpleTestsFolder = new File(resFolder + File.separator + "simple-tests/")
     Files.walk(simpleTestsFolder.toPath).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
       val testHolder = new File(p.toString)
       try {
