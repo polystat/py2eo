@@ -23,16 +23,15 @@ class TestsSimple(path: jl.String) {
   def yaml2python(f : File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    YamlTest(map.get("python"), map.containsKey("disabled"))
+
+    YamlTest(map.get("python"),  map.containsKey("disabled") && map.getOrDefault("disabled","false").asInstanceOf[Boolean])
   }
 
   def useCageHolder(test : File): Unit = {
     def db = debugPrinter(test)(_, _)
     val z = yaml2python(test)
 
-    println("use cage " + test.getName)
-
-    if (!z.disabled) {
+    if (z.disabled) {
       try {
         writeFile(
           test, "genCageEO", ".eo", Transpile.transpile(db)(
