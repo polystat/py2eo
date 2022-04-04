@@ -1,6 +1,5 @@
 package org.polystat.py2eo.checker
 
-import org.polystat.py2eo.checker.Check.{diffName, expected}
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 
@@ -41,12 +40,12 @@ object Write {
   private def row(test: TestResult, mutations: Iterable[Mutation]): String = {
     lazy val name = test.name
     test.results match {
-      case Left(stage) =>
-        lazy val colspan = mutations.size
-        lazy val str = s"<td colspan=\"$colspan\" class=\"data\">Original test $stage</td>"
+      case None =>
+        lazy val colspan = mutations size
+        lazy val str = s"<td colspan=\"$colspan\" class=\"data\">Original test couldn't be transpiled</td>"
         s"<tr>\n<th class=\"left\">$name</th>\n$str</tr>\n"
 
-      case Right(results) =>
+      case Some(results) =>
         lazy val cells = mutations.toList map (mutation => cell(mutation, name, results(mutation)))
         s"<tr>\n<th class=\"left\">$name</th>\n${cells mkString}</tr>\n"
     }
@@ -54,20 +53,18 @@ object Write {
 
   /** Returns table cell with test result */
   private def cell(mutation: Mutation, name: String, stage: CompilingResult): String = {
-    lazy val link = diffName(name, mutation)
-
-    lazy val kind = if (stage == CompilingResult.invalid) {
-      "data"
-    } else if (stage == expected(mutation)) {
-      "expected data"
-    } else {
-      "unexpected data"
+    lazy val kind = stage match {
+      case CompilingResult.invalid => "data"
+      case CompilingResult.failed => "unexpected data"
+      case CompilingResult.nodiff => "unexpected data"
+      case CompilingResult.passed => "expected data"
     }
 
-    lazy val data = if (Set(CompilingResult.invalid, CompilingResult.failed) contains stage) {
-      stage toString
-    } else {
+    lazy val data = if (stage equals CompilingResult.passed) {
+      lazy val link = Check.diffName(name, mutation)
       s"<a href=\"$link\">$stage</a>"
+    } else {
+      stage
     }
 
     s"<td class=\"$kind\">$data</td>\n"
