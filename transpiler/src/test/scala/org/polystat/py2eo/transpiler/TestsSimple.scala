@@ -32,19 +32,29 @@ class TestsSimple(path: jl.String) {
     val z = yaml2python(test)
 
     if (!z.disabled) {
-      try {
-        writeFile(
-          test, "genCageEO", ".eo", Transpile.transpile(db)(
-            test.getName.replace(".yaml", ""),
-            z.python
-          )
-        )
-      }catch {
-        case e : Throwable =>
-          println(s"failed to transpile ${test.getName}: ${e.toString}")
+      val res = Transpile(test.getName.replace(".yaml", ""),
+        z.python)
 
-          fail(e.getLocalizedMessage)
+      res match {
+        case None => fail(s"could not transpile ${test.getName}");
+        case Some(transpiled) =>
+          writeFile(
+            test, "genCageEO", ".eo", transpiled
+          )
       }
+//      try {
+//        writeFile(
+//          test, "genCageEO", ".eo", Transpile.transpile(db)(
+//            test.getName.replace(".yaml", ""),
+//            z.python
+//          )
+//        )
+//      }catch {
+//        case e : Throwable =>
+//          println(s"failed to transpile ${test.getName}: ${e.toString}")
+//
+//          fail(e.getLocalizedMessage)
+//      }
     }
   }
 
@@ -55,7 +65,6 @@ class TestsSimple(path: jl.String) {
 
 object TestsSimple {
   @Parameters def parameters: ju.Collection[Array[jl.String]] = {
-    val resFolder = getClass.getResource("").getFile
     val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
 
     val res = collection.mutable.ArrayBuffer[String]()
