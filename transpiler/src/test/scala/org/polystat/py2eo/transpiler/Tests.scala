@@ -1,6 +1,6 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.{assertTrue, fail}
+import org.junit.Assert.assertTrue
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.parser.{Parse, Statement}
 import org.polystat.py2eo.transpiler.Common.dfsFiles
@@ -54,7 +54,6 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
-  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -144,39 +143,4 @@ class Tests {
     )
     for (f <- futures) Await.result(f, Duration.Inf)
   }
-
-  def useCageHolder(test : File): Unit = {
-    def db = debugPrinter(test)(_, _)
-    val z = yaml2python(test)
-
-    if (!z.disabled) {
-      try {
-        writeFile(
-          test, "genCageEO", ".eo", Transpile.transpile(db)(
-            test.getName.replace(".yaml", ""),
-            z.python
-          )
-        )
-      }catch {
-        case e : Throwable =>
-          println(s"failed to transpile ${test.getName}: ${e.toString}")
-          fail(e.getLocalizedMessage)
-      }
-
-  //    val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
-    //    assertTrue(0 == Process(python + " \"" + runme + "\"").!)
-    }
-  }
-
-  def simpleConstructionCheck(path:String): Unit = {
-    val testHolder = new File(path)
-    if (testHolder.exists && testHolder.isDirectory) {
-      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-        if (file.getName.endsWith(".yaml")) {
-          useCageHolder(file)
-        }
-      }
-    }
-  }
-
 }
