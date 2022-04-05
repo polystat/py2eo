@@ -31,7 +31,7 @@ class TestsSimple(path: jl.String) {
     def db = debugPrinter(test)(_, _)
     val z = yaml2python(test)
 
-    if (z.disabled) {
+    if (!z.disabled) {
       try {
         writeFile(
           test, "genCageEO", ".eo", Transpile.transpile(db)(
