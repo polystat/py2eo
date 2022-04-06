@@ -18,17 +18,18 @@ import java.{lang => jl, util => ju}
 class TestsSimple(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
 
-  case class YamlTest(python : String, disabled : Boolean)
+  case class YamlTest(python: String, disabled: Boolean)
 
-  def yaml2python(f : File): YamlTest = {
+  def yaml2python(f: File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
 
-    YamlTest(map.get("python"),  map.containsKey("disabled") && map.getOrDefault("disabled","false").asInstanceOf[Boolean])
+    YamlTest(map.get("python"), map.containsKey("disabled") && map.getOrDefault("disabled", "false").asInstanceOf[Boolean])
   }
 
-  def useCageHolder(test : File): Unit = {
+  def useCageHolder(test: File): Unit = {
     def db = debugPrinter(test)(_, _)
+
     val z = yaml2python(test)
 
     if (!z.disabled) {
@@ -42,19 +43,6 @@ class TestsSimple(path: jl.String) {
             test, "genCageEO", ".eo", transpiled
           )
       }
-//      try {
-//        writeFile(
-//          test, "genCageEO", ".eo", Transpile.transpile(db)(
-//            test.getName.replace(".yaml", ""),
-//            z.python
-//          )
-//        )
-//      }catch {
-//        case e : Throwable =>
-//          println(s"failed to transpile ${test.getName}: ${e.toString}")
-//
-//          fail(e.getLocalizedMessage)
-//      }
     }
   }
 
