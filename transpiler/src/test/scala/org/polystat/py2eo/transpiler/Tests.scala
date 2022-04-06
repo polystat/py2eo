@@ -39,7 +39,7 @@ class Tests {
     if (match1.group(1) == "2") "python3" else "python"
   }
 
-  case class YamlTest(python : String, disabled : Boolean)
+  case class YamlTest(python : String, enabled : Boolean)
 
   def yaml2python(f : File): YamlTest = {
     val yaml = new Yaml()
@@ -152,7 +152,7 @@ class Tests {
     def db = debugPrinter(test)(_, _)
     val z = yaml2python(test)
 
-    if (!z.disabled) {
+    if (!z.enabled) {
       try {
         writeFile(
           test, "genCageEO", ".eo", Transpile.transpile(db)(
