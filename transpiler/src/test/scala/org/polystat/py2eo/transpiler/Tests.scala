@@ -39,12 +39,12 @@ class Tests {
     if (match1.group(1) == "2") "python3" else "python"
   }
 
-  case class YamlTest(python : String, disabled : Boolean)
+  case class YamlTest(python : String, enabled : Boolean)
 
   def yaml2python(f : File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    YamlTest(map.get("python"), map.containsKey("disabled"))
+    YamlTest(map.get("python"), map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean])
   }
 
   def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
@@ -152,7 +152,7 @@ class Tests {
     def db = debugPrinter(test)(_, _)
     val z = yaml2python(test)
 
-    if (!z.disabled) {
+    if (z.enabled) {
       try {
         writeFile(
           test, "genCageEO", ".eo", Transpile.transpile(db)(
