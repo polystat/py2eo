@@ -1,17 +1,17 @@
 package org.polystat.py2eo.transpiler
 
+import java.io.{File, FileInputStream}
+import java.nio.file.{Files, Path}
+import java.{lang => jl, util => ju}
+
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import org.polystat.py2eo.transpiler.Main.{debugPrinter, writeFile}
+import org.polystat.py2eo.transpiler.Main.writeFile
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
-
-import java.io.{File, FileInputStream}
-import java.nio.file.{Files, Path}
-import java.{lang => jl, util => ju}
 
 
 @RunWith(value = classOf[Parameterized])
@@ -24,12 +24,10 @@ class TestsSimple(path: jl.String) {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
 
-    YamlTest(map.get("python"), map.containsKey("disabled") && map.getOrDefault("disabled", "false").asInstanceOf[Boolean])
+    YamlTest(map.get("python"), map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean])
   }
 
   def useCageHolder(test: File): Unit = {
-    def db = debugPrinter(test)(_, _)
-
     val z = yaml2python(test)
 
     if (!z.disabled) {
