@@ -18,7 +18,7 @@ import org.yaml.snakeyaml.error.YAMLException
 class TestsSimple(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
 
-  case class YamlTest(python: String, disabled: Boolean)
+  case class YamlTest(python: String, enabled: Boolean)
 
   def yaml2python(f: File): YamlTest = {
     val yaml = new Yaml()
@@ -28,11 +28,11 @@ class TestsSimple(path: jl.String) {
   }
 
   def useCageHolder(test: File): Unit = {
-    val z = yaml2python(test)
+    val yamlObj = yaml2python(test)
 
-    if (z.disabled) {
+    if (yamlObj.enabled) {
       val res = Transpile(test.getName.replace(".yaml", ""),
-        z.python)
+        yamlObj.python)
 
       res match {
         case None => fail(s"could not transpile ${test.getName}");
