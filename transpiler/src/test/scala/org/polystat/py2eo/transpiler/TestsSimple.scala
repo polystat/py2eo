@@ -30,7 +30,7 @@ class TestsSimple(path: jl.String) {
   def useCageHolder(test: File): Unit = {
     val z = yaml2python(test)
 
-    if (!z.disabled) {
+    if (z.disabled) {
       val res = Transpile(test.getName.replace(".yaml", ""),
         z.python)
 
