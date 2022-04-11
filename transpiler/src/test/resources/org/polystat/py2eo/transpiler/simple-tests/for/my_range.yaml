@@ -1,0 +1,25 @@
+python: |
+  def myRange():
+    class StopIteration: pass
+    class MyRange:
+      i = 0
+      last = 2
+      def next(self):
+        if (self.i == self.last):
+          raise StopIteration()
+        else:
+          ret = self.i
+          self.i = self.i + 1
+          return ret
+
+    r = MyRange()
+    z = 0
+    try:
+      z = z + r.next()
+      z = z + r.next()
+      z = z + r.next()
+    except StopIteration: pass
+
+    return z == 1
+
+  #assert(myRange())
