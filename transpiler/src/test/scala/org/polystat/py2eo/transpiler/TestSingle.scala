@@ -65,10 +65,10 @@ class TestSingle(path: jl.String) {
   private def run(file: File):Boolean = {
     //val  result = new File(runEOPath + s"/${file.getName}")
     //val path = Path.of(runEOPath + s"/${file.getName}")
-    val path = Path.of(s"D:\\EO\\py2eo\\runEO\\${file.getName}")
+    val path = Path.of(s"$runEOPath/${file.getName}")
     val test = Files.copy(file.toPath, path, REPLACE_EXISTING).toAbsolutePath
     println(test)
-    val dir = new java.io.File("D:\\EO\\py2eo\\runEO\\")
+    val dir = new java.io.File(runEOPath)
     //var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
     var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
     pb = pb.directory(dir)
