@@ -1,6 +1,5 @@
 package org.polystat.py2eo.transpiler
 
-import jdk.internal.vm.vector.VectorSupport.test
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,8 +59,6 @@ class TestsChecker (path: jl.String) {
     val dir = new java.io.File(runEOPath.jfile.getPath)
     val process = new ProcessBuilder(s"mvn clean test -DpathToEo=\"$file\"").directory(dir).start
     val ret = process.waitFor(40, TimeUnit.SECONDS)
-
-    Files delete test
 
     if (ret) {
       process.exitValue == 0
