@@ -10,16 +10,18 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
 import java.io.{File, FileInputStream}
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Path}
 import java.util.concurrent.TimeUnit
-import java.{lang => jl, util => ju}
+import java.{ lang => jl, util => ju}
+import scala.language.postfixOps
 import scala.reflect.io.Directory
 
 
 @RunWith(value = classOf[Parameterized])
 class TestSingle(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
-  private val runEOPath = Directory.Current.get / "runEO"
+  private val runEOPath = Directory.Current.get.jfile + "/runEO"
 
   case class YamlTest(python: String)
 
@@ -49,11 +51,33 @@ class TestSingle(path: jl.String) {
     }
   }
 
+//  private def compile(file: File): Boolean = {
+//    val path = Path.of(s"D:\\EO\\py2eo\\runEO\\${file.getName}")
+//    val result = Files.copy(file.toPath, path, REPLACE_EXISTING)
+//    val ret = Process(s"mvn clean test -DpathToEo=${new File(result.toString)}", new File("D:\\EO\\py2eo\\runEO")).! == 0
+//
+//    Files delete result
+//
+//    ret
+//  }
+
 
   private def run(file: File):Boolean = {
-    val dir = new java.io.File(runEOPath.jfile.getPath)
-    val process = new ProcessBuilder(s"mvn clean test -DpathToEo=\"$file\"").directory(dir).start
+    //val  result = new File(runEOPath + s"/${file.getName}")
+    //val path = Path.of(runEOPath + s"/${file.getName}")
+    val path = Path.of(s"D:\\EO\\py2eo\\runEO\\${file.getName}")
+    val test = Files.copy(file.toPath, path, REPLACE_EXISTING).toAbsolutePath
+    println(test)
+    val dir = new java.io.File("D:\\EO\\py2eo\\runEO\\")
+    //var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
+    var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
+    pb = pb.directory(dir)
+    pb.inheritIO()
+    val process = pb.start
     val ret = process.waitFor(40, TimeUnit.SECONDS)
+
+
+    Files.delete(test)
 
     if (ret) {
       process.exitValue == 0
