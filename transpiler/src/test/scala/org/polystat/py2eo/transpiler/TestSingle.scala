@@ -19,8 +19,7 @@ import scala.reflect.io.Directory
 @RunWith(value = classOf[Parameterized])
 class TestSingle(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
-  private val resourcesPath = Directory.Current.get / "checker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checkerchecker/src/test/resources/org/polystat/py2eo/checker"
-  private val runEOPath = resourcesPath / "runEO"
+  private val runEOPath = Directory.Current.get / "runEO"
 
   case class YamlTest(python: String)
 
