@@ -19,8 +19,8 @@ import scala.reflect.io.Directory
 @RunWith(value = classOf[Parameterized])
 class TestsChecker (path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
-  private val resourcesPath = Directory.Current.get / "checker/src/test/resources/org/polystat/py2eo/checker"
-  private val runEOPath = resourcesPath / "runEO"
+  private val resourcesPath = Directory.Current.get / "runEO"
+
 
   case class YamlTest(python: String, disabled: Boolean)
 
@@ -56,7 +56,7 @@ class TestsChecker (path: jl.String) {
 
 
   private def run(file: File):Boolean = {
-    val dir = new java.io.File(runEOPath.jfile.getPath)
+    val dir = new java.io.File(resourcesPath.jfile.getPath)
     val process = new ProcessBuilder(s"mvn clean test -DpathToEo=\"$file\"").directory(dir).start
     val ret = process.waitFor(40, TimeUnit.SECONDS)
 
