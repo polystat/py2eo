@@ -43,16 +43,16 @@ object Transpile {
           val hacked = Suite(List(
             theFun,
             Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-        Assert(Ident("assertMe", ann.pos), None, ann.pos)
+            Assert(Ident("assertMe", ann.pos), None, ann.pos)
           ), ann.pos)
           debugPrinter(hacked, "afterUseCage")
           val eoHacked = Suite(List(
             theFun,
             Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-        Return(Some(Ident("assertMe", ann.pos)), ann.pos)
-      ), ann.pos)
-      val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
-      (eoText.init :+ "  (goto (apply.@)).result > @").mkString("\n")
+            Return(Some(Ident("assertMe", ann.pos)), ann.pos)
+          ), ann.pos)
+          val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
+          (eoText.init :+ "  (goto (apply.@)).result > @").mkString("\n")
         }
         catch {
           case e: Throwable => {
