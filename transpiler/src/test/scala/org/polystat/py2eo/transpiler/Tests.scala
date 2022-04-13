@@ -1,10 +1,9 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.{assertTrue, fail}
+import org.junit.Assert.assertTrue
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.parser.{Parse, Statement}
 import org.polystat.py2eo.transpiler.Common.dfsFiles
-import org.scalatest.Tag
 import org.yaml.snakeyaml.Yaml
 
 import java.io.{File, FileInputStream}
@@ -17,8 +16,6 @@ import scala.language.postfixOps
 import scala.sys.process.{Process, ProcessLogger}
 
 
-object SlowTest extends Tag("SlowTest")
-
 class Tests {
   // the script to convert python files to .yaml containers. Use it to add new big files
   // for i in *.py; do perl -e 'print "python: |\n"; while (<>) { print "  $_" } ' < $i > ${i%.py}.yaml; done
@@ -26,7 +23,6 @@ class Tests {
   val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
-  private val yamlPrefix = System.getProperty("user.dir") + "/src/test/resources/yaml/"
 
   import Main.{debugPrinter, readFile, writeFile}
 
@@ -39,12 +35,12 @@ class Tests {
     if (match1.group(1) == "2") "python3" else "python"
   }
 
-  case class YamlTest(python : String, disabled : Boolean)
+  case class YamlTest(python : String, enabled : Boolean)
 
   def yaml2python(f : File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    YamlTest(map.get("python"), map.containsKey("disabled"))
+    YamlTest(map.get("python"), map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean])
   }
 
   def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
@@ -58,7 +54,6 @@ class Tests {
     SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
   }
 
-  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
@@ -148,120 +143,4 @@ class Tests {
     )
     for (f <- futures) Await.result(f, Duration.Inf)
   }
-
-  def useCageHolder(test : File): Unit = {
-    def db = debugPrinter(test)(_, _)
-    val z = yaml2python(test)
-
-    if (!z.disabled) {
-      try {
-        writeFile(
-          test, "genCageEO", ".eo", Transpile.transpile(db)(
-            test.getName.replace(".yaml", ""),
-            z.python
-          )
-        )
-      }catch {
-        case e : Throwable =>
-          println(s"failed to transpile ${test.getName}: ${e.toString}")
-          fail(e.getLocalizedMessage)
-      }
-
-  //    val runme = test.getParentFile.getPath + "/afterUseCage/" + chopExtension(test.getName) + ".py"
-    //    assertTrue(0 == Process(python + " \"" + runme + "\"").!)
-    }
-  }
-
-  @Test def whileCheckTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/while")
-  }
-
-  @Test def ifCheck():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/if")
-  }
-
-  @Test def forCheck():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/for")
-  }
-
-  @Test def assignCheck():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/assign")
-  }
-
-  @Test def classCheck():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/class")
-  }
-
-  @Test def exceptionsCheck():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/exceptions")
-  }
-
-  @Test def conversion():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/arithmetic-conversion")
-  }
-
-  @Test def assertTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/assert")
-  }
-
-  @Test def functionDefTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/function-def")
-  }
-
-  @Test def importTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/import")
-  }
-
-  @Test def annotatedAssignTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/annotated-assignment")
-  }
-
-  @Test def expressionStatementTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/expression-statement")
-  }
-
-  @Test def returnTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/return")
-  }
-
-  @Test def comprehensionTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/comprehension-expression")
-  }
-
-  @Test def dictionaryTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/dictionary")
-  }
-
-  @Test def generatorTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/generator-expression")
-  }
-
-  @Test def listTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/list")
-  }
-
-  @Test def setTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/set")
-  }
-
-  @Test def attributeRefsTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/attribute-reference")
-  }
-
-  @Test def lambdaTest():Unit = {
-    simpleConstructionCheck(testsPrefix + "/simple-tests/lambda")
-  }
-
-  def simpleConstructionCheck(path:String): Unit = {
-    val testHolder = new File(path)
-    if (testHolder.exists && testHolder.isDirectory) {
-      for (file <- testHolder.listFiles.filter(_.isFile).toList) {
-        if (file.getName.endsWith(".yaml")) {
-          useCageHolder(file)
-        }
-      }
-    }
-  }
-
 }
-
