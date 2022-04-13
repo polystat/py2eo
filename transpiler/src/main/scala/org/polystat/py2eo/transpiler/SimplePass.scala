@@ -416,7 +416,7 @@ object SimplePass {
       }
       case Raise(Some(x), None, ann) => f(false, x, ns) match {
         case (Left(e), ns) => (Raise(Some(e), None, ann.pos), ns)
-        case (Right((st, e)), ns) => (Suite(List(st, Return(Some(e), e.ann.pos)), ann.pos), ns)
+        case (Right((st, e)), ns) => (Suite(List(st, Raise(Some(e), None, e.ann.pos)), ann.pos), ns)
       }
       case cd@ClassDef(name, bases, body, Decorators(List()), ann) =>
         val (body1, ns1) = pst(body, ns)
