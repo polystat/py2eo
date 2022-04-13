@@ -35,11 +35,9 @@ object Transpile {
           debugPrinter(rmExcepts._1, "afterRmExcepts")
           val simIf = SimplePass.procStatement(SimplePass.simplifyIf)(rmExcepts._1, rmExcepts._2)
           debugPrinter(simIf._1, "simplifyIf")
-          val methodCall = SimplePass.procExprInStatement(
-            SimplePass.procExpr(SimplePass.simpleSyntacticMethodCall))(simIf._1, simIf._2)
+          val methodCall = SimplePass.procExprInStatement((SimplePass.simpleSyntacticMethodCall))(simIf._1, simIf._2)
           debugPrinter(methodCall._1, "methodCall")
-          val textractAllCalls = SimplePass.procExprInStatement(
-            SimplePass.procExpr(SimplePass.extractAllCalls))(methodCall._1, methodCall._2)
+          val textractAllCalls = SimplePass.procExprInStatement((SimplePass.extractAllCalls))(methodCall._1, methodCall._2)
           debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
           val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
           val hacked = Suite(List(
