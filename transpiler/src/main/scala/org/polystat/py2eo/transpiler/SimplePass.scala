@@ -284,6 +284,7 @@ object SimplePass {
       CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
   }
 
+  // it DOES call procExpr itself!
   def procExprInStatement(f: (Boolean, T, NamesU) => (EAfterPass, NamesU))(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
     def pst = procExprInStatement(f)(_, _)
     def pstl(l: List[Statement.T], ns: NamesU) =
@@ -312,7 +313,7 @@ object SimplePass {
       case IfSimple(cond, yes, no, ann) =>
         val (yes1, ns1) = pst(yes, ns)
         val (no1, ns2) = pst(no, ns1)
-        f(false, cond, ns2) match {
+        procExpr(f)(false, cond, ns2) match {
           case (Left(cond), ns) => (IfSimple(cond, yes1, no1, ann.pos), ns)
           case (Right((scond, cond)), ns) => (Suite(List(scond, IfSimple(cond, yes1, no1, ann.pos)), ann.pos), ns)
         }
@@ -328,7 +329,7 @@ object SimplePass {
       case While(cond, body, Some(eelse), ann) =>
         val (body1, ns1) = pst(body, ns)
         val (else1, ns2) = pst(eelse, ns1)
-        f(false, cond, ns2) match {
+        procExpr(f)(false, cond, ns2) match {
           case (Left(cond), ns) => (While(cond, body1, Some(else1), ann.pos), ns)
           case (Right((scond, cond)), ns) =>
             val ann = cond.ann.pos
@@ -410,11 +411,11 @@ object SimplePass {
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(stl ++ str :+ AugAssign(op, el, er, ann.pos), ann.pos), ns)
-      case Return(Some(x), ann) => f(false, x, ns) match {
+      case Return(Some(x), ann) => procExpr(f)(false, x, ns) match {
         case (Left(e), ns) => (Return(Some(e), ann.pos), ns)
         case (Right((st, e)), ns) => (Suite(List(st, Return(Some(e), e.ann.pos)), ann.pos), ns)
       }
-      case Raise(Some(x), None, ann) => f(false, x, ns) match {
+      case Raise(Some(x), None, ann) => procExpr(f)(false, x, ns) match {
         case (Left(e), ns) => (Raise(Some(e), None, ann.pos), ns)
         case (Right((st, e)), ns) => (Suite(List(st, Raise(Some(e), None, e.ann.pos)), ann.pos), ns)
       }
