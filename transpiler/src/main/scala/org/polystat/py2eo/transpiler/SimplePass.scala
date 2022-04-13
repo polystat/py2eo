@@ -851,6 +851,42 @@ object SimplePass {
     case _ => (s, ns)
   }
 
+  def simplifyFor(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case For(what, in, body, eelse, false, ann) =>
+      val (it, ns1) = ns("it")
+      (Suite(List(
+        Assign(List(Ident(it, in.ann.pos), CallIndex(true, Field(in, "__iter__", in.ann.pos), List(), in.ann.pos)), in.ann.pos),
+        Try(
+          While(
+            BoolLiteral(true, ann.pos),
+            Suite(
+              List(
+                Assign(
+                  List(
+                    what,
+                    CallIndex(true, Field(Ident(it, in.ann.pos), "__next__", in.ann.pos), List(), in.ann.pos)
+                  ),
+                  what.ann.pos
+                ),
+                body
+              ),
+              body.ann.pos
+            ),
+            None,
+            ann.pos
+          ),
+          List(
+            (Some(Ident("StopIteration", ann.pos), None), Pass(ann.pos))
+          ),
+          None,
+          None,
+          ann.pos
+        )
+      ), ann.pos), ns1)
+    case _ => (s, ns)
+  }
+
+
   def simplifyInheritance(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
 
     def simplifyInheritance: (Boolean, T, NamesU) => (EAfterPass, NamesU) = procExpr({
