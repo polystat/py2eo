@@ -19,7 +19,7 @@ import scala.reflect.io.Directory
 
 
 @RunWith(value = classOf[Parameterized])
-class TestSingle(path: jl.String) {
+class Counter(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
   private val runEOPath = Directory.Current.get.jfile + "/runEO"
 
@@ -50,16 +50,6 @@ class TestSingle(path: jl.String) {
         }
     }
   }
-
-//  private def compile(file: File): Boolean = {
-//    val path = Path.of(s"D:\\EO\\py2eo\\runEO\\${file.getName}")
-//    val result = Files.copy(file.toPath, path, REPLACE_EXISTING)
-//    val ret = Process(s"mvn clean test -DpathToEo=${new File(result.toString)}", new File("D:\\EO\\py2eo\\runEO")).! == 0
-//
-//    Files delete result
-//
-//    ret
-//  }
 
 
   private def run(file: File):Boolean = {
@@ -92,7 +82,7 @@ class TestSingle(path: jl.String) {
 }
 
 
-object TestSingle {
+object Counter {
   @Parameters def parameters: ju.Collection[Array[jl.String]] = {
     val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
 
