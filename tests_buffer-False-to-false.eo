@@ -1,0 +1,34 @@
+memory > xfalse
+memory > xTestCase
+memory > xsys
+[] > tests_buffer
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_pass
+        memory > xtest_fail
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_pass.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xsys).xstderr).xwrite)).apply ("Write to stderr."))
+                        bogusForceDataize.write (((((xsys).xstdout).xwrite)).apply ("Write to stdout."))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (TRUE))
+                xtest_fail.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xsys).xstderr).xwrite)).apply ("Write to stderr."))
+                        bogusForceDataize.write (((((xsys).xstdout).xwrite)).apply ("Write to stdout."))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((xfalse)))

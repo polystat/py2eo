@@ -1,0 +1,90 @@
+memory > xcompiler
+memory > xwhere
+memory > xFieldError
+memory > xfrom_sql
+memory > xwhere_sql
+memory > xparams
+memory > xsuper
+memory > xtuple
+memory > xupdate_query
+memory > xsql
+memory > xSQLCompiler
+memory > xupdate_params
+memory > xfrom_params
+memory > xwhere_params
+memory > x_
+memory > xcolumn
+memory > xCol
+memory > xisinstance
+memory > xresolved
+memory > xhaving
+[] > compiler
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xas_subquery_condition
+        memory > xas_sql
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xcompiler).xSQLCompiler)))
+              xas_subquery_condition.write
+                [xself xalias xcolumns xcompiler]
+                  memory > xqn
+                  memory > xqn2
+                  seq > @
+                    seq
+                      xqn.write ((xcompiler).xquote_name_unless_alias)
+                      xqn2.write ((((xself).xconnection).xops).xquote_name)
+                      (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) (((xself).xas_sql)))
+                      (((unsupported)).apply ((((unsupported)).apply (("(%s) IN (%s)".mod (((unsupported)).apply ((((", ".xjoin)).apply ((((unsupported)).apply (("%s.%s".mod (((unsupported)).apply ((((xqn)).apply ((xalias)))) ((((xqn2)).apply ((xcolumn))))))) ((xcolumn)) ((xcolumns)))))) ((xsql))))) ((xparams)))))
+            (((unsupported)).apply (((xcompiler).xSQLInsertCompiler)) ((xSQLCompiler)))
+            (((unsupported)).apply (((xcompiler).xSQLDeleteCompiler)) ((xSQLCompiler)))
+              xas_sql.write
+                [xself]
+                  memory > xresult
+                  seq > @
+                    seq
+                      (((unsupported)).apply ((((unsupported)).apply ((xwhere)) ((xhaving)))) (((((xself).xquery).xwhere).xsplit_having)))
+                      (((xself).xsingle_alias).or (xhaving)).if
+                        (((unsupported)).apply (((xsuper).xas_sql)))
+                      xresult.write (((unsupported)).apply (("DELETE %s FROM".mod ((((xself).xquote_name_unless_alias)).apply ((((xself).xquery).xget_initial_alias))))))
+                      (((unsupported)).apply ((((unsupported)).apply ((xfrom_sql)) ((xfrom_params)))) (((xself).xget_from_clause)))
+                      bogusForceDataize.write ((((xresult).xextend)).apply ((xfrom_sql)))
+                      (((unsupported)).apply ((((unsupported)).apply ((xwhere_sql)) ((xwhere_params)))) (((((xself).xcompile)).apply ((xwhere)))))
+                      (xwhere_sql).if
+                        bogusForceDataize.write ((((xresult).xappend)).apply (("WHERE %s".mod (xwhere_sql))))
+                      (((unsupported)).apply ((((unsupported)).apply ((((" ".xjoin)).apply ((xresult)))) (((((xtuple)).apply ((xfrom_params))).add (((xtuple)).apply ((xwhere_params))))))))
+            (((unsupported)).apply (((xcompiler).xSQLUpdateCompiler)) ((xSQLCompiler)))
+              xas_sql.write
+                [xself]
+                  memory > xorder_by_params
+                  memory > xorder_by_sql
+                  memory > xdb_table
+                  seq > @
+                    seq
+                      (((unsupported)).apply ((((unsupported)).apply ((xupdate_query)) ((xupdate_params)))) (((xsuper).xas_sql)))
+                      (((xself).xquery).xorder_by).if
+                        seq
+                          xorder_by_sql.write (((unsupported)).apply)
+                          xorder_by_params.write (((unsupported)).apply)
+                          xdb_table.write ((((xself).xquery).xget_meta).xdb_table)
+                          (((unsupported)).apply ((xFieldError)))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xresolved)) ((((unsupported)).apply ((xsql)) ((xparams)) ((x_)))))) (((xself).xget_order_by)))
+                                seq
+                                  ((((xisinstance)).apply (((xresolved).xexpression)) ((xCol))).and ((((xresolved).xexpression).xalias).neq (xdb_table))).if
+                                    (((unsupported)).apply ((xFieldError)))
+                                  bogusForceDataize.write ((((xorder_by_sql).xappend)).apply ((xsql)))
+                                  bogusForceDataize.write ((((xorder_by_params).xextend)).apply ((xparams)))
+                              (((unsupported)).apply ((xupdate_query)) ((" ORDER BY ".add (((", ".xjoin)).apply ((xorder_by_sql))))))
+                              (((unsupported)).apply ((xupdate_params)) ((((xtuple)).apply ((xorder_by_params)))))
+                      (((unsupported)).apply ((((unsupported)).apply ((xupdate_query)) ((xupdate_params)))))
+            (((unsupported)).apply (((xcompiler).xSQLAggregateCompiler)) ((xSQLCompiler)))

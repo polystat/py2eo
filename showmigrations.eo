@@ -1,0 +1,183 @@
+memory > xparent
+memory > xstr
+memory > xapps
+memory > xerr
+memory > xBaseCommand
+memory > xset
+memory > xsys
+memory > xsorted
+memory > xLookupError
+memory > xtarget
+memory > xkey
+memory > xMigrationRecorder
+memory > xDEFAULT_DB_ALIAS
+memory > xconnections
+memory > xhasattr
+memory > xmigration
+memory > xnode
+memory > xplan_node
+memory > xoptions
+memory > xMigrationLoader
+memory > xlen
+memory > xapp_name
+[] > showmigrations
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_validate_app_names
+        memory > xhandle
+        memory > xshow_plan
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xshow_list
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Shows all available migrations for the current project"
+                xadd_arguments.write
+                  [xself xparser]
+                    memory > xformats
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("app_label") ("*") ("App labels of applications to limit the output to."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ((xDEFAULT_DB_ALIAS)) ("Nominates a database to show migrations for. Defaults to the \"default\" database."))
+                        xformats.write ((((xparser).xadd_mutually_exclusive_group)).apply)
+                        (((unsupported)).apply (((xformats).xadd_argument)) ("--list") ("-l") ("store_const") ("format") ("list") ("Shows a list of all migrations and which are applied. With a verbosity level of 2 or above, the applied datetimes will be included."))
+                        (((unsupported)).apply (((xformats).xadd_argument)) ("--plan") ("-p") ("store_const") ("format") ("plan") ("Shows all migrations in the order they will be applied. With a verbosity level of 2 or above all direct migration dependencies and reverse dependencies (run_before) will be included."))
+                        (((unsupported)).apply (((xparser).xset_defaults)) ("list"))
+                xhandle.write
+                  [xself]
+                    memory > xdb
+                    memory > xconnection
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xverbosity)) ((((unsupported)).apply ((xoptions)) ("verbosity"))))
+                        xdb.write (((unsupported)).apply ((xoptions)) ("database"))
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdb)))
+                        ((((unsupported)).apply ((xoptions)) ("format")).eq "plan").if
+                          (((unsupported)).apply (((((xself).xshow_plan)).apply ((xconnection)) ((((unsupported)).apply ((xoptions)) ("app_label"))))))
+                          (((unsupported)).apply (((((xself).xshow_list)).apply ((xconnection)) ((((unsupported)).apply ((xoptions)) ("app_label"))))))
+                x_validate_app_names.write
+                  [xself xloader xapp_names]
+                    memory > xhas_bad_names
+                    seq > @
+                      seq
+                        xhas_bad_names.write FALSE
+                        (((unsupported)).apply ((xapp_name)) ((xapp_names)))
+                          (((unsupported)).apply ((xLookupError)))
+                            bogusForceDataize.write ((((xapps).xget_app_config)).apply ((xapp_name)))
+                            seq
+                              bogusForceDataize.write (((((xself).xstderr).xwrite)).apply ((((xstr)).apply ((xerr)))))
+                              xhas_bad_names.write TRUE
+                        (xhas_bad_names).if
+                          bogusForceDataize.write ((((xsys).xexit)).apply (2))
+                xshow_list.write
+                  [xself xconnection xapp_names]
+                    memory > xloader
+                    memory > xgraph
+                    memory > xapplied_migration
+                    memory > xtitle
+                    memory > xshown
+                    memory > xrecorder
+                    memory > xrecorded_migrations
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xloader.write (((unsupported)).apply ((xMigrationLoader)) ((xconnection)) (TRUE))
+                        xrecorder.write (((xMigrationRecorder)).apply ((xconnection)))
+                        xrecorded_migrations.write ((((xrecorder).xapplied_migrations)).apply)
+                        xgraph.write ((xloader).xgraph)
+                        (xapp_names).if
+                          bogusForceDataize.write ((((xself).x_validate_app_names)).apply ((xloader)) ((xapp_names)))
+                          xapp_names.write (((xsorted)).apply (((xloader).xmigrated_apps)))
+                        (((unsupported)).apply ((xapp_name)) ((xapp_names)))
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((xapp_name)) ((((xself).xstyle).xMIGRATE_LABEL)))
+                            xshown.write (((xset)).apply)
+                            (((unsupported)).apply ((xnode)) (((((xgraph).xleaf_nodes)).apply ((xapp_name)))))
+                              (((unsupported)).apply ((xplan_node)) (((((xgraph).xforwards_plan)).apply ((xnode)))))
+                                ((((unsupported)).apply ((xplan_node)) ((xshown))).and ((((unsupported)).apply ((xplan_node)) (0)).eq (xapp_name))).if
+                                  seq
+                                    xtitle.write (((unsupported)).apply ((xplan_node)) (1))
+                                    ((((unsupported)).apply (((xgraph).xnodes)) ((xplan_node))).xreplaces).if
+                                      (((unsupported)).apply ((xtitle)) ((" (%s squashed migrations)".mod (((xlen)).apply (((((unsupported)).apply (((xgraph).xnodes)) ((xplan_node))).xreplaces))))))
+                                    xapplied_migration.write (((((xloader).xapplied_migrations).xget)).apply ((xplan_node)))
+                                    (xapplied_migration).if
+                                      seq
+                                        (((unsupported)).apply ((xplan_node)) ((xrecorded_migrations))).if
+                                          xoutput.write (" [X] %s".mod (xtitle))
+                                          seq
+                                            (((unsupported)).apply ((xtitle)) (" Run 'manage.py migrate' to finish recording."))
+                                            xoutput.write (" [-] %s".mod (xtitle))
+                                        ((((xself).xverbosity).geq 2).and (((xhasattr)).apply ((xapplied_migration)) ("applied"))).if
+                                          (((unsupported)).apply ((xoutput)) ((" (applied at %s)".mod (((((xapplied_migration).xapplied).xstrftime)).apply ("%Y-%m-%d %H:%M:%S")))))
+                                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((xoutput)))
+                                      bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((" [ ] %s".mod (xtitle))))
+                                    bogusForceDataize.write ((((xshown).xadd)).apply ((xplan_node)))
+                            ((xshown).not).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (" (no migrations)") ((((xself).xstyle).xERROR)))
+                xshow_plan.write
+                  [xself xconnection xapp_names]
+                    memory > xloader
+                    memory > xtargets
+                    memory > xprint_deps
+                    memory > xgraph
+                    memory > xplan
+                    memory > xnode
+                    memory > xdeps
+                    memory > xseen
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xloader.write (((xMigrationLoader)).apply ((xconnection)))
+                        xgraph.write ((xloader).xgraph)
+                        (xapp_names).if
+                          seq
+                            bogusForceDataize.write ((((xself).x_validate_app_names)).apply ((xloader)) ((xapp_names)))
+                            xtargets.write (((unsupported)).apply ((xkey)) ((xkey)) (((((xgraph).xleaf_nodes)).apply)) ((((unsupported)).apply ((((unsupported)).apply ((xkey)) (0))) ((xapp_names)))))
+                          xtargets.write ((((xgraph).xleaf_nodes)).apply)
+                        xplan.write (((unsupported)).apply)
+                        xseen.write (((xset)).apply)
+                        (((unsupported)).apply ((xtarget)) ((xtargets)))
+                          (((unsupported)).apply ((xmigration)) (((((xgraph).xforwards_plan)).apply ((xtarget)))))
+                            (((unsupported)).apply ((xmigration)) ((xseen))).if
+                              seq
+                                xnode.write (((unsupported)).apply (((xgraph).xnode_map)) ((xmigration)))
+                                bogusForceDataize.write ((((xplan).xappend)).apply ((xnode)))
+                                bogusForceDataize.write ((((xseen).xadd)).apply ((xmigration)))
+                        xprint_deps.write
+                          [xnode]
+                            memory > xout
+                            seq > @
+                              seq
+                                xout.write (((unsupported)).apply)
+                                (((unsupported)).apply ((xparent)) ((((xsorted)).apply (((xnode).xparents)))))
+                                  bogusForceDataize.write ((((xout).xappend)).apply (("%s.%s".mod ((xparent).xkey))))
+                                (xout).if
+                                  (((unsupported)).apply ((" ... (%s)".mod (((", ".xjoin)).apply ((xout))))))
+                                (((unsupported)).apply (""))
+                        (((unsupported)).apply ((xnode)) ((xplan)))
+                          seq
+                            xdeps.write ""
+                            (((xself).xverbosity).geq 2).if
+                              xdeps.write (((xprint_deps)).apply ((xnode)))
+                            (((unsupported)).apply (((xnode).xkey)) (((xloader).xapplied_migrations))).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("[X]  %s.%s%s".mod (((unsupported)).apply ((((unsupported)).apply (((xnode).xkey)) (0))) ((((unsupported)).apply (((xnode).xkey)) (1))) ((xdeps))))))
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("[ ]  %s.%s%s".mod (((unsupported)).apply ((((unsupported)).apply (((xnode).xkey)) (0))) ((((unsupported)).apply (((xnode).xkey)) (1))) ((xdeps))))))
+                        ((xplan).not).if
+                          bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("(no migrations)") ((((xself).xstyle).xERROR)))

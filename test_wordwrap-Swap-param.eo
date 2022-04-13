@@ -1,0 +1,65 @@
+memory > xwordwrap
+memory > xmark_safe
+memory > xlazystr
+memory > xSimpleTestCase
+[] > test_wordwrap
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_indent
+        memory > xtest_wrap_lazy_string
+        memory > xtest_wordwrap01
+        memory > xtest_wordwrap02
+        memory > xtest_wrap
+        memory > xtest_non_string_input
+        memory > xtest_indent2
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_wordwrap01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("wordwrap01") ((((unsupported)).apply ("a") ("a & b") ("b") ((((xmark_safe)).apply ("a & b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("a &nb a &nb") ((xoutput)))
+                xtest_wordwrap02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("wordwrap02") ((((unsupported)).apply ("a") ("a & b") ("b") ((((xmark_safe)).apply ("a & b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a &amp;nb a &nb"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_wrap.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordwrap)).apply ("this is a long paragraph of text that really needs to be wrapped I'm afraid") (14))) ("this is a longnparagraph ofntext thatnreally needsnto be wrappednI'm afraid"))
+                xtest_indent.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordwrap)).apply ("this is a short paragraph of text.n  But this line should be indented") (14))) ("this is anshortnparagraph ofntext.n  But thisnline should benindented"))
+                xtest_indent2.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordwrap)).apply ("this is a short paragraph of text.n  But this line should be indented") (15))) ("this is a shortnparagraph ofntext.n  But this linenshould benindented"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordwrap)).apply (123) (2))) ("123"))
+                xtest_wrap_lazy_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordwrap)).apply ((((xlazystr)).apply ("this is a long paragraph of text that really needs to be wrapped I'm afraid"))) (14))) ("this is a longnparagraph ofntext thatnreally needsnto be wrappednI'm afraid"))

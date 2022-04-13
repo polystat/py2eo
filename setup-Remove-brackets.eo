@@ -1,0 +1,42 @@
+memory > xsite
+memory > xlib_path
+memory > xsys
+memory > xget_python_lib
+memory > xos
+memory > xsetup
+[] > setup
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xoverlay_warning
+        memory > xlib_paths
+        memory > xexisting_path
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xsite).xENABLE_USER_SITE)) ((((unsupported)).apply ("--user") ((((unsupported)).apply (((xsys).xargv)) ((((unsupported)).apply (1))))))))
+            xoverlay_warning.write FALSE
+            (((unsupported)).apply ("install") (((xsys).xargv))).if
+              seq
+                xlib_paths.write (((unsupported)).apply ((xget_python_lib)))
+                ((((((unsupported)).apply ((xlib_paths)) (0)).xstartswith)).apply ("/usr/lib/")).if
+                  bogusForceDataize.write ((((xlib_paths).xappend)).apply ((((unsupported)).apply ((xget_python_lib)) ("/usr/local"))))
+                (((unsupported)).apply ((xlib_path)) ((xlib_paths)))
+                  seq
+                    xexisting_path.write (((((xos).xpath).xabspath)).apply ((((((xos).xpath).xjoin)).apply ((xlib_path)) ("django"))))
+                    (((((xos).xpath).xexists)).apply ((xexisting_path))).if
+                      seq
+                        xoverlay_warning.write TRUE
+                        (((unsupported)).apply)
+            unsupported
+            (xoverlay_warning).if
+              bogusForceDataize.write (((((xsys).xstderr).xwrite)).apply (((((unsupported)).apply).mod (((unsupported)).apply ("existing_path") ((xexisting_path))))))

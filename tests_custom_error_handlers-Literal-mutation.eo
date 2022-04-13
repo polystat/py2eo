@@ -1,0 +1,64 @@
+memory > xmodify_settings
+memory > xTemplateResponse
+memory > xpath
+memory > xPermissionDenied
+memory > xoverride_settings
+memory > xSimpleTestCase
+[] > tests_custom_error_handlers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xurlpatterns
+        memory > xtemplate_response_error_handler
+        memory > xpermission_denied_view
+        memory > x__init__
+        memory > xhandler403
+        memory > x__call__
+        memory > xtest_handler_renders_template_response
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xget_response]
+                    seq > @
+                      (((unsupported)).apply (((xself).xget_response)) ((xget_response)))
+                x__call__.write
+                  [xself xrequest]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write ((((xself).xget_response)).apply ((xrequest)))
+                        (((unsupported)).apply (((xresponse).xcontent)))
+                        (((unsupported)).apply ((xresponse)))
+            xtemplate_response_error_handler.write
+              [xrequest xexception]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xTemplateResponse)) ((xrequest)) ("test_handler.html") (403))))
+            xpermission_denied_view.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((xPermissionDenied)))
+            xurlpatterns.write (((unsupported)).apply ((((xpath)).apply ("") ((xpermission_denied_view)))))
+            xhandler403.write (xtemplate_response_error_handler)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("handlers.tests_custom_error_handlers"))) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ("handlers.tests_custom_error_handlers.MiddlewareAccessingContent"))))))
+              xtest_handler_renders_template_response.write
+                [xself]
+                  memory > xresponse
+                  seq > @
+                    seq
+                      (((unsupported)).apply)
+                      xresponse.write (((((xself).xclient).xget)).apply ("/"))
+                      (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("Error handler content") (403))

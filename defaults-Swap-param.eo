@@ -1,0 +1,113 @@
+memory > xContext
+memory > xloader
+memory > xAttributeError
+memory > xIndexError
+memory > xHttpResponseServerError
+memory > xHttpResponseBadRequest
+memory > xTemplateDoesNotExist
+memory > xHttpResponseForbidden
+memory > xisinstance
+memory > xquote
+memory > xstr
+memory > xEngine
+memory > xHttpResponseNotFound
+[] > defaults
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xERROR_PAGE_TEMPLATE
+        memory > xERROR_500_TEMPLATE_NAME
+        memory > xserver_error
+        memory > xpage_not_found
+        memory > xbad_request
+        memory > xERROR_404_TEMPLATE_NAME
+        memory > xERROR_400_TEMPLATE_NAME
+        memory > xERROR_403_TEMPLATE_NAME
+        memory > xpermission_denied
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xERROR_404_TEMPLATE_NAME.write "404.html"
+            xERROR_403_TEMPLATE_NAME.write "403.html"
+            xERROR_400_TEMPLATE_NAME.write "400.html"
+            xERROR_500_TEMPLATE_NAME.write "500.html"
+            xERROR_PAGE_TEMPLATE.write (((unsupported)).apply)
+            xpage_not_found.write
+              [xrequest xexception xtemplate_name]
+                memory > xmessage
+                memory > xcontext
+                memory > xtemplate
+                memory > xbody
+                memory > xexception_repr
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xexception_repr.write (((xexception).x__class__).x__name__)
+                    (((unsupported)).apply ((((unsupported)).apply ((xAttributeError)) ((xIndexError)))))
+                      xmessage.write (((unsupported)).apply (((xexception).xargs)) (0))
+                      (((xisinstance)).apply ((xstr)) ((xmessage))).if
+                        xexception_repr.write (xmessage)
+                    xcontext.write (((unsupported)).apply ("request_path") ((((xquote)).apply (((xrequest).xpath)))) ("exception") ((xexception_repr)))
+                    (((unsupported)).apply ((xTemplateDoesNotExist)))
+                      seq
+                        xtemplate.write ((((xloader).xget_template)).apply ((xtemplate_name)))
+                        xbody.write ((((xtemplate).xrender)).apply ((xcontext)) ((xrequest)))
+                      seq
+                        ((xtemplate_name).neq (xERROR_404_TEMPLATE_NAME)).if
+                          (((unsupported)).apply)
+                        xtemplate.write ((((((xEngine)).apply).xfrom_string)).apply (((xERROR_PAGE_TEMPLATE).mod (((unsupported)).apply ("title") ("Not Found") ("details") ("The requested resource was not found on this server.")))))
+                        xbody.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((xcontext)))))
+                    (((unsupported)).apply ((((xHttpResponseNotFound)).apply ((xbody)))))
+            xserver_error.write
+              [xrequest xtemplate_name]
+                memory > xtemplate
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xTemplateDoesNotExist)))
+                      xtemplate.write ((((xloader).xget_template)).apply ((xtemplate_name)))
+                      seq
+                        ((xtemplate_name).neq (xERROR_500_TEMPLATE_NAME)).if
+                          (((unsupported)).apply)
+                        (((unsupported)).apply ((((xHttpResponseServerError)).apply (((xERROR_PAGE_TEMPLATE).mod (((unsupported)).apply ("title") ("Server Error (500)") ("details") ("")))))))
+                    (((unsupported)).apply ((((xHttpResponseServerError)).apply (((((xtemplate).xrender)).apply)))))
+            xbad_request.write
+              [xrequest xexception xtemplate_name]
+                memory > xtemplate
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xTemplateDoesNotExist)))
+                      xtemplate.write ((((xloader).xget_template)).apply ((xtemplate_name)))
+                      seq
+                        ((xtemplate_name).neq (xERROR_400_TEMPLATE_NAME)).if
+                          (((unsupported)).apply)
+                        (((unsupported)).apply ((((xHttpResponseBadRequest)).apply (((xERROR_PAGE_TEMPLATE).mod (((unsupported)).apply ("title") ("Bad Request (400)") ("details") ("")))))))
+                    (((unsupported)).apply ((((xHttpResponseBadRequest)).apply (((((xtemplate).xrender)).apply)))))
+            xpermission_denied.write
+              [xrequest xexception xtemplate_name]
+                memory > xtemplate
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xTemplateDoesNotExist)))
+                      xtemplate.write ((((xloader).xget_template)).apply ((xtemplate_name)))
+                      seq
+                        ((xtemplate_name).neq (xERROR_403_TEMPLATE_NAME)).if
+                          (((unsupported)).apply)
+                        (((unsupported)).apply ((((xHttpResponseForbidden)).apply (((xERROR_PAGE_TEMPLATE).mod (((unsupported)).apply ("title") ("403 Forbidden") ("details") ("")))))))
+                    (((unsupported)).apply ((((xHttpResponseForbidden)).apply ((((unsupported)).apply (((xtemplate).xrender)) ((xrequest)) ((((unsupported)).apply ("exception") ((((xstr)).apply ((xexception)))))))))))

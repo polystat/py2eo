@@ -1,0 +1,51 @@
+memory > xSlugField
+memory > xSimpleTestCase
+[] > test_slugfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_slugfield_unicode_normalization
+        memory > xtest_empty_value
+        memory > xtest_slugfield_normalization
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_slugfield_normalization.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xSlugField)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("    aa-bb-cc    "))) ("aa-bb-cc"))
+                xtest_slugfield_unicode_normalization.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xSlugField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("a"))) ("a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1"))) ("1"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("a1"))) ("a1"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("你好"))) ("你好"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("  你-好  "))) ("你-好"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("ıçğüş"))) ("ıçğüş"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("foo-ıç-bar"))) ("foo-ıç-bar"))
+                xtest_empty_value.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xSlugField)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (""))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))) (""))
+                        xf.write (((unsupported)).apply ((xSlugField)) (FALSE) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))

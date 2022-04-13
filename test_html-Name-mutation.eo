@@ -1,17 +1,34 @@
-memory > xchar
-memory > xs
-memory > xcp
-memory > x__name__
-memory > xnum
-memory > xerrmsg
-memory > xx
-memory > xend
-memory > xch
-memory > xe
-memory > xhtml
-memory > xformat
-memory > xzip
-memory > xunittest
+memory > xSubclass
+memory > xValueError
+memory > xstr
+memory > xhasattr
+memory > xHtmlClass
+memory > xescape
+memory > xsmart_urlquote
+memory > xSimpleTestCase
+memory > xfp
+memory > xstrip_tags
+memory > xurlize
+memory > xconditional_escape
+memory > xfilename
+memory > xdatetime
+memory > xexpected
+memory > xlinebreaks
+memory > xvalue
+memory > xescapejs
+memory > xoutput
+memory > xopen
+memory > xarg
+memory > xpattern
+memory > xBaseClass
+memory > xjson_script
+memory > xmark_safe
+memory > xos
+memory > xstrip_spaces_between_tags
+memory > x__file__
+memory > xformat_html
+memory > xlazystr
+memory > xhtml_safe
 [] > test_html
   [args...] > unsupported
   [args...] > xunsupported
@@ -21,90 +38,252 @@ memory > xunittest
   seq > @
     xhack.write
       []
+        memory > xtest_escapejs
+        memory > xtest_html_safe_defines_html_error
+        memory > xcheck_output
+        memory > xtest_html_safe
+        memory > xtest_urlize
         memory > xtest_escape
-        memory > xtest_unescape
+        memory > xtest_strip_tags
+        memory > xtest_linebreaks
+        memory > xtest_urlize_unchanged_inputs
+        memory > xtest_html_safe_doesnt_define_str
+        memory > xtest_strip_spaces_between_tags
+        memory > xtest_html_safe_subclass
+        memory > xtest_json_script
+        memory > xtest_smart_urlquote
+        memory > xtest_conditional_escape
+        memory > xtest_json_script_without_id
+        memory > xtest_format_html
+        memory > xtest_strip_tags_files
         seq > @
           seq
             (((unsupported)).apply)
             (((unsupported)).apply)
             (((unsupported)).apply)
-            (((unsupported)).apply (((xunittest).xTestCase)))
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
               seq
+                xcheck_output.write
+                  [xself xfunction xvalue xoutput]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xoutput)) ("None: is there a None literal in the EO language?")).if
+                          xoutput2.write (xvalue)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xfunction)).apply ((xvalue)))) ((xoutput)))
                 xtest_escape.write
                   [xself]
+                    memory > xpatterns
+                    memory > xitems
                     seq > @
                       seq
-                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xhtml).xescape)).apply ("'<script>\"&foo;\"</script>'"))) ("&#x27;&lt;script&gt;&quot;&amp;foo;&quot;&lt;/script&gt;&#x27;"))
-                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xhtml).xescape)).apply ("'<script>\"&foo;\"</script>'") (FALSE))) ("'&lt;script&gt;\"&amp;foo;\"&lt;/script&gt;'"))
-                xtest_unescape.write
-                  [xself]
-                    memory > xformats
-                    memory > xerrmsg2
-                    memory > xcheck_num
-                    memory > xcheck
-                    memory > xnumeric_formats
-                    seq > @
-                      seq
-                        xnumeric_formats.write (((unsupported)).apply ("&#%d") ("&#%d;") ("&#x%x") ("&#x%x;"))
-                        xerrmsg2.write "unescape(%r) should have returned %r"
-                        xcheck.write
-                          [xtext xexpected]
-                            seq > @
-                              (((unsupported)).apply (((xself).xassertEqual)) (((((xhtml).xunescape)).apply ((xtext)))) ((xexpected)) (((xerrmsg).mod (((unsupported)).apply ((xtext)) ((xexpected))))))
-                        xcheck_num.write
-                          [xnum xexpected]
-                            memory > xtext
-                            seq > @
-                              (((unsupported)).apply ((xformat)) ((xnumeric_formats)))
-                                seq
-                                  xtext.write ((xformat).mod (xnum))
-                                  (((unsupported)).apply (((xself).xassertEqual)) (((((xhtml).xunescape)).apply ((xtext)))) ((xexpected)) (((xerrmsg).mod (((unsupported)).apply ((xtext)) ((xexpected))))))
-                        bogusForceDataize.write (((xcheck)).apply ("no character references") ("no character references"))
-                        bogusForceDataize.write (((xcheck)).apply ("&n&t& &&") ("&n&t& &&"))
-                        bogusForceDataize.write (((xcheck)).apply ("&0 &9 &a &0; &9; &a;") ("&0 &9 &a &0; &9; &a;"))
-                        (((unsupported)).apply ((xx)) ((((unsupported)).apply ("&") ("&#") ("&#x") ("&#X") ("&#y") ("&#xy") ("&#Xy"))))
-                          seq
-                            bogusForceDataize.write (((xcheck)).apply ((xx)) ((xx)))
-                            bogusForceDataize.write (((xcheck)).apply (((xx).add ";")) (((xx).add ";")))
-                        xformats.write (((unsupported)).apply ("&#%d") ("&#%07d") ("&#%d;") ("&#%07d;") ("&#x%x") ("&#x%06x") ("&#x%x;") ("&#x%06x;") ("&#x%X") ("&#x%06X") ("&#X%x;") ("&#X%06x;"))
-                        (((unsupported)).apply ((((unsupported)).apply ((xnum)) ((xchar)))) ((((xzip)).apply ((((unsupported)).apply (65) (97) (34) (38) (9731) (1053236))) ((((unsupported)).apply ("A") ("a") ("\"") ("&") ("u2603") ("U00101234"))))))
-                          (((unsupported)).apply ((xs)) ((xformats)))
+                        xitems.write (((unsupported)).apply ((((unsupported)).apply ("&") ("&amp;"))) ((((unsupported)).apply ("<") ("&lt;"))) ((((unsupported)).apply (">") ("&gt;"))) ((((unsupported)).apply ("\"") ("&quot;"))) ((((unsupported)).apply ("'") ("&#x27;"))))
+                        xpatterns.write (((unsupported)).apply ("%s") ("asdf%sfdsa") ("%s1") ("1%sb"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xoutput)))) ((xitems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xoutput)))))
                             seq
-                              bogusForceDataize.write (((xcheck)).apply (((xs).mod (xnum))) ((xchar)))
-                              (((unsupported)).apply ((xend)) ((((unsupported)).apply (" ") ("X"))))
-                                bogusForceDataize.write (((xcheck)).apply ((((xs).add (xend)).mod (xnum))) (((xchar).add (xend))))
-                        (((unsupported)).apply ((xcp)) ((((unsupported)).apply (55296) (56064) (56320) (57343) (1114112))))
-                          bogusForceDataize.write (((xcheck_num)).apply ((xcp)) ("uFFFD"))
-                        (((unsupported)).apply ((xcp)) ((((unsupported)).apply (1) (11) (14) (127) (65534) (65535) (1114110) (1114111))))
-                          bogusForceDataize.write (((xcheck_num)).apply ((xcp)) (""))
-                        (((unsupported)).apply ((((unsupported)).apply ((xnum)) ((xch)))) ((((xzip)).apply ((((unsupported)).apply (13) (128) (149) (157))) ("ru20acu2022x9d"))))
-                          bogusForceDataize.write (((xcheck_num)).apply ((xnum)) ((xch)))
-                        bogusForceDataize.write (((xcheck_num)).apply (0) ("uFFFD"))
-                        bogusForceDataize.write (((xcheck_num)).apply (9) ("t"))
-                        bogusForceDataize.write (((xcheck_num)).apply ((((unsupported)).apply)) ("uFFFD"))
-                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&quot;;") ("&#34;;") ("&#x22;;") ("&#X22;;"))))
-                          bogusForceDataize.write (((xcheck)).apply ((xe)) ("\";"))
-                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&quot;quot;") ("&#34;quot;") ("&#x22;quot;") ("&#X22;quot;"))))
-                          bogusForceDataize.write (((xcheck)).apply ((xe)) ("\"quot;"))
-                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&quot") ("&#34") ("&#x22") ("&#X22"))))
+                              (((unsupported)).apply ((xpattern)) ((xpatterns)))
+                                (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xoutput)) ((xpattern)))))
+                                  seq
+                                    bogusForceDataize.write ((((xself).xcheck_output)).apply ((xescape)) (((xpattern).mod (xvalue))) (((xpattern).mod (xoutput))))
+                                    bogusForceDataize.write ((((xself).xcheck_output)).apply ((xescape)) ((((xlazystr)).apply (((xpattern).mod (xvalue))))) (((xpattern).mod (xoutput))))
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xescape)) (((xvalue).mul 2)) (((xoutput).mul 2)))
+                        bogusForceDataize.write ((((xself).xcheck_output)).apply ((xescape)) ("<&") ("&lt;&amp;"))
+                xtest_format_html.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xformat_html)) ("{} {} {third} {fourth}") ("< Dangerous >") ((((xmark_safe)).apply ("<b>safe</b>"))) ("< dangerous again") ((((xmark_safe)).apply ("<i>safe again</i>"))))) ("&lt; Dangerous &gt; <b>safe</b> &lt; dangerous again <i>safe again</i>"))
+                xtest_linebreaks.write
+                  [xself]
+                    memory > xitems
+                    seq > @
+                      seq
+                        xitems.write (((unsupported)).apply ((((unsupported)).apply ("para1nnpara2rrpara3") ("<p>para1</p>nn<p>para2</p>nn<p>para3</p>"))) ((((unsupported)).apply ("para1nsub1rsub2nnpara2") ("<p>para1<br>sub1<br>sub2</p>nn<p>para2</p>"))) ((((unsupported)).apply ("para1rnrnpara2rsub1rrpara4") ("<p>para1</p>nn<p>para2<br>sub1</p>nn<p>para4</p>"))) ((((unsupported)).apply ("para1tmorennpara2") ("<p>para1tmore</p>nn<p>para2</p>"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xoutput)))) ((xitems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xoutput)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xlinebreaks)) ((xvalue)) ((xoutput)))
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xlinebreaks)) ((((xlazystr)).apply ((xvalue)))) ((xoutput)))
+                xtest_strip_tags.write
+                  [xself]
+                    memory > xitems
+                    seq > @
+                      seq
+                        xitems.write (((unsupported)).apply ((((unsupported)).apply ("<p>See: &#39;&eacute; is an apostrophe followed by e acute</p>") ("See: &#39;&eacute; is an apostrophe followed by e acute"))) ((((unsupported)).apply ("<p>See: &#x27;&eacute; is an apostrophe followed by e acute</p>") ("See: &#x27;&eacute; is an apostrophe followed by e acute"))) ((((unsupported)).apply ("<adf>a") ("a"))) ((((unsupported)).apply ("</adf>a") ("a"))) ((((unsupported)).apply ("<asdf><asdf>e") ("e"))) ((((unsupported)).apply ("hi, <f x") ("hi, <f x"))) ((((unsupported)).apply ("234<235, right?") ("234<235, right?"))) ((((unsupported)).apply ("a4<a5 right?") ("a4<a5 right?"))) ((((unsupported)).apply ("b7>b2!") ("b7>b2!"))) ((((unsupported)).apply ("</fe") ("</fe"))) ((((unsupported)).apply ("<x>b<y>") ("b"))) ((((unsupported)).apply ("a<p onclick=\"alert('<test>')\">b</p>c") ("abc"))) ((((unsupported)).apply ("a<p a >b</p>c") ("abc"))) ((((unsupported)).apply ("d<a:b c:d>e</p>f") ("def"))) ((((unsupported)).apply ("<strong>foo</strong><a href=\"http://example.com\">bar</a>") ("foobar"))) ((((unsupported)).apply ("&gotcha&#;<>") ("&gotcha&#;<>"))) ((((unsupported)).apply ("<sc<!-- -->ript>test<<!-- -->/script>") ("ript>test"))) ((((unsupported)).apply ("<script>alert()</script>&h") ("alert()h"))) ((((unsupported)).apply ((("><!".add ("&".mul 16000)).add "D")) ((("><!".add ("&".mul 16000)).add "D")))) ((((unsupported)).apply ("X<<<<br>br>br>br>X") ("XX"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xoutput)))) ((xitems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xoutput)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xstrip_tags)) ((xvalue)) ((xoutput)))
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xstrip_tags)) ((((xlazystr)).apply ((xvalue)))) ((xoutput)))
+                xtest_strip_tags_files.write
+                  [xself]
+                    memory > xelapsed
+                    memory > xstart
+                    memory > xcontent
+                    memory > xpath
+                    memory > xstripped
+                    seq > @
+                      (((unsupported)).apply ((xfilename)) ((((unsupported)).apply ("strip_tags1.html") ("strip_tags2.txt"))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfilename)))))
                           seq
-                            bogusForceDataize.write (((xcheck)).apply (((xe).mul 3)) ("\"\"\""))
-                            bogusForceDataize.write (((xcheck)).apply ((((xe).add ";").mul 3)) ("\"\"\""))
-                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&amp") ("&amp;") ("&AMP") ("&AMP;"))))
-                          bogusForceDataize.write (((xcheck)).apply ((xe)) ("&"))
-                        (((unsupported)).apply ((xe)) ((((unsupported)).apply ("&Amp") ("&Amp;"))))
-                          bogusForceDataize.write (((xcheck)).apply ((xe)) ((xe)))
-                        bogusForceDataize.write (((xcheck)).apply ("&svadilfari;") ("&svadilfari;"))
-                        bogusForceDataize.write (((xcheck)).apply ("&notit") ("¬it"))
-                        bogusForceDataize.write (((xcheck)).apply ("&notit;") ("¬it;"))
-                        bogusForceDataize.write (((xcheck)).apply ("&notin") ("¬in"))
-                        bogusForceDataize.write (((xcheck)).apply ("&notin;") ("∉"))
-                        bogusForceDataize.write (((xcheck)).apply ("&notReallyAnExistingNamedCharacterReference;") ("¬ReallyAnExistingNamedCharacterReference;"))
-                        bogusForceDataize.write (((xcheck)).apply ("&CounterClockwiseContourIntegral;") ("∳"))
-                        bogusForceDataize.write (((xcheck)).apply ("&acE;") ("u223Eu0333"))
-                        bogusForceDataize.write (((xcheck)).apply ("&acE") ("&acE"))
-                        bogusForceDataize.write (((xcheck)).apply (("&#123; ".mul 1050)) (("{ ".mul 1050)))
-                        bogusForceDataize.write (((xcheck)).apply ("&Eacuteric&Eacute;ric&alphacentauri&alpha;centauri") ("ÉricÉric&alphacentauriαcentauri"))
-                        bogusForceDataize.write (((xcheck)).apply ("&co;") ("&co;"))
-            ((x__name__).eq "__main__").if
-              bogusForceDataize.write ((((xunittest).xmain)).apply)
+                            xpath.write (((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply ((x__file__)))) ("files") ((xfilename)))
+                            (((unsupported)).apply ((((xopen)).apply ((xpath)))) ((xfp)))
+                              seq
+                                xcontent.write ((((xfp).xread)).apply)
+                                xstart.write ((((xdatetime).xnow)).apply)
+                                xstripped.write (((xstrip_tags)).apply ((xcontent)))
+                                xelapsed.write (((((xdatetime).xnow)).apply).sub (xstart))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((xelapsed).xseconds)) (0))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("Test string that has not been stripped.") ((xstripped)))
+                            bogusForceDataize.write ((((xself).xassertNotIn)).apply ("<") ((xstripped)))
+                xtest_strip_spaces_between_tags.write
+                  [xself]
+                    memory > xitems
+                    seq > @
+                      seq
+                        xitems.write (((unsupported)).apply (" <adf>") ("<adf> ") (" </adf> ") (" <f> x</f>"))
+                        (((unsupported)).apply ((xvalue)) ((xitems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xstrip_spaces_between_tags)) ((xvalue)))
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xstrip_spaces_between_tags)) ((((xlazystr)).apply ((xvalue)))))
+                        xitems.write (((unsupported)).apply ((((unsupported)).apply ("<d> </d>") ("<d></d>"))) ((((unsupported)).apply ("<p>hello </p>n<p> world</p>") ("<p>hello </p><p> world</p>"))) ((((unsupported)).apply ("n<p>t</p>n<p> </p>n") ("n<p></p><p></p>n"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xoutput)))) ((xitems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xoutput)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xstrip_spaces_between_tags)) ((xvalue)) ((xoutput)))
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xstrip_spaces_between_tags)) ((((xlazystr)).apply ((xvalue)))) ((xoutput)))
+                xtest_escapejs.write
+                  [xself]
+                    memory > xitems
+                    seq > @
+                      seq
+                        xitems.write (((unsupported)).apply ((((unsupported)).apply ("\"double quotes\" and 'single quotes'") ((((unsupported)).apply)))) ((((unsupported)).apply (" : backslashes, too") ((((unsupported)).apply)))) ((((unsupported)).apply ("and lots of whitespace: rntvfb") ((((unsupported)).apply)))) ((((unsupported)).apply ("<script>and this</script>") ((((unsupported)).apply)))) ((((unsupported)).apply ("paragraph separator:u2029and line separator:u2028") ((((unsupported)).apply)))) ((((unsupported)).apply ("`") ((((unsupported)).apply)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xoutput)))) ((xitems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xoutput)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xescapejs)) ((xvalue)) ((xoutput)))
+                              bogusForceDataize.write ((((xself).xcheck_output)).apply ((xescapejs)) ((((xlazystr)).apply ((xvalue)))) ((xoutput)))
+                xtest_json_script.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("&<>") ((((unsupported)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ("a") ("<script>test&ing</script>"))) ((((unsupported)).apply)))) ((((unsupported)).apply ((((xlazystr)).apply ("&<>"))) ((((unsupported)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ("a") ((((xlazystr)).apply ("<script>test&ing</script>"))))) ((((unsupported)).apply)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xarg)) ((xexpected)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xarg)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xjson_script)).apply ((xarg)) ("test_id"))) ((xexpected)))
+                xtest_json_script_without_id.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ((((xjson_script)).apply ((((unsupported)).apply ("key") ("value"))))) ("<script type=\"application/json\">{\"key\": \"value\"}</script>"))
+                xtest_smart_urlquote.write
+                  [xself]
+                    memory > xitems
+                    seq > @
+                      seq
+                        xitems.write (((unsupported)).apply ((((unsupported)).apply ("http://öäü.com/") ("http://xn--4ca9at.com/"))) ((((unsupported)).apply ("http://öäü.com/öäü/") ("http://xn--4ca9at.com/%C3%B6%C3%A4%C3%BC/"))) ((((unsupported)).apply ("http://example.com/path/öäü/") ("http://example.com/path/%C3%B6%C3%A4%C3%BC/"))) ((((unsupported)).apply ("http://example.com/%C3%B6/ä/") ("http://example.com/%C3%B6/%C3%A4/"))) ((((unsupported)).apply ("http://example.com/?x=1&y=2+3&z=") ("http://example.com/?x=1&y=2+3&z="))) ((((unsupported)).apply ("http://example.com/?x=<>\"'") ("http://example.com/?x=%3C%3E%22%27"))) ((((unsupported)).apply ("http://example.com/?q=http://example.com/?x=1%26q=django") ("http://example.com/?q=http%3A%2F%2Fexample.com%2F%3Fx%3D1%26q%3Ddjango"))) ((((unsupported)).apply ("http://example.com/?q=http%3A%2F%2Fexample.com%2F%3Fx%3D1%26q%3Ddjango") ("http://example.com/?q=http%3A%2F%2Fexample.com%2F%3Fx%3D1%26q%3Ddjango"))) ((((unsupported)).apply ("http://.www.f oo.bar/") ("http://.www.f%20oo.bar/"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xoutput)))) ((xitems)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xoutput)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsmart_urlquote)).apply ((xvalue)))) ((xoutput)))
+                xtest_conditional_escape.write
+                  [xself]
+                    memory > xs
+                    seq > @
+                      seq
+                        xs.write "<h1>interop</h1>"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xconditional_escape)).apply ((xs)))) ("&lt;h1&gt;interop&lt;/h1&gt;"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xconditional_escape)).apply ((((xmark_safe)).apply ((xs)))))) ((xs)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xconditional_escape)).apply ((((xlazystr)).apply ((((xmark_safe)).apply ((xs)))))))) ((xs)))
+                xtest_html_safe.write
+                  [xself]
+                    memory > x__str__
+                    memory > xhtml_obj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xhtml_safe)))
+                          x__str__.write
+                            [xself]
+                              seq > @
+                                (((unsupported)).apply ("<h1>I'm a html class!</h1>"))
+                        xhtml_obj.write (((xHtmlClass)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xhasattr)).apply ((xHtmlClass)) ("__html__"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xhasattr)).apply ((xhtml_obj)) ("__html__"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xhtml_obj)))) (((((xhtml_obj).x__html__)).apply)))
+                xtest_html_safe_subclass.write
+                  [xself]
+                    memory > xsubclass_obj
+                    memory > x__str__
+                    memory > x__html__
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          seq
+                            x__html__.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply ("some html content"))
+                            x__str__.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply ("some non html content"))
+                        (((unsupported)).apply ((xBaseClass)) ((xhtml_safe)))
+                          x__str__.write
+                            [xself]
+                              seq > @
+                                (((unsupported)).apply ("some html safe content"))
+                        xsubclass_obj.write (((xSubclass)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xsubclass_obj)))) (((((xsubclass_obj).x__html__)).apply)))
+                xtest_html_safe_defines_html_error.write
+                  [xself]
+                    memory > xmsg
+                    memory > x__html__
+                    seq > @
+                      seq
+                        xmsg.write "can't apply @html_safe to HtmlClass because it defines __html__()."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xhtml_safe)))
+                            x__html__.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply ("<h1>I'm a html class!</h1>"))
+                xtest_html_safe_doesnt_define_str.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "can't apply @html_safe to HtmlClass because it doesn't define __str__()."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xhtml_safe)))
+                xtest_urlize.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("Search for google.com/?q=! and see.") ("Search for <a href=\"http://google.com/?q=\">google.com/?q=</a>! and see."))) ((((unsupported)).apply ("Search for google.com/?q=1&lt! and see.") ("Search for <a href=\"http://google.com/?q=1%3C\">google.com/?q=1&lt</a>! and see."))) ((((unsupported)).apply ((((xlazystr)).apply ("Search for google.com/?q=!"))) ("Search for <a href=\"http://google.com/?q=\">google.com/?q=</a>!"))) ((((unsupported)).apply ("foo@example.com") ("<a href=\"mailto:foo@example.com\">foo@example.com</a>"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xoutput)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ((xvalue)))) ((xoutput)))
+                xtest_urlize_unchanged_inputs.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((("a".add ("@a".mul 50000)).add "a")) ((("a".add (".".mul 1000000)).add "a")) ("foo@") ("@foo.com") ("foo@.example.com") ("foo@localhost") ("foo@localhost."))
+                        (((unsupported)).apply ((xvalue)) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ((xvalue)))) ((xvalue)))

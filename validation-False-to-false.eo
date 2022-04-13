@@ -1,0 +1,47 @@
+memory > xfalse
+memory > xall
+memory > xfeature
+memory > xhasattr
+memory > xgetattr
+[] > validation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck
+        memory > xcheck_field
+        memory > x__init__
+        seq > @
+          (((unsupported)).apply)
+            seq
+              unsupported
+              x__init__.write
+                [xself xconnection]
+                  seq > @
+                    (((unsupported)).apply (((xself).xconnection)) ((xconnection)))
+              xcheck.write
+                [xself]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ((((unsupported)).apply)))
+              xcheck_field.write
+                [xself xfield]
+                  memory > xerrors
+                  memory > xfield_type
+                  memory > xdb_supports_all_required_features
+                  seq > @
+                    (((unsupported)).apply)
+                      xerrors.write (((unsupported)).apply)
+                      ((((xhasattr)).apply ((xself)) ("check_field_type")).and ((((xgetattr)).apply ((xfield)) ("remote_field") ("None: is there a None literal in the EO language?")).not)).if
+                        seq
+                          xdb_supports_all_required_features.write (((xall)).apply ((((unsupported)).apply ((((xgetattr)).apply ((((xself).xconnection).xfeatures)) ((xfeature)) ((xfalse)))) ((xfeature)) (((((xfield).xmodel).x_meta).xrequired_db_features)))))
+                          (xdb_supports_all_required_features).if
+                            seq
+                              xfield_type.write ((((xfield).xdb_type)).apply (((xself).xconnection)))
+                              (((unsupported)).apply ((xfield_type)) ("None: is there a None literal in the EO language?")).if
+                                bogusForceDataize.write ((((xerrors).xextend)).apply (((((xself).xcheck_field_type)).apply ((xfield)) ((xfield_type)))))
+                      (((unsupported)).apply ((xerrors)))

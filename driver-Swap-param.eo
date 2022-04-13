@@ -1,0 +1,97 @@
+memory > xc_void_p
+memory > xstr
+memory > xforce_str
+memory > xtype
+memory > xint
+memory > xiface
+memory > xGDALException
+memory > xGDALBase
+memory > xforce_bytes
+memory > xisinstance
+[] > driver
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdriver_count
+        memory > x__str__
+        memory > xvcapi
+        memory > xrcapi
+        memory > xensure_registered
+        memory > x_alias
+        memory > x__init__
+        memory > xname
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xGDALBase)))
+              seq
+                (((unsupported)).apply)
+                x_alias.write (((unsupported)).apply ("esri") ("ESRI Shapefile") ("shp") ("ESRI Shapefile") ("shape") ("ESRI Shapefile") ("tiger") ("TIGER") ("tiger/line") ("TIGER") ("tiff") ("GTiff") ("tif") ("GTiff") ("jpeg") ("JPEG") ("jpg") ("JPEG"))
+                x__init__.write
+                  [xself xdr_input]
+                    memory > xname
+                    memory > xdriver
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xisinstance)).apply ((xdr_input)) ((xstr))).if
+                          seq
+                            bogusForceDataize.write ((((xself).xensure_registered)).apply)
+                            (((unsupported)).apply (((((xdr_input).xlower)).apply)) (((xself).x_alias))).if
+                              xname.write (((unsupported)).apply (((xself).x_alias)) (((((xdr_input).xlower)).apply)))
+                              xname.write (xdr_input)
+                            (((unsupported)).apply ((xiface)) ((((unsupported)).apply ((xvcapi)) ((xrcapi)))))
+                              seq
+                                xdriver.write (((xc_void_p)).apply (((((xiface).xget_driver_by_name)).apply ((((xforce_bytes)).apply ((xname)))))))
+                                (xdriver).if
+                                  (((unsupported)).apply)
+                          (((xisinstance)).apply ((xint)) ((xdr_input))).if
+                            seq
+                              bogusForceDataize.write ((((xself).xensure_registered)).apply)
+                              (((unsupported)).apply ((xiface)) ((((unsupported)).apply ((xvcapi)) ((xrcapi)))))
+                                seq
+                                  xdriver.write ((((xiface).xget_driver)).apply ((xdr_input)))
+                                  (xdriver).if
+                                    (((unsupported)).apply)
+                            (((xisinstance)).apply ((xdr_input)) ((xc_void_p))).if
+                              xdriver.write (xdr_input)
+                              (((unsupported)).apply ((((xGDALException)).apply (("Unrecognized input type for GDAL/OGR Driver: %s".mod (((xtype)).apply ((xdr_input))))))))
+                        ((xdriver).not).if
+                          (((unsupported)).apply ((((xGDALException)).apply (("Could not initialize GDAL/OGR Driver on input: %s".mod (xdr_input))))))
+                        (((unsupported)).apply (((xself).xptr)) ((xdriver)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xname)))
+                xensure_registered.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((((xvcapi).xget_driver_count)).apply).not).if
+                          bogusForceDataize.write ((((xvcapi).xregister_all)).apply)
+                        (((((xrcapi).xget_driver_count)).apply).not).if
+                          bogusForceDataize.write ((((xrcapi).xregister_all)).apply)
+                xdriver_count.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xvcapi).xget_driver_count)).apply).add ((((xrcapi).xget_driver_count)).apply))))
+                xname.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xforce_str)).apply (((((xrcapi).xget_driver_description)).apply (((xself).xptr)))))))

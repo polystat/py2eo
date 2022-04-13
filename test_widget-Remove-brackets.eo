@@ -1,0 +1,52 @@
+memory > xWidget
+memory > xInput
+memory > xWidgetTest
+[] > test_widget
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_attr_false_not_rendered
+        memory > xtest_format_value
+        memory > xtest_no_trailing_newline_in_attrs
+        memory > xtest_value_omitted_from_data
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xtest_format_value.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (xWidget)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xwidget).xformat_value)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xwidget).xformat_value)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwidget).xformat_value)).apply ("español"))) ("español"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwidget).xformat_value)).apply (42.5))) ("42.5"))
+                xtest_value_omitted_from_data.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (xWidget)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ("field"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply ("field") ("value"))) ((((unsupported)).apply)) ("field"))) (FALSE))
+                xtest_no_trailing_newline_in_attrs.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) ((xInput)) ("name") ("value") (TRUE) ("<input type=\"None\" name=\"name\" value=\"value\">"))
+                xtest_attr_false_not_rendered.write
+                  [xself]
+                    memory > xhtml
+                    seq > @
+                      seq
+                        xhtml.write "<input type=\"None\" name=\"name\" value=\"value\">"
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xInput)) ("name") ("value") ((xhtml)) ((((unsupported)).apply ("readonly") (FALSE))))

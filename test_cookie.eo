@@ -1,0 +1,233 @@
+memory > xhttp_date
+memory > xtimezone
+memory > xdatetime
+memory > xValueError
+memory > xstr
+memory > xprefix
+memory > xtimedelta
+memory > xHttpResponse
+memory > xfreeze_time
+memory > xSimpleTestCase
+memory > xtime
+memory > xcookies
+[] > test_cookie
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_far_expiration
+        memory > xtest_default
+        memory > xtest_aware_expiration
+        memory > xtest_max_age_expiration
+        memory > xtest_invalid_samesite
+        memory > xtest_max_age_timedelta
+        memory > xtest_delete_cookie_samesite
+        memory > xtest_httponly_cookie
+        memory > xtest_create_cookie_after_deleting_cookie
+        memory > xtest_samesite
+        memory > xtest_unicode_cookie
+        memory > xtest_near_expiration
+        memory > xtest_max_age_int
+        memory > xtest_delete_cookie_secure_prefix
+        memory > xtest_delete_cookie_secure_samesite_none
+        memory > xtest_max_age_with_expires
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_near_expiration.write
+                  [xself]
+                    memory > xresponse
+                    memory > xdatetime_cookie
+                    memory > xexpires
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((xHttpResponse)).apply)
+                        xexpires.write ((((unsupported)).apply (((((unsupported)).apply (((xdatetime).xnow)) (((xtimezone).xutc))).xreplace)) ("None: is there a None literal in the EO language?")).add (((unsupported)).apply ((xtimedelta)) (10)))
+                        bogusForceDataize.write ((((xtime).xsleep)).apply (0.001))
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("datetime") ((xexpires)))
+                        xdatetime_cookie.write (((unsupported)).apply (((xresponse).xcookies)) ("datetime"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xdatetime_cookie)) ("max-age"))) (10))
+                xtest_aware_expiration.write
+                  [xself]
+                    memory > xresponse
+                    memory > xdatetime_cookie
+                    memory > xexpires
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((xHttpResponse)).apply)
+                        xexpires.write ((((unsupported)).apply (((xdatetime).xnow)) (((xtimezone).xutc))).add (((unsupported)).apply ((xtimedelta)) (10)))
+                        bogusForceDataize.write ((((xtime).xsleep)).apply (0.001))
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("datetime") ((xexpires)))
+                        xdatetime_cookie.write (((unsupported)).apply (((xresponse).xcookies)) ("datetime"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xdatetime_cookie)) ("max-age"))) (10))
+                xtest_create_cookie_after_deleting_cookie.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((xHttpResponse)).apply)
+                        bogusForceDataize.write ((((xresponse).xset_cookie)).apply ("c") ("old-value"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("c"))) ("expires"))) (""))
+                        bogusForceDataize.write ((((xresponse).xdelete_cookie)).apply ("c"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("c"))) ("expires"))) ("Thu, 01 Jan 1970 00:00:00 GMT"))
+                        bogusForceDataize.write ((((xresponse).xset_cookie)).apply ("c") ("new-value"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("c"))) ("expires"))) (""))
+                xtest_far_expiration.write
+                  [xself]
+                    memory > xresponse
+                    memory > xdatetime_cookie
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("datetime") ((((xdatetime)).apply (2038) (1) (1) (4) (5) (6))))
+                        xdatetime_cookie.write (((unsupported)).apply (((xresponse).xcookies)) ("datetime"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply ((xdatetime_cookie)) ("expires"))) ((((unsupported)).apply ("Fri, 01 Jan 2038 04:05:06 GMT") ("Fri, 01 Jan 2038 04:05:07 GMT"))))
+                xtest_max_age_expiration.write
+                  [xself]
+                    memory > xmax_age_cookie
+                    memory > xresponse
+                    memory > xset_cookie_time
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((xHttpResponse)).apply)
+                        xset_cookie_time.write ((((xtime).xtime)).apply)
+                        (((unsupported)).apply ((((xfreeze_time)).apply ((xset_cookie_time)))))
+                          (((unsupported)).apply (((xresponse).xset_cookie)) ("max_age") (10))
+                        xmax_age_cookie.write (((unsupported)).apply (((xresponse).xcookies)) ("max_age"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xmax_age_cookie)) ("max-age"))) (10))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xmax_age_cookie)) ("expires"))) ((((xhttp_date)).apply (((xset_cookie_time).add 10)))))
+                xtest_max_age_int.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("max_age") (10.6))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("max_age"))) ("max-age"))) (10))
+                xtest_max_age_timedelta.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("max_age") ((((unsupported)).apply ((xtimedelta)) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("max_age"))) ("max-age"))) (3600))
+                xtest_max_age_with_expires.write
+                  [xself]
+                    memory > xresponse
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        xmsg.write "'expires' and 'max_age' can't be used together."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply (((xresponse).xset_cookie)) ("max_age") ((((xdatetime)).apply (2000) (1) (1))) ((((unsupported)).apply ((xtimedelta)) (1))))
+                xtest_httponly_cookie.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexample_cookie
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("example") (TRUE))
+                        xexample_cookie.write (((unsupported)).apply (((xresponse).xcookies)) ("example"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("; %s".mod (((unsupported)).apply ((((xcookies).xMorsel).x_reserved)) ("httponly")))) ((((xstr)).apply ((xexample_cookie)))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((xexample_cookie)) ("httponly"))) (TRUE))
+                xtest_unicode_cookie.write
+                  [xself]
+                    memory > xresponse
+                    memory > xcookie_value
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((xHttpResponse)).apply)
+                        xcookie_value.write "清風"
+                        bogusForceDataize.write ((((xresponse).xset_cookie)).apply ("test") ((xcookie_value)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcookies)) ("test")).xvalue)) ((xcookie_value)))
+                xtest_samesite.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("example") ("None"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("example"))) ("samesite"))) ("None"))
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("example") ("Lax"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("example"))) ("samesite"))) ("Lax"))
+                        (((unsupported)).apply (((xresponse).xset_cookie)) ("example") ("strict"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("example"))) ("samesite"))) ("strict"))
+                xtest_invalid_samesite.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "samesite must be \"lax\", \"none\", or \"strict\"."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply (((((xHttpResponse)).apply).xset_cookie)) ("example") ("invalid"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_default.write
+                  [xself]
+                    memory > xcookie
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        bogusForceDataize.write ((((xresponse).xdelete_cookie)).apply ("c"))
+                        xcookie.write (((unsupported)).apply (((xresponse).xcookies)) ("c"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcookie)) ("expires"))) ("Thu, 01 Jan 1970 00:00:00 GMT"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcookie)) ("max-age"))) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcookie)) ("path"))) ("/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcookie)) ("secure"))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcookie)) ("domain"))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcookie)) ("samesite"))) (""))
+                xtest_delete_cookie_secure_prefix.write
+                  [xself]
+                    memory > xresponse
+                    memory > xcookie_name
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply ((xprefix)) ((((unsupported)).apply ("Secure") ("Host"))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xprefix)))))
+                            seq
+                              xcookie_name.write ("__%s-c".mod (xprefix))
+                              bogusForceDataize.write ((((xresponse).xdelete_cookie)).apply ((xcookie_name)))
+                              bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ((xcookie_name)))) ("secure"))) (TRUE))
+                xtest_delete_cookie_secure_samesite_none.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply (((xresponse).xdelete_cookie)) ("c") ("none"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("c"))) ("secure"))) (TRUE))
+                xtest_delete_cookie_samesite.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xHttpResponse)).apply)
+                        (((unsupported)).apply (((xresponse).xdelete_cookie)) ("c") ("lax"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("c"))) ("samesite"))) ("lax"))

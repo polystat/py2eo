@@ -1,0 +1,90 @@
+memory > xis_valid_ipv6_address
+memory > xclean_ipv6_address
+memory > xunittest
+[] > test_ipv6
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_validates_incorrect_plain_address
+        memory > xtest_validates_correct_plain_address
+        memory > xtest_unpacks_ipv4
+        memory > xtest_cleans_with_v4_mapping
+        memory > xtest_validates_incorrect_with_v4mapping
+        memory > xtest_cleans_plain_address
+        memory > xtest_validates_correct_with_v4mapping
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_validates_correct_plain_address.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("fe80::223:6cff:fe8a:2e8a"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("2a02::223:6cff:fe8a:2e8a"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("1::2:3:4:5:6:7"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("::"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("::a"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("2::"))))
+                xtest_validates_correct_with_v4mapping.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("::ffff:254.42.16.14"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("::ffff:0a0a:0a0a"))))
+                xtest_validates_incorrect_plain_address.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("foo"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("127.0.0.1"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("12345::"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("1::2:3::4"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("1::zzz"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("1::2:3:4:5:6:7:8"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("1:2"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("1:::2"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("fe80::223: 6cff:fe8a:2e8a"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("2a02::223:6cff :fe8a:2e8a"))))
+                xtest_validates_incorrect_with_v4mapping.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("::ffff:999.42.16.14"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("::ffff:zzzz:0a0a"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("::254.42.16.14"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xis_valid_ipv6_address)).apply ("::0a0a:0a0a"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("::999.42.16.14"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xis_valid_ipv6_address)).apply ("::zzzz:0a0a"))))
+                xtest_cleans_plain_address.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("DEAD::0:BEEF"))) ("dead::beef"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("2001:000:a:0000:0:fe:fe:beef"))) ("2001:0:a::fe:fe:beef"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("2001::a:0000:0:fe:fe:beef"))) ("2001:0:a::fe:fe:beef"))
+                xtest_cleans_with_v4_mapping.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("::ffff:0a0a:0a0a"))) ("::ffff:10.10.10.10"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("::ffff:1234:1234"))) ("::ffff:18.52.18.52"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("::ffff:18.52.18.52"))) ("::ffff:18.52.18.52"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("::ffff:0.52.18.52"))) ("::ffff:0.52.18.52"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xclean_ipv6_address)).apply ("::ffff:0.0.0.0"))) ("::ffff:0.0.0.0"))
+                xtest_unpacks_ipv4.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xclean_ipv6_address)) ("::ffff:0a0a:0a0a") (TRUE))) ("10.10.10.10"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xclean_ipv6_address)) ("::ffff:1234:1234") (TRUE))) ("18.52.18.52"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xclean_ipv6_address)) ("::ffff:18.52.18.52") (TRUE))) ("18.52.18.52"))

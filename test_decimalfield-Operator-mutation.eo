@@ -1,0 +1,237 @@
+memory > xWidget
+memory > xFormFieldAssertionsMixin
+memory > xformats
+memory > xValidationError
+memory > xvalue
+memory > xSimpleTestCase
+memory > xDecimalField
+memory > xNumberInput
+memory > xdecimal
+memory > xtranslation
+[] > test_decimalfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_decimalfield_widget_attrs
+        memory > xtest_decimalfield_3
+        memory > xtest_decimalfield_2
+        memory > xtest_decimalfield_1
+        memory > xtest_decimalfield_5
+        memory > xtest_decimalfield_localized
+        memory > xtest_decimalfield_support_thousands_separator
+        memory > xtest_decimalfield_4
+        memory > xtest_decimalfield_scientific
+        memory > xtest_decimalfield_6
+        memory > xtest_decimalfield_changed
+        memory > xtest_enter_a_number_error
+        memory > xtest_decimalfield_support_decimal_separator
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFormFieldAssertionsMixin)) ((xSimpleTestCase)))
+              seq
+                xtest_decimalfield_1.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (4) (2))
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input id=\"id_f\" step=\"0.01\" type=\"number\" name=\"f\" required>"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1"))) (((((xdecimal).xDecimal)).apply ("1"))))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((((xf).xclean)).apply ("1"))) (((xdecimal).xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("23"))) (((((xdecimal).xDecimal)).apply ("23"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("3.14"))) (((((xdecimal).xDecimal)).apply ("3.14"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (3.14))) (((((xdecimal).xDecimal)).apply ("3.14"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (((((xdecimal).xDecimal)).apply ("3.14"))))) (((((xdecimal).xDecimal)).apply ("3.14"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1.0 "))) (((((xdecimal).xDecimal)).apply ("1.0"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 1.0"))) (((((xdecimal).xDecimal)).apply ("1.0"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 1.0 "))) (((((xdecimal).xDecimal)).apply ("1.0"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure that there are no more than 4 digits in total.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("123.45"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure that there are no more than 2 decimal places.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1.234"))
+                        xmsg.write "'Ensure that there are no more than 2 digits before the decimal point.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("123.4"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("-12.34"))) (((((xdecimal).xDecimal)).apply ("-12.34"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure that there are no more than 4 digits in total.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("-123.45"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("-.12"))) (((((xdecimal).xDecimal)).apply ("-0.12"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("-00.12"))) (((((xdecimal).xDecimal)).apply ("-0.12"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("-000.12"))) (((((xdecimal).xDecimal)).apply ("-0.12"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure that there are no more than 2 decimal places.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("-000.123"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure that there are no more than 4 digits in total.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("-000.12345"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xmax_digits)) (4))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xdecimal_places)) (2))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xf).xmax_value)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xf).xmin_value)))
+                xtest_enter_a_number_error.write
+                  [xself]
+                    memory > xvalues
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (1) (4) (2))
+                        xvalues.write (((unsupported)).apply ("-NaN") ("NaN") ("-NaN") ("-sNaN") ("sNaN") ("-sNaN") ("-Inf") ("Inf") ("-Inf") ("-Infinity") ("Infinity") ("-Infinity") ("a") ("łąść") ("1.0a") ("--0.12"))
+                        (((unsupported)).apply ((xvalue)) ((xvalues)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))) (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a number.'"))))
+                            bogusForceDataize.write ((((xf).xclean)).apply ((xvalue)))
+                xtest_decimalfield_2.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (4) (2) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1"))) (((((xdecimal).xDecimal)).apply ("1"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xmax_digits)) (4))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xdecimal_places)) (2))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xf).xmax_value)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xf).xmin_value)))
+                xtest_decimalfield_3.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (4) (2) (((((xdecimal).xDecimal)).apply ("1.5"))) (((((xdecimal).xDecimal)).apply ("0.5"))))
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input step=\"0.01\" name=\"f\" min=\"0.5\" max=\"1.5\" type=\"number\" id=\"id_f\" required>"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value is less than or equal to 1.5.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1.6"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value is greater than or equal to 0.5.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("0.4"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1.5"))) (((((xdecimal).xDecimal)).apply ("1.5"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("0.5"))) (((((xdecimal).xDecimal)).apply ("0.5"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (".5"))) (((((xdecimal).xDecimal)).apply ("0.5"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("00.50"))) (((((xdecimal).xDecimal)).apply ("0.50"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xmax_digits)) (4))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xdecimal_places)) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xmax_value)) (((((xdecimal).xDecimal)).apply ("1.5"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xmin_value)) (((((xdecimal).xDecimal)).apply ("0.5"))))
+                xtest_decimalfield_4.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (2))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure that there are no more than 2 decimal places.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("0.00000001"))
+                xtest_decimalfield_5.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (3))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("0000000.10"))) (((((xdecimal).xDecimal)).apply ("0.1"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("0000000.100"))) (((((xdecimal).xDecimal)).apply ("0.100"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("000000.02"))) (((((xdecimal).xDecimal)).apply ("0.02"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure that there are no more than 3 digits in total.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("000000.0002"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (".002"))) (((((xdecimal).xDecimal)).apply ("0.002"))))
+                xtest_decimalfield_6.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (2) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (".01"))) (((((xdecimal).xDecimal)).apply (".01"))))
+                        xmsg.write "'Ensure that there are no more than 0 digits before the decimal point.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1.1"))
+                xtest_decimalfield_scientific.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (4) (2))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("Ensure that there are no more"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1E-2"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1E-1"))) (((((xdecimal).xDecimal)).apply ("10"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1E-1"))) (((((xdecimal).xDecimal)).apply ("0.1"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("0.546e-2"))) (((((xdecimal).xDecimal)).apply ("54.6"))))
+                xtest_decimalfield_widget_attrs.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (6) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xwidget_attrs)).apply ((((xWidget)).apply)))) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xwidget_attrs)).apply ((((xNumberInput)).apply)))) ((((unsupported)).apply ("step") ("0.01"))))
+                        xf.write (((unsupported)).apply ((xDecimalField)) (10) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xwidget_attrs)).apply ((((xNumberInput)).apply)))) ((((unsupported)).apply ("step") ("1"))))
+                        xf.write (((unsupported)).apply ((xDecimalField)) (19) (19))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xwidget_attrs)).apply ((((xNumberInput)).apply)))) ((((unsupported)).apply ("step") ("1e-19"))))
+                        xf.write (((unsupported)).apply ((xDecimalField)) (20))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xwidget_attrs)).apply ((((xNumberInput)).apply)))) ((((unsupported)).apply ("step") ("any"))))
+                        xf.write (((unsupported)).apply ((xDecimalField)) (6) ((((unsupported)).apply ((xNumberInput)) ((((unsupported)).apply ("step") ("0.01"))))))
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input step=\"0.01\" name=\"f\" type=\"number\" id=\"id_f\" required>"))
+                xtest_decimalfield_localized.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xf.write (((unsupported)).apply ((xDecimalField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input id=\"id_f\" name=\"f\" type=\"text\" required>"))
+                xtest_decimalfield_changed.write
+                  [xself]
+                    memory > xd
+                    memory > xlocalized_d
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDecimalField)) (2) (2))
+                        xd.write ((((xdecimal).xDecimal)).apply ("0.1"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ((xd)) ("0.10"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply ((xd)) ("0.101"))))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          seq
+                            xf.write (((unsupported)).apply ((xDecimalField)) (2) (2) (TRUE))
+                            xlocalized_d.write ((((xformats).xlocalize_input)).apply ((xd)))
+                            bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ((xd)) ((xlocalized_d)))))
+                xtest_decimalfield_support_decimal_separator.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      (((unsupported)).apply)
+                        xf.write (((unsupported)).apply ((xDecimalField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1001,10"))) (((((xdecimal).xDecimal)).apply ("1001.10"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1001.10"))) (((((xdecimal).xDecimal)).apply ("1001.10"))))
+                xtest_decimalfield_support_thousands_separator.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      (((unsupported)).apply)
+                        xf.write (((unsupported)).apply ((xDecimalField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1.001,10"))) (((((xdecimal).xDecimal)).apply ("1001.10"))))
+                        xmsg.write "'Enter a number.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1,001.1"))

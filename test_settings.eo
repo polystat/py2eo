@@ -1,0 +1,54 @@
+memory > xextend_sys_path
+memory > xtempfile
+memory > xconf
+memory > xsorted
+memory > xos
+memory > xSimpleTestCase
+memory > xMIDDLEWARE
+memory > xshutil
+[] > test_settings
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_middleware_headers
+        memory > xsetUp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    memory > xtemplate_settings_py
+                    memory > xtest_settings_py
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xtemp_dir)) (((((xtempfile).xTemporaryDirectory)).apply)))
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply ((((xself).xtemp_dir).xcleanup)))
+                        xtemplate_settings_py.write (((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply (((xconf).x__file__)))) ("project_template") ("project_name") ("settings.py-tpl"))
+                        xtest_settings_py.write (((((xos).xpath).xjoin)).apply ((((xself).xtemp_dir).xname)) ("test_settings.py"))
+                        bogusForceDataize.write ((((xshutil).xcopyfile)).apply ((xtemplate_settings_py)) ((xtest_settings_py)))
+                xtest_middleware_headers.write
+                  [xself]
+                    memory > xheaders
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xextend_sys_path)).apply ((((xself).xtemp_dir).xname)))))
+                          (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ((xMIDDLEWARE)) ("project_template.urls"))))
+                          seq
+                            xresponse.write (((((xself).xclient).xget)).apply ("/empty/"))
+                            xheaders.write (((xsorted)).apply ((((((((xresponse).xserialize_headers)).apply).xsplit)).apply ("rn"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xheaders)) ((((unsupported)).apply ("Content-Length: 0") ("Content-Type: text/html; charset=utf-8") ("Cross-Origin-Opener-Policy: same-origin") ("Referrer-Policy: same-origin") ("X-Content-Type-Options: nosniff") ("X-Frame-Options: DENY"))))

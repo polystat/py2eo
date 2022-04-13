@@ -1,0 +1,100 @@
+memory > xevent
+memory > xEvent
+memory > xPerson
+memory > xMembership
+memory > xTestCase
+memory > xp
+memory > xCompetingTeam
+memory > xGroup
+memory > xsorted
+memory > xIndividualCompetitor
+[] > test_multitable
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_m2m_prefetch_proxied
+        memory > xtest_m2m_reverse_query
+        memory > xtest_m2m_query
+        memory > xtest_m2m_prefetch_reverse_proxied
+        memory > xtest_m2m_reverse_query_proxied
+        memory > xtest_m2m_query_proxied
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xalice)) ((((unsupported)).apply ((((xPerson).xobjects).xcreate)) ("Alice"))))
+                        (((unsupported)).apply (((xcls).xbob)) ((((unsupported)).apply ((((xPerson).xobjects).xcreate)) ("Bob"))))
+                        (((unsupported)).apply (((xcls).xchris)) ((((unsupported)).apply ((((xPerson).xobjects).xcreate)) ("Chris"))))
+                        (((unsupported)).apply (((xcls).xdan)) ((((unsupported)).apply ((((xPerson).xobjects).xcreate)) ("Dan"))))
+                        (((unsupported)).apply (((xcls).xteam_alpha)) ((((unsupported)).apply ((((xGroup).xobjects).xcreate)) ("Alpha"))))
+                        (((unsupported)).apply ((((xMembership).xobjects).xcreate)) (((xcls).xalice)) (((xcls).xteam_alpha)))
+                        (((unsupported)).apply ((((xMembership).xobjects).xcreate)) (((xcls).xbob)) (((xcls).xteam_alpha)))
+                        (((unsupported)).apply (((xcls).xevent)) ((((unsupported)).apply ((((xEvent).xobjects).xcreate)) ("Exposition Match"))))
+                        (((unsupported)).apply ((((xIndividualCompetitor).xobjects).xcreate)) (((xcls).xevent)) (((xcls).xchris)))
+                        (((unsupported)).apply ((((xIndividualCompetitor).xobjects).xcreate)) (((xcls).xevent)) (((xcls).xdan)))
+                        (((unsupported)).apply ((((xCompetingTeam).xobjects).xcreate)) (((xcls).xevent)) (((xcls).xteam_alpha)))
+                xtest_m2m_query.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      seq
+                        xresult.write ((((((xself).xevent).xteams).xall)).apply)
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((xresult)) ((((unsupported)).apply (((xself).xteam_alpha)))))
+                xtest_m2m_reverse_query.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      seq
+                        xresult.write ((((((xself).xchris).xevent_set).xall)).apply)
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((xresult)) ((((unsupported)).apply (((xself).xevent)))))
+                xtest_m2m_query_proxied.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      seq
+                        xresult.write ((((((xself).xevent).xspecial_people).xall)).apply)
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((xresult)) ((((unsupported)).apply (((xself).xchris)) (((xself).xdan)))))
+                xtest_m2m_reverse_query_proxied.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      seq
+                        xresult.write ((((((xself).xchris).xspecial_event_set).xall)).apply)
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((xresult)) ((((unsupported)).apply (((xself).xevent)))))
+                xtest_m2m_prefetch_proxied.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      seq
+                        xresult.write ((((((unsupported)).apply ((((xEvent).xobjects).xfilter)) ("Exposition Match")).xprefetch_related)).apply ("special_people"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (2))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((xresult)) ((((unsupported)).apply (((xself).xevent)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsorted)).apply ((((unsupported)).apply (((xp).xname)) ((xp)) ((((((((unsupported)).apply ((xresult)) (0)).xspecial_people).xall)).apply)))))) ((((unsupported)).apply ("Chris") ("Dan"))))
+                xtest_m2m_prefetch_reverse_proxied.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      seq
+                        xresult.write ((((((unsupported)).apply ((((xPerson).xobjects).xfilter)) ("Dan")).xprefetch_related)).apply ("special_event_set"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (2))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((xresult)) ((((unsupported)).apply (((xself).xdan)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xevent).xname)) ((xevent)) ((((((((unsupported)).apply ((xresult)) (0)).xspecial_event_set).xall)).apply)))) ((((unsupported)).apply ("Exposition Match"))))

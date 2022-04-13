@@ -1,0 +1,120 @@
+memory > xentries
+memory > xImportError
+memory > xarchive
+memory > xtmpdir
+memory > xstat
+memory > xentry
+memory > xtempfile
+memory > xImportError2
+memory > xos
+memory > xSimpleTestCase
+memory > xSuspiciousOperation
+memory > xsys
+memory > x__file__
+memory > xinvalid_path
+memory > xunittest
+[] > test_archive
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_extract_function_traversal
+        memory > xsetUp
+        memory > xtest_extract_file_permissions
+        memory > xtest_extract_function
+        memory > xtearDown
+        memory > xHAS_BZ2
+        memory > xHAS_LZMA
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xImportError2)))
+              seq
+                (((unsupported)).apply)
+                xHAS_BZ2.write TRUE
+              xHAS_BZ2.write FALSE
+            (((unsupported)).apply ((xImportError)))
+              seq
+                (((unsupported)).apply)
+                xHAS_LZMA.write TRUE
+              xHAS_LZMA.write FALSE
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xtestdir)) ((((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply ((x__file__)))) ("archives"))))
+                        (((unsupported)).apply (((xself).xold_cwd)) (((((xos).xgetcwd)).apply)))
+                        bogusForceDataize.write ((((xos).xchdir)).apply (((xself).xtestdir)))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xos).xchdir)).apply (((xself).xold_cwd)))
+                xtest_extract_function.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xos).xscandir)).apply (((xself).xtestdir)))) ((xentries)))
+                        (((unsupported)).apply ((xentry)) ((xentries)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply (((xentry).xname)))) (((((xtempfile).xTemporaryDirectory)).apply)) ((xtmpdir)))
+                            seq
+                              (((((((xentry).xname).xendswith)).apply (".bz2")).and ((xHAS_BZ2).not)).or ((((((xentry).xname).xendswith)).apply ((((unsupported)).apply (".lzma") (".xz")))).and ((xHAS_LZMA).not))).if
+                                (((unsupported)).apply)
+                              bogusForceDataize.write ((((xarchive).xextract)).apply (((xentry).xpath)) ((xtmpdir)))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xisfile)).apply ((((((xos).xpath).xjoin)).apply ((xtmpdir)) ("1"))))))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xisfile)).apply ((((((xos).xpath).xjoin)).apply ((xtmpdir)) ("2"))))))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xisfile)).apply ((((((xos).xpath).xjoin)).apply ((xtmpdir)) ("foo") ("1"))))))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xisfile)).apply ((((((xos).xpath).xjoin)).apply ((xtmpdir)) ("foo") ("2"))))))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xisfile)).apply ((((((xos).xpath).xjoin)).apply ((xtmpdir)) ("foo") ("bar") ("1"))))))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xisfile)).apply ((((((xos).xpath).xjoin)).apply ((xtmpdir)) ("foo") ("bar") ("2"))))))
+                xtest_extract_file_permissions.write
+                  [xself]
+                    memory > xfilepath
+                    memory > xumask
+                    memory > xmask
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xmask.write ((((xstat).xS_IRWXU).or ((xstat).xS_IRWXG)).or ((xstat).xS_IRWXO))
+                        xumask.write ((((xos).xumask)).apply (0))
+                        bogusForceDataize.write ((((xos).xumask)).apply ((xumask)))
+                        (((unsupported)).apply (((((xos).xscandir)).apply (((xself).xtestdir)))) ((xentries)))
+                          (((unsupported)).apply ((xentry)) ((xentries)))
+                            seq
+                              (((((((xentry).xname).xstartswith)).apply ("leadpath_")).or ((((((xentry).xname).xendswith)).apply (".bz2")).and ((xHAS_BZ2).not))).or ((((((xentry).xname).xendswith)).apply ((((unsupported)).apply (".lzma") (".xz")))).and ((xHAS_LZMA).not))).if
+                                (((unsupported)).apply)
+                              (((unsupported)).apply (((((xself).xsubTest)).apply (((xentry).xname)))) (((((xtempfile).xTemporaryDirectory)).apply)) ((xtmpdir)))
+                                seq
+                                  bogusForceDataize.write ((((xarchive).xextract)).apply (((xentry).xpath)) ((xtmpdir)))
+                                  xfilepath.write (((((xos).xpath).xjoin)).apply ((xtmpdir)) ("executable"))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xos).xstat)).apply ((xfilepath))).xst_mode).and (xmask))) (509))
+                                  xfilepath.write (((((xos).xpath).xjoin)).apply ((xtmpdir)) ("no_permissions"))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xos).xstat)).apply ((xfilepath))).xst_mode).and (xmask))) ((438.and ((xumask).neg))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_extract_function_traversal.write
+                [xself]
+                  memory > xarchives_dir
+                  memory > xtests
+                  memory > xmsg
+                  seq > @
+                    seq
+                      xarchives_dir.write (((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply ((x__file__)))) ("traversal_archives"))
+                      xtests.write (((unsupported)).apply ((((unsupported)).apply ("traversal.tar") (".."))) ((((unsupported)).apply ("traversal_absolute.tar") ("/tmp/evil.py"))))
+                      (((xsys).xplatform).eq "win32").if
+                        (((unsupported)).apply ((xtests)) ((((unsupported)).apply ((((unsupported)).apply ("traversal_disk_win.tar") ("d:evil.py"))) ((((unsupported)).apply ("traversal_disk_win.zip") ("d:evil.py"))))))
+                      xmsg.write "Archive contains invalid path: '%s'"
+                      (((unsupported)).apply ((((unsupported)).apply ((xentry)) ((xinvalid_path)))) ((xtests)))
+                        (((unsupported)).apply (((((xself).xsubTest)).apply ((xentry)))) (((((xtempfile).xTemporaryDirectory)).apply)) ((xtmpdir)))
+                          (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousOperation)) (((xmsg).mod (xinvalid_path))))))
+                            bogusForceDataize.write ((((xarchive).xextract)).apply ((((((xos).xpath).xjoin)).apply ((xarchives_dir)) ((xentry)))) ((xtmpdir)))

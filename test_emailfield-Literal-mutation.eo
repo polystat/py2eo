@@ -1,0 +1,94 @@
+memory > xFormFieldAssertionsMixin
+memory > xValidationError
+memory > xEmailField
+memory > xSimpleTestCase
+memory > xTypeError
+[] > test_emailfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_email_regexp_for_performance
+        memory > xtest_emailfield_strip_on_none_value
+        memory > xtest_emailfield_unable_to_set_strip_kwarg
+        memory > xtest_emailfield_min_max_length
+        memory > xtest_emailfield_1
+        memory > xtest_emailfield_not_required
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFormFieldAssertionsMixin)) ((xSimpleTestCase)))
+              seq
+                xtest_emailfield_1.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xEmailField)).apply)
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input type=\"email\" name=\"f\" id=\"id_f\" required>"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("person@example.com") (((((xf).xclean)).apply ("person@example.com"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid email address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("local@domain.with.idn.xyzxe4xf6xfcxdfabc.part.com") (((((xf).xclean)).apply ("local@domain.with.idn.xyzäöüßabc.part.com"))))
+                xtest_email_regexp_for_performance.write
+                  [xself]
+                    memory > xaddr
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xEmailField)).apply)
+                        xaddr.write "viewx3dtextx26qx3d@yahoo.comx26latlngx3d15854521645943074058"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xaddr)) (((((xf).xclean)).apply ((xaddr)))))
+                xtest_emailfield_not_required.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xEmailField)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("") (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("") (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("person@example.com") (((((xf).xclean)).apply ("person@example.com"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("example@example.com") (((((xf).xclean)).apply ("      example@example.com  t   t "))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid email address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo"))
+                xtest_emailfield_min_max_length.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xEmailField)) (10) (15))
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input id=\"id_f\" type=\"email\" name=\"f\" maxlength=\"15\" minlength=\"10\" required>"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value has at least 10 characters (it has 9).'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("a@foo.com"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("alf@foo.com") (((((xf).xclean)).apply ("alf@foo.com"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value has at most 15 characters (it has 20).'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("alf123456788@foo.com"))
+                xtest_emailfield_strip_on_none_value.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xEmailField)) (FALSE) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                xtest_emailfield_unable_to_set_strip_kwarg.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "__init__() got multiple values for keyword argument 'strip'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          (((unsupported)).apply ((xEmailField)) (FALSE))

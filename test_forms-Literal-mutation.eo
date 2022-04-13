@@ -1,0 +1,39 @@
+memory > xMedia
+memory > xstatic
+memory > xstr
+memory > xoverride_settings
+memory > xstorage
+memory > xurljoin
+memory > xSimpleTestCase
+[] > test_forms
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_absolute_url
+        memory > xurl
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xstorage).xStaticFilesStorage)))
+              xurl.write
+                [xself xname]
+                  seq > @
+                    (((unsupported)).apply ((((xurljoin)).apply ("https://example.com/assets/") ((xname)))))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("http://media.example.com/static/") ((((unsupported)).apply ("django.contrib.staticfiles"))) ("staticfiles_tests.test_forms.StaticTestStorage"))))
+              xtest_absolute_url.write
+                [xself]
+                  memory > xm
+                  seq > @
+                    seq
+                      xm.write (((unsupported)).apply ((xMedia)) ((((unsupported)).apply ("all") ((((unsupported)).apply ("path/to/css1") ("/path/to/css2"))))) ((((unsupported)).apply ("/path/to/js1") ("http://media.other.com/path/to/js2") ("https://secure.other.com/path/to/js3") ((((xstatic)).apply ("relative/path/to/js4"))))))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xm)))) ((((unsupported)).apply)))

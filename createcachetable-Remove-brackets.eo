@@ -1,0 +1,141 @@
+memory > xstatement
+memory > xDEFAULT_DB_ALIAS
+memory > xcaches
+memory > xrouter
+memory > xtablename
+memory > xBaseCommand
+memory > xconnections
+memory > xi
+memory > xcache_alias
+memory > xtablenames
+memory > xe
+memory > xmodels
+memory > xoptions
+memory > xBaseDatabaseCache
+memory > xenumerate
+memory > xf
+memory > xsettings
+memory > xDatabaseError
+memory > xisinstance
+memory > xtransaction
+memory > xline
+memory > xcurs
+memory > xCommandError
+memory > xlen
+[] > createcachetable
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xcreate_table
+        memory > xhandle
+        memory > xadd_arguments
+        memory > xhelp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Creates the tables needed to use the SQL cache backend."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("args") ("table_name") ("*") ("Optional table names. Otherwise, settings.CACHES is used to find cache tables."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ((xDEFAULT_DB_ALIAS)) ("Nominates a database onto which the cache tables will be installed. Defaults to the \"default\" database."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--dry-run") ("store_true") ("Does not create the table, just prints the SQL that would be run."))
+                xhandle.write
+                  [xself]
+                    memory > xcache
+                    memory > xdry_run
+                    memory > xdb
+                    seq > @
+                      (((unsupported)).apply)
+                        xdb.write (((unsupported)).apply ((xoptions)) ("database"))
+                        (((unsupported)).apply (((xself).xverbosity)) ((((unsupported)).apply ((xoptions)) ("verbosity"))))
+                        xdry_run.write (((unsupported)).apply ((xoptions)) ("dry_run"))
+                        (xtablenames).if
+                          (((unsupported)).apply ((xtablename)) ((xtablenames)))
+                            bogusForceDataize.write ((((xself).xcreate_table)).apply ((xdb)) ((xtablename)) ((xdry_run)))
+                          (((unsupported)).apply ((xcache_alias)) (((xsettings).xCACHES)))
+                            seq
+                              xcache.write (((unsupported)).apply ((xcaches)) ((xcache_alias)))
+                              (((xisinstance)).apply ((xcache)) ((xBaseDatabaseCache))).if
+                                bogusForceDataize.write ((((xself).xcreate_table)).apply ((xdb)) (((xcache).x_table)) ((xdry_run)))
+                xcreate_table.write
+                  [xself xdatabase xtablename xdry_run]
+                    memory > xindex_output
+                    memory > xfield_output
+                    memory > xtable_output
+                    memory > xfields
+                    memory > xconnection
+                    memory > xunique
+                    memory > xfull_statement
+                    memory > xcache
+                    memory > xqn
+                    seq > @
+                      seq
+                        xcache.write (((xBaseDatabaseCache)).apply ((xtablename)) ((((unsupported)).apply)))
+                        (((((xrouter).xallow_migrate_model)).apply ((xdatabase)) (((xcache).xcache_model_class))).not).if
+                          (((unsupported)).apply)
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdatabase)))
+                        (((unsupported)).apply ((xtablename)) ((((xconnection).xintrospection).xtable_names))).if
+                          seq
+                            (((xself).xverbosity).greater 0).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("Cache table '%s' already exists.".mod (xtablename))))
+                            (((unsupported)).apply)
+                        xfields.write (((unsupported)).apply ((((unsupported)).apply (((xmodels).xCharField)) ("cache_key") (255) (TRUE) (TRUE))) ((((unsupported)).apply (((xmodels).xTextField)) ("value"))) ((((unsupported)).apply (((xmodels).xDateTimeField)) ("expires") (TRUE))))
+                        xtable_output.write (((unsupported)).apply)
+                        xindex_output.write (((unsupported)).apply)
+                        xqn.write (((xconnection).xops).xquote_name)
+                        (((unsupported)).apply ((xf)) ((xfields)))
+                          seq
+                            xfield_output.write (((unsupported)).apply ((((xqn)).apply (((xf).xname)))) ((((unsupported)).apply (((xf).xdb_type)) ((xconnection)))) (("%sNULL".mod ((((xf).xnull).not).if "NOT " ""))))
+                            ((xf).xprimary_key).if
+                              bogusForceDataize.write ((((xfield_output).xappend)).apply ("PRIMARY KEY"))
+                              ((xf).xunique).if
+                                bogusForceDataize.write ((((xfield_output).xappend)).apply ("UNIQUE"))
+                            ((xf).xdb_index).if
+                              seq
+                                xunique.write (((xf).xunique).if "UNIQUE " "")
+                                bogusForceDataize.write ((((xindex_output).xappend)).apply (("CREATE %sINDEX %s ON %s (%s);".mod (((unsupported)).apply ((xunique)) ((((xqn)).apply (("%s_%s".mod (((unsupported)).apply ((xtablename)) (((xf).xname))))))) ((((xqn)).apply ((xtablename)))) ((((xqn)).apply (((xf).xname))))))))
+                            bogusForceDataize.write ((((xtable_output).xappend)).apply ((((" ".xjoin)).apply ((xfield_output)))))
+                        xfull_statement.write (((unsupported)).apply (("CREATE TABLE %s (".mod (((xqn)).apply ((xtablename))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xi)) ((xline)))) ((((xenumerate)).apply ((xtable_output)))))
+                          bogusForceDataize.write ((((xfull_statement).xappend)).apply (("    %s%s".mod (((unsupported)).apply ((xline)) ((((xi).less ((((xlen)).apply ((xtable_output))).sub 1)).if "," ""))))))
+                        bogusForceDataize.write ((((xfull_statement).xappend)).apply (");"))
+                        xfull_statement.write ((("n".xjoin)).apply ((xfull_statement)))
+                        (xdry_run).if
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((xfull_statement)))
+                            (((unsupported)).apply ((xstatement)) ((xindex_output)))
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((xstatement)))
+                            (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xtransaction).xatomic)) ((xdatabase)) ((((xconnection).xfeatures).xcan_rollback_ddl)))))
+                          (((unsupported)).apply (((xconnection).xcursor)) ((xcurs)))
+                            seq
+                              (((unsupported)).apply ((xDatabaseError)))
+                                bogusForceDataize.write ((((xcurs).xexecute)).apply ((xfull_statement)))
+                                (((unsupported)).apply ((((xCommandError)).apply (("Cache table '%s' could not be created.nThe error was: %s.".mod (((unsupported)).apply ((xtablename)) ((xe))))))))
+                              (((unsupported)).apply ((xstatement)) ((xindex_output)))
+                                bogusForceDataize.write ((((xcurs).xexecute)).apply ((xstatement)))
+                        (((xself).xverbosity).greater 1).if
+                          bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("Cache table '%s' created.".mod (xtablename))))

@@ -1,0 +1,246 @@
+memory > xWKBReader
+memory > xAttributeError
+memory > xenumerate
+memory > xValueError
+memory > xbad_byteorder
+memory > xbyteorder
+memory > xWKTReader
+memory > xbinascii
+memory > xsrid
+memory > xgeos_version_tuple
+memory > xhexes
+memory > xgeom
+memory > xWKTWriter
+memory > xbad_outdim
+memory > xPoint
+memory > xbad_wkb
+memory > xWKBWriter
+memory > xmemoryview
+memory > xhex
+memory > xGEOSGeometry
+memory > xSimpleTestCase
+memory > xTypeError
+memory > xPolygon
+[] > test_io
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_empty_point_wkb
+        memory > xtest_wkt_writer_precision
+        memory > xtest_empty_polygon_wkb
+        memory > xtest03_wkbreader
+        memory > xtest01_wktreader
+        memory > xtest_wktwriter_constructor_arguments
+        memory > xtest02_wktwriter
+        memory > xtest04_wkbwriter
+        memory > xtest_wkt_writer_trim
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest01_wktreader.write
+                  [xself]
+                    memory > xwkt_r
+                    memory > xref
+                    memory > xwkt
+                    memory > xg2
+                    memory > xg1
+                    seq > @
+                      seq
+                        xwkt_r.write (xWKTReader)
+                        xwkt.write "POINT (5 23)"
+                        xref.write (((xGEOSGeometry)).apply ((xwkt)))
+                        xg1.write ((((xwkt_r).xread)).apply (((xwkt).xencode)))
+                        xg2.write ((((xwkt_r).xread)).apply ((xwkt)))
+                        (((unsupported)).apply ((xgeom)) ((((unsupported)).apply ((xg1)) ((xg2)))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xref)) ((xgeom)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((xwkt_r).xread)).apply (1))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((xwkt_r).xread)).apply ((((xmemoryview)).apply ("foo"))))
+                xtest02_wktwriter.write
+                  [xself]
+                    memory > xref
+                    memory > xwkt_w
+                    memory > xref_wkt
+                    seq > @
+                      seq
+                        xwkt_w.write (xWKTWriter)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          (((unsupported)).apply (((xwkt_w).xptr)) (((xWKTReader).xptr_type)))
+                        xref.write (((xGEOSGeometry)).apply ("POINT (5 23)"))
+                        xref_wkt.write "POINT (5.0000000000000000 23.0000000000000000)"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xref_wkt)) ((((((xwkt_w).xwrite)).apply ((xref))).xdecode)))
+                xtest_wktwriter_constructor_arguments.write
+                  [xself]
+                    memory > xref
+                    memory > xwkt_w
+                    memory > xref_wkt
+                    seq > @
+                      seq
+                        xwkt_w.write (((unsupported)).apply ((xWKTWriter)) (3) (TRUE) (3))
+                        xref.write (((xGEOSGeometry)).apply ("POINT (5.34562 23 1.5)"))
+                        ((xgeos_version_tuple).greater (((unsupported)).apply (3) (10))).if
+                          xref_wkt.write "POINT Z (5.346 23 1.5)"
+                          xref_wkt.write "POINT Z (5.35 23 1.5)"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xref_wkt)) ((((((xwkt_w).xwrite)).apply ((xref))).xdecode)))
+                xtest03_wkbreader.write
+                  [xself]
+                    memory > xwkb
+                    memory > xref
+                    memory > xwkb_r
+                    memory > xg2
+                    memory > xbad_input
+                    memory > xhex
+                    memory > xg1
+                    seq > @
+                      seq
+                        xwkb_r.write (xWKBReader)
+                        xhex.write "000000000140140000000000004037000000000000"
+                        xwkb.write (((xmemoryview)).apply (((((xbinascii).xa2b_hex)).apply ((xhex)))))
+                        xref.write (((xGEOSGeometry)).apply ((xhex)))
+                        xg1.write ((((xwkb_r).xread)).apply ((xwkb)))
+                        xg2.write ((((xwkb_r).xread)).apply ((xhex)))
+                        (((unsupported)).apply ((xgeom)) ((((unsupported)).apply ((xg1)) ((xg2)))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xref)) ((xgeom)))
+                        xbad_input.write (((unsupported)).apply (1) (5.23) ("None: is there a None literal in the EO language?") (FALSE))
+                        (((unsupported)).apply ((xbad_wkb)) ((xbad_input)))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                            bogusForceDataize.write ((((xwkb_r).xread)).apply ((xbad_wkb)))
+                xtest04_wkbwriter.write
+                  [xself]
+                    memory > xwkb2
+                    memory > xwkb_w
+                    memory > xg
+                    memory > xhex1
+                    memory > xwkb1
+                    memory > xhex3d_srid
+                    memory > xhex3d
+                    memory > xwkb3d
+                    memory > xwkb3d_srid
+                    memory > xhex2
+                    seq > @
+                      seq
+                        xwkb_w.write (xWKBWriter)
+                        xg.write (((xGEOSGeometry)).apply ("POINT (5 23)"))
+                        xhex1.write "010100000000000000000014400000000000003740"
+                        xwkb1.write (((xmemoryview)).apply (((((xbinascii).xa2b_hex)).apply ((xhex1)))))
+                        xhex2.write "000000000140140000000000004037000000000000"
+                        xwkb2.write (((xmemoryview)).apply (((((xbinascii).xa2b_hex)).apply ((xhex2)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xhex1)) (((((xwkb_w).xwrite_hex)).apply ((xg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xwkb1)) (((((xwkb_w).xwrite)).apply ((xg)))))
+                        (((unsupported)).apply ((xbad_byteorder)) ((((unsupported)).apply ((1.neg)) (2) (523) ("foo") ("None: is there a None literal in the EO language?"))))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                            bogusForceDataize.write ((((xwkb_w).x_set_byteorder)).apply ((xbad_byteorder)))
+                        (((unsupported)).apply (((xwkb_w).xbyteorder)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xhex2)) (((((xwkb_w).xwrite_hex)).apply ((xg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xwkb2)) (((((xwkb_w).xwrite)).apply ((xg)))))
+                        (((unsupported)).apply (((xwkb_w).xbyteorder)) (1))
+                        xg.write (((xGEOSGeometry)).apply ("POINT (5 23 17)"))
+                        (((unsupported)).apply (((xg).xsrid)) (4326))
+                        xhex3d.write "0101000080000000000000144000000000000037400000000000003140"
+                        xwkb3d.write (((xmemoryview)).apply (((((xbinascii).xa2b_hex)).apply ((xhex3d)))))
+                        xhex3d_srid.write "01010000A0E6100000000000000000144000000000000037400000000000003140"
+                        xwkb3d_srid.write (((xmemoryview)).apply (((((xbinascii).xa2b_hex)).apply ((xhex3d_srid)))))
+                        (((unsupported)).apply ((xbad_outdim)) ((((unsupported)).apply ((1.neg)) (0) (1) (4) (423) ("foo") ("None: is there a None literal in the EO language?"))))
+                          (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("WKB output dimension must be 2 or 3"))))
+                            (((unsupported)).apply (((xwkb_w).xoutdim)) ((xbad_outdim)))
+                        (((unsupported)).apply (((xwkb_w).xoutdim)) (3))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xhex3d)) (((((xwkb_w).xwrite_hex)).apply ((xg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xwkb3d)) (((((xwkb_w).xwrite)).apply ((xg)))))
+                        (((unsupported)).apply (((xwkb_w).xsrid)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xhex3d_srid)) (((((xwkb_w).xwrite_hex)).apply ((xg)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xwkb3d_srid)) (((((xwkb_w).xwrite)).apply ((xg)))))
+                xtest_wkt_writer_trim.write
+                  [xself]
+                    memory > xwkt_w
+                    seq > @
+                      seq
+                        xwkt_w.write (xWKTWriter)
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xwkt_w).xtrim)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply (1) (1))))) ("POINT (1.0000000000000000 1.0000000000000000)"))
+                        (((unsupported)).apply (((xwkt_w).xtrim)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xwkt_w).xtrim)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply (1) (1))))) ("POINT (1 1)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply (1.1) (1))))) ("POINT (1.1 1)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply ((1.0.div 3)) (1))))) ("POINT (0.3333333333333333 1)"))
+                        (((unsupported)).apply (((xwkt_w).xtrim)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xwkt_w).xtrim)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply (1) (1))))) ("POINT (1.0000000000000000 1.0000000000000000)"))
+                xtest_wkt_writer_precision.write
+                  [xself]
+                    memory > xwkt_w
+                    seq > @
+                      seq
+                        xwkt_w.write (xWKTWriter)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xwkt_w).xprecision)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply ((1.0.div 3)) ((2.0.div 3)))))) ("POINT (0.3333333333333333 0.6666666666666666)"))
+                        (((unsupported)).apply (((xwkt_w).xprecision)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xwkt_w).xprecision)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply ((1.0.div 3)) ((2.0.div 3)))))) ("POINT (0.3 0.7)"))
+                        (((unsupported)).apply (((xwkt_w).xprecision)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xwkt_w).xprecision)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply ((1.0.div 3)) ((2.0.div 3)))))) ("POINT (0 1)"))
+                        (((unsupported)).apply (((xwkt_w).xprecision)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xwkt_w).xprecision)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkt_w).xwrite)).apply ((((xPoint)).apply ((1.0.div 3)) ((2.0.div 3)))))) ("POINT (0.3333333333333333 0.6666666666666666)"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xAttributeError)) ("WKT output rounding precision must be "))))
+                          (((unsupported)).apply (((xwkt_w).xprecision)) ("potato"))
+                xtest_empty_point_wkb.write
+                  [xself]
+                    memory > xwkb_w
+                    memory > xp
+                    seq > @
+                      seq
+                        xp.write (((unsupported)).apply ((xPoint)) (4326))
+                        xwkb_w.write (xWKBWriter)
+                        (((unsupported)).apply (((xwkb_w).xsrid)) (FALSE))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Empty point is not representable in WKB."))))
+                          bogusForceDataize.write ((((xwkb_w).xwrite)).apply ((xp)))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Empty point is not representable in WKB."))))
+                          bogusForceDataize.write ((((xwkb_w).xwrite_hex)).apply ((xp)))
+                        (((unsupported)).apply (((xwkb_w).xsrid)) (TRUE))
+                        (((unsupported)).apply ((((unsupported)).apply ((xbyteorder)) ((xhex)))) ((((xenumerate)).apply ((((unsupported)).apply ("0020000001000010E67FF80000000000007FF8000000000000") ("0101000020E6100000000000000000F87F000000000000F87F"))))))
+                          seq
+                            (((unsupported)).apply (((xwkb_w).xbyteorder)) ((xbyteorder)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkb_w).xwrite_hex)).apply ((xp)))) ((xhex)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xGEOSGeometry)).apply (((((xwkb_w).xwrite_hex)).apply ((xp)))))) ((xp)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkb_w).xwrite)).apply ((xp)))) ((((xmemoryview)).apply (((((xbinascii).xa2b_hex)).apply ((xhex)))))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xGEOSGeometry)).apply (((((xwkb_w).xwrite)).apply ((xp)))))) ((xp)))
+                xtest_empty_polygon_wkb.write
+                  [xself]
+                    memory > xwkb_w
+                    memory > xp_no_srid
+                    memory > xp
+                    seq > @
+                      seq
+                        xp.write (((unsupported)).apply ((xPolygon)) (4326))
+                        xp_no_srid.write (xPolygon)
+                        xwkb_w.write (xWKBWriter)
+                        (((unsupported)).apply (((xwkb_w).xsrid)) (TRUE))
+                        (((unsupported)).apply ((((unsupported)).apply ((xbyteorder)) ((xhexes)))) ((((xenumerate)).apply ((((unsupported)).apply ((((unsupported)).apply ("000000000300000000") ("0020000003000010E600000000"))) ((((unsupported)).apply ("010300000000000000") ("0103000020E610000000000000"))))))))
+                          seq
+                            (((unsupported)).apply (((xwkb_w).xbyteorder)) ((xbyteorder)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xsrid)) ((xhex)))) ((((xenumerate)).apply ((xhexes)))))
+                              seq
+                                (((unsupported)).apply (((xwkb_w).xsrid)) ((xsrid)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkb_w).xwrite_hex)).apply ((xp)))) ((xhex)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xGEOSGeometry)).apply (((((xwkb_w).xwrite_hex)).apply ((xp)))))) (((xsrid).if (xp) (xp_no_srid))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwkb_w).xwrite)).apply ((xp)))) ((((xmemoryview)).apply (((((xbinascii).xa2b_hex)).apply ((xhex)))))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xGEOSGeometry)).apply (((((xwkb_w).xwrite)).apply ((xp)))))) (((xsrid).if (xp) (xp_no_srid))))

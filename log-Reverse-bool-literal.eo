@@ -1,0 +1,190 @@
+memory > xcopy
+memory > ximport_string
+memory > xcolor_style
+memory > xsettings
+memory > xsuper
+memory > xmail
+memory > xargs
+memory > xgetattr
+memory > xkwargs
+memory > xException
+memory > xhasattr
+memory > xget_connection
+memory > xlogging
+[] > log
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xemit
+        memory > xconfigure_logging
+        memory > xuses_server_time
+        memory > xdefault_time_format
+        memory > xconnection
+        memory > xDEFAULT_LOGGING
+        memory > xformat_subject
+        memory > xsend_mail
+        memory > xlog_response
+        memory > xrequest_logger
+        memory > x__init__
+        memory > xformat
+        memory > xfilter
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xrequest_logger.write ((((xlogging).xgetLogger)).apply ("django.request"))
+            xDEFAULT_LOGGING.write (((unsupported)).apply ("version") (1) ("disable_existing_loggers") (FALSE) ("filters") ((((unsupported)).apply ("require_debug_false") ((((unsupported)).apply ("()") ("django.utils.log.RequireDebugFalse"))) ("require_debug_false") ((((unsupported)).apply ("()") ("django.utils.log.RequireDebugTrue"))))) ("formatters") ((((unsupported)).apply ("django.server") ((((unsupported)).apply ("()") ("django.utils.log.ServerFormatter") ("format") ("[{server_time}] {message}") ("style") ("{"))))) ("handlers") ((((unsupported)).apply ("console") ((((unsupported)).apply ("level") ("INFO") ("filters") ((((unsupported)).apply ("require_debug_false"))) ("class") ("logging.StreamHandler"))) ("django.server") ((((unsupported)).apply ("level") ("INFO") ("class") ("logging.StreamHandler") ("formatter") ("django.server"))) ("mail_admins") ((((unsupported)).apply ("level") ("ERROR") ("filters") ((((unsupported)).apply ("require_debug_false"))) ("class") ("django.utils.log.AdminEmailHandler"))))) ("loggers") ((((unsupported)).apply ("django") ((((unsupported)).apply ("handlers") ((((unsupported)).apply ("console") ("mail_admins"))) ("level") ("INFO"))) ("django.server") ((((unsupported)).apply ("handlers") ((((unsupported)).apply ("django.server"))) ("level") ("INFO") ("propagate") (FALSE))))))
+            xconfigure_logging.write
+              [xlogging_config xlogging_settings]
+                memory > xlogging_config_func
+                seq > @
+                  (xlogging_config).if
+                    seq
+                      xlogging_config_func.write (((ximport_string)).apply ((xlogging_config)))
+                      bogusForceDataize.write (((((xlogging).xconfig).xdictConfig)).apply ((xDEFAULT_LOGGING)))
+                      (xlogging_settings).if
+                        bogusForceDataize.write (((xlogging_config_func)).apply ((xlogging_settings)))
+            (((unsupported)).apply (((xlogging).xHandler)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xinclude_html xemail_backend xreporter_class]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply)
+                        (((unsupported)).apply (((xself).xinclude_html)) ((xinclude_html)))
+                        (((unsupported)).apply (((xself).xemail_backend)) ((xemail_backend)))
+                        (((unsupported)).apply (((xself).xreporter_class)) ((((ximport_string)).apply (((xreporter_class).or ((xsettings).xDEFAULT_EXCEPTION_REPORTER))))))
+                xemit.write
+                  [xself xrecord]
+                    memory > xexc_info
+                    memory > xmessage
+                    memory > xrequest
+                    memory > xhtml_message
+                    memory > xsubject
+                    memory > xreporter
+                    memory > xno_exc_record
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xException)))
+                          seq
+                            xrequest.write ((xrecord).xrequest)
+                            xsubject.write ("%s (%s IP): %s".mod (((unsupported)).apply (((xrecord).xlevelname)) (((((unsupported)).apply ((((((xrequest).xMETA).xget)).apply ("REMOTE_ADDR"))) (((xsettings).xINTERNAL_IPS))).if "internal" "EXTERNAL")) (((((xrecord).xgetMessage)).apply))))
+                          seq
+                            xsubject.write ("%s: %s".mod (((unsupported)).apply (((xrecord).xlevelname)) (((((xrecord).xgetMessage)).apply))))
+                            xrequest.write "None: is there a None literal in the EO language?"
+                        xsubject.write ((((xself).xformat_subject)).apply ((xsubject)))
+                        xno_exc_record.write (((xcopy)).apply ((xrecord)))
+                        (((unsupported)).apply (((xno_exc_record).xexc_info)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xno_exc_record).xexc_text)) ("None: is there a None literal in the EO language?"))
+                        ((xrecord).xexc_info).if
+                          xexc_info.write ((xrecord).xexc_info)
+                          xexc_info.write (((unsupported)).apply ("None: is there a None literal in the EO language?") (((((xrecord).xgetMessage)).apply)) ("None: is there a None literal in the EO language?"))
+                        xreporter.write (((unsupported)).apply (((xself).xreporter_class)) ((xrequest)) (TRUE) ((((unsupported)).apply ((xexc_info)))))
+                        xmessage.write ("%snn%s".mod (((unsupported)).apply (((((xself).xformat)).apply ((xno_exc_record)))) (((((xreporter).xget_traceback_text)).apply))))
+                        xhtml_message.write (((xself).xinclude_html).if ((((xreporter).xget_traceback_html)).apply) "None: is there a None literal in the EO language?")
+                        (((unsupported)).apply (((xself).xsend_mail)) ((xsubject)) ((xmessage)) (TRUE) ((xhtml_message)))
+                xsend_mail.write
+                  [xself xsubject xmessage]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmail).xmail_admins)) ((xsubject)) ((xmessage)) ((((unsupported)).apply ((xargs)))) (((((xself).xconnection)).apply)) ((((unsupported)).apply ((xkwargs)))))
+                xconnection.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xget_connection)) (((xself).xemail_backend)) (TRUE))))
+                xformat_subject.write
+                  [xself xsubject]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((((((xsubject).xreplace)).apply ("n") ((((unsupported)).apply))).xreplace)).apply ("r") ((((unsupported)).apply)))))
+            (((unsupported)).apply (((xlogging).xFilter)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xcallback]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcallback)) ((xcallback)))
+                xfilter.write
+                  [xself xrecord]
+                    seq > @
+                      seq
+                        ((((xself).xcallback)).apply ((xrecord))).if
+                          (((unsupported)).apply (1))
+                        (((unsupported)).apply (0))
+            (((unsupported)).apply (((xlogging).xFilter)))
+              xfilter.write
+                [xself xrecord]
+                  seq > @
+                    (((unsupported)).apply ((((xsettings).xDEBUG).not)))
+            (((unsupported)).apply (((xlogging).xFilter)))
+              xfilter.write
+                [xself xrecord]
+                  seq > @
+                    (((unsupported)).apply (((xsettings).xDEBUG)))
+            (((unsupported)).apply (((xlogging).xFormatter)))
+              seq
+                xdefault_time_format.write "%d/%b/%Y %H:%M:%S"
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xstyle)) ((((xcolor_style)).apply)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                xformat.write
+                  [xself xrecord]
+                    memory > xmsg
+                    memory > xstatus_code
+                    seq > @
+                      seq
+                        xmsg.write ((xrecord).xmsg)
+                        xstatus_code.write (((xgetattr)).apply ((xrecord)) ("status_code") ("None: is there a None literal in the EO language?"))
+                        (xstatus_code).if
+                          (((unsupported)).apply (200) ((xstatus_code)) (300)).if
+                            xmsg.write (((((xself).xstyle).xHTTP_SUCCESS)).apply ((xmsg)))
+                            (((unsupported)).apply (100) ((xstatus_code)) (200)).if
+                              xmsg.write (((((xself).xstyle).xHTTP_INFO)).apply ((xmsg)))
+                              ((xstatus_code).eq 304).if
+                                xmsg.write (((((xself).xstyle).xHTTP_NOT_MODIFIED)).apply ((xmsg)))
+                                (((unsupported)).apply (300) ((xstatus_code)) (400)).if
+                                  xmsg.write (((((xself).xstyle).xHTTP_REDIRECT)).apply ((xmsg)))
+                                  ((xstatus_code).eq 404).if
+                                    xmsg.write (((((xself).xstyle).xHTTP_NOT_FOUND)).apply ((xmsg)))
+                                    (((unsupported)).apply (400) ((xstatus_code)) (500)).if
+                                      xmsg.write (((((xself).xstyle).xHTTP_BAD_REQUEST)).apply ((xmsg)))
+                                      xmsg.write (((((xself).xstyle).xHTTP_SERVER_ERROR)).apply ((xmsg)))
+                        (((((xself).xuses_server_time)).apply).and ((((xhasattr)).apply ((xrecord)) ("server_time")).not)).if
+                          (((unsupported)).apply (((xrecord).xserver_time)) (((((xself).xformatTime)).apply ((xrecord)) (((xself).xdatefmt)))))
+                        (((unsupported)).apply (((xrecord).xmsg)) ((xmsg)))
+                        (((unsupported)).apply (((((((xsuper)).apply).xformat)).apply ((xrecord)))))
+                xuses_server_time.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((((xself).x_fmt).xfind)).apply ("{server_time}")).geq 0)))
+            xlog_response.write
+              [xmessage xresponse xrequest xlogger xlevel xexception]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((xgetattr)).apply ((xresponse)) ("_has_been_logged") (FALSE)).if
+                      (((unsupported)).apply)
+                    (((unsupported)).apply ((xlevel)) ("None: is there a None literal in the EO language?")).if
+                      (((xresponse).xstatus_code).geq 500).if
+                        xlevel.write "error"
+                        (((xresponse).xstatus_code).geq 400).if
+                          xlevel.write "warning"
+                          xlevel.write "info"
+                    (((unsupported)).apply ((((xgetattr)).apply ((xlogger)) ((xlevel)))) ((xmessage)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ("status_code") (((xresponse).xstatus_code)) ("request") ((xrequest)))) ((xexception)))
+                    (((unsupported)).apply (((xresponse).x_has_been_logged)) (TRUE))

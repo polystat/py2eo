@@ -1,0 +1,176 @@
+memory > xlist
+memory > xapps
+memory > xt
+memory > xrouter
+memory > xNotImplementedError
+memory > xnamedtuple
+memory > xcursor
+memory > xm
+memory > xsorted
+memory > xapp_config
+memory > xmap
+memory > xmodel
+memory > xf
+memory > xset
+memory > xconstraint
+memory > xti
+[] > introspection
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_table_list
+        memory > xTableInfo
+        memory > xinstalled_models
+        memory > xget_table_description
+        memory > xdata_types_reverse
+        memory > xFieldInfo
+        memory > xtable_names
+        memory > xsequence_list
+        memory > xidentifier_converter
+        memory > xget_relations
+        memory > xget_primary_key_column
+        memory > xdjango_table_names
+        memory > xget_migratable_models
+        memory > x__init__
+        memory > xget_field_type
+        memory > xget_sequences
+        memory > xget_constraints
+        seq > @
+          seq
+            (((unsupported)).apply)
+            xTableInfo.write (((xnamedtuple)).apply ("TableInfo") ((((unsupported)).apply ("name") ("type"))))
+            xFieldInfo.write (((xnamedtuple)).apply ("FieldInfo") ("name type_code display_size internal_size precision scale null_ok default collation"))
+            (((unsupported)).apply)
+              seq
+                unsupported
+                xdata_types_reverse.write (((unsupported)).apply)
+                x__init__.write
+                  [xself xconnection]
+                    seq > @
+                      (((unsupported)).apply (((xself).xconnection)) ((xconnection)))
+                xget_field_type.write
+                  [xself xdata_type xdescription]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xdata_types_reverse)) ((xdata_type)))))
+                xidentifier_converter.write
+                  [xself xname]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xname)))
+                xtable_names.write
+                  [xself xcursor xinclude_views]
+                    memory > xget_names
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xget_names.write
+                          [xcursor]
+                            seq > @
+                              (((unsupported)).apply ((((xsorted)).apply ((((unsupported)).apply (((xti).xname)) ((xti)) (((((xself).xget_table_list)).apply ((xcursor)))) (((xinclude_views).or (((xti).xtype).eq "t"))))))))
+                        (((unsupported)).apply ((xcursor)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((((xself).xconnection).xcursor)).apply)) ((xcursor)))
+                            (((unsupported)).apply ((((xget_names)).apply ((xcursor)))))
+                        (((unsupported)).apply ((((xget_names)).apply ((xcursor)))))
+                xget_table_list.write
+                  [xself xcursor]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotImplementedError)).apply ("subclasses of BaseDatabaseIntrospection may require a get_table_list() method"))))
+                xget_table_description.write
+                  [xself xcursor xtable_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotImplementedError)).apply ("subclasses of BaseDatabaseIntrospection may require a get_table_description() method."))))
+                xget_migratable_models.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xmodel)) ((xapp_config)) (((((xapps).xget_app_configs)).apply)) ((xmodel)) (((((xrouter).xget_migratable_models)).apply ((xapp_config)) ((((xself).xconnection).xalias)))) ((((((xmodel).x_meta).xcan_migrate)).apply (((xself).xconnection)))))))
+                xdjango_table_names.write
+                  [xself xonly_existing xinclude_views]
+                    memory > xtables
+                    memory > xexisting_tables
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xtables.write (((xset)).apply)
+                        (((unsupported)).apply ((xmodel)) (((((xself).xget_migratable_models)).apply)))
+                          seq
+                            ((((xmodel).x_meta).xmanaged).not).if
+                              (((unsupported)).apply)
+                            bogusForceDataize.write ((((xtables).xadd)).apply ((((xmodel).x_meta).xdb_table)))
+                            bogusForceDataize.write ((((xtables).xupdate)).apply ((((unsupported)).apply (((((xf).xm2m_db_table)).apply)) ((xf)) ((((xmodel).x_meta).xlocal_many_to_many)) ((((((xf).xremote_field).xthrough).x_meta).xmanaged)))))
+                        xtables.write (((xlist)).apply ((xtables)))
+                        (xonly_existing).if
+                          seq
+                            xexisting_tables.write (((xset)).apply ((((unsupported)).apply (((xself).xtable_names)) ((xinclude_views)))))
+                            xtables.write (((unsupported)).apply ((xt)) ((xt)) ((xtables)) ((((unsupported)).apply (((((xself).xidentifier_converter)).apply ((xt)))) ((xexisting_tables)))))
+                        (((unsupported)).apply ((xtables)))
+                xinstalled_models.write
+                  [xself xtables]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtables.write (((xset)).apply ((((xmap)).apply (((xself).xidentifier_converter)) ((xtables)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xm)) ((xm)) (((((xself).xget_migratable_models)).apply)) ((((unsupported)).apply (((((xself).xidentifier_converter)).apply ((((xm).x_meta).xdb_table)))) ((xtables)))))))
+                xsequence_list.write
+                  [xself]
+                    memory > xsequence_list
+                    memory > xsequence
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xsequence_list.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xconnection).xcursor)).apply)) ((xcursor)))
+                          (((unsupported)).apply ((xmodel)) (((((xself).xget_migratable_models)).apply)))
+                            seq
+                              ((((xmodel).x_meta).xmanaged).not).if
+                                (((unsupported)).apply)
+                              (((xmodel).x_meta).xswapped).if
+                                (((unsupported)).apply)
+                              bogusForceDataize.write ((((xsequence_list).xextend)).apply (((((xself).xget_sequences)).apply ((xcursor)) ((((xmodel).x_meta).xdb_table)) ((((xmodel).x_meta).xlocal_fields)))))
+                              (((unsupported)).apply ((xf)) ((((xmodel).x_meta).xlocal_many_to_many)))
+                                (((((xf).xremote_field).xthrough).x_meta).xauto_created).if
+                                  seq
+                                    xsequence.write ((((xself).xget_sequences)).apply ((xcursor)) (((((xf).xm2m_db_table)).apply)))
+                                    bogusForceDataize.write ((((xsequence_list).xextend)).apply (((xsequence).or (((unsupported)).apply ((((unsupported)).apply ("table") (((((xf).xm2m_db_table)).apply)) ("column") ("None: is there a None literal in the EO language?")))))))
+                        (((unsupported)).apply ((xsequence_list)))
+                xget_sequences.write
+                  [xself xcursor xtable_name xtable_fields]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotImplementedError)).apply ("subclasses of BaseDatabaseIntrospection may require a get_sequences() method"))))
+                xget_relations.write
+                  [xself xcursor xtable_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotImplementedError)).apply ("subclasses of BaseDatabaseIntrospection may require a get_relations() method."))))
+                xget_primary_key_column.write
+                  [xself xcursor xtable_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xconstraint)) ((((((((xself).xget_constraints)).apply ((xcursor)) ((xtable_name))).xvalues)).apply)))
+                          (((unsupported)).apply ((xconstraint)) ("primary_key")).if
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ("columns"))) (0))))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xget_constraints.write
+                  [xself xcursor xtable_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotImplementedError)).apply ("subclasses of BaseDatabaseIntrospection may require a get_constraints() method"))))

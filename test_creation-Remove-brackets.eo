@@ -1,0 +1,103 @@
+memory > xDatabaseCreation
+memory > x_clone_db
+memory > xconnection
+memory > xDatabaseError
+memory > xmocked_popen
+memory > xBaseDatabaseCreation
+memory > xSimpleTestCase
+memory > xsubprocess
+memory > xmock
+memory > xunittest
+memory > xSystemExit
+[] > test_creation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_execute_raise_access_denied
+        memory > xtest_clone_test_db_options_ordering
+        memory > x_execute_raise_database_exists
+        memory > xpatch_test_db_creation
+        memory > xtest_clone_test_db_database_exists
+        memory > xtest_create_test_db_unexpected_error
+        memory > xtest_create_test_db_database_exists
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) (((((xunittest).xskipUnless)).apply ((((xconnection).xvendor).eq "mysql")) ("MySQL tests"))))
+              seq
+                x_execute_raise_database_exists.write
+                  [xself xcursor xparameters xkeepdb]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xDatabaseError)).apply (1007) (("Can't create database '%s'; database exists".mod (((unsupported)).apply ((xparameters)) ("dbname")))))))
+                x_execute_raise_access_denied.write
+                  [xself xcursor xparameters xkeepdb]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xDatabaseError)).apply (1044) ("Access denied for user"))))
+                xpatch_test_db_creation.write
+                  [xself xexecute_create_test_db]
+                    seq > @
+                      (((unsupported)).apply ((((((xmock).xpatch).xobject)).apply ((xBaseDatabaseCreation)) ("_execute_create_test_db") ((xexecute_create_test_db)))))
+                xtest_create_test_db_database_exists.write
+                  [xself]
+                    memory > xcreation
+                    seq > @
+                      (((unsupported)).apply)
+                        xcreation.write (((xDatabaseCreation)).apply ((xconnection)))
+                        (((unsupported)).apply (((((xself).xpatch_test_db_creation)).apply (((xself).x_execute_raise_database_exists)))))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("builtins.input") ("no"))))
+                              (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))))
+                                (((unsupported)).apply (((xcreation).x_create_test_db)) (0) (FALSE) (FALSE))
+                            (((unsupported)).apply (((xcreation).x_create_test_db)) (0) (FALSE) (TRUE))
+                xtest_create_test_db_unexpected_error.write
+                  [xself]
+                    memory > xcreation
+                    seq > @
+                      (((unsupported)).apply)
+                        xcreation.write (((xDatabaseCreation)).apply ((xconnection)))
+                        (((unsupported)).apply (((((xself).xpatch_test_db_creation)).apply (((xself).x_execute_raise_access_denied)))))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))))
+                            (((unsupported)).apply (((xcreation).x_create_test_db)) (0) (FALSE) (FALSE))
+                xtest_clone_test_db_database_exists.write
+                  [xself]
+                    memory > xcreation
+                    seq > @
+                      seq
+                        xcreation.write (((xDatabaseCreation)).apply ((xconnection)))
+                        (((unsupported)).apply (((((xself).xpatch_test_db_creation)).apply (((xself).x_execute_raise_database_exists)))))
+                          (((unsupported)).apply ((((((xmock).xpatch).xobject)).apply ((xDatabaseCreation)) ("_clone_db"))) ((x_clone_db)))
+                            seq
+                              (((unsupported)).apply (((xcreation).x_clone_test_db)) ("suffix") (0) (TRUE))
+                              unsupported
+                xtest_clone_test_db_options_ordering.write
+                  [xself]
+                    memory > xcreation
+                    memory > xsaved_settings
+                    seq > @
+                      seq
+                        xcreation.write (((xDatabaseCreation)).apply ((xconnection)))
+                        (((unsupported)).apply)
+                          seq
+                            xsaved_settings.write ((xconnection).xsettings_dict)
+                            (((unsupported)).apply (((xconnection).xsettings_dict)) ((((unsupported)).apply ("NAME") ("source_db") ("USER") ("") ("PASSWORD") ("") ("PORT") ("") ("HOST") ("") ("ENGINE") ("django.db.backends.mysql") ("OPTIONS") ((((unsupported)).apply ("read_default_file") ("my.cnf"))))))
+                            (((unsupported)).apply ((((((xmock).xpatch).xobject)).apply ((xsubprocess)) ("Popen"))) ((xmocked_popen)))
+                              seq
+                                bogusForceDataize.write ((((xcreation).x_clone_db)).apply ("source_db") ("target_db"))
+                                bogusForceDataize.write ((((xmocked_popen).xassert_has_calls)).apply ((((unsupported)).apply ((((unsupported)).apply (((xmock).xcall)) ((((unsupported)).apply ("mysqldump") ("--defaults-file=my.cnf") ("--routines") ("--events") ("source_db"))) (((xsubprocess).xPIPE)) ("None: is there a None literal in the EO language?"))))))
+                          (((unsupported)).apply (((xconnection).xsettings_dict)) ((xsaved_settings)))

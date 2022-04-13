@@ -1,0 +1,75 @@
+memory > xurlizetrunc
+memory > xmark_safe
+memory > xlen
+memory > xSimpleTestCase
+[] > test_urlizetrunc
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_query_string
+        memory > xtest_urlizetrunc01
+        memory > xtest_non_string_input
+        memory > xtest_urlizetrunc02
+        memory > xtest_overtruncate
+        memory > xtest_truncate
+        memory > xtest_autoescape_off
+        memory > xtest_autoescape
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_urlizetrunc01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlizetrunc01") ((((unsupported)).apply ("a") ("\"Unsafe\" http://example.com/x=&y=") ("b") ((((xmark_safe)).apply ("&quot;Safe&quot; http://example.com?x=&amp;y="))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("\"Unsafe\" <a href=\"http://example.com/x=&amp;y=\" rel=\"nofollow\">http://…</a> &quot;Safe&quot; <a href=\"http://example.com?x=&amp;y=\" rel=\"nofollow\">http://…</a>"))
+                xtest_urlizetrunc02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlizetrunc02") ((((unsupported)).apply ("a") ("\"Unsafe\" http://example.com/x=&y=") ("b") ((((xmark_safe)).apply ("&quot;Safe&quot; http://example.com?x=&amp;y="))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&quot;Unsafe&quot; <a href=\"http://example.com/x=&amp;y=\" rel=\"nofollow\">http://…</a> &quot;Safe&quot; <a href=\"http://example.com?x=&amp;y=\" rel=\"nofollow\">http://…</a>"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_truncate.write
+                  [xself]
+                    memory > xuri
+                    seq > @
+                      seq
+                        xuri.write "http://31characteruri.com/test/"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xuri)))) (31))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlizetrunc)).apply ((xuri)) (31))) ("<a href=\"http://31characteruri.com/test/\" rel=\"nofollow\">http://31characteruri.com/test/</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlizetrunc)).apply ((xuri)) (30))) ("<a href=\"http://31characteruri.com/test/\" rel=\"nofollow\">http://31characteruri.com/tes…</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlizetrunc)).apply ((xuri)) (1))) ("<a href=\"http://31characteruri.com/test/\" rel=\"nofollow\">…</a>"))
+                xtest_overtruncate.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlizetrunc)).apply ("http://short.com/") (20))) ("<a href=\"http://short.com/\" rel=\"nofollow\">http://short.com/</a>"))
+                xtest_query_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlizetrunc)).apply ("http://www.google.co.uk/search?hl=en&q=some+long+url&btnG=Search&meta=") (20))) ("<a href=\"http://www.google.co.uk/search?hl=en&amp;q=some+long+url&amp;btnG=Search&amp;meta=\" rel=\"nofollow\">http://www.google.c…</a>"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlizetrunc)).apply (123) (1))) ("123"))
+                xtest_autoescape.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlizetrunc)).apply ("foo<a href=\" google.com \">bar</a>buz") (10))) ("foo&lt;a href=&quot; <a href=\"http://google.com\" rel=\"nofollow\">google.com</a> &quot;&gt;bar&lt;/a&gt;buz"))
+                xtest_autoescape_off.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlizetrunc)) ("foo<a href=\" google.com \">bar</a>buz") (9) (FALSE))) ("foo<a href=\" <a href=\"http://google.com\" rel=\"nofollow\">google.c…</a> \">bar</a>buz"))

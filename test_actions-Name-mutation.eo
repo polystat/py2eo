@@ -1,0 +1,182 @@
+memory > xadmin
+memory > xdesc
+memory > xAdminBase
+memory > xTestCase
+memory > xdescription
+memory > x_
+memory > xpermission
+memory > xAdminB
+memory > xhasattr
+memory > xPermission
+memory > xAdminA
+memory > xuser
+memory > xUser
+memory > xMockRequest
+memory > xContentType
+memory > xBandAdmin
+memory > xexpected
+memory > xBand
+memory > xlist
+memory > xcontent_type
+memory > xuser_type
+memory > xsetattr
+memory > xname
+[] > test_actions
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_actions_inheritance
+        memory > xtest_get_actions_respects_permissions
+        memory > xtest_global_actions_description
+        memory > xtest_actions_replace_global_action
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    memory > xcontent_type2
+                    memory > xuser
+                    memory > xusername
+                    memory > xpermission
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                        xcontent_type2.write (((((xContentType).xobjects).xget_for_model)).apply ((xBand)))
+                        (((unsupported)).apply ((((xPermission).xobjects).xcreate)) ("custom") ("custom_band") ((xcontent_type)))
+                        (((unsupported)).apply ((xuser_type)) ((((unsupported)).apply ("view") ("add") ("change") ("delete") ("custom"))))
+                          seq
+                            xusername.write ("%suser".mod (xuser_type))
+                            xuser.write (((unsupported)).apply ((((xUser).xobjects).xcreate_user)) ((xusername)) ("secret") (TRUE))
+                            xpermission.write (((unsupported)).apply ((((xPermission).xobjects).xget)) (("%s_band".mod (xuser_type))) ((xcontent_type)))
+                            bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply ((xpermission)))
+                            bogusForceDataize.write (((xsetattr)).apply ((xcls)) ((xusername)) ((xuser)))
+                xtest_get_actions_respects_permissions.write
+                  [xself]
+                    memory > xmock_request
+                    memory > xma
+                    memory > xcustom_action
+                    memory > xhas_custom_permission
+                    memory > xactions
+                    memory > xcases
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xadmin).xModelAdmin)))
+                          seq
+                            xactions.write (((unsupported)).apply ("custom_action"))
+                            xcustom_action.write
+                              [xmodeladmin xrequest xqueryset]
+                                seq > @
+                                  (((unsupported)).apply)
+                            xhas_custom_permission.write
+                              [xself xrequest]
+                                seq > @
+                                  (((unsupported)).apply ((((((xrequest).xuser).xhas_perm)).apply (("%s.custom_band".mod (((xself).xopts).xapp_label))))))
+                        xma.write (((xBandAdmin)).apply ((xBand)) (((((xadmin).xAdminSite)).apply)))
+                        xmock_request.write (((xMockRequest)).apply)
+                        (((unsupported)).apply (((xmock_request).xGET)) ((((unsupported)).apply)))
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") (((xself).xviewuser)) ((((unsupported)).apply ("custom_action"))))) ((((unsupported)).apply ("view") (((xself).xsuperuser)) ((((unsupported)).apply ("delete_selected") ("custom_action"))))) ((((unsupported)).apply ("view") (((xself).xviewuser)) ((((unsupported)).apply ("custom_action"))))) ((((unsupported)).apply ("add") (((xself).xadduser)) ((((unsupported)).apply ("custom_action"))))) ((((unsupported)).apply ("change") (((xself).xchangeuser)) ((((unsupported)).apply ("custom_action"))))) ((((unsupported)).apply ("delete") (((xself).xdeleteuser)) ((((unsupported)).apply ("delete_selected") ("custom_action"))))) ((((unsupported)).apply ("custom") (((xself).xcustomuser)) ((((unsupported)).apply ("custom_action"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xpermission)) ((xuser)) ((xexpected)))) ((xcases)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xpermission)) ((xuser)))))
+                            seq
+                              (((unsupported)).apply ((xpermission)) ("None: is there a None literal in the EO language?")).if
+                                (((xhasattr)).apply (((xBandAdmin).xcustom_action)) ("allowed_permissions")).if
+                                  (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xBandAdmin).xcustom_action).xallowed_permissions)))))))
+                                (((unsupported)).apply ((((xBandAdmin).xcustom_action).xallowed_permissions)) ((((unsupported)).apply ((xpermission)))))
+                              (((unsupported)).apply (((xmock_request).xuser)) ((xuser)))
+                              xactions.write ((((xma).xget_actions)).apply ((xmock_request)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply (((((xactions).xkeys)).apply)))) ((xexpected)))
+                xtest_actions_inheritance.write
+                  [xself]
+                    memory > xma2
+                    memory > xcustom_action
+                    memory > xaction_names
+                    memory > xactions
+                    memory > xma1
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xadmin).xModelAdmin)))
+                          seq
+                            xactions.write (((unsupported)).apply ("custom_action"))
+                            xcustom_action.write
+                              [xmodeladmin xrequest xqueryset]
+                                seq > @
+                                  (((unsupported)).apply)
+                        (((unsupported)).apply ((xAdminBase)))
+                        (((unsupported)).apply ((xAdminBase)))
+                          xactions.write "None: is there a None literal in the EO language?"
+                        xma1.write (((xAdminA)).apply ((xBand)) (((((xadmin).xAdminSite)).apply)))
+                        xaction_names.write (((unsupported)).apply ((xname)) ((((unsupported)).apply ((x_)) ((xname)) ((x_)))) (((((xma1).x_get_base_actions)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xaction_names)) ((((unsupported)).apply ("delete_selected") ("custom_action"))))
+                        xma2.write (((xAdminB)).apply ((xBand)) (((((xadmin).xAdminSite)).apply)))
+                        xaction_names.write (((unsupported)).apply ((xname)) ((((unsupported)).apply ((x_)) ((xname)) ((x_)))) (((((xma2).x_get_base_actions)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xaction_names)) ((((unsupported)).apply ("delete_selected"))))
+                xtest_global_actions_description.write
+                  [xself]
+                    memory > xma
+                    memory > xadmin_site
+                    memory > xglobal_action_2
+                    memory > xglobal_action_1
+                    seq > @
+                      seq
+                        xglobal_action_1.write
+                          [xmodeladmin xrequest xqueryset]
+                            seq > @
+                              (((unsupported)).apply)
+                        xglobal_action_2.write
+                          [xmodeladmin xrequest xqueryset]
+                            seq > @
+                              (((unsupported)).apply)
+                        xadmin_site.write ((((xadmin).xAdminSite)).apply)
+                        bogusForceDataize.write ((((xadmin_site).xadd_action)).apply ((xglobal_action_1)))
+                        bogusForceDataize.write ((((xadmin_site).xadd_action)).apply ((xglobal_action_2)))
+                        (((unsupported)).apply (((xadmin).xModelAdmin)))
+                        xma.write (((xBandAdmin)).apply ((xBand)) ((xadmin_site)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xdescription)) ((((unsupported)).apply ((x_)) ((x_)) ((xdescription)))) (((((xma).x_get_base_actions)).apply)))) ((((unsupported)).apply ("Delete selected %(verbose_name_plural)s") ("Site-wide admin action 1.") ("Global action 2"))))
+                xtest_actions_replace_global_action.write
+                  [xself]
+                    memory > xma
+                    memory > xcustom_action_2
+                    memory > xglobal_action_1
+                    memory > xglobal_action_2
+                    memory > xactions
+                    memory > xcustom_action_1
+                    seq > @
+                      seq
+                        xglobal_action_1.write
+                          [xmodeladmin xrequest xqueryset]
+                            seq > @
+                              (((unsupported)).apply)
+                        xglobal_action_2.write
+                          [xmodeladmin xrequest xqueryset]
+                            seq > @
+                              (((unsupported)).apply)
+                        (((unsupported)).apply ((((xadmin).xsite).xadd_action)) ((xglobal_action_1)) ("custom_action_1"))
+                        (((unsupported)).apply ((((xadmin).xsite).xadd_action)) ((xglobal_action_2)) ("custom_action_2"))
+                        xcustom_action_1.write
+                          [xmodeladmin xrequest xqueryset]
+                            seq > @
+                              (((unsupported)).apply)
+                        (((unsupported)).apply (((xadmin).xModelAdmin)))
+                          seq
+                            xactions.write (((unsupported)).apply ((xcustom_action_1)) ("custom_action_2"))
+                            xcustom_action_2.write
+                              [xself xrequest xqueryset]
+                                seq > @
+                                  (((unsupported)).apply)
+                        xma.write (((xBandAdmin)).apply ((xBand)) (((xadmin).xsite)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xma).xcheck)).apply)) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xdesc)) ((((unsupported)).apply ((x_)) ((xname)) ((xdesc)))) (((((xma).x_get_base_actions)).apply)) (((((xname).xstartswith)).apply ("custom_action"))))) ((((unsupported)).apply ("Local admin action 1.") ("Local admin action 2."))))

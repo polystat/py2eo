@@ -1,0 +1,32 @@
+memory > xrender_to_string
+memory > xjson
+memory > xSimpleTestCase
+[] > test_templates
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_javascript_escaping
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_javascript_escaping.write
+                [xself]
+                  memory > xcontext
+                  memory > xoutput
+                  seq > @
+                    seq
+                      xcontext.write (((unsupported)).apply ("inline_admin_formset") ((((unsupported)).apply ("inline_formset_data") (((((xjson).xdumps)).apply ((((unsupported)).apply ("formset") ((((unsupported)).apply ("prefix") ("my-prefix"))) ("opts") ((((unsupported)).apply ("verbose_name") ("verbose name\\"))))))))))
+                      xoutput.write (((xrender_to_string)).apply ("admin/edit_inline/stacked.html") ((xcontext)))
+                      bogusForceDataize.write ((((xself).xassertIn)).apply ("&quot;prefix&quot;: &quot;my-prefix&quot;") ((xoutput)))
+                      bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply)) ((xoutput)))
+                      xoutput.write (((xrender_to_string)).apply ("admin/edit_inline/tabular.html") ((xcontext)))
+                      bogusForceDataize.write ((((xself).xassertIn)).apply ("&quot;prefix&quot;: &quot;my-prefix&quot;") ((xoutput)))
+                      bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply)) ((xoutput)))

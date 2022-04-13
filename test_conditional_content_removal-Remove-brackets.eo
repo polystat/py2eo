@@ -1,0 +1,66 @@
+memory > xStreamingHttpResponse
+memory > xHttpRequest
+memory > xHttpResponse
+memory > xconditional_content_removal
+memory > xstatus_code
+memory > xgzip
+memory > xSimpleTestCase
+[] > test_conditional_content_removal
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_conditional_content_removal
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_conditional_content_removal.write
+                [xself]
+                  memory > xreq
+                  memory > xres
+                  memory > xabc
+                  seq > @
+                    seq
+                      (((unsupported)).apply)
+                      xreq.write (xHttpRequest)
+                      xres.write (((xHttpResponse)).apply ("abc"))
+                      bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xcontent)) ("abc"))
+                      xres.write (((xStreamingHttpResponse)).apply ((((unsupported)).apply ("abc"))))
+                      bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((("".xjoin)).apply ((xres)))) ("abc"))
+                      (((unsupported)).apply ((xstatus_code)) ((((unsupported)).apply (100) (150) (199) (204) (304))))
+                        seq
+                          xres.write (((unsupported)).apply ((xHttpResponse)) ("abc") ((xstatus_code)))
+                          bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xcontent)) (""))
+                          xres.write (((unsupported)).apply ((xStreamingHttpResponse)) ((((unsupported)).apply ("abc"))) ((xstatus_code)))
+                          bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((("".xjoin)).apply ((xres)))) (""))
+                      xabc.write ((((xgzip).xcompress)).apply ("abc"))
+                      xres.write (((unsupported)).apply ((xHttpResponse)) ((xabc)) (304))
+                      (((unsupported)).apply ((((unsupported)).apply ((xres)) ("Content-Encoding"))) ("gzip"))
+                      bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xcontent)) (""))
+                      xres.write (((unsupported)).apply ((xStreamingHttpResponse)) ((((unsupported)).apply ((xabc)))) (304))
+                      (((unsupported)).apply ((((unsupported)).apply ((xres)) ("Content-Encoding"))) ("gzip"))
+                      bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((("".xjoin)).apply ((xres)))) (""))
+                      (((unsupported)).apply (((xreq).xmethod)) ("HEAD"))
+                      xres.write (((xHttpResponse)).apply ("abc"))
+                      bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xcontent)) (""))
+                      xres.write (((xStreamingHttpResponse)).apply ((((unsupported)).apply ("abc"))))
+                      bogusForceDataize.write (((xconditional_content_removal)).apply ((xreq)) ((xres)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((("".xjoin)).apply ((xres)))) (""))

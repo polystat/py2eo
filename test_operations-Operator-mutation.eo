@@ -1,0 +1,306 @@
+memory > xc
+memory > xfields
+memory > xMigration
+memory > xskipIfDBFeature
+memory > xNotImplementedError
+memory > xconnection
+memory > xProjectState
+memory > xmigrations
+memory > xhasattr
+memory > xsuper
+memory > xeditor
+memory > xMultiPolygon
+memory > xmodels
+memory > xImproperlyConfigured
+memory > xPolygon
+memory > xany
+memory > xOperationTestCase
+memory > xcursor
+memory > xTransactionTestCase
+[] > test_operations
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_create_model_spatial_index
+        memory > xtest_create_raster_model_on_db_without_raster_support
+        memory > xset_up_test_model
+        memory > xassertColumnExists
+        memory > xtest_add_3d_field_opclass
+        memory > xtest_geom_col_name
+        memory > xassertColumnNotExists
+        memory > xtest_remove_raster_field
+        memory > xtearDown
+        memory > xtest_add_raster_field
+        memory > xassertSpatialIndexExists
+        memory > xGeometryColumns
+        memory > xget_opclass_query
+        memory > xapply_operations
+        memory > xtest_add_blank_geom_field
+        memory > xget_table_description
+        memory > xtest_add_raster_field_on_db_without_raster_support
+        memory > xtest_remove_geom_field
+        memory > xtest_add_blank_raster_field
+        memory > xsetUp
+        memory > xalter_gis_model
+        memory > xtest_alter_geom_field_dim
+        memory > xHAS_GEOMETRY_COLUMNS
+        memory > xhas_spatial_indexes
+        memory > xtest_add_geom_field
+        memory > xtest_add_check_constraint
+        memory > xassertGeometryColumnsCount
+        memory > xavailable_apps
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xNotImplementedError)))
+              seq
+                xGeometryColumns.write (((((xconnection).xops).xgeometry_columns)).apply)
+                xHAS_GEOMETRY_COLUMNS.write TRUE
+              xHAS_GEOMETRY_COLUMNS.write FALSE
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("gis_tests.gis_migrations"))
+                xget_opclass_query.write (((unsupported)).apply)
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((xhasattr)).apply ((xself)) ("current_state")).if
+                          bogusForceDataize.write ((((xself).xapply_operations)).apply ("gis") (((xself).xcurrent_state)) ((((unsupported)).apply (((((xmigrations).xDeleteModel)).apply ("Neighborhood"))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xtearDown)).apply)
+                xhas_spatial_indexes.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xconnection).xops).xmysql).if
+                          (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                            (((unsupported)).apply ((((((xconnection).xintrospection).xsupports_spatial_index)).apply ((xcursor)) ("gis_neighborhood"))))
+                        (((unsupported)).apply (TRUE))
+                xget_table_description.write
+                  [xself xtable]
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                        (((unsupported)).apply ((((((xconnection).xintrospection).xget_table_description)).apply ((xcursor)) ((xtable)))))
+                xassertColumnExists.write
+                  [xself xtable xcolumn]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertIn)).apply ((xcolumn)) ((((unsupported)).apply (((xc).xname)) ((xc)) (((((xself).xget_table_description)).apply ((xtable)))))))
+                xassertColumnNotExists.write
+                  [xself xtable xcolumn]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertNotIn)).apply ((xcolumn)) ((((unsupported)).apply (((xc).xname)) ((xc)) (((((xself).xget_table_description)).apply ((xtable)))))))
+                xapply_operations.write
+                  [xself xapp_label xproject_state xoperations]
+                    memory > xmigration
+                    seq > @
+                      seq
+                        xmigration.write (((xMigration)).apply ("name") ((xapp_label)))
+                        (((unsupported)).apply (((xmigration).xoperations)) ((xoperations)))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          (((unsupported)).apply (((((xmigration).xapply)).apply ((xproject_state)) ((xeditor)))))
+                xset_up_test_model.write
+                  [xself xforce_raster_creation]
+                    memory > xtest_fields
+                    memory > xoperations
+                    seq > @
+                      (((unsupported)).apply)
+                        xtest_fields.write (((unsupported)).apply ((((unsupported)).apply ("id") ((((unsupported)).apply (((xmodels).xAutoField)) (TRUE))))) ((((unsupported)).apply ("name") ((((unsupported)).apply (((xmodels).xCharField)) (100) (TRUE))))) ((((unsupported)).apply ("geom") ((((unsupported)).apply (((xfields).xMultiPolygonField)) (4326))))))
+                        ((((xconnection).xfeatures).xsupports_raster).or (xforce_raster_creation)).if
+                          (((unsupported)).apply ((xtest_fields)) ((((unsupported)).apply ((((unsupported)).apply ("rast") ((((unsupported)).apply (((xfields).xRasterField)) (4326) (TRUE))))))))
+                        xoperations.write (((unsupported)).apply (((((xmigrations).xCreateModel)).apply ("Neighborhood") ((xtest_fields)))))
+                        (((unsupported)).apply (((xself).xcurrent_state)) (((((xself).xapply_operations)).apply ("gis") ((((xProjectState)).apply)) ((xoperations)))))
+                xassertGeometryColumnsCount.write
+                  [xself xexpected_count]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((((xGeometryColumns).xobjects).xfilter)).apply ((((unsupported)).apply ((((unsupported)).apply (("%s__iexact".mod ((((xGeometryColumns).xtable_name_col)).apply))) ("gis_neighborhood")))))).xcount)).apply)) ((xexpected_count)))
+                xassertSpatialIndexExists.write
+                  [xself xtable xcolumn xraster]
+                    memory > xconstraints
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          xconstraints.write (((((xconnection).xintrospection).xget_constraints)).apply ((xcursor)) ((xtable)))
+                        (xraster).if
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xany)).apply ((((unsupported)).apply ((((unsupported)).apply (("st_convexhull(%s)".mod (xcolumn))) ((((unsupported)).apply ((xc)) ("definition"))))) ((xc)) (((((xconstraints).xvalues)).apply)) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("definition"))) ("None: is there a None literal in the EO language?"))))))))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply ((xcolumn)))) ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("columns"))) ((xc)) (((((xconstraints).xvalues)).apply)))))
+                xalter_gis_model.write
+                  [xself xmigration_class xmodel_name xfield_name xblank xfield_class xfield_class_kwargs]
+                    memory > xold_state
+                    memory > xargs
+                    memory > xoperation
+                    seq > @
+                      (((unsupported)).apply)
+                        xargs.write (((unsupported)).apply ((xmodel_name)) ((xfield_name)))
+                        (xfield_class).if
+                          seq
+                            xfield_class_kwargs.write ((xfield_class_kwargs).or (((unsupported)).apply ("srid") (4326) ("blank") ((xblank))))
+                            bogusForceDataize.write ((((xargs).xappend)).apply ((((xfield_class)).apply ((((unsupported)).apply ((xfield_class_kwargs)))))))
+                        xoperation.write (((xmigration_class)).apply ((((unsupported)).apply ((xargs)))))
+                        xold_state.write (((((xself).xcurrent_state).xclone)).apply)
+                        bogusForceDataize.write ((((xoperation).xstate_forwards)).apply ("gis") (((xself).xcurrent_state)))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xoperation).xdatabase_forwards)).apply ("gis") ((xeditor)) ((xold_state)) (((xself).xcurrent_state)))
+            (((unsupported)).apply ((xOperationTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        bogusForceDataize.write ((((xself).xset_up_test_model)).apply)
+                xtest_add_geom_field.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xalter_gis_model)).apply (((xmigrations).xAddField)) ("Neighborhood") ("path") (FALSE) (((xfields).xLineStringField)))
+                        bogusForceDataize.write ((((xself).xassertColumnExists)).apply ("gis_neighborhood") ("path"))
+                        (xHAS_GEOMETRY_COLUMNS).if
+                          bogusForceDataize.write ((((xself).xassertGeometryColumnsCount)).apply (2))
+                        ((xself).xhas_spatial_indexes).if
+                          bogusForceDataize.write ((((xself).xassertSpatialIndexExists)).apply ("gis_neighborhood") ("path"))
+                xtest_geom_col_name.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xGeometryColumns).xgeom_col_name)).apply)) (((((xconnection).xops).xoracle).if "column_name" "f_geometry_column")))
+                xtest_add_raster_field.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xalter_gis_model)).apply (((xmigrations).xAddField)) ("Neighborhood") ("heatmap") (FALSE) (((xfields).xRasterField)))
+                        bogusForceDataize.write ((((xself).xassertColumnExists)).apply ("gis_neighborhood") ("heatmap"))
+                        ((xself).xhas_spatial_indexes).if
+                          (((unsupported)).apply (((xself).xassertSpatialIndexExists)) ("gis_neighborhood") ("heatmap") (TRUE))
+                xtest_add_blank_geom_field.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xalter_gis_model)).apply (((xmigrations).xAddField)) ("Neighborhood") ("path") (TRUE) (((xfields).xLineStringField)))
+                        bogusForceDataize.write ((((xself).xassertColumnExists)).apply ("gis_neighborhood") ("path"))
+                        (xHAS_GEOMETRY_COLUMNS).if
+                          bogusForceDataize.write ((((xself).xassertGeometryColumnsCount)).apply (2))
+                        ((xself).xhas_spatial_indexes).if
+                          bogusForceDataize.write ((((xself).xassertSpatialIndexExists)).apply ("gis_neighborhood") ("path"))
+                xtest_add_blank_raster_field.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xalter_gis_model)).apply (((xmigrations).xAddField)) ("Neighborhood") ("heatmap") (TRUE) (((xfields).xRasterField)))
+                        bogusForceDataize.write ((((xself).xassertColumnExists)).apply ("gis_neighborhood") ("heatmap"))
+                        ((xself).xhas_spatial_indexes).if
+                          (((unsupported)).apply (((xself).xassertSpatialIndexExists)) ("gis_neighborhood") ("heatmap") (TRUE))
+                xtest_remove_geom_field.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xalter_gis_model)).apply (((xmigrations).xRemoveField)) ("Neighborhood") ("geom"))
+                        bogusForceDataize.write ((((xself).xassertColumnNotExists)).apply ("gis_neighborhood") ("geom"))
+                        (xHAS_GEOMETRY_COLUMNS).if
+                          bogusForceDataize.write ((((xself).xassertGeometryColumnsCount)).apply (0))
+                xtest_remove_raster_field.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xalter_gis_model)).apply (((xmigrations).xRemoveField)) ("Neighborhood") ("rast"))
+                        bogusForceDataize.write ((((xself).xassertColumnNotExists)).apply ("gis_neighborhood") ("rast"))
+                xtest_create_model_spatial_index.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((xself).xhas_spatial_indexes).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("No support for Spatial indexes"))
+                        bogusForceDataize.write ((((xself).xassertSpatialIndexExists)).apply ("gis_neighborhood") ("geom"))
+                        (((xconnection).xfeatures).xsupports_raster).if
+                          (((unsupported)).apply (((xself).xassertSpatialIndexExists)) ("gis_neighborhood") ("rast") (TRUE))
+                xtest_add_3d_field_opclass.write
+                  [xself]
+                    memory > xindex_name
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xconnection).xops).xpostgis).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("PostGIS-specific test."))
+                        (((unsupported)).apply (((xself).xalter_gis_model)) (((xmigrations).xAddField)) ("Neighborhood") ("point3d") (((xfields).xPointField)) ((((unsupported)).apply ("dim") (3))))
+                        bogusForceDataize.write ((((xself).xassertColumnExists)).apply ("gis_neighborhood") ("point3d"))
+                        bogusForceDataize.write ((((xself).xassertSpatialIndexExists)).apply ("gis_neighborhood") ("point3d"))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            xindex_name.write "gis_neighborhood_point3d_113bc868_id"
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply (((xself).xget_opclass_query)) ((((unsupported)).apply ((xindex_name)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("gist_geometry_ops_nd") ((xindex_name)))))))
+                xtest_alter_geom_field_dim.write
+                  [xself]
+                    memory > xp1
+                    memory > xNeighborhood
+                    seq > @
+                      (((unsupported)).apply)
+                        xNeighborhood.write ((((((xself).xcurrent_state).xapps).xget_model)).apply ("gis") ("Neighborhood"))
+                        xp1.write (((xPolygon)).apply ((((unsupported)).apply ((((unsupported)).apply (0) (0))) ((((unsupported)).apply (0) (1))) ((((unsupported)).apply (1) (1))) ((((unsupported)).apply (1) (0))) ((((unsupported)).apply (0) (0))))))
+                        (((unsupported)).apply ((((xNeighborhood).xobjects).xcreate)) ("TestDim") ((((xMultiPolygon)).apply ((xp1)) ((xp1)))))
+                        (((unsupported)).apply (((xself).xalter_gis_model)) (((xmigrations).xAlterField)) ("Neighborhood") ("geom") (FALSE) (((xfields).xMultiPolygonField)) ((((unsupported)).apply ("srid") (4326) ("dim") (3))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((((xNeighborhood).xobjects).xfirst)).apply).xgeom).xhasz)))
+                        (((unsupported)).apply (((xself).xalter_gis_model)) (((xmigrations).xAlterField)) ("Neighborhood") ("geom") (FALSE) (((xfields).xMultiPolygonField)) ((((unsupported)).apply ("srid") (4326) ("dim") (2))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((((xNeighborhood).xobjects).xfirst)).apply).xgeom).xhasz)))
+                xtest_add_check_constraint.write
+                  [xself]
+                    memory > xpoly
+                    memory > xNeighborhood
+                    memory > xconstraints
+                    memory > xconstraint
+                    seq > @
+                      (((unsupported)).apply)
+                        xNeighborhood.write ((((((xself).xcurrent_state).xapps).xget_model)).apply ("gis") ("Neighborhood"))
+                        xpoly.write (((xPolygon)).apply ((((unsupported)).apply ((((unsupported)).apply (0) (0))) ((((unsupported)).apply (0) (1))) ((((unsupported)).apply (1) (1))) ((((unsupported)).apply (1) (0))) ((((unsupported)).apply (0) (0))))))
+                        xconstraint.write (((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) ((xpoly)))) ("geom_within_constraint"))
+                        (((unsupported)).apply ((((xNeighborhood).x_meta).xconstraints)) ((((unsupported)).apply ((xconstraint)))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_constraint)).apply ((xNeighborhood)) ((xconstraint)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            xconstraints.write (((((xconnection).xintrospection).xget_constraints)).apply ((xcursor)) ((((xNeighborhood).x_meta).xdb_table)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("geom_within_constraint") ((xconstraints)))
+            (((unsupported)).apply ((xOperationTestCase)) ((((xskipIfDBFeature)).apply ("supports_raster"))))
+              seq
+                xtest_create_raster_model_on_db_without_raster_support.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Raster fields require backends with raster support."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          (((unsupported)).apply (((xself).xset_up_test_model)) (TRUE))
+                xtest_add_raster_field_on_db_without_raster_support.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Raster fields require backends with raster support."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xset_up_test_model)).apply)
+                            bogusForceDataize.write ((((xself).xalter_gis_model)).apply (((xmigrations).xAddField)) ("Neighborhood") ("heatmap") (FALSE) (((xfields).xRasterField)))

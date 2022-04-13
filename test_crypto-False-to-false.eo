@@ -1,0 +1,92 @@
+memory > xvector
+memory > xconstant_time_compare
+memory > xdigest
+memory > xunittest
+memory > xpbkdf2
+memory > xkwargs
+memory > xSimpleTestCase
+memory > xsalted_hmac
+memory > xInvalidAlgorithm
+memory > xargs
+memory > xhashlib
+[] > test_crypto
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_default_hmac_alg
+        memory > xtest_constant_time_compare
+        memory > xtest_invalid_algorithm
+        memory > xtest_regression_vectors
+        memory > xtest_salted_hmac
+        memory > xregression_vectors
+        memory > xrfc_vectors
+        memory > xtest_public_vectors
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_constant_time_compare.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xconstant_time_compare)).apply ("spam") ("spam"))))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xconstant_time_compare)).apply ("spam") ("eggs"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xconstant_time_compare)).apply ("spam") ("spam"))))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xconstant_time_compare)).apply ("spam") ("eggs"))))
+                xtest_salted_hmac.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ("salt") ("value"))) ((((unsupported)).apply)) ("b51a2e619c43b1ca4f91d15c57455521d71d61eb"))) ((((unsupported)).apply ((((unsupported)).apply ("salt") ("value"))) ((((unsupported)).apply)) ("b51a2e619c43b1ca4f91d15c57455521d71d61eb"))) ((((unsupported)).apply ((((unsupported)).apply ("salt") ("value"))) ((((unsupported)).apply ("secret") ("abcdefg"))) ("8bbee04ccddfa24772d1423a0ba43bd0c0e24b76"))) ((((unsupported)).apply ((((unsupported)).apply ("salt") ("value"))) ((((unsupported)).apply ("secret") (("x".mul (((((xhashlib).xsha1)).apply).xblock_size))))) ("bd3749347b412b1b0a9ea65220e55767ac8e96b0"))) ((((unsupported)).apply ((((unsupported)).apply ("salt") ("value"))) ((((unsupported)).apply ("algorithm") ("sha256"))) ("ee0bf789e4e009371a5372c90f73fcf17695a8439c9108b0480f14e347b3f9ec"))) ((((unsupported)).apply ((((unsupported)).apply ("salt") ("value"))) ((((unsupported)).apply ("algorithm") ("blake2b") ("secret") (("x".mul (((((xhashlib).xblake2b)).apply).xblock_size))))) ("fc6b9800a584d40732a07fa33fb69c35211269441823bca431a143853c32fe836cf19ab881689528ede647dac412170cd5d3407b44c6d0f44630690c54ad3d58"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xargs)) ((xkwargs)) ((xdigest)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xargs)) ((xkwargs)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xsalted_hmac)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs))))).xhexdigest)).apply)) ((xdigest)))
+                xtest_invalid_algorithm.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "'whatever' is not an algorithm accepted by the hashlib module."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xInvalidAlgorithm)) ((xmsg)))))
+                          (((unsupported)).apply ((xsalted_hmac)) ("salt") ("value") ("whatever"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xrfc_vectors.write (((unsupported)).apply ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("password") ("salt") ("salt") ("iterations") (1) ("dklen") (20) ("digest") (((xhashlib).xsha1)))) ("result") ("0c60c80f961f0e71f3a9b524af6012062fe037a6"))) ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("password") ("salt") ("salt") ("iterations") (2) ("dklen") (20) ("digest") (((xhashlib).xsha1)))) ("result") ("ea6c014dc72d6f8ccd1ed92ace1d41f0d8de8957"))) ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("password") ("salt") ("salt") ("iterations") (4096) ("dklen") (20) ("digest") (((xhashlib).xsha1)))) ("result") ("4b007901b765489abead49d926f721d065a429c1"))) ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("passwordPASSWORDpassword") ("salt") ("saltSALTsaltSALTsaltSALTsaltSALTsalt") ("iterations") (4096) ("dklen") (25) ("digest") (((xhashlib).xsha1)))) ("result") ("3d2eec4fe41c849b80c8d83662c0e44a8b291a964cf2f07038"))) ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("pass0word") ("salt") ("sa0lt") ("iterations") (4096) ("dklen") (16) ("digest") (((xhashlib).xsha1)))) ("result") ("56fa6aa75548099dcc37d7f03425e0c3"))))
+                xregression_vectors.write (((unsupported)).apply ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("password") ("salt") ("salt") ("iterations") (1) ("dklen") (20) ("digest") (((xhashlib).xsha256)))) ("result") ("120fb6cffcf8b32c43e7225256c4f837a86548c9"))) ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("password") ("salt") ("salt") ("iterations") (1) ("dklen") (20) ("digest") (((xhashlib).xsha512)))) ("result") ("867f70cf1ade02cff3752599a3a53dc4af34c7a6"))) ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("password") ("salt") ("salt") ("iterations") (1000) ("dklen") (0) ("digest") (((xhashlib).xsha512)))) ("result") ("afe6c5530785b6cc6b1c6453384731bd5ee432ee549fd42fb6695779ad8a1c5bf59de69c48f774efc4007d5298f9033c0241d5ab69305e7b64eceeb8d834cfec"))) ((((unsupported)).apply ("args") ((((unsupported)).apply ("password") ("xba") ("salt") ("salt") ("iterations") (1) ("dklen") (20) ("digest") (((xhashlib).xsha1)))) ("result") ("0053d3b91a7f1e54effebd6d68771e8a6e0b2c5b"))))
+                xtest_public_vectors.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      (((unsupported)).apply ((xvector)) (((xself).xrfc_vectors)))
+                        seq
+                          xresult.write (((xpbkdf2)).apply ((((unsupported)).apply ((((unsupported)).apply ((xvector)) ("args"))))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xresult).xhex)).apply)) ((((unsupported)).apply ((xvector)) ("result"))))
+                xtest_regression_vectors.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      (((unsupported)).apply ((xvector)) (((xself).xregression_vectors)))
+                        seq
+                          xresult.write (((xpbkdf2)).apply ((((unsupported)).apply ((((unsupported)).apply ((xvector)) ("args"))))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xresult).xhex)).apply)) ((((unsupported)).apply ((xvector)) ("result"))))
+                xtest_default_hmac_alg.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply ("password") ("password") ("salt") ("salt") ("iterations") (1) ("dklen") (20))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xpbkdf2)).apply ((((unsupported)).apply ((xkwargs)))))) ((((unsupported)).apply (((xhashlib).xpbkdf2_hmac)) ((((((xhashlib).xsha256)).apply).xname)) ((((unsupported)).apply ((xkwargs)))))))

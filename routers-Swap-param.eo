@@ -1,0 +1,81 @@
+memory > xDEFAULT_DB_ALIAS
+[] > routers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdb_for_read
+        memory > xallow_relation
+        memory > xallow_migrate
+        memory > xdb_for_write
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xdb_for_read.write
+                  [xself xmodel xinstance]
+                    seq > @
+                      (((unsupported)).apply)
+                        (xinstance).if
+                          (((unsupported)).apply (((((xinstance).x_state).xdb).or "other")))
+                        (((unsupported)).apply ("other"))
+                xdb_for_write.write
+                  [xself xmodel]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xDEFAULT_DB_ALIAS)))
+                xallow_relation.write
+                  [xself xobj1 xobj2]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((unsupported)).apply ((((xobj1).x_state).xdb)) ((((unsupported)).apply ("default") ("other")))).and (((unsupported)).apply ((((xobj2).x_state).xdb)) ((((unsupported)).apply ("default") ("other")))))))
+                xallow_migrate.write
+                  [xself xdb xapp_label]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (TRUE))
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xdb_for_read.write
+                  [xself xmodel]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        ((((xmodel).x_meta).xapp_label).eq "auth").if
+                          (((unsupported)).apply ("default"))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xdb_for_write.write
+                  [xself xmodel]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        ((((xmodel).x_meta).xapp_label).eq "auth").if
+                          (((unsupported)).apply ("other"))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xallow_relation.write
+                  [xself xobj1 xobj2]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((((xobj1).x_meta).xapp_label).eq "auth").or ((((xobj2).x_meta).xapp_label).eq "auth")).or "None: is there a None literal in the EO language?")))
+                xallow_migrate.write
+                  [xself xdb xapp_label]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        ((xapp_label).eq "auth").if
+                          (((unsupported)).apply (((xdb).eq "other")))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+            (((unsupported)).apply)
+              xdb_for_write.write
+                [xself xmodel]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ("writer"))

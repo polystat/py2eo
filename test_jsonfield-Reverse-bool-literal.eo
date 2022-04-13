@@ -1,0 +1,212 @@
+memory > xValidationError
+memory > xCharField
+memory > xjson_string
+memory > xsuper
+memory > xJSONField
+memory > xForm
+memory > xJSONForm
+memory > xjson
+memory > xSimpleTestCase
+memory > xCustomDecoder
+memory > xCustomJSONField
+memory > xdata
+memory > xTextarea
+memory > xuuid
+memory > xargs
+memory > xDjangoJSONEncoder
+memory > xTextInput
+memory > xkwargs
+[] > test_jsonfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_has_changed
+        memory > xtest_widget
+        memory > xtest_custom_widget_kwarg
+        memory > xtest_formfield_disabled
+        memory > xtest_valid_empty
+        memory > xtest_redisplay_none_input
+        memory > xtest_valid
+        memory > xtest_prepare_value
+        memory > xtest_redisplay_wrong_input
+        memory > xtest_invalid
+        memory > xtest_converted_value
+        memory > xtest_custom_widget_attribute
+        memory > xtest_custom_encoder_decoder
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_valid.write
+                  [xself]
+                    memory > xfield
+                    memory > xvalue
+                    seq > @
+                      seq
+                        xfield.write (((xJSONField)).apply)
+                        xvalue.write ((((xfield).xclean)).apply ("{\"a\": \"b\"}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) ((((unsupported)).apply ("a") ("b"))))
+                xtest_valid_empty.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply ((xJSONField)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xfield).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xfield).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                xtest_invalid.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((xJSONField)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("Enter a valid JSON."))))
+                          bogusForceDataize.write ((((xfield).xclean)).apply ("{some badly formed: json}"))
+                xtest_prepare_value.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((xJSONField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ((((unsupported)).apply ("a") ("b"))))) ("{\"a\": \"b\"}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ("None: is there a None literal in the EO language?"))) ("null"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ("foo"))) ("\"foo\""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ("你好，世界"))) ("\"你好，世界\""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ((((unsupported)).apply ("a") ("😀🐱"))))) ("{\"a\": \"😀🐱\"}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ((((unsupported)).apply ("你好，世界") ("jaźń"))))) ("[\"你好，世界\", \"jaźń\"]"))
+                xtest_widget.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((xJSONField)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xfield).xwidget)) ((xTextarea)))
+                xtest_custom_widget_kwarg.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply ((xJSONField)) ((xTextInput)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xfield).xwidget)) ((xTextInput)))
+                xtest_custom_widget_attribute.write
+                  [xself]
+                    memory > xfield
+                    memory > xwidget
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xJSONField)))
+                          xwidget.write (xTextInput)
+                        xfield.write (((xCustomJSONField)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xfield).xwidget)) ((xTextInput)))
+                xtest_converted_value.write
+                  [xself]
+                    memory > xval
+                    memory > xfield
+                    memory > xtests
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply ((xJSONField)) (FALSE))
+                        xtests.write (((unsupported)).apply ("[\"a\", \"b\", \"c\"]") ("{\"a\": 1, \"b\": 2}") ("1") ("1.5") ("\"foo\"") ("false") ("false") ("null"))
+                        (((unsupported)).apply ((xjson_string)) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xjson_string)))))
+                            seq
+                              xval.write ((((xfield).xclean)).apply ((xjson_string)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xclean)).apply ((xval)))) ((xval)))
+                xtest_has_changed.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((xJSONField)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xfield).xhas_changed)).apply ((((unsupported)).apply ("a") (TRUE))) ("{\"a\": 1}"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xfield).xhas_changed)).apply ((((unsupported)).apply ("a") (1) ("b") (2))) ("{\"b\": 2, \"a\": 1}"))) (FALSE))
+                xtest_custom_encoder_decoder.write
+                  [xself]
+                    memory > xfield
+                    memory > xencoded_value
+                    memory > xas_uuid
+                    memory > xvalue
+                    memory > x__init__
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xjson).xJSONDecoder)))
+                          seq
+                            x__init__.write
+                              [xself xobject_hook]
+                                seq > @
+                                  (((unsupported)).apply)
+                                    (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).x__init__)) (((xself).xas_uuid)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                            xas_uuid.write
+                              [xself xdct]
+                                seq > @
+                                  seq
+                                    (((unsupported)).apply ("uuid") ((xdct))).if
+                                      (((unsupported)).apply ((((unsupported)).apply ((xdct)) ("uuid"))) (((((xuuid).xUUID)).apply ((((unsupported)).apply ((xdct)) ("uuid"))))))
+                                    (((unsupported)).apply ((xdct)))
+                        xvalue.write (((unsupported)).apply ("uuid") (((((xuuid).xUUID)).apply ("{c141e152-6550-4172-a784-05448d98204b}"))))
+                        xencoded_value.write "{\"uuid\": \"c141e152-6550-4172-a784-05448d98204b\"}"
+                        xfield.write (((unsupported)).apply ((xJSONField)) ((xDjangoJSONEncoder)) ((xCustomDecoder)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ((xvalue)))) ((xencoded_value)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xclean)).apply ((xencoded_value)))) ((xvalue)))
+                xtest_formfield_disabled.write
+                  [xself]
+                    memory > xjson_field
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          xjson_field.write (((unsupported)).apply ((xJSONField)) (TRUE))
+                        xform.write (((unsupported)).apply ((xJSONForm)) ((((unsupported)).apply ("json_field") ("[\"bar\"]"))) ((((unsupported)).apply ("json_field") ((((unsupported)).apply ("foo"))))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("[&quot;foo&quot;]</textarea>") (((((xform).xas_p)).apply)))
+                xtest_redisplay_none_input.write
+                  [xself]
+                    memory > xjson_field
+                    memory > xform
+                    memory > xtests
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          xjson_field.write (((unsupported)).apply ((xJSONField)) (TRUE))
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply ("json_field") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply ((xdata)) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xdata)))))
+                            seq
+                              xform.write (((xJSONForm)).apply ((xdata)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((xform)) ("json_field")).xvalue)).apply)) ("null"))
+                              bogusForceDataize.write ((((xself).xassertIn)).apply ("null</textarea>") (((((xform).xas_p)).apply)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xform).xerrors)) ("json_field"))) ((((unsupported)).apply ("This field is required."))))
+                xtest_redisplay_wrong_input.write
+                  [xself]
+                    memory > xname
+                    memory > xjson_field
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xname.write (((unsupported)).apply ((xCharField)) (2))
+                            xjson_field.write (((xJSONField)).apply)
+                        xform.write (((xJSONForm)).apply ((((unsupported)).apply ("name") ("xyz") ("json_field") ("[\"foo\"]"))))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("json_field") (((xform).xerrors)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("[&quot;foo&quot;]</textarea>") (((((xform).xas_p)).apply)))
+                        xform.write (((xJSONForm)).apply ((((unsupported)).apply ("name") ("xy") ("json_field") ("{\"foo\"}"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xform).xerrors)) ("json_field"))) ((((unsupported)).apply ("Enter a valid JSON."))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("{&quot;foo&quot;}</textarea>") (((((xform).xas_p)).apply)))

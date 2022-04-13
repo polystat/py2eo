@@ -1,0 +1,121 @@
+memory > xoracle_flag
+memory > xTestCase
+memory > xrange
+memory > xunit_name
+memory > xconnection
+memory > xauth_name
+memory > xi
+memory > xsd
+memory > xskipUnlessDBFeature
+memory > xnext
+memory > xfalse
+memory > xadd_srs_entry
+memory > xf
+memory > xre
+memory > xunit
+[] > test_spatialrefsys
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xSpatialRefSys
+        memory > xtest_get_units
+        memory > xtest_ellipsoid
+        memory > xtest_srs
+        memory > xtest_osr
+        memory > xtest_add_entry
+        memory > xtest_retrieve
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xtest_srs.write (((unsupported)).apply ((((unsupported)).apply ("srid") (4326) ("auth_name") ((((unsupported)).apply ("EPSG") (TRUE))) ("auth_srid") (4326) ("srtext") ("GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\"") ("proj_re") ("+proj=longlat (+ellps=WGS84 )?(+datum=WGS84 |+towgs84=0,0,0,0,0,0,0 )+no_defs ?") ("spheroid") ("WGS 84") ("name") ("WGS 84") ("geographic") (TRUE) ("projected") ((xfalse)) ("spatialite") (TRUE) ("ellipsoid") ((((unsupported)).apply (6378137.0) (6356752.3) (298.257223563))) ("eprec") ((((unsupported)).apply (1) (1) (9))) ("wkt") (((((xre).xsub)).apply ("[s+]") ("") ((((unsupported)).apply)))))) ((((unsupported)).apply ("srid") (32140) ("auth_name") ((((unsupported)).apply ("EPSG") ((xfalse)))) ("auth_srid") (32140) ("srtext") ("PROJCS[\"NAD83 / Texas South Central\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS 1980\"") ("proj_re") ("+proj=lcc (+lat_1=30.28333333333333? |+lat_2=28.38333333333333? |+lat_0=27.83333333333333? |+lon_0=-99 ){4}+x_0=600000 +y_0=4000000 (+ellps=GRS80 )?(+datum=NAD83 |+towgs84=0,0,0,0,0,0,0 )?+units=m +no_defs ?") ("spheroid") ("GRS 1980") ("name") ("NAD83 / Texas South Central") ("geographic") ((xfalse)) ("projected") (TRUE) ("spatialite") ((xfalse)) ("ellipsoid") ((((unsupported)).apply (6378137.0) (6356752.31414) (298.257222101))) ("eprec") ((((unsupported)).apply (1) (5) (10))))))
+            (((unsupported)).apply ((xTestCase)) ((((xskipUnlessDBFeature)).apply ("has_spatialrefsys_table"))))
+              seq
+                xSpatialRefSys.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((((xconnection).xops).xconnection).xops).xspatial_ref_sys)).apply)))
+                xtest_get_units.write
+                  [xself]
+                    memory > xepsg_4326
+                    seq > @
+                      seq
+                        xepsg_4326.write (((xnext)).apply ((((unsupported)).apply ((xf)) ((xf)) ((xtest_srs)) (((((unsupported)).apply ((xf)) ("srid")).eq 4326)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xunit)) ((xunit_name)))) ((((((((xself).xSpatialRefSys)).apply).xget_units)).apply ((((unsupported)).apply ((xepsg_4326)) ("wkt"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xunit_name)) ("degree"))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply ((xunit)) (0.01745329251994328))
+                xtest_retrieve.write
+                  [xself]
+                    memory > xsrs
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xsd)) ((xtest_srs)))
+                          seq
+                            xsrs.write (((unsupported)).apply (((((xself).xSpatialRefSys).xobjects).xget)) ((((unsupported)).apply ((xsd)) ("srid"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xsd)) ("srid"))) (((xsrs).xsrid)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xauth_name)) ((xoracle_flag)))) ((((unsupported)).apply ((xsd)) ("auth_name"))))
+                            (((((xconnection).xops).xoracle).not).or (xoracle_flag)).if
+                              bogusForceDataize.write ((((xself).xassertIs)).apply (((((((((xsrs).xauth_name).xupper)).apply).xstartswith)).apply ((xauth_name)))) (TRUE))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xsd)) ("auth_srid"))) (((xsrs).xauth_srid)))
+                            ((((xconnection).xops).xoracle).not).if
+                              seq
+                                bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xsrs).xwkt).xstartswith)).apply ((((unsupported)).apply ((xsd)) ("srtext"))))))
+                                bogusForceDataize.write ((((xself).xassertRegex)).apply (((xsrs).xproj4text)) ((((unsupported)).apply ((xsd)) ("proj_re"))))
+                xtest_osr.write
+                  [xself]
+                    memory > xsr
+                    memory > xsrs
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xsd)) ((xtest_srs)))
+                          seq
+                            xsr.write (((unsupported)).apply (((((xself).xSpatialRefSys).xobjects).xget)) ((((unsupported)).apply ((xsd)) ("srid"))))
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xsr).xspheroid).xstartswith)).apply ((((unsupported)).apply ((xsd)) ("spheroid"))))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xsd)) ("geographic"))) (((xsr).xgeographic)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xsd)) ("projected"))) (((xsr).xprojected)))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xsr).xname).xstartswith)).apply ((((unsupported)).apply ((xsd)) ("name"))))) (TRUE))
+                            ((((xconnection).xops).xoracle).not).if
+                              seq
+                                xsrs.write ((xsr).xsrs)
+                                bogusForceDataize.write ((((xself).xassertRegex)).apply (((xsrs).xproj)) ((((unsupported)).apply ((xsd)) ("proj_re"))))
+                                bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xsrs).xwkt).xstartswith)).apply ((((unsupported)).apply ((xsd)) ("srtext"))))))
+                xtest_ellipsoid.write
+                  [xself]
+                    memory > xprec
+                    memory > xellps2
+                    memory > xsrs
+                    memory > xellps1
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xsd)) ((xtest_srs)))
+                          seq
+                            xellps1.write (((unsupported)).apply ((xsd)) ("ellipsoid"))
+                            xprec.write (((unsupported)).apply ((xsd)) ("eprec"))
+                            xsrs.write (((unsupported)).apply (((((xself).xSpatialRefSys).xobjects).xget)) ((((unsupported)).apply ((xsd)) ("srid"))))
+                            xellps2.write ((xsrs).xellipsoid)
+                            (((unsupported)).apply ((xi)) ((((xrange)).apply (3))))
+                              bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply ((((unsupported)).apply ((xellps1)) ((xi)))) ((((unsupported)).apply ((xellps2)) ((xi)))) ((((unsupported)).apply ((xprec)) ((xi)))))
+                xtest_add_entry.write
+                  [xself]
+                    memory > xsrs
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((xadd_srs_entry)).apply (3857))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((unsupported)).apply (((((xself).xSpatialRefSys).xobjects).xfilter)) (3857)).xexists)).apply)))
+                        xsrs.write (((unsupported)).apply (((((xself).xSpatialRefSys).xobjects).xget)) (3857))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((((xself).xSpatialRefSys).xget_spheroid)).apply (((xsrs).xwkt))).xstartswith)).apply ("SPHEROID["))))

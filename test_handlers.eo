@@ -1,0 +1,48 @@
+memory > xStaticFilesTestCase
+memory > xASGIStaticFilesHandler
+memory > xASGIHandler
+memory > xAsyncRequestFactory
+[] > test_handlers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_get_async_response
+        memory > xasync_request_factory
+        memory > xtest_get_async_response_not_found
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xStaticFilesTestCase)))
+              seq
+                xasync_request_factory.write (((xAsyncRequestFactory)).apply)
+                xtest_get_async_response.write
+                  [xself]
+                    memory > xresponse
+                    memory > xhandler
+                    memory > xrequest
+                    seq > @
+                      (((unsupported)).apply)
+                        xrequest.write (((((xself).xasync_request_factory).xget)).apply ("/static/test/file.txt"))
+                        xhandler.write (((xASGIStaticFilesHandler)).apply ((((xASGIHandler)).apply)))
+                        xresponse.write (((unsupported)).apply (((((xhandler).xget_response_async)).apply ((xrequest)))))
+                        bogusForceDataize.write ((((xresponse).xclose)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                xtest_get_async_response_not_found.write
+                  [xself]
+                    memory > xresponse
+                    memory > xhandler
+                    memory > xrequest
+                    seq > @
+                      (((unsupported)).apply)
+                        xrequest.write (((((xself).xasync_request_factory).xget)).apply ("/static/test/not-found.txt"))
+                        xhandler.write (((xASGIStaticFilesHandler)).apply ((((xASGIHandler)).apply)))
+                        xresponse.write (((unsupported)).apply (((((xhandler).xget_response_async)).apply ((xrequest)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))

@@ -1,0 +1,388 @@
+memory > xk
+memory > x_lazy_re_compile
+memory > xel
+memory > xt
+memory > xparse_etags
+memory > xtime
+memory > xlog_response
+memory > xdefaultdict
+memory > xetag
+memory > xkwargs
+memory > xTypeError
+memory > xhttp_date
+memory > xfield
+memory > xmin
+memory > xheader
+memory > xquote_etag
+memory > xValueError
+memory > xmd5
+memory > xget_current_timezone_name
+memory > xcaches
+memory > xvalue
+memory > xHttpResponseNotModified
+memory > xKeyError
+memory > xnewheader
+memory > xHttpResponse
+memory > xset
+memory > xsettings
+memory > xint
+memory > xgetattr
+memory > xv
+memory > xget_language
+memory > xparse_http_date_safe
+memory > xisinstance
+memory > xlen
+memory > xdict
+[] > cache
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xpatch_cache_control
+        memory > xhas_vary_header
+        memory > x_if_none_match_passes
+        memory > x_not_modified
+        memory > xcc_delim_re
+        memory > xget_max_age
+        memory > xlearn_cache_key
+        memory > x_if_match_passes
+        memory > x_if_modified_since_passes
+        memory > x_precondition_failed
+        memory > xget_cache_key
+        memory > xpatch_response_headers
+        memory > xset_response_etag
+        memory > x_i18n_cache_key_suffix
+        memory > xadd_never_cache_headers
+        memory > x_to_tuple
+        memory > xget_conditional_response
+        memory > x_if_unmodified_since_passes
+        memory > x_generate_cache_header_key
+        memory > x_generate_cache_key
+        memory > xpatch_vary_headers
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcc_delim_re.write (((x_lazy_re_compile)).apply ("s*,s*"))
+            xpatch_cache_control.write
+              [xresponse]
+                memory > xvalues
+                memory > xdictvalue
+                memory > xdirectives
+                memory > xdictitem
+                memory > xcc
+                memory > xdirective
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xdictitem.write
+                      [xs]
+                        memory > xt
+                        seq > @
+                          seq
+                            xt.write ((((xs).xsplit)).apply ("=") (1))
+                            ((((xlen)).apply ((xt))).greater 1).if
+                              (((unsupported)).apply ((((unsupported)).apply (((((((unsupported)).apply ((xt)) (0)).xlower)).apply)) ((((unsupported)).apply ((xt)) (1))))))
+                              (((unsupported)).apply ((((unsupported)).apply (((((((unsupported)).apply ((xt)) (0)).xlower)).apply)) (TRUE))))
+                    xdictvalue.write
+                      []
+                        seq > @
+                          (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xt)) (1))) (TRUE)).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xt)) (0))))
+                              (((unsupported)).apply (("%s=%s".mod (((unsupported)).apply ((((unsupported)).apply ((xt)) (0))) ((((unsupported)).apply ((xt)) (1)))))))
+                    xcc.write (((xdefaultdict)).apply ((xset)))
+                    ((((xresponse).xget)).apply ("Cache-Control")).if
+                      (((unsupported)).apply ((xfield)) (((((xcc_delim_re).xsplit)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Cache-Control"))))))
+                        seq
+                          (((unsupported)).apply ((((unsupported)).apply ((xdirective)) ((xvalue)))) ((((xdictitem)).apply ((xfield)))))
+                          ((xdirective).eq "no-cache").if
+                            bogusForceDataize.write ((((((unsupported)).apply ((xcc)) ((xdirective))).xadd)).apply ((xvalue)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xcc)) ((xdirective)))) ((xvalue)))
+                    ((((unsupported)).apply ("max-age") ((xcc))).and (((unsupported)).apply ("max_age") ((xkwargs)))).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("max_age"))) ((((xmin)).apply ((((xint)).apply ((((unsupported)).apply ((xcc)) ("max-age"))))) ((((unsupported)).apply ((xkwargs)) ("max_age"))))))
+                    ((((unsupported)).apply ("private") ((xcc))).and (((unsupported)).apply ("public") ((xkwargs)))).if
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xcc)) ("private"))))))
+                      ((((unsupported)).apply ("public") ((xcc))).and (((unsupported)).apply ("private") ((xkwargs)))).if
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xcc)) ("public"))))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xk)) ((xv)))) (((((xkwargs).xitems)).apply)))
+                      seq
+                        xdirective.write ((((xk).xreplace)).apply ("_") ("-"))
+                        ((xdirective).eq "no-cache").if
+                          bogusForceDataize.write ((((((unsupported)).apply ((xcc)) ((xdirective))).xadd)).apply ((xv)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xcc)) ((xdirective)))) ((xv)))
+                    xdirectives.write (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xdirective)) ((xvalues)))) (((((xcc).xitems)).apply)))
+                      (((xisinstance)).apply ((xvalues)) ((xset))).if
+                        seq
+                          (((unsupported)).apply (TRUE) ((xvalues))).if
+                            xvalues.write (((unsupported)).apply (TRUE))
+                          bogusForceDataize.write ((((xdirectives).xextend)).apply ((((unsupported)).apply ((((xdictvalue)).apply ((xdirective)) ((xvalue)))) ((xvalue)) ((xvalues)))))
+                        bogusForceDataize.write ((((xdirectives).xappend)).apply ((((xdictvalue)).apply ((xdirective)) ((xvalues)))))
+                    xcc.write (((", ".xjoin)).apply ((xdirectives)))
+                    (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Cache-Control"))) ((xcc)))
+            xget_max_age.write
+              [xresponse]
+                memory > xcc
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((((xresponse).xhas_header)).apply ("Cache-Control")).not).if
+                      (((unsupported)).apply)
+                    xcc.write (((xdict)).apply ((((unsupported)).apply ((((x_to_tuple)).apply ((xel)))) ((xel)) (((((xcc_delim_re).xsplit)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Cache-Control"))))))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xValueError)) ((xTypeError)) ((xKeyError)))))
+                      (((unsupported)).apply ((((xint)).apply ((((unsupported)).apply ((xcc)) ("max-age"))))))
+            xset_response_etag.write
+              [xresponse]
+                seq > @
+                  seq
+                    ((((xresponse).xstreaming).not).and ((xresponse).xcontent)).if
+                      (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("ETag"))) ((((xquote_etag)).apply (((((((unsupported)).apply ((xmd5)) (((xresponse).xcontent)) (FALSE)).xhexdigest)).apply)))))
+                    (((unsupported)).apply ((xresponse)))
+            x_precondition_failed.write
+              [xrequest]
+                memory > xresponse
+                seq > @
+                  seq
+                    xresponse.write (((unsupported)).apply ((xHttpResponse)) (412))
+                    (((unsupported)).apply ((xlog_response)) ("Precondition Failed: %s") (((xrequest).xpath)) ((xresponse)) ((xrequest)))
+                    (((unsupported)).apply ((xresponse)))
+            x_not_modified.write
+              [xrequest xresponse]
+                memory > xnew_response
+                seq > @
+                  (((unsupported)).apply)
+                    xnew_response.write (((xHttpResponseNotModified)).apply)
+                    (xresponse).if
+                      seq
+                        (((unsupported)).apply ((xheader)) ((((unsupported)).apply ("Cache-Control") ("Content-Location") ("Date") ("ETag") ("Expires") ("Last-Modified") ("Vary"))))
+                          (((unsupported)).apply ((xheader)) ((xresponse))).if
+                            (((unsupported)).apply ((((unsupported)).apply (((xnew_response).xheaders)) ((xheader)))) ((((unsupported)).apply (((xresponse).xheaders)) ((xheader)))))
+                        (((unsupported)).apply (((xnew_response).xcookies)) (((xresponse).xcookies)))
+                    (((unsupported)).apply ((xnew_response)))
+            xget_conditional_response.write
+              [xrequest xetag xlast_modified xresponse]
+                memory > xif_modified_since
+                memory > xif_unmodified_since
+                memory > xif_none_match_etags
+                memory > xif_match_etags
+                seq > @
+                  (((unsupported)).apply)
+                    ((xresponse).and ((((unsupported)).apply (200) (((xresponse).xstatus_code)) (300)).not)).if
+                      (((unsupported)).apply ((xresponse)))
+                    xif_match_etags.write (((xparse_etags)).apply ((((((xrequest).xMETA).xget)).apply ("HTTP_IF_MATCH") (""))))
+                    xif_unmodified_since.write (((((xrequest).xMETA).xget)).apply ("HTTP_IF_UNMODIFIED_SINCE"))
+                    xif_unmodified_since.write ((xif_unmodified_since).and (((xparse_http_date_safe)).apply ((xif_unmodified_since))))
+                    xif_none_match_etags.write (((xparse_etags)).apply ((((((xrequest).xMETA).xget)).apply ("HTTP_IF_NONE_MATCH") (""))))
+                    xif_modified_since.write (((((xrequest).xMETA).xget)).apply ("HTTP_IF_MODIFIED_SINCE"))
+                    xif_modified_since.write ((xif_modified_since).and (((xparse_http_date_safe)).apply ((xif_modified_since))))
+                    ((xif_match_etags).and ((((x_if_match_passes)).apply ((xetag)) ((xif_match_etags))).not)).if
+                      (((unsupported)).apply ((((x_precondition_failed)).apply ((xrequest)))))
+                    ((((xif_match_etags).not).and (xif_unmodified_since)).and ((((x_if_unmodified_since_passes)).apply ((xlast_modified)) ((xif_unmodified_since))).not)).if
+                      (((unsupported)).apply ((((x_precondition_failed)).apply ((xrequest)))))
+                    ((xif_none_match_etags).and ((((x_if_none_match_passes)).apply ((xetag)) ((xif_none_match_etags))).not)).if
+                      (((unsupported)).apply (((xrequest).xmethod)) ((((unsupported)).apply ("GET") ("HEAD")))).if
+                        (((unsupported)).apply ((((x_not_modified)).apply ((xrequest)) ((xresponse)))))
+                        (((unsupported)).apply ((((x_precondition_failed)).apply ((xrequest)))))
+                    (((((xif_none_match_etags).not).and (xif_modified_since)).and ((((x_if_modified_since_passes)).apply ((xlast_modified)) ((xif_modified_since))).not)).and (((unsupported)).apply (((xrequest).xmethod)) ((((unsupported)).apply ("GET") ("HEAD"))))).if
+                      (((unsupported)).apply ((((x_not_modified)).apply ((xrequest)) ((xresponse)))))
+                    (((unsupported)).apply ((xresponse)))
+            x_if_match_passes.write
+              [xtarget_etag xetags]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((xtarget_etag).not).if
+                      (((unsupported)).apply (FALSE))
+                      ((xetags).eq (((unsupported)).apply ("*"))).if
+                        (((unsupported)).apply (TRUE))
+                        ((((xtarget_etag).xstartswith)).apply ("W/")).if
+                          (((unsupported)).apply (FALSE))
+                          (((unsupported)).apply ((((unsupported)).apply ((xtarget_etag)) ((xetags)))))
+            x_if_unmodified_since_passes.write
+              [xlast_modified xif_unmodified_since]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((xlast_modified).and ((xlast_modified).leq (xif_unmodified_since)))))
+            x_if_none_match_passes.write
+              [xtarget_etag xetags]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((xtarget_etag).not).if
+                      (((unsupported)).apply (TRUE))
+                      ((xetags).eq (((unsupported)).apply ("*"))).if
+                        (((unsupported)).apply (FALSE))
+                        seq
+                          xtarget_etag.write ((((xtarget_etag).xstrip)).apply ("W/"))
+                          xetags.write (((unsupported)).apply (((((xetag).xstrip)).apply ("W/"))) ((xetag)) ((xetags)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xtarget_etag)) ((xetags)))))
+            x_if_modified_since_passes.write
+              [xlast_modified xif_modified_since]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((xlast_modified).not).or ((xlast_modified).greater (xif_modified_since)))))
+            xpatch_response_headers.write
+              [xresponse xcache_timeout]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xcache_timeout)) ("None: is there a None literal in the EO language?")).if
+                      xcache_timeout.write ((xsettings).xCACHE_MIDDLEWARE_SECONDS)
+                    ((xcache_timeout).less 0).if
+                      xcache_timeout.write 0
+                    (((((xresponse).xhas_header)).apply ("Expires")).not).if
+                      (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Expires"))) ((((xhttp_date)).apply ((((((xtime).xtime)).apply).add (xcache_timeout))))))
+                    (((unsupported)).apply ((xpatch_cache_control)) ((xresponse)) ((xcache_timeout)))
+            xadd_never_cache_headers.write
+              [xresponse]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xpatch_response_headers)) ((xresponse)) ((1.neg)))
+                    (((unsupported)).apply ((xpatch_cache_control)) ((xresponse)) (TRUE) (TRUE) (TRUE) (TRUE))
+            xpatch_vary_headers.write
+              [xresponse xnewheaders]
+                memory > xexisting_headers
+                memory > xvary_headers
+                memory > xadditional_headers
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((((xresponse).xhas_header)).apply ("Vary")).if
+                      xvary_headers.write ((((xcc_delim_re).xsplit)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Vary"))))
+                      xvary_headers.write (((unsupported)).apply)
+                    xexisting_headers.write (((unsupported)).apply (((((xheader).xlower)).apply)) ((xheader)) ((xvary_headers)))
+                    xadditional_headers.write (((unsupported)).apply ((xnewheader)) ((xnewheader)) ((xnewheaders)) ((((unsupported)).apply (((((xnewheader).xlower)).apply)) ((xexisting_headers)))))
+                    (((unsupported)).apply ((xvary_headers)) ((xadditional_headers)))
+                    (((unsupported)).apply ("*") ((xvary_headers))).if
+                      (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Vary"))) ("*"))
+                      (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Vary"))) ((((", ".xjoin)).apply ((xvary_headers)))))
+            xhas_vary_header.write
+              [xresponse xheader_query]
+                memory > xexisting_headers
+                memory > xvary_headers
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((((xresponse).xhas_header)).apply ("Vary")).not).if
+                      (((unsupported)).apply (FALSE))
+                    xvary_headers.write ((((xcc_delim_re).xsplit)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Vary"))))
+                    xexisting_headers.write (((unsupported)).apply (((((xheader).xlower)).apply)) ((xheader)) ((xvary_headers)))
+                    (((unsupported)).apply ((((unsupported)).apply (((((xheader_query).xlower)).apply)) ((xexisting_headers)))))
+            x_i18n_cache_key_suffix.write
+              [xrequest xcache_key]
+                seq > @
+                  seq
+                    unsupported
+                    ((xsettings).xUSE_I18N).if
+                      (((unsupported)).apply ((xcache_key)) ((".%s".mod (((xgetattr)).apply ((xrequest)) ("LANGUAGE_CODE") ((((xget_language)).apply))))))
+                    ((xsettings).xUSE_TZ).if
+                      (((unsupported)).apply ((xcache_key)) ((".%s".mod (((xget_current_timezone_name)).apply))))
+                    (((unsupported)).apply ((xcache_key)))
+            x_generate_cache_key.write
+              [xrequest xmethod xheaderlist xkey_prefix]
+                memory > xvalue
+                memory > xcache_key
+                memory > xurl
+                memory > xctx
+                seq > @
+                  seq
+                    unsupported
+                    xctx.write (((unsupported)).apply ((xmd5)) (FALSE))
+                    (((unsupported)).apply ((xheader)) ((xheaderlist)))
+                      seq
+                        xvalue.write (((((xrequest).xMETA).xget)).apply ((xheader)))
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xctx).xupdate)).apply (((((xvalue).xencode)).apply)))
+                    xurl.write (((unsupported)).apply ((xmd5)) ((((((((xrequest).xbuild_absolute_uri)).apply).xencode)).apply ("ascii"))) (FALSE))
+                    xcache_key.write ("views.decorators.cache.cache_page.%s.%s.%s.%s".mod (((unsupported)).apply ((xkey_prefix)) ((xmethod)) (((((xurl).xhexdigest)).apply)) (((((xctx).xhexdigest)).apply))))
+                    (((unsupported)).apply ((((x_i18n_cache_key_suffix)).apply ((xrequest)) ((xcache_key)))))
+            x_generate_cache_header_key.write
+              [xkey_prefix xrequest]
+                memory > xcache_key
+                memory > xurl
+                seq > @
+                  seq
+                    unsupported
+                    xurl.write (((unsupported)).apply ((xmd5)) ((((((((xrequest).xbuild_absolute_uri)).apply).xencode)).apply ("ascii"))) (FALSE))
+                    xcache_key.write ("views.decorators.cache.cache_header.%s.%s".mod (((unsupported)).apply ((xkey_prefix)) (((((xurl).xhexdigest)).apply))))
+                    (((unsupported)).apply ((((x_i18n_cache_key_suffix)).apply ((xrequest)) ((xcache_key)))))
+            xget_cache_key.write
+              [xrequest xkey_prefix xmethod xcache]
+                memory > xcache_key
+                memory > xheaderlist
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xkey_prefix)) ("None: is there a None literal in the EO language?")).if
+                      xkey_prefix.write ((xsettings).xCACHE_MIDDLEWARE_KEY_PREFIX)
+                    xcache_key.write (((x_generate_cache_header_key)).apply ((xkey_prefix)) ((xrequest)))
+                    (((unsupported)).apply ((xcache)) ("None: is there a None literal in the EO language?")).if
+                      xcache.write (((unsupported)).apply ((xcaches)) (((xsettings).xCACHE_MIDDLEWARE_ALIAS)))
+                    xheaderlist.write ((((xcache).xget)).apply ((xcache_key)))
+                    (((unsupported)).apply ((xheaderlist)) ("None: is there a None literal in the EO language?")).if
+                      (((unsupported)).apply ((((x_generate_cache_key)).apply ((xrequest)) ((xmethod)) ((xheaderlist)) ((xkey_prefix)))))
+                      (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+            xlearn_cache_key.write
+              [xrequest xresponse xcache_timeout xkey_prefix xcache]
+                memory > xis_accept_language_redundant
+                memory > xcache_key
+                memory > xheader
+                memory > xheaderlist
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xkey_prefix)) ("None: is there a None literal in the EO language?")).if
+                      xkey_prefix.write ((xsettings).xCACHE_MIDDLEWARE_KEY_PREFIX)
+                    (((unsupported)).apply ((xcache_timeout)) ("None: is there a None literal in the EO language?")).if
+                      xcache_timeout.write ((xsettings).xCACHE_MIDDLEWARE_SECONDS)
+                    xcache_key.write (((x_generate_cache_header_key)).apply ((xkey_prefix)) ((xrequest)))
+                    (((unsupported)).apply ((xcache)) ("None: is there a None literal in the EO language?")).if
+                      xcache.write (((unsupported)).apply ((xcaches)) (((xsettings).xCACHE_MIDDLEWARE_ALIAS)))
+                    ((((xresponse).xhas_header)).apply ("Vary")).if
+                      seq
+                        xis_accept_language_redundant.write ((xsettings).xUSE_I18N)
+                        xheaderlist.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xheader)) (((((xcc_delim_re).xsplit)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Vary"))))))
+                          seq
+                            xheader.write (((((((xheader).xupper)).apply).xreplace)).apply ("-") ("_"))
+                            (((xheader).neq "ACCEPT_LANGUAGE").or ((xis_accept_language_redundant).not)).if
+                              bogusForceDataize.write ((((xheaderlist).xappend)).apply (("HTTP_".add (xheader))))
+                        bogusForceDataize.write ((((xheaderlist).xsort)).apply)
+                        bogusForceDataize.write ((((xcache).xset)).apply ((xcache_key)) ((xheaderlist)) ((xcache_timeout)))
+                        (((unsupported)).apply ((((x_generate_cache_key)).apply ((xrequest)) (((xrequest).xmethod)) ((xheaderlist)) ((xkey_prefix)))))
+                      seq
+                        bogusForceDataize.write ((((xcache).xset)).apply ((xcache_key)) ((((unsupported)).apply)) ((xcache_timeout)))
+                        (((unsupported)).apply ((((x_generate_cache_key)).apply ((xrequest)) (((xrequest).xmethod)) ((((unsupported)).apply)) ((xkey_prefix)))))
+            x_to_tuple.write
+              [xs]
+                memory > xt
+                seq > @
+                  seq
+                    xt.write ((((xs).xsplit)).apply ("=") (1))
+                    ((((xlen)).apply ((xt))).eq 2).if
+                      (((unsupported)).apply ((((unsupported)).apply (((((((unsupported)).apply ((xt)) (0)).xlower)).apply)) ((((unsupported)).apply ((xt)) (1))))))
+                    (((unsupported)).apply ((((unsupported)).apply (((((((unsupported)).apply ((xt)) (0)).xlower)).apply)) (TRUE))))

@@ -1,0 +1,209 @@
+memory > xlist
+memory > xRelated
+memory > xValueError
+memory > xTestCase
+memory > xFKUniqueTrue
+memory > xBar
+memory > xConcreteReferent
+memory > xParent
+memory > xmodels
+memory > xFkToChar
+memory > xstr
+memory > xchecks
+memory > xFieldError
+memory > xapps
+memory > xFoo
+memory > xBaz
+memory > xAbstractReferent
+memory > xAbstractForeignKeyModel
+memory > xReferred
+memory > xChild
+memory > xDecimal
+memory > xTypeError
+memory > xPrimaryKeyCharModel
+[] > test_foreignkey
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_abstract_model_app_relative_foreign_key
+        memory > xtest_fk_to_fk_get_col_output_field
+        memory > xtest_abstract_model_pending_operations
+        memory > xtest_non_local_to_field
+        memory > xtest_callable_default
+        memory > xtest_to_python
+        memory > xtest_related_name_converted_to_text
+        memory > xtest_empty_string_fk
+        memory > xtest_warning_when_unique_true_on_fk
+        memory > xtest_recursive_fks_get_col
+        memory > xtest_invalid_to_parameter
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_callable_default.write
+                  [xself]
+                    memory > xb
+                    memory > xa
+                    seq > @
+                      seq
+                        unsupported
+                        xa.write (((unsupported)).apply ((((xFoo).xobjects).xcreate)) (1) ("abc") ((((xDecimal)).apply ("12.34"))))
+                        xb.write (((unsupported)).apply ((((xBar).xobjects).xcreate)) ("bcd"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xb).xa)) ((xa)))
+                xtest_empty_string_fk.write
+                  [xself]
+                    memory > xfk_model_empty
+                    memory > xchar_model_empty
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xchar_model_empty.write (((unsupported)).apply ((((xPrimaryKeyCharModel).xobjects).xcreate)) (""))
+                        xfk_model_empty.write (((unsupported)).apply ((((xFkToChar).xobjects).xcreate)) ((xchar_model_empty)))
+                        xfk_model_empty.write (((unsupported)).apply (((((((xFkToChar).xobjects).xselect_related)).apply ("out")).xget)) (((xfk_model_empty).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xfk_model_empty).xout)) ((xchar_model_empty)))
+                xtest_warning_when_unique_true_on_fk.write
+                  [xself]
+                    memory > xwarnings
+                    memory > xfk_field
+                    memory > xmodel
+                    memory > xexpected_warnings
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xfk_field.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xFoo)) (((xmodels).xCASCADE)) (TRUE))
+                        xmodel.write (xFKUniqueTrue)
+                        xexpected_warnings.write (((unsupported)).apply ((((unsupported)).apply (((xchecks).xWarning)) ("Setting unique=True on a ForeignKey has the same effect as using a OneToOneField.") ("ForeignKey(unique=True) is usually better served by a OneToOneField.") ((((xFKUniqueTrue).xfk_field).xfield)) ("fields.W342"))))
+                        xwarnings.write ((xmodel).xcheck)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xwarnings)) ((xexpected_warnings)))
+                xtest_related_name_converted_to_text.write
+                  [xself]
+                    memory > xrel_name
+                    seq > @
+                      seq
+                        xrel_name.write (((((((xBar).x_meta).xget_field)).apply ("a")).xremote_field).xrelated_name)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xrel_name)) ((xstr)))
+                xtest_abstract_model_pending_operations.write
+                  [xself]
+                    memory > xpending_ops_before
+                    memory > xabstract
+                    memory > xfk
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xpending_ops_before.write (((xlist)).apply ((((xapps).x_pending_operations).xitems)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xfk.write ((((xmodels).xForeignKey)).apply ("missing.FK") (((xmodels).xCASCADE)))
+                            (((unsupported)).apply)
+                              xabstract.write TRUE
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xAbstractForeignKeyModel).x_meta).xapps)) ((xapps)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpending_ops_before)) ((((xlist)).apply ((((xapps).x_pending_operations).xitems)))) ("Pending lookup added for a foreign key on an abstract model"))
+                xtest_abstract_model_app_relative_foreign_key.write
+                  [xself]
+                    memory > xassert_app_model_resolved
+                    memory > xreference
+                    memory > xabstract
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xreference.write (((unsupported)).apply (((xmodels).xForeignKey)) ("Referred") (((xmodels).xCASCADE)))
+                            (((unsupported)).apply)
+                              seq
+                                xapp_label.write "model_fields"
+                                xabstract.write TRUE
+                        xassert_app_model_resolved.write
+                          [xlabel]
+                            memory > xapp_label
+                            seq > @
+                              seq
+                                (((unsupported)).apply (((xmodels).xModel)))
+                                  (((unsupported)).apply)
+                                    xapp_label.write (xlabel)
+                                (((unsupported)).apply ((xAbstractReferent)))
+                                  (((unsupported)).apply)
+                                    xapp_label.write (xlabel)
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xConcreteReferent).x_meta).xget_field)).apply ("reference")).xrelated_model)) ((xReferred)))
+                        bogusForceDataize.write (((xassert_app_model_resolved)).apply ("model_fields"))
+                        bogusForceDataize.write (((xassert_app_model_resolved)).apply ("tests"))
+                xtest_to_python.write
+                  [xself]
+                    memory > xfk
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xfk.write ((((xmodels).xForeignKey)).apply ((xFoo)) (((xmodels).xCASCADE)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((((xBar).x_meta).xget_field)).apply ("fk")).xto_python)).apply ("1"))) (1))
+                xtest_fk_to_fk_get_col_output_field.write
+                  [xself]
+                    memory > xcol
+                    memory > xfoo
+                    memory > xbar
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xfoo.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xFoo)) (((xmodels).xCASCADE)) (TRUE))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xbar.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xBar)) (((xmodels).xCASCADE)) (TRUE))
+                        xcol.write ((((((((xBaz).x_meta).xget_field)).apply ("bar")).xget_col)).apply ("alias"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((xcol).xoutput_field)) ((((xFoo).x_meta).xpk)))
+                xtest_recursive_fks_get_col.write
+                  [xself]
+                    memory > xfoo
+                    memory > xbar
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xbar.write (((unsupported)).apply (((xmodels).xForeignKey)) ("Bar") (((xmodels).xCASCADE)) (TRUE))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xfoo.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xFoo)) (((xmodels).xCASCADE)) (TRUE))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Cannot resolve output_field"))))
+                          bogusForceDataize.write ((((((((xFoo).x_meta).xget_field)).apply ("bar")).xget_col)).apply ("alias"))
+                xtest_non_local_to_field.write
+                  [xself]
+                    memory > xchild
+                    memory > xmsg
+                    memory > xkey
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xkey.write (((unsupported)).apply (((xmodels).xIntegerField)) (TRUE))
+                        (((unsupported)).apply ((xParent)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xchild.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xChild)) (((xmodels).xCASCADE)) ("key"))
+                        xmsg.write "'model_fields.Related.child' refers to field 'key' which is not local to model 'model_fields.Child'."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xFieldError)) ((xmsg)))))
+                          unsupported
+                xtest_invalid_to_parameter.write
+                  [xself]
+                    memory > xchild
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "ForeignKey(1) is invalid. First parameter to ForeignKey must be either a model, a model name, or the string 'self'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          (((unsupported)).apply (((xmodels).xModel)))
+                            xchild.write ((((xmodels).xForeignKey)).apply (1) (((xmodels).xCASCADE)))

@@ -1,0 +1,31 @@
+memory > xfalse
+memory > xSitemap
+memory > xImproperlyConfigured
+[] > sitemaps
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdjango_apps
+        memory > xitems
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSitemap)))
+              xitems.write
+                [xself]
+                  memory > xcurrent_site
+                  memory > xSite
+                  seq > @
+                    seq
+                      (((((xdjango_apps).xis_installed)).apply ("django.contrib.sites")).not).if
+                        (((unsupported)).apply ((((xImproperlyConfigured)).apply ("FlatPageSitemap requires django.contrib.sites, which isn't installed."))))
+                      xSite.write ((((xdjango_apps).xget_model)).apply ("sites.Site"))
+                      xcurrent_site.write (((((xSite).xobjects).xget_current)).apply)
+                      (((unsupported)).apply ((((unsupported)).apply ((((xcurrent_site).xflatpage_set).xfilter)) ((xfalse)))))

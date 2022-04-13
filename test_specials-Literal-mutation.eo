@@ -1,0 +1,38 @@
+memory > xoverride_settings
+memory > xSimpleTestCase
+[] > test_specials
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_permanent_nonascii_redirect
+        memory > xredirect_target
+        memory > xtest_nonascii_redirect
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("view_tests.generic_urls"))))
+              seq
+                (((unsupported)).apply)
+                xredirect_target.write "/%E4%B8%AD%E6%96%87/target/"
+                xtest_nonascii_redirect.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/nonascii_redirect/"))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) (((xself).xredirect_target)))
+                xtest_permanent_nonascii_redirect.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/permanent_nonascii_redirect/"))
+                        (((unsupported)).apply (((xself).xassertRedirects)) ((xresponse)) (((xself).xredirect_target)) (301))

@@ -1,0 +1,163 @@
+memory > xCount
+memory > xfalse
+memory > xenumerate
+memory > xstr
+memory > xTestCase
+memory > xconnection
+memory > xxml
+memory > xf
+memory > xNotSupportedError
+memory > xsorted
+memory > xqueryset
+memory > xidx
+memory > xjson
+memory > xoptions
+memory > xTag
+memory > xValueError
+memory > xcaptured_queries
+memory > xskipIfDBFeature
+memory > xvalue
+memory > xtuple
+memory > xCaptureQueriesContext
+memory > xformat
+memory > xskipUnlessDBFeature
+memory > xname
+memory > xtransaction
+memory > xlen
+[] > test_explain
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_mysql_analyze
+        memory > xtest_postgres_options
+        memory > xtest_mysql_text_to_traditional
+        memory > xtest_message
+        memory > xtest_unknown_format
+        memory > xtest_basic
+        memory > xtest_unknown_options
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((xskipUnlessDBFeature)).apply ("supports_explaining_query_execution"))))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xquerysets
+                    memory > xresult
+                    memory > xsupported_formats
+                    memory > xall_formats
+                    seq > @
+                      seq
+                        xquerysets.write (((unsupported)).apply ((((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test"))) (((((((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test")).xselect_related)).apply ("parent"))) (((((((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test")).xprefetch_related)).apply ("children"))) (((((((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test")).xannotate)).apply ((((xCount)).apply ("children"))))) (((((((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test")).xvalues_list)).apply ("name"))) (((((((((xTag).xobjects).xorder_by)).apply).xunion)).apply ((((unsupported)).apply (((((((xTag).xobjects).xorder_by)).apply).xfilter)) ("test"))))) ((((unsupported)).apply (((((((xTag).xobjects).xselect_for_update)).apply).xfilter)) ("test"))))
+                        xsupported_formats.write (((xconnection).xfeatures).xsupported_explain_formats)
+                        xall_formats.write (((((unsupported)).apply ("None: is there a None literal in the EO language?")).add (((xtuple)).apply ((xsupported_formats)))).add (((xtuple)).apply ((((unsupported)).apply (((((xf).xlower)).apply)) ((xf)) ((xsupported_formats))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xidx)) ((xqueryset)))) ((((xenumerate)).apply ((xquerysets)))))
+                          (((unsupported)).apply ((xformat)) ((xall_formats)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xformat)) ((xidx)))))
+                              (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))) ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                                seq
+                                  xresult.write (((unsupported)).apply (((xqueryset).xexplain)) ((xformat)))
+                                  bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) (0))) ("sql")).xstartswith)).apply ((((xconnection).xops).xexplain_prefix)))))
+                                  bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xresult)) ((xstr)))
+                                  bogusForceDataize.write ((((xself).xassertTrue)).apply ((xresult)))
+                                  ((xformat).eq "xml").if
+                                    (((unsupported)).apply (((((xxml).xetree).xElementTree).xParseError)))
+                                      bogusForceDataize.write ((((((xxml).xetree).xElementTree).xfromstring)).apply ((xresult)))
+                                      bogusForceDataize.write ((((xself).xfail)).apply ("QuerySet.explain() result is not valid XML: {e}"))
+                                    ((xformat).eq "json").if
+                                      (((unsupported)).apply (((xjson).xJSONDecodeError)))
+                                        bogusForceDataize.write ((((xjson).xloads)).apply ((xresult)))
+                                        bogusForceDataize.write ((((xself).xfail)).apply ("QuerySet.explain() result is not valid JSON: {e}"))
+                xtest_unknown_options.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Unknown options: test, test2"))))
+                          (((unsupported)).apply ((((xTag).xobjects).xexplain)) (1) (1))
+                xtest_unknown_format.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "DOES NOT EXIST is not a recognized format."
+                        (((xconnection).xfeatures).xsupported_explain_formats).if
+                          (((unsupported)).apply ((xmsg)) ((" Allowed formats: %s".mod (((", ".xjoin)).apply ((((xsorted)).apply ((((xconnection).xfeatures).xsupported_explain_formats))))))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((((xTag).xobjects).xexplain)) ("does not exist"))
+                xtest_postgres_options.write
+                  [xself]
+                    memory > xqs
+                    memory > xoption
+                    memory > xtest_options
+                    seq > @
+                      (((unsupported)).apply)
+                        xqs.write (((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test"))
+                        xtest_options.write (((unsupported)).apply ((((unsupported)).apply ("COSTS") ((xfalse)) ("BUFFERS") (TRUE) ("ANALYZE") (TRUE))) ((((unsupported)).apply ("costs") ((xfalse)) ("buffers") (TRUE) ("analyze") (TRUE))) ((((unsupported)).apply ("verbose") (TRUE) ("timing") (TRUE) ("analyze") (TRUE))) ((((unsupported)).apply ("verbose") ((xfalse)) ("timing") ((xfalse)) ("analyze") (TRUE))) ((((unsupported)).apply ("summary") (TRUE))))
+                        (((xconnection).xfeatures).xis_postgresql_12).if
+                          bogusForceDataize.write ((((xtest_options).xappend)).apply ((((unsupported)).apply ("settings") (TRUE))))
+                        (((xconnection).xfeatures).xis_postgresql_13).if
+                          bogusForceDataize.write ((((xtest_options).xappend)).apply ((((unsupported)).apply ("analyze") (TRUE) ("wal") (TRUE))))
+                        (((unsupported)).apply ((xoptions)) ((xtest_options)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((((unsupported)).apply ((xoptions)))))) (((((xtransaction).xatomic)).apply)))
+                            seq
+                              (((unsupported)).apply ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                                (((unsupported)).apply (((xqs).xexplain)) ("text") ((((unsupported)).apply ((xoptions)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xcaptured_queries)))) (1))
+                              (((unsupported)).apply ((((unsupported)).apply ((xname)) ((xvalue)))) (((((xoptions).xitems)).apply)))
+                                seq
+                                  xoption.write ((("{} {}".xformat)).apply (((((xname).xupper)).apply)) (((xvalue).if "true" "false")))
+                                  bogusForceDataize.write ((((xself).xassertIn)).apply ((xoption)) ((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) (0))) ("sql"))))
+                xtest_mysql_text_to_traditional.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                          (((unsupported)).apply (((((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test")).xexplain)) ("text"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xcaptured_queries)))) (1))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("FORMAT=TRADITIONAL") ((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) (0))) ("sql"))))
+                xtest_mysql_analyze.write
+                  [xself]
+                    memory > xqs
+                    memory > xprefix
+                    seq > @
+                      (((unsupported)).apply)
+                        xqs.write (((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test"))
+                        (((unsupported)).apply ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                          (((unsupported)).apply (((xqs).xexplain)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xcaptured_queries)))) (1))
+                        xprefix.write (((xconnection).xmysql_is_mariadb).if "ANALYZE " "EXPLAIN ANALYZE ")
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) (0))) ("sql")).xstartswith)).apply ((xprefix)))))
+                        (((unsupported)).apply ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                          (((unsupported)).apply (((xqs).xexplain)) (TRUE) ("JSON"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xcaptured_queries)))) (1))
+                        ((xconnection).xmysql_is_mariadb).if
+                          bogusForceDataize.write ((((xself).xassertIn)).apply ("FORMAT=JSON") ((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) (0))) ("sql"))))
+                          bogusForceDataize.write ((((xself).xassertNotIn)).apply ("FORMAT=JSON") ((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) (0))) ("sql"))))
+            (((unsupported)).apply ((xTestCase)) ((((xskipIfDBFeature)).apply ("supports_explaining_query_execution"))))
+              xtest_message.write
+                [xself]
+                  memory > xmsg
+                  seq > @
+                    seq
+                      xmsg.write "This backend does not support explaining query execution."
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xNotSupportedError)) ((xmsg)))))
+                        bogusForceDataize.write ((((((unsupported)).apply ((((xTag).xobjects).xfilter)) ("test")).xexplain)).apply)

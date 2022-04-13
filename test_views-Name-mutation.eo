@@ -1,0 +1,55 @@
+memory > xStaticFilesTestCase
+memory > xquote
+memory > xsettings
+memory > xoverride_settings
+memory > xTestServeStatic
+memory > xposixpath
+memory > xTestServeStatic2
+memory > xTestDefaults
+[] > test_views
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_disabled_serving
+        memory > xassertFileNotFound
+        memory > x_response
+        memory > xassertFileContains
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xStaticFilesTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("staticfiles_tests.urls.default"))))
+              seq
+                (((unsupported)).apply)
+                x_response.write
+                  [xself xfilepath]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xclient).xget)).apply ((((xquote)).apply (((((xposixpath).xjoin)).apply (((xsettings).xSTATIC_URL)) ((xfilepath)))))))))
+                xassertFileContains.write
+                  [xself xfilepath xtext]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertContains)).apply (((((xself).x_response)).apply ((xfilepath)))) ((xtext)))
+                xassertFileNotFound.write
+                  [xself xfilepath]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).x_response)).apply ((xfilepath))).xstatus_code)) (404))
+            (((unsupported)).apply ((xTestServeStatic2)) ((((unsupported)).apply ((xoverride_settings)) (FALSE))))
+              seq
+                (((unsupported)).apply)
+                xtest_disabled_serving.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertFileNotFound)).apply ("test.txt"))
+            (((unsupported)).apply ((xTestDefaults)) ((xTestServeStatic)) ((((unsupported)).apply ((xoverride_settings)) (TRUE))))
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestDefaults)) ((xTestServeStatic)) ((((unsupported)).apply ((xoverride_settings)) (TRUE) ("staticfiles_tests.urls.helper"))))
+              (((unsupported)).apply)

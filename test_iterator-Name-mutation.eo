@@ -1,0 +1,91 @@
+memory > xValueError
+memory > xcursor_iter
+memory > xsize
+memory > xcursor_iter_mock
+memory > xconnections
+memory > x_mock_kwargs
+memory > xmock
+memory > xArticle
+memory > xnext
+memory > xdatetime
+memory > xlist
+memory > xTestCase
+memory > xmock_args
+[] > test_iterator
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_default_iterator_chunk_size
+        memory > xsetUpTestData
+        memory > xtest_iterator_chunk_size
+        memory > xtest_no_chunked_reads
+        memory > xtest_iterator_invalid_chunk_size
+        memory > xitersize_index_in_mock_args2
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xitersize_index_in_mock_args2.write 3
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Article 1") ((((((xdatetime).xdatetime).xnow)).apply)))
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Article 2") ((((((xdatetime).xdatetime).xnow)).apply)))
+                xtest_iterator_invalid_chunk_size.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xsize)) ((((unsupported)).apply (0) ((1.neg)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsize)))))
+                          (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Chunk size must be strictly positive."))))
+                            (((unsupported)).apply ((((xArticle).xobjects).xiterator)) ((xsize)))
+                xtest_default_iterator_chunk_size.write
+                  [xself]
+                    memory > xqs
+                    seq > @
+                      seq
+                        xqs.write (((((xArticle).xobjects).xiterator)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("django.db.models.sql.compiler.cursor_iter") ((xcursor_iter)))) ((xcursor_iter_mock)))
+                          bogusForceDataize.write (((xnext)).apply ((xqs)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xcursor_iter_mock).xcall_count)) (1))
+                        (((unsupported)).apply ((((unsupported)).apply ((xmock_args)) ((x_mock_kwargs)))) (((xcursor_iter_mock).xcall_args)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xmock_args)) (((xself).xitersize_index_in_mock_args)))) (2000))
+                xtest_iterator_chunk_size.write
+                  [xself]
+                    memory > xqs
+                    memory > xbatch_size
+                    seq > @
+                      seq
+                        xbatch_size.write 3
+                        xqs.write (((unsupported)).apply ((((xArticle).xobjects).xiterator)) ((xbatch_size)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("django.db.models.sql.compiler.cursor_iter") ((xcursor_iter)))) ((xcursor_iter_mock)))
+                          bogusForceDataize.write (((xnext)).apply ((xqs)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xcursor_iter_mock).xcall_count)) (1))
+                        (((unsupported)).apply ((((unsupported)).apply ((xmock_args)) ((x_mock_kwargs)))) (((xcursor_iter_mock).xcall_args)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xmock_args)) (((xself).xitersize_index_in_mock_args)))) ((xbatch_size)))
+                xtest_no_chunked_reads.write
+                  [xself]
+                    memory > xqs
+                    memory > xcompiler
+                    memory > xresult
+                    memory > xfeatures
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xqs.write (((((xArticle).xobjects).xall)).apply)
+                        xcompiler.write (((unsupported)).apply ((((xqs).xquery).xget_compiler)) (((xqs).xdb)))
+                        xfeatures.write ((((unsupported)).apply ((xconnections)) (((xqs).xdb))).xfeatures)
+                        (((unsupported)).apply ((((((xmock).xpatch).xobject)).apply ((xfeatures)) ("can_use_chunked_reads") (FALSE))))
+                          xresult.write (((unsupported)).apply (((xcompiler).xexecute_sql)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xresult)) ((xlist)))

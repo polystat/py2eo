@@ -1,0 +1,128 @@
+memory > xNode
+memory > xcopy
+memory > xc
+memory > xstr
+memory > xbool
+memory > xmake_hashable
+memory > xhash
+memory > xisinstance
+memory > xlen
+[] > tree
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_new_instance
+        memory > xdefault
+        memory > x__init__
+        memory > xadd
+        memory > x__bool__
+        memory > x__str__
+        memory > x__deepcopy__
+        memory > x__eq__
+        memory > x__repr__
+        memory > xnegate
+        memory > x__contains__
+        memory > x__hash__
+        memory > x__len__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xdefault.write "DEFAULT"
+                x__init__.write
+                  [xself xchildren xconnector xnegated]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((xself).xchildren)) (((xchildren).if (((unsupported)).apply ((xchildren)) ((((unsupported)).apply))) (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).xconnector)) (((xconnector).or ((xself).xdefault))))
+                        (((unsupported)).apply (((xself).xnegated)) ((xnegated)))
+                x_new_instance.write
+                  [xcls xchildren xconnector xnegated]
+                    memory > xobj
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xobj.write (((xNode)).apply ((xchildren)) ((xconnector)) ((xnegated)))
+                        (((unsupported)).apply (((xobj).x__class__)) ((xcls)))
+                        (((unsupported)).apply ((xobj)))
+                x__str__.write
+                  [xself]
+                    memory > xtemplate
+                    seq > @
+                      seq
+                        xtemplate.write (((xself).xnegated).if "(NOT (%s: %s))" "(%s: %s)")
+                        (((unsupported)).apply (((xtemplate).mod (((unsupported)).apply (((xself).xconnector)) ((((", ".xjoin)).apply ((((unsupported)).apply ((((xstr)).apply ((xc)))) ((xc)) (((xself).xchildren))))))))))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("<%s: %s>".mod (((unsupported)).apply ((((xself).x__class__).x__name__)) ((xself))))))
+                x__deepcopy__.write
+                  [xself xmemodict]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write (((unsupported)).apply ((xNode)) (((xself).xconnector)) (((xself).xnegated)))
+                        (((unsupported)).apply (((xobj).x__class__)) (((xself).x__class__)))
+                        (((unsupported)).apply (((xobj).xchildren)) (((((xcopy).xdeepcopy)).apply (((xself).xchildren)) ((xmemodict)))))
+                        (((unsupported)).apply ((xobj)))
+                x__len__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((xlen)).apply (((xself).xchildren)))))
+                x__bool__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((xbool)).apply (((xself).xchildren)))))
+                x__contains__.write
+                  [xself xother]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xother)) (((xself).xchildren)))))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      (((unsupported)).apply (((((((xself).x__class__).eq ((xother).x__class__)).and (((xself).xconnector).eq ((xother).xconnector))).and (((xself).xnegated).eq ((xother).xnegated))).and (((xself).xchildren).eq ((xother).xchildren)))))
+                x__hash__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xhash)).apply ((((unsupported)).apply (((xself).x__class__)) (((xself).xconnector)) (((xself).xnegated)) ((((unsupported)).apply ((((xmake_hashable)).apply (((xself).xchildren)))))))))))
+                xadd.write
+                  [xself xdata xconn_type]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xself).xconnector).neq (xconn_type)).if
+                          seq
+                            xobj.write ((((xself).x_new_instance)).apply (((xself).xchildren)) (((xself).xconnector)) (((xself).xnegated)))
+                            (((unsupported)).apply (((xself).xconnector)) ((xconn_type)))
+                            (((unsupported)).apply (((xself).xchildren)) ((((unsupported)).apply ((xobj)) ((xdata)))))
+                            (((unsupported)).apply ((xdata)))
+                          (((((xisinstance)).apply ((xdata)) ((xNode))).and (((xdata).xnegated).not)).and ((((xdata).xconnector).eq (xconn_type)).or ((((xlen)).apply ((xdata))).eq 1))).if
+                            seq
+                              bogusForceDataize.write (((((xself).xchildren).xextend)).apply (((xdata).xchildren)))
+                              (((unsupported)).apply ((xself)))
+                            seq
+                              bogusForceDataize.write (((((xself).xchildren).xappend)).apply ((xdata)))
+                              (((unsupported)).apply ((xdata)))
+                xnegate.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xnegated)) ((((xself).xnegated).not)))

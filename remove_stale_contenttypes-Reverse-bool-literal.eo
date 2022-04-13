@@ -1,0 +1,109 @@
+memory > xcontent_types
+memory > xapps
+memory > xBaseCommand
+memory > xCollector
+memory > xinput
+memory > xoptions
+memory > xlen
+memory > xct
+memory > xContentType
+memory > xDEFAULT_DB_ALIAS
+memory > xNoFastDeleteCollector
+memory > xobjs
+memory > xrouter
+memory > xapp_label
+memory > xobj_type
+memory > xitertools
+memory > xobj
+[] > remove_stale_contenttypes
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xcan_fast_delete
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--noinput") ("--no-input") ("store_false") ("interactive") ("Tells Django to NOT prompt the user for input of any kind."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ((xDEFAULT_DB_ALIAS)) ("Nominates the database to use. Defaults to the \"default\" database."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--include-stale-apps") ("store_false") (FALSE) ("Deletes stale content types including ones from previously installed apps that have been removed from INSTALLED_APPS."))
+                xhandle.write
+                  [xself]
+                    memory > xinteractive
+                    memory > xusing
+                    memory > xapps_content_types
+                    memory > xok_to_delete
+                    memory > xct_info
+                    memory > xto_remove
+                    memory > xcontent_type_display
+                    memory > xcollector
+                    memory > xinclude_stale_apps
+                    memory > xdb
+                    memory > xverbosity
+                    seq > @
+                      (((unsupported)).apply)
+                        xdb.write (((unsupported)).apply ((xoptions)) ("database"))
+                        xinclude_stale_apps.write (((unsupported)).apply ((xoptions)) ("include_stale_apps"))
+                        xinteractive.write (((unsupported)).apply ((xoptions)) ("interactive"))
+                        xverbosity.write (((unsupported)).apply ((xoptions)) ("verbosity"))
+                        (((((xrouter).xallow_migrate_model)).apply ((xdb)) ((xContentType))).not).if
+                          (((unsupported)).apply)
+                        bogusForceDataize.write (((((xContentType).xobjects).xclear_cache)).apply)
+                        xapps_content_types.write ((((xitertools).xgroupby)).apply (((((((((xContentType).xobjects).xusing)).apply ((xdb))).xorder_by)).apply ("app_label") ("model"))) ((((unsupported)).apply (((xobj).xapp_label)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xapp_label)) ((xcontent_types)))) ((xapps_content_types)))
+                          seq
+                            (((xinclude_stale_apps).not).and (((unsupported)).apply ((xapp_label)) (((xapps).xapp_configs)))).if
+                              (((unsupported)).apply)
+                            xto_remove.write (((unsupported)).apply ((xct)) ((xct)) ((xcontent_types)) ((((unsupported)).apply (((((xct).xmodel_class)).apply)) ("None: is there a None literal in the EO language?"))))
+                            xusing.write ((((xrouter).xdb_for_write)).apply ((xContentType)))
+                            (xto_remove).if
+                              seq
+                                (xinteractive).if
+                                  seq
+                                    xct_info.write (((unsupported)).apply)
+                                    (((unsupported)).apply ((xct)) ((xto_remove)))
+                                      seq
+                                        bogusForceDataize.write ((((xct_info).xappend)).apply (("    - Content type for %s.%s".mod (((unsupported)).apply (((xct).xapp_label)) (((xct).xmodel))))))
+                                        xcollector.write (((unsupported)).apply ((xNoFastDeleteCollector)) ((xusing)) ((xct)))
+                                        bogusForceDataize.write ((((xcollector).xcollect)).apply ((((unsupported)).apply ((xct)))))
+                                        (((unsupported)).apply ((((unsupported)).apply ((xobj_type)) ((xobjs)))) ((((((xcollector).xdata).xitems)).apply)))
+                                          ((xobjs).neq (((unsupported)).apply ((xct)))).if
+                                            bogusForceDataize.write ((((xct_info).xappend)).apply (("    - %s %s object(s)".mod (((unsupported)).apply ((((xlen)).apply ((xobjs)))) ((((xobj_type).x_meta).xlabel))))))
+                                    xcontent_type_display.write ((("n".xjoin)).apply ((xct_info)))
+                                    bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (((((unsupported)).apply).mod (xcontent_type_display))))
+                                    xok_to_delete.write (((xinput)).apply ("Type 'yes' to continue, or 'no' to cancel: "))
+                                  xok_to_delete.write "yes"
+                                ((xok_to_delete).eq "yes").if
+                                  (((unsupported)).apply ((xct)) ((xto_remove)))
+                                    seq
+                                      ((xverbosity).geq 2).if
+                                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("Deleting stale content type '%s | %s'".mod (((unsupported)).apply (((xct).xapp_label)) (((xct).xmodel))))))
+                                      bogusForceDataize.write ((((xct).xdelete)).apply)
+                                  ((xverbosity).geq 2).if
+                                    bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("Stale content types remain."))
+            (((unsupported)).apply ((xCollector)))
+              xcan_fast_delete.write
+                [xself]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply)
+                      (((unsupported)).apply (FALSE))

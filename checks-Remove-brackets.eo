@@ -1,0 +1,57 @@
+memory > xfield
+memory > xapps
+memory > xError
+memory > xchain
+memory > xvars
+memory > xapp_config
+memory > xmodel
+memory > xobj
+memory > xGenericForeignKey
+memory > xisinstance
+memory > xlen
+[] > checks
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck_generic_foreign_keys
+        memory > xcheck_model_name_lengths
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcheck_generic_foreign_keys.write
+              [xapp_configs]
+                memory > xmodels
+                memory > xerrors
+                memory > xfields
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xapp_configs)) ("None: is there a None literal in the EO language?")).if
+                      xmodels.write ((xapps).xget_models)
+                      xmodels.write ((((xchain).xfrom_iterable)).apply ((((unsupported)).apply (((xapp_config).xget_models)) ((xapp_config)) ((xapp_configs)))))
+                    xerrors.write (((unsupported)).apply)
+                    xfields.write (((unsupported)).apply ((xobj)) ((xmodel)) ((xmodels)) ((xobj)) (((((xvars)).apply ((xmodel))).xvalues)) ((((xisinstance)).apply ((xobj)) ((xGenericForeignKey)))))
+                    (((unsupported)).apply ((xfield)) ((xfields)))
+                      bogusForceDataize.write ((((xerrors).xextend)).apply (((xfield).xcheck)))
+                    (((unsupported)).apply ((xerrors)))
+            xcheck_model_name_lengths.write
+              [xapp_configs]
+                memory > xmodels
+                memory > xerrors
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((xapp_configs)) ("None: is there a None literal in the EO language?")).if
+                      xmodels.write ((xapps).xget_models)
+                      xmodels.write ((((xchain).xfrom_iterable)).apply ((((unsupported)).apply (((xapp_config).xget_models)) ((xapp_config)) ((xapp_configs)))))
+                    xerrors.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xmodel)) ((xmodels)))
+                      ((((xlen)).apply ((((xmodel).x_meta).xmodel_name))).greater 100).if
+                        bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xError)) (("Model names must be at most 100 characters (got %d).".mod (((unsupported)).apply ((((xlen)).apply ((((xmodel).x_meta).xmodel_name))))))) ((xmodel)) ("contenttypes.E005"))))
+                    (((unsupported)).apply ((xerrors)))

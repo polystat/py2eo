@@ -1,0 +1,460 @@
+memory > xtimezone
+memory > xuuid
+memory > xforce_str
+memory > xlhs
+memory > xOnConflict
+memory > xrhs
+memory > xlhs_sql
+memory > xsettings
+memory > xhasattr
+memory > xExists
+memory > xgetattr
+memory > xoffset
+memory > xoptions
+memory > xisinstance
+memory > xsequence_info
+memory > xtable_name
+memory > xfield
+memory > xlhs_params
+memory > xrhs_params
+memory > xrhs_sql
+memory > xValueError
+memory > xsplit_tzname_delta
+memory > xBaseDatabaseOperations
+memory > xsign
+memory > xstr
+memory > xsuper
+memory > xrow
+memory > xbool
+memory > xtuple
+memory > xsql
+memory > xLookup
+memory > xExpressionWrapper
+memory > xmap
+[] > operations
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdatetime_trunc_sql
+        memory > xexplain_prefix
+        memory > xconditional_expression_supported_in_where_clause
+        memory > xget_db_converters
+        memory > xcast_char_field_without_max_length
+        memory > xdatetime_cast_date_sql
+        memory > xdate_extract_sql
+        memory > xdatetime_cast_time_sql
+        memory > xexplain_query_prefix
+        memory > xadapt_decimalfield_value
+        memory > xconvert_booleanfield_value
+        memory > xvalidate_autopk_value
+        memory > xadapt_datetimefield_value
+        memory > xreturn_insert_columns
+        memory > xpk_default_value
+        memory > xno_limit_value
+        memory > xinsert_statement
+        memory > xsubtract_temporals
+        memory > xsequence_reset_by_name_sql
+        memory > xdatetime_extract_sql
+        memory > xcast_data_types
+        memory > xlookup_cast
+        memory > xconvert_uuidfield_value
+        memory > xcombine_expression
+        memory > x_convert_field_to_tz
+        memory > xbulk_insert_sql
+        memory > xbinary_placeholder_sql
+        memory > xfetch_returned_insert_rows
+        memory > xconvert_datetimefield_value
+        memory > xforce_no_ordering
+        memory > xsql_flush
+        memory > xcompiler_module
+        memory > xon_conflict_suffix_sql
+        memory > xtime_trunc_sql
+        memory > xdate_trunc_sql
+        memory > xquote_name
+        memory > xinteger_field_ranges
+        memory > x_prepare_tzname_delta
+        memory > xformat_for_duration_arithmetic
+        memory > xmax_name_length
+        memory > xregex_lookup
+        memory > xlast_executed_query
+        memory > xadapt_timefield_value
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseOperations)))
+              seq
+                xcompiler_module.write "django.db.backends.mysql.compiler"
+                xinteger_field_ranges.write (((unsupported)).apply (((xBaseDatabaseOperations).xinteger_field_ranges)) ("PositiveSmallIntegerField") ((((unsupported)).apply (0) (65535))) ("PositiveIntegerField") ((((unsupported)).apply (0) ((((unsupported)).apply)))) ("PositiveBigIntegerField") ((((unsupported)).apply (0) ((((unsupported)).apply)))))
+                xcast_data_types.write (((unsupported)).apply ("AutoField") ("signed integer") ("BigAutoField") ("signed integer") ("SmallAutoField") ("signed integer") ("CharField") ("char(%(max_length)s)") ("DecimalField") ("decimal(%(max_digits)s, %(decimal_places)s)") ("TextField") ("char") ("IntegerField") ("signed integer") ("BigIntegerField") ("signed integer") ("SmallIntegerField") ("signed integer") ("PositiveBigIntegerField") ("unsigned integer") ("PositiveIntegerField") ("unsigned integer") ("PositiveSmallIntegerField") ("unsigned integer") ("DurationField") ("signed integer"))
+                xcast_char_field_without_max_length.write "char"
+                xexplain_prefix.write "EXPLAIN"
+                xdate_extract_sql.write
+                  [xself xlookup_type xfield_name]
+                    seq > @
+                      ((xlookup_type).eq "week_day").if
+                        (((unsupported)).apply (("DAYOFWEEK(%s)".mod (xfield_name))))
+                        ((xlookup_type).eq "iso_week_day").if
+                          (((unsupported)).apply (("WEEKDAY(%s) + 1".mod (xfield_name))))
+                          ((xlookup_type).eq "week").if
+                            (((unsupported)).apply (("WEEK(%s, 3)".mod (xfield_name))))
+                            ((xlookup_type).eq "iso_year").if
+                              (((unsupported)).apply (("TRUNCATE(YEARWEEK(%s, 3), -2) / 100".mod (xfield_name))))
+                              (((unsupported)).apply (("EXTRACT(%s FROM %s)".mod (((unsupported)).apply (((xlookup_type).xupper)) ((xfield_name))))))
+                xdate_trunc_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    memory > xformat_str
+                    memory > xfields
+                    seq > @
+                      (((unsupported)).apply)
+                        xfield_name.write ((((xself).x_convert_field_to_tz)).apply ((xfield_name)) ((xtzname)))
+                        xfields.write (((unsupported)).apply ("year") ("%%Y-01-01") ("month") ("%%Y-%%m-01"))
+                        (((unsupported)).apply ((xlookup_type)) ((xfields))).if
+                          seq
+                            xformat_str.write (((unsupported)).apply ((xfields)) ((xlookup_type)))
+                            (((unsupported)).apply (("CAST(DATE_FORMAT(%s, '%s') AS DATE)".mod (((unsupported)).apply ((xfield_name)) ((xformat_str))))))
+                          ((xlookup_type).eq "quarter").if
+                            (((unsupported)).apply (("MAKEDATE(YEAR(%s), 1) + INTERVAL QUARTER(%s) QUARTER - INTERVAL 1 QUARTER".mod (((unsupported)).apply ((xfield_name)) ((xfield_name))))))
+                            ((xlookup_type).eq "week").if
+                              (((unsupported)).apply (("DATE_SUB(%s, INTERVAL WEEKDAY(%s) DAY)".mod (((unsupported)).apply ((xfield_name)) ((xfield_name))))))
+                              (((unsupported)).apply (("DATE(%s)".mod (xfield_name))))
+                x_prepare_tzname_delta.write
+                  [xself xtzname]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xtzname)) ((xsign)) ((xoffset)))) ((((xsplit_tzname_delta)).apply ((xtzname)))))
+                        (((unsupported)).apply (((xoffset).if "{sign}{offset}" (xtzname))))
+                x_convert_field_to_tz.write
+                  [xself xfield_name xtzname]
+                    seq > @
+                      seq
+                        (((xtzname).and ((xsettings).xUSE_TZ)).and ((((xself).xconnection).xtimezone_name).neq (xtzname))).if
+                          xfield_name.write ("CONVERT_TZ(%s, '%s', '%s')".mod (((unsupported)).apply ((xfield_name)) ((((xself).xconnection).xtimezone_name)) (((((xself).x_prepare_tzname_delta)).apply ((xtzname))))))
+                        (((unsupported)).apply ((xfield_name)))
+                xdatetime_cast_date_sql.write
+                  [xself xfield_name xtzname]
+                    seq > @
+                      seq
+                        xfield_name.write ((((xself).x_convert_field_to_tz)).apply ((xfield_name)) ((xtzname)))
+                        (((unsupported)).apply (("DATE(%s)".mod (xfield_name))))
+                xdatetime_cast_time_sql.write
+                  [xself xfield_name xtzname]
+                    seq > @
+                      seq
+                        xfield_name.write ((((xself).x_convert_field_to_tz)).apply ((xfield_name)) ((xtzname)))
+                        (((unsupported)).apply (("TIME(%s)".mod (xfield_name))))
+                xdatetime_extract_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    seq > @
+                      seq
+                        xfield_name.write ((((xself).x_convert_field_to_tz)).apply ((xfield_name)) ((xtzname)))
+                        (((unsupported)).apply (((((xself).xdate_extract_sql)).apply ((xlookup_type)) ((xfield_name)))))
+                xdatetime_trunc_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    memory > xformat_def
+                    memory > xfields
+                    memory > xi
+                    memory > xformat_str
+                    memory > xsql
+                    memory > xformat
+                    seq > @
+                      seq
+                        xfield_name.write ((((xself).x_convert_field_to_tz)).apply ((xfield_name)) ((xtzname)))
+                        xfields.write (((unsupported)).apply ("year") ("month") ("day") ("hour") ("minute") ("second"))
+                        xformat.write (((unsupported)).apply ("%%Y-") ("%%m") ("-%%d") (" %%H:") ("%%i") (":%%s"))
+                        xformat_def.write (((unsupported)).apply ("0000-") ("01") ("-01") (" 00:") ("00") (":00"))
+                        ((xlookup_type).eq "quarter").if
+                          (((unsupported)).apply ((((unsupported)).apply ((("CAST(DATE_FORMAT(MAKEDATE(YEAR({field_name}), 1) + INTERVAL QUARTER({field_name}) QUARTER - ".add "INTERVAL 1 QUARTER, '%%Y-%%m-01 00:00:00') AS DATETIME)").xformat)) ((xfield_name)))))
+                        ((xlookup_type).eq "week").if
+                          (((unsupported)).apply ((((unsupported)).apply (("CAST(DATE_FORMAT(DATE_SUB({field_name}, INTERVAL WEEKDAY({field_name}) DAY), '%%Y-%%m-%%d 00:00:00') AS DATETIME)".xformat)) ((xfield_name)))))
+                        (((unsupported)).apply ((xValueError)))
+                          xi.write (((((xfields).xindex)).apply ((xlookup_type))).add 1)
+                          xsql.write (xfield_name)
+                          seq
+                            xformat_str.write ((("".xjoin)).apply (((((unsupported)).apply ((xformat)) ((((unsupported)).apply ((xi))))).add (((unsupported)).apply ((xformat_def)) ((((unsupported)).apply ((xi))))))))
+                            xsql.write ("CAST(DATE_FORMAT(%s, '%s') AS DATETIME)".mod (((unsupported)).apply ((xfield_name)) ((xformat_str))))
+                        (((unsupported)).apply ((xsql)))
+                xtime_trunc_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    memory > xformat_str
+                    memory > xfields
+                    seq > @
+                      (((unsupported)).apply)
+                        xfield_name.write ((((xself).x_convert_field_to_tz)).apply ((xfield_name)) ((xtzname)))
+                        xfields.write (((unsupported)).apply ("hour") ("%%H:00:00") ("minute") ("%%H:%%i:00") ("second") ("%%H:%%i:%%s"))
+                        (((unsupported)).apply ((xlookup_type)) ((xfields))).if
+                          seq
+                            xformat_str.write (((unsupported)).apply ((xfields)) ((xlookup_type)))
+                            (((unsupported)).apply (("CAST(DATE_FORMAT(%s, '%s') AS TIME)".mod (((unsupported)).apply ((xfield_name)) ((xformat_str))))))
+                          (((unsupported)).apply (("TIME(%s)".mod (xfield_name))))
+                xfetch_returned_insert_rows.write
+                  [xself xcursor]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xcursor).xfetchall)))
+                xformat_for_duration_arithmetic.write
+                  [xself xsql]
+                    seq > @
+                      (((unsupported)).apply (("INTERVAL %s MICROSECOND".mod (xsql))))
+                xforce_no_ordering.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ((((unsupported)).apply ("NULL") ((((unsupported)).apply)) (FALSE))))))))
+                xadapt_decimalfield_value.write
+                  [xself xvalue xmax_digits xdecimal_places]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xvalue)))
+                xlast_executed_query.write
+                  [xself xcursor xsql xparams]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xforce_str)) ((((xgetattr)).apply ((xcursor)) ("_executed") ("None: is there a None literal in the EO language?"))) ("replace"))))
+                xno_limit_value.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply)))
+                xquote_name.write
+                  [xself xname]
+                    seq > @
+                      seq
+                        (((((xname).xstartswith)).apply ("`")).and ((((xname).xendswith)).apply ("`"))).if
+                          (((unsupported)).apply ((xname)))
+                        (((unsupported)).apply (("`%s`".mod (xname))))
+                xreturn_insert_columns.write
+                  [xself xfields]
+                    memory > xcolumns
+                    seq > @
+                      seq
+                        ((xfields).not).if
+                          (((unsupported)).apply ((((unsupported)).apply (""))))
+                        xcolumns.write (((unsupported)).apply (("%s.%s".mod (((unsupported)).apply (((((xself).xquote_name)).apply (((((xfield).xmodel).x_meta).xdb_table)))) (((((xself).xquote_name)).apply (((xfield).xcolumn))))))) ((xfield)) ((xfields)))
+                        (((unsupported)).apply ((((unsupported)).apply (("RETURNING %s".mod (((", ".xjoin)).apply ((xcolumns))))))))
+                xsql_flush.write
+                  [xself xstyle xtables xreset_sequences xallow_cascade]
+                    memory > xsql
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xtables).not).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        xsql.write (((unsupported)).apply ("SET FOREIGN_KEY_CHECKS = 0;"))
+                        (xreset_sequences).if
+                          bogusForceDataize.write ((((xsql).xextend)).apply ((((unsupported)).apply (("%s %s;".mod (((unsupported)).apply (((((xstyle).xSQL_KEYWORD)).apply ("TRUNCATE"))) (((((xstyle).xSQL_FIELD)).apply (((((xself).xquote_name)).apply ((xtable_name))))))))) ((xtable_name)) ((xtables)))))
+                          bogusForceDataize.write ((((xsql).xextend)).apply ((((unsupported)).apply (("%s %s %s;".mod (((unsupported)).apply (((((xstyle).xSQL_KEYWORD)).apply ("DELETE"))) (((((xstyle).xSQL_KEYWORD)).apply ("FROM"))) (((((xstyle).xSQL_FIELD)).apply (((((xself).xquote_name)).apply ((xtable_name))))))))) ((xtable_name)) ((xtables)))))
+                        bogusForceDataize.write ((((xsql).xappend)).apply ("SET FOREIGN_KEY_CHECKS = 1;"))
+                        (((unsupported)).apply ((xsql)))
+                xsequence_reset_by_name_sql.write
+                  [xself xstyle xsequences]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (("%s %s %s %s = 1;".mod (((unsupported)).apply (((((xstyle).xSQL_KEYWORD)).apply ("ALTER"))) (((((xstyle).xSQL_KEYWORD)).apply ("TABLE"))) (((((xstyle).xSQL_FIELD)).apply (((((xself).xquote_name)).apply ((((unsupported)).apply ((xsequence_info)) ("table"))))))) (((((xstyle).xSQL_FIELD)).apply ("AUTO_INCREMENT")))))) ((xsequence_info)) ((xsequences)))))
+                xvalidate_autopk_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((xvalue).eq 0).and (((((xself).xconnection).xfeatures).xallows_auto_pk_0).not)).if
+                          (((unsupported)).apply ((((xValueError)).apply ("The database backend does not accept 0 as a value for AutoField."))))
+                        (((unsupported)).apply ((xvalue)))
+                xadapt_datetimefield_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((xhasattr)).apply ((xvalue)) ("resolve_expression")).if
+                          (((unsupported)).apply ((xvalue)))
+                        ((((xtimezone).xis_aware)).apply ((xvalue))).if
+                          ((xsettings).xUSE_TZ).if
+                            xvalue.write ((((xtimezone).xmake_naive)).apply ((xvalue)) ((((xself).xconnection).xtimezone)))
+                            (((unsupported)).apply ((((xValueError)).apply ("MySQL backend does not support timezone-aware datetimes when USE_TZ is False."))))
+                        (((unsupported)).apply ((((xstr)).apply ((xvalue)))))
+                xadapt_timefield_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((xhasattr)).apply ((xvalue)) ("resolve_expression")).if
+                          (((unsupported)).apply ((xvalue)))
+                        ((((xtimezone).xis_aware)).apply ((xvalue))).if
+                          (((unsupported)).apply ((((xValueError)).apply ("MySQL backend does not support timezone-aware times."))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xvalue).xisoformat)) ("microseconds"))))
+                xmax_name_length.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (64))
+                xpk_default_value.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("NULL"))
+                xbulk_insert_sql.write
+                  [xself xfields xplaceholder_rows]
+                    memory > xvalues_sql
+                    memory > xplaceholder_rows_sql
+                    seq > @
+                      seq
+                        xplaceholder_rows_sql.write (((unsupported)).apply ((((", ".xjoin)).apply ((xrow)))) ((xrow)) ((xplaceholder_rows)))
+                        xvalues_sql.write (((", ".xjoin)).apply ((((unsupported)).apply (("(%s)".mod (xsql))) ((xsql)) ((xplaceholder_rows_sql)))))
+                        (((unsupported)).apply (("VALUES ".add (xvalues_sql))))
+                xcombine_expression.write
+                  [xself xconnector xsub_expressions]
+                    seq > @
+                      seq
+                        ((xconnector).eq "^").if
+                          (((unsupported)).apply (("POW(%s)".mod (((",".xjoin)).apply ((xsub_expressions))))))
+                          (((unsupported)).apply ((xconnector)) ((((unsupported)).apply ("&") ("|") ("<<") ("#")))).if
+                            seq
+                              xconnector.write (((xconnector).eq "#").if "^" (xconnector))
+                              (((unsupported)).apply (("CONVERT(%s, SIGNED)".mod ((((xconnector).xjoin)).apply ((xsub_expressions))))))
+                            ((xconnector).eq ">>").if
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((xlhs)) ((xrhs)))) ((xsub_expressions)))
+                                (((unsupported)).apply (("FLOOR(%(lhs)s / POW(2, %(rhs)s))".mod (((unsupported)).apply ("lhs") ((xlhs)) ("rhs") ((xrhs))))))
+                        (((unsupported)).apply (((((xsuper).xcombine_expression)).apply ((xconnector)) ((xsub_expressions)))))
+                xget_db_converters.write
+                  [xself xexpression]
+                    memory > xconverters
+                    memory > xinternal_type
+                    seq > @
+                      seq
+                        xconverters.write ((((xsuper).xget_db_converters)).apply ((xexpression)))
+                        xinternal_type.write (((xexpression).xoutput_field).xget_internal_type)
+                        ((xinternal_type).eq "BooleanField").if
+                          bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_booleanfield_value)))
+                          ((xinternal_type).eq "DateTimeField").if
+                            ((xsettings).xUSE_TZ).if
+                              bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_datetimefield_value)))
+                            ((xinternal_type).eq "UUIDField").if
+                              bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_uuidfield_value)))
+                        (((unsupported)).apply ((xconverters)))
+                xconvert_booleanfield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ((((unsupported)).apply (0) (1)))).if
+                          xvalue.write (((xbool)).apply ((xvalue)))
+                        (((unsupported)).apply ((xvalue)))
+                xconvert_datetimefield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          xvalue.write ((((xtimezone).xmake_aware)).apply ((xvalue)) ((((xself).xconnection).xtimezone)))
+                        (((unsupported)).apply ((xvalue)))
+                xconvert_uuidfield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          xvalue.write ((((xuuid).xUUID)).apply ((xvalue)))
+                        (((unsupported)).apply ((xvalue)))
+                xbinary_placeholder_sql.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply ((((((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).and ((((xhasattr)).apply ((xvalue)) ("as_sql")).not)).if "_binary %s" "%s")))
+                xsubtract_temporals.write
+                  [xself xinternal_type xlhs xrhs]
+                    memory > xparams
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xlhs_sql)) ((xlhs_params)))) ((xlhs)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xrhs_sql)) ((xrhs_params)))) ((xrhs)))
+                        ((xinternal_type).eq "TimeField").if
+                          seq
+                            (((xself).xconnection).xmysql_is_mariadb).if
+                              (((unsupported)).apply ((((unsupported)).apply (("CAST((TIME_TO_SEC(%(lhs)s) - TIME_TO_SEC(%(rhs)s)) * 1000000 AS SIGNED)".mod (((unsupported)).apply ("lhs") ((xlhs_sql)) ("rhs") ((xrhs_sql))))) ((((unsupported)).apply ((((unsupported)).apply ((xlhs_params)))) ((((unsupported)).apply ((xrhs_params)))))))))
+                            (((unsupported)).apply ((((unsupported)).apply (("((TIME_TO_SEC(%(lhs)s) * 1000000 + MICROSECOND(%(lhs)s)) - (TIME_TO_SEC(%(rhs)s) * 1000000 + MICROSECOND(%(rhs)s)))".mod (((unsupported)).apply ("lhs") ((xlhs_sql)) ("rhs") ((xrhs_sql))))) ((((((xtuple)).apply ((xlhs_params))).mul 2).add ((((xtuple)).apply ((xrhs_params))).mul 2))))))
+                        xparams.write (((unsupported)).apply ((((unsupported)).apply ((xrhs_params)))) ((((unsupported)).apply ((xlhs_params)))))
+                        (((unsupported)).apply ((((unsupported)).apply (("TIMESTAMPDIFF(MICROSECOND, %s, %s)".mod (((unsupported)).apply ((xrhs_sql)) ((xlhs_sql))))) ((xparams)))))
+                xexplain_query_prefix.write
+                  [xself xformat]
+                    memory > xprefix
+                    memory > xanalyze
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xformat).and (((xformat).xupper).eq "TEXT")).if
+                          xformat.write "TRADITIONAL"
+                          (((xformat).not).and (((unsupported)).apply ("TREE") (((((xself).xconnection).xfeatures).xsupported_explain_formats)))).if
+                            xformat.write "TREE"
+                        xanalyze.write ((((xoptions).xpop)).apply ("analyze") (FALSE))
+                        xprefix.write ((((xsuper).xexplain_query_prefix)).apply ((xformat)) ((((unsupported)).apply ((xoptions)))))
+                        ((xanalyze).and ((((xself).xconnection).xfeatures).xsupports_explain_analyze)).if
+                          xprefix.write ((((xself).xconnection).xmysql_is_mariadb).if "ANALYZE" ((xprefix).add " ANALYZE"))
+                        ((xformat).and (((xanalyze).and ((((xself).xconnection).xmysql_is_mariadb).not)).not)).if
+                          (((unsupported)).apply ((xprefix)) ((" FORMAT=%s".mod (xformat))))
+                        (((unsupported)).apply ((xprefix)))
+                xregex_lookup.write
+                  [xself xlookup_type]
+                    memory > xmatch_option
+                    seq > @
+                      seq
+                        (((((xself).xconnection).xmysql_version).less (((unsupported)).apply (8) (0) (0))).or (((xself).xconnection).xmysql_is_mariadb)).if
+                          seq
+                            ((xlookup_type).eq "regex").if
+                              (((unsupported)).apply ("%s REGEXP BINARY %s"))
+                            (((unsupported)).apply ("%s REGEXP %s"))
+                        xmatch_option.write (((xlookup_type).eq "regex").if "c" "i")
+                        (((unsupported)).apply (("REGEXP_LIKE(%%s, %%s, '%s')".mod (xmatch_option))))
+                xinsert_statement.write
+                  [xself xon_conflict]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xon_conflict).eq ((xOnConflict).xIGNORE)).if
+                          (((unsupported)).apply ("INSERT IGNORE INTO"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xsuper).xinsert_statement)) ((xon_conflict)))))
+                xlookup_cast.write
+                  [xself xlookup_type xinternal_type]
+                    memory > xlookup
+                    seq > @
+                      (((unsupported)).apply)
+                        xlookup.write "%s"
+                        ((xinternal_type).eq "JSONField").if
+                          ((((xself).xconnection).xmysql_is_mariadb).or (((unsupported)).apply ((xlookup_type)) ((((unsupported)).apply ("iexact") ("contains") ("icontains") ("startswith") ("istartswith") ("endswith") ("iendswith") ("regex") ("iregex"))))).if
+                            xlookup.write "JSON_UNQUOTE(%s)"
+                        (((unsupported)).apply ((xlookup)))
+                xconditional_expression_supported_in_where_clause.write
+                  [xself xexpression]
+                    seq > @
+                      seq
+                        (((xisinstance)).apply ((xexpression)) ((((unsupported)).apply ((xExists)) ((xLookup))))).if
+                          (((unsupported)).apply (TRUE))
+                        ((((xisinstance)).apply ((xexpression)) ((xExpressionWrapper))).and ((xexpression).xconditional)).if
+                          (((unsupported)).apply (((((xself).xconditional_expression_supported_in_where_clause)).apply (((xexpression).xexpression)))))
+                        (((xgetattr)).apply ((xexpression)) ("conditional") (FALSE)).if
+                          (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply (((((xsuper).xconditional_expression_supported_in_where_clause)).apply ((xexpression)))))
+                xon_conflict_suffix_sql.write
+                  [xself xfields xon_conflict xupdate_fields xunique_fields]
+                    memory > xconflict_suffix_sql
+                    memory > xfield_sql
+                    seq > @
+                      seq
+                        ((xon_conflict).eq ((xOnConflict).xUPDATE)).if
+                          seq
+                            xconflict_suffix_sql.write "ON DUPLICATE KEY UPDATE %(fields)s"
+                            xfield_sql.write "%(field)s = VALUES(%(field)s)"
+                            ((((xself).xconnection).xmysql_is_mariadb).not).if
+                              ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (19))).if
+                                seq
+                                  xconflict_suffix_sql.write "AS new {conflict_suffix_sql}"
+                                  xfield_sql.write "%(field)s = new.%(field)s"
+                              ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (10) (3) (3))).if
+                                xfield_sql.write "%(field)s = VALUE(%(field)s)"
+                            xfields.write (((", ".xjoin)).apply ((((unsupported)).apply (((xfield_sql).mod (((unsupported)).apply ("field") ((xfield))))) ((xfield)) ((((xmap)).apply (((xself).xquote_name)) ((xupdate_fields)))))))
+                            (((unsupported)).apply (((xconflict_suffix_sql).mod (((unsupported)).apply ("fields") ((xfields))))))
+                        (((unsupported)).apply (((((xsuper).xon_conflict_suffix_sql)).apply ((xfields)) ((xon_conflict)) ((xupdate_fields)) ((xunique_fields)))))

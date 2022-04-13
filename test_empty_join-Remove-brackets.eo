@@ -1,0 +1,54 @@
+memory > xlist
+memory > xValueError
+memory > xTestCase
+memory > xSlugPage
+memory > xp
+memory > xslug
+[] > test_empty_join
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_empty_join_conditions
+        memory > xtest_restrictions_with_no_joining_columns
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    memory > xslugs
+                    seq > @
+                      (((unsupported)).apply)
+                        xslugs.write (((unsupported)).apply ("a") ("a/a") ("a/b") ("a/b/a") ("x") ("x/y/z"))
+                        bogusForceDataize.write (((((xSlugPage).xobjects).xbulk_create)).apply ((((unsupported)).apply ((((unsupported)).apply ((xSlugPage)) ((xslug)))) ((xslug)) ((xslugs)))))
+                xtest_restrictions_with_no_joining_columns.write
+                  [xself]
+                    memory > xaba
+                    memory > xa
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xa.write (((unsupported)).apply ((((xSlugPage).xobjects).xget)) ("a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xp).xslug)) ((xp)) ((((unsupported)).apply ((((xSlugPage).xobjects).xfilter)) ((xa)))))) ((((unsupported)).apply ("a") ("a/a") ("a/b") ("a/b/a"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xp).xslug)) ((xp)) ((((xa).xdescendants).xall)))) ((((unsupported)).apply ("a") ("a/a") ("a/b") ("a/b/a"))))
+                        xaba.write (((unsupported)).apply ((((xSlugPage).xobjects).xget)) ("a/b/a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xp).xslug)) ((xp)) ((((unsupported)).apply ((((xSlugPage).xobjects).xfilter)) ((((unsupported)).apply ((xaba)))))))) ((((unsupported)).apply ("a") ("a/b") ("a/b/a"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xp).xslug)) ((xp)) ((((xaba).xascendants).xall)))) ((((unsupported)).apply ("a") ("a/b") ("a/b/a"))))
+                xtest_empty_join_conditions.write
+                  [xself]
+                    memory > xx
+                    memory > xmessage
+                    seq > @
+                      seq
+                        xx.write (((unsupported)).apply ((((xSlugPage).xobjects).xget)) ("x"))
+                        xmessage.write "Join generated an empty ON clause."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmessage)))))
+                          bogusForceDataize.write (((xlist)).apply ((((unsupported)).apply ((((xSlugPage).xobjects).xfilter)) ((xx)))))

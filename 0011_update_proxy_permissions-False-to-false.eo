@@ -1,0 +1,89 @@
+memory > xfalse
+memory > xQ
+memory > xcodename
+memory > xsys
+memory > xaction
+memory > xname
+memory > xtransaction
+memory > xmigrations
+memory > xcolor_style
+memory > xIntegrityError
+memory > xModel
+[] > 0011_update_proxy_permissions
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xoperations
+        memory > xrevert_proxy_model_permissions
+        memory > xWARNING
+        memory > xupdate_proxy_model_permissions
+        memory > xdependencies
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xWARNING.write (((unsupported)).apply)
+            xupdate_proxy_model_permissions.write
+              [xapps xschema_editor xreverse]
+                memory > xstyle
+                memory > xconcrete_content_type
+                memory > xopts
+                memory > xalias
+                memory > xnew_content_type
+                memory > xPermission
+                memory > xproxy_default_permissions_codenames
+                memory > xold_content_type
+                memory > xContentType
+                memory > xcontent_type_manager
+                memory > xpermissions_query
+                memory > xproxy_content_type
+                memory > xnew
+                memory > xold
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xstyle.write (((xcolor_style)).apply)
+                    xPermission.write ((((xapps).xget_model)).apply ("auth") ("Permission"))
+                    xContentType.write ((((xapps).xget_model)).apply ("contenttypes") ("ContentType"))
+                    xalias.write (((xschema_editor).xconnection).xalias)
+                    (((unsupported)).apply ((xModel)) (((((xapps).xget_models)).apply)))
+                      seq
+                        xopts.write ((xModel).x_meta)
+                        (((xopts).xproxy).not).if
+                          (((unsupported)).apply)
+                        xproxy_default_permissions_codenames.write (((unsupported)).apply (("%s_%s".mod (((unsupported)).apply ((xaction)) (((xopts).xmodel_name))))) ((xaction)) (((xopts).xdefault_permissions)))
+                        xpermissions_query.write (((unsupported)).apply ((xQ)) ((xproxy_default_permissions_codenames)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xcodename)) ((xname)))) (((xopts).xpermissions)))
+                          xpermissions_query.write ((xpermissions_query).or (((unsupported)).apply ((xQ)) ((xcodename)) ((xname))))
+                        xcontent_type_manager.write (((((xContentType).xobjects).xdb_manager)).apply ((xalias)))
+                        xconcrete_content_type.write (((unsupported)).apply (((xcontent_type_manager).xget_for_model)) ((xModel)) (TRUE))
+                        xproxy_content_type.write (((unsupported)).apply (((xcontent_type_manager).xget_for_model)) ((xModel)) ((xfalse)))
+                        xold_content_type.write ((xreverse).if (xproxy_content_type) (xconcrete_content_type))
+                        xnew_content_type.write ((xreverse).if (xconcrete_content_type) (xproxy_content_type))
+                        (((unsupported)).apply ((xIntegrityError)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xtransaction).xatomic)) ((xalias)))))
+                            (((unsupported)).apply (((((unsupported)).apply (((((((xPermission).xobjects).xusing)).apply ((xalias))).xfilter)) ((xpermissions_query)) ((xold_content_type))).xupdate)) ((xnew_content_type)))
+                          seq
+                            xold.write ((("{}_{}".xformat)).apply (((xold_content_type).xapp_label)) (((xold_content_type).xmodel)))
+                            xnew.write ((("{}_{}".xformat)).apply (((xnew_content_type).xapp_label)) (((xnew_content_type).xmodel)))
+                            bogusForceDataize.write (((((xsys).xstdout).xwrite)).apply (((((xstyle).xWARNING)).apply ((((unsupported)).apply (((xWARNING).xformat)) ((xold)) ((xnew)) ((xpermissions_query)))))))
+            xrevert_proxy_model_permissions.write
+              [xapps xschema_editor]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xupdate_proxy_model_permissions)) ((xapps)) ((xschema_editor)) (TRUE))
+            (((unsupported)).apply (((xmigrations).xMigration)))
+              seq
+                xdependencies.write (((unsupported)).apply ((((unsupported)).apply ("auth") ("0010_alter_group_name_max_length"))) ((((unsupported)).apply ("contenttypes") ("0002_remove_content_type_name"))))
+                xoperations.write (((unsupported)).apply (((((xmigrations).xRunPython)).apply ((xupdate_proxy_model_permissions)) ((xrevert_proxy_model_permissions)))))

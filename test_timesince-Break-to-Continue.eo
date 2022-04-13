@@ -1,0 +1,188 @@
+memory > xdatetime
+memory > xtimedelta
+memory > xtimesince_filter
+memory > xTimezoneTestCase
+memory > xSimpleTestCase
+[] > test_timesince
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_timesince01
+        memory > xtest_no_args
+        memory > xtest_timesince12
+        memory > xtest_timesince05
+        memory > xtest_timesince08
+        memory > xtest_timesince07
+        memory > xtest_since_now
+        memory > xtest_timesince04
+        memory > xtest_timesince15
+        memory > xtest_timesince17
+        memory > xtest_timesince14
+        memory > xtest_timesince03
+        memory > xtest_timesince02
+        memory > xtest_timesince13
+        memory > xtest_timesince09
+        memory > xtest_timesince16
+        memory > xtest_timesince11
+        memory > xtest_timesince18
+        memory > xtest_explicit_date
+        memory > xtest_timesince10
+        memory > xtest_timesince06
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTimezoneTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_timesince01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince01") ((((unsupported)).apply ("a") ((((((xdatetime).xnow)).apply).add (((unsupported)).apply ((xtimedelta)) ((1.neg)) ((10.neg))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0minute"))
+                xtest_timesince02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince02") ((((unsupported)).apply ("a") ((((((xdatetime).xnow)).apply).sub (((unsupported)).apply ((xtimedelta)) (1) (1)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0day"))
+                xtest_timesince03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince03") ((((unsupported)).apply ("a") ((((((xdatetime).xnow)).apply).sub (((unsupported)).apply ((xtimedelta)) (1) (25) (10)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0hour, 25xa0minutes"))
+                xtest_timesince04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince04") ((((unsupported)).apply ("a") ((((xself).xnow).sub (((unsupported)).apply ((xtimedelta)) (2)))) ("b") ((((xself).xnow).sub (((unsupported)).apply ((xtimedelta)) (1)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0day"))
+                xtest_timesince05.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince05") ((((unsupported)).apply ("a") ((((xself).xnow).sub (((unsupported)).apply ((xtimedelta)) (2) (1)))) ("b") ((((xself).xnow).sub (((unsupported)).apply ((xtimedelta)) (2)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0minute"))
+                xtest_timesince06.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince06") ((((unsupported)).apply ("a") ((((xself).xnow_tz).sub (((unsupported)).apply ((xtimedelta)) (8)))) ("b") (((xself).xnow_tz)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("8xa0hours"))
+                xtest_timesince07.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince07") ((((unsupported)).apply ("earlier") ((((xself).xnow).sub (((unsupported)).apply ((xtimedelta)) (7)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0week"))
+                xtest_timesince08.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince08") ((((unsupported)).apply ("now") (((xself).xnow)) ("earlier") ((((xself).xnow).sub (((unsupported)).apply ((xtimedelta)) (7)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0week"))
+                xtest_timesince09.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince09") ((((unsupported)).apply ("later") ((((xself).xnow).add (((unsupported)).apply ((xtimedelta)) (7)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("0xa0minutes"))
+                xtest_timesince10.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince10") ((((unsupported)).apply ("now") (((xself).xnow)) ("later") ((((xself).xnow).add (((unsupported)).apply ((xtimedelta)) (7)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("0xa0minutes"))
+                xtest_timesince11.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince11") ((((unsupported)).apply ("a") (((xself).xnow)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("0xa0minutes"))
+                xtest_timesince12.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince12") ((((unsupported)).apply ("a") (((xself).xnow_tz)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("0xa0minutes"))
+                xtest_timesince13.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince13") ((((unsupported)).apply ("a") (((xself).xnow_tz_i)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("0xa0minutes"))
+                xtest_timesince14.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince14") ((((unsupported)).apply ("a") (((xself).xnow_tz)) ("b") (((xself).xnow_tz_i)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("0xa0minutes"))
+                xtest_timesince15.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince15") ((((unsupported)).apply ("a") (((xself).xnow)) ("b") (((xself).xnow_tz_i)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))
+                xtest_timesince16.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince16") ((((unsupported)).apply ("a") (((xself).xnow_tz_i)) ("b") (((xself).xnow)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))
+                xtest_timesince17.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince17") ((((unsupported)).apply ("a") (((xself).xtoday)) ("b") (((xself).xtoday)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("0xa0minutes"))
+                xtest_timesince18.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("timesince18") ((((unsupported)).apply ("a") (((xself).xtoday)) ("b") ((((xself).xtoday).add (((unsupported)).apply ((xtimedelta)) (24)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1xa0day"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_since_now.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtimesince_filter)).apply ((((((xdatetime).xnow)).apply).sub (((xtimedelta)).apply (1)))))) ("1xa0day"))
+                xtest_no_args.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtimesince_filter)).apply ("None: is there a None literal in the EO language?"))) (""))
+                xtest_explicit_date.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtimesince_filter)).apply ((((xdatetime)).apply (2005) (12) (29))) ((((xdatetime)).apply (2005) (12) (30))))) ("1xa0day"))

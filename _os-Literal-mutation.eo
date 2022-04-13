@@ -1,0 +1,81 @@
+memory > xjoin
+memory > xstr
+memory > xNotImplementedError
+memory > xtempfile
+memory > xpaths
+memory > xSuspiciousFileOperation
+memory > xnormcase
+memory > xsep
+memory > xisinstance
+memory > xTypeError
+memory > xtemp_dir
+memory > xPath
+memory > xabspath
+memory > xtype
+memory > xOSError
+memory > xos
+memory > xdirname
+[] > _os
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsafe_join
+        memory > xsymlinks_supported
+        memory > xto_path
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xsafe_join.write
+              [xbase]
+                memory > xbase_path
+                memory > xfinal_path
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xfinal_path.write (((xabspath)).apply ((((xjoin)).apply ((xbase)) ((((unsupported)).apply ((xpaths)))))))
+                    xbase_path.write (((xabspath)).apply ((xbase)))
+                    (((((((((xnormcase)).apply ((xfinal_path))).xstartswith)).apply ((((xnormcase)).apply (((xbase_path).add (xsep)))))).not).and ((((xnormcase)).apply ((xfinal_path))).neq (((xnormcase)).apply ((xbase_path))))).and ((((xdirname)).apply ((((xnormcase)).apply ((xbase_path))))).neq (((xnormcase)).apply ((xbase_path))))).if
+                      (((unsupported)).apply ((((xSuspiciousFileOperation)).apply (((("The joined path ({}) is located outside of the base path component ({})".xformat)).apply ((xfinal_path)) ((xbase_path)))))))
+                    (((unsupported)).apply ((xfinal_path)))
+            xsymlinks_supported.write
+              []
+                memory > xsupported
+                memory > xsymlink_path
+                memory > xoriginal_path
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((((xtempfile).xTemporaryDirectory)).apply)) ((xtemp_dir)))
+                      seq
+                        xoriginal_path.write (((((xos).xpath).xjoin)).apply ((xtemp_dir)) ("original"))
+                        xsymlink_path.write (((((xos).xpath).xjoin)).apply ((xtemp_dir)) ("symlink"))
+                        bogusForceDataize.write ((((xos).xmakedirs)).apply ((xoriginal_path)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xOSError)) ((xNotImplementedError)))))
+                          seq
+                            bogusForceDataize.write ((((xos).xsymlink)).apply ((xoriginal_path)) ((xsymlink_path)))
+                            xsupported.write TRUE
+                          xsupported.write FALSE
+                        (((unsupported)).apply ((xsupported)))
+            xto_path.write
+              [xvalue]
+                seq > @
+                  seq
+                    unsupported
+                    (((xisinstance)).apply ((xvalue)) ((xPath))).if
+                      (((unsupported)).apply ((xvalue)))
+                      ((((xisinstance)).apply ((xvalue)) ((xstr))).not).if
+                        (((unsupported)).apply ((((xTypeError)).apply (("Invalid path type: %s".mod ((((xtype)).apply ((xvalue))).x__name__))))))
+                    (((unsupported)).apply ((((xPath)).apply ((xvalue)))))

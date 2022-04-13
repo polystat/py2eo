@@ -1,0 +1,149 @@
+memory > xstring_at
+memory > xc_void_p
+memory > xint
+memory > xGDALException
+memory > xSRSException
+memory > xlgdal
+memory > xisinstance
+memory > xcheck_err
+[] > errcheck
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck_srs
+        memory > xcheck_errcode
+        memory > xcheck_const_string
+        memory > xcheck_pointer
+        memory > xarg_byref
+        memory > xcheck_arg_errcode
+        memory > xcheck_geom_offset
+        memory > xptr_byref
+        memory > xcheck_geom
+        memory > xcheck_str_arg
+        memory > xcheck_string
+        memory > xcheck_envelope
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xarg_byref.write
+              [xargs xoffset]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((((((unsupported)).apply ((xargs)) ((xoffset))).x_obj).xvalue)))
+            xptr_byref.write
+              [xargs xoffset]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((((unsupported)).apply ((xargs)) ((xoffset))).x_obj)))
+            xcheck_const_string.write
+              [xresult xfunc xcargs xoffset xcpl]
+                memory > xptr
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (xoffset).if
+                      seq
+                        (((unsupported)).apply ((xcheck_err)) ((xresult)) ((xcpl)))
+                        xptr.write (((xptr_byref)).apply ((xoffset)) ((xcargs)))
+                        (((unsupported)).apply (((xptr).xvalue)))
+                      (((unsupported)).apply ((xresult)))
+            xcheck_string.write
+              [xresult xfunc xcargs xoffset xstr_result]
+                memory > xptr
+                memory > xs
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (xstr_result).if
+                      seq
+                        xptr.write (xresult)
+                        ((xptr).not).if
+                          xs.write "None: is there a None literal in the EO language?"
+                          xs.write (((xstring_at)).apply ((xresult)))
+                      seq
+                        bogusForceDataize.write (((xcheck_err)).apply ((xresult)))
+                        xptr.write (((xptr_byref)).apply ((xcargs)) ((xoffset)))
+                        xs.write ((xptr).xvalue)
+                    (xptr).if
+                      bogusForceDataize.write ((((xlgdal).xVSIFree)).apply ((xptr)))
+                    (((unsupported)).apply ((xs)))
+            xcheck_envelope.write
+              [xresult xfunc xcargs xoffset]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((((xptr_byref)).apply ((xcargs)) ((xoffset)))))
+            xcheck_geom.write
+              [xresult xfunc xcargs]
+                seq > @
+                  seq
+                    unsupported
+                    (((xisinstance)).apply ((xresult)) ((xint))).if
+                      xresult.write (((xc_void_p)).apply ((xresult)))
+                    ((xresult).not).if
+                      (((unsupported)).apply ((((xGDALException)).apply (("Invalid geometry pointer returned from \"%s\".".mod ((xfunc).x__name__))))))
+                    (((unsupported)).apply ((xresult)))
+            xcheck_geom_offset.write
+              [xresult xfunc xcargs xoffset]
+                memory > xgeom
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    bogusForceDataize.write (((xcheck_err)).apply ((xresult)))
+                    xgeom.write (((unsupported)).apply ((xptr_byref)) ((xcargs)) ((xoffset)))
+                    (((unsupported)).apply ((((xcheck_geom)).apply ((xgeom)) ((xfunc)) ((xcargs)))))
+            xcheck_srs.write
+              [xresult xfunc xcargs]
+                seq > @
+                  seq
+                    (((xisinstance)).apply ((xresult)) ((xint))).if
+                      xresult.write (((xc_void_p)).apply ((xresult)))
+                    ((xresult).not).if
+                      (((unsupported)).apply ((((xSRSException)).apply (("Invalid spatial reference pointer returned from \"%s\".".mod ((xfunc).x__name__))))))
+                    (((unsupported)).apply ((xresult)))
+            xcheck_arg_errcode.write
+              [xresult xfunc xcargs xcpl]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xcheck_err)) ((((xarg_byref)).apply ((xcargs)))) ((xcpl)))
+                    (((unsupported)).apply ((xresult)))
+            xcheck_errcode.write
+              [xresult xfunc xcargs xcpl]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xcheck_err)) ((xresult)) ((xcpl)))
+            xcheck_pointer.write
+              [xresult xfunc xcargs]
+                seq > @
+                  seq
+                    unsupported
+                    (((xisinstance)).apply ((xresult)) ((xint))).if
+                      xresult.write (((xc_void_p)).apply ((xresult)))
+                    (xresult).if
+                      (((unsupported)).apply ((xresult)))
+                      (((unsupported)).apply ((((xGDALException)).apply (("Invalid pointer returned from \"%s\"".mod ((xfunc).x__name__))))))
+            xcheck_str_arg.write
+              [xresult xfunc xcargs]
+                memory > xptr
+                memory > xdbl
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xdbl.write (xresult)
+                    xptr.write ((((unsupported)).apply ((xcargs)) ((1.neg))).x_obj)
+                    (((unsupported)).apply ((((unsupported)).apply ((xdbl)) ((((((xptr).xvalue).xdecode)).apply)))))

@@ -1,0 +1,64 @@
+memory > xlinenumbers
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_linenumbers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_linenumbers01
+        memory > xtest_non_string_input
+        memory > xtest_linenumbers02
+        memory > xtest_linenumbers
+        memory > xtest_linenumbers2
+        memory > xtest_autoescape_off
+        memory > xtest_autoescape
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_linenumbers01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("linenumbers01") ((((unsupported)).apply ("a") ("onen<two>nthree") ("b") ((((xmark_safe)).apply ("onen&lt;two&gt;nthree"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1. onen2. &lt;two&gt;n3. three 1. onen2. &lt;two&gt;n3. three"))
+                xtest_linenumbers02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("linenumbers02") ((((unsupported)).apply ("a") ("onen<two>nthree") ("b") ((((xmark_safe)).apply ("onen&lt;two&gt;nthree"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1. onen2. <two>n3. three 1. onen2. &lt;two&gt;n3. three"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_linenumbers.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinenumbers)).apply ("line 1nline 2"))) ("1. line 1n2. line 2"))
+                xtest_linenumbers2.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinenumbers)).apply (((("n".xjoin)).apply (((((unsupported)).apply ("x")).mul 10)))))) ("01. xn02. xn03. xn04. xn05. xn06. xn07. xn08. xn09. xn10. x"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinenumbers)).apply (123))) ("1. 123"))
+                xtest_autoescape.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinenumbers)).apply ("foon<a>bar</a>nbuz"))) ("1. foon2. &lt;a&gt;bar&lt;/a&gt;n3. buz"))
+                xtest_autoescape_off.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xlinenumbers)) ("foon<a>bar</a>nbuz") (FALSE))) ("1. foon2. <a>bar</a>n3. buz"))

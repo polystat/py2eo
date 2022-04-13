@@ -1,0 +1,109 @@
+memory > xCity
+memory > xstr
+memory > xconnection
+memory > xIndex
+memory > xeditor
+memory > xconstraint
+memory > xname
+memory > xSchemaCity
+memory > xcursor
+memory > xTransactionTestCase
+[] > test_indexes
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_using_sql
+        memory > xtest_index_name
+        memory > xget_indexes
+        memory > xtest_namespaced_db_table
+        memory > xhas_spatial_indexes
+        memory > xmodels
+        memory > xavailable_apps
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply)
+                xmodels.write (((unsupported)).apply ((xCity)))
+                xget_indexes.write
+                  [xself xtable]
+                    memory > xconstraints
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                        seq
+                          xconstraints.write (((((xconnection).xintrospection).xget_constraints)).apply ((xtable)) ((xcursor)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xname)) ((((unsupported)).apply ((xconstraint)) ("columns"))) ((((unsupported)).apply ((xname)) ((xconstraint)))) (((((xconstraints).xitems)).apply)) ((((unsupported)).apply ((xconstraint)) ("index"))))))
+                xhas_spatial_indexes.write
+                  [xself xtable]
+                    seq > @
+                      seq
+                        (((xconnection).xops).xmysql).if
+                          (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                            (((unsupported)).apply ((((((xconnection).xintrospection).xsupports_spatial_index)).apply ((xcursor)) ((xtable)))))
+                          (((xconnection).xops).xoracle).if
+                            (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply (TRUE))
+                xtest_using_sql.write
+                  [xself]
+                    memory > xindex
+                    memory > xeditor
+                    seq > @
+                      seq
+                        ((((xconnection).xops).xpostgis).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("This is a PostGIS-specific test."))
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((unsupported)).apply ("point"))))
+                        xeditor.write ((((xconnection).xschema_editor)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("%s USING ".mod ((((xeditor).xquote_name)).apply ((((xCity).x_meta).xdb_table))))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xCity)) ((xeditor)))))))
+                xtest_namespaced_db_table.write
+                  [xself]
+                    memory > xdb_table
+                    memory > xindex
+                    memory > xpoint
+                    memory > xapp_label
+                    memory > xcreate_index_sql
+                    memory > xeditor
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xconnection).xops).xpostgis).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("PostGIS-specific test."))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xpoint.write ((((xmodels).xPointField)).apply)
+                            (((unsupported)).apply)
+                              seq
+                                xapp_label.write "geoapp"
+                                xdb_table.write "django_schema\".\"geoapp_schema_city"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((unsupported)).apply ("point"))))
+                        xeditor.write ((((xconnection).xschema_editor)).apply)
+                        xcreate_index_sql.write (((xstr)).apply (((((xindex).xcreate_sql)).apply ((xSchemaCity)) ((xeditor)))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("%s USING ".mod ((((xeditor).xquote_name)).apply ((((xSchemaCity).x_meta).xdb_table))))) ((xcreate_index_sql)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("CREATE INDEX \"geoapp_schema_city_point_9ed70651_id\" ") ((xcreate_index_sql)))
+                xtest_index_name.write
+                  [xself]
+                    memory > xindex_name
+                    memory > xindex
+                    memory > xindexes
+                    seq > @
+                      seq
+                        (((((xself).xhas_spatial_indexes)).apply ((((xCity).x_meta).xdb_table))).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("Spatial indexes in Meta.indexes are not supported."))
+                        xindex_name.write "custom_point_index_name"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((unsupported)).apply ("point"))) ((xindex_name)))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xCity)) ((xindex)))
+                            xindexes.write ((((xself).xget_indexes)).apply ((((xCity).x_meta).xdb_table)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ((xindex_name)) ((xindexes)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xindexes)) ((xindex_name)))) ((((unsupported)).apply ("point"))))
+                            bogusForceDataize.write ((((xeditor).xremove_index)).apply ((xCity)) ((xindex)))

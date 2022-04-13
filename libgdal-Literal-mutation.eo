@@ -1,0 +1,135 @@
+memory > xlib_name
+memory > xWinDLL
+memory > xsubminor
+memory > xminor
+memory > xc_int
+memory > xc_char_p
+memory > xGDALException
+memory > xCDLL
+memory > xfind_library
+memory > xImportError
+memory > xAttributeError
+memory > xsettings
+memory > xint
+memory > xre
+memory > xOSError
+memory > xos
+memory > xCFUNCTYPE
+memory > xImproperlyConfigured
+memory > xmajor
+memory > xlogging
+[] > libgdal
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xlogger
+        memory > xGDAL_VERSION
+        memory > xstd_call
+        memory > xCPLErrorHandler
+        memory > x_version_info
+        memory > xlib_path
+        memory > xgdal_version_info
+        memory > xlib_names
+        memory > xfunction
+        memory > xlgdal
+        memory > xgdal_full_version
+        memory > xerr_handler
+        memory > xset_error_handler
+        memory > xgdal_version
+        memory > xlwingdal
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xlogger.write ((((xlogging).xgetLogger)).apply ("django.contrib.gis"))
+            (((unsupported)).apply ((((unsupported)).apply ((xAttributeError)) ((xImportError)) ((xImproperlyConfigured)) ((xOSError)))))
+              seq
+                (((unsupported)).apply)
+                xlib_path.write ((xsettings).xGDAL_LIBRARY_PATH)
+              xlib_path.write "None: is there a None literal in the EO language?"
+            (xlib_path).if
+              xlib_names.write "None: is there a None literal in the EO language?"
+              (((xos).xname).eq "nt").if
+                xlib_names.write (((unsupported)).apply ("gdal304") ("gdal303") ("gdal302") ("gdal301") ("gdal300") ("gdal204") ("gdal203") ("gdal202"))
+                (((xos).xname).eq "posix").if
+                  xlib_names.write (((unsupported)).apply ("gdal") ("GDAL") ("gdal3.4.0") ("gdal3.3.0") ("gdal3.2.0") ("gdal3.1.0") ("gdal3.0.0") ("gdal2.4.0") ("gdal2.3.0") ("gdal2.2.0"))
+                  (((unsupported)).apply ((((xImproperlyConfigured)).apply (("GDAL is unsupported on OS \"%s\".".mod ((xos).xname))))))
+            (xlib_names).if
+              (((unsupported)).apply ((xlib_name)) ((xlib_names)))
+                seq
+                  xlib_path.write (((xfind_library)).apply ((xlib_name)))
+                  (((unsupported)).apply ((xlib_path)) ("None: is there a None literal in the EO language?")).if
+                    (((unsupported)).apply)
+            (((unsupported)).apply ((xlib_path)) ("None: is there a None literal in the EO language?")).if
+              (((unsupported)).apply ((((xImproperlyConfigured)).apply (("Could not find the GDAL library (tried \"%s\"). Is GDAL installed? If it is, try setting GDAL_LIBRARY_PATH in your settings.".mod ((("\", \"".xjoin)).apply ((xlib_names))))))))
+            xlgdal.write (((xCDLL)).apply ((xlib_path)))
+            (((xos).xname).eq "nt").if
+              seq
+                (((unsupported)).apply)
+                xlwingdal.write (((xWinDLL)).apply ((xlib_path)))
+            xstd_call.write
+              [xfunc]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xos).xname).eq "nt").if
+                      (((unsupported)).apply ((((unsupported)).apply ((xlwingdal)) ((xfunc)))))
+                      (((unsupported)).apply ((((unsupported)).apply ((xlgdal)) ((xfunc)))))
+            x_version_info.write (((xstd_call)).apply ("GDALVersionInfo"))
+            (((unsupported)).apply (((x_version_info).xargtypes)) ((((unsupported)).apply ((xc_char_p)))))
+            (((unsupported)).apply (((x_version_info).xrestype)) ((xc_char_p)))
+            xgdal_version.write
+              []
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((x_version_info)).apply ("RELEASE_NAME"))))
+            xgdal_full_version.write
+              []
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((x_version_info)).apply (""))))
+            xgdal_version_info.write
+              []
+                memory > xver
+                memory > xm
+                seq > @
+                  seq
+                    xver.write (((xgdal_version)).apply)
+                    xm.write ((((xre).xmatch)).apply ("^(?P<major>d+).(?P<minor>d+)(?:.(?P<subminor>d+))?") ((xver)))
+                    ((xm).not).if
+                      (((unsupported)).apply ((((xGDALException)).apply (("Could not parse GDAL version string \"%s\"".mod (xver))))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xmajor)) ((xminor)) ((xsubminor)))) (((((xm).xgroups)).apply)))
+                    (((unsupported)).apply ((((unsupported)).apply ((((xint)).apply ((xmajor)))) ((((xint)).apply ((xminor)))) (((xsubminor).and (((xint)).apply ((xsubminor))))))))
+            xGDAL_VERSION.write (((xgdal_version_info)).apply)
+            xCPLErrorHandler.write (((xCFUNCTYPE)).apply ("None: is there a None literal in the EO language?") ((xc_int)) ((xc_int)) ((xc_char_p)))
+            xerr_handler.write
+              [xerror_class xerror_number xmessage]
+                seq > @
+                  bogusForceDataize.write ((((xlogger).xerror)).apply ("GDAL_ERROR %d: %s") ((xerror_number)) ((xmessage)))
+            xerr_handler.write (((xCPLErrorHandler)).apply ((xerr_handler)))
+            xfunction.write
+              [xname xargs xrestype]
+                memory > xfunc
+                seq > @
+                  seq
+                    xfunc.write (((xstd_call)).apply ((xname)))
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargs)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((xrestype)))
+                    (((unsupported)).apply ((xfunc)))
+            xset_error_handler.write (((xfunction)).apply ("CPLSetErrorHandler") ((((unsupported)).apply ((xCPLErrorHandler)))) ((xCPLErrorHandler)))
+            bogusForceDataize.write (((xset_error_handler)).apply ((xerr_handler)))

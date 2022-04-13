@@ -1,0 +1,159 @@
+memory > xget_fixed_timezone
+memory > xparse_time
+memory > xtime
+memory > xparse_date
+memory > xparse_datetime
+memory > xdatetime
+memory > xexpected
+memory > xparse_duration
+memory > xValueError
+memory > xtimedelta
+memory > xdate
+memory > xformat
+memory > xsource
+memory > xdelta
+memory > xunittest
+[] > test_dateparse
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_parse_postgresql_format
+        memory > xtest_parse_time
+        memory > xtest_days
+        memory > xtest_minutes_seconds
+        memory > xtest_parse_python_format
+        memory > xtest_negative
+        memory > xtest_parse_datetime
+        memory > xtest_fractions_of_seconds
+        memory > xtest_hours_minutes_seconds
+        memory > xtest_seconds
+        memory > xtest_iso_8601
+        memory > xtest_parse_date
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_parse_date.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_date)).apply ("2012-04-23"))) ((((xdate)).apply (2012) (4) (23))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_date)).apply ("2012-4-9"))) ((((xdate)).apply (2012) (4) (9))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_date)).apply ("20120423"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          bogusForceDataize.write (((xparse_date)).apply ("2012-04-56"))
+                xtest_parse_time.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_time)).apply ("09:15:00"))) ((((xtime)).apply (9) (15))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_time)).apply ("10:10"))) ((((xtime)).apply (10) (10))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_time)).apply ("10:20:30.400"))) ((((xtime)).apply (10) (20) (30) (400000))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_time)).apply ("10:20:30,400"))) ((((xtime)).apply (10) (20) (30) (400000))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_time)).apply ("4:8:16"))) ((((xtime)).apply (4) (8) (16))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_time)).apply ("00:05:23+04:00"))) ((((xtime)).apply (0) (5) (23))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_time)).apply ("00:05:"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_time)).apply ("00:05:23,"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_time)).apply ("00:05:23+"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_time)).apply ("00:05:23+25:00"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_time)).apply ("4:18:101"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_time)).apply ("091500"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          bogusForceDataize.write (((xparse_time)).apply ("09:15:90"))
+                xtest_parse_datetime.write
+                  [xself]
+                    memory > xvalid_inputs
+                    seq > @
+                      seq
+                        xvalid_inputs.write (((unsupported)).apply ((((unsupported)).apply ("2012-04-23T09:15:00") ((((xdatetime)).apply (2012) (4) (23) (9) (15))))) ((((unsupported)).apply ("2012-4-9 4:8:16") ((((xdatetime)).apply (2012) (4) (9) (4) (8) (16))))) ((((unsupported)).apply ("2012-04-23T09:15:00Z") ((((xdatetime)).apply (2012) (4) (23) (9) (15) (0) (0) ((((xget_fixed_timezone)).apply (0))))))) ((((unsupported)).apply ("2012-4-9 4:8:16-0320") ((((xdatetime)).apply (2012) (4) (9) (4) (8) (16) (0) ((((xget_fixed_timezone)).apply ((200.neg)))))))) ((((unsupported)).apply ("2012-04-23T10:20:30.400+02:30") ((((xdatetime)).apply (2012) (4) (23) (10) (20) (30) (400000) ((((xget_fixed_timezone)).apply (150))))))) ((((unsupported)).apply ("2012-04-23T10:20:30.400+02") ((((xdatetime)).apply (2012) (4) (23) (10) (20) (30) (400000) ((((xget_fixed_timezone)).apply (120))))))) ((((unsupported)).apply ("2012-04-23T10:20:30.400-02") ((((xdatetime)).apply (2012) (4) (23) (10) (20) (30) (400000) ((((xget_fixed_timezone)).apply ((120.neg)))))))) ((((unsupported)).apply ("2012-04-23T10:20:30,400-02") ((((xdatetime)).apply (2012) (4) (23) (10) (20) (30) (400000) ((((xget_fixed_timezone)).apply ((120.neg)))))))) ((((unsupported)).apply ("2012-04-23T10:20:30.400 +0230") ((((xdatetime)).apply (2012) (4) (23) (10) (20) (30) (400000) ((((xget_fixed_timezone)).apply (150))))))) ((((unsupported)).apply ("2012-04-23T10:20:30,400 +00") ((((xdatetime)).apply (2012) (4) (23) (10) (20) (30) (400000) ((((xget_fixed_timezone)).apply (0))))))) ((((unsupported)).apply ("2012-04-23T10:20:30   -02") ((((xdatetime)).apply (2012) (4) (23) (10) (20) (30) (0) ((((xget_fixed_timezone)).apply ((120.neg)))))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsource)) ((xexpected)))) ((xvalid_inputs)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsource)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_datetime)).apply ((xsource)))) ((xexpected)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_datetime)).apply ("20120423091500"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          bogusForceDataize.write (((xparse_datetime)).apply ("2012-04-56T09:15:90"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_parse_python_format.write
+                  [xself]
+                    memory > xtimedeltas
+                    seq > @
+                      seq
+                        xtimedeltas.write (((unsupported)).apply ((((unsupported)).apply ((xtimedelta)) (4) (15) (30) (100))) ((((unsupported)).apply ((xtimedelta)) (10) (15) (30))) ((((unsupported)).apply ((xtimedelta)) (4) (15) (30))) ((((unsupported)).apply ((xtimedelta)) (1) (0) (0))) ((((unsupported)).apply ((xtimedelta)) ((4.neg)) (15) (30))) ((((unsupported)).apply ((xtimedelta)) (15) (30))) ((((unsupported)).apply ((xtimedelta)) (30))))
+                        (((unsupported)).apply ((xdelta)) ((xtimedeltas)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xdelta)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xformat)).apply ((xdelta)))))) ((xdelta)))
+                xtest_parse_postgresql_format.write
+                  [xself]
+                    memory > xtest_values
+                    seq > @
+                      seq
+                        xtest_values.write (((unsupported)).apply ((((unsupported)).apply ("1 day") ((((xtimedelta)).apply (1))))) ((((unsupported)).apply ("-1 day") ((((xtimedelta)).apply ((1.neg)))))) ((((unsupported)).apply ("1 day 0:00:01") ((((unsupported)).apply ((xtimedelta)) (1) (1))))) ((((unsupported)).apply ("1 day -0:00:01") ((((unsupported)).apply ((xtimedelta)) (1) ((1.neg)))))) ((((unsupported)).apply ("-1 day -0:00:01") ((((unsupported)).apply ((xtimedelta)) ((1.neg)) ((1.neg)))))) ((((unsupported)).apply ("-1 day +0:00:01") ((((unsupported)).apply ((xtimedelta)) ((1.neg)) (1))))) ((((unsupported)).apply ("4 days 0:15:30.1") ((((unsupported)).apply ((xtimedelta)) (4) (15) (30) (100))))) ((((unsupported)).apply ("4 days 0:15:30.0001") ((((unsupported)).apply ((xtimedelta)) (4) (15) (30) (100))))) ((((unsupported)).apply ("-4 days -15:00:30") ((((unsupported)).apply ((xtimedelta)) ((4.neg)) ((15.neg)) ((30.neg)))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsource)) ((xexpected)))) ((xtest_values)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsource)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((xsource)))) ((xexpected)))
+                xtest_seconds.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("30"))) ((((unsupported)).apply ((xtimedelta)) (30))))
+                xtest_minutes_seconds.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("15:30"))) ((((unsupported)).apply ((xtimedelta)) (15) (30))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("5:30"))) ((((unsupported)).apply ((xtimedelta)) (5) (30))))
+                xtest_hours_minutes_seconds.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("10:15:30"))) ((((unsupported)).apply ((xtimedelta)) (10) (15) (30))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("1:15:30"))) ((((unsupported)).apply ((xtimedelta)) (1) (15) (30))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("100:200:300"))) ((((unsupported)).apply ((xtimedelta)) (100) (200) (300))))
+                xtest_days.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("4 15:30"))) ((((unsupported)).apply ((xtimedelta)) (4) (15) (30))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ("4 10:15:30"))) ((((unsupported)).apply ((xtimedelta)) (4) (10) (15) (30))))
+                xtest_fractions_of_seconds.write
+                  [xself]
+                    memory > xtest_values
+                    seq > @
+                      seq
+                        xtest_values.write (((unsupported)).apply ((((unsupported)).apply ("15:30.1") ((((unsupported)).apply ((xtimedelta)) (15) (30) (100))))) ((((unsupported)).apply ("15:30.01") ((((unsupported)).apply ((xtimedelta)) (15) (30) (10))))) ((((unsupported)).apply ("15:30.001") ((((unsupported)).apply ((xtimedelta)) (15) (30) (1))))) ((((unsupported)).apply ("15:30.0001") ((((unsupported)).apply ((xtimedelta)) (15) (30) (100))))) ((((unsupported)).apply ("15:30.00001") ((((unsupported)).apply ((xtimedelta)) (15) (30) (10))))) ((((unsupported)).apply ("15:30.000001") ((((unsupported)).apply ((xtimedelta)) (15) (30) (1))))) ((((unsupported)).apply ("15:30,000001") ((((unsupported)).apply ((xtimedelta)) (15) (30) (1))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsource)) ((xexpected)))) ((xtest_values)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsource)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((xsource)))) ((xexpected)))
+                xtest_negative.write
+                  [xself]
+                    memory > xtest_values
+                    seq > @
+                      seq
+                        xtest_values.write (((unsupported)).apply ((((unsupported)).apply ("-4 15:30") ((((unsupported)).apply ((xtimedelta)) ((4.neg)) (15) (30))))) ((((unsupported)).apply ("-172800") ((((unsupported)).apply ((xtimedelta)) ((2.neg)))))) ((((unsupported)).apply ("-15:30") ((((unsupported)).apply ((xtimedelta)) ((15.neg)) ((30.neg)))))) ((((unsupported)).apply ("-1:15:30") ((((unsupported)).apply ((xtimedelta)) ((1.neg)) ((15.neg)) ((30.neg)))))) ((((unsupported)).apply ("-30.1") ((((unsupported)).apply ((xtimedelta)) ((30.neg)) ((100.neg)))))) ((((unsupported)).apply ("-30,1") ((((unsupported)).apply ((xtimedelta)) ((30.neg)) ((100.neg)))))) ((((unsupported)).apply ("-00:01:01") ((((unsupported)).apply ((xtimedelta)) ((1.neg)) ((1.neg)))))) ((((unsupported)).apply ("-01:01") ((((unsupported)).apply ((xtimedelta)) ((61.neg)))))) ((((unsupported)).apply ("-01:-01") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsource)) ((xexpected)))) ((xtest_values)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsource)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((xsource)))) ((xexpected)))
+                xtest_iso_8601.write
+                  [xself]
+                    memory > xtest_values
+                    seq > @
+                      seq
+                        xtest_values.write (((unsupported)).apply ((((unsupported)).apply ("P4Y") ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ("P4M") ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ("P4W") ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ("P4D") ((((unsupported)).apply ((xtimedelta)) (4))))) ((((unsupported)).apply ("-P1D") ((((unsupported)).apply ((xtimedelta)) ((1.neg)))))) ((((unsupported)).apply ("P0.5D") ((((unsupported)).apply ((xtimedelta)) (12))))) ((((unsupported)).apply ("P0,5D") ((((unsupported)).apply ((xtimedelta)) (12))))) ((((unsupported)).apply ("-P0.5D") ((((unsupported)).apply ((xtimedelta)) ((12.neg)))))) ((((unsupported)).apply ("-P0,5D") ((((unsupported)).apply ((xtimedelta)) ((12.neg)))))) ((((unsupported)).apply ("PT5H") ((((unsupported)).apply ((xtimedelta)) (5))))) ((((unsupported)).apply ("-PT5H") ((((unsupported)).apply ((xtimedelta)) ((5.neg)))))) ((((unsupported)).apply ("PT5M") ((((unsupported)).apply ((xtimedelta)) (5))))) ((((unsupported)).apply ("-PT5M") ((((unsupported)).apply ((xtimedelta)) ((5.neg)))))) ((((unsupported)).apply ("PT5S") ((((unsupported)).apply ((xtimedelta)) (5))))) ((((unsupported)).apply ("-PT5S") ((((unsupported)).apply ((xtimedelta)) ((5.neg)))))) ((((unsupported)).apply ("PT0.000005S") ((((unsupported)).apply ((xtimedelta)) (5))))) ((((unsupported)).apply ("PT0,000005S") ((((unsupported)).apply ((xtimedelta)) (5))))) ((((unsupported)).apply ("-PT0.000005S") ((((unsupported)).apply ((xtimedelta)) ((5.neg)))))) ((((unsupported)).apply ("-PT0,000005S") ((((unsupported)).apply ((xtimedelta)) ((5.neg)))))) ((((unsupported)).apply ("-P4DT1H") ((((unsupported)).apply ((xtimedelta)) ((4.neg)) ((1.neg)))))) ((((unsupported)).apply ("P3(3D") ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ("PT3)3H") ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ("PT3|3M") ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ("PT3/3S") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsource)) ((xexpected)))) ((xtest_values)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsource)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((xsource)))) ((xexpected)))

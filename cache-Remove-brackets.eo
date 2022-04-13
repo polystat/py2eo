@@ -1,0 +1,74 @@
+memory > xpatch_cache_control
+memory > xCacheMiddleware
+memory > xadd_never_cache_headers
+memory > xkw
+memory > xhasattr
+memory > xargs
+memory > xdecorator_from_middleware_with_args
+memory > xkwargs
+memory > xTypeError
+[] > cache
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnever_cache
+        memory > xcache_control
+        memory > xcache_page
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcache_page.write
+              [xtimeout xcache xkey_prefix]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((((xdecorator_from_middleware_with_args)).apply ((xCacheMiddleware)))) ((xtimeout)) ((xcache)) ((xkey_prefix)))))
+            xcache_control.write
+              []
+                memory > x_cache_controller
+                seq > @
+                  (((unsupported)).apply)
+                    x_cache_controller.write
+                      [xviewfunc]
+                        memory > x_cache_controlled
+                        seq > @
+                          seq
+                            x_cache_controlled.write
+                              [xrequest]
+                                memory > xresponse
+                                seq > @
+                                  (((unsupported)).apply)
+                                    ((((xhasattr)).apply ((xrequest)) ("META")).not).if
+                                      (((unsupported)).apply ((((xTypeError)).apply ("cache_control didn't receive an HttpRequest. If you are decorating a classmethod, be sure to use @method_decorator."))))
+                                    xresponse.write (((xviewfunc)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkw)))))
+                                    bogusForceDataize.write (((xpatch_cache_control)).apply ((xresponse)) ((((unsupported)).apply ((xkwargs)))))
+                                    (((unsupported)).apply ((xresponse)))
+                            (((unsupported)).apply ((x_cache_controlled)))
+                    (((unsupported)).apply ((x_cache_controller)))
+            xnever_cache.write
+              [xview_func]
+                memory > x_wrapped_view_func
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    x_wrapped_view_func.write
+                      [xrequest]
+                        memory > xresponse
+                        seq > @
+                          (((unsupported)).apply)
+                            ((((xhasattr)).apply ((xrequest)) ("META")).not).if
+                              (((unsupported)).apply ((((xTypeError)).apply ("never_cache didn't receive an HttpRequest. If you are decorating a classmethod, be sure to use @method_decorator."))))
+                            xresponse.write (((xview_func)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                            bogusForceDataize.write (((xadd_never_cache_headers)).apply ((xresponse)))
+                            (((unsupported)).apply ((xresponse)))
+                    (((unsupported)).apply ((x_wrapped_view_func)))

@@ -1,0 +1,235 @@
+memory > xCookieStorage
+memory > xMessageDecoder
+memory > xlist
+memory > xconstants
+memory > xBaseTests
+memory > xrange
+memory > xrandom
+memory > xMessageEncoder
+memory > xargs
+memory > xjson
+memory > xextra_tags
+memory > xSafeData
+memory > xint
+memory > xget_random_string
+memory > xsettings
+memory > xhasattr
+memory > xillegal
+memory > xx
+memory > xi
+memory > xoverride_settings
+memory > xm
+memory > xmark_safe
+memory > xMessage
+memory > xkwargs
+memory > xlen
+memory > xSimpleTestCase
+[] > test_cookie
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_get_bad_cookie
+        memory > xtest_message_rfc6265
+        memory > xtest_extra_tags
+        memory > xset_cookie_data
+        memory > xencode_decode
+        memory > xtest_get
+        memory > xtest_json_encoder_decoder
+        memory > xstored_cookie_messages_count
+        memory > xstored_messages_count
+        memory > xtest_safedata
+        memory > xstorage_class
+        memory > xtest_max_cookie_length
+        memory > xtest_cookie_setings
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xset_cookie_data.write
+              [xstorage xmessages xinvalid xencode_empty]
+                memory > xencoded_data
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xencoded_data.write (((unsupported)).apply (((xstorage).x_encode)) ((xmessages)) ((xencode_empty)))
+                    (xinvalid).if
+                      xencoded_data.write (((unsupported)).apply ((xencoded_data)) ((((unsupported)).apply (1))))
+                    (((unsupported)).apply ((((xstorage).xrequest).xCOOKIES)) ((((unsupported)).apply (((xCookieStorage).xcookie_name)) ((xencoded_data)))))
+                    (((xhasattr)).apply ((xstorage)) ("_loaded_data")).if
+                      (((unsupported)).apply ((((unsupported)).apply (((xstorage).x_loaded_data)))))
+            xstored_cookie_messages_count.write
+              [xstorage xresponse]
+                memory > xcookie
+                memory > xdata
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xcookie.write (((((xresponse).xcookies).xget)).apply (((xstorage).xcookie_name)))
+                    (((xcookie).not).or ((((unsupported)).apply ((xcookie)) ("max-age")).eq 0)).if
+                      (((unsupported)).apply (0))
+                    xdata.write ((((xstorage).x_decode)).apply (((xcookie).xvalue)))
+                    ((xdata).not).if
+                      (((unsupported)).apply (0))
+                    ((((unsupported)).apply ((xdata)) ((1.neg))).eq ((xCookieStorage).xnot_finished)).if
+                      bogusForceDataize.write ((((xdata).xpop)).apply)
+                    (((unsupported)).apply ((((xlen)).apply ((xdata)))))
+            (((unsupported)).apply ((xBaseTests)) ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) (".example.com") (TRUE) (TRUE))))
+              seq
+                xstorage_class.write (xCookieStorage)
+                xstored_messages_count.write
+                  [xself xstorage xresponse]
+                    seq > @
+                      (((unsupported)).apply ((((xstored_cookie_messages_count)).apply ((xstorage)) ((xresponse)))))
+                xencode_decode.write
+                  [xself]
+                    memory > xencoded
+                    memory > xmessage
+                    memory > xstorage
+                    seq > @
+                      (((unsupported)).apply)
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xmessage.write (((xMessage)).apply (((xconstants).xDEBUG)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        xencoded.write ((((xstorage).x_encode)).apply ((xmessage)))
+                        (((unsupported)).apply (((((xstorage).x_decode)).apply ((xencoded)))))
+                xtest_get.write
+                  [xself]
+                    memory > xstorage
+                    memory > xexample_messages
+                    seq > @
+                      seq
+                        xstorage.write ((((xself).xstorage_class)).apply (((((xself).xget_request)).apply)))
+                        xexample_messages.write (((unsupported)).apply ("test") ("me"))
+                        bogusForceDataize.write (((xset_cookie_data)).apply ((xstorage)) ((xexample_messages)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xstorage)))) ((xexample_messages)))
+                xtest_cookie_setings.write
+                  [xself]
+                    memory > xresponse
+                    memory > xmessages
+                    memory > xstorage
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xresponse.write ((((xself).xget_response)).apply)
+                        bogusForceDataize.write ((((xstorage).xadd)).apply (((xconstants).xINFO)) ("test"))
+                        bogusForceDataize.write ((((xstorage).xupdate)).apply ((xresponse)))
+                        xmessages.write ((((xstorage).x_decode)).apply (((((unsupported)).apply (((xresponse).xcookies)) ("messages")).xvalue)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xmessages)))) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((xmessages)) (0)).xmessage)) ("test"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("domain"))) (".example.com"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("expires"))) (""))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("secure"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("httponly"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("samesite"))) ("Strict"))
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xresponse.write ((((xself).xget_response)).apply)
+                        bogusForceDataize.write ((((xstorage).xadd)).apply (((xconstants).xINFO)) ("test"))
+                        (((unsupported)).apply ((xm)) ((xstorage)))
+                        bogusForceDataize.write ((((xstorage).xupdate)).apply ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcookies)) ("messages")).xvalue)) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("domain"))) (".example.com"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("expires"))) ("Thu, 01 Jan 1970 00:00:00 GMT"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("messages"))) ("samesite"))) (((xsettings).xSESSION_COOKIE_SAMESITE)))
+                xtest_get_bad_cookie.write
+                  [xself]
+                    memory > xrequest
+                    memory > xstorage
+                    memory > xexample_messages
+                    seq > @
+                      seq
+                        xrequest.write ((((xself).xget_request)).apply)
+                        xstorage.write ((((xself).xstorage_class)).apply ((xrequest)))
+                        xexample_messages.write (((unsupported)).apply ("test") ("me"))
+                        (((unsupported)).apply ((xset_cookie_data)) ((xstorage)) ((xexample_messages)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xstorage)))) ((((unsupported)).apply)))
+                xtest_max_cookie_length.write
+                  [xself]
+                    memory > xmsg
+                    memory > xunstored_messages
+                    memory > xmsg_size
+                    memory > xcookie_storing
+                    memory > xresponse
+                    memory > xfirst_msg
+                    memory > xstorage
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xresponse.write ((((xself).xget_response)).apply)
+                        xmsg_size.write (((xint)).apply ((((((xCookieStorage).xmax_cookie_size).sub 54).div 4.5).sub 37)))
+                        xfirst_msg.write "None: is there a None literal in the EO language?"
+                        bogusForceDataize.write ((((xrandom).xseed)).apply (42))
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (5))))
+                          seq
+                            xmsg.write (((xget_random_string)).apply ((xmsg_size)))
+                            bogusForceDataize.write ((((xstorage).xadd)).apply (((xconstants).xINFO)) ((xmsg)))
+                            ((xi).eq 0).if
+                              xfirst_msg.write (xmsg)
+                        xunstored_messages.write ((((xstorage).xupdate)).apply ((xresponse)))
+                        xcookie_storing.write ((((xself).xstored_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcookie_storing)) (4))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xunstored_messages)))) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((xunstored_messages)) (0)).xmessage)) ((xfirst_msg)))
+                xtest_message_rfc6265.write
+                  [xself]
+                    memory > xencoded
+                    memory > xnon_compliant_chars
+                    memory > xmessages
+                    memory > xstorage
+                    seq > @
+                      seq
+                        xnon_compliant_chars.write (((unsupported)).apply ("\\") (",") (";") ("\""))
+                        xmessages.write (((unsupported)).apply ((((unsupported)).apply)) (";m\"e") ("u2019") ("123\"NOTRECEIVED\""))
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xencoded.write ((((xstorage).x_encode)).apply ((xmessages)))
+                        (((unsupported)).apply ((xillegal)) ((xnon_compliant_chars)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xencoded).xfind)).apply ((xillegal)))) ((1.neg)))
+                xtest_json_encoder_decoder.write
+                  [xself]
+                    memory > xdecoded_messages
+                    memory > xvalue
+                    memory > xencoder
+                    memory > xmessages
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xmessages.write (((unsupported)).apply ((((unsupported)).apply ("message") ((((xMessage)).apply (((xconstants).xINFO)) ("Test message"))) ("message_list") (((((unsupported)).apply ((((xMessage)).apply (((xconstants).xINFO)) ("message %s"))) ((xx)) ((((xrange)).apply (5)))).add (((unsupported)).apply ((((unsupported)).apply ("another-message") ((((xMessage)).apply (((xconstants).xERROR)) ("error")))))))))) ((((xMessage)).apply (((xconstants).xINFO)) ("message %s"))))
+                        xencoder.write (((xMessageEncoder)).apply)
+                        xvalue.write ((((xencoder).xencode)).apply ((xmessages)))
+                        xdecoded_messages.write (((unsupported)).apply (((xjson).xloads)) ((xvalue)) ((xMessageDecoder)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xmessages)) ((xdecoded_messages)))
+                xtest_safedata.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((((xself).xencode_decode)).apply ((((xmark_safe)).apply ("<b>Hello Django!</b>")))).xmessage)) ((xSafeData)))
+                        bogusForceDataize.write ((((xself).xassertNotIsInstance)).apply ((((((xself).xencode_decode)).apply ("<b>Hello Django!</b>")).xmessage)) ((xSafeData)))
+                xtest_extra_tags.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xextra_tags)) ((((unsupported)).apply ("") ("None: is there a None literal in the EO language?") ("some tags"))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xextra_tags)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xself).xencode_decode)) ("message") ((xextra_tags))).xextra_tags)) ((xextra_tags)))

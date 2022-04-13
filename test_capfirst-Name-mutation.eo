@@ -1,0 +1,43 @@
+memory > xoutput
+memory > xSimpleTestCase
+memory > xcapfirst
+memory > xmark_safe
+[] > test_capfirst
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_capfirst01
+        memory > xtest_capfirst
+        memory > xtest_capfirst02
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_capfirst01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("capfirst01") ((((unsupported)).apply ("a") ("fred>") ("b") ((((xmark_safe)).apply ("fred&gt;"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Fred> Fred&gt;"))
+                xtest_capfirst02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("capfirst02") ((((unsupported)).apply ("a") ("fred>") ("b") ((((xmark_safe)).apply ("fred&gt;"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Fred&gt; Fred&gt;"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_capfirst.write
+                [xself]
+                  seq > @
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcapfirst)).apply ("hello world"))) ("Hello world"))

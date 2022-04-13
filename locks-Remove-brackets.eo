@@ -1,0 +1,151 @@
+memory > xc_int64
+memory > xc_void_p
+memory > xmsvcrt
+memory > xPOINTER
+memory > xbyref
+memory > xBOOL
+memory > xbool
+memory > xos
+memory > xc_ulong
+memory > x_OFFSET_UNION
+memory > xDWORD
+memory > x_OFFSET
+memory > xwindll
+memory > xImportError
+memory > xAttributeError
+memory > xHANDLE
+memory > xsizeof
+memory > xhasattr
+memory > xStructure
+memory > xfcntl
+memory > xBlockingIOError
+memory > xUnion
+memory > xOVERLAPPED
+[] > locks
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xPVOID
+        memory > x_anonymous_
+        memory > xLPOVERLAPPED
+        memory > x_fd
+        memory > xunlock
+        memory > xLockFileEx
+        memory > x__all__
+        memory > xLOCK_SH
+        memory > xULONG_PTR
+        memory > xUnlockFileEx
+        memory > xLOCK_NB
+        memory > xLOCK_EX
+        memory > xlock
+        memory > x_fields_
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("LOCK_EX") ("LOCK_SH") ("LOCK_NB") ("lock") ("unlock"))
+            x_fd.write
+              [xf]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply (((((xhasattr)).apply ((xf)) ("fileno")).if ((xf).xfileno) (xf))))
+            (((xos).xname).eq "nt").if
+              seq
+                (((unsupported)).apply)
+                seq
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                seq
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                  (((unsupported)).apply)
+                xLOCK_SH.write 0
+                xLOCK_NB.write 1
+                xLOCK_EX.write 2
+                ((((xsizeof)).apply ((xc_ulong))).neq (((xsizeof)).apply ((xc_void_p)))).if
+                  xULONG_PTR.write (xc_int64)
+                  xULONG_PTR.write (xc_ulong)
+                xPVOID.write (xc_void_p)
+                (((unsupported)).apply ((xStructure)))
+                  x_fields_.write (((unsupported)).apply ((((unsupported)).apply ("Offset") ((xDWORD)))) ((((unsupported)).apply ("OffsetHigh") ((xDWORD)))))
+                (((unsupported)).apply ((xUnion)))
+                  seq
+                    x_anonymous_.write (((unsupported)).apply ("_offset"))
+                    x_fields_.write (((unsupported)).apply ((((unsupported)).apply ("_offset") ((x_OFFSET)))) ((((unsupported)).apply ("Pointer") ((xPVOID)))))
+                (((unsupported)).apply ((xStructure)))
+                  seq
+                    x_anonymous_.write (((unsupported)).apply ("_offset_union"))
+                    x_fields_.write (((unsupported)).apply ((((unsupported)).apply ("Internal") ((xULONG_PTR)))) ((((unsupported)).apply ("InternalHigh") ((xULONG_PTR)))) ((((unsupported)).apply ("_offset_union") ((x_OFFSET_UNION)))) ((((unsupported)).apply ("hEvent") ((xHANDLE)))))
+                xLPOVERLAPPED.write (((xPOINTER)).apply ((xOVERLAPPED)))
+                xLockFileEx.write (((xwindll).xkernel32).xLockFileEx)
+                (((unsupported)).apply (((xLockFileEx).xrestype)) ((xBOOL)))
+                (((unsupported)).apply (((xLockFileEx).xargtypes)) ((((unsupported)).apply ((xHANDLE)) ((xDWORD)) ((xDWORD)) ((xDWORD)) ((xDWORD)) ((xLPOVERLAPPED)))))
+                xUnlockFileEx.write (((xwindll).xkernel32).xUnlockFileEx)
+                (((unsupported)).apply (((xUnlockFileEx).xrestype)) ((xBOOL)))
+                (((unsupported)).apply (((xUnlockFileEx).xargtypes)) ((((unsupported)).apply ((xHANDLE)) ((xDWORD)) ((xDWORD)) ((xDWORD)) ((xLPOVERLAPPED)))))
+                xlock.write
+                  [xf xflags]
+                    memory > xret
+                    memory > xhfile
+                    memory > xoverlapped
+                    seq > @
+                      seq
+                        xhfile.write ((((xmsvcrt).xget_osfhandle)).apply ((((x_fd)).apply ((xf)))))
+                        xoverlapped.write (xOVERLAPPED)
+                        xret.write (((xLockFileEx)).apply ((xhfile)) ((xflags)) (0) (0) ((((unsupported)).apply)) ((((xbyref)).apply ((xoverlapped)))))
+                        (((unsupported)).apply ((((xbool)).apply ((xret)))))
+                xunlock.write
+                  [xf]
+                    memory > xret
+                    memory > xhfile
+                    memory > xoverlapped
+                    seq > @
+                      seq
+                        xhfile.write ((((xmsvcrt).xget_osfhandle)).apply ((((x_fd)).apply ((xf)))))
+                        xoverlapped.write (xOVERLAPPED)
+                        xret.write (((xUnlockFileEx)).apply ((xhfile)) (0) (0) ((((unsupported)).apply)) ((((xbyref)).apply ((xoverlapped)))))
+                        (((unsupported)).apply ((((xbool)).apply ((xret)))))
+              (((unsupported)).apply ((((unsupported)).apply ((xImportError)) ((xAttributeError)))))
+                seq
+                  (((unsupported)).apply)
+                  xLOCK_SH.write ((xfcntl).xLOCK_SH)
+                  xLOCK_NB.write ((xfcntl).xLOCK_NB)
+                  xLOCK_EX.write ((xfcntl).xLOCK_EX)
+                seq
+                  (((unsupported)).apply ((xLOCK_EX)) ((xLOCK_SH)) ((xLOCK_NB)) (0))
+                  xlock.write
+                    [xf xflags]
+                      seq > @
+                        (((unsupported)).apply (FALSE))
+                  xunlock.write
+                    [xf]
+                      seq > @
+                        (((unsupported)).apply (TRUE))
+                seq
+                  xlock.write
+                    [xf xflags]
+                      seq > @
+                        (((unsupported)).apply ((xBlockingIOError)))
+                          seq
+                            bogusForceDataize.write ((((xfcntl).xflock)).apply ((((x_fd)).apply ((xf)))) ((xflags)))
+                            (((unsupported)).apply (TRUE))
+                          (((unsupported)).apply (FALSE))
+                  xunlock.write
+                    [xf]
+                      seq > @
+                        seq
+                          bogusForceDataize.write ((((xfcntl).xflock)).apply ((((x_fd)).apply ((xf)))) (((xfcntl).xLOCK_UN)))
+                          (((unsupported)).apply (TRUE))

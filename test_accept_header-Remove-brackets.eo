@@ -1,0 +1,130 @@
+memory > xmime_type
+memory > xstr
+memory > xHttpRequest
+memory > xTestCase
+memory > xrepr
+memory > xMediaType
+memory > xempty_media_type
+memory > xaccepted_type
+[] > test_accept_header
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_request_accepts_some
+        memory > xtest_accept_headers
+        memory > xtest_str
+        memory > xtest_request_accepts_none
+        memory > xtest_is_all_types
+        memory > xtest_empty
+        memory > xtest_request_accepts_any
+        memory > xtest_match
+        memory > xtest_no_match
+        memory > xtest_no_headers
+        memory > xtest_repr
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_empty.write
+                  [xself]
+                    memory > xmedia_type
+                    seq > @
+                      (((unsupported)).apply ((xempty_media_type)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") (""))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xempty_media_type)))))
+                          seq
+                            xmedia_type.write (((xMediaType)).apply ((xempty_media_type)))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((xmedia_type).xis_all_types)) (FALSE))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xmedia_type)))) (""))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xmedia_type)))) ("<MediaType: >"))
+                xtest_str.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((((xMediaType)).apply ("*/*; q=0.8"))))) ("*/*; q=0.8"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((((xMediaType)).apply ("application/xml"))))) ("application/xml"))
+                xtest_repr.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((((xMediaType)).apply ("*/*; q=0.8"))))) ("<MediaType: */*; q=0.8>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((((xMediaType)).apply ("application/xml"))))) ("<MediaType: application/xml>"))
+                xtest_is_all_types.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xMediaType)).apply ("*/*")).xis_all_types)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xMediaType)).apply ("*/*; q=0.8")).xis_all_types)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xMediaType)).apply ("text/*")).xis_all_types)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xMediaType)).apply ("application/xml")).xis_all_types)) (FALSE))
+                xtest_match.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("*/*; q=0.8") ("*/*"))) ((((unsupported)).apply ("*/*") ("application/json"))) ((((unsupported)).apply (" */* ") ("application/json"))) ((((unsupported)).apply ("application/*") ("application/json"))) ((((unsupported)).apply ("application/xml") ("application/xml"))) ((((unsupported)).apply (" application/xml ") ("application/xml"))) ((((unsupported)).apply ("application/xml") (" application/xml "))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xaccepted_type)) ((xmime_type)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xaccepted_type)) ((xmime_type)))))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((((xMediaType)).apply ((xaccepted_type))).xmatch)).apply ((xmime_type)))) (TRUE))
+                xtest_no_match.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("*/*"))) ((((unsupported)).apply ("") ("*/*"))) ((((unsupported)).apply ("; q=0.8") ("*/*"))) ((((unsupported)).apply ("application/xml") ("application/html"))) ((((unsupported)).apply ("application/xml") ("*/*"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xaccepted_type)) ((xmime_type)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xaccepted_type)) ((xmime_type)))))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((((xMediaType)).apply ((xaccepted_type))).xmatch)).apply ((xmime_type)))) (FALSE))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_no_headers.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        unsupported
+                        xrequest.write (xHttpRequest)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xstr)).apply ((xaccepted_type)))) ((xaccepted_type)) (((xrequest).xaccepted_types)))) ((((unsupported)).apply ("*/*"))))
+                xtest_accept_headers.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (xHttpRequest)
+                        (((unsupported)).apply ((((unsupported)).apply (((xrequest).xMETA)) ("HTTP_ACCEPT"))) ("text/html, application/xhtml+xml,application/xml ;q=0.9,*/*;q=0.8"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xstr)).apply ((xaccepted_type)))) ((xaccepted_type)) (((xrequest).xaccepted_types)))) ((((unsupported)).apply ("text/html") ("application/xhtml+xml") ("application/xml; q=0.9") ("*/*; q=0.8"))))
+                xtest_request_accepts_any.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (xHttpRequest)
+                        (((unsupported)).apply ((((unsupported)).apply (((xrequest).xMETA)) ("HTTP_ACCEPT"))) ("*/*"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xrequest).xaccepts)).apply ("application/json"))) (TRUE))
+                xtest_request_accepts_none.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (xHttpRequest)
+                        (((unsupported)).apply ((((unsupported)).apply (((xrequest).xMETA)) ("HTTP_ACCEPT"))) (""))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xrequest).xaccepts)).apply ("application/json"))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xrequest).xaccepted_types)) ((((unsupported)).apply)))
+                xtest_request_accepts_some.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (xHttpRequest)
+                        (((unsupported)).apply ((((unsupported)).apply (((xrequest).xMETA)) ("HTTP_ACCEPT"))) ("text/html,application/xhtml+xml,application/xml;q=0.9"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xrequest).xaccepts)).apply ("text/html"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xrequest).xaccepts)).apply ("application/xhtml+xml"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xrequest).xaccepts)).apply ("application/xml"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xrequest).xaccepts)).apply ("application/json"))) (FALSE))

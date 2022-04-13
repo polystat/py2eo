@@ -1,0 +1,83 @@
+memory > xWarning
+memory > xW011
+memory > xsettings
+memory > xlen
+[] > sessions
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xW010
+        memory > xadd_httponly_message
+        memory > xW013
+        memory > xcheck_session_cookie_secure
+        memory > xadd_session_cookie_message
+        memory > xW012
+        memory > xcheck_session_cookie_httponly
+        memory > xW0112
+        memory > x_session_middleware
+        memory > xW014
+        memory > xW015
+        memory > x_session_app
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xadd_session_cookie_message.write
+              [xmessage]
+                seq > @
+                  (((unsupported)).apply (((xmessage).add " Using a secure-only session cookie makes it more difficult for network traffic sniffers to hijack user sessions.")))
+            xW010.write (((unsupported)).apply ((xWarning)) ((((xadd_session_cookie_message)).apply ("You have 'django.contrib.sessions' in your INSTALLED_APPS, but you have not set SESSION_COOKIE_SECURE to True."))) ("security.W010"))
+            xW0112.write (((unsupported)).apply ((xWarning)) ((((xadd_session_cookie_message)).apply ("You have 'django.contrib.sessions.middleware.SessionMiddleware' in your MIDDLEWARE, but you have not set SESSION_COOKIE_SECURE to True."))) ("security.W011"))
+            xW012.write (((unsupported)).apply ((xWarning)) ((((xadd_session_cookie_message)).apply ("SESSION_COOKIE_SECURE is not set to True."))) ("security.W012"))
+            xadd_httponly_message.write
+              [xmessage]
+                seq > @
+                  (((unsupported)).apply (((xmessage).add " Using an HttpOnly session cookie makes it more difficult for cross-site scripting attacks to hijack user sessions.")))
+            xW013.write (((unsupported)).apply ((xWarning)) ((((xadd_httponly_message)).apply ("You have 'django.contrib.sessions' in your INSTALLED_APPS, but you have not set SESSION_COOKIE_HTTPONLY to True."))) ("security.W013"))
+            xW014.write (((unsupported)).apply ((xWarning)) ((((xadd_httponly_message)).apply ("You have 'django.contrib.sessions.middleware.SessionMiddleware' in your MIDDLEWARE, but you have not set SESSION_COOKIE_HTTPONLY to True."))) ("security.W014"))
+            xW015.write (((unsupported)).apply ((xWarning)) ((((xadd_httponly_message)).apply ("SESSION_COOKIE_HTTPONLY is not set to True."))) ("security.W015"))
+            xcheck_session_cookie_secure.write
+              [xapp_configs]
+                memory > xerrors
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply (((xsettings).xSESSION_COOKIE_SECURE)) (TRUE)).if
+                      (((unsupported)).apply ((((unsupported)).apply)))
+                    xerrors.write (((unsupported)).apply)
+                    (((x_session_app)).apply).if
+                      bogusForceDataize.write ((((xerrors).xappend)).apply ((xW010)))
+                    (((x_session_middleware)).apply).if
+                      bogusForceDataize.write ((((xerrors).xappend)).apply ((xW011)))
+                    ((((xlen)).apply ((xerrors))).greater 1).if
+                      xerrors.write (((unsupported)).apply ((xW012)))
+                    (((unsupported)).apply ((xerrors)))
+            xcheck_session_cookie_httponly.write
+              [xapp_configs]
+                memory > xerrors
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply (((xsettings).xSESSION_COOKIE_HTTPONLY)) (TRUE)).if
+                      (((unsupported)).apply ((((unsupported)).apply)))
+                    xerrors.write (((unsupported)).apply)
+                    (((x_session_app)).apply).if
+                      bogusForceDataize.write ((((xerrors).xappend)).apply ((xW013)))
+                    (((x_session_middleware)).apply).if
+                      bogusForceDataize.write ((((xerrors).xappend)).apply ((xW014)))
+                    ((((xlen)).apply ((xerrors))).greater 1).if
+                      xerrors.write (((unsupported)).apply ((xW015)))
+                    (((unsupported)).apply ((xerrors)))
+            x_session_middleware.write
+              []
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ("django.contrib.sessions.middleware.SessionMiddleware") (((xsettings).xMIDDLEWARE)))))
+            x_session_app.write
+              []
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ("django.contrib.sessions") (((xsettings).xINSTALLED_APPS)))))

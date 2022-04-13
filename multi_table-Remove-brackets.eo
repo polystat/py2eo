@@ -1,0 +1,37 @@
+memory > xParentManager
+memory > xParent
+memory > xmodels
+[] > multi_table
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xparent_m2m
+        memory > xchild_data
+        memory > xobjects
+        memory > xnatural_key
+        memory > xparent_data
+        memory > xget_by_natural_key
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xManager)))
+              xget_by_natural_key.write
+                [xself xparent_data]
+                  seq > @
+                    (((unsupported)).apply ((((unsupported)).apply (((xself).xget)) ((xparent_data)))))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xparent_data.write (((unsupported)).apply (((xmodels).xCharField)) (30) (TRUE))
+                xparent_m2m.write ((((xmodels).xManyToManyField)).apply ("self"))
+                xobjects.write (xParentManager)
+                xnatural_key.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xparent_data)))))
+            (((unsupported)).apply ((xParent)))
+              xchild_data.write (((unsupported)).apply (((xmodels).xCharField)) (30) (TRUE))

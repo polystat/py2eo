@@ -1,0 +1,207 @@
+memory > xGeoIP2
+memory > xstr
+memory > xe1
+memory > xpathlib
+memory > xos
+memory > xgetattr
+memory > x__file__
+memory > xTypeError
+memory > xskipUnless
+memory > xg
+memory > xrepr
+memory > xsettings
+memory > xquery
+memory > xe2
+memory > xfloat
+memory > xbad
+memory > xGeoIP2Exception
+memory > xHAS_GEOIP2
+memory > xisinstance
+memory > xGEOSGeometry
+memory > xSimpleTestCase
+[] > test_geoip2
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest06_ipv6_query
+        memory > xtest_check_query
+        memory > xtest01_init
+        memory > xtest_repr
+        memory > xtest03_country
+        memory > xtest02_bad_query
+        memory > xfqdn
+        memory > xtest_no_database_file
+        memory > xaddr
+        memory > xtest04_city
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (xHAS_GEOIP2).if
+              seq
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((xskipUnless)).apply (((xHAS_GEOIP2).and (((xgetattr)).apply ((xsettings)) ("GEOIP_PATH") ("None: is there a None literal in the EO language?")))) ("GeoIP is required along with the GEOIP_PATH setting."))))
+              seq
+                xaddr.write "129.237.192.1"
+                xfqdn.write "ku.edu"
+                xtest01_init.write
+                  [xself]
+                    memory > xbad_params
+                    memory > xcntry
+                    memory > xcity
+                    memory > xg4
+                    memory > xg3
+                    memory > xpath
+                    memory > xg2
+                    memory > xg5
+                    memory > xe
+                    memory > xg1
+                    seq > @
+                      seq
+                        unsupported
+                        xg1.write (((xGeoIP2)).apply)
+                        xpath.write ((xsettings).xGEOIP_PATH)
+                        xg2.write (((xGeoIP2)).apply (0) ((xpath)))
+                        xg3.write ((((xGeoIP2).xopen)).apply ((xpath)) (0))
+                        (((xisinstance)).apply ((xpath)) ((xstr))).if
+                          xg4.write (((xGeoIP2)).apply (((((xpathlib).xPath)).apply ((xpath)))))
+                          xg4.write (((xGeoIP2)).apply ((((xstr)).apply ((xpath)))))
+                        (((unsupported)).apply ((xg)) ((((unsupported)).apply ((xg1)) ((xg2)) ((xg3)) ((xg4)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((xg).x_country)))
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((xg).x_city)))
+                        xcity.write (((((xos).xpath).xjoin)).apply ((xpath)) ("GeoLite2-City.mmdb"))
+                        xcntry.write (((((xos).xpath).xjoin)).apply ((xpath)) ("GeoLite2-Country.mmdb"))
+                        xg4.write (((unsupported)).apply ((xGeoIP2)) ((xcity)) (""))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xg4).x_country)))
+                        xg5.write (((unsupported)).apply ((xGeoIP2)) ((xcntry)) (""))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xg5).x_city)))
+                        xbad_params.write (((unsupported)).apply (23) ("foo") (15.23))
+                        (((unsupported)).apply ((xbad)) ((xbad_params)))
+                          seq
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xGeoIP2Exception)))))
+                              (((unsupported)).apply ((xGeoIP2)) ((xbad)))
+                            (((xisinstance)).apply ((xbad)) ((xstr))).if
+                              xe.write (xGeoIP2Exception)
+                              xe.write (xTypeError)
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xe)))))
+                              bogusForceDataize.write (((xGeoIP2)).apply ((xbad)) (0))
+                xtest_no_database_file.write
+                  [xself]
+                    memory > xmsg
+                    memory > xinvalid_path
+                    seq > @
+                      seq
+                        xinvalid_path.write (((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply ((x__file__)))) ("data"))
+                        xmsg.write ("Could not load a database from %s.".mod (xinvalid_path))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xGeoIP2Exception)) ((xmsg)))))
+                          bogusForceDataize.write (((xGeoIP2)).apply ((xinvalid_path)))
+                xtest02_bad_query.write
+                  [xself]
+                    memory > xcntry_g
+                    seq > @
+                      seq
+                        unsupported
+                        xcntry_g.write (((unsupported)).apply ((xGeoIP2)) ("<foo>"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xGeoIP2Exception)))))
+                          bogusForceDataize.write ((((xcntry_g).xcity)).apply ("tmc.edu"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xGeoIP2Exception)))))
+                          bogusForceDataize.write ((((xcntry_g).xcoords)).apply ("tmc.edu"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((xcntry_g).xcountry_code)).apply (17))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          bogusForceDataize.write ((((xcntry_g).xcountry_name)).apply ((xGeoIP2)))
+                xtest03_country.write
+                  [xself xgethostbyname]
+                    memory > xg
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((xgethostbyname).xreturn_value)) ("128.249.1.1"))
+                        xg.write (((unsupported)).apply ((xGeoIP2)) ("<foo>"))
+                        (((unsupported)).apply ((xquery)) ((((unsupported)).apply (((xself).xfqdn)) (((xself).xaddr)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("US") (((((xg).xcountry_code)).apply ((xquery)))) (("Failed for func country_code and query %s".mod (xquery))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("United States") (((((xg).xcountry_name)).apply ((xquery)))) (("Failed for func country_name and query %s".mod (xquery))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ("country_code") ("US") ("country_name") ("United States"))) (((((xg).xcountry)).apply ((xquery)))))
+                xtest04_city.write
+                  [xself xgethostbyname]
+                    memory > xd
+                    memory > xgeom
+                    memory > xg
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((xgethostbyname).xreturn_value)) ("129.237.192.1"))
+                        xg.write (((unsupported)).apply ((xGeoIP2)) ("<foo>"))
+                        (((unsupported)).apply ((xquery)) ((((unsupported)).apply (((xself).xfqdn)) (((xself).xaddr)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("US") (((((xg).xcountry_code)).apply ((xquery)))) (("Failed for func country_code and query %s".mod (xquery))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("United States") (((((xg).xcountry_name)).apply ((xquery)))) (("Failed for func country_name and query %s".mod (xquery))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ("country_code") ("US") ("country_name") ("United States"))) (((((xg).xcountry)).apply ((xquery)))))
+                            xd.write ((((xg).xcity)).apply ((xquery)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("NA") ((((unsupported)).apply ((xd)) ("continent_code"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("North America") ((((unsupported)).apply ((xd)) ("continent_name"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("US") ((((unsupported)).apply ((xd)) ("country_code"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("Lawrence") ((((unsupported)).apply ((xd)) ("city"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("KS") ((((unsupported)).apply ((xd)) ("region"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("America/Chicago") ((((unsupported)).apply ((xd)) ("time_zone"))))
+                            bogusForceDataize.write ((((xself).xassertFalse)).apply ((((unsupported)).apply ((xd)) ("is_in_european_union"))))
+                            xgeom.write ((((xg).xgeos)).apply ((xquery)))
+                            bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xgeom)) ((xGEOSGeometry)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xe1)) ((xe2)))) ((((unsupported)).apply (((xgeom).xtuple)) (((((xg).xcoords)).apply ((xquery)))) (((((xg).xlon_lat)).apply ((xquery)))) (((((xg).xlat_lon)).apply ((xquery)))))))
+                              seq
+                                bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xe1)) ((xfloat)))
+                                bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xe2)) ((xfloat)))
+                xtest06_ipv6_query.write
+                  [xself]
+                    memory > xd
+                    memory > xg
+                    seq > @
+                      seq
+                        unsupported
+                        xg.write (((xGeoIP2)).apply)
+                        xd.write ((((xg).xcity)).apply ("2002:81ed:c9a5::81ed:c9a5"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("US") ((((unsupported)).apply ((xd)) ("country_code"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("Lawrence") ((((unsupported)).apply ((xd)) ("city"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("KS") ((((unsupported)).apply ((xd)) ("region"))))
+                xtest_repr.write
+                  [xself]
+                    memory > xmeta
+                    memory > xexpected
+                    memory > xg
+                    memory > xversion
+                    memory > xcity_path
+                    memory > xpath
+                    memory > xcountry_path
+                    seq > @
+                      seq
+                        xpath.write ((xsettings).xGEOIP_PATH)
+                        xg.write (((unsupported)).apply ((xGeoIP2)) ((xpath)))
+                        xmeta.write (((((xg).x_reader).xmetadata)).apply)
+                        xversion.write ("%s.%s".mod (((unsupported)).apply (((xmeta).xbinary_format_major_version)) (((xmeta).xbinary_format_minor_version))))
+                        xcountry_path.write ((xg).x_country_file)
+                        xcity_path.write ((xg).x_city_file)
+                        xexpected.write ("<GeoIP2 [v%(version)s] _country_file=\"%(country)s\", _city_file=\"%(city)s\">".mod (((unsupported)).apply ("version") ((xversion)) ("country") ((xcountry_path)) ("city") ((xcity_path))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xg)))) ((xexpected)))
+                xtest_check_query.write
+                  [xself xgethostbyname]
+                    memory > xg
+                    seq > @
+                      (((unsupported)).apply)
+                        xg.write (((xGeoIP2)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xg).x_check_query)).apply ("127.0.0.1"))) ("127.0.0.1"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xg).x_check_query)).apply ("2002:81ed:c9a5::81ed:c9a5"))) ("2002:81ed:c9a5::81ed:c9a5"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xg).x_check_query)).apply ("invalid-ip-address"))) ("expected"))

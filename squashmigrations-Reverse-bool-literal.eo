@@ -1,0 +1,225 @@
+memory > xValueError
+memory > xstr
+memory > xKeyError
+memory > xerr
+memory > xconnections
+memory > xsmigration
+memory > xinput
+memory > xshutil
+memory > xmn
+memory > xdependency
+memory > xDEFAULT_DB_ALIAS
+memory > xapps
+memory > xMigrationWriter
+memory > xfh
+memory > xAmbiguityError
+memory > xSwappableTuple
+memory > xprefix
+memory > x_
+memory > xmigrations
+memory > xopen
+memory > xtype
+memory > xBaseCommand
+memory > xset
+memory > xsettings
+memory > xMigrationOptimizer
+memory > xLookupError
+memory > xos
+memory > xoptions
+memory > xal
+memory > xget_docs_version
+memory > xisinstance
+memory > xMigrationLoader
+memory > xrun_formatters
+memory > xCommandError
+memory > xlen
+[] > squashmigrations
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xhandle
+        memory > xfind_migration
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Squashes an existing set of migrations (from first until specified) into a single new one."
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("app_label") ("App label of the application to squash migrations for."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("start_migration_name") ("?") ("Migrations will be squashed starting from and including this migration."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("migration_name") ("Migrations will be squashed until and including this migration."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--no-optimize") ("store_false") ("Do not try to optimize the squashed operations."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--noinput") ("--no-input") ("store_false") ("interactive") ("Tells Django to NOT prompt the user for input of any kind."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--squashed-name") ("Sets the name of the new squashed migration."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--no-header") ("store_false") ("include_header") ("Do not add a header comment to the new squashed migration."))
+                xhandle.write
+                  [xself]
+                    memory > xfirst_migration
+                    memory > xreplaces
+                    memory > xanswer
+                    memory > xsquashed_name
+                    memory > xstart
+                    memory > xnew_migration
+                    memory > xmigrations_to_squash
+                    memory > xmigration
+                    memory > xnew_operations
+                    memory > xdependencies
+                    memory > xwriter
+                    memory > xstart_migration_name
+                    memory > xloader
+                    memory > xoperations
+                    memory > xapp_label
+                    memory > xno_optimize
+                    memory > xstart_index
+                    memory > xstart_migration
+                    memory > xsubclass
+                    memory > xname
+                    memory > xoptimizer
+                    memory > xmigration_name
+                    memory > xinclude_header
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xverbosity)) ((((unsupported)).apply ((xoptions)) ("verbosity"))))
+                        (((unsupported)).apply (((xself).xinteractive)) ((((unsupported)).apply ((xoptions)) ("interactive"))))
+                        xapp_label.write (((unsupported)).apply ((xoptions)) ("app_label"))
+                        xstart_migration_name.write (((unsupported)).apply ((xoptions)) ("start_migration_name"))
+                        xmigration_name.write (((unsupported)).apply ((xoptions)) ("migration_name"))
+                        xno_optimize.write (((unsupported)).apply ((xoptions)) ("no_optimize"))
+                        xsquashed_name.write (((unsupported)).apply ((xoptions)) ("squashed_name"))
+                        xinclude_header.write (((unsupported)).apply ((xoptions)) ("include_header"))
+                        (((unsupported)).apply ((xLookupError)))
+                          bogusForceDataize.write ((((xapps).xget_app_config)).apply ((xapp_label)))
+                          (((unsupported)).apply ((((xCommandError)).apply ((((xstr)).apply ((xerr)))))))
+                        xloader.write (((xMigrationLoader)).apply ((((unsupported)).apply ((xconnections)) ((xDEFAULT_DB_ALIAS)))))
+                        (((unsupported)).apply ((xapp_label)) (((xloader).xmigrated_apps))).if
+                          (((unsupported)).apply ((((xCommandError)).apply (("App '%s' does not have migrations (so squashmigrations on it makes no sense)".mod (xapp_label))))))
+                        xmigration.write ((((xself).xfind_migration)).apply ((xloader)) ((xapp_label)) ((xmigration_name)))
+                        xmigrations_to_squash.write (((unsupported)).apply (((((xloader).xget_migration)).apply ((xal)) ((xmn)))) ((((unsupported)).apply ((xal)) ((xmn)))) ((((((xloader).xgraph).xforwards_plan)).apply ((((unsupported)).apply (((xmigration).xapp_label)) (((xmigration).xname)))))) (((xal).eq ((xmigration).xapp_label))))
+                        (xstart_migration_name).if
+                          seq
+                            xstart_migration.write ((((xself).xfind_migration)).apply ((xloader)) ((xapp_label)) ((xstart_migration_name)))
+                            xstart.write ((((xloader).xget_migration)).apply (((xstart_migration).xapp_label)) (((xstart_migration).xname)))
+                            (((unsupported)).apply ((xValueError)))
+                              seq
+                                xstart_index.write ((((xmigrations_to_squash).xindex)).apply ((xstart)))
+                                xmigrations_to_squash.write (((unsupported)).apply ((xmigrations_to_squash)) ((((unsupported)).apply ((xstart_index)))))
+                              (((unsupported)).apply ((((xCommandError)).apply (("The migration '%s' cannot be found. Maybe it comes after the migration '%s'?nHave a look at:n  python manage.py showmigrations %snto debug this issue.".mod (((unsupported)).apply ((xstart_migration)) ((xmigration)) ((xapp_label))))))))
+                        ((((xself).xverbosity).greater 0).or ((xself).xinteractive)).if
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((((xself).xstyle).xMIGRATE_HEADING)).apply ("Will squash the following migrations:"))))
+                            (((unsupported)).apply ((xmigration)) ((xmigrations_to_squash)))
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((" - %s".mod ((xmigration).xname))))
+                            ((xself).xinteractive).if
+                              seq
+                                xanswer.write "None: is there a None literal in the EO language?"
+                                while.
+                                  (((xanswer).not).or (((unsupported)).apply ((xanswer)) ("yn")))
+                                  [unused]
+                                    seq > @
+                                      seq
+                                        xanswer.write (((xinput)).apply ("Do you wish to proceed? [yN] "))
+                                        ((xanswer).not).if
+                                          seq
+                                            xanswer.write "n"
+                                            (((unsupported)).apply)
+                                          xanswer.write ((((((unsupported)).apply ((xanswer)) (0)).xlower)).apply)
+                                ((xanswer).neq "y").if
+                                  (((unsupported)).apply)
+                        xoperations.write (((unsupported)).apply)
+                        xdependencies.write (((xset)).apply)
+                        xfirst_migration.write TRUE
+                        (((unsupported)).apply ((xsmigration)) ((xmigrations_to_squash)))
+                          seq
+                            ((xsmigration).xreplaces).if
+                              (((unsupported)).apply ((((xCommandError)).apply (("You cannot squash squashed migrations! Please transition it to a normal migration first: https://docs.djangoproject.com/en/%s/topics/migrations/#squashing-migrations".mod (((xget_docs_version)).apply))))))
+                            bogusForceDataize.write ((((xoperations).xextend)).apply (((xsmigration).xoperations)))
+                            (((unsupported)).apply ((xdependency)) (((xsmigration).xdependencies)))
+                              (((xisinstance)).apply ((xdependency)) ((xSwappableTuple))).if
+                                (((xsettings).xAUTH_USER_MODEL).eq ((xdependency).xsetting)).if
+                                  bogusForceDataize.write ((((xdependencies).xadd)).apply ((((unsupported)).apply ("__setting__") ("AUTH_USER_MODEL"))))
+                                  bogusForceDataize.write ((((xdependencies).xadd)).apply ((xdependency)))
+                                (((((unsupported)).apply ((xdependency)) (0)).neq ((xsmigration).xapp_label)).or (xfirst_migration)).if
+                                  bogusForceDataize.write ((((xdependencies).xadd)).apply ((xdependency)))
+                            xfirst_migration.write FALSE
+                        (xno_optimize).if
+                          seq
+                            (((xself).xverbosity).greater 0).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((((xself).xstyle).xMIGRATE_HEADING)).apply ("(Skipping optimization.)"))))
+                            xnew_operations.write (xoperations)
+                          seq
+                            (((xself).xverbosity).greater 0).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((((xself).xstyle).xMIGRATE_HEADING)).apply ("Optimizing..."))))
+                            xoptimizer.write (((xMigrationOptimizer)).apply)
+                            xnew_operations.write ((((xoptimizer).xoptimize)).apply ((xoperations)) (((xmigration).xapp_label)))
+                            (((xself).xverbosity).greater 0).if
+                              ((((xlen)).apply ((xnew_operations))).eq (((xlen)).apply ((xoperations)))).if
+                                bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("  No optimizations possible."))
+                                bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("  Optimized from %s operations to %s operations.".mod (((unsupported)).apply ((((xlen)).apply ((xoperations)))) ((((xlen)).apply ((xnew_operations))))))))
+                        xreplaces.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xmigration)) ((xmigrations_to_squash)))
+                          ((xmigration).xreplaces).if
+                            bogusForceDataize.write ((((xreplaces).xextend)).apply (((xmigration).xreplaces)))
+                            bogusForceDataize.write ((((xreplaces).xappend)).apply ((((unsupported)).apply (((xmigration).xapp_label)) (((xmigration).xname)))))
+                        xsubclass.write (((xtype)).apply ("Migration") ((((unsupported)).apply (((xmigrations).xMigration)))) ((((unsupported)).apply ("dependencies") ((xdependencies)) ("operations") ((xnew_operations)) ("replaces") ((xreplaces)))))
+                        (xstart_migration_name).if
+                          seq
+                            (xsquashed_name).if
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((xprefix)) ((x_)))) ((((((xstart_migration).xname).xsplit)).apply ("_") (1))))
+                                xname.write ("%s_%s".mod (((unsupported)).apply ((xprefix)) ((xsquashed_name))))
+                              xname.write ("%s_squashed_%s".mod (((unsupported)).apply (((xstart_migration).xname)) (((xmigration).xname))))
+                            xnew_migration.write (((xsubclass)).apply ((xname)) ((xapp_label)))
+                          seq
+                            xname.write ("0001_%s".mod ((xsquashed_name).or ("squashed_%s".mod ((xmigration).xname))))
+                            xnew_migration.write (((xsubclass)).apply ((xname)) ((xapp_label)))
+                            (((unsupported)).apply (((xnew_migration).xinitial)) (TRUE))
+                        xwriter.write (((xMigrationWriter)).apply ((xnew_migration)) ((xinclude_header)))
+                        (((((xos).xpath).xexists)).apply (((xwriter).xpath))).if
+                          (((unsupported)).apply ((((xCommandError)).apply ("Migration {new_migration.name} already exists. Use a different name."))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xopen)) (((xwriter).xpath)) ("w") ("utf-8"))) ((xfh)))
+                          bogusForceDataize.write ((((xfh).xwrite)).apply (((((xwriter).xas_string)).apply)))
+                        bogusForceDataize.write (((xrun_formatters)).apply ((((unsupported)).apply (((xwriter).xpath)))))
+                        (((xself).xverbosity).greater 0).if
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (((((((xself).xstyle).xMIGRATE_HEADING)).apply (("Created new squashed migration %s".mod ((xwriter).xpath)))).add "n  You should commit this migration but leave the old ones in place;n  the new migration will be used for new installs. Once you are suren  all instances of the codebase have applied the migrations you squashed,n  you can delete them.")))
+                            ((xwriter).xneeds_manual_porting).if
+                              seq
+                                bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (((((((xself).xstyle).xMIGRATE_HEADING)).apply ("Manual porting required")).add "n  Your migrations contained functions that must be manually copied over,n  as we could not safely copy their implementation.n  See the comment at the top of the squashed migration for details.")))
+                                ((((xshutil).xwhich)).apply ("black")).if
+                                  bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((((xself).xstyle).xWARNING)).apply ("Squashed migration couldn't be formatted using the \"black\" command. You can call it manually."))))
+                xfind_migration.write
+                  [xself xloader xapp_label xname]
+                    seq > @
+                      (((unsupported)).apply ((xAmbiguityError)) ((xKeyError)))
+                        (((unsupported)).apply (((((xloader).xget_migration_by_prefix)).apply ((xapp_label)) ((xname)))))
+                        (((unsupported)).apply ((((xCommandError)).apply (("More than one migration matches '%s' in app '%s'. Please be more specific.".mod (((unsupported)).apply ((xname)) ((xapp_label))))))))
+                        (((unsupported)).apply ((((xCommandError)).apply (("Cannot find a migration matching '%s' from app '%s'.".mod (((unsupported)).apply ((xname)) ((xapp_label))))))))

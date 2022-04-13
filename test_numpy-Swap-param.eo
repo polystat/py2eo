@@ -1,0 +1,43 @@
+memory > xImportError
+memory > xskipIf
+memory > xSimpleTestCase
+[] > test_numpy
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_numpy_array_index02
+        memory > xnumpy
+        memory > xtest_numpy_array_index01
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xImportError)))
+              (((unsupported)).apply)
+              xnumpy.write FALSE
+            (((unsupported)).apply ((xSimpleTestCase)) ((((xskipIf)).apply ((((unsupported)).apply ((xnumpy)) (FALSE))) ("Numpy must be installed to run these tests."))))
+              seq
+                xtest_numpy_array_index01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("numpy-array-index01") ((((unsupported)).apply ("var") (((((xnumpy).xarray)).apply ((((unsupported)).apply ("first item") ("second item"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("second item") ((xoutput)))
+                xtest_numpy_array_index02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("numpy-array-index02") ((((unsupported)).apply ("var") (((((xnumpy).xarray)).apply ((((unsupported)).apply ("first item") ("second item"))))))))
+                        (((xself).xengine).xstring_if_invalid).if
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("INVALID"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))

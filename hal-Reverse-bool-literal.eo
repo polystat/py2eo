@@ -1,0 +1,48 @@
+memory > xapp_label
+memory > xBaseCommand
+memory > xset
+memory > xoptions
+memory > xCommandError
+[] > hal
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xhandle
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Useless command."
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("args") ("app_label") ("*") ("Specify the app label(s) to works on."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--empty") ("store_false") ("Do nothing."))
+                xhandle.write
+                  [xself]
+                    memory > xapp_labels
+                    seq > @
+                      (((unsupported)).apply)
+                        xapp_labels.write (((xset)).apply ((xapp_labels)))
+                        (((unsupported)).apply ((xoptions)) ("empty")).if
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply)
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("Dave, I can't do that."))
+                            (((unsupported)).apply)
+                        ((xapp_labels).not).if
+                          (((unsupported)).apply ((((xCommandError)).apply ("I'm sorry Dave, I'm afraid I can't do that."))))
+                        (((unsupported)).apply ((xapp_label)) ((xapp_labels)))
+                          ((((xapp_label).xstartswith)).apply ("--")).if
+                            (((unsupported)).apply ((((xCommandError)).apply ("Sorry, Dave, I can't let you do that."))))
+                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("Dave, my mind is going. I can feel it. I can feel it."))

@@ -1,0 +1,264 @@
+memory > xC
+memory > xValueError
+memory > xvalue
+memory > xKEY_ERRORS_WITH_MEMCACHED_MSG
+memory > xoverride_settings
+memory > xcache
+memory > xSimpleTestCase
+memory > xCacheKeyWarning
+memory > xkey
+memory > xasyncio
+[] > tests_async
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_adelete
+        memory > xtest_aincr
+        memory > xtest_ahas_key
+        memory > xtest_aclear
+        memory > xtest_simple
+        memory > xtest_aincr_version
+        memory > xtest_adecr_version
+        memory > xtest_expiration
+        memory > xtest_aclose
+        memory > xtest_aadd
+        memory > xtest_aset_many
+        memory > xtest_aget_or_set_callable
+        memory > xtest_non_existent
+        memory > xtest_data_types
+        memory > xtest_adelete_many_invalid_key
+        memory > xtest_adelete_many
+        memory > xtest_aset_many_invalid_key
+        memory > xtest_unicode
+        memory > xtest_adecr
+        memory > xtest_aget_many
+        memory > xtest_aget_or_set
+        memory > xtest_atouch
+        memory > xtest_aget_many_invalid_key
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ("default") ((((unsupported)).apply ("BACKEND") ("django.core.cache.backends.dummy.DummyCache"))))))))
+              seq
+                xtest_simple.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("key") ("value"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("key"))))))
+                xtest_aadd.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (TRUE) ((((unsupported)).apply (((((xcache).xaadd)).apply ("key") ("value"))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply (((((xcache).xaadd)).apply ("key") ("new_value"))))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("key"))))))
+                xtest_non_existent.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("does_not_exist"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("does_not_exist") ("default"))))) ("default"))
+                xtest_aget_many.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset_many)).apply ((((unsupported)).apply ("a") ("a") ("b") ("b") ("c") ("c") ("d") ("d"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xcache).xaget_many)).apply ((((unsupported)).apply ("a") ("c") ("d"))))))) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xcache).xaget_many)).apply ((((unsupported)).apply ("a") ("b") ("e"))))))) ((((unsupported)).apply)))
+                xtest_aget_many_invalid_key.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write ((xKEY_ERRORS_WITH_MEMCACHED_MSG).mod ":1:key with spaces")
+                        (((unsupported)).apply (((((xself).xassertWarnsMessage)).apply ((xCacheKeyWarning)) ((xmsg)))))
+                          (((unsupported)).apply (((((xcache).xaget_many)).apply ((((unsupported)).apply ("key with spaces"))))))
+                xtest_adelete.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xcache).xaset_many)).apply ((((unsupported)).apply ("key1") ("spam") ("key2") ("eggs"))))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("key1"))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply (((((xcache).xadelete)).apply ("key1"))))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("key1"))))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("key2"))))))
+                xtest_ahas_key.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("hello1") ("goodbye1"))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply (((((xcache).xahas_key)).apply ("hello1"))))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply (((((xcache).xahas_key)).apply ("goodbye1"))))) (FALSE))
+                xtest_aincr.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("answer") (42))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xaincr)).apply ("answer"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xaincr)).apply ("does_not_exist"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xaincr)).apply ("does_not_exist") ((1.neg)))))
+                xtest_adecr.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("answer") (42))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xadecr)).apply ("answer"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xadecr)).apply ("does_not_exist"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xadecr)).apply ("does_not_exist") ((1.neg)))))
+                xtest_atouch.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply (((((xcache).xatouch)).apply ("key"))))) (FALSE))
+                xtest_data_types.write
+                  [xself]
+                    memory > xm
+                    memory > xdata
+                    memory > xf
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xf.write
+                          []
+                            seq > @
+                              (((unsupported)).apply (42))
+                        (((unsupported)).apply)
+                          xm.write
+                            [xn]
+                              seq > @
+                                (((unsupported)).apply (24))
+                        xdata.write (((unsupported)).apply ("string") ("this is a string") ("int") (42) ("list") ((((unsupported)).apply (1) (2) (3) (4))) ("tuple") ((((unsupported)).apply (1) (2) (3) (4))) ("dict") ((((unsupported)).apply ("A") (1) ("B") (2))) ("function") ((xf)) ("class") ((xC)))
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("data") ((xdata)))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("data"))))))
+                xtest_expiration.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("expire1") ("very quickly") (1))))
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("expire2") ("very quickly") (1))))
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("expire3") ("very quickly") (1))))
+                        (((unsupported)).apply (((((xasyncio).xsleep)).apply (2))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("expire1"))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply (((((xcache).xaadd)).apply ("expire2") ("new_value"))))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ("expire2"))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply (((((xcache).xahas_key)).apply ("expire3"))))) (FALSE))
+                xtest_unicode.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xtests.write (((unsupported)).apply ("ascii") ("ascii_value") ("unicode_ascii") ("Iñtërnâtiônàlizætiøn1") ("Iñtërnâtiônàlizætiøn") ("Iñtërnâtiônàlizætiøn2") ("ascii2") ((((unsupported)).apply ("x") (1))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xkey)) ((xvalue)))) (((((xtests).xitems)).apply)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xkey)))))
+                            seq
+                              (((unsupported)).apply (((((xcache).xaset)).apply ((xkey)) ((xvalue)))))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget)).apply ((xkey)))))))
+                xtest_aset_many.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xcache).xaset_many)).apply ((((unsupported)).apply ("a") (1) ("b") (2))))))) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply (((xcache).xaset_many)) ((((unsupported)).apply ("a") (1) ("b") (2))) (2) ("1"))))) ((((unsupported)).apply)))
+                xtest_aset_many_invalid_key.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write ((xKEY_ERRORS_WITH_MEMCACHED_MSG).mod ":1:key with spaces")
+                        (((unsupported)).apply (((((xself).xassertWarnsMessage)).apply ((xCacheKeyWarning)) ((xmsg)))))
+                          (((unsupported)).apply (((((xcache).xaset_many)).apply ((((unsupported)).apply ("key with spaces") ("foo"))))))
+                xtest_adelete_many.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xadelete_many)).apply ((((unsupported)).apply ("a") ("b"))))))
+                xtest_adelete_many_invalid_key.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write ((xKEY_ERRORS_WITH_MEMCACHED_MSG).mod ":1:key with spaces")
+                        (((unsupported)).apply (((((xself).xassertWarnsMessage)).apply ((xCacheKeyWarning)) ((xmsg)))))
+                          (((unsupported)).apply (((((xcache).xadelete_many)).apply ((((unsupported)).apply ("key with spaces") ("foo"))))))
+                xtest_aclear.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaclear)).apply)))
+                xtest_aclose.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaclose)).apply)))
+                xtest_aincr_version.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("answer") (42))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xaincr_version)).apply ("answer"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xcache).xaincr_version)) ("answer") (2))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xaincr_version)).apply ("does_not_exist"))))
+                xtest_adecr_version.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcache).xaset)).apply ("answer") (42))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xadecr_version)).apply ("answer"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xcache).xadecr_version)) ("answer") (2))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply (((((xcache).xadecr_version)).apply ("does_not_exist"))))
+                xtest_aget_or_set.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xcache).xaget_or_set)).apply ("key") ("default"))))) ("default"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((xcache).xaget_or_set)).apply ("key") ("None: is there a None literal in the EO language?"))))))
+                xtest_aget_or_set_callable.write
+                  [xself]
+                    memory > xmy_callable
+                    seq > @
+                      (((unsupported)).apply)
+                        xmy_callable.write
+                          []
+                            seq > @
+                              (((unsupported)).apply ("default"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xcache).xaget_or_set)).apply ("key") ((xmy_callable)))))) ("default"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xcache).xaget_or_set)).apply ("key") ((((xmy_callable)).apply)))))) ("default"))

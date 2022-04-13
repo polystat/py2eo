@@ -1,0 +1,109 @@
+memory > xMissingDjangoVersion
+memory > xDifferentDjangoVersion
+memory > xDJANGO_VERSION_PICKLE_KEY
+memory > xRuntimeWarning
+memory > xhasattr
+memory > xsuper
+memory > xPickledModel
+memory > xmodels
+memory > xSimpleTestCase
+memory > xpickle
+memory > xdjango
+[] > test_pickle
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_unsupported_unpickle
+        memory > xtest_missing_django_version_unpickling
+        memory > xtest_with_getstate
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_missing_django_version_unpickling.write
+                  [xself]
+                    memory > x__reduce__
+                    memory > xmsg
+                    memory > xp
+                    memory > xtitle
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xtitle.write (((unsupported)).apply (((xmodels).xCharField)) (10))
+                            x__reduce__.write
+                              [xself]
+                                memory > xreduce_list
+                                memory > xdata
+                                seq > @
+                                  seq
+                                    xreduce_list.write ((xsuper).x__reduce__)
+                                    xdata.write (((unsupported)).apply ((xreduce_list)) ((1.neg)))
+                                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xdata)) ((xDJANGO_VERSION_PICKLE_KEY)))))))
+                                    (((unsupported)).apply ((xreduce_list)))
+                        xp.write (((unsupported)).apply ((xMissingDjangoVersion)) ("FooBar"))
+                        xmsg.write "Pickled model instance's Django version is not specified."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xRuntimeWarning)) ((xmsg)))))
+                          bogusForceDataize.write ((((xpickle).xloads)).apply (((((xpickle).xdumps)).apply ((xp)))))
+                xtest_unsupported_unpickle.write
+                  [xself]
+                    memory > x__reduce__
+                    memory > xmsg
+                    memory > xp
+                    memory > xtitle
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xtitle.write (((unsupported)).apply (((xmodels).xCharField)) (10))
+                            x__reduce__.write
+                              [xself]
+                                memory > xreduce_list
+                                memory > xdata
+                                seq > @
+                                  seq
+                                    xreduce_list.write ((xsuper).x__reduce__)
+                                    xdata.write (((unsupported)).apply ((xreduce_list)) ((1.neg)))
+                                    (((unsupported)).apply ((((unsupported)).apply ((xdata)) ((xDJANGO_VERSION_PICKLE_KEY)))) ("1.0"))
+                                    (((unsupported)).apply ((xreduce_list)))
+                        xp.write (((unsupported)).apply ((xDifferentDjangoVersion)) ("FooBar"))
+                        xmsg.write ("Pickled model instance's Django version 1.0 does not match the current version %s.".mod ((xdjango).x__version__))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xRuntimeWarning)) ((xmsg)))))
+                          bogusForceDataize.write ((((xpickle).xloads)).apply (((((xpickle).xdumps)).apply ((xp)))))
+                xtest_with_getstate.write
+                  [xself]
+                    memory > x__getstate__
+                    memory > xreloaded
+                    memory > xm
+                    memory > xdumped
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          x__getstate__.write
+                            [xself]
+                              memory > xstate
+                              seq > @
+                                seq
+                                  xstate.write (((xsuper).x__getstate__).xcopy)
+                                  (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xstate)) ("dont_pickle"))))))
+                                  (((unsupported)).apply ((xstate)))
+                        xm.write (xPickledModel)
+                        (((unsupported)).apply (((xm).xdont_pickle)) (1))
+                        xdumped.write ((((xpickle).xdumps)).apply ((xm)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xm).xdont_pickle)) (1))
+                        xreloaded.write ((((xpickle).xloads)).apply ((xdumped)))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xhasattr)).apply ((xreloaded)) ("dont_pickle"))))

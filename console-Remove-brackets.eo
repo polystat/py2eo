@@ -1,0 +1,73 @@
+memory > xthreading
+memory > xmessage
+memory > xBaseEmailBackend
+memory > xException
+memory > xargs
+memory > xkwargs
+memory > xsuper
+memory > xsys
+[] > console
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__init__
+        memory > xsend_messages
+        memory > xwrite_message
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseEmailBackend)))
+              seq
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xstream)) (((((xkwargs).xpop)).apply ("stream") (((xsys).xstdout)))))
+                        (((unsupported)).apply (((xself).x_lock)) (((xthreading).xRLock)))
+                        bogusForceDataize.write ((((xsuper).x__init__)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                xwrite_message.write
+                  [xself xmessage]
+                    memory > xmsg_data
+                    memory > xcharset
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write ((xmessage).xmessage)
+                        xmsg_data.write ((xmsg).xas_bytes)
+                        xcharset.write (((xmsg).xget_charset).if (((xmsg).xget_charset).xget_output_charset) "utf-8")
+                        xmsg_data.write ((((xmsg_data).xdecode)).apply ((xcharset)))
+                        bogusForceDataize.write (((((xself).xstream).xwrite)).apply (("%sn".mod (xmsg_data))))
+                        bogusForceDataize.write (((((xself).xstream).xwrite)).apply (("-".mul 79)))
+                        bogusForceDataize.write (((((xself).xstream).xwrite)).apply ("n"))
+                xsend_messages.write
+                  [xself xemail_messages]
+                    memory > xmsg_count
+                    memory > xstream_created
+                    seq > @
+                      seq
+                        unsupported
+                        ((xemail_messages).not).if
+                          (((unsupported)).apply)
+                        xmsg_count.write 0
+                        (((unsupported)).apply (((xself).x_lock)))
+                          (((unsupported)).apply ((xException)))
+                            seq
+                              xstream_created.write ((xself).xopen)
+                              (((unsupported)).apply ((xmessage)) ((xemail_messages)))
+                                seq
+                                  bogusForceDataize.write ((((xself).xwrite_message)).apply ((xmessage)))
+                                  unsupported
+                                  (((unsupported)).apply ((xmsg_count)) (1))
+                              (xstream_created).if
+                                unsupported
+                            (((xself).xfail_silently).not).if
+                              (((unsupported)).apply)
+                        (((unsupported)).apply ((xmsg_count)))

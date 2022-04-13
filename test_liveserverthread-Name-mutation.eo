@@ -1,0 +1,79 @@
+memory > xDEFAULT_DB_ALIAS
+memory > xMyServerTestCase
+memory > xFakeServer
+memory > xtype
+memory > xconnections
+memory > xTransactionTestCase
+memory > xMyServerThread
+memory > xLiveServerTestCase
+memory > xLiveServerThread
+[] > test_liveserverthread
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_server_class
+        memory > xtest_closes_connections
+        memory > xavailable_apps2
+        memory > xrun_live_server_thread
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps2.write (((unsupported)).apply)
+                xrun_live_server_thread.write
+                  [xself xconnections_override]
+                    memory > xthread
+                    seq > @
+                      (((unsupported)).apply)
+                        xthread.write ((((xLiveServerTestCase).x_create_server_thread)).apply ((xconnections_override)))
+                        (((unsupported)).apply (((xthread).xdaemon)) (TRUE))
+                        bogusForceDataize.write ((((xthread).xstart)).apply)
+                        bogusForceDataize.write (((((xthread).xis_ready).xwait)).apply)
+                        bogusForceDataize.write ((((xthread).xterminate)).apply)
+                xtest_closes_connections.write
+                  [xself]
+                    memory > xconn
+                    memory > xconnections_override
+                    seq > @
+                      seq
+                        xconn.write (((unsupported)).apply ((xconnections)) ((xDEFAULT_DB_ALIAS)))
+                        xconnections_override.write (((unsupported)).apply ((xDEFAULT_DB_ALIAS)) ((xconn)))
+                        bogusForceDataize.write ((((xconn).xconnect)).apply)
+                        bogusForceDataize.write ((((xconn).xinc_thread_sharing)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIsNotNone)).apply (((xconn).xconnection)))
+                            bogusForceDataize.write ((((xself).xrun_live_server_thread)).apply ((xconnections_override)))
+                            bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xconn).xconnection)))
+                          bogusForceDataize.write ((((xconn).xdec_thread_sharing)).apply)
+                xtest_server_class.write
+                  [xself]
+                    memory > xserver_thread_class
+                    memory > x__init__
+                    memory > xserver_class
+                    memory > xthread
+                    memory > xserver
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          x__init__.write
+                            []
+                              seq > @
+                                (((unsupported)).apply)
+                        (((unsupported)).apply ((xLiveServerThread)))
+                          xserver_class.write (xFakeServer)
+                        (((unsupported)).apply ((xLiveServerTestCase)))
+                          xserver_thread_class.write (xMyServerThread)
+                        xthread.write ((((xMyServerTestCase).x_create_server_thread)).apply ("None: is there a None literal in the EO language?"))
+                        xserver.write ((((xthread).x_create_server)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xtype)).apply ((xserver)))) ((xFakeServer)))

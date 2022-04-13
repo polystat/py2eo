@@ -1,0 +1,70 @@
+memory > xfalse
+memory > xcheck_password
+memory > xCustomUser
+memory > xTransactionTestCase
+memory > xgroups_for_user
+memory > xGroup
+memory > xUser
+[] > test_handlers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_check_password
+        memory > xtest_groups_for_user
+        memory > xtest_check_password_custom_user
+        memory > xavailable_apps
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                (((unsupported)).apply)
+                xavailable_apps.write (((unsupported)).apply ("django.contrib.auth") ("django.contrib.contenttypes") ("auth_tests"))
+                xtest_check_password.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xUser).xobjects).xcreate_user)).apply ("test") ("test@example.com") ("test"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xcheck_password)).apply ((((unsupported)).apply)) ("unknown") (""))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xcheck_password)).apply ((((unsupported)).apply)) ("test") ("test"))))
+                        (((unsupported)).apply (((((unsupported)).apply ((((xUser).xobjects).xfilter)) ("test")).xupdate)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xcheck_password)).apply ((((unsupported)).apply)) ("test") ("test"))))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xcheck_password)).apply ((((unsupported)).apply)) ("test") ("incorrect"))))
+                xtest_check_password_custom_user.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xCustomUser).x_default_manager).xcreate_user)).apply ("test@example.com") ("1990-01-01") ("test"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xcheck_password)).apply ((((unsupported)).apply)) ("unknown") (""))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xcheck_password)).apply ((((unsupported)).apply)) ("test@example.com") ("test"))))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xcheck_password)).apply ((((unsupported)).apply)) ("test@example.com") ("incorrect"))))
+                xtest_groups_for_user.write
+                  [xself]
+                    memory > xuser1
+                    memory > xgroup
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xuser1.write (((((xUser).xobjects).xcreate_user)).apply ("test") ("test@example.com") ("test"))
+                        bogusForceDataize.write (((((xUser).xobjects).xcreate_user)).apply ("test1") ("test1@example.com") ("test1"))
+                        xgroup.write (((unsupported)).apply ((((xGroup).xobjects).xcreate)) ("test_group"))
+                        bogusForceDataize.write (((((xuser1).xgroups).xadd)).apply ((xgroup)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgroups_for_user)).apply ((((unsupported)).apply)) ("unknown"))) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgroups_for_user)).apply ((((unsupported)).apply)) ("test"))) ((((unsupported)).apply ("test_group"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgroups_for_user)).apply ((((unsupported)).apply)) ("test1"))) ((((unsupported)).apply)))

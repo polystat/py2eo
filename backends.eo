@@ -1,0 +1,267 @@
+memory > xget_user_model
+memory > xOuterRef
+memory > xValueError
+memory > xwarnings
+memory > xapp_label
+memory > xany
+memory > xset
+memory > xgetattr
+memory > xkwargs
+memory > xisinstance
+memory > xstr
+memory > xQ
+memory > xfunc_supports_parameter
+memory > xperm
+memory > xBaseBackend
+memory > xModelBackend
+memory > xhasattr
+memory > xExists
+memory > xcodename
+memory > xPermission
+memory > xsuper
+memory > xRemovedInDjango50Warning
+memory > xsetattr
+memory > xname
+memory > xRemoteUserBackend
+memory > xTypeError
+memory > xct
+[] > backends
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xauthenticate
+        memory > xget_user
+        memory > xget_all_permissions
+        memory > xget_user_permissions
+        memory > xconfigure_user
+        memory > x_get_user_permissions
+        memory > xhas_module_perms
+        memory > x_get_permissions
+        memory > xUserModel
+        memory > xhas_perm
+        memory > xget_group_permissions
+        memory > x_get_group_permissions
+        memory > xclean_username
+        memory > xwith_perm
+        memory > xuser_can_authenticate
+        memory > xcreate_unknown_user
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xUserModel.write (((xget_user_model)).apply)
+            (((unsupported)).apply)
+              seq
+                xauthenticate.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xget_user.write
+                  [xself xuser_id]
+                    seq > @
+                      (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xget_user_permissions.write
+                  [xself xuser_obj xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xset)).apply)))
+                xget_group_permissions.write
+                  [xself xuser_obj xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xset)).apply)))
+                xget_all_permissions.write
+                  [xself xuser_obj xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).xget_user_permissions)) ((xuser_obj)) ((xobj)))))) ((((unsupported)).apply ((((unsupported)).apply (((xself).xget_group_permissions)) ((xuser_obj)) ((xobj)))))))))
+                xhas_perm.write
+                  [xself xuser_obj xperm xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xperm)) ((((unsupported)).apply (((xself).xget_all_permissions)) ((xuser_obj)) ((xobj)))))))
+            (((unsupported)).apply ((xBaseBackend)))
+              seq
+                (((unsupported)).apply)
+                xauthenticate.write
+                  [xself xrequest xusername xpassword]
+                    memory > xuser
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xusername)) ("None: is there a None literal in the EO language?")).if
+                          xusername.write ((((xkwargs).xget)).apply (((xUserModel).xUSERNAME_FIELD)))
+                        ((((unsupported)).apply ((xusername)) ("None: is there a None literal in the EO language?")).or (((unsupported)).apply ((xpassword)) ("None: is there a None literal in the EO language?"))).if
+                          (((unsupported)).apply)
+                        (((unsupported)).apply (((xUserModel).xDoesNotExist)))
+                          xuser.write (((((xUserModel).x_default_manager).xget_by_natural_key)).apply ((xusername)))
+                          bogusForceDataize.write ((((((xUserModel)).apply).xset_password)).apply ((xpassword)))
+                          (((((xuser).xcheck_password)).apply ((xpassword))).and ((((xself).xuser_can_authenticate)).apply ((xuser)))).if
+                            (((unsupported)).apply ((xuser)))
+                xuser_can_authenticate.write
+                  [xself xuser]
+                    memory > xis_active
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xis_active.write (((xgetattr)).apply ((xuser)) ("is_active") ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xis_active).or (((unsupported)).apply ((xis_active)) ("None: is there a None literal in the EO language?")))))
+                x_get_user_permissions.write
+                  [xself xuser_obj]
+                    seq > @
+                      (((unsupported)).apply ((((((xuser_obj).xuser_permissions).xall)).apply)))
+                x_get_group_permissions.write
+                  [xself xuser_obj]
+                    memory > xuser_groups_field
+                    memory > xuser_groups_query
+                    seq > @
+                      seq
+                        xuser_groups_field.write (((((((xget_user_model)).apply).x_meta).xget_field)).apply ("groups"))
+                        xuser_groups_query.write ("group__%s".mod ((((xuser_groups_field).xrelated_query_name)).apply))
+                        (((unsupported)).apply ((((((xPermission).xobjects).xfilter)).apply ((((unsupported)).apply ((((unsupported)).apply ((xuser_groups_query)) ((xuser_obj)))))))))
+                x_get_permissions.write
+                  [xself xuser_obj xobj xfrom_name]
+                    memory > xperm_cache_name
+                    memory > xperms
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((((xuser_obj).xis_active).not).or ((xuser_obj).xis_anonymous)).or (((unsupported)).apply ((xobj)) ("None: is there a None literal in the EO language?"))).if
+                          (((unsupported)).apply ((((xset)).apply)))
+                        xperm_cache_name.write ("_%s_perm_cache".mod (xfrom_name))
+                        ((((xhasattr)).apply ((xuser_obj)) ((xperm_cache_name))).not).if
+                          seq
+                            ((xuser_obj).xis_superuser).if
+                              xperms.write (((((xPermission).xobjects).xall)).apply)
+                              xperms.write (((((xgetattr)).apply ((xself)) (("_get_%s_permissions".mod (xfrom_name))))).apply ((xuser_obj)))
+                            xperms.write (((((((xperms).xvalues_list)).apply ("content_type__app_label") ("codename")).xorder_by)).apply)
+                            bogusForceDataize.write (((xsetattr)).apply ((xuser_obj)) ((xperm_cache_name)) ((((unsupported)).apply (("%s.%s".mod (((unsupported)).apply ((xct)) ((xname))))) ((((unsupported)).apply ((xct)) ((xname)))) ((xperms)))))
+                        (((unsupported)).apply ((((xgetattr)).apply ((xuser_obj)) ((xperm_cache_name)))))
+                xget_user_permissions.write
+                  [xself xuser_obj xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).x_get_permissions)).apply ((xuser_obj)) ((xobj)) ("user"))))
+                xget_group_permissions.write
+                  [xself xuser_obj xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).x_get_permissions)).apply ((xuser_obj)) ((xobj)) ("group"))))
+                xget_all_permissions.write
+                  [xself xuser_obj xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((xuser_obj).xis_active).not).or ((xuser_obj).xis_anonymous)).or (((unsupported)).apply ((xobj)) ("None: is there a None literal in the EO language?"))).if
+                          (((unsupported)).apply ((((xset)).apply)))
+                        ((((xhasattr)).apply ((xuser_obj)) ("_perm_cache")).not).if
+                          (((unsupported)).apply (((xuser_obj).x_perm_cache)) (((((((xsuper)).apply).xget_all_permissions)).apply ((xuser_obj)))))
+                        (((unsupported)).apply (((xuser_obj).x_perm_cache)))
+                xhas_perm.write
+                  [xself xuser_obj xperm xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xuser_obj).xis_active).and (((unsupported)).apply (((((xsuper)).apply).xhas_perm)) ((xuser_obj)) ((xperm)) ((xobj))))))
+                xhas_module_perms.write
+                  [xself xuser_obj xapp_label]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xuser_obj).xis_active).and (((xany)).apply ((((unsupported)).apply (((((unsupported)).apply ((xperm)) ((((unsupported)).apply (((((xperm).xindex)).apply (".")))))).eq (xapp_label))) ((xperm)) (((((xself).xget_all_permissions)).apply ((xuser_obj))))))))))
+                xwith_perm.write
+                  [xself xperm xis_active xinclude_superusers xobj]
+                    memory > xuser_q
+                    memory > xpermission_q
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((xisinstance)).apply ((xperm)) ((xstr))).if
+                          (((unsupported)).apply ((xValueError)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xapp_label)) ((xcodename)))) (((((xperm).xsplit)).apply ("."))))
+                            (((unsupported)).apply ((((xValueError)).apply ("Permission name should be in the form app_label.permission_codename."))))
+                          ((((xisinstance)).apply ((xperm)) ((xPermission))).not).if
+                            (((unsupported)).apply ((((xTypeError)).apply ("The `perm` argument must be a string or a permission instance."))))
+                        (((unsupported)).apply ((xobj)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((((xUserModel).x_default_manager).xnone)).apply)))
+                        xpermission_q.write ((((unsupported)).apply ((xQ)) ((((xOuterRef)).apply ("pk")))).or (((unsupported)).apply ((xQ)) ((((xOuterRef)).apply ("pk")))))
+                        (((xisinstance)).apply ((xperm)) ((xPermission))).if
+                          (((unsupported)).apply ((xpermission_q)) ((((unsupported)).apply ((xQ)) (((xperm).xpk)))))
+                          (((unsupported)).apply ((xpermission_q)) ((((unsupported)).apply ((xQ)) ((xcodename)) ((xapp_label)))))
+                        xuser_q.write (((xExists)).apply ((((((xPermission).xobjects).xfilter)).apply ((xpermission_q)))))
+                        (xinclude_superusers).if
+                          (((unsupported)).apply ((xuser_q)) ((((unsupported)).apply ((xQ)) (TRUE))))
+                        (((unsupported)).apply ((xis_active)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xuser_q)) ((((unsupported)).apply ((xQ)) ((xis_active)))))
+                        (((unsupported)).apply ((((((xUserModel).x_default_manager).xfilter)).apply ((xuser_q)))))
+                xget_user.write
+                  [xself xuser_id]
+                    memory > xuser
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xUserModel).xDoesNotExist)))
+                          xuser.write (((unsupported)).apply ((((xUserModel).x_default_manager).xget)) ((xuser_id)))
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((((((xself).xuser_can_authenticate)).apply ((xuser))).if (xuser) "None: is there a None literal in the EO language?")))
+            (((unsupported)).apply ((xModelBackend)))
+              xuser_can_authenticate.write
+                [xself xuser]
+                  seq > @
+                    (((unsupported)).apply (TRUE))
+            (((unsupported)).apply ((xModelBackend)))
+              seq
+                (((unsupported)).apply)
+                xcreate_unknown_user.write TRUE
+                xauthenticate.write
+                  [xself xrequest xremote_user]
+                    memory > xuser
+                    memory > xusername
+                    memory > xcreated
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xremote_user).not).if
+                          (((unsupported)).apply)
+                        xcreated.write FALSE
+                        xuser.write "None: is there a None literal in the EO language?"
+                        xusername.write ((((xself).xclean_username)).apply ((xremote_user)))
+                        ((xself).xcreate_unknown_user).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xuser)) ((xcreated)))) ((((((xUserModel).x_default_manager).xget_or_create)).apply ((((unsupported)).apply ((((unsupported)).apply (((xUserModel).xUSERNAME_FIELD)) ((xusername)))))))))
+                          (((unsupported)).apply (((xUserModel).xDoesNotExist)))
+                            xuser.write (((((xUserModel).x_default_manager).xget_by_natural_key)).apply ((xusername)))
+                        (((xfunc_supports_parameter)).apply (((xself).xconfigure_user)) ("created")).if
+                          xuser.write (((unsupported)).apply (((xself).xconfigure_user)) ((xrequest)) ((xuser)) ((xcreated)))
+                          seq
+                            (((unsupported)).apply (((xwarnings).xwarn)) ("`created=True` must be added to the signature of {self.__class__.__qualname__}.configure_user().") ((xRemovedInDjango50Warning)))
+                            (xcreated).if
+                              xuser.write ((((xself).xconfigure_user)).apply ((xrequest)) ((xuser)))
+                        (((unsupported)).apply ((((((xself).xuser_can_authenticate)).apply ((xuser))).if (xuser) "None: is there a None literal in the EO language?")))
+                xclean_username.write
+                  [xself xusername]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xusername)))
+                xconfigure_user.write
+                  [xself xrequest xuser xcreated]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xuser)))
+            (((unsupported)).apply ((xRemoteUserBackend)))
+              xuser_can_authenticate.write
+                [xself xuser]
+                  seq > @
+                    (((unsupported)).apply (TRUE))

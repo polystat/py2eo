@@ -1,0 +1,127 @@
+memory > xcm
+memory > xforms
+memory > xTestCase
+memory > xDurationModel
+memory > xexceptions
+memory > xserializers
+memory > xNullDurationModel
+memory > xmodels
+memory > xjson
+memory > xSimpleTestCase
+memory > xdatetime
+memory > xlist
+[] > test_durationfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_gt
+        memory > xtest_data
+        memory > xsetUpTestData
+        memory > xtest_fractional_seconds
+        memory > xtest_formfield
+        memory > xtest_loading
+        memory > xtest_create_empty
+        memory > xtest_invalid_string
+        memory > xtest_dumping
+        memory > xtest_simple_roundtrip
+        memory > xtest_exact
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_simple_roundtrip.write
+                  [xself]
+                    memory > xduration
+                    memory > xloaded
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) ((((unsupported)).apply)))
+                        (((unsupported)).apply ((((xDurationModel).xobjects).xcreate)) ((xduration)))
+                        xloaded.write (((((xDurationModel).xobjects).xget)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xloaded).xfield)) ((xduration)))
+                xtest_create_empty.write
+                  [xself]
+                    memory > xloaded
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xNullDurationModel).xobjects).xcreate)).apply)
+                        xloaded.write (((((xNullDurationModel).xobjects).xget)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xloaded).xfield)))
+                xtest_fractional_seconds.write
+                  [xself]
+                    memory > xd
+                    memory > xvalue
+                    seq > @
+                      seq
+                        xvalue.write (((unsupported)).apply (((xdatetime).xtimedelta)) (2.05))
+                        xd.write (((unsupported)).apply ((((xDurationModel).xobjects).xcreate)) ((xvalue)))
+                        bogusForceDataize.write ((((xd).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xd).xfield)) ((xvalue)))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xobjs)) ((((unsupported)).apply ((((unsupported)).apply ((((xDurationModel).xobjects).xcreate)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1))))) ((((unsupported)).apply ((((xDurationModel).xobjects).xcreate)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1))))) ((((unsupported)).apply ((((xDurationModel).xobjects).xcreate)) ((((unsupported)).apply (((xdatetime).xtimedelta)) ((1.neg)))))))))
+                xtest_exact.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xDurationModel).xobjects).xfilter)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1))))) ((((unsupported)).apply ((((unsupported)).apply (((xself).xobjs)) (0))))))
+                xtest_gt.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xDurationModel).xobjects).xfilter)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (0))))) ((((unsupported)).apply ((((unsupported)).apply (((xself).xobjs)) (0))) ((((unsupported)).apply (((xself).xobjs)) (1))))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_data.write "[{\"fields\": {\"field\": \"1 01:00:00\"}, \"model\": \"model_fields.durationmodel\", \"pk\": null}]"
+                xtest_dumping.write
+                  [xself]
+                    memory > xinstance
+                    memory > xdata
+                    seq > @
+                      seq
+                        xinstance.write (((unsupported)).apply ((xDurationModel)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1))))
+                        xdata.write ((((xserializers).xserialize)).apply ("json") ((((unsupported)).apply ((xinstance)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xjson).xloads)).apply ((xdata)))) (((((xjson).xloads)).apply (((xself).xtest_data)))))
+                xtest_loading.write
+                  [xself]
+                    memory > xinstance
+                    seq > @
+                      seq
+                        xinstance.write ((((unsupported)).apply ((((xlist)).apply (((((xserializers).xdeserialize)).apply ("json") (((xself).xtest_data)))))) (0)).xobject)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xinstance).xfield)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_invalid_string.write
+                [xself]
+                  memory > xfield
+                  seq > @
+                    seq
+                      xfield.write ((((xmodels).xDurationField)).apply)
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply (((xexceptions).xValidationError)))) ((xcm)))
+                        bogusForceDataize.write ((((xfield).xclean)).apply ("not a datetime") ("None: is there a None literal in the EO language?"))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xcode)) ("invalid"))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcm).xexception).xmessage).mod (((xcm).xexception).xparams))) ("“not a datetime” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[.uuuuuu] format."))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_formfield.write
+                [xself]
+                  memory > xfield
+                  seq > @
+                    seq
+                      xfield.write ((((xmodels).xDurationField)).apply)
+                      bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((((xfield).xformfield)).apply)) (((xforms).xDurationField)))

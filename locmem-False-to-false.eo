@@ -1,0 +1,200 @@
+memory > xfalse
+memory > xpickle
+memory > xValueError
+memory > xOrderedDict
+memory > xrange
+memory > x_
+memory > xKeyError
+memory > xBaseCache
+memory > xtime
+memory > xi
+memory > xsuper
+memory > xLock
+memory > xlen
+memory > xkey
+[] > locmem
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdelete
+        memory > xhas_key
+        memory > xget
+        memory > xclear
+        memory > x_set
+        memory > x_has_expired
+        memory > xincr
+        memory > xset
+        memory > x_delete
+        memory > xpickle_protocol
+        memory > xtouch
+        memory > x__init__
+        memory > xadd
+        memory > x_caches
+        memory > x_locks
+        memory > x_cull
+        memory > x_expire_info
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            x_caches.write (((unsupported)).apply)
+            x_expire_info.write (((unsupported)).apply)
+            x_locks.write (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCache)))
+              seq
+                xpickle_protocol.write ((xpickle).xHIGHEST_PROTOCOL)
+                x__init__.write
+                  [xself xname xparams]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xparams)))
+                        (((unsupported)).apply (((xself).x_cache)) (((((x_caches).xsetdefault)).apply ((xname)) ((((xOrderedDict)).apply)))))
+                        (((unsupported)).apply (((xself).x_expire_info)) (((((x_expire_info).xsetdefault)).apply ((xname)) ((((unsupported)).apply)))))
+                        (((unsupported)).apply (((xself).x_lock)) (((((x_locks).xsetdefault)).apply ((xname)) ((((xLock)).apply)))))
+                xadd.write
+                  [xself xkey xvalue xtimeout xversion]
+                    memory > xpickled
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        xpickled.write ((((xpickle).xdumps)).apply ((xvalue)) (((xself).xpickle_protocol)))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          seq
+                            ((((xself).x_has_expired)).apply ((xkey))).if
+                              seq
+                                bogusForceDataize.write ((((xself).x_set)).apply ((xkey)) ((xpickled)) ((xtimeout)))
+                                (((unsupported)).apply (TRUE))
+                            (((unsupported)).apply ((xfalse)))
+                xget.write
+                  [xself xkey xdefault xversion]
+                    memory > xpickled
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          seq
+                            ((((xself).x_has_expired)).apply ((xkey))).if
+                              seq
+                                bogusForceDataize.write ((((xself).x_delete)).apply ((xkey)))
+                                (((unsupported)).apply ((xdefault)))
+                            xpickled.write (((unsupported)).apply (((xself).x_cache)) ((xkey)))
+                            (((unsupported)).apply ((((xself).x_cache).xmove_to_end)) ((xkey)) ((xfalse)))
+                        (((unsupported)).apply (((((xpickle).xloads)).apply ((xpickled)))))
+                x_set.write
+                  [xself xkey xvalue xtimeout]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xlen)).apply (((xself).x_cache))).geq ((xself).x_max_entries)).if
+                          bogusForceDataize.write ((((xself).x_cull)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x_cache)) ((xkey)))) ((xvalue)))
+                        (((unsupported)).apply ((((xself).x_cache).xmove_to_end)) ((xkey)) ((xfalse)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x_expire_info)) ((xkey)))) (((((xself).xget_backend_timeout)).apply ((xtimeout)))))
+                xset.write
+                  [xself xkey xvalue xtimeout xversion]
+                    memory > xpickled
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        xpickled.write ((((xpickle).xdumps)).apply ((xvalue)) (((xself).xpickle_protocol)))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          bogusForceDataize.write ((((xself).x_set)).apply ((xkey)) ((xpickled)) ((xtimeout)))
+                xtouch.write
+                  [xself xkey xtimeout xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          seq
+                            ((((xself).x_has_expired)).apply ((xkey))).if
+                              (((unsupported)).apply ((xfalse)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).x_expire_info)) ((xkey)))) (((((xself).xget_backend_timeout)).apply ((xtimeout)))))
+                            (((unsupported)).apply (TRUE))
+                xincr.write
+                  [xself xkey xdelta xversion]
+                    memory > xnew_value
+                    memory > xvalue
+                    memory > xpickled
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          seq
+                            ((((xself).x_has_expired)).apply ((xkey))).if
+                              seq
+                                bogusForceDataize.write ((((xself).x_delete)).apply ((xkey)))
+                                (((unsupported)).apply ((((xValueError)).apply (("Key '%s' not found".mod (xkey))))))
+                            xpickled.write (((unsupported)).apply (((xself).x_cache)) ((xkey)))
+                            xvalue.write ((((xpickle).xloads)).apply ((xpickled)))
+                            xnew_value.write ((xvalue).add (xdelta))
+                            xpickled.write ((((xpickle).xdumps)).apply ((xnew_value)) (((xself).xpickle_protocol)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).x_cache)) ((xkey)))) ((xpickled)))
+                            (((unsupported)).apply ((((xself).x_cache).xmove_to_end)) ((xkey)) ((xfalse)))
+                        (((unsupported)).apply ((xnew_value)))
+                xhas_key.write
+                  [xself xkey xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          seq
+                            ((((xself).x_has_expired)).apply ((xkey))).if
+                              seq
+                                bogusForceDataize.write ((((xself).x_delete)).apply ((xkey)))
+                                (((unsupported)).apply ((xfalse)))
+                            (((unsupported)).apply (TRUE))
+                x_has_expired.write
+                  [xself xkey]
+                    memory > xexp
+                    seq > @
+                      seq
+                        xexp.write (((((xself).x_expire_info).xget)).apply ((xkey)) ((1.neg)))
+                        (((unsupported)).apply (((((unsupported)).apply ((xexp)) ("None: is there a None literal in the EO language?")).and ((xexp).leq ((((xtime).xtime)).apply)))))
+                x_cull.write
+                  [xself]
+                    memory > xcount
+                    seq > @
+                      (((xself).x_cull_frequency).eq 0).if
+                        seq
+                          bogusForceDataize.write (((((xself).x_cache).xclear)).apply)
+                          bogusForceDataize.write (((((xself).x_expire_info).xclear)).apply)
+                        seq
+                          xcount.write (((unsupported)).apply ((((xlen)).apply (((xself).x_cache)))) (((xself).x_cull_frequency)))
+                          (((unsupported)).apply ((xi)) ((((xrange)).apply ((xcount)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xkey)) ((x_)))) ((((((xself).x_cache).xpopitem)).apply)))
+                              (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).x_expire_info)) ((xkey)))))))
+                x_delete.write
+                  [xself xkey]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xKeyError)))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).x_cache)) ((xkey)))))))
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).x_expire_info)) ((xkey)))))))
+                          (((unsupported)).apply ((xfalse)))
+                        (((unsupported)).apply (TRUE))
+                xdelete.write
+                  [xself xkey xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          (((unsupported)).apply (((((xself).x_delete)).apply ((xkey)))))
+                xclear.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).x_lock)))
+                        seq
+                          bogusForceDataize.write (((((xself).x_cache).xclear)).apply)
+                          bogusForceDataize.write (((((xself).x_expire_info).xclear)).apply)

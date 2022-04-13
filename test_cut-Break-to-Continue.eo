@@ -1,0 +1,90 @@
+memory > xcut
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_cut
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_non_string_input
+        memory > xtest_cut05
+        memory > xtest_cut06
+        memory > xtest_non_matching_string
+        memory > xtest_cut01
+        memory > xtest_cut03
+        memory > xtest_characters
+        memory > xtest_cut04
+        memory > xtest_cut02
+        memory > xtest_character
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_cut01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cut01") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&amp;y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&y &amp;y"))
+                xtest_cut02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cut02") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&amp;y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&amp;y &amp;y"))
+                xtest_cut03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cut03") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&amp;y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("xy xamp;y"))
+                xtest_cut04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cut04") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&amp;y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("xy xamp;y"))
+                xtest_cut05.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cut05") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&amp;y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&y x&ampy"))
+                xtest_cut06.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cut06") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&amp;y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&amp;y x&amp;ampy"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_character.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcut)).apply ("a string to be mangled") ("a"))) (" string to be mngled"))
+                xtest_characters.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcut)).apply ("a string to be mangled") ("ng"))) ("a stri to be maled"))
+                xtest_non_matching_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcut)).apply ("a string to be mangled") ("strings"))) ("a string to be mangled"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcut)).apply (123) ("2"))) ("13"))

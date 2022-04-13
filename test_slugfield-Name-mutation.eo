@@ -1,0 +1,40 @@
+memory > xBigS
+memory > xUnicodeSlugField
+memory > xTestCase
+[] > test_slugfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_slugfield_max_length
+        memory > xtest_slugfield_unicode_max_length
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_slugfield_max_length.write
+                  [xself]
+                    memory > xbs
+                    memory > xbs2
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xbs2.write (((unsupported)).apply ((((xBigS).xobjects).xcreate)) (("slug".mul 50)))
+                        xbs.write (((unsupported)).apply ((((xBigS).xobjects).xget)) (((xbs).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xbs).xs)) (("slug".mul 50)))
+                xtest_slugfield_unicode_max_length.write
+                  [xself]
+                    memory > xbs
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xbs.write (((unsupported)).apply ((((xUnicodeSlugField).xobjects).xcreate)) (("你好你好".mul 50)))
+                        xbs.write (((unsupported)).apply ((((xUnicodeSlugField).xobjects).xget)) (((xbs).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xbs).xs)) (("你好你好".mul 50)))

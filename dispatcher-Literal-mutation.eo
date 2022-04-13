@@ -1,0 +1,235 @@
+memory > xthreading
+memory > xlist
+memory > xindex
+memory > xValueError
+memory > xnamed
+memory > xfunc_accepts_kwargs
+memory > xrange
+memory > x_
+memory > xerr
+memory > xsettings
+memory > xs
+memory > xr_key
+memory > xreceiverkey
+memory > xobject
+memory > xcallable
+memory > xany
+memory > xException
+memory > xr
+memory > xhasattr
+memory > xbool
+memory > xtuple
+memory > xweakref
+memory > xid
+memory > xr_senderkey
+memory > xkwargs
+memory > xisinstance
+memory > xlen
+memory > xTypeError
+memory > xlogging
+[] > dispatcher
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xlogger
+        memory > xdisconnect
+        memory > xsend_robust
+        memory > x_live_receivers
+        memory > xconnect
+        memory > xNO_RECEIVERS
+        memory > xreceiver
+        memory > xsend
+        memory > x_make_id
+        memory > xNONE_ID
+        memory > xhas_listeners
+        memory > x_remove_receiver
+        memory > x_clear_dead_receivers
+        memory > x__init__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xlogger.write ((((xlogging).xgetLogger)).apply ("django.dispatch"))
+            x_make_id.write
+              [xtarget]
+                seq > @
+                  seq
+                    (((xhasattr)).apply ((xtarget)) ("__func__")).if
+                      (((unsupported)).apply ((((unsupported)).apply ((((xid)).apply (((xtarget).x__self__)))) ((((xid)).apply (((xtarget).x__func__)))))))
+                    (((unsupported)).apply ((((xid)).apply ((xtarget)))))
+            xNONE_ID.write (((x_make_id)).apply ("None: is there a None literal in the EO language?"))
+            xNO_RECEIVERS.write (((xobject)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xuse_caching]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xreceivers)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xlock)) (((((xthreading).xLock)).apply)))
+                        (((unsupported)).apply (((xself).xuse_caching)) ((xuse_caching)))
+                        (((unsupported)).apply (((xself).xsender_receivers_cache)) (((xuse_caching).if ((((xweakref).xWeakKeyDictionary)).apply) (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).x_dead_receivers)) (FALSE))
+                xconnect.write
+                  [xself xreceiver xsender xweak xdispatch_uid]
+                    memory > xlookup_key
+                    memory > xref
+                    memory > xreceiver_object
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((xsettings).xconfigured).and ((xsettings).xDEBUG)).if
+                          seq
+                            ((((xcallable)).apply ((xreceiver))).not).if
+                              (((unsupported)).apply ((((xTypeError)).apply ("Signal receivers must be callable."))))
+                            ((((xfunc_accepts_kwargs)).apply ((xreceiver))).not).if
+                              (((unsupported)).apply ((((xValueError)).apply ("Signal receivers must accept keyword arguments (**kwargs)."))))
+                        (xdispatch_uid).if
+                          xlookup_key.write (((unsupported)).apply ((xdispatch_uid)) ((((x_make_id)).apply ((xsender)))))
+                          xlookup_key.write (((unsupported)).apply ((((x_make_id)).apply ((xreceiver)))) ((((x_make_id)).apply ((xsender)))))
+                        (xweak).if
+                          seq
+                            xref.write ((xweakref).xref)
+                            xreceiver_object.write (xreceiver)
+                            ((((xhasattr)).apply ((xreceiver)) ("__self__")).and (((xhasattr)).apply ((xreceiver)) ("__func__"))).if
+                              seq
+                                xref.write ((xweakref).xWeakMethod)
+                                xreceiver_object.write ((xreceiver).x__self__)
+                            xreceiver.write (((xref)).apply ((xreceiver)))
+                            bogusForceDataize.write ((((xweakref).xfinalize)).apply ((xreceiver_object)) (((xself).x_remove_receiver)))
+                        (((unsupported)).apply (((xself).xlock)))
+                          seq
+                            bogusForceDataize.write ((((xself).x_clear_dead_receivers)).apply)
+                            ((((xany)).apply ((((unsupported)).apply (((xr_key).eq (xlookup_key))) ((((unsupported)).apply ((xr_key)) ((x_)))) (((xself).xreceivers))))).not).if
+                              bogusForceDataize.write (((((xself).xreceivers).xappend)).apply ((((unsupported)).apply ((xlookup_key)) ((xreceiver)))))
+                            bogusForceDataize.write (((((xself).xsender_receivers_cache).xclear)).apply)
+                xdisconnect.write
+                  [xself xreceiver xsender xdispatch_uid]
+                    memory > xlookup_key
+                    memory > xdisconnected
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (xdispatch_uid).if
+                          xlookup_key.write (((unsupported)).apply ((xdispatch_uid)) ((((x_make_id)).apply ((xsender)))))
+                          xlookup_key.write (((unsupported)).apply ((((x_make_id)).apply ((xreceiver)))) ((((x_make_id)).apply ((xsender)))))
+                        xdisconnected.write FALSE
+                        (((unsupported)).apply (((xself).xlock)))
+                          seq
+                            bogusForceDataize.write ((((xself).x_clear_dead_receivers)).apply)
+                            (((unsupported)).apply ((xindex)) ((((xrange)).apply ((((xlen)).apply (((xself).xreceivers)))))))
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((xr_key)) ((x_)))) ((((unsupported)).apply (((xself).xreceivers)) ((xindex)))))
+                                ((xr_key).eq (xlookup_key)).if
+                                  seq
+                                    xdisconnected.write TRUE
+                                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).xreceivers)) ((xindex)))))))))
+                                    (((unsupported)).apply)
+                            bogusForceDataize.write (((((xself).xsender_receivers_cache).xclear)).apply)
+                        (((unsupported)).apply ((xdisconnected)))
+                xhas_listeners.write
+                  [xself xsender]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xbool)).apply (((((xself).x_live_receivers)).apply ((xsender)))))))
+                xsend.write
+                  [xself xsender]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((((xself).xreceivers).not).or (((unsupported)).apply ((((((xself).xsender_receivers_cache).xget)).apply ((xsender)))) ((xNO_RECEIVERS)))).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xreceiver)) ((((unsupported)).apply ((xreceiver)) ((xself)) ((xsender)) ((((unsupported)).apply ((xnamed)))))))) ((xreceiver)) (((((xself).x_live_receivers)).apply ((xsender)))))))
+                xsend_robust.write
+                  [xself xsender]
+                    memory > xresponses
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((((xself).xreceivers).not).or (((unsupported)).apply ((((((xself).xsender_receivers_cache).xget)).apply ((xsender)))) ((xNO_RECEIVERS)))).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        xresponses.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xreceiver)) (((((xself).x_live_receivers)).apply ((xsender)))))
+                          (((unsupported)).apply ((xException)))
+                            xresponse.write (((unsupported)).apply ((xreceiver)) ((xself)) ((xsender)) ((((unsupported)).apply ((xnamed)))))
+                            seq
+                              (((unsupported)).apply (((xlogger).xerror)) ("Error calling %s in Signal.send_robust() (%s)") (((xreceiver).x__qualname__)) ((xerr)) ((xerr)))
+                              bogusForceDataize.write ((((xresponses).xappend)).apply ((((unsupported)).apply ((xreceiver)) ((xerr)))))
+                            bogusForceDataize.write ((((xresponses).xappend)).apply ((((unsupported)).apply ((xreceiver)) ((xresponse)))))
+                        (((unsupported)).apply ((xresponses)))
+                x_clear_dead_receivers.write
+                  [xself]
+                    seq > @
+                      ((xself).x_dead_receivers).if
+                        seq
+                          (((unsupported)).apply (((xself).x_dead_receivers)) (FALSE))
+                          (((unsupported)).apply (((xself).xreceivers)) ((((unsupported)).apply ((xr)) ((xr)) (((xself).xreceivers)) ((((((xisinstance)).apply ((((unsupported)).apply ((xr)) (1))) (((xweakref).xReferenceType))).and (((unsupported)).apply ((((((unsupported)).apply ((xr)) (1))).apply)) ("None: is there a None literal in the EO language?"))).not)))))
+                x_live_receivers.write
+                  [xself xsender]
+                    memory > xsenderkey
+                    memory > xreceivers
+                    memory > xnon_weak_receivers
+                    memory > xreceiver
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xreceivers.write "None: is there a None literal in the EO language?"
+                        (((xself).xuse_caching).and (((xself).x_dead_receivers).not)).if
+                          seq
+                            xreceivers.write (((((xself).xsender_receivers_cache).xget)).apply ((xsender)))
+                            (((unsupported)).apply ((xreceivers)) ((xNO_RECEIVERS))).if
+                              (((unsupported)).apply ((((unsupported)).apply)))
+                        (((unsupported)).apply ((xreceivers)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (((xself).xlock)))
+                            seq
+                              bogusForceDataize.write ((((xself).x_clear_dead_receivers)).apply)
+                              xsenderkey.write (((x_make_id)).apply ((xsender)))
+                              xreceivers.write (((unsupported)).apply)
+                              (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xreceiverkey)) ((xr_senderkey)))) ((xreceiver)))) (((xself).xreceivers)))
+                                (((xr_senderkey).eq (xNONE_ID)).or ((xr_senderkey).eq (xsenderkey))).if
+                                  bogusForceDataize.write ((((xreceivers).xappend)).apply ((xreceiver)))
+                              ((xself).xuse_caching).if
+                                ((xreceivers).not).if
+                                  (((unsupported)).apply ((((unsupported)).apply (((xself).xsender_receivers_cache)) ((xsender)))) ((xNO_RECEIVERS)))
+                                  (((unsupported)).apply ((((unsupported)).apply (((xself).xsender_receivers_cache)) ((xsender)))) ((xreceivers)))
+                        xnon_weak_receivers.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xreceiver)) ((xreceivers)))
+                          (((xisinstance)).apply ((xreceiver)) (((xweakref).xReferenceType))).if
+                            seq
+                              xreceiver.write (((xreceiver)).apply)
+                              (((unsupported)).apply ((xreceiver)) ("None: is there a None literal in the EO language?")).if
+                                bogusForceDataize.write ((((xnon_weak_receivers).xappend)).apply ((xreceiver)))
+                            bogusForceDataize.write ((((xnon_weak_receivers).xappend)).apply ((xreceiver)))
+                        (((unsupported)).apply ((xnon_weak_receivers)))
+                x_remove_receiver.write
+                  [xself xreceiver]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).x_dead_receivers)) (TRUE))
+            xreceiver.write
+              [xsignal]
+                memory > x_decorator
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    x_decorator.write
+                      [xfunc]
+                        seq > @
+                          seq
+                            (((xisinstance)).apply ((xsignal)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                              (((unsupported)).apply ((xs)) ((xsignal)))
+                                bogusForceDataize.write ((((xs).xconnect)).apply ((xfunc)) ((((unsupported)).apply ((xkwargs)))))
+                              bogusForceDataize.write ((((xsignal).xconnect)).apply ((xfunc)) ((((unsupported)).apply ((xkwargs)))))
+                            (((unsupported)).apply ((xfunc)))
+                    (((unsupported)).apply ((x_decorator)))

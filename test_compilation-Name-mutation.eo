@@ -1,0 +1,350 @@
+memory > xlang
+memory > xall
+memory > xcall_command
+memory > xMessageCompilationTests
+memory > xexecute_from_command_line
+memory > xgettext
+memory > xsuper
+memory > xoverride_settings
+memory > xrun
+memory > xtranslation
+memory > xRunInTmpDirMixin2
+memory > xstat
+memory > xcaptured_stdout
+memory > xPath
+memory > xProjectAndAppTests
+memory > xargs
+memory > xmock
+memory > xos
+memory > xfind_command
+memory > xStringIO
+memory > xunittest
+memory > xcopytree
+memory > xkwargs
+memory > xcaptured_stderr
+memory > xCommandError
+memory > xSimpleTestCase
+[] > test_compilation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xwork_subdir
+        memory > xtest_multiple_locales
+        memory > xhas_msgfmt
+        memory > xMO_FILE
+        memory > xtest_msgfmt_error_including_non_ascii
+        memory > xPROJECT_MO_FILE
+        memory > xtest_error_reported_by_msgfmt
+        memory > xCACHE_DIR
+        memory > xtest_multiple_locales_excluded_with_locale
+        memory > xtest_no_compile_when_unneeded
+        memory > xtest_app_locale_compiled
+        memory > xMO_FILE_EN
+        memory > xtest_multiple_locale_dirs_ignored
+        memory > xtest_one_locale_excluded
+        memory > xtest_fuzzy_compiling
+        memory > xassertNoneExist
+        memory > xLOCALE
+        memory > xassertAllExist
+        memory > xsetUp
+        memory > xtest_ignores_based_on_pattern
+        memory > xtest_nofuzzy_compiling
+        memory > xtest_one_locale_dir_ignored
+        memory > xMO_FILE_HR
+        memory > xgettext_module
+        memory > xtest_one_locale_excluded_with_locale
+        memory > xMO_FILE_FR
+        memory > xtest_one_locale
+        memory > xtest_command_help
+        memory > xtest_percent_symbol_in_po_file
+        memory > xMakeMessagesCommand
+        memory > xtest_bom_rejection
+        memory > xtest_multiple_locales_excluded
+        memory > xAPP_MO_FILE
+        memory > xtest_no_write_access
+        memory > xNESTED_DIR
+        memory > xtest_locale_paths_pathlib
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xhas_msgfmt.write (((xfind_command)).apply ("msgfmt"))
+            (((unsupported)).apply ((xRunInTmpDirMixin2)) ((xSimpleTestCase)) (((((xunittest).xskipUnless)).apply ((xhas_msgfmt)) ("msgfmt is mandatory for compilation tests"))))
+              xwork_subdir.write "commands"
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xLOCALE.write "es_AR"
+                xMO_FILE.write ("locale/%s/LC_MESSAGES/django.mo".mod (xLOCALE))
+                xMO_FILE_EN.write "locale/en/LC_MESSAGES/django.mo"
+                xtest_bom_rejection.write
+                  [xself]
+                    memory > xstderr
+                    seq > @
+                      seq
+                        xstderr.write (((xStringIO)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xCommandError)) ("compilemessages generated one or more errors."))))
+                          (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply (((xself).xLOCALE)))) (0) ((xstderr)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("file has a BOM (Byte Order Mark)") (((((xstderr).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply (((xself).xMO_FILE)))))
+                xtest_no_write_access.write
+                  [xself]
+                    memory > xmo_file_en
+                    memory > xold_mode
+                    memory > xerr_buffer
+                    seq > @
+                      seq
+                        xmo_file_en.write (((xPath)).apply (((xself).xMO_FILE_EN)))
+                        xerr_buffer.write (((xStringIO)).apply)
+                        xold_mode.write (((((xmo_file_en).xstat)).apply).xst_mode)
+                        bogusForceDataize.write ((((xmo_file_en).xchmod)).apply (((xstat).xS_IREAD)))
+                        bogusForceDataize.write (((((((xmo_file_en).xwith_suffix)).apply (".po")).xtouch)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xCommandError)) ("compilemessages generated one or more errors."))))
+                              (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("en"))) ((xerr_buffer)) (0))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("not writable location") (((((xerr_buffer).xgetvalue)).apply)))
+                          bogusForceDataize.write ((((xmo_file_en).xchmod)).apply ((xold_mode)))
+                xtest_no_compile_when_unneeded.write
+                  [xself]
+                    memory > xstdout
+                    memory > xmo_file_en
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmo_file_en.write (((xPath)).apply (((xself).xMO_FILE_EN)))
+                        bogusForceDataize.write ((((xmo_file_en).xtouch)).apply)
+                        xstdout.write (((xStringIO)).apply)
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("en"))) ((xstdout)) (1))
+                        xmsg.write ("%s” is already compiled and up to date.".mod ((((xmo_file_en).xwith_suffix)).apply (".po")))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xmsg)) (((((xstdout).xgetvalue)).apply)))
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xLOCALE.write "fr"
+                xMO_FILE.write ("locale/%s/LC_MESSAGES/django.mo".mod (xLOCALE))
+                xtest_percent_symbol_in_po_file.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply (((xself).xLOCALE)))) (0))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply (((xself).xMO_FILE)))))
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xMO_FILE_HR.write "None: is there a None literal in the EO language?"
+                xMO_FILE_FR.write "None: is there a None literal in the EO language?"
+                xsetUp.write
+                  [xself]
+                    memory > xlocaledir
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        xlocaledir.write (((((xos).xpath).xjoin)).apply (((xself).xtest_dir)) ("locale"))
+                        (((unsupported)).apply (((xself).xMO_FILE_HR)) ((((((xos).xpath).xjoin)).apply ((xlocaledir)) ("hr/LC_MESSAGES/django.mo"))))
+                        (((unsupported)).apply (((xself).xMO_FILE_FR)) ((((((xos).xpath).xjoin)).apply ((xlocaledir)) ("fr/LC_MESSAGES/django.mo"))))
+                xtest_one_locale.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((((xos).xpath).xjoin)).apply (((xself).xtest_dir)) ("locale"))))))))
+                        seq
+                          (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("hr"))) (0))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply (((xself).xMO_FILE_HR)))))
+                xtest_multiple_locales.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((((xos).xpath).xjoin)).apply (((xself).xtest_dir)) ("locale"))))))))
+                        seq
+                          (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("hr") ("fr"))) (0))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply (((xself).xMO_FILE_HR)))))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply (((xself).xMO_FILE_FR)))))
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xwork_subdir.write "exclude"
+                xMO_FILE.write "locale/%s/LC_MESSAGES/django.mo"
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        bogusForceDataize.write (((xcopytree)).apply ("canned_locale") ("locale"))
+                xtest_command_help.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xcaptured_stdout)).apply)) ((((xcaptured_stderr)).apply)))
+                        bogusForceDataize.write (((xexecute_from_command_line)).apply ((((unsupported)).apply ("django-admin") ("help") ("compilemessages"))))
+                xtest_one_locale_excluded.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("it"))) (0))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "en")))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "fr")))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "it")))))
+                xtest_multiple_locales_excluded.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("it") ("fr"))) (0))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "en")))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "fr")))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "it")))))
+                xtest_one_locale_excluded_with_locale.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("en") ("fr"))) ((((unsupported)).apply ("fr"))) (0))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "en")))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "fr")))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "it")))))
+                xtest_multiple_locales_excluded_with_locale.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("en") ("fr") ("it"))) ((((unsupported)).apply ("fr") ("it"))) (0))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "en")))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "fr")))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((((xself).xMO_FILE).mod "it")))))
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xwork_subdir.write "exclude"
+                xMO_FILE.write "%s/%s/LC_MESSAGES/django.mo"
+                xCACHE_DIR.write ((((xPath)).apply ("cache")).div "locale")
+                xNESTED_DIR.write (((((xPath)).apply ("outdated")).div "v1").div "locale")
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        bogusForceDataize.write (((xcopytree)).apply ("canned_locale") ("locale"))
+                        bogusForceDataize.write (((xcopytree)).apply ("canned_locale") (((xself).xCACHE_DIR)))
+                        bogusForceDataize.write (((xcopytree)).apply ("canned_locale") (((xself).xNESTED_DIR)))
+                xassertAllExist.write
+                  [xself xdir xlangs]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xall)).apply ((((unsupported)).apply (((((((xPath)).apply ((((xself).xMO_FILE).mod (((unsupported)).apply ((xdir)) ((xlang)))))).xexists)).apply)) ((xlang)) ((xlangs)))))))
+                xassertNoneExist.write
+                  [xself xdir xlangs]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xall)).apply ((((unsupported)).apply ((((unsupported)).apply (((((((xPath)).apply ((((xself).xMO_FILE).mod (((unsupported)).apply ((xdir)) ((xlang)))))).xexists)).apply)) (FALSE))) ((xlang)) ((xlangs)))))))
+                xtest_one_locale_dir_ignored.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("cache"))) (0))
+                        bogusForceDataize.write ((((xself).xassertAllExist)).apply ("locale") ((((unsupported)).apply ("en") ("fr") ("it"))))
+                        bogusForceDataize.write ((((xself).xassertNoneExist)).apply (((xself).xCACHE_DIR)) ((((unsupported)).apply ("en") ("fr") ("it"))))
+                        bogusForceDataize.write ((((xself).xassertAllExist)).apply (((xself).xNESTED_DIR)) ((((unsupported)).apply ("en") ("fr") ("it"))))
+                xtest_multiple_locale_dirs_ignored.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("cache/locale") ("outdated"))) (0))
+                        bogusForceDataize.write ((((xself).xassertAllExist)).apply ("locale") ((((unsupported)).apply ("en") ("fr") ("it"))))
+                        bogusForceDataize.write ((((xself).xassertNoneExist)).apply (((xself).xCACHE_DIR)) ((((unsupported)).apply ("en") ("fr") ("it"))))
+                        bogusForceDataize.write ((((xself).xassertNoneExist)).apply (((xself).xNESTED_DIR)) ((((unsupported)).apply ("en") ("fr") ("it"))))
+                xtest_ignores_based_on_pattern.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("*/locale"))) (0))
+                        bogusForceDataize.write ((((xself).xassertAllExist)).apply ("locale") ((((unsupported)).apply ("en") ("fr") ("it"))))
+                        bogusForceDataize.write ((((xself).xassertNoneExist)).apply (((xself).xCACHE_DIR)) ((((unsupported)).apply ("en") ("fr") ("it"))))
+                        bogusForceDataize.write ((((xself).xassertNoneExist)).apply (((xself).xNESTED_DIR)) ((((unsupported)).apply ("en") ("fr") ("it"))))
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xtest_error_reported_by_msgfmt.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xCommandError)))))
+                        (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("ja"))) (0))
+                xtest_msgfmt_error_including_non_ascii.write
+                  [xself]
+                    memory > xenv
+                    memory > xstderr
+                    memory > xcmd
+                    seq > @
+                      seq
+                        xenv.write (((((xos).xenviron).xcopy)).apply)
+                        bogusForceDataize.write ((((xenv).xupdate)).apply ((((unsupported)).apply ("LC_ALL") ("C"))))
+                        (((unsupported)).apply (((((xmock).xpatch)).apply ("django.core.management.utils.run") ((((unsupported)).apply ((((unsupported)).apply ((xrun)) ((((unsupported)).apply ((xargs)))) ((xenv)) ((((unsupported)).apply ((xkwargs)))))))))))
+                          seq
+                            xcmd.write (((xMakeMessagesCommand)).apply)
+                            (((xcmd).xgettext_version).less (((unsupported)).apply (0) (18) (3))).if
+                              bogusForceDataize.write ((((xself).xskipTest)).apply ("python-brace-format is a recent gettext addition."))
+                            xstderr.write (((xStringIO)).apply)
+                            (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xCommandError)) ("compilemessages generated one or more errors"))))
+                              (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("ko"))) ((((xStringIO)).apply)) ((xstderr)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("' cannot start a field name") (((((xstderr).xgetvalue)).apply)))
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xLOCALE.write "ru"
+                xPROJECT_MO_FILE.write ("locale/%s/LC_MESSAGES/django.mo".mod (xLOCALE))
+                xAPP_MO_FILE.write ("app_with_locale/locale/%s/LC_MESSAGES/django.mo".mod (xLOCALE))
+            (((unsupported)).apply ((xProjectAndAppTests)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        (((unsupported)).apply (((xgettext_module).x_translations)) ((((unsupported)).apply)))
+                xtest_nofuzzy_compiling.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((((xos).xpath).xjoin)).apply (((xself).xtest_dir)) ("locale"))))))))
+                        seq
+                          (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply (((xself).xLOCALE)))) (0))
+                          (((unsupported)).apply (((((xtranslation).xoverride)).apply (((xself).xLOCALE)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgettext)).apply ("Lenin"))) ("Ленин"))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgettext)).apply ("Vodka"))) ("Vodka"))
+                xtest_fuzzy_compiling.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((((xos).xpath).xjoin)).apply (((xself).xtest_dir)) ("locale"))))))))
+                        seq
+                          (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply (((xself).xLOCALE)))) (TRUE) (0))
+                          (((unsupported)).apply (((((xtranslation).xoverride)).apply (((xself).xLOCALE)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgettext)).apply ("Lenin"))) ("Ленин"))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgettext)).apply ("Vodka"))) ("Водка"))
+            (((unsupported)).apply ((xProjectAndAppTests)))
+              xtest_app_locale_compiled.write
+                [xself]
+                  seq > @
+                    seq
+                      (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply (((xself).xLOCALE)))) (0))
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply (((xself).xPROJECT_MO_FILE)))))
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply (((xself).xAPP_MO_FILE)))))
+            (((unsupported)).apply ((xMessageCompilationTests)))
+              seq
+                xwork_subdir.write "exclude"
+                xtest_locale_paths_pathlib.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply (((((xPath)).apply (((xself).xtest_dir))).div "canned_locale")))))))
+                        seq
+                          (((unsupported)).apply ((xcall_command)) ("compilemessages") ((((unsupported)).apply ("fr"))) (0))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply ("canned_locale/fr/LC_MESSAGES/django.mo"))))

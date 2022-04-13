@@ -1,0 +1,83 @@
+memory > xPathConverter
+memory > xuuid
+memory > xstr
+memory > xUUIDConverter
+memory > xIntConverter
+memory > xStringConverter
+memory > xSlugConverter
+memory > xint
+[] > converters
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_converters
+        memory > xget_converter
+        memory > xregister_converter
+        memory > xto_python
+        memory > xto_url
+        memory > xDEFAULT_CONVERTERS
+        memory > xregex
+        memory > xREGISTERED_CONVERTERS
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                xregex.write "[0-9]-"
+                xto_python.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply ((((xint)).apply ((xvalue)))))
+                xto_url.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply ((((xstr)).apply ((xvalue)))))
+            (((unsupported)).apply)
+              seq
+                xregex.write "[^/]-"
+                xto_python.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply ((xvalue)))
+                xto_url.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply ((xvalue)))
+            (((unsupported)).apply)
+              seq
+                xregex.write "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+                xto_python.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply (((((xuuid).xUUID)).apply ((xvalue)))))
+                xto_url.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply ((((xstr)).apply ((xvalue)))))
+            (((unsupported)).apply ((xStringConverter)))
+              xregex.write "[-a-zA-Z0-9_]-"
+            (((unsupported)).apply ((xStringConverter)))
+              xregex.write ".-"
+            xDEFAULT_CONVERTERS.write (((unsupported)).apply ("int") ((((xIntConverter)).apply)) ("path") ((((xPathConverter)).apply)) ("slug") ((((xSlugConverter)).apply)) ("str") ((((xStringConverter)).apply)) ("uuid") ((((xUUIDConverter)).apply)))
+            xREGISTERED_CONVERTERS.write (((unsupported)).apply)
+            xregister_converter.write
+              [xconverter xtype_name]
+                seq > @
+                  seq
+                    (((unsupported)).apply ((((unsupported)).apply ((xREGISTERED_CONVERTERS)) ((xtype_name)))) ((((xconverter)).apply)))
+                    bogusForceDataize.write ((((xget_converters).xcache_clear)).apply)
+            xget_converters.write
+              []
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xDEFAULT_CONVERTERS)) ((xREGISTERED_CONVERTERS)))))
+            xget_converter.write
+              [xraw_converter]
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ((((xget_converters)).apply)) ((xraw_converter)))))

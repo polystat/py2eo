@@ -1,0 +1,44 @@
+memory > xstr
+memory > xoption
+memory > xvalue
+memory > xgroup
+memory > xBaseCommand
+memory > xint
+memory > xoptions
+[] > mutually_exclusive_required
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    memory > xgroup2
+                    seq > @
+                      seq
+                        xgroup2.write (((unsupported)).apply (((xparser).xadd_mutually_exclusive_group)) (TRUE))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--foo-id") ((xint)) ("?") ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--foo-name") ((xstr)) ("?") ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--foo-list") ((xint)) ("+"))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--append_const") ("append_const") (42))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--const") ("store_const") (31))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--count") ("count"))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--flag_false") ("store_false"))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--flag_true") ("store_true"))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xoption)) ((xvalue)))) (((((xoptions).xitems)).apply)))
+                          (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("%s=%s".mod (((unsupported)).apply ((xoption)) ((xvalue))))))

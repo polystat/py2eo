@@ -1,0 +1,57 @@
+memory > xScientistRef
+memory > xScientist
+memory > xArticle
+memory > xmodels
+[] > tablespaces
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdb_table
+        memory > xreviewers
+        memory > xcode
+        memory > xtitle
+        memory > xReviewers
+        memory > xname
+        memory > xmanaged
+        memory > xauthors
+        memory > xdb_tablespace
+        memory > xAuthors
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xModel)))
+              xname.write (((unsupported)).apply (((xmodels).xCharField)) (50))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xtitle.write (((unsupported)).apply (((xmodels).xCharField)) (50) (TRUE))
+                xcode.write (((unsupported)).apply (((xmodels).xCharField)) (50) (TRUE))
+                xauthors.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xScientistRef)) ("articles_written_set"))
+                xreviewers.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xScientistRef)) ("articles_reviewed_set"))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (50))
+                (((unsupported)).apply)
+                  seq
+                    xdb_table.write "model_options_scientistref"
+                    xdb_tablespace.write "tbl_tbsp"
+                    xmanaged.write FALSE
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xtitle.write (((unsupported)).apply (((xmodels).xCharField)) (50) (TRUE))
+                xcode.write (((unsupported)).apply (((xmodels).xCharField)) (50) (TRUE) ("idx_tbsp"))
+                xauthors.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xScientist)) ("articles_written_set"))
+                xreviewers.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xScientist)) ("articles_reviewed_set") ("idx_tbsp"))
+                (((unsupported)).apply)
+                  seq
+                    xdb_table.write "model_options_articleref"
+                    xdb_tablespace.write "tbl_tbsp"
+                    xmanaged.write FALSE
+            xAuthors.write (((((((xArticle).x_meta).xget_field)).apply ("authors")).xremote_field).xthrough)
+            (((unsupported)).apply ((((xAuthors).x_meta).xdb_table)) ("model_options_articleref_authors"))
+            xReviewers.write (((((((xArticle).x_meta).xget_field)).apply ("reviewers")).xremote_field).xthrough)
+            (((unsupported)).apply ((((xReviewers).x_meta).xdb_table)) ("model_options_articleref_reviewers"))

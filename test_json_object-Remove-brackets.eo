@@ -1,0 +1,104 @@
+memory > xtimezone
+memory > xskipIfDBFeature
+memory > xLower
+memory > xValue
+memory > xArticle
+memory > xskipUnlessDBFeature
+memory > xJSONObject
+memory > xTestCase
+memory > xAuthor
+memory > xNotSupportedError
+memory > xF
+[] > test_json_object
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_not_supported
+        memory > xtest_textfield
+        memory > xtest_nested_json_object
+        memory > xsetUpTestData
+        memory > xtest_basic
+        memory > xtest_nested_empty_json_object
+        memory > xtest_expressions
+        memory > xtest_empty
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((xskipUnlessDBFeature)).apply ("has_json_object_function"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Ivan Ivanov") ("iivanov"))
+                xtest_empty.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write ((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((xJSONObject))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xjson_object)) ((((unsupported)).apply)))
+                xtest_basic.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write ((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((unsupported)).apply ((xJSONObject)) ("name")))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xjson_object)) ((((unsupported)).apply ("name") ("Ivan Ivanov"))))
+                xtest_expressions.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write ((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((unsupported)).apply ((xJSONObject)) ((((xLower)).apply ("name"))) ("alias") ("goes_by") ((((xValue)).apply (30000.15))) (((((xF)).apply ("age")).mul 2))))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xjson_object)) ((((unsupported)).apply ("name") ("ivan ivanov") ("alias") ("iivanov") ("goes_by") ("None: is there a None literal in the EO language?") ("salary") (30000.15) ("age") (60))))
+                xtest_nested_json_object.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write ((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((unsupported)).apply ((xJSONObject)) ("name") ((((unsupported)).apply ((xJSONObject)) ("alias") ("age")))))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xjson_object)) ((((unsupported)).apply ("name") ("Ivan Ivanov") ("nested_json_object") ((((unsupported)).apply ("alias") ("iivanov") ("age") (30))))))
+                xtest_nested_empty_json_object.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write ((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((unsupported)).apply ((xJSONObject)) ("name") ((xJSONObject))))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xjson_object)) ((((unsupported)).apply ("name") ("Ivan Ivanov") ("nested_json_object") ((((unsupported)).apply)))))
+                xtest_textfield.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("The Title") (("x".mul 4000)) (((xtimezone).xnow)))
+                        xobj.write ((((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((unsupported)).apply ((xJSONObject)) ((((xF)).apply ("text")))))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xjson_object)) ((((unsupported)).apply ("text") (("x".mul 4000)))))
+            (((unsupported)).apply ((xTestCase)) ((((xskipIfDBFeature)).apply ("has_json_object_function"))))
+              xtest_not_supported.write
+                [xself]
+                  memory > xmsg
+                  seq > @
+                    seq
+                      xmsg.write "JSONObject is not supported on this database backend."
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xNotSupportedError)) ((xmsg)))))
+                        unsupported

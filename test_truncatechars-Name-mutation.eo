@@ -1,0 +1,41 @@
+memory > xoutput
+memory > xSimpleTestCase
+[] > test_truncatechars
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_truncatechars02
+        memory > xtest_fail_silently_incorrect_arg
+        memory > xtest_truncatechars01
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_truncatechars01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("truncatechars01") ((((unsupported)).apply ("a") ("Testing, testing"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Te…"))
+                xtest_truncatechars02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("truncatechars02") ((((unsupported)).apply ("a") ("Testing"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Testing"))
+                xtest_fail_silently_incorrect_arg.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("truncatechars03") ((((unsupported)).apply ("a") ("Testing, testing"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Testing, testing"))

@@ -1,0 +1,54 @@
+memory > xCharField
+memory > xLower
+memory > xregister_lookup
+memory > xTestCase
+memory > xAuthor
+memory > xTypeError
+memory > xa
+[] > test_lower
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_transform
+        memory > xtest_num_args
+        memory > xtest_basic
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xLower)).apply ("name"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("john smith") ("rhonda"))) ((((unsupported)).apply (((xa).xlower_name)))))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xupdate)) ((((xLower)).apply ("name"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ((((unsupported)).apply ("john smith") ("john smith"))) ((((unsupported)).apply ("rhonda") ("rhonda"))))) ((((unsupported)).apply ((((unsupported)).apply (((xa).xlower_name)) (((xa).xname)))))))
+                xtest_num_args.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ("'Lower' takes exactly 1 argument (2 given)"))))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xupdate)) ((((xLower)).apply ("name") ("name"))))
+                xtest_transform.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      (((unsupported)).apply ((((xregister_lookup)).apply ((xCharField)) ((xLower)))))
+                        seq
+                          (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                          (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                          xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xfilter)) ("john smith"))
+                          bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("John Smith"))) ((((unsupported)).apply (((xa).xname)))))

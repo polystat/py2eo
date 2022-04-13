@@ -1,0 +1,97 @@
+memory > xImportError
+memory > ximport_module
+memory > xapps
+memory > xno_style
+memory > xBaseCommand
+memory > xsql_flush
+memory > xinput
+memory > xapp_config
+memory > xexc
+memory > xoptions
+memory > xCommandError
+memory > xemit_post_migrate_signal
+memory > xException
+memory > xconnections
+[] > flush
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        memory > xstealth_options
+        memory > xhelp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Removes ALL DATA from the database, including data added during migrations. Does not achieve a \"fresh install\" state."
+                xstealth_options.write (((unsupported)).apply ("reset_sequences") ("allow_cascade") ("inhibit_post_migrate"))
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--noinput") ("--no-input") ("store_false") ("interactive") ("Tells Django to NOT prompt the user for input of any kind."))
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                        seq
+                xhandle.write
+                  [xself]
+                    memory > xinteractive
+                    memory > xconnection
+                    memory > xconfirm
+                    memory > xallow_cascade
+                    memory > xreset_sequences
+                    memory > xdatabase
+                    memory > xverbosity
+                    memory > xsql_list
+                    memory > xinhibit_post_migrate
+                    seq > @
+                      (((unsupported)).apply)
+                        xdatabase.write (((unsupported)).apply ((xoptions)) ("database"))
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdatabase)))
+                        xverbosity.write (((unsupported)).apply ((xoptions)) ("verbosity"))
+                        xinteractive.write (((unsupported)).apply ((xoptions)) ("interactive"))
+                        xreset_sequences.write ((((xoptions).xget)).apply ("reset_sequences") (TRUE))
+                        xallow_cascade.write ((((xoptions).xget)).apply ("allow_cascade") (FALSE))
+                        xinhibit_post_migrate.write ((((xoptions).xget)).apply ("inhibit_post_migrate") (FALSE))
+                        (((unsupported)).apply (((xself).xstyle)) ((((xno_style)).apply)))
+                        (((unsupported)).apply ((xapp_config)) (((((xapps).xget_app_configs)).apply)))
+                          (((unsupported)).apply ((xImportError)))
+                            bogusForceDataize.write (((ximport_module)).apply (".management") (((xapp_config).xname)))
+                        xsql_list.write (((unsupported)).apply ((xsql_flush)) (((xself).xstyle)) ((xconnection)) ((xreset_sequences)) ((xallow_cascade)))
+                        (xinteractive).if
+                          xconfirm.write (((xinput)).apply (((((unsupported)).apply).mod (((unsupported)).apply (((xconnection).xsettings_dict)) ("NAME")))))
+                          xconfirm.write "yes"
+                        ((xconfirm).eq "yes").if
+                          seq
+                            (((unsupported)).apply ((xException)))
+                              bogusForceDataize.write (((((xconnection).xops).xexecute_sql_flush)).apply ((xsql_list)))
+                              (((unsupported)).apply ((((xCommandError)).apply (("Database %s couldn't be flushed. Possible reasons:n  * The database isn't running or isn't configured correctly.n  * At least one of the expected database tables doesn't exist.n  * The SQL was invalid.nHint: Look at the output of 'django-admin sqlflush'. That's the SQL this command wasn't able to run.".mod (((unsupported)).apply ((((unsupported)).apply (((xconnection).xsettings_dict)) ("NAME")))))))) ((xexc)))
+                            ((xsql_list).and ((xinhibit_post_migrate).not)).if
+                              bogusForceDataize.write (((xemit_post_migrate_signal)).apply ((xverbosity)) ((xinteractive)) ((xdatabase)))
+                          bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("Flush cancelled."))

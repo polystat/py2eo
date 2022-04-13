@@ -1,0 +1,37 @@
+memory > xBaseConnectionHandler
+memory > xNotImplementedError
+memory > xSimpleTestCase
+[] > test_connection
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_all_initialized_only
+        memory > xtest_create_connection
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_create_connection.write
+                  [xself]
+                    memory > xhandler
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xhandler.write (((xBaseConnectionHandler)).apply)
+                        xmsg.write "Subclasses must implement create_connection()."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xmsg)) ((xNotImplementedError)))))
+                          bogusForceDataize.write ((((xhandler).xcreate_connection)).apply ("None: is there a None literal in the EO language?"))
+                xtest_all_initialized_only.write
+                  [xself]
+                    memory > xhandler
+                    seq > @
+                      seq
+                        xhandler.write (((xBaseConnectionHandler)).apply ((((unsupported)).apply ("default") ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xhandler).xall)) (TRUE))) ((((unsupported)).apply)))

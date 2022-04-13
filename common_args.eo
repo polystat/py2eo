@@ -1,0 +1,33 @@
+memory > xBaseCommand
+memory > xArgumentError
+memory > xCommandError
+[] > common_args
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      (((unsupported)).apply ((xArgumentError)))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--version") ("version") ("A.B.C"))
+                        (((unsupported)).apply ((((xCommandError)).apply ("--version argument does no yet exist"))))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ("Detected that --version already exists"))

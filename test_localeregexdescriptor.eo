@@ -1,0 +1,107 @@
+memory > xRegexPattern
+memory > xAssertionError
+memory > xPath
+memory > xoverride_settings
+memory > x__file__
+memory > xLocaleRegexDescriptor
+memory > xImproperlyConfigured
+memory > xSimpleTestCase
+memory > xtranslation
+memory > xLocaleRegexDescriptorTests
+memory > xmock
+memory > xos
+[] > test_localeregexdescriptor
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_regex_compile_error
+        memory > xhere
+        memory > xsetUp
+        memory > xtest_translated_regex_compiled_per_language
+        memory > xtest_nontranslated_regex_compiled_once
+        memory > xtest_access_locale_regex_descriptor
+        memory > xtearDown
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xhere.write (((((xos).xpath).xdirname)).apply ((((((xos).xpath).xabspath)).apply ((x__file__)))))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((((xos).xpath).xjoin)).apply ((xhere)) ("translations") ("locale"))))))))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xtranslation).xtrans_real).x_translations)) ((((unsupported)).apply)))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xtranslation).xtrans_real).x_translations)) ((((unsupported)).apply)))
+                xtest_translated_regex_compiled_per_language.write
+                  [xself]
+                    memory > xerror
+                    memory > xprovider
+                    memory > xde_compiled_2
+                    memory > xfr_compiled
+                    memory > xde_compiled
+                    seq > @
+                      seq
+                        xprovider.write (((xRegexPattern)).apply (((((xtranslation).xgettext_lazy)).apply ("^foo/$"))))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("de"))))
+                          seq
+                            xde_compiled.write ((xprovider).xregex)
+                            xerror.write (((xAssertionError)).apply ("tried to compile url regex twice for the same language"))
+                            (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("django.urls.resolvers.re.compile") ((xerror)))))
+                              xde_compiled_2.write ((xprovider).xregex)
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          xfr_compiled.write ((xprovider).xregex)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xfr_compiled).xpattern)) ("^foo-fr/$"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xde_compiled).xpattern)) ("^foo-de/$"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xde_compiled)) ((xde_compiled_2)))
+                xtest_nontranslated_regex_compiled_once.write
+                  [xself]
+                    memory > xfr_compiled
+                    memory > xerror
+                    memory > xde_compiled
+                    memory > xprovider
+                    seq > @
+                      seq
+                        xprovider.write (((xRegexPattern)).apply ("^foo/$"))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("de"))))
+                          xde_compiled.write ((xprovider).xregex)
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          seq
+                            xerror.write (((xAssertionError)).apply ("tried to compile non-translated url regex twice"))
+                            (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("django.urls.resolvers.re.compile") ((xerror)))))
+                              xfr_compiled.write ((xprovider).xregex)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xde_compiled).xpattern)) ("^foo/$"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xfr_compiled).xpattern)) ("^foo/$"))
+                xtest_regex_compile_error.write
+                  [xself]
+                    memory > xmsg
+                    memory > xprovider
+                    seq > @
+                      seq
+                        unsupported
+                        xprovider.write (((xRegexPattern)).apply ("*"))
+                        xmsg.write "\"*\" is not a valid regular expression: nothing to repeat"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          unsupported
+                xtest_access_locale_regex_descriptor.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xRegexPattern).xregex)) ((xLocaleRegexDescriptor)))
+            (((unsupported)).apply ((xLocaleRegexDescriptorTests)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((((xPath)).apply ((xhere))).div "translations").div "locale")))))))

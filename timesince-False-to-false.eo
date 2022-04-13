@@ -1,0 +1,98 @@
+memory > xdatetime
+memory > xenumerate
+memory > xValueError
+memory > xavoid_wrapping
+memory > xcalendar
+memory > xi
+memory > xis_aware
+memory > xname
+memory > xngettext_lazy
+memory > xseconds
+memory > xgettext
+memory > xisinstance
+memory > xlen
+[] > timesince
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xTIME_STRINGS
+        memory > xTIMESINCE_CHUNKS
+        memory > xtimesince
+        memory > xtimeuntil
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xTIME_STRINGS.write (((unsupported)).apply ("year") ((((xngettext_lazy)).apply ("%(num)d year") ("%(num)d years") ("num"))) ("month") ((((xngettext_lazy)).apply ("%(num)d month") ("%(num)d months") ("num"))) ("week") ((((xngettext_lazy)).apply ("%(num)d week") ("%(num)d weeks") ("num"))) ("day") ((((xngettext_lazy)).apply ("%(num)d day") ("%(num)d days") ("num"))) ("hour") ((((xngettext_lazy)).apply ("%(num)d hour") ("%(num)d hours") ("num"))) ("minute") ((((xngettext_lazy)).apply ("%(num)d minute") ("%(num)d minutes") ("num"))))
+            xTIMESINCE_CHUNKS.write (((unsupported)).apply ((((unsupported)).apply ((((60.mul 60).mul 24).mul 365)) ("year"))) ((((unsupported)).apply ((((60.mul 60).mul 24).mul 30)) ("month"))) ((((unsupported)).apply ((((60.mul 60).mul 24).mul 7)) ("week"))) ((((unsupported)).apply (((60.mul 60).mul 24)) ("day"))) ((((unsupported)).apply ((60.mul 60)) ("hour"))) ((((unsupported)).apply (60) ("minute"))))
+            xtimesince.write
+              [xd xnow xreversed xtime_strings xdepth]
+                memory > xsince
+                memory > xcount
+                memory > xleapdays
+                memory > xcurrent_depth
+                memory > xdelta
+                memory > xresult
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xtime_strings)) ("None: is there a None literal in the EO language?")).if
+                      xtime_strings.write (xTIME_STRINGS)
+                    ((xdepth).leq 0).if
+                      (((unsupported)).apply ((((xValueError)).apply ("depth must be greater than 0."))))
+                    ((((xisinstance)).apply ((xd)) (((xdatetime).xdatetime))).not).if
+                      xd.write ((((xdatetime).xdatetime)).apply (((xd).xyear)) (((xd).xmonth)) (((xd).xday)))
+                    ((xnow).and ((((xisinstance)).apply ((xnow)) (((xdatetime).xdatetime))).not)).if
+                      xnow.write ((((xdatetime).xdatetime)).apply (((xnow).xyear)) (((xnow).xmonth)) (((xnow).xday)))
+                    xnow.write ((xnow).or (((((xdatetime).xdatetime).xnow)).apply (((((xis_aware)).apply ((xd))).if (((xdatetime).xtimezone).xutc) "None: is there a None literal in the EO language?"))))
+                    (xreversed).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xd)) ((xnow)))) ((((unsupported)).apply ((xnow)) ((xd)))))
+                    xdelta.write ((xnow).sub (xd))
+                    xleapdays.write ((((xcalendar).xleapdays)).apply (((xd).xyear)) (((xnow).xyear)))
+                    ((xleapdays).neq 0).if
+                      ((((xcalendar).xisleap)).apply (((xd).xyear))).if
+                        (((unsupported)).apply ((xleapdays)) (1))
+                        ((((xcalendar).xisleap)).apply (((xnow).xyear))).if
+                          (((unsupported)).apply ((xleapdays)) (1))
+                    (((unsupported)).apply ((xdelta)) (((((xdatetime).xtimedelta)).apply ((xleapdays)))))
+                    xsince.write ((((((xdelta).xdays).mul 24).mul 60).mul 60).add ((xdelta).xseconds))
+                    ((xsince).leq 0).if
+                      (((unsupported)).apply ((((xavoid_wrapping)).apply (((((unsupported)).apply ((xtime_strings)) ("minute")).mod (((unsupported)).apply ("num") (0)))))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xi)) ((((unsupported)).apply ((xseconds)) ((xname)))))) ((((xenumerate)).apply ((xTIMESINCE_CHUNKS)))))
+                      seq
+                        xcount.write (((unsupported)).apply ((xsince)) ((xseconds)))
+                        ((xcount).neq 0).if
+                          (((unsupported)).apply)
+                      (((unsupported)).apply ((((xavoid_wrapping)).apply (((((unsupported)).apply ((xtime_strings)) ("minute")).mod (((unsupported)).apply ("num") (0)))))))
+                    xresult.write (((unsupported)).apply)
+                    xcurrent_depth.write 0
+                    while.
+                      (((xi).less (((xlen)).apply ((xTIMESINCE_CHUNKS)))).and ((xcurrent_depth).less (xdepth)))
+                      [unused]
+                        seq > @
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xseconds)) ((xname)))) ((((unsupported)).apply ((xTIMESINCE_CHUNKS)) ((xi)))))
+                            xcount.write (((unsupported)).apply ((xsince)) ((xseconds)))
+                            ((xcount).eq 0).if
+                              (((unsupported)).apply)
+                            bogusForceDataize.write ((((xresult).xappend)).apply ((((xavoid_wrapping)).apply (((((unsupported)).apply ((xtime_strings)) ((xname))).mod (((unsupported)).apply ("num") ((xcount))))))))
+                            (((unsupported)).apply ((xsince)) (((xseconds).mul (xcount))))
+                            (((unsupported)).apply ((xcurrent_depth)) (1))
+                            (((unsupported)).apply ((xi)) (1))
+                    (((unsupported)).apply (((((((xgettext)).apply (", ")).xjoin)).apply ((xresult)))))
+            xtimeuntil.write
+              [xd xnow xtime_strings xdepth]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xtimesince)) ((xd)) ((xnow)) (TRUE) ((xtime_strings)) ((xdepth)))))

@@ -1,0 +1,148 @@
+memory > xCoalesce
+memory > xtimezone
+memory > xdatetime
+memory > xRawSQL
+memory > xValueError
+memory > xDecimalModel
+memory > xLeast
+memory > xArticle
+memory > xDecimal
+memory > xnow
+memory > xTestCase
+memory > xAuthor
+memory > xFan
+memory > xtimedelta
+[] > test_least
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_one_expressions
+        memory > xtest_update
+        memory > xtest_related_field
+        memory > xtest_basic
+        memory > xtest_all_null
+        memory > xtest_coalesce_workaround
+        memory > xtest_coalesce_workaround_mysql
+        memory > xtest_propagates_null
+        memory > xtest_ignores_null
+        memory > xtest_decimal_filter
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xbefore
+                    memory > xnow2
+                    memory > xarticles
+                    seq > @
+                      seq
+                        xnow2.write ((((xtimezone).xnow)).apply)
+                        xbefore.write ((xnow).sub (((unsupported)).apply ((xtimedelta)) (1)))
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Testing with Django") ((xbefore)) ((xnow)))
+                        xarticles.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xLeast)).apply ("written") ("published"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xarticles).xfirst)).apply).xfirst_updated)) ((xbefore)))
+                xtest_ignores_null.write
+                  [xself]
+                    memory > xnow
+                    memory > xarticles
+                    seq > @
+                      (((unsupported)).apply)
+                        xnow.write ((((xtimezone).xnow)).apply)
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Testing with Django") ((xnow)))
+                        xarticles.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xLeast)).apply ("written") ("published"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xarticles).xfirst)).apply).xfirst_updated)) ((xnow)))
+                xtest_propagates_null.write
+                  [xself]
+                    memory > xarticles
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Testing with Django") (((((xtimezone).xnow)).apply)))
+                        xarticles.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xLeast)).apply ("written") ("published"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((((xarticles).xfirst)).apply).xfirst_updated)))
+                xtest_coalesce_workaround.write
+                  [xself]
+                    memory > xfuture
+                    memory > xnow
+                    memory > xarticles
+                    seq > @
+                      seq
+                        xfuture.write (((xdatetime)).apply (2100) (1) (1))
+                        xnow.write ((((xtimezone).xnow)).apply)
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Testing with Django") ((xnow)))
+                        xarticles.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xLeast)).apply ((((xCoalesce)).apply ("written") ((xfuture)))) ((((xCoalesce)).apply ("published") ((xfuture)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xarticles).xfirst)).apply).xlast_updated)) ((xnow)))
+                xtest_coalesce_workaround_mysql.write
+                  [xself]
+                    memory > xfuture_sql
+                    memory > xfuture
+                    memory > xnow
+                    memory > xarticles
+                    seq > @
+                      (((unsupported)).apply)
+                        xfuture.write (((xdatetime)).apply (2100) (1) (1))
+                        xnow.write ((((xtimezone).xnow)).apply)
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Testing with Django") ((xnow)))
+                        xfuture_sql.write (((xRawSQL)).apply ("cast(%s as datetime)") ((((unsupported)).apply ((xfuture)))))
+                        xarticles.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xLeast)).apply ((((xCoalesce)).apply ("written") ((xfuture_sql)))) ((((xCoalesce)).apply ("published") ((xfuture_sql)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xarticles).xfirst)).apply).xlast_updated)) ((xnow)))
+                xtest_all_null.write
+                  [xself]
+                    memory > xarticles
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Testing with Django") (((((xtimezone).xnow)).apply)))
+                        xarticles.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xLeast)).apply ("published") ("updated"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((((xarticles).xfirst)).apply).xfirst_updated)))
+                xtest_one_expressions.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Least must take at least two expressions"))))
+                        bogusForceDataize.write (((xLeast)).apply ("written"))
+                xtest_related_field.write
+                  [xself]
+                    memory > xauthors
+                    memory > xauthor
+                    seq > @
+                      seq
+                        xauthor.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") (45))
+                        (((unsupported)).apply ((((xFan).xobjects).xcreate)) ("Margaret") (50) ((xauthor)))
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xLeast)).apply ("age") ("fans__age"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xauthors).xfirst)).apply).xlowest_age)) (45))
+                xtest_update.write
+                  [xself]
+                    memory > xauthor
+                    seq > @
+                      seq
+                        xauthor.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("James Smith") ("Jim"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xupdate)) ((((xLeast)).apply ("name") ("goes_by"))))
+                        bogusForceDataize.write ((((xauthor).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xauthor).xalias)) ("James Smith"))
+                xtest_decimal_filter.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("1.1"))) ((((xDecimal)).apply ("1.2"))))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((((unsupported)).apply ((((xDecimalModel).xobjects).xannotate)) ((((xLeast)).apply ("n1") ("n2")))).xfilter)) ((((xDecimal)).apply ("1.1"))))) ((((unsupported)).apply ((xobj)))))

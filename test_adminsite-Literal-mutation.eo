@@ -1,0 +1,153 @@
+memory > xreverse
+memory > xadmin
+memory > xTestCase
+memory > xpath
+memory > xRequestFactory
+memory > xoverride_settings
+memory > xArticle
+memory > xKeyError
+memory > xdelete_selected
+memory > xSimpleTestCase
+memory > xUser
+memory > xlen
+[] > test_adminsite
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xurlpatterns
+        memory > xsite
+        memory > xtest_disable_action
+        memory > xsetUp
+        memory > xtest_available_apps
+        memory > xtest_add_action
+        memory > xtest_get_action
+        memory > xrequest_factory
+        memory > xtest_each_context
+        memory > xsetUpTestData
+        memory > xtest_each_context_site_url_with_script_name
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xsite.write (((unsupported)).apply (((xadmin).xAdminSite)) ("test_adminsite"))
+            bogusForceDataize.write ((((xsite).xregister)).apply ((xUser)))
+            bogusForceDataize.write ((((xsite).xregister)).apply ((xArticle)))
+            xurlpatterns.write (((unsupported)).apply ((((xpath)).apply ("test_admin/admin/") (((xsite).xurls)))))
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.test_adminsite"))))
+              seq
+                (((unsupported)).apply)
+                xrequest_factory.write (((xRequestFactory)).apply)
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xu1)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                xsetUp.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (((((xself).xrequest_factory).xget)).apply ((((xreverse)).apply ("test_adminsite:index"))))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xu1)))
+                        (((unsupported)).apply (((xself).xctx)) (((((xsite).xeach_context)).apply ((xrequest)))))
+                xtest_each_context.write
+                  [xself]
+                    memory > xctx
+                    seq > @
+                      seq
+                        xctx.write ((xself).xctx)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xctx)) ("site_header"))) ("Django administration"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xctx)) ("site_title"))) ("Django site admin"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xctx)) ("site_url"))) ("/"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((xctx)) ("has_permission"))) (TRUE))
+                xtest_each_context_site_url_with_script_name.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (((unsupported)).apply ((((xself).xrequest_factory).xget)) ((((xreverse)).apply ("test_adminsite:index"))) ("/my-script-name/"))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xu1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xsite).xeach_context)).apply ((xrequest)))) ("site_url"))) ("/my-script-name/"))
+                xtest_available_apps.write
+                  [xself]
+                    memory > xadmin_views
+                    memory > xapps
+                    memory > xauth
+                    memory > xarticle
+                    memory > xctx
+                    memory > xuser
+                    seq > @
+                      seq
+                        xctx.write ((xself).xctx)
+                        xapps.write (((unsupported)).apply ((xctx)) ("available_apps"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xapps)))) (2))
+                        xadmin_views.write (((unsupported)).apply ((xapps)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xadmin_views)) ("app_label"))) ("admin_views"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((unsupported)).apply ((xadmin_views)) ("models"))))) (1))
+                        xarticle.write (((unsupported)).apply ((((unsupported)).apply ((xadmin_views)) ("models"))) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xarticle)) ("object_name"))) ("Article"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xarticle)) ("model"))) ((xArticle)))
+                        xauth.write (((unsupported)).apply ((xapps)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xauth)) ("app_label"))) ("auth"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((unsupported)).apply ((xauth)) ("models"))))) (1))
+                        xuser.write (((unsupported)).apply ((((unsupported)).apply ((xauth)) ("models"))) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xuser)) ("object_name"))) ("User"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xuser)) ("model"))) ((xUser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xauth)) ("app_url"))) ("/test_admin/admin/auth/"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((xauth)) ("has_module_perms"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("perms") ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((((unsupported)).apply ((xuser)) ("perms"))) ("add"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((((unsupported)).apply ((xuser)) ("perms"))) ("change"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((((unsupported)).apply ((xuser)) ("perms"))) ("delete"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xuser)) ("admin_url"))) ("/test_admin/admin/auth/user/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xuser)) ("add_url"))) ("/test_admin/admin/auth/user/add/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xuser)) ("name"))) ("Users"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xsite)) (((((xadmin).xAdminSite)).apply)))
+                xtest_add_action.write
+                  [xself]
+                    memory > xtest_action
+                    seq > @
+                      seq
+                        xtest_action.write
+                          []
+                            seq > @
+                        bogusForceDataize.write (((((xself).xsite).xadd_action)).apply ((xtest_action)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xsite).xget_action)).apply ("test_action"))) ((xtest_action)))
+                xtest_disable_action.write
+                  [xself]
+                    memory > xaction_name
+                    seq > @
+                      seq
+                        xaction_name.write "delete_selected"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xsite).x_actions)) ((xaction_name)))) ((xdelete_selected)))
+                        bogusForceDataize.write (((((xself).xsite).xdisable_action)).apply ((xaction_name)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xKeyError)))))
+                          (((unsupported)).apply ((((xself).xsite).x_actions)) ((xaction_name)))
+                xtest_get_action.write
+                  [xself]
+                    memory > xaction_name
+                    seq > @
+                      seq
+                        unsupported
+                        xaction_name.write "delete_selected"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xsite).xget_action)).apply ((xaction_name)))) ((xdelete_selected)))
+                        bogusForceDataize.write (((((xself).xsite).xdisable_action)).apply ((xaction_name)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xsite).xget_action)).apply ((xaction_name)))) ((xdelete_selected)))

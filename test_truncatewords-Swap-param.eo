@@ -1,0 +1,63 @@
+memory > xtruncatewords
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_truncatewords
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_invalid_number
+        memory > xtest_truncatewords02
+        memory > xtest_overtruncate
+        memory > xtest_truncate2
+        memory > xtest_truncate
+        memory > xtest_truncatewords01
+        memory > xtest_non_string_input
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_truncatewords01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("truncatewords01") ((((unsupported)).apply ("a") ("alpha & bravo") ("b") ((((xmark_safe)).apply ("alpha &amp; bravo"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("alpha & … alpha &amp; …") ((xoutput)))
+                xtest_truncatewords02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("truncatewords02") ((((unsupported)).apply ("a") ("alpha & bravo") ("b") ((((xmark_safe)).apply ("alpha &amp; bravo"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha &amp; … alpha &amp; …"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_truncate.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatewords)).apply ("A sentence with a few words in it") (1))) ("A …"))
+                xtest_truncate2.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatewords)).apply ("A sentence with a few words in it") (5))) ("A sentence with a few …"))
+                xtest_overtruncate.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatewords)).apply ("A sentence with a few words in it") (100))) ("A sentence with a few words in it"))
+                xtest_invalid_number.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatewords)).apply ("A sentence with a few words in it") ("not a number"))) ("A sentence with a few words in it"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatewords)).apply (123) (2))) ("123"))

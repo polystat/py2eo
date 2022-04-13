@@ -1,0 +1,58 @@
+memory > xLength
+memory > xCharField
+memory > xregister_lookup
+memory > xTestCase
+memory > xAuthor
+memory > xauthors
+memory > xa
+[] > test_length
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_transform
+        memory > xtest_basic
+        memory > xtest_ordering
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xauthors2
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                        xauthors2.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xLength)).apply ("name"))) ((((xLength)).apply ("alias"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ((((unsupported)).apply (10) (6))) ((((unsupported)).apply (6) ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ((((unsupported)).apply (((xa).xname_length)) (((xa).xalias_length)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply (((xauthors).xfilter)) ((((xLength)).apply ("name")))).xcount)).apply)) (1))
+                xtest_ordering.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj1"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda") ("ronny"))
+                        xauthors.write (((((xAuthor).xobjects).xorder_by)).apply ((((xLength)).apply ("name"))) ((((xLength)).apply ("alias"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((xauthors)) ((((unsupported)).apply ((((unsupported)).apply ("Rhonda") ("ronny"))) ((((unsupported)).apply ("John Smith") ("smithj"))) ((((unsupported)).apply ("John Smith") ("smithj1"))))) ((((unsupported)).apply ((((unsupported)).apply (((xa).xname)) (((xa).xalias)))))))
+                xtest_transform.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      (((unsupported)).apply ((((xregister_lookup)).apply ((xCharField)) ((xLength)))))
+                        seq
+                          (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                          (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                          xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xfilter)) (7))
+                          bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("John Smith"))) ((((unsupported)).apply (((xa).xname)))))

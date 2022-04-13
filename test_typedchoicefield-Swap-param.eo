@@ -1,0 +1,116 @@
+memory > xdecimal
+memory > xstr
+memory > xValidationError
+memory > xint
+memory > xfloat
+memory > xSimpleTestCase
+memory > xbool
+memory > xTypedChoiceField
+[] > test_typedchoicefield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_typedchoicefield_3
+        memory > xtest_typedchoicefield_2
+        memory > xtest_typedchoicefield_special_coerce
+        memory > xtest_typedchoicefield_5
+        memory > xtest_typedchoicefield_1
+        memory > xtest_typedchoicefield_has_changed
+        memory > xtest_typedchoicefield_6
+        memory > xtest_typedchoicefield_4
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_typedchoicefield_1.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply (1) ("+1"))) ((((unsupported)).apply ((1.neg)) ("-1"))))) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("1"))) (1))
+                        xmsg.write "'Select a valid choice. 2 is not one of the available choices.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("2"))
+                xtest_typedchoicefield_2.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply (1) ("+1"))) ((((unsupported)).apply ((1.neg)) ("-1"))))) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (1.0) (((((xf).xclean)).apply ("1"))))
+                xtest_typedchoicefield_3.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply (1) ("+1"))) ((((unsupported)).apply ((1.neg)) ("-1"))))) ((xbool)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xclean)).apply ("-1"))))
+                xtest_typedchoicefield_4.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply ("A") ("A"))) ((((unsupported)).apply ("B") ("B"))))) ((xint)))
+                        xmsg.write "'Select a valid choice. B is not one of the available choices.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("B"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                xtest_typedchoicefield_5.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply (1) ("+1"))) ((((unsupported)).apply ((1.neg)) ("-1"))))) ((xint)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("") (((((xf).xclean)).apply (""))))
+                xtest_typedchoicefield_6.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply (1) ("+1"))) ((((unsupported)).apply ((1.neg)) ("-1"))))) ((xint)) (FALSE) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                xtest_typedchoicefield_has_changed.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply (1) ("+1"))) ((((unsupported)).apply ((1.neg)) ("-1"))))) ((xint)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ("None: is there a None literal in the EO language?") (""))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply (1) ("1"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ("1") ("1"))))
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply ("") ("---------"))) ((((unsupported)).apply ("a") ("a"))) ((((unsupported)).apply ("b") ("b"))))) ((xstr)) (FALSE) ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ("None: is there a None literal in the EO language?") (""))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply ("") ("a"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ("a") ("a"))))
+                xtest_typedchoicefield_special_coerce.write
+                  [xself]
+                    memory > xcoerce_func
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xcoerce_func.write
+                          [xval]
+                            seq > @
+                              (((unsupported)).apply (((((xdecimal).xDecimal)).apply (("1.%s".mod (xval))))))
+                        xf.write (((unsupported)).apply ((xTypedChoiceField)) ((((unsupported)).apply ((((unsupported)).apply (1) ("1"))) ((((unsupported)).apply (2) ("2"))))) ((xcoerce_func)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdecimal).xDecimal)).apply ("1.2"))) (((((xf).xclean)).apply ("2"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        xmsg.write "'Select a valid choice. 3 is not one of the available choices.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("3"))

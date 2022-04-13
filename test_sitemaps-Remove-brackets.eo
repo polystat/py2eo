@@ -1,0 +1,96 @@
+memory > xCity
+memory > xBytesIO
+memory > xmodify_settings
+memory > xTestCase
+memory > xurl
+memory > xoverride_settings
+memory > xCountry
+memory > xminidom
+memory > xlen
+memory > xzipfile
+memory > xset
+memory > xsettings
+memory > xzf
+memory > xSite
+memory > xkml_type
+memory > xn
+[] > test_sitemaps
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xassertChildNodes
+        memory > xtest_geositemap_kml
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ((((unsupported)).apply ("django.contrib.sites") ("django.contrib.sitemaps"))))))) ((((unsupported)).apply ((xoverride_settings)) ("gis_tests.geoapp.urls"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                xassertChildNodes.write
+                  [xself xelem xexpected]
+                    memory > xactual
+                    seq > @
+                      seq
+                        unsupported
+                        xactual.write (((unsupported)).apply (((xn).xnodeName)) ((xn)) (((xelem).xchildNodes)))
+                        xexpected.write (((xset)).apply ((xexpected)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ((xexpected)))
+                xtest_geositemap_kml.write
+                  [xself]
+                    memory > xkml_url
+                    memory > xurlset
+                    memory > xkml_doc
+                    memory > xmodel
+                    memory > xdoc
+                    memory > xurls
+                    memory > xbuf
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xkml_type)) ((((unsupported)).apply ("kml") ("kmz"))))
+                          seq
+                            xdoc.write ((((xminidom).xparseString)).apply (((((((xself).xclient).xget)).apply (("/sitemaps/%s.xml".mod (xkml_type)))).xcontent)))
+                            xurlset.write ((xdoc).xfirstChild)
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xurlset).xgetAttribute)).apply ("xmlns"))) ("http://www.sitemaps.org/schemas/sitemap/0.9"))
+                            xurls.write ((((xurlset).xgetElementsByTagName)).apply ("url"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (2) ((((xlen)).apply ((xurls)))))
+                            (((unsupported)).apply ((xurl)) ((xurls)))
+                              seq
+                                bogusForceDataize.write ((((xself).xassertChildNodes)).apply ((xurl)) ((((unsupported)).apply ("loc"))))
+                                xkml_url.write (((unsupported)).apply ((((((((unsupported)).apply (((((unsupported)).apply (((((xurl).xgetElementsByTagName)).apply ("loc"))) (0)).xchildNodes)) (0)).xdata).xsplit)).apply ("http://example.com"))) (1))
+                                ((xkml_type).eq "kml").if
+                                  xkml_doc.write ((((xminidom).xparseString)).apply (((((((xself).xclient).xget)).apply ((xkml_url))).xcontent)))
+                                  ((xkml_type).eq "kmz").if
+                                    seq
+                                      xbuf.write (((xBytesIO)).apply (((((((xself).xclient).xget)).apply ((xkml_url))).xcontent)))
+                                      (((unsupported)).apply (((((xzipfile).xZipFile)).apply ((xbuf)))) ((xzf)))
+                                        seq
+                                          bogusForceDataize.write ((((xself).xassertEqual)).apply (1) ((((xlen)).apply (((xzf).xfilelist)))))
+                                          bogusForceDataize.write ((((xself).xassertEqual)).apply ("doc.kml") (((((unsupported)).apply (((xzf).xfilelist)) (0)).xfilename)))
+                                          xkml_doc.write ((((xminidom).xparseString)).apply (((((xzf).xread)).apply ("doc.kml"))))
+                                (((unsupported)).apply ("city") ((xkml_url))).if
+                                  xmodel.write (xCity)
+                                  (((unsupported)).apply ("country") ((xkml_url))).if
+                                    xmodel.write (xCountry)
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xmodel).xobjects).xcount)) ((((xlen)).apply (((((xkml_doc).xgetElementsByTagName)).apply ("Placemark"))))))

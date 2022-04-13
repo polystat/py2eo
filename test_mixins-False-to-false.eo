@@ -1,0 +1,395 @@
+memory > xfalse
+memory > xAView
+memory > xAlwaysfalseMixin
+memory > xEmptyResponseView
+memory > xRequestFactory
+memory > xStackedMixinsView1
+memory > xAlwaysTrueMixin
+memory > xmodels
+memory > xAlwaysTrueView
+memory > xSimpleTestCase
+memory > xAlwaysfalseView
+memory > xAnonymousUser
+memory > xTestCase
+memory > xUserPassesTestMixin
+memory > xView
+memory > xPermissionDenied
+memory > xHttpResponse
+memory > xStackedMixinsView2
+memory > xPermissionRequiredMixin
+memory > xLoginRequiredMixin
+[] > test_mixins
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xpermission_required
+        memory > xtest_func
+        memory > xtest_raise_exception
+        memory > xtest_permissioned_denied_redirect
+        memory > xtest_user_passes
+        memory > xtest_stacked_mixins_missing_permission
+        memory > xtest_raise_exception_custom_message
+        memory > xtest_no_redirect_parameter
+        memory > x_test_redirect
+        memory > xtest_raise_exception_custom_message_function
+        memory > xtest_access_mixin_permission_denied_response
+        memory > xtest_custom_redirect_parameter
+        memory > xtest_access_mixin_permission_denied_remote_login_url
+        memory > xget
+        memory > xtest_default
+        memory > xtest_many_permissions_pass
+        memory > xfactory
+        memory > xtest_stacked_mixins_not_logged_in
+        memory > xtest_stacked_mixins_success
+        memory > xsetUpTestData
+        memory > xtest_login_required
+        memory > xraise_exception
+        memory > xtest_single_permission_pass
+        memory > xtest_permissioned_denied_exception_raised
+        memory > xtest_custom_redirect_url
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xUserPassesTestMixin)))
+              xtest_func.write
+                [xself]
+                  seq > @
+                    (((unsupported)).apply (TRUE))
+            (((unsupported)).apply ((xUserPassesTestMixin)))
+              xtest_func.write
+                [xself]
+                  seq > @
+                    (((unsupported)).apply ((xfalse)))
+            (((unsupported)).apply ((xView)))
+              xget.write
+                [xself xrequest]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ((((xHttpResponse)).apply)))
+            (((unsupported)).apply ((xAlwaysTrueMixin)) ((xEmptyResponseView)))
+            (((unsupported)).apply ((xAlwaysfalseMixin)) ((xEmptyResponseView)))
+            (((unsupported)).apply ((xLoginRequiredMixin)) ((xPermissionRequiredMixin)) ((xEmptyResponseView)))
+              seq
+                xpermission_required.write (((unsupported)).apply ("auth_tests.add_customuser") ("auth_tests.change_customuser"))
+                xraise_exception.write TRUE
+            (((unsupported)).apply ((xPermissionRequiredMixin)) ((xLoginRequiredMixin)) ((xEmptyResponseView)))
+              seq
+                xpermission_required.write (((unsupported)).apply ("auth_tests.add_customuser") ("auth_tests.change_customuser"))
+                xraise_exception.write TRUE
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xfactory.write (((xRequestFactory)).apply)
+                xtest_stacked_mixins_success.write
+                  [xself]
+                    memory > xrequest
+                    memory > xperms
+                    memory > xview
+                    memory > xresponse
+                    memory > xuser
+                    seq > @
+                      seq
+                        xuser.write (((unsupported)).apply (((((xmodels).xUser).xobjects).xcreate)) ("joe") ("qwerty"))
+                        xperms.write (((unsupported)).apply (((((xmodels).xPermission).xobjects).xfilter)) ((((unsupported)).apply ("add_customuser") ("change_customuser"))))
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply ((((unsupported)).apply ((xperms)))))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((xuser)))
+                        xview.write ((((xStackedMixinsView1).xas_view)).apply)
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                        xview.write ((((xStackedMixinsView2).xas_view)).apply)
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                xtest_stacked_mixins_missing_permission.write
+                  [xself]
+                    memory > xuser
+                    memory > xrequest
+                    memory > xperms
+                    memory > xview
+                    seq > @
+                      seq
+                        xuser.write (((unsupported)).apply (((((xmodels).xUser).xobjects).xcreate)) ("joe") ("qwerty"))
+                        xperms.write (((unsupported)).apply (((((xmodels).xPermission).xobjects).xfilter)) ((((unsupported)).apply ("add_customuser"))))
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply ((((unsupported)).apply ((xperms)))))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((xuser)))
+                        xview.write ((((xStackedMixinsView1).xas_view)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write (((xview)).apply ((xrequest)))
+                        xview.write ((((xStackedMixinsView2).xas_view)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write (((xview)).apply ((xrequest)))
+                xtest_access_mixin_permission_denied_response.write
+                  [xself]
+                    memory > xuser
+                    memory > xresponse
+                    memory > xrequest
+                    memory > xview
+                    seq > @
+                      seq
+                        xuser.write (((unsupported)).apply (((((xmodels).xUser).xobjects).xcreate)) ("joe") ("qwerty"))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((xuser)))
+                        xview.write ((((xAlwaysfalseView).xas_view)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write (((xview)).apply ((xrequest)))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (302))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xurl)) ("/accounts/login/?next=/rand"))
+                xtest_access_mixin_permission_denied_remote_login_url.write
+                  [xself]
+                    memory > xresponse
+                    memory > xrequest
+                    memory > xview
+                    memory > xlogin_url
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xAlwaysfalseView)))
+                          xlogin_url.write "https://www.remote.example.com/login"
+                        xview.write ((((xAView).xas_view)).apply)
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (302))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xurl)) ("https://www.remote.example.com/login?next=http%3A//testserver/rand"))
+                xtest_stacked_mixins_not_logged_in.write
+                  [xself]
+                    memory > xuser
+                    memory > xrequest
+                    memory > xperms
+                    memory > xview
+                    seq > @
+                      (((unsupported)).apply)
+                        xuser.write (((unsupported)).apply (((((xmodels).xUser).xobjects).xcreate)) ("joe") ("qwerty"))
+                        xperms.write (((unsupported)).apply (((((xmodels).xPermission).xobjects).xfilter)) ((((unsupported)).apply ("add_customuser") ("change_customuser"))))
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply ((((unsupported)).apply ((xperms)))))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((xuser)))
+                        xview.write ((((xStackedMixinsView1).xas_view)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write (((xview)).apply ((xrequest)))
+                        xview.write ((((xStackedMixinsView2).xas_view)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write (((xview)).apply ((xrequest)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xfactory.write (((xRequestFactory)).apply)
+                x_test_redirect.write
+                  [xself xview xurl]
+                    memory > xresponse
+                    memory > xrequest
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xview).not).if
+                          xview.write ((((xAlwaysfalseView).xas_view)).apply)
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (302))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xurl)) ((xurl)))
+                xtest_default.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).x_test_redirect)).apply)
+                xtest_custom_redirect_url.write
+                  [xself]
+                    memory > xlogin_url
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xAlwaysfalseView)))
+                          xlogin_url.write "/login/"
+                        bogusForceDataize.write ((((xself).x_test_redirect)).apply (((((xAView).xas_view)).apply)) ("/login/?next=/rand"))
+                xtest_custom_redirect_parameter.write
+                  [xself]
+                    memory > xredirect_field_name
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xAlwaysfalseView)))
+                          xredirect_field_name.write "goto"
+                        bogusForceDataize.write ((((xself).x_test_redirect)).apply (((((xAView).xas_view)).apply)) ("/accounts/login/?goto=/rand"))
+                xtest_no_redirect_parameter.write
+                  [xself]
+                    memory > xredirect_field_name
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xAlwaysfalseView)))
+                          xredirect_field_name.write "None: is there a None literal in the EO language?"
+                        bogusForceDataize.write ((((xself).x_test_redirect)).apply (((((xAView).xas_view)).apply)) ("/accounts/login/"))
+                xtest_raise_exception.write
+                  [xself]
+                    memory > xraise_exception
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xAlwaysfalseView)))
+                          xraise_exception.write TRUE
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write ((((((xAView).xas_view)).apply)).apply ((xrequest)))
+                xtest_raise_exception_custom_message.write
+                  [xself]
+                    memory > xrequest
+                    memory > xraise_exception
+                    memory > xview
+                    memory > xmsg
+                    memory > xpermission_denied_message
+                    seq > @
+                      seq
+                        xmsg.write "You don't have access here"
+                        (((unsupported)).apply ((xAlwaysfalseView)))
+                          seq
+                            xraise_exception.write TRUE
+                            xpermission_denied_message.write (xmsg)
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xview.write ((((xAView).xas_view)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xPermissionDenied)) ((xmsg)))))
+                          bogusForceDataize.write (((xview)).apply ((xrequest)))
+                xtest_raise_exception_custom_message_function.write
+                  [xself]
+                    memory > xrequest
+                    memory > xraise_exception
+                    memory > xmsg
+                    memory > xview
+                    memory > xget_permission_denied_message
+                    seq > @
+                      seq
+                        xmsg.write "You don't have access here"
+                        (((unsupported)).apply ((xAlwaysfalseView)))
+                          seq
+                            xraise_exception.write TRUE
+                            xget_permission_denied_message.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply ((xmsg)))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xview.write ((((xAView).xas_view)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xPermissionDenied)) ((xmsg)))))
+                          bogusForceDataize.write (((xview)).apply ((xrequest)))
+                xtest_user_passes.write
+                  [xself]
+                    memory > xresponse
+                    memory > xrequest
+                    memory > xview
+                    seq > @
+                      seq
+                        xview.write ((((xAlwaysTrueView).xas_view)).apply)
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xfactory.write (((xRequestFactory)).apply)
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xuser)) ((((unsupported)).apply (((((xmodels).xUser).xobjects).xcreate)) ("joe") ("qwerty"))))
+                xtest_login_required.write
+                  [xself]
+                    memory > xresponse
+                    memory > xrequest
+                    memory > xview
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xLoginRequiredMixin)) ((xEmptyResponseView)))
+                        xview.write ((((xAView).xas_view)).apply)
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (302))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("/accounts/login/?next=/rand") (((xresponse).xurl)))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xuser)))
+                        xresponse.write (((xview)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xfactory.write (((xRequestFactory)).apply)
+                xsetUpTestData.write
+                  [xcls]
+                    memory > xperms
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xuser)) ((((unsupported)).apply (((((xmodels).xUser).xobjects).xcreate)) ("joe") ("qwerty"))))
+                        xperms.write (((unsupported)).apply (((((xmodels).xPermission).xobjects).xfilter)) ((((unsupported)).apply ("add_customuser") ("change_customuser"))))
+                        bogusForceDataize.write ((((((xcls).xuser).xuser_permissions).xadd)).apply ((((unsupported)).apply ((xperms)))))
+                xtest_many_permissions_pass.write
+                  [xself]
+                    memory > xpermission_required
+                    memory > xresp
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xPermissionRequiredMixin)) ((xEmptyResponseView)))
+                          xpermission_required.write (((unsupported)).apply ("auth_tests.add_customuser") ("auth_tests.change_customuser"))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xuser)))
+                        xresp.write ((((((xAView).xas_view)).apply)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresp).xstatus_code)) (200))
+                xtest_single_permission_pass.write
+                  [xself]
+                    memory > xpermission_required
+                    memory > xresp
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xPermissionRequiredMixin)) ((xEmptyResponseView)))
+                          xpermission_required.write "auth_tests.add_customuser"
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xuser)))
+                        xresp.write ((((((xAView).xas_view)).apply)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresp).xstatus_code)) (200))
+                xtest_permissioned_denied_redirect.write
+                  [xself]
+                    memory > xpermission_required
+                    memory > xresp
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xPermissionRequiredMixin)) ((xEmptyResponseView)))
+                          xpermission_required.write (((unsupported)).apply ("auth_tests.add_customuser") ("auth_tests.change_customuser") ("nonexistent-permission"))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xuser)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write ((((((xAView).xas_view)).apply)).apply ((xrequest)))
+                        (((unsupported)).apply (((xrequest).xuser)) ((((xAnonymousUser)).apply)))
+                        xresp.write ((((((xAView).xas_view)).apply)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresp).xstatus_code)) (302))
+                xtest_permissioned_denied_exception_raised.write
+                  [xself]
+                    memory > xraise_exception
+                    memory > xpermission_required
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xPermissionRequiredMixin)) ((xEmptyResponseView)))
+                          seq
+                            xpermission_required.write (((unsupported)).apply ("auth_tests.add_customuser") ("auth_tests.change_customuser") ("nonexistent-permission"))
+                            xraise_exception.write TRUE
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/rand"))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xuser)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xPermissionDenied)))))
+                          bogusForceDataize.write ((((((xAView).xas_view)).apply)).apply ((xrequest)))

@@ -1,0 +1,59 @@
+memory > xEditor
+memory > xBook
+memory > xAuthor
+memory > xStore
+memory > xmodels
+[] > default_related_name
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdefault_related_name
+        memory > xavailable_books
+        memory > xtitle
+        memory > xfirst_name
+        memory > xeditor
+        memory > xabstract
+        memory > xname
+        memory > xlast_name2
+        memory > xaddress
+        memory > xbestselling_author
+        memory > xauthors
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xfirst_name.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+                xlast_name2.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+                xbestselling_author.write ((((xmodels).xForeignKey)).apply ((xAuthor)) (((xmodels).xCASCADE)))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xtitle.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+                xauthors.write ((((xmodels).xManyToManyField)).apply ((xAuthor)))
+                xeditor.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xEditor)) (((xmodels).xCASCADE)) ("edited_books"))
+                (((unsupported)).apply)
+                  xdefault_related_name.write "books"
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+                xaddress.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+                (((unsupported)).apply)
+                  seq
+                    xabstract.write TRUE
+                    xdefault_related_name.write "%(app_label)s_%(model_name)ss"
+            (((unsupported)).apply ((xStore)))
+              xavailable_books.write ((((xmodels).xManyToManyField)).apply ((xBook)))
+            (((unsupported)).apply ((xStore)))
+              seq
+                xeditor.write ((((xmodels).xForeignKey)).apply ((xEditor)) (((xmodels).xCASCADE)))
+                xavailable_books.write ((((xmodels).xManyToManyField)).apply ((xBook)))
+                (((unsupported)).apply)
+                  xdefault_related_name.write "editor_stores"

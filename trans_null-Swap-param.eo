@@ -1,0 +1,89 @@
+memory > xsettings
+memory > xLookupError
+[] > trans_null
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xgettext_lazy
+        memory > xget_language_bidi
+        memory > x_
+        memory > xactivate
+        memory > xgettext
+        memory > xget_supported_language_variant
+        memory > xngettext_lazy
+        memory > xnpgettext
+        memory > xdeactivate_all
+        memory > xget_language_from_path
+        memory > xngettext
+        memory > xcheck_for_language
+        memory > xgettext_noop
+        memory > xpgettext
+        memory > xget_language_from_request
+        memory > xdeactivate
+        memory > xget_language
+        seq > @
+          seq
+            (((unsupported)).apply)
+            xgettext.write
+              [xmessage]
+                seq > @
+                  (((unsupported)).apply ((xmessage)))
+            (((unsupported)).apply ((xgettext_noop)) ((xgettext_lazy)) ((x_)) ((xgettext)))
+            xngettext.write
+              [xsingular xplural xnumber]
+                seq > @
+                  seq
+                    ((xnumber).eq 1).if
+                      (((unsupported)).apply ((xsingular)))
+                    (((unsupported)).apply ((xplural)))
+            xngettext_lazy.write (xngettext)
+            xpgettext.write
+              [xcontext xmessage]
+                seq > @
+                  (((unsupported)).apply ((((xgettext)).apply ((xmessage)))))
+            xnpgettext.write
+              [xcontext xsingular xplural xnumber]
+                seq > @
+                  (((unsupported)).apply ((((xngettext)).apply ((xnumber)) ((xplural)) ((xsingular)))))
+            xactivate.write
+              [xx]
+                seq > @
+                  (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+            xdeactivate.write
+              []
+                seq > @
+                  (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+            xdeactivate_all.write (xdeactivate)
+            xget_language.write
+              []
+                seq > @
+                  (((unsupported)).apply (((xsettings).xLANGUAGE_CODE)))
+            xget_language_bidi.write
+              []
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply (((xsettings).xLANGUAGE_CODE)) (((xsettings).xLANGUAGES_BIDI)))))
+            xcheck_for_language.write
+              [xx]
+                seq > @
+                  (((unsupported)).apply (TRUE))
+            xget_language_from_request.write
+              [xrequest xcheck_path]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply (((xsettings).xLANGUAGE_CODE)))
+            xget_language_from_path.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+            xget_supported_language_variant.write
+              [xlang_code xstrict]
+                seq > @
+                  (((unsupported)).apply)
+                    ((xlang_code).eq ((xsettings).xLANGUAGE_CODE)).if
+                      (((unsupported)).apply ((xlang_code)))
+                      (((unsupported)).apply ((((xLookupError)).apply ((xlang_code)))))

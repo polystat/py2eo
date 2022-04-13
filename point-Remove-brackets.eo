@@ -1,0 +1,208 @@
+memory > xgdal
+memory > xlist
+memory > xrange
+memory > xint
+memory > xi
+memory > xsuper
+memory > xfloat
+memory > xiter
+memory > xGEOSException
+memory > xTypeError
+memory > xc_uint
+memory > xnext
+memory > xisinstance
+memory > xGEOSGeometry
+memory > xlen
+[] > point
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_create_empty
+        memory > xcoords
+        memory > xz
+        memory > x_set_list
+        memory > x_maxlength
+        memory > x_create_point
+        memory > xx
+        memory > x_from_pickle_wkb
+        memory > xtuple
+        memory > xhas_cs
+        memory > x__init__
+        memory > x_set_single
+        memory > x__len__
+        memory > xy
+        memory > x_minlength
+        memory > x_get_single_external
+        memory > x_ogr_ptr
+        memory > x__iter__
+        memory > x_to_pickle_wkb
+        memory > xcapi
+        memory > x_get_single_internal
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xGEOSGeometry)))
+              seq
+                x_minlength.write 2
+                x_maxlength.write 3
+                xhas_cs.write TRUE
+                x__init__.write
+                  [xself xx xy xz xsrid]
+                    memory > xcoords
+                    memory > xpoint
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xx)) ("None: is there a None literal in the EO language?")).if
+                          xcoords.write (((unsupported)).apply)
+                          (((xisinstance)).apply ((xx)) ((((unsupported)).apply ((xtuple)) ((xlist))))).if
+                            xcoords.write (xx)
+                            ((((xisinstance)).apply ((xx)) ((((unsupported)).apply ((xfloat)) ((xint))))).and (((xisinstance)).apply ((xy)) ((((unsupported)).apply ((xfloat)) ((xint)))))).if
+                              (((xisinstance)).apply ((xz)) ((((unsupported)).apply ((xfloat)) ((xint))))).if
+                                xcoords.write (((unsupported)).apply ((xx)) ((xy)) ((xz)))
+                                xcoords.write (((unsupported)).apply ((xx)) ((xy)))
+                              (((unsupported)).apply ((((xTypeError)).apply ("Invalid parameters given for Point initialization."))))
+                        xpoint.write ((((xself).x_create_point)).apply ((((xlen)).apply ((xcoords)))) ((xcoords)))
+                        (((unsupported)).apply (((xsuper).x__init__)) ((xpoint)) ((xsrid)))
+                x_to_pickle_wkb.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xself).xempty).if "None: is there a None literal in the EO language?" ((xsuper).x_to_pickle_wkb))))
+                x_from_pickle_wkb.write
+                  [xself xwkb]
+                    seq > @
+                      (((unsupported)).apply (((((unsupported)).apply ((xwkb)) ("None: is there a None literal in the EO language?")).if ((xself).x_create_empty) ((((xsuper).x_from_pickle_wkb)).apply ((xwkb))))))
+                x_ogr_ptr.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xself).xempty).if ((((xgdal).xgeometries).xPoint).x_create_empty) ((xsuper).x_ogr_ptr))))
+                x_create_empty.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xcls).x_create_point)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                x_create_point.write
+                  [xcls xndim xcoords]
+                    memory > xcs
+                    memory > xi
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((xndim).not).if
+                          (((unsupported)).apply (((((xcapi).xcreate_point)).apply ("None: is there a None literal in the EO language?"))))
+                        (((xndim).less 2).or ((xndim).greater 3)).if
+                          (((unsupported)).apply ((((xTypeError)).apply (("Invalid point dimension: %s".mod (xndim))))))
+                        xcs.write ((((xcapi).xcreate_cs)).apply ((((xc_uint)).apply (1))) ((((xc_uint)).apply ((xndim)))))
+                        xi.write (((xiter)).apply ((xcoords)))
+                        bogusForceDataize.write ((((xcapi).xcs_setx)).apply ((xcs)) (0) ((((xnext)).apply ((xi)))))
+                        bogusForceDataize.write ((((xcapi).xcs_sety)).apply ((xcs)) (0) ((((xnext)).apply ((xi)))))
+                        ((xndim).eq 3).if
+                          bogusForceDataize.write ((((xcapi).xcs_setz)).apply ((xcs)) (0) ((((xnext)).apply ((xi)))))
+                        (((unsupported)).apply (((((xcapi).xcreate_point)).apply ((xcs)))))
+                x_set_list.write
+                  [xself xlength xitems]
+                    memory > xptr
+                    memory > xsrid
+                    seq > @
+                      seq
+                        xptr.write ((((xself).x_create_point)).apply ((xlength)) ((xitems)))
+                        (xptr).if
+                          seq
+                            xsrid.write ((xself).xsrid)
+                            bogusForceDataize.write ((((xcapi).xdestroy_geom)).apply (((xself).xptr)))
+                            (((unsupported)).apply (((xself).x_ptr)) ((xptr)))
+                            (((unsupported)).apply ((xsrid)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply (((xself).xsrid)) ((xsrid)))
+                            unsupported
+                          (((unsupported)).apply ((((xGEOSException)).apply ("Geometry resulting from slice deletion was invalid."))))
+                x_set_single.write
+                  [xself xindex xvalue]
+                    seq > @
+                      bogusForceDataize.write (((((xself).x_cs).xsetOrdinate)).apply ((xindex)) (0) ((xvalue)))
+                x__iter__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply ((((xlen)).apply ((xself)))))))
+                          (((unsupported)).apply ((((unsupported)).apply ((xself)) ((xi)))))
+                x__len__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        ((xself).xempty).if
+                          (((unsupported)).apply (0))
+                        ((xself).xhasz).if
+                          (((unsupported)).apply (3))
+                          (((unsupported)).apply (2))
+                x_get_single_external.write
+                  [xself xindex]
+                    seq > @
+                      ((xindex).eq 0).if
+                        (((unsupported)).apply (((xself).xx)))
+                        ((xindex).eq 1).if
+                          (((unsupported)).apply (((xself).xy)))
+                          ((xindex).eq 2).if
+                            (((unsupported)).apply (((xself).xz)))
+                x_get_single_internal.write (x_get_single_external)
+                xx.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((((xself).x_cs).xgetOrdinate)).apply (0) (0))))
+                xx.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write (((((xself).x_cs).xsetOrdinate)).apply (0) (0) ((xvalue)))
+                xy.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((((xself).x_cs).xgetOrdinate)).apply (1) (0))))
+                xy.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write (((((xself).x_cs).xsetOrdinate)).apply (1) (0) ((xvalue)))
+                xz.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xself).xhasz).if (((((xself).x_cs).xgetOrdinate)).apply (2) (0)) "None: is there a None literal in the EO language?")))
+                xz.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((xself).xhasz).not).if
+                          (((unsupported)).apply ((((xGEOSException)).apply ("Cannot set Z on 2D Point."))))
+                        bogusForceDataize.write (((((xself).x_cs).xsetOrdinate)).apply (2) (0) ((xvalue)))
+                xtuple.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xself).x_cs).xtuple)))
+                xtuple.write
+                  [xself xtup]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x_cs)) (0))) ((xtup)))
+                xcoords.write (xtuple)

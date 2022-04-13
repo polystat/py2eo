@@ -1,0 +1,227 @@
+memory > xCookieStorage
+memory > xlist
+memory > xconstants
+memory > xBaseTests
+memory > xstr
+memory > xset_cookie_data
+memory > xrange
+memory > xFallbackStorage
+memory > xrandom
+memory > xi
+memory > xsuper
+memory > xset_session_data
+memory > xSimpleTestCase
+memory > xget_random_string
+memory > xint
+[] > test_fallback
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_get_empty
+        memory > xstorage_class
+        memory > xtest_get_fallback
+        memory > xget_session_storage
+        memory > xget_cookie_storage
+        memory > xtest_get_fallback_only
+        memory > xget_request
+        memory > xstored_session_messages_count
+        memory > xtest_no_fallback
+        memory > xtest_get
+        memory > xtest_session_fallback_only
+        memory > xtest_flush_used_backends
+        memory > xstored_cookie_messages_count
+        memory > xstored_messages_count
+        memory > xtest_session_fallback
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseTests)) ((xSimpleTestCase)))
+              seq
+                xstorage_class.write (xFallbackStorage)
+                xget_request.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsession)) ((((unsupported)).apply)))
+                        xrequest.write ((((((xsuper)).apply).xget_request)).apply)
+                        (((unsupported)).apply (((xrequest).xsession)) (((xself).xsession)))
+                        (((unsupported)).apply ((xrequest)))
+                xget_cookie_storage.write
+                  [xself xstorage]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xstorage).xstorages)) ((2.neg)))))
+                xget_session_storage.write
+                  [xself xstorage]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xstorage).xstorages)) ((1.neg)))))
+                xstored_cookie_messages_count.write
+                  [xself xstorage xresponse]
+                    seq > @
+                      (((unsupported)).apply ((((xstored_cookie_messages_count)).apply (((((xself).xget_cookie_storage)).apply ((xstorage)))) ((xresponse)))))
+                xstored_session_messages_count.write
+                  [xself xstorage xresponse]
+                    seq > @
+                      (((unsupported)).apply ((((xstored_session_messages_count)).apply (((((xself).xget_session_storage)).apply ((xstorage)))))))
+                xstored_messages_count.write
+                  [xself xstorage xresponse]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xstored_cookie_messages_count)).apply ((xstorage)) ((xresponse))).sub ((((xself).xstored_session_messages_count)).apply ((xstorage)) ((xresponse))))))
+                xtest_get.write
+                  [xself]
+                    memory > xrequest
+                    memory > xcookie_storage
+                    memory > xstorage
+                    memory > xexample_messages
+                    seq > @
+                      seq
+                        xrequest.write ((((xself).xget_request)).apply)
+                        xstorage.write ((((xself).xstorage_class)).apply ((xrequest)))
+                        xcookie_storage.write ((((xself).xget_cookie_storage)).apply ((xstorage)))
+                        xexample_messages.write (((unsupported)).apply ((((xstr)).apply ((xi)))) ((xi)) ((((xrange)).apply (5))))
+                        bogusForceDataize.write (((xset_cookie_data)).apply ((xcookie_storage)) ((xexample_messages)))
+                        (((unsupported)).apply ((((((xself).xget_session_storage)).apply ((xstorage))).x_get)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xstorage)))) ((xexample_messages)))
+                xtest_get_empty.write
+                  [xself]
+                    memory > xrequest
+                    memory > xstorage
+                    seq > @
+                      seq
+                        xrequest.write ((((xself).xget_request)).apply)
+                        xstorage.write ((((xself).xstorage_class)).apply ((xrequest)))
+                        (((unsupported)).apply ((((((xself).xget_session_storage)).apply ((xstorage))).x_get)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xstorage)))) ((((unsupported)).apply)))
+                xtest_get_fallback.write
+                  [xself]
+                    memory > xsession_storage
+                    memory > xrequest
+                    memory > xexample_messages
+                    memory > xcookie_storage
+                    memory > xstorage
+                    seq > @
+                      seq
+                        xrequest.write ((((xself).xget_request)).apply)
+                        xstorage.write ((((xself).xstorage_class)).apply ((xrequest)))
+                        xcookie_storage.write ((((xself).xget_cookie_storage)).apply ((xstorage)))
+                        xsession_storage.write ((((xself).xget_session_storage)).apply ((xstorage)))
+                        xexample_messages.write (((unsupported)).apply ((((xstr)).apply ((xi)))) ((xi)) ((((xrange)).apply (5))))
+                        bogusForceDataize.write (((xset_cookie_data)).apply ((xcookie_storage)) (((((unsupported)).apply ((xexample_messages)) ((((unsupported)).apply (4)))).sub (((unsupported)).apply (((xCookieStorage).xnot_finished))))))
+                        bogusForceDataize.write (((xset_session_data)).apply ((xsession_storage)) ((((unsupported)).apply ((xexample_messages)) ((((unsupported)).apply (4))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xstorage)))) ((xexample_messages)))
+                xtest_get_fallback_only.write
+                  [xself]
+                    memory > xsession_storage
+                    memory > xrequest
+                    memory > xexample_messages
+                    memory > xcookie_storage
+                    memory > xstorage
+                    seq > @
+                      seq
+                        xrequest.write ((((xself).xget_request)).apply)
+                        xstorage.write ((((xself).xstorage_class)).apply ((xrequest)))
+                        xcookie_storage.write ((((xself).xget_cookie_storage)).apply ((xstorage)))
+                        xsession_storage.write ((((xself).xget_session_storage)).apply ((xstorage)))
+                        xexample_messages.write (((unsupported)).apply ((((xstr)).apply ((xi)))) ((xi)) ((((xrange)).apply (5))))
+                        (((unsupported)).apply ((xset_cookie_data)) ((xcookie_storage)) ((((unsupported)).apply (((xCookieStorage).xnot_finished)))) (TRUE))
+                        bogusForceDataize.write (((xset_session_data)).apply ((xsession_storage)) ((xexample_messages)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xstorage)))) ((xexample_messages)))
+                xtest_flush_used_backends.write
+                  [xself]
+                    memory > xsession_storage
+                    memory > xrequest
+                    memory > xresponse
+                    memory > xcookie_storage
+                    memory > xsession_storing
+                    memory > xstorage
+                    seq > @
+                      seq
+                        xrequest.write ((((xself).xget_request)).apply)
+                        xstorage.write ((((xself).xstorage_class)).apply ((xrequest)))
+                        xcookie_storage.write ((((xself).xget_cookie_storage)).apply ((xstorage)))
+                        xsession_storage.write ((((xself).xget_session_storage)).apply ((xstorage)))
+                        bogusForceDataize.write (((xset_cookie_data)).apply ((xcookie_storage)) ((((unsupported)).apply ("cookie") (((xCookieStorage).xnot_finished)))))
+                        bogusForceDataize.write (((xset_session_data)).apply ((xsession_storage)) ((((unsupported)).apply ("session"))))
+                        xresponse.write ((((xself).xget_response)).apply)
+                        bogusForceDataize.write (((xlist)).apply ((xstorage)))
+                        bogusForceDataize.write ((((xstorage).xupdate)).apply ((xresponse)))
+                        xsession_storing.write ((((xself).xstored_session_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xsession_storing)) (0))
+                xtest_no_fallback.write
+                  [xself]
+                    memory > xresponse
+                    memory > xsession_storing
+                    memory > xstorage
+                    memory > xcookie_storing
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xresponse.write ((((xself).xget_response)).apply)
+                        (((unsupported)).apply ((((((xself).xget_session_storage)).apply ((xstorage))).x_store)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (5))))
+                          bogusForceDataize.write ((((xstorage).xadd)).apply (((xconstants).xINFO)) (((((xstr)).apply ((xi))).mul 100)))
+                        bogusForceDataize.write ((((xstorage).xupdate)).apply ((xresponse)))
+                        xcookie_storing.write ((((xself).xstored_cookie_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcookie_storing)) (5))
+                        xsession_storing.write ((((xself).xstored_session_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xsession_storing)) (0))
+                xtest_session_fallback.write
+                  [xself]
+                    memory > xmsg_size
+                    memory > xcookie_storing
+                    memory > xresponse
+                    memory > xsession_storing
+                    memory > xstorage
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xresponse.write ((((xself).xget_response)).apply)
+                        xmsg_size.write (((xint)).apply ((((((xCookieStorage).xmax_cookie_size).sub 54).div 4.5).sub 37)))
+                        bogusForceDataize.write ((((xrandom).xseed)).apply (42))
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (5))))
+                          bogusForceDataize.write ((((xstorage).xadd)).apply (((xconstants).xINFO)) ((((xget_random_string)).apply ((xmsg_size)))))
+                        bogusForceDataize.write ((((xstorage).xupdate)).apply ((xresponse)))
+                        xcookie_storing.write ((((xself).xstored_cookie_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcookie_storing)) (4))
+                        xsession_storing.write ((((xself).xstored_session_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xsession_storing)) (1))
+                xtest_session_fallback_only.write
+                  [xself]
+                    memory > xresponse
+                    memory > xsession_storing
+                    memory > xstorage
+                    memory > xcookie_storing
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xresponse.write ((((xself).xget_response)).apply)
+                        bogusForceDataize.write ((((xrandom).xseed)).apply (42))
+                        bogusForceDataize.write ((((xstorage).xadd)).apply (((xconstants).xINFO)) ((((xget_random_string)).apply (5000))))
+                        bogusForceDataize.write ((((xstorage).xupdate)).apply ((xresponse)))
+                        xcookie_storing.write ((((xself).xstored_cookie_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcookie_storing)) (0))
+                        xsession_storing.write ((((xself).xstored_session_messages_count)).apply ((xstorage)) ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xsession_storing)) (1))

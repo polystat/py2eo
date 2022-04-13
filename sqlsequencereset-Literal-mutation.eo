@@ -1,0 +1,48 @@
+memory > xDEFAULT_DB_ALIAS
+memory > xconnections
+memory > xoptions
+memory > xAppCommand
+memory > xsuper
+[] > sqlsequencereset
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle_app_config
+        memory > xhelp
+        memory > xoutput_transaction
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xAppCommand)))
+              seq
+                xhelp.write "Prints the SQL statements for resetting sequences for the given app name(s)."
+                xoutput_transaction.write TRUE
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_arguments)).apply ((xparser)))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ((xDEFAULT_DB_ALIAS)) ("Nominates a database to print the SQL for. Defaults to the \"default\" database."))
+                xhandle_app_config.write
+                  [xself xapp_config]
+                    memory > xmodels
+                    memory > xconnection
+                    memory > xstatements
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xapp_config).xmodels_module)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply)
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((((unsupported)).apply ((xoptions)) ("database"))))
+                        xmodels.write (((unsupported)).apply (((xapp_config).xget_models)) (TRUE))
+                        xstatements.write (((((xconnection).xops).xsequence_reset_sql)).apply (((xself).xstyle)) ((xmodels)))
+                        (((xstatements).not).and ((((unsupported)).apply ((xoptions)) ("verbosity")).geq 1)).if
+                          bogusForceDataize.write (((((xself).xstderr).xwrite)).apply ("No sequences found."))
+                        (((unsupported)).apply (((("n".xjoin)).apply ((xstatements)))))

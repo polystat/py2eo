@@ -1,0 +1,59 @@
+memory > xapps
+memory > xsys
+memory > xapp_config2
+memory > xapp_config
+memory > xmodels
+memory > xkwargs
+[] > sql
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsql_flush
+        memory > xemit_post_migrate_signal
+        memory > xemit_pre_migrate_signal
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xsql_flush.write
+              [xstyle xconnection xreset_sequences xallow_cascade]
+                memory > xtables
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xtables.write (((unsupported)).apply ((((xconnection).xintrospection).xdjango_table_names)) (TRUE) (FALSE))
+                    (((unsupported)).apply ((((unsupported)).apply ((((xconnection).xops).xsql_flush)) ((xstyle)) ((xtables)) ((xreset_sequences)) ((xallow_cascade)))))
+            xemit_pre_migrate_signal.write
+              [xverbosity xinteractive xdb]
+                memory > xstdout
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((xapp_config2)) (((((xapps).xget_app_configs)).apply)))
+                      seq
+                        (((unsupported)).apply (((xapp_config).xmodels_module)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply)
+                        ((xverbosity).geq 2).if
+                          seq
+                            xstdout.write ((((xkwargs).xget)).apply ("stdout") (((xsys).xstdout)))
+                            bogusForceDataize.write ((((xstdout).xwrite)).apply (("Running pre-migrate handlers for application %s".mod ((xapp_config).xlabel))))
+                        (((unsupported)).apply (((((xmodels).xsignals).xpre_migrate).xsend)) ((xapp_config)) ((xapp_config)) ((xverbosity)) ((xinteractive)) ((xdb)) ((((unsupported)).apply ((xkwargs)))))
+            xemit_post_migrate_signal.write
+              [xverbosity xinteractive xdb]
+                memory > xstdout
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((xapp_config)) (((((xapps).xget_app_configs)).apply)))
+                      seq
+                        (((unsupported)).apply (((xapp_config).xmodels_module)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply)
+                        ((xverbosity).geq 2).if
+                          seq
+                            xstdout.write ((((xkwargs).xget)).apply ("stdout") (((xsys).xstdout)))
+                            bogusForceDataize.write ((((xstdout).xwrite)).apply (("Running post-migrate handlers for application %s".mod ((xapp_config).xlabel))))
+                        (((unsupported)).apply (((((xmodels).xsignals).xpost_migrate).xsend)) ((xapp_config)) ((xapp_config)) ((xverbosity)) ((xinteractive)) ((xdb)) ((((unsupported)).apply ((xkwargs)))))

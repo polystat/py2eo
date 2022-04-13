@@ -1,0 +1,53 @@
+memory > xXMLGenerator2
+memory > xValueError
+memory > xre
+memory > xsuper
+memory > xsorted
+memory > xUnserializableContentError
+memory > xXMLGenerator
+memory > xdict
+[] > xmlutils
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcharacters
+        memory > xstartElement
+        memory > xaddQuickElement
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xValueError)))
+            (((unsupported)).apply ((xXMLGenerator2)))
+              seq
+                xaddQuickElement.write
+                  [xself xname xcontents xattrs]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((xattrs)) ("None: is there a None literal in the EO language?")).if
+                          xattrs.write (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xstartElement)).apply ((xname)) ((xattrs)))
+                        (((unsupported)).apply ((xcontents)) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xself).xcharacters)).apply ((xcontents)))
+                        bogusForceDataize.write ((((xself).xendElement)).apply ((xname)))
+                xcharacters.write
+                  [xself xcontent]
+                    seq > @
+                      seq
+                        ((xcontent).and ((((xre).xsearch)).apply ("[x00-x08x0B-x0Cx0E-x1F]") ((xcontent)))).if
+                          (((unsupported)).apply ((((xUnserializableContentError)).apply ("Control characters are not supported in XML 1.0"))))
+                        bogusForceDataize.write ((((xXMLGenerator).xcharacters)).apply ((xself)) ((xcontent)))
+                xstartElement.write
+                  [xself xname xattrs]
+                    memory > xsorted_attrs
+                    seq > @
+                      seq
+                        xsorted_attrs.write ((xattrs).if (((xdict)).apply ((((xsorted)).apply (((((xattrs).xitems)).apply))))) (xattrs))
+                        bogusForceDataize.write ((((((xsuper)).apply).xstartElement)).apply ((xname)) ((xsorted_attrs)))

@@ -1,0 +1,67 @@
+memory > xskipUnless
+memory > xconnection
+memory > xTestCase
+memory > x_connection
+memory > xmock
+memory > xDatabaseFeatures
+[] > test_features
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_skip_locked_no_wait
+        memory > xtest_supports_transactions
+        memory > xtest_allows_auto_pk_0
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((xskipUnless)).apply ((((xconnection).xvendor).eq "mysql")) ("MySQL tests"))))
+              seq
+                xtest_supports_transactions.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xmock).xpatch)).apply ("django.db.connection.features._mysql_storage_engine") ("InnoDB"))))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xconnection).xfeatures).xsupports_transactions)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xconnection).xfeatures).xsupports_transactions)))))
+                        (((unsupported)).apply (((((xmock).xpatch)).apply ("django.db.connection.features._mysql_storage_engine") ("MyISAM"))))
+                          bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xconnection).xfeatures).xsupports_transactions)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xconnection).xfeatures).xsupports_transactions)))))
+                xtest_skip_locked_no_wait.write
+                  [xself]
+                    memory > xdatabase_features
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmock).xMagicMock)) ((x_connection)))
+                          seq
+                            (((unsupported)).apply (((x_connection).xmysql_version)) ((((unsupported)).apply (8) (0) (1))))
+                            (((unsupported)).apply (((x_connection).xmysql_is_mariadb)) (FALSE))
+                            xdatabase_features.write (((xDatabaseFeatures)).apply ((x_connection)))
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((xdatabase_features).xhas_select_for_update_skip_locked)))
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((xdatabase_features).xhas_select_for_update_nowait)))
+                        (((unsupported)).apply (((xmock).xMagicMock)) ((x_connection)))
+                          seq
+                            (((unsupported)).apply (((x_connection).xmysql_version)) ((((unsupported)).apply (8) (0) (0))))
+                            (((unsupported)).apply (((x_connection).xmysql_is_mariadb)) (FALSE))
+                            xdatabase_features.write (((xDatabaseFeatures)).apply ((x_connection)))
+                            bogusForceDataize.write ((((xself).xassertFalse)).apply (((xdatabase_features).xhas_select_for_update_skip_locked)))
+                            bogusForceDataize.write ((((xself).xassertFalse)).apply (((xdatabase_features).xhas_select_for_update_nowait)))
+                xtest_allows_auto_pk_0.write
+                  [xself]
+                    memory > xdatabase_features
+                    seq > @
+                      (((unsupported)).apply (((xmock).xMagicMock)) ((x_connection)))
+                        seq
+                          (((unsupported)).apply (((x_connection).xsql_mode)) ((((unsupported)).apply ("NO_AUTO_VALUE_ON_ZERO"))))
+                          xdatabase_features.write (((xDatabaseFeatures)).apply ((x_connection)))
+                          bogusForceDataize.write ((((xself).xassertIs)).apply (((xdatabase_features).xallows_auto_pk_0)) (TRUE))

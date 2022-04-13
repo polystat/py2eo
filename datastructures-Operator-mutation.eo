@@ -1,0 +1,204 @@
+memory > xINNER
+memory > xValueError
+memory > xp
+memory > xException
+memory > xextra_sql
+memory > xNotImplemented
+memory > xextra_params
+memory > xLOUTER
+memory > xlhs_col
+memory > xisinstance
+memory > xrhs_col
+memory > xBaseTable
+memory > xgetattr
+memory > xJoin
+memory > xhash
+[] > datastructures
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xjoin_type
+        memory > xas_sql
+        memory > xdemote
+        memory > x__init__
+        memory > xidentity
+        memory > xfiltered_relation
+        memory > xrelabeled_clone
+        memory > x__eq__
+        memory > xpromote
+        memory > xparent_alias
+        memory > xequals
+        memory > x__hash__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xException)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xnames_pos xpath_with_names]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xlevel)) ((xnames_pos)))
+                        (((unsupported)).apply (((xself).xnames_with_path)) ((xpath_with_names)))
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xtable_name xparent_alias xtable_alias xjoin_type xjoin_field xnullable xfiltered_relation]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xtable_name)) ((xtable_name)))
+                        (((unsupported)).apply (((xself).xparent_alias)) ((xparent_alias)))
+                        (((unsupported)).apply (((xself).xtable_alias)) ((xtable_alias)))
+                        (((unsupported)).apply (((xself).xjoin_type)) ((xjoin_type)))
+                        (((unsupported)).apply (((xself).xjoin_cols)) (((((xjoin_field).xget_joining_columns)).apply)))
+                        (((unsupported)).apply (((xself).xjoin_field)) ((xjoin_field)))
+                        (((unsupported)).apply (((xself).xnullable)) ((xnullable)))
+                        (((unsupported)).apply (((xself).xfiltered_relation)) ((xfiltered_relation)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xqn2
+                    memory > xextra_cond
+                    memory > xjoin_conditions
+                    memory > xalias_str
+                    memory > xqn
+                    memory > xdeclared_field
+                    memory > xparams
+                    memory > xsql
+                    memory > xon_clause_sql
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xjoin_conditions.write (((unsupported)).apply)
+                        xparams.write (((unsupported)).apply)
+                        xqn.write ((xcompiler).xquote_name_unless_alias)
+                        xqn2.write (((xconnection).xops).xquote_name)
+                        (((unsupported)).apply ((((unsupported)).apply ((xlhs_col)) ((xrhs_col)))) (((xself).xjoin_cols)))
+                          bogusForceDataize.write ((((xjoin_conditions).xappend)).apply (("%s.%s = %s.%s".mod (((unsupported)).apply ((((xqn)).apply (((xself).xparent_alias)))) ((((xqn2)).apply ((xlhs_col)))) ((((xqn)).apply (((xself).xtable_alias)))) ((((xqn2)).apply ((xrhs_col))))))))
+                        xextra_cond.write (((((xself).xjoin_field).xget_extra_restriction)).apply (((xself).xtable_alias)) (((xself).xparent_alias)))
+                        (xextra_cond).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xextra_sql)) ((xextra_params)))) (((((xcompiler).xcompile)).apply ((xextra_cond)))))
+                            bogusForceDataize.write ((((xjoin_conditions).xappend)).apply (("(%s)".mod (xextra_sql))))
+                            bogusForceDataize.write ((((xparams).xextend)).apply ((xextra_params)))
+                        ((xself).xfiltered_relation).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xextra_sql)) ((xextra_params)))) (((((xcompiler).xcompile)).apply (((xself).xfiltered_relation)))))
+                            (xextra_sql).if
+                              seq
+                                bogusForceDataize.write ((((xjoin_conditions).xappend)).apply (("(%s)".mod (xextra_sql))))
+                                bogusForceDataize.write ((((xparams).xextend)).apply ((xextra_params)))
+                        ((xjoin_conditions).not).if
+                          seq
+                            xdeclared_field.write (((xgetattr)).apply (((xself).xjoin_field)) ("field") (((xself).xjoin_field)))
+                            (((unsupported)).apply ((((xValueError)).apply (("Join generated an empty ON clause. %s did not yield either joining columns or extra restrictions.".mod ((xdeclared_field).x__class__))))))
+                        xon_clause_sql.write (((" AND ".xjoin)).apply ((xjoin_conditions)))
+                        xalias_str.write ((((xself).xtable_alias).eq ((xself).xtable_name)).if "" (" %s".mod ((xself).xtable_alias)))
+                        xsql.write ("%s %s%s ON (%s)".mod (((unsupported)).apply (((xself).xjoin_type)) ((((xqn)).apply (((xself).xtable_name)))) ((xalias_str)) ((xon_clause_sql))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))))
+                xrelabeled_clone.write
+                  [xself xchange_map]
+                    memory > xnew_table_alias
+                    memory > xfiltered_relation
+                    memory > xnew_parent_alias
+                    seq > @
+                      seq
+                        xnew_parent_alias.write ((((xchange_map).xget)).apply (((xself).xparent_alias)) (((xself).xparent_alias)))
+                        xnew_table_alias.write ((((xchange_map).xget)).apply (((xself).xtable_alias)) (((xself).xtable_alias)))
+                        (((unsupported)).apply (((xself).xfiltered_relation)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            xfiltered_relation.write (((((xself).xfiltered_relation).xclone)).apply)
+                            (((unsupported)).apply (((xfiltered_relation).xpath)) ((((unsupported)).apply (((((xchange_map).xget)).apply ((xp)) ((xp)))) ((xp)) ((((xself).xfiltered_relation).xpath)))))
+                          xfiltered_relation.write "None: is there a None literal in the EO language?"
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x__class__)) (((xself).xtable_name)) ((xnew_parent_alias)) ((xnew_table_alias)) (((xself).xjoin_type)) (((xself).xjoin_field)) (((xself).xnullable)) ((xfiltered_relation)))))
+                xidentity.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x__class__)) (((xself).xtable_name)) (((xself).xparent_alias)) (((xself).xjoin_field)) (((xself).xfiltered_relation)))))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      seq
+                        ((((xisinstance)).apply ((xother)) ((xJoin))).not).if
+                          (((unsupported)).apply ((xNotImplemented)))
+                        (((unsupported)).apply ((((xself).xidentity).eq ((xother).xidentity))))
+                x__hash__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xhash)).apply (((xself).xidentity)))))
+                xequals.write
+                  [xself xother]
+                    seq > @
+                      (((unsupported)).apply (((((unsupported)).apply (((xself).xidentity)) ((((unsupported)).apply ((1.neg))))).eq (((unsupported)).apply (((xother).xidentity)) ((((unsupported)).apply ((1.neg))))))))
+                xdemote.write
+                  [xself]
+                    memory > xnew
+                    seq > @
+                      seq
+                        xnew.write ((((xself).xrelabeled_clone)).apply ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xnew).xjoin_type)) ((xINNER)))
+                        (((unsupported)).apply ((xnew)))
+                xpromote.write
+                  [xself]
+                    memory > xnew
+                    seq > @
+                      seq
+                        xnew.write ((((xself).xrelabeled_clone)).apply ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xnew).xjoin_type)) ((xLOUTER)))
+                        (((unsupported)).apply ((xnew)))
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xjoin_type.write "None: is there a None literal in the EO language?"
+                xparent_alias.write "None: is there a None literal in the EO language?"
+                xfiltered_relation.write "None: is there a None literal in the EO language?"
+                x__init__.write
+                  [xself xtable_name xalias]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xtable_name)) ((xtable_name)))
+                        (((unsupported)).apply (((xself).xtable_alias)) ((xalias)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xalias_str
+                    memory > xbase_sql
+                    seq > @
+                      seq
+                        xalias_str.write ((((xself).xtable_alias).eq ((xself).xtable_name)).if "" (" %s".mod ((xself).xtable_alias)))
+                        xbase_sql.write ((((xcompiler).xquote_name_unless_alias)).apply (((xself).xtable_name)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xbase_sql).sub (xalias_str))) ((((unsupported)).apply)))))
+                xrelabeled_clone.write
+                  [xself xchange_map]
+                    seq > @
+                      (((unsupported)).apply (((((xself).x__class__)).apply (((xself).xtable_name)) (((((xchange_map).xget)).apply (((xself).xtable_alias)) (((xself).xtable_alias)))))))
+                xidentity.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x__class__)) (((xself).xtable_name)) (((xself).xtable_alias)))))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      seq
+                        ((((xisinstance)).apply ((xother)) ((xBaseTable))).not).if
+                          (((unsupported)).apply ((xNotImplemented)))
+                        (((unsupported)).apply ((((xself).xidentity).eq ((xother).xidentity))))
+                x__hash__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xhash)).apply (((xself).xidentity)))))
+                xequals.write
+                  [xself xother]
+                    seq > @
+                      (((unsupported)).apply ((((xself).xidentity).eq ((xother).xidentity))))

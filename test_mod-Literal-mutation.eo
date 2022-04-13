@@ -1,0 +1,72 @@
+memory > xIntegerModel
+memory > xMod
+memory > xFloatModel
+memory > xTestCase
+memory > xfloat
+memory > xDecimal
+memory > xDecimalModel
+memory > xmath
+[] > test_mod
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_decimal
+        memory > xtest_float
+        memory > xtest_null
+        memory > xtest_integer
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_null.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) (100))
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xMod)).apply ("small") ("normal"))) ((((xMod)).apply ("normal") ("big")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_mod_small)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_mod_normal)))
+                xtest_decimal.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("-9.9"))) ((((xDecimal)).apply ("4.6"))))
+                        xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xannotate)) ((((xMod)).apply ("n1") ("n2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn_mod)) ((xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xobj).xn_mod)) ((((xDecimal)).apply (((((xmath).xfmod)).apply (((xobj).xn1)) (((xobj).xn2)))))))
+                xtest_float.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) ((25.neg)) (0.33))
+                        xobj.write ((((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xMod)).apply ("f1") ("f2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf_mod)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xobj).xf_mod)) (((((xmath).xfmod)).apply (((xobj).xf1)) (((xobj).xf2)))))
+                xtest_integer.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) (20) (15) (1))
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xMod)).apply ("small") ("normal"))) ((((xMod)).apply ("normal") ("big"))) ((((xMod)).apply ("big") ("small")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xsmall_mod)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xnormal_mod)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xbig_mod)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xsmall_mod)) (((((xmath).xfmod)).apply (((xobj).xsmall)) (((xobj).xnormal)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xnormal_mod)) (((((xmath).xfmod)).apply (((xobj).xnormal)) (((xobj).xbig)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xbig_mod)) (((((xmath).xfmod)).apply (((xobj).xbig)) (((xobj).xsmall)))))

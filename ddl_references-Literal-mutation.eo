@@ -1,0 +1,300 @@
+memory > xstr
+memory > xTable
+memory > xpart
+memory > xReference
+memory > xany
+memory > xsuper
+memory > xtuple
+memory > xcolumn
+memory > xsql
+memory > xindex
+memory > xenumerate
+memory > xparts
+memory > xdeepcopy
+memory > xColumns
+memory > xNotImplementedError
+memory > xIndexError
+memory > xcol
+memory > xhasattr
+memory > xidx
+memory > xTableColumns
+memory > xmap
+[] > ddl_references
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__str__
+        memory > x__repr__
+        memory > xrename_table_references
+        memory > xrename_column_references
+        memory > x__init__
+        memory > xreferences_column
+        memory > xreferences_table
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                unsupported
+                xreferences_table.write
+                  [xself xtable]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (FALSE))
+                xreferences_column.write
+                  [xself xtable xcolumn]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (FALSE))
+                xrename_table_references.write
+                  [xself xold_table xnew_table]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                xrename_column_references.write
+                  [xself xtable xold_column xnew_column]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("<%s %r>".mod (((unsupported)).apply ((((xself).x__class__).x__name__)) ((((xstr)).apply ((xself))))))))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xNotImplementedError)).apply ("Subclasses must define how they should be converted to string."))))
+            (((unsupported)).apply ((xReference)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xtable xquote_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xtable)) ((xtable)))
+                        (((unsupported)).apply (((xself).xquote_name)) ((xquote_name)))
+                xreferences_table.write
+                  [xself xtable]
+                    seq > @
+                      (((unsupported)).apply ((((xself).xtable).eq (xtable))))
+                xrename_table_references.write
+                  [xself xold_table xnew_table]
+                    seq > @
+                      (((xself).xtable).eq (xold_table)).if
+                        (((unsupported)).apply (((xself).xtable)) ((xnew_table)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xquote_name)).apply (((xself).xtable)))))
+            (((unsupported)).apply ((xTable)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xtable xcolumns]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xtable)) ((xtable)))
+                        (((unsupported)).apply (((xself).xcolumns)) ((xcolumns)))
+                xreferences_column.write
+                  [xself xtable xcolumn]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xtable).eq (xtable)).and (((unsupported)).apply ((xcolumn)) (((xself).xcolumns))))))
+                xrename_column_references.write
+                  [xself xtable xold_column xnew_column]
+                    seq > @
+                      (((xself).xtable).eq (xtable)).if
+                        (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xcolumn)))) ((((xenumerate)).apply (((xself).xcolumns)))))
+                          ((xcolumn).eq (xold_column)).if
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xcolumns)) ((xindex)))) ((xnew_column)))
+            (((unsupported)).apply ((xTableColumns)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xtable xcolumns xquote_name xcol_suffixes]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xquote_name)) ((xquote_name)))
+                        (((unsupported)).apply (((xself).xcol_suffixes)) ((xcol_suffixes)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xtable)) ((xcolumns)))
+                x__str__.write
+                  [xself]
+                    memory > xcol_str
+                    seq > @
+                      seq
+                        xcol_str.write
+                          [xcolumn xidx]
+                            memory > xcol
+                            memory > xsuffix
+                            seq > @
+                              seq
+                                xcol.write ((((xself).xquote_name)).apply ((xcolumn)))
+                                (((unsupported)).apply ((xIndexError)))
+                                  seq
+                                    xsuffix.write (((unsupported)).apply (((xself).xcol_suffixes)) ((xidx)))
+                                    (xsuffix).if
+                                      xcol.write ((("{} {}".xformat)).apply ((xcol)) ((xsuffix)))
+                                (((unsupported)).apply ((xcol)))
+                        (((unsupported)).apply ((((", ".xjoin)).apply ((((unsupported)).apply ((((xcol_str)).apply ((xcolumn)) ((xidx)))) ((((unsupported)).apply ((xidx)) ((xcolumn)))) ((((xenumerate)).apply (((xself).xcolumns)))))))))
+            (((unsupported)).apply ((xTableColumns)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xtable xcolumns xsuffix xcreate_index_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsuffix)) ((xsuffix)))
+                        (((unsupported)).apply (((xself).xcreate_index_name)) ((xcreate_index_name)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xtable)) ((xcolumns)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xcreate_index_name)).apply (((xself).xtable)) (((xself).xcolumns)) (((xself).xsuffix)))))
+            (((unsupported)).apply ((xColumns)))
+              seq
+                x__init__.write
+                  [xself xtable xcolumns xquote_name xcol_suffixes xopclasses]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xopclasses)) ((xopclasses)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xtable)) ((xcolumns)) ((xquote_name)) ((xcol_suffixes)))
+                x__str__.write
+                  [xself]
+                    memory > xcol_str
+                    seq > @
+                      seq
+                        xcol_str.write
+                          [xcolumn xidx]
+                            memory > xcol
+                            memory > xsuffix
+                            seq > @
+                              seq
+                                xcol.write ((("{} {}".xformat)).apply (((((xself).xquote_name)).apply ((xcolumn)))) ((((unsupported)).apply (((xself).xopclasses)) ((xidx)))))
+                                (((unsupported)).apply ((xIndexError)))
+                                  seq
+                                    xsuffix.write (((unsupported)).apply (((xself).xcol_suffixes)) ((xidx)))
+                                    (xsuffix).if
+                                      xcol.write ((("{} {}".xformat)).apply ((xcol)) ((xsuffix)))
+                                (((unsupported)).apply ((xcol)))
+                        (((unsupported)).apply ((((", ".xjoin)).apply ((((unsupported)).apply ((((xcol_str)).apply ((xcolumn)) ((xidx)))) ((((unsupported)).apply ((xidx)) ((xcolumn)))) ((((xenumerate)).apply (((xself).xcolumns)))))))))
+            (((unsupported)).apply ((xTableColumns)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xfrom_table xfrom_columns xto_table xto_columns xsuffix_template xcreate_fk_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xto_reference)) ((((xTableColumns)).apply ((xto_table)) ((xto_columns)))))
+                        (((unsupported)).apply (((xself).xsuffix_template)) ((xsuffix_template)))
+                        (((unsupported)).apply (((xself).xcreate_fk_name)) ((xcreate_fk_name)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xfrom_table)) ((xfrom_columns)))
+                xreferences_table.write
+                  [xself xtable]
+                    seq > @
+                      (((unsupported)).apply ((((((((xsuper)).apply).xreferences_table)).apply ((xtable))).or (((((xself).xto_reference).xreferences_table)).apply ((xtable))))))
+                xreferences_column.write
+                  [xself xtable xcolumn]
+                    seq > @
+                      (((unsupported)).apply ((((((((xsuper)).apply).xreferences_column)).apply ((xtable)) ((xcolumn))).or (((((xself).xto_reference).xreferences_column)).apply ((xtable)) ((xcolumn))))))
+                xrename_table_references.write
+                  [xself xold_table xnew_table]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xrename_table_references)).apply ((xold_table)) ((xnew_table)))
+                        bogusForceDataize.write (((((xself).xto_reference).xrename_table_references)).apply ((xold_table)) ((xnew_table)))
+                xrename_column_references.write
+                  [xself xtable xold_column xnew_column]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xrename_column_references)).apply ((xtable)) ((xold_column)) ((xnew_column)))
+                        bogusForceDataize.write (((((xself).xto_reference).xrename_column_references)).apply ((xtable)) ((xold_column)) ((xnew_column)))
+                x__str__.write
+                  [xself]
+                    memory > xsuffix
+                    seq > @
+                      seq
+                        xsuffix.write (((xself).xsuffix_template).mod (((unsupported)).apply ("to_table") ((((xself).xto_reference).xtable)) ("to_column") ((((unsupported)).apply ((((xself).xto_reference).xcolumns)) (0)))))
+                        (((unsupported)).apply (((((xself).xcreate_fk_name)).apply (((xself).xtable)) (((xself).xcolumns)) ((xsuffix)))))
+            (((unsupported)).apply ((xReference)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xtemplate]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xtemplate)) ((xtemplate)))
+                        (((unsupported)).apply (((xself).xparts)) ((xparts)))
+                xreferences_table.write
+                  [xself xtable]
+                    seq > @
+                      (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply (((((xhasattr)).apply ((xpart)) ("references_table")).and ((((xpart).xreferences_table)).apply ((xtable))))) ((xpart)) ((((((xself).xparts).xvalues)).apply)))))))
+                xreferences_column.write
+                  [xself xtable xcolumn]
+                    seq > @
+                      (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply (((((xhasattr)).apply ((xpart)) ("references_column")).and ((((xpart).xreferences_column)).apply ((xtable)) ((xcolumn))))) ((xpart)) ((((((xself).xparts).xvalues)).apply)))))))
+                xrename_table_references.write
+                  [xself xold_table xnew_table]
+                    seq > @
+                      (((unsupported)).apply ((xpart)) ((((((xself).xparts).xvalues)).apply)))
+                        (((xhasattr)).apply ((xpart)) ("rename_table_references")).if
+                          bogusForceDataize.write ((((xpart).xrename_table_references)).apply ((xold_table)) ((xnew_table)))
+                xrename_column_references.write
+                  [xself xtable xold_column xnew_column]
+                    seq > @
+                      (((unsupported)).apply ((xpart)) ((((((xself).xparts).xvalues)).apply)))
+                        (((xhasattr)).apply ((xpart)) ("rename_column_references")).if
+                          bogusForceDataize.write ((((xpart).xrename_column_references)).apply ((xtable)) ((xold_column)) ((xnew_column)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xself).xtemplate).mod ((xself).xparts))))
+            (((unsupported)).apply ((xTableColumns)))
+              seq
+                x__init__.write
+                  [xself xtable xexpressions xcompiler xquote_value]
+                    memory > xcolumns
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xcompiler)) ((xcompiler)))
+                        (((unsupported)).apply (((xself).xexpressions)) ((xexpressions)))
+                        (((unsupported)).apply (((xself).xquote_value)) ((xquote_value)))
+                        xcolumns.write (((unsupported)).apply ((((xcol).xtarget).xcolumn)) ((xcol)) (((((((xself).xcompiler).xquery).x_gen_cols)).apply ((((unsupported)).apply (((xself).xexpressions)))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xtable)) ((xcolumns)))
+                xrename_table_references.write
+                  [xself xold_table xnew_table]
+                    seq > @
+                      seq
+                        (((xself).xtable).neq (xold_table)).if
+                          (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xexpressions)) ((((((xself).xexpressions).xrelabeled_clone)).apply ((((unsupported)).apply ((xold_table)) ((xnew_table)))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xrename_table_references)).apply ((xold_table)) ((xnew_table)))
+                xrename_column_references.write
+                  [xself xtable xold_column xnew_column]
+                    memory > xexpressions
+                    seq > @
+                      seq
+                        (((xself).xtable).neq (xtable)).if
+                          (((unsupported)).apply)
+                        xexpressions.write (((xdeepcopy)).apply (((xself).xexpressions)))
+                        (((unsupported)).apply (((xself).xcolumns)) ((((unsupported)).apply)))
+                        (((unsupported)).apply ((xcol)) (((((((xself).xcompiler).xquery).x_gen_cols)).apply ((((unsupported)).apply ((xexpressions)))))))
+                          seq
+                            ((((xcol).xtarget).xcolumn).eq (xold_column)).if
+                              (((unsupported)).apply ((((xcol).xtarget).xcolumn)) ((xnew_column)))
+                            bogusForceDataize.write (((((xself).xcolumns).xappend)).apply ((((xcol).xtarget).xcolumn)))
+                        (((unsupported)).apply (((xself).xexpressions)) ((xexpressions)))
+                x__str__.write
+                  [xself]
+                    memory > xparams
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) ((((((xself).xcompiler).xcompile)).apply (((xself).xexpressions)))))
+                        xparams.write (((xmap)).apply (((xself).xquote_value)) ((xparams)))
+                        (((unsupported)).apply (((xsql).mod (((xtuple)).apply ((xparams))))))

@@ -1,0 +1,88 @@
+memory > xAnonymousUser
+memory > xstr
+memory > xPermLookupDict
+memory > xapp_label
+memory > xhasattr
+memory > xbool
+memory > xPermWrapper
+memory > xTypeError
+[] > context_processors
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__repr__
+        memory > x__iter__
+        memory > x__contains__
+        memory > x__getitem__
+        memory > xauth
+        memory > x__init__
+        memory > x__bool__
+        seq > @
+          seq
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xuser xapp_label]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xuser)) (((xself).xapp_label)))) ((((unsupported)).apply ((xuser)) ((xapp_label)))))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xstr)).apply ((((((xself).xuser).xget_all_permissions)).apply)))))
+                x__getitem__.write
+                  [xself xperm_name]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xuser).xhas_perm)).apply (("%s.%s".mod (((unsupported)).apply (((xself).xapp_label)) ((xperm_name))))))))
+                x__iter__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xTypeError)).apply ("PermLookupDict is not iterable."))))
+                x__bool__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xuser).xhas_module_perms)).apply (((xself).xapp_label)))))
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xuser]
+                    seq > @
+                      (((unsupported)).apply (((xself).xuser)) ((xuser)))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("{self.__class__.__qualname__}({self.user!r})"))
+                x__getitem__.write
+                  [xself xapp_label]
+                    seq > @
+                      (((unsupported)).apply ((((xPermLookupDict)).apply (((xself).xuser)) ((xapp_label)))))
+                x__iter__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xTypeError)).apply ("PermWrapper is not iterable."))))
+                x__contains__.write
+                  [xself xperm_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (".") ((xperm_name))).if
+                          (((unsupported)).apply ((((xbool)).apply ((((unsupported)).apply ((xself)) ((xperm_name)))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xapp_label)) ((xperm_name)))) (((((xperm_name).xsplit)).apply (".") (1))))
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xself)) ((xapp_label)))) ((xperm_name)))))
+            xauth.write
+              [xrequest]
+                memory > xuser
+                memory > xuser2
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xhasattr)).apply ((xrequest)) ("user")).if
+                      xuser2.write ((xrequest).xuser)
+                      seq
+                        (((unsupported)).apply)
+                        xuser.write (((xAnonymousUser)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ("user") ((xuser)) ("perms") ((((xPermWrapper)).apply ((xuser)))))))

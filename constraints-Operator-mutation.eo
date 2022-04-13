@@ -1,0 +1,203 @@
+memory > xExpressions
+memory > xenumerate
+memory > xValueError
+memory > xexpr
+memory > xp
+memory > xtuple
+memory > xsql
+memory > xIndexExpression
+memory > xidx
+memory > xkwargs
+memory > xall
+memory > xlist
+memory > xDeferrable
+memory > xBaseConstraint
+memory > xstr
+memory > xQ
+memory > xwarnings
+memory > xTable
+memory > xIndexError
+memory > xQuery
+memory > xtype
+memory > xOpClass
+memory > xpath
+memory > xrepr
+memory > xExclusionConstraintExpression
+memory > xStatement
+memory > xoperator
+memory > xparams
+memory > xNotSupportedError
+memory > xF
+memory > xsuper
+memory > xRemovedInDjango50Warning
+memory > xargs
+memory > xExpressionList
+memory > xisinstance
+memory > xfield_name
+memory > xlen
+[] > constraints
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcreate_sql
+        memory > xtemplate
+        memory > xcheck_supported
+        memory > x_get_expressions
+        memory > xremove_sql
+        memory > x__all__
+        memory > xdeconstruct
+        memory > x__init__
+        memory > xconstraint_sql
+        memory > x_get_condition_sql
+        memory > x__eq__
+        memory > x__repr__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("ExclusionConstraint"))
+            (((unsupported)).apply ((xIndexExpression)))
+              xtemplate.write "%(expressions)s WITH %(operator)s"
+            (((unsupported)).apply ((xBaseConstraint)))
+              seq
+                xtemplate.write "CONSTRAINT %(name)s EXCLUDE USING %(index_type)s (%(expressions)s)%(include)s%(where)s%(deferrable)s"
+                x__init__.write
+                  [xself xname xexpressions xindex_type xcondition xdeferrable xinclude xopclasses]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xindex_type).and (((unsupported)).apply (((((xindex_type).xlower)).apply)) ((((unsupported)).apply ("gist") ("spgist"))))).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Exclusion constraints only support GiST or SP-GiST indexes."))))
+                        ((xexpressions).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("At least one expression is required to define an exclusion constraint."))))
+                        ((((xall)).apply ((((unsupported)).apply (((((xisinstance)).apply ((xexpr)) ((((unsupported)).apply ((xlist)) ((xtuple))))).and ((((xlen)).apply ((xexpr))).eq 2))) ((xexpr)) ((xexpressions))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("The expressions must be a list of 2-tuples."))))
+                        ((((xisinstance)).apply ((xcondition)) ((((unsupported)).apply ((((xtype)).apply ("None: is there a None literal in the EO language?"))) ((xQ))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("ExclusionConstraint.condition must be a Q instance."))))
+                        ((xcondition).and (xdeferrable)).if
+                          (((unsupported)).apply ((((xValueError)).apply ("ExclusionConstraint with conditions cannot be deferred."))))
+                        ((((xisinstance)).apply ((xdeferrable)) ((((unsupported)).apply ((((xtype)).apply ("None: is there a None literal in the EO language?"))) ((xDeferrable))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("ExclusionConstraint.deferrable must be a Deferrable instance."))))
+                        ((((xisinstance)).apply ((xinclude)) ((((unsupported)).apply ((((xtype)).apply ("None: is there a None literal in the EO language?"))) ((xlist)) ((xtuple))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("ExclusionConstraint.include must be a list or tuple."))))
+                        ((((xisinstance)).apply ((xopclasses)) ((((unsupported)).apply ((xlist)) ((xtuple))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("ExclusionConstraint.opclasses must be a list or tuple."))))
+                        ((xopclasses).and ((((xlen)).apply ((xexpressions))).neq (((xlen)).apply ((xopclasses))))).if
+                          (((unsupported)).apply ((((xValueError)).apply ("ExclusionConstraint.expressions and ExclusionConstraint.opclasses must have the same number of elements."))))
+                        (((unsupported)).apply (((xself).xexpressions)) ((xexpressions)))
+                        (((unsupported)).apply (((xself).xindex_type)) (((xindex_type).or "GIST")))
+                        (((unsupported)).apply (((xself).xcondition)) ((xcondition)))
+                        (((unsupported)).apply (((xself).xdeferrable)) ((xdeferrable)))
+                        (((unsupported)).apply (((xself).xinclude)) (((xinclude).if (((xtuple)).apply ((xinclude))) (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).xopclasses)) ((xopclasses)))
+                        ((xself).xopclasses).if
+                          (((unsupported)).apply (((xwarnings).xwarn)) ("The opclasses argument is deprecated in favor of using django.contrib.postgres.indexes.OpClass in ExclusionConstraint.expressions.") ((xRemovedInDjango50Warning)) (2))
+                        (((unsupported)).apply (((((xsuper)).apply).x__init__)) ((xname)))
+                x_get_expressions.write
+                  [xself xschema_editor xquery]
+                    memory > xexpressions
+                    memory > xexpression
+                    seq > @
+                      seq
+                        xexpressions.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xidx)) ((((unsupported)).apply ((xexpression)) ((xoperator)))))) ((((xenumerate)).apply (((xself).xexpressions)))))
+                          seq
+                            (((xisinstance)).apply ((xexpression)) ((xstr))).if
+                              xexpression.write (((xF)).apply ((xexpression)))
+                            (((unsupported)).apply ((xIndexError)))
+                              xexpression.write (((xOpClass)).apply ((xexpression)) ((((unsupported)).apply (((xself).xopclasses)) ((xidx)))))
+                            xexpression.write (((unsupported)).apply ((xExclusionConstraintExpression)) ((xexpression)) ((xoperator)))
+                            bogusForceDataize.write ((((xexpression).xset_wrapper_classes)).apply (((xschema_editor).xconnection)))
+                            bogusForceDataize.write ((((xexpressions).xappend)).apply ((xexpression)))
+                        (((unsupported)).apply (((((((xExpressionList)).apply ((((unsupported)).apply ((xexpressions))))).xresolve_expression)).apply ((xquery)))))
+                x_get_condition_sql.write
+                  [xself xcompiler xschema_editor xquery]
+                    memory > xwhere
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xcondition)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        xwhere.write ((((xquery).xbuild_where)).apply (((xself).xcondition)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) (((((xwhere).xas_sql)).apply ((xcompiler)) (((xschema_editor).xconnection)))))
+                        (((unsupported)).apply (((xsql).mod (((xtuple)).apply ((((unsupported)).apply (((((xschema_editor).xquote_value)).apply ((xp)))) ((xp)) ((xparams))))))))
+                xconstraint_sql.write
+                  [xself xmodel xschema_editor]
+                    memory > xcompiler
+                    memory > xtable
+                    memory > xcondition
+                    memory > xinclude
+                    memory > xquery
+                    memory > xexpressions
+                    seq > @
+                      seq
+                        xquery.write (((unsupported)).apply ((xQuery)) ((xmodel)) (FALSE))
+                        xcompiler.write (((unsupported)).apply (((xquery).xget_compiler)) (((xschema_editor).xconnection)))
+                        xexpressions.write ((((xself).x_get_expressions)).apply ((xschema_editor)) ((xquery)))
+                        xtable.write (((xmodel).x_meta).xdb_table)
+                        xcondition.write ((((xself).x_get_condition_sql)).apply ((xcompiler)) ((xschema_editor)) ((xquery)))
+                        xinclude.write (((unsupported)).apply (((((((xmodel).x_meta).xget_field)).apply ((xfield_name))).xcolumn)) ((xfield_name)) (((xself).xinclude)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xStatement)) (((xself).xtemplate)) ((((xTable)).apply ((xtable)) (((xschema_editor).xquote_name)))) (((((xschema_editor).xquote_name)).apply (((xself).xname)))) (((xself).xindex_type)) ((((xExpressions)).apply ((xtable)) ((xexpressions)) ((xcompiler)) (((xschema_editor).xquote_value)))) (((xcondition).if (" WHERE (%s)".mod (xcondition)) "")) (((((xschema_editor).x_index_include_sql)).apply ((xmodel)) ((xinclude)))) (((((xschema_editor).x_deferrable_constraint_sql)).apply (((xself).xdeferrable)))))))
+                xcreate_sql.write
+                  [xself xmodel xschema_editor]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xcheck_supported)).apply ((xschema_editor)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xStatement)) ("ALTER TABLE %(table)s ADD %(constraint)s") ((((xTable)).apply ((((xmodel).x_meta).xdb_table)) (((xschema_editor).xquote_name)))) (((((xself).xconstraint_sql)).apply ((xmodel)) ((xschema_editor)))))))
+                xremove_sql.write
+                  [xself xmodel xschema_editor]
+                    seq > @
+                      (((unsupported)).apply (((((xschema_editor).x_delete_constraint_sql)).apply (((xschema_editor).xsql_delete_check)) ((xmodel)) (((((xschema_editor).xquote_name)).apply (((xself).xname)))))))
+                xcheck_supported.write
+                  [xself xschema_editor]
+                    seq > @
+                      seq
+                        ((((xself).xinclude).and ((((((xself).xindex_type).xlower)).apply).eq "gist")).and (((((xschema_editor).xconnection).xfeatures).xsupports_covering_gist_indexes).not)).if
+                          (((unsupported)).apply ((((xNotSupportedError)).apply ("Covering exclusion constraints using a GiST index require PostgreSQL 12-."))))
+                        ((((xself).xinclude).and ((((((xself).xindex_type).xlower)).apply).eq "spgist")).and (((((xschema_editor).xconnection).xfeatures).xsupports_covering_spgist_indexes).not)).if
+                          (((unsupported)).apply ((((xNotSupportedError)).apply ("Covering exclusion constraints using an SP-GiST index require PostgreSQL 14-."))))
+                xdeconstruct.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xpath)) ((xargs)) ((xkwargs)))) (((((((xsuper)).apply).xdeconstruct)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("expressions"))) (((xself).xexpressions)))
+                        (((unsupported)).apply (((xself).xcondition)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("condition"))) (((xself).xcondition)))
+                        ((((((xself).xindex_type).xlower)).apply).neq "gist").if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("index_type"))) (((xself).xindex_type)))
+                        ((xself).xdeferrable).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("deferrable"))) (((xself).xdeferrable)))
+                        ((xself).xinclude).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("include"))) (((xself).xinclude)))
+                        ((xself).xopclasses).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("opclasses"))) (((xself).xopclasses)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xpath)) ((xargs)) ((xkwargs)))))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      seq
+                        (((xisinstance)).apply ((xother)) (((xself).x__class__))).if
+                          (((unsupported)).apply ((((((((((xself).xname).eq ((xother).xname)).and (((xself).xindex_type).eq ((xother).xindex_type))).and (((xself).xexpressions).eq ((xother).xexpressions))).and (((xself).xcondition).eq ((xother).xcondition))).and (((xself).xdeferrable).eq ((xother).xdeferrable))).and (((xself).xinclude).eq ((xother).xinclude))).and (((xself).xopclasses).eq ((xother).xopclasses)))))
+                        (((unsupported)).apply (((((((xsuper)).apply).x__eq__)).apply ((xother)))))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("<%s: index_type=%s expressions=%s name=%s%s%s%s%s>".mod (((unsupported)).apply ((((xself).x__class__).x__qualname__)) ((((xrepr)).apply (((xself).xindex_type)))) ((((xrepr)).apply (((xself).xexpressions)))) ((((xrepr)).apply (((xself).xname)))) (((((unsupported)).apply (((xself).xcondition)) ("None: is there a None literal in the EO language?")).if "" (" condition=%s".mod ((xself).xcondition)))) (((((unsupported)).apply (((xself).xdeferrable)) ("None: is there a None literal in the EO language?")).if "" (" deferrable=%r".mod ((xself).xdeferrable)))) (((((xself).xinclude).not).if "" (" include=%s".mod (((xrepr)).apply (((xself).xinclude)))))) (((((xself).xopclasses).not).if "" (" opclasses=%s".mod (((xrepr)).apply (((xself).xopclasses))))))))))

@@ -1,0 +1,83 @@
+memory > xNotImplementedError
+memory > xValue
+memory > xCustomLookup
+memory > xDateTimeField
+memory > xmock
+memory > xLookup
+memory > xhash
+memory > xYearLookup
+memory > xSimpleTestCase
+memory > xdatetime
+memory > xexpected
+memory > xrepr
+memory > xlookup
+[] > test_lookups
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_equality
+        memory > xtest_get_bound_params
+        memory > xtest_hash
+        memory > xtest_repr
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xLookup)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_equality.write
+                  [xself]
+                    memory > xlookup
+                    seq > @
+                      seq
+                        xlookup.write (((xLookup)).apply ((((xValue)).apply (1))) ((((xValue)).apply (2))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlookup)) ((xlookup)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlookup)) ((((xLookup)).apply (((xlookup).xlhs)) (((xlookup).xrhs)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlookup)) (((xmock).xANY)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xlookup)) ((((xLookup)).apply (((xlookup).xlhs)) ((((xValue)).apply (3))))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xlookup)) ((((xLookup)).apply ((((xValue)).apply (3))) (((xlookup).xrhs)))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xlookup)) ((((xCustomLookup)).apply (((xlookup).xlhs)) (((xlookup).xrhs)))))
+                xtest_repr.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ((((xLookup)).apply ((((xValue)).apply (1))) ((((xValue)).apply ("a"))))) ("Lookup(Value(1), Value('a'))"))) ((((unsupported)).apply ((((xYearLookup)).apply ((((xValue)).apply ((((xdatetime)).apply (2010) (1) (1) (0) (0) (0))))) ((((xValue)).apply ((((xdatetime)).apply (2010) (1) (1) (23) (59) (59))))))) ("YearLookup(Value(datetime.datetime(2010, 1, 1, 0, 0)), Value(datetime.datetime(2010, 1, 1, 23, 59, 59)))"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xlookup)) ((xexpected)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xlookup)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xlookup)))) ((xexpected)))
+                xtest_hash.write
+                  [xself]
+                    memory > xlookup
+                    seq > @
+                      seq
+                        xlookup.write (((xLookup)).apply ((((xValue)).apply (1))) ((((xValue)).apply (2))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xhash)).apply ((xlookup)))) ((((xhash)).apply ((xlookup)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xhash)).apply ((xlookup)))) ((((xhash)).apply ((((xLookup)).apply (((xlookup).xlhs)) (((xlookup).xrhs)))))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xhash)).apply ((xlookup)))) ((((xhash)).apply ((((xLookup)).apply (((xlookup).xlhs)) ((((xValue)).apply (3))))))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xhash)).apply ((xlookup)))) ((((xhash)).apply ((((xLookup)).apply ((((xValue)).apply (3))) (((xlookup).xrhs)))))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xhash)).apply ((xlookup)))) ((((xhash)).apply ((((xCustomLookup)).apply (((xlookup).xlhs)) (((xlookup).xrhs)))))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_get_bound_params.write
+                [xself]
+                  memory > xlook_up
+                  memory > xmsg
+                  seq > @
+                    seq
+                      xlook_up.write (((unsupported)).apply ((xYearLookup)) ((((unsupported)).apply ((xValue)) ((((xdatetime)).apply (2010) (1) (1) (0) (0) (0))) ((xDateTimeField)))) ((((unsupported)).apply ((xValue)) ((((xdatetime)).apply (2010) (1) (1) (23) (59) (59))) ((xDateTimeField)))))
+                      xmsg.write "subclasses of YearLookup must provide a get_bound_params method"
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xNotImplementedError)) ((xmsg)))))
+                        bogusForceDataize.write ((((xlook_up).xget_bound_params)).apply ((((xdatetime)).apply (2010) (1) (1) (0) (0) (0))) ((((xdatetime)).apply (2010) (1) (1) (23) (59) (59))))

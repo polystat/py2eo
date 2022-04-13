@@ -1,0 +1,82 @@
+memory > xold_file
+memory > xerrno
+memory > xcopystat
+memory > xopen
+memory > xhasattr
+memory > xe
+memory > xFileExistsError
+memory > xOSError
+memory > xos
+memory > xgetattr
+memory > xPermissionError
+memory > xlocks
+memory > xOSError2
+[] > move
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__all__
+        memory > xfile_move_safe
+        memory > x_samefile
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("file_move_safe"))
+            x_samefile.write
+              [xsrc xdst]
+                seq > @
+                  seq
+                    (((xhasattr)).apply (((xos).xpath)) ("samefile")).if
+                      (((unsupported)).apply ((xOSError2)))
+                        (((unsupported)).apply ((((((xos).xpath).xsamefile)).apply ((xsrc)) ((xdst)))))
+                        (((unsupported)).apply (FALSE))
+                    (((unsupported)).apply (((((((xos).xpath).xnormcase)).apply ((((((xos).xpath).xabspath)).apply ((xsrc))))).eq (((((xos).xpath).xnormcase)).apply ((((((xos).xpath).xabspath)).apply ((xdst))))))))
+            xfile_move_safe.write
+              [xold_file_name xnew_file_name xchunk_size xallow_overwrite]
+                memory > xcurrent_chunk
+                memory > xfd
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((x_samefile)).apply ((xold_file_name)) ((xnew_file_name))).if
+                      (((unsupported)).apply)
+                    (((unsupported)).apply ((xOSError)))
+                      seq
+                        (((xallow_overwrite).not).and ((((xos).xaccess)).apply ((xnew_file_name)) (((xos).xF_OK)))).if
+                          (((unsupported)).apply ((((xFileExistsError)).apply (("Destination file %s exists and allow_overwrite is False.".mod (xnew_file_name))))))
+                        bogusForceDataize.write ((((xos).xrename)).apply ((xold_file_name)) ((xnew_file_name)))
+                        (((unsupported)).apply)
+                    (((unsupported)).apply ((((xopen)).apply ((xold_file_name)) ("rb"))) ((xold_file)))
+                      seq
+                        xfd.write ((((xos).xopen)).apply ((xnew_file_name)) ((((xallow_overwrite).not).if (((((xos).xO_WRONLY).or ((xos).xO_CREAT)).or (((xgetattr)).apply ((xos)) ("O_BINARY") (0))).or ((xos).xO_EXCL)) 0)))
+                        (((unsupported)).apply)
+                          seq
+                            bogusForceDataize.write ((((xlocks).xlock)).apply ((xfd)) (((xlocks).xLOCK_EX)))
+                            xcurrent_chunk.write "None: is there a None literal in the EO language?"
+                            while.
+                              ((xcurrent_chunk).neq "")
+                              [unused]
+                                seq > @
+                                  seq
+                                    xcurrent_chunk.write ((((xold_file).xread)).apply ((xchunk_size)))
+                                    bogusForceDataize.write ((((xos).xwrite)).apply ((xfd)) ((xcurrent_chunk)))
+                          seq
+                            bogusForceDataize.write ((((xlocks).xunlock)).apply ((xfd)))
+                            bogusForceDataize.write ((((xos).xclose)).apply ((xfd)))
+                    (((unsupported)).apply ((xPermissionError)))
+                      bogusForceDataize.write (((xcopystat)).apply ((xold_file_name)) ((xnew_file_name)))
+                      (((xe).xerrno).neq ((xerrno).xEPERM)).if
+                        (((unsupported)).apply)
+                    (((unsupported)).apply ((xPermissionError)))
+                      bogusForceDataize.write ((((xos).xremove)).apply ((xold_file_name)))
+                      ((((xgetattr)).apply ((xe)) ("winerror") (0)).neq 32).if
+                        (((unsupported)).apply)

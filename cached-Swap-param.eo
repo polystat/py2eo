@@ -1,0 +1,110 @@
+memory > xloader
+memory > xstr
+memory > xtype
+memory > xhasattr
+memory > xe
+memory > xisinstance
+memory > xcopy_exception
+memory > xsuper
+memory > xs
+memory > xissubclass
+memory > xorigin
+memory > xhashlib
+memory > xTemplateDoesNotExist
+[] > cached
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xgenerate_hash
+        memory > xget_contents
+        memory > xBaseLoader
+        memory > xcache_key
+        memory > xget_template
+        memory > xget_dirs
+        memory > xget_template_sources
+        memory > xreset
+        memory > x__init__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseLoader)))
+              seq
+                x__init__.write
+                  [xself xengine xloaders]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xget_template_cache)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xloaders)) (((((xengine).xget_template_loaders)).apply ((xloaders)))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xengine)))
+                xget_dirs.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xloader)) (((xself).xloaders)))
+                        (((xhasattr)).apply ((xloader)) ("get_dirs")).if
+                          (((unsupported)).apply (((((xloader).xget_dirs)).apply)))
+                xget_contents.write
+                  [xself xorigin]
+                    seq > @
+                      (((unsupported)).apply ((((((xorigin).xloader).xget_contents)).apply ((xorigin)))))
+                xget_template.write
+                  [xself xtemplate_name xskip]
+                    memory > xcached
+                    memory > xtemplate
+                    memory > xkey
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xkey.write ((((xself).xcache_key)).apply ((xtemplate_name)) ((xskip)))
+                        xcached.write (((((xself).xget_template_cache).xget)).apply ((xkey)))
+                        (xcached).if
+                          seq
+                            ((((xisinstance)).apply ((xcached)) ((xtype))).and (((xissubclass)).apply ((xcached)) ((xTemplateDoesNotExist)))).if
+                              (((unsupported)).apply ((((xcached)).apply ((xtemplate_name)))))
+                              (((xisinstance)).apply ((xcached)) ((xTemplateDoesNotExist))).if
+                                (((unsupported)).apply ((((xcopy_exception)).apply ((xcached)))))
+                            (((unsupported)).apply ((xcached)))
+                        (((unsupported)).apply ((xTemplateDoesNotExist)))
+                          xtemplate.write ((((((xsuper)).apply).xget_template)).apply ((xtemplate_name)) ((xskip)))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xget_template_cache)) ((xkey)))) (((((xself).xengine).xdebug).if (((xcopy_exception)).apply ((xe))) (xTemplateDoesNotExist))))
+                            (((unsupported)).apply)
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xget_template_cache)) ((xkey)))) ((xtemplate)))
+                        (((unsupported)).apply ((xtemplate)))
+                xget_template_sources.write
+                  [xself xtemplate_name]
+                    seq > @
+                      (((unsupported)).apply ((xloader)) (((xself).xloaders)))
+                        (((unsupported)).apply (((((xloader).xget_template_sources)).apply ((xtemplate_name)))))
+                xcache_key.write
+                  [xself xtemplate_name xskip]
+                    memory > xmatching
+                    memory > xskip_prefix
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xskip_prefix.write ""
+                        (xskip).if
+                          seq
+                            xmatching.write (((unsupported)).apply (((xorigin).xname)) ((xorigin)) ((xskip)) ((((xorigin).xtemplate_name).eq (xtemplate_name))))
+                            (xmatching).if
+                              xskip_prefix.write ((((xself).xgenerate_hash)).apply ((xmatching)))
+                        (((unsupported)).apply (((("-".xjoin)).apply ((((unsupported)).apply ((xs)) ((xs)) ((((unsupported)).apply ((((xstr)).apply ((xtemplate_name)))) ((xskip_prefix)))) ((xs)))))))
+                xgenerate_hash.write
+                  [xself xvalues]
+                    seq > @
+                      (((unsupported)).apply ((((((((xhashlib).xsha1)).apply ((((((("|".xjoin)).apply ((xvalues))).xencode)).apply))).xhexdigest)).apply)))
+                xreset.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write (((((xself).xget_template_cache).xclear)).apply)

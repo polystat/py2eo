@@ -1,0 +1,105 @@
+memory > xfalse
+memory > xImportError
+memory > xGeneratorExit
+memory > xdecimal
+memory > xstr
+memory > xDjangoSafeDumper
+memory > xcollections
+memory > xDeserializationError
+memory > xException
+memory > xsuper
+memory > xbytes
+memory > xgetattr
+memory > xStringIO
+memory > xexc
+memory > xmodels
+memory > xyaml
+memory > xoptions
+memory > xisinstance
+memory > xdict
+[] > pyyaml
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xgetvalue
+        memory > xSafeDumper
+        memory > xinternal_use_only
+        memory > xSafeLoader
+        memory > xrepresent_ordered_dict
+        memory > xPythonSerializer
+        memory > xPythonDeserializer
+        memory > xDeserializer
+        memory > xhandle_field
+        memory > xrepresent_decimal
+        memory > xend_serialization
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xImportError)))
+              seq
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+            (((unsupported)).apply ((xSafeDumper)))
+              seq
+                xrepresent_decimal.write
+                  [xself xdata]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xrepresent_scalar)).apply ("tag:yaml.org,2002:str") ((((xstr)).apply ((xdata)))))))
+                xrepresent_ordered_dict.write
+                  [xself xdata]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xrepresent_mapping)).apply ("tag:yaml.org,2002:map") (((((xdata).xitems)).apply)))))
+            bogusForceDataize.write ((((xDjangoSafeDumper).xadd_representer)).apply (((xdecimal).xDecimal)) (((xDjangoSafeDumper).xrepresent_decimal)))
+            bogusForceDataize.write ((((xDjangoSafeDumper).xadd_representer)).apply (((xcollections).xOrderedDict)) (((xDjangoSafeDumper).xrepresent_ordered_dict)))
+            bogusForceDataize.write ((((xDjangoSafeDumper).xadd_representer)).apply ((xdict)) (((xDjangoSafeDumper).xrepresent_ordered_dict)))
+            (((unsupported)).apply ((xPythonSerializer)))
+              seq
+                unsupported
+                xinternal_use_only.write (xfalse)
+                xhandle_field.write
+                  [xself xobj xfield]
+                    seq > @
+                      ((((xisinstance)).apply ((xfield)) (((xmodels).xTimeField))).and (((unsupported)).apply ((((xgetattr)).apply ((xobj)) (((xfield).xname)))) ("None: is there a None literal in the EO language?"))).if
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x_current)) (((xfield).xname)))) ((((xstr)).apply ((((xgetattr)).apply ((xobj)) (((xfield).xname)))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xhandle_field)).apply ((xobj)) ((xfield)))
+                xend_serialization.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xoptions).xsetdefault)).apply ("allow_unicode") (TRUE))
+                        (((unsupported)).apply (((xyaml).xdump)) (((xself).xobjects)) (((xself).xstream)) ((xDjangoSafeDumper)) ((((unsupported)).apply (((xself).xoptions)))))
+                xgetvalue.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((((xsuper)).apply ((xPythonSerializer)) ((xself))).xgetvalue)).apply)))
+            xDeserializer.write
+              [xstream_or_string]
+                memory > xstream
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((xisinstance)).apply ((xstream_or_string)) ((xbytes))).if
+                      xstream_or_string.write ((((xstream_or_string).xdecode)).apply)
+                    (((xisinstance)).apply ((xstream_or_string)) ((xstr))).if
+                      xstream.write (((xStringIO)).apply ((xstream_or_string)))
+                      xstream.write (xstream_or_string)
+                    (((unsupported)).apply ((((unsupported)).apply ((xGeneratorExit)) ((xDeserializationError)))) ((xException)))
+                      (((unsupported)).apply ((((xPythonDeserializer)).apply ((((unsupported)).apply (((xyaml).xload)) ((xstream)) ((xSafeLoader)))) ((((unsupported)).apply ((xoptions)))))))
+                      (((unsupported)).apply)
+                      (((unsupported)).apply ((((xDeserializationError)).apply)) ((xexc)))

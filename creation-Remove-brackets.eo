@@ -1,0 +1,101 @@
+memory > xdump_proc
+memory > xException
+memory > xcursor
+memory > xe
+memory > xlen
+memory > xcmd_args
+memory > xDatabaseClient
+memory > xsuper
+memory > xsys
+memory > xsubprocess
+memory > xos
+memory > xBaseDatabaseCreation
+memory > xcmd_env
+[] > creation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_clone_test_db
+        memory > x_clone_db
+        memory > xsql_table_creation_suffix
+        memory > x_execute_create_test_db
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseCreation)))
+              seq
+                xsql_table_creation_suffix.write
+                  [xself]
+                    memory > xsuffix
+                    memory > xtest_settings
+                    seq > @
+                      seq
+                        xsuffix.write (((unsupported)).apply)
+                        xtest_settings.write (((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("TEST"))
+                        (((unsupported)).apply ((xtest_settings)) ("CHARSET")).if
+                          bogusForceDataize.write ((((xsuffix).xappend)).apply (("CHARACTER SET %s".mod (((unsupported)).apply ((xtest_settings)) ("CHARSET")))))
+                        (((unsupported)).apply ((xtest_settings)) ("COLLATION")).if
+                          bogusForceDataize.write ((((xsuffix).xappend)).apply (("COLLATE %s".mod (((unsupported)).apply ((xtest_settings)) ("COLLATION")))))
+                        (((unsupported)).apply ((((" ".xjoin)).apply ((xsuffix)))))
+                x_execute_create_test_db.write
+                  [xself xcursor xparameters xkeepdb]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xException)))
+                          bogusForceDataize.write ((((xsuper).x_execute_create_test_db)).apply ((xcursor)) ((xparameters)) ((xkeepdb)))
+                          (((((xlen)).apply (((xe).xargs))).less 1).or ((((unsupported)).apply (((xe).xargs)) (0)).neq 1007)).if
+                            seq
+                              bogusForceDataize.write ((((xself).xlog)).apply (("Got an error creating the test database: %s".mod (xe))))
+                              bogusForceDataize.write ((((xsys).xexit)).apply (2))
+                            (((unsupported)).apply)
+                x_clone_test_db.write
+                  [xself xsuffix xverbosity xkeepdb]
+                    memory > xtest_db_params
+                    memory > xsource_database_name
+                    memory > xtarget_database_name
+                    seq > @
+                      (((unsupported)).apply)
+                        xsource_database_name.write (((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("NAME"))
+                        xtarget_database_name.write (((unsupported)).apply (((((xself).xget_test_db_clone_settings)).apply ((xsuffix)))) ("NAME"))
+                        xtest_db_params.write (((unsupported)).apply ("dbname") (((((((xself).xconnection).xops).xquote_name)).apply ((xtarget_database_name)))) ("suffix") (((xself).xsql_table_creation_suffix)))
+                        (((unsupported)).apply (((xself).x_nodb_cursor)) ((xcursor)))
+                          (((unsupported)).apply ((xException)))
+                            bogusForceDataize.write ((((xself).x_execute_create_test_db)).apply ((xcursor)) ((xtest_db_params)) ((xkeepdb)))
+                            seq
+                              (xkeepdb).if
+                                (((unsupported)).apply)
+                              (((unsupported)).apply ((xException)))
+                                seq
+                                  ((xverbosity).geq 1).if
+                                    bogusForceDataize.write ((((xself).xlog)).apply (("Destroying old test database for alias %s...".mod (((unsupported)).apply (((((xself).x_get_database_display_str)).apply ((xverbosity)) ((xtarget_database_name))))))))
+                                  bogusForceDataize.write ((((xcursor).xexecute)).apply (("DROP DATABASE %(dbname)s".mod (xtest_db_params))))
+                                  bogusForceDataize.write ((((xself).x_execute_create_test_db)).apply ((xcursor)) ((xtest_db_params)) ((xkeepdb)))
+                                seq
+                                  bogusForceDataize.write ((((xself).xlog)).apply (("Got an error recreating the test database: %s".mod (xe))))
+                                  bogusForceDataize.write ((((xsys).xexit)).apply (2))
+                        bogusForceDataize.write ((((xself).x_clone_db)).apply ((xsource_database_name)) ((xtarget_database_name)))
+                x_clone_db.write
+                  [xself xsource_database_name xtarget_database_name]
+                    memory > xdump_cmd
+                    memory > xload_env
+                    memory > xload_cmd
+                    memory > xdump_env
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xcmd_args)) ((xcmd_env)))) (((((xDatabaseClient).xsettings_to_cmd_args_env)).apply ((((xself).xconnection).xsettings_dict)) ((((unsupported)).apply)))))
+                        xdump_cmd.write (((unsupported)).apply ("mysqldump") ((((unsupported)).apply ((((unsupported)).apply ((xcmd_args)) ((((unsupported)).apply (1) ((1.neg)))))))) ("--routines") ("--events") ((xsource_database_name)))
+                        (((unsupported)).apply ((xdump_env)) ((xload_env)) (((xcmd_env).if (((unsupported)).apply (((xos).xenviron)) ((xcmd_env))) "None: is there a None literal in the EO language?")))
+                        xload_cmd.write (xcmd_args)
+                        (((unsupported)).apply ((((unsupported)).apply ((xload_cmd)) ((1.neg)))) ((xtarget_database_name)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xsubprocess).xPopen)) ((xdump_cmd)) (((xsubprocess).xPIPE)) ((xdump_env)))) ((xdump_proc)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xsubprocess).xPopen)) ((xload_cmd)) (((xdump_proc).xstdout)) (((xsubprocess).xDEVNULL)) ((xload_env)))))
+                            unsupported

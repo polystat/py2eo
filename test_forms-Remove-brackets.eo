@@ -1,0 +1,58 @@
+memory > xAdminForm
+memory > xTestCase
+memory > xArticleForm
+memory > xrepr
+memory > xoverride_settings
+memory > xAdminAuthenticationForm
+memory > xUser
+memory > xSimpleTestCase
+[] > test_forms
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_inactive_user
+        memory > xtest_repr
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ("django.contrib.auth.backends.AllowAllUsersModelBackend"))))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate_user)) ("inactive") ("password") (FALSE))
+                xtest_inactive_user.write
+                  [xself]
+                    memory > xform
+                    memory > xdata
+                    seq > @
+                      seq
+                        xdata.write (((unsupported)).apply ("username") ("inactive") ("password") ("password"))
+                        xform.write (((xAdminAuthenticationForm)).apply ("None: is there a None literal in the EO language?") ((xdata)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xform).xnon_field_errors)) ((((unsupported)).apply ("This account is inactive."))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_repr.write
+                [xself]
+                  memory > xform
+                  memory > xfieldsets
+                  memory > xadmin_form
+                  seq > @
+                    seq
+                      xfieldsets.write (((unsupported)).apply ((((unsupported)).apply ("My fields") ((((unsupported)).apply ("classes") ((((unsupported)).apply ("collapse"))) ("fields") ((((unsupported)).apply ("url") ("title") ("content") ("sites"))))))))
+                      xform.write (xArticleForm)
+                      xadmin_form.write (((xAdminForm)).apply ((xform)) ((xfieldsets)) ((((unsupported)).apply)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xadmin_form)))) ("<AdminForm: form=ArticleForm fieldsets=(('My fields', {'classes': ['collapse'], 'fields': ('url', 'title', 'content', 'sites')}),)>"))

@@ -1,0 +1,56 @@
+memory > xTrim
+memory > xRTrim
+memory > xCharField
+memory > xtransform
+memory > xtrimmed_name
+memory > xregister_lookup
+memory > xLTrim
+memory > xa
+memory > xTestCase
+memory > xAuthor
+[] > test_trim
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_trim_transform
+        memory > xtest_trim
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_trim.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("  John ") ("j"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("r") ("Rhonda"))
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xLTrim)).apply ("name"))) ((((xRTrim)).apply ("name"))) ((((xTrim)).apply ("name"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("alias"))) ((((unsupported)).apply ((((unsupported)).apply ("John ") ("  John") ("John"))) ((((unsupported)).apply ("Rhonda") ("Rhonda") ("Rhonda"))))) ((((unsupported)).apply ((((unsupported)).apply (((xa).xltrim)) (((xa).xrtrim)) (((xa).xtrim)))))))
+                xtest_trim_transform.write
+                  [xself]
+                    memory > xauthors
+                    memory > xtests
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) (" John  "))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ((xLTrim)) ("John  "))) ((((unsupported)).apply ((xRTrim)) (" John"))) ((((unsupported)).apply ((xTrim)) ("John"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xtransform)) ((xtrimmed_name)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xtransform)))))
+                            (((unsupported)).apply ((((xregister_lookup)).apply ((xCharField)) ((xtransform)))))
+                              seq
+                                xauthors.write (((((xAuthor).xobjects).xfilter)).apply ((((unsupported)).apply ((((unsupported)).apply (("name__%s".mod ((xtransform).xlookup_name))) ((xtrimmed_name)))))))
+                                bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((xauthors)) ((((unsupported)).apply (" John  "))) ((((unsupported)).apply (((xa).xname)))))

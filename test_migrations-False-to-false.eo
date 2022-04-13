@@ -1,0 +1,236 @@
+memory > xProxy
+memory > xconnection
+memory > xpermission
+memory > xconnections
+memory > xeditor
+memory > xUser
+memory > xContentType
+memory > xfalse
+memory > xstdout
+memory > ximport_module
+memory > xUserProxy
+memory > xapps
+memory > xcaptured_stdout
+memory > xTransactionTestCase
+memory > xPermission
+[] > test_migrations
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdatabases
+        memory > xtest_proxy_model_permissions_contenttype
+        memory > xtest_user_has_now_proxy_model_permissions
+        memory > xsetUp
+        memory > xtest_user_still_has_proxy_model_permissions
+        memory > xtest_migrate_with_existing_target_permission
+        memory > xupdate_proxy_permissions
+        memory > xtest_migrate_backwards
+        memory > xtest_migrate_other_database
+        memory > xavailable_apps
+        memory > xtest_user_keeps_same_permissions_after_migrating_backward
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xupdate_proxy_permissions.write (((ximport_module)).apply ("django.contrib.auth.migrations.0011_update_proxy_permissions"))
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("auth_tests") ("django.contrib.auth") ("django.contrib.contenttypes"))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((((((xPermission).xobjects).xall)).apply).xdelete)).apply)
+                        (((unsupported)).apply (((xself).xconcrete_content_type)) ((((((xContentType).xobjects).xget_for_model)).apply ((xUserProxy)))))
+                        (((unsupported)).apply (((xself).xdefault_permission)) ((((unsupported)).apply ((((xPermission).xobjects).xcreate)) (((xself).xconcrete_content_type)) ("add_userproxy") ("Can add userproxy"))))
+                        (((unsupported)).apply (((xself).xcustom_permission)) ((((unsupported)).apply ((((xPermission).xobjects).xcreate)) (((xself).xconcrete_content_type)) ("use_different_app_label") ("May use a different app label"))))
+                xtest_proxy_model_permissions_contenttype.write
+                  [xself]
+                    memory > xproxy_model_content_type
+                    seq > @
+                      seq
+                        xproxy_model_content_type.write (((unsupported)).apply ((((xContentType).xobjects).xget_for_model)) ((xUserProxy)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xdefault_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xcustom_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        bogusForceDataize.write (((((xself).xdefault_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xdefault_permission).xcontent_type)) ((xproxy_model_content_type)))
+                        bogusForceDataize.write (((((xself).xcustom_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xcustom_permission).xcontent_type)) ((xproxy_model_content_type)))
+                xtest_user_has_now_proxy_model_permissions.write
+                  [xself]
+                    memory > xuser
+                    seq > @
+                      seq
+                        xuser.write (((((xUser).xobjects).xcreate)).apply)
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xdefault_permission)))
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xcustom_permission)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth.".add ((xpermission).xcodename))))))
+                            bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        xuser.write (((unsupported)).apply ((((xUser).x_default_manager).xget)) (((xuser).xpk)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xuser).xhas_perm)).apply (("auth.".add ((xpermission).xcodename))))))
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+                xtest_migrate_backwards.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xrevert_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        bogusForceDataize.write (((((xself).xdefault_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xdefault_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                        bogusForceDataize.write (((((xself).xcustom_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xcustom_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                xtest_user_keeps_same_permissions_after_migrating_backward.write
+                  [xself]
+                    memory > xuser
+                    seq > @
+                      seq
+                        xuser.write (((((xUser).xobjects).xcreate)).apply)
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xdefault_permission)))
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xcustom_permission)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth.".add ((xpermission).xcodename))))))
+                            bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xrevert_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        xuser.write (((unsupported)).apply ((((xUser).x_default_manager).xget)) (((xuser).xpk)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth.".add ((xpermission).xcodename))))))
+                            bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("auth_tests") ("django.contrib.auth") ("django.contrib.contenttypes"))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((((((xPermission).xobjects).xall)).apply).xdelete)).apply)
+                        (((unsupported)).apply (((xself).xconcrete_content_type)) ((((((xContentType).xobjects).xget_for_model)).apply ((xProxy)))))
+                        (((unsupported)).apply (((xself).xdefault_permission)) ((((unsupported)).apply ((((xPermission).xobjects).xcreate)) (((xself).xconcrete_content_type)) ("add_proxy") ("Can add proxy"))))
+                        (((unsupported)).apply (((xself).xcustom_permission)) ((((unsupported)).apply ((((xPermission).xobjects).xcreate)) (((xself).xconcrete_content_type)) ("display_proxys") ("May display proxys information"))))
+                xtest_proxy_model_permissions_contenttype.write
+                  [xself]
+                    memory > xproxy_model_content_type
+                    seq > @
+                      seq
+                        xproxy_model_content_type.write (((unsupported)).apply ((((xContentType).xobjects).xget_for_model)) ((xProxy)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xdefault_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xcustom_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        bogusForceDataize.write (((((xself).xdefault_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write (((((xself).xcustom_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xdefault_permission).xcontent_type)) ((xproxy_model_content_type)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xcustom_permission).xcontent_type)) ((xproxy_model_content_type)))
+                xtest_user_still_has_proxy_model_permissions.write
+                  [xself]
+                    memory > xuser
+                    seq > @
+                      seq
+                        xuser.write (((((xUser).xobjects).xcreate)).apply)
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xdefault_permission)))
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xcustom_permission)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        xuser.write (((unsupported)).apply ((((xUser).x_default_manager).xget)) (((xuser).xpk)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+                xtest_migrate_backwards.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xrevert_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        bogusForceDataize.write (((((xself).xdefault_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xdefault_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                        bogusForceDataize.write (((((xself).xcustom_permission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xcustom_permission).xcontent_type)) (((xself).xconcrete_content_type)))
+                xtest_user_keeps_same_permissions_after_migrating_backward.write
+                  [xself]
+                    memory > xuser
+                    seq > @
+                      seq
+                        xuser.write (((((xUser).xobjects).xcreate)).apply)
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xdefault_permission)))
+                        bogusForceDataize.write (((((xuser).xuser_permissions).xadd)).apply (((xself).xcustom_permission)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xrevert_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        xuser.write (((unsupported)).apply ((((xUser).x_default_manager).xget)) (((xuser).xpk)))
+                        (((unsupported)).apply ((xpermission)) ((((unsupported)).apply (((xself).xdefault_permission)) (((xself).xcustom_permission)))))
+                          bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xuser).xhas_perm)).apply (("auth_tests.".add ((xpermission).xcodename))))))
+                xtest_migrate_with_existing_target_permission.write
+                  [xself]
+                    memory > xproxy_model_content_type
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xproxy_model_content_type.write (((unsupported)).apply ((((xContentType).xobjects).xget_for_model)) ((xProxy)) ((xfalse)))
+                        (((unsupported)).apply ((((xPermission).xobjects).xcreate)) ((xproxy_model_content_type)) ("add_proxy") ("Can add proxy"))
+                        (((unsupported)).apply ((((xPermission).xobjects).xcreate)) ((xproxy_model_content_type)) ("display_proxys") ("May display proxys information"))
+                        (((unsupported)).apply ((((xcaptured_stdout)).apply)) ((xstdout)))
+                          (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                            bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("A problem arose migrating proxy model permissions") (((((xstdout).xgetvalue)).apply)))
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xdatabases.write (((unsupported)).apply ("default") ("other"))
+                xavailable_apps.write (((unsupported)).apply ("auth_tests") ("django.contrib.auth") ("django.contrib.contenttypes"))
+                xsetUp.write
+                  [xself]
+                    memory > xconcrete_content_type
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((((xContentType).xobjects).xall)).apply).xdelete)).apply)
+                        bogusForceDataize.write ((((((((xPermission).xobjects).xusing)).apply ("other")).xdelete)).apply)
+                        xconcrete_content_type.write ((((((((xContentType).xobjects).xdb_manager)).apply ("other")).xget_for_model)).apply ((xProxy)))
+                        (((unsupported)).apply (((xself).xpermission)) ((((unsupported)).apply (((((((xPermission).xobjects).xusing)).apply ("other")).xcreate)) ((xconcrete_content_type)) ("add_proxy") ("Can add proxy"))))
+                xtest_migrate_other_database.write
+                  [xself]
+                    memory > xproxy_model_content_type
+                    seq > @
+                      seq
+                        xproxy_model_content_type.write (((unsupported)).apply (((((((xContentType).xobjects).xdb_manager)).apply ("other")).xget_for_model)) ((xProxy)) ((xfalse)))
+                        (((unsupported)).apply (((((((unsupported)).apply ((xconnections)) ("other")).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xupdate_proxy_permissions).xupdate_proxy_model_permissions)).apply ((xapps)) ((xeditor)))
+                        bogusForceDataize.write (((((xself).xpermission).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xpermission).xcontent_type)) ((xproxy_model_content_type)))

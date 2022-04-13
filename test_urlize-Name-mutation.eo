@@ -1,0 +1,311 @@
+memory > xurlize
+memory > xend_out
+memory > xstart_in
+memory > xstr
+memory > xstart_out
+memory > xurl
+memory > xoutput
+memory > xend_in
+memory > xmark_safe
+memory > xlazy
+memory > xwrapping_in
+memory > xSimpleTestCase
+[] > test_urlize
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_trailing_multiple_punctuation
+        memory > xtest_wrapping_characters
+        memory > xtest_trailing_period
+        memory > xtest_urlize09
+        memory > xtest_ipv6
+        memory > xtest_url_split_chars
+        memory > xtest_urlize01
+        memory > xtest_ipv4
+        memory > xtest_urlize08
+        memory > xtest_urlize04
+        memory > xtest_quotation_marks
+        memory > xtest_malformed
+        memory > xtest_brackets
+        memory > xtest_non_string_input
+        memory > xtest_parenthesis
+        memory > xtest_lazystring
+        memory > xtest_exclamation_marks
+        memory > xtest_urls
+        memory > xtest_invalid_email
+        memory > xtest_unicode
+        memory > xtest_urlize03
+        memory > xtest_email
+        memory > xtest_urlize05
+        memory > xtest_urlize06
+        memory > xtest_urlize02
+        memory > xtest_nofollow
+        memory > xtest_autoescape_off
+        memory > xtest_autoescape
+        memory > xtest_https
+        memory > xtest_word_with_dot
+        memory > xtest_uppercase
+        memory > xtest_quote_commas
+        memory > xtest_idn
+        memory > xtest_tlds
+        memory > xtest_quoting
+        memory > xtest_urlencoded
+        memory > xtest_urlize07
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_urlize01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("urlize01") ((((unsupported)).apply ("a") ("http://example.com/?x=&y=") ("b") ((((xmark_safe)).apply ("http://example.com?x=&amp;y=&lt;2&gt;"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<a href=\"http://example.com/?x=&amp;y=\" rel=\"nofollow\">http://example.com/?x=&y=</a> <a href=\"http://example.com?x=&amp;y=%3C2%3E\" rel=\"nofollow\">http://example.com?x=&amp;y=&lt;2&gt;</a>"))
+                xtest_urlize02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize02") ((((unsupported)).apply ("a") ("http://example.com/?x=&y=") ("b") ((((xmark_safe)).apply ("http://example.com?x=&amp;y="))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<a href=\"http://example.com/?x=&amp;y=\" rel=\"nofollow\">http://example.com/?x=&amp;y=</a> <a href=\"http://example.com?x=&amp;y=\" rel=\"nofollow\">http://example.com?x=&amp;y=</a>"))
+                xtest_urlize03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize03") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("a &amp; b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a &amp; b"))
+                xtest_urlize04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize04") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("a &amp; b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a &amp; b"))
+                xtest_urlize05.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize05") ((((unsupported)).apply ("a") ("<script>alert('foo')</script>"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<script>alert('foo')</script>"))
+                xtest_urlize06.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize06") ((((unsupported)).apply ("a") ("<script>alert('foo')</script>"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&lt;script&gt;alert(&#x27;foo&#x27;)&lt;/script&gt;"))
+                xtest_urlize07.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize07") ((((unsupported)).apply ("a") ("Email me at me@example.com"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Email me at <a href=\"mailto:me@example.com\">me@example.com</a>"))
+                xtest_urlize08.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize08") ((((unsupported)).apply ("a") ("Email me at <me@example.com>"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Email me at &lt;<a href=\"mailto:me@example.com\">me@example.com</a>&gt;"))
+                xtest_urlize09.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("urlize09") ((((unsupported)).apply ("a") ("http://example.com/?x=&amp;y=&lt;2&gt;"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<a href=\"http://example.com/?x=&amp;y=%3C2%3E\" rel=\"nofollow\">http://example.com/?x=&amp;y=&lt;2&gt;</a>"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_urls.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://google.com"))) ("<a href=\"http://google.com\" rel=\"nofollow\">http://google.com</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://google.com/"))) ("<a href=\"http://google.com/\" rel=\"nofollow\">http://google.com/</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("www.google.com"))) ("<a href=\"http://www.google.com\" rel=\"nofollow\">www.google.com</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("djangoproject.org"))) ("<a href=\"http://djangoproject.org\" rel=\"nofollow\">djangoproject.org</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("djangoproject.org/"))) ("<a href=\"http://djangoproject.org/\" rel=\"nofollow\">djangoproject.org/</a>"))
+                xtest_url_split_chars.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("www.server.com\"abc"))) ("<a href=\"http://www.server.com\" rel=\"nofollow\">www.server.com</a>&quot;abc"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("www.server.com'abc"))) ("<a href=\"http://www.server.com\" rel=\"nofollow\">www.server.com</a>&#x27;abc"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("www.server.com<abc"))) ("<a href=\"http://www.server.com\" rel=\"nofollow\">www.server.com</a>&lt;abc"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("www.server.com>abc"))) ("<a href=\"http://www.server.com\" rel=\"nofollow\">www.server.com</a>&gt;abc"))
+                xtest_email.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("info@djangoproject.org"))) ("<a href=\"mailto:info@djangoproject.org\">info@djangoproject.org</a>"))
+                xtest_word_with_dot.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("some.organization"))) ("some.organization"))
+                xtest_https.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("https://google.com"))) ("<a href=\"https://google.com\" rel=\"nofollow\">https://google.com</a>"))
+                xtest_quoting.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://hi.baidu.com/%E9%87%8D%E6%96%B0%E5%BC%80%E5%A7%8B"))) ("<a href=\"http://hi.baidu.com/%E9%87%8D%E6%96%B0%E5%BC%80%E5%A7%8B\" rel=\"nofollow\">http://hi.baidu.com/%E9%87%8D%E6%96%B0%E5%BC%80%E5%A7%8B</a>"))
+                xtest_urlencoded.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("www.mystore.com/30%OffCoupons!"))) ("<a href=\"http://www.mystore.com/30%25OffCoupons\" rel=\"nofollow\">www.mystore.com/30%OffCoupons</a>!"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("https://en.wikipedia.org/wiki/Caf%C3%A9"))) ("<a href=\"https://en.wikipedia.org/wiki/Caf%C3%A9\" rel=\"nofollow\">https://en.wikipedia.org/wiki/Caf%C3%A9</a>"))
+                xtest_unicode.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("https://en.wikipedia.org/wiki/Café"))) ("<a href=\"https://en.wikipedia.org/wiki/Caf%C3%A9\" rel=\"nofollow\">https://en.wikipedia.org/wiki/Café</a>"))
+                xtest_parenthesis.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("https://en.wikipedia.org/wiki/Django_(web_framework)"))) ("<a href=\"https://en.wikipedia.org/wiki/Django_(web_framework)\" rel=\"nofollow\">https://en.wikipedia.org/wiki/Django_(web_framework)</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("(see https://en.wikipedia.org/wiki/Django_(web_framework))"))) ("(see <a href=\"https://en.wikipedia.org/wiki/Django_(web_framework)\" rel=\"nofollow\">https://en.wikipedia.org/wiki/Django_(web_framework)</a>)"))
+                xtest_nofollow.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("foo@bar.com or www.bar.com"))) ("<a href=\"mailto:foo@bar.com\">foo@bar.com</a> or <a href=\"http://www.bar.com\" rel=\"nofollow\">www.bar.com</a>"))
+                xtest_idn.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://c✶.ws"))) ("<a href=\"http://xn--c-lgq.ws\" rel=\"nofollow\">http://c✶.ws</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("www.c✶.ws"))) ("<a href=\"http://www.xn--c-lgq.ws\" rel=\"nofollow\">www.c✶.ws</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("c✶.org"))) ("<a href=\"http://xn--c-lgq.org\" rel=\"nofollow\">c✶.org</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("info@c✶.org"))) ("<a href=\"mailto:info@xn--c-lgq.org\">info@c✶.org</a>"))
+                xtest_malformed.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http:///www.google.com"))) ("http:///www.google.com"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://.google.com"))) ("http://.google.com"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://@foo.com"))) ("http://@foo.com"))
+                xtest_tlds.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("usa.gov"))) ("<a href=\"http://usa.gov\" rel=\"nofollow\">usa.gov</a>"))
+                xtest_invalid_email.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("email@.stream.ru"))) ("email@.stream.ru"))
+                xtest_uppercase.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("HTTPS://github.com/"))) ("<a href=\"https://github.com/\" rel=\"nofollow\">HTTPS://github.com/</a>"))
+                xtest_trailing_period.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("(Go to http://www.example.com/foo.)"))) ("(Go to <a href=\"http://www.example.com/foo\" rel=\"nofollow\">http://www.example.com/foo</a>.)"))
+                xtest_trailing_multiple_punctuation.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("A test http://testing.com/example.."))) ("A test <a href=\"http://testing.com/example\" rel=\"nofollow\">http://testing.com/example</a>.."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("A test http://testing.com/example!!"))) ("A test <a href=\"http://testing.com/example\" rel=\"nofollow\">http://testing.com/example</a>!!"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("A test http://testing.com/example!!!"))) ("A test <a href=\"http://testing.com/example\" rel=\"nofollow\">http://testing.com/example</a>!!!"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("A test http://testing.com/example.,:;)\"!"))) ("A test <a href=\"http://testing.com/example\" rel=\"nofollow\">http://testing.com/example</a>.,:;)&quot;!"))
+                xtest_brackets.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("[see www.example.com]"))) ("[see <a href=\"http://www.example.com\" rel=\"nofollow\">www.example.com</a>]"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("see test[at[example.com"))) ("see <a href=\"http://test[at[example.com\" rel=\"nofollow\">test[at[example.com</a>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("[http://168.192.0.1](http://168.192.0.1)"))) ("[<a href=\"http://168.192.0.1](http://168.192.0.1)\" rel=\"nofollow\">http://168.192.0.1](http://168.192.0.1)</a>"))
+                xtest_wrapping_characters.write
+                  [xself]
+                    memory > xwrapping_chars
+                    seq > @
+                      seq
+                        xwrapping_chars.write (((unsupported)).apply ((((unsupported)).apply ("()") ((((unsupported)).apply ("(") (")"))))) ((((unsupported)).apply ("<>") ((((unsupported)).apply ("&lt;") ("&gt;"))))) ((((unsupported)).apply ("[]") ((((unsupported)).apply ("[") ("]"))))) ((((unsupported)).apply ("\"\"") ((((unsupported)).apply ("&quot;") ("&quot;"))))) ((((unsupported)).apply ("''") ((((unsupported)).apply ("&#x27;") ("&#x27;"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xwrapping_in)) ((((unsupported)).apply ((xstart_out)) ((xend_out)))))) ((xwrapping_chars)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xwrapping_in)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xstart_in)) ((xend_in)))) ((xwrapping_in)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ((((xstart_in).add "https://www.example.org/").add (xend_in))))) ("{start_out}<a href=\"https://www.example.org/\" rel=\"nofollow\">https://www.example.org/</a>{end_out}"))
+                xtest_ipv4.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://192.168.0.15/api/9"))) ("<a href=\"http://192.168.0.15/api/9\" rel=\"nofollow\">http://192.168.0.15/api/9</a>"))
+                xtest_ipv6.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("http://[2001:db8:cafe::2]/api/9"))) ("<a href=\"http://[2001:db8:cafe::2]/api/9\" rel=\"nofollow\">http://[2001:db8:cafe::2]/api/9</a>"))
+                xtest_quotation_marks.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("before \"hi@example.com\" afterward") (FALSE))) ("before \"<a href=\"mailto:hi@example.com\">hi@example.com</a>\" afterward"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("before hi@example.com\" afterward") (FALSE))) ("before <a href=\"mailto:hi@example.com\">hi@example.com</a>\" afterward"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("before \"hi@example.com afterward") (FALSE))) ("before \"<a href=\"mailto:hi@example.com\">hi@example.com</a> afterward"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("before 'hi@example.com' afterward") (FALSE))) ("before '<a href=\"mailto:hi@example.com\">hi@example.com</a>' afterward"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("before hi@example.com' afterward") (FALSE))) ("before <a href=\"mailto:hi@example.com\">hi@example.com</a>' afterward"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("before 'hi@example.com afterward") (FALSE))) ("before '<a href=\"mailto:hi@example.com\">hi@example.com</a> afterward"))
+                xtest_quote_commas.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("Email us at \"hi@example.com\", or phone us at +xx.yy") (FALSE))) ("Email us at \"<a href=\"mailto:hi@example.com\">hi@example.com</a>\", or phone us at +xx.yy"))
+                xtest_exclamation_marks.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("Go to djangoproject.com! and enjoy."))) ("Go to <a href=\"http://djangoproject.com\" rel=\"nofollow\">djangoproject.com</a>! and enjoy."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("Search for google.com/?q=! and see."))) ("Search for <a href=\"http://google.com/?q=\" rel=\"nofollow\">google.com/?q=</a>! and see."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("Search for google.com/?q=dj!`? and see."))) ("Search for <a href=\"http://google.com/?q=dj%21%60%3F\" rel=\"nofollow\">google.com/?q=dj!`?</a> and see."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("Search for google.com/?q=dj!`?! and see."))) ("Search for <a href=\"http://google.com/?q=dj%21%60%3F\" rel=\"nofollow\">google.com/?q=dj!`?</a>! and see."))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply (123))) ("123"))
+                xtest_autoescape.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ("foo<a href=\" google.com \">bar</a>buz"))) ("foo&lt;a href=&quot; <a href=\"http://google.com\" rel=\"nofollow\">google.com</a> &quot;&gt;bar&lt;/a&gt;buz"))
+                xtest_autoescape_off.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xurlize)) ("foo<a href=\" google.com \">bar</a>buz") (FALSE))) ("foo<a href=\" <a href=\"http://google.com\" rel=\"nofollow\">google.com</a> \">bar</a>buz"))
+                xtest_lazystring.write
+                  [xself]
+                    memory > xprepend_www
+                    seq > @
+                      seq
+                        xprepend_www.write (((xlazy)).apply ((((unsupported)).apply (("www.".add (xurl))))) ((xstr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xurlize)).apply ((((xprepend_www)).apply ("google.com"))))) ("<a href=\"http://www.google.com\" rel=\"nofollow\">www.google.com</a>"))

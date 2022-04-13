@@ -1,0 +1,56 @@
+memory > xoutput
+memory > xmark_safe
+memory > xstriptags
+memory > xlazystr
+memory > xSimpleTestCase
+[] > test_striptags
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_strip
+        memory > xtest_non_string_input
+        memory > xtest_striptags02
+        memory > xtest_strip_lazy_string
+        memory > xtest_striptags01
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_striptags01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("striptags01") ((((unsupported)).apply ("a") ("<a>x</a> <p><b>y</b></p>") ("b") ((((xmark_safe)).apply ("<a>x</a> <p><b>y</b></p>"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x y x y"))
+                xtest_striptags02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("striptags02") ((((unsupported)).apply ("a") ("<a>x</a> <p><b>y</b></p>") ("b") ((((xmark_safe)).apply ("<a>x</a> <p><b>y</b></p>"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x y x y"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_strip.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstriptags)).apply ("some <b>html</b> with <script>alert(\"You smell\")</script> disallowed <img /> tags"))) ("some html with alert(\"You smell\") disallowed  tags"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstriptags)).apply (123))) ("123"))
+                xtest_strip_lazy_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstriptags)).apply ((((xlazystr)).apply ("some <b>html</b> with <script>alert(\"Hello\")</script> disallowed <img /> tags"))))) ("some html with alert(\"Hello\") disallowed  tags"))

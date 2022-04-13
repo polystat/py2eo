@@ -1,0 +1,61 @@
+memory > xOrganization
+memory > xCustomUserWithM2MManager
+memory > xBaseUserManager
+memory > xAbstractBaseUser
+memory > xmodels
+memory > xCustomUserWithM2MThrough
+[] > with_many_to_many
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xREQUIRED_FIELDS
+        memory > xusername
+        memory > xcustom_objects
+        memory > xname
+        memory > xuser
+        memory > xorganization
+        memory > xorgs
+        memory > xUSERNAME_FIELD
+        memory > xcreate_superuser
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xModel)))
+              xname.write (((unsupported)).apply (((xmodels).xCharField)) (255))
+            (((unsupported)).apply ((xBaseUserManager)))
+              xcreate_superuser.write
+                [xself xusername xorgs xpassword]
+                  memory > xuser
+                  seq > @
+                    seq
+                      xuser.write (((unsupported)).apply (((xself).xmodel)) ((xusername)))
+                      bogusForceDataize.write ((((xuser).xset_password)).apply ((xpassword)))
+                      (((unsupported)).apply (((xuser).xsave)) (((xself).x_db)))
+                      bogusForceDataize.write (((((xuser).xorgs).xadd)).apply ((((unsupported)).apply ((xorgs)))))
+                      (((unsupported)).apply ((xuser)))
+            (((unsupported)).apply ((xAbstractBaseUser)))
+              seq
+                xusername.write (((unsupported)).apply (((xmodels).xCharField)) (30) (TRUE))
+                xorgs.write ((((xmodels).xManyToManyField)).apply ((xOrganization)))
+                xcustom_objects.write (((xCustomUserWithM2MManager)).apply)
+                xUSERNAME_FIELD.write "username"
+                xREQUIRED_FIELDS.write (((unsupported)).apply ("orgs"))
+            (((unsupported)).apply ((xAbstractBaseUser)))
+              seq
+                xusername.write (((unsupported)).apply (((xmodels).xCharField)) (30) (TRUE))
+                xorgs.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xOrganization)) ("Membership"))
+                xcustom_objects.write (((xCustomUserWithM2MManager)).apply)
+                xUSERNAME_FIELD.write "username"
+                xREQUIRED_FIELDS.write (((unsupported)).apply ("orgs"))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xuser.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xCustomUserWithM2MThrough)) (((xmodels).xCASCADE)))
+                xorganization.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xOrganization)) (((xmodels).xCASCADE)))

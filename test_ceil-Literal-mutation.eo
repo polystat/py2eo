@@ -1,0 +1,91 @@
+memory > xIntegerModel
+memory > xDecimalField
+memory > xCeil
+memory > xFloatModel
+memory > xTestCase
+memory > xint
+memory > xfloat
+memory > xregister_lookup
+memory > xDecimal
+memory > xDecimalModel
+memory > xmath
+[] > test_ceil
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_float
+        memory > xtest_null
+        memory > xtest_integer
+        memory > xtest_decimal
+        memory > xtest_transform
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_null.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xIntegerModel).xobjects).xcreate)).apply)
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xCeil)).apply ("normal")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_ceil)))
+                xtest_decimal.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("12.9"))) ((((xDecimal)).apply ("0.6"))))
+                        xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xannotate)) ((((xCeil)).apply ("n1"))) ((((xCeil)).apply ("n2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn1_ceil)) ((xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn2_ceil)) ((xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xn1_ceil)) ((((xDecimal)).apply (((((xmath).xceil)).apply (((xobj).xn1)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xn2_ceil)) ((((xDecimal)).apply (((((xmath).xceil)).apply (((xobj).xn2)))))))
+                xtest_float.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) ((12.5.neg)) (21.33))
+                        xobj.write ((((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xCeil)).apply ("f1"))) ((((xCeil)).apply ("f2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf1_ceil)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf2_ceil)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xf1_ceil)) (((((xmath).xceil)).apply (((xobj).xf1)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xf2_ceil)) (((((xmath).xceil)).apply (((xobj).xf2)))))
+                xtest_integer.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) ((11.neg)) (0) ((100.neg)))
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xCeil)).apply ("small"))) ((((xCeil)).apply ("normal"))) ((((xCeil)).apply ("big")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xsmall_ceil)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xnormal_ceil)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xbig_ceil)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xsmall_ceil)) (((((xmath).xceil)).apply (((xobj).xsmall)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xnormal_ceil)) (((((xmath).xceil)).apply (((xobj).xnormal)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xbig_ceil)) (((((xmath).xceil)).apply (((xobj).xbig)))))
+                xtest_transform.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      (((unsupported)).apply ((((xregister_lookup)).apply ((xDecimalField)) ((xCeil)))))
+                        seq
+                          (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("3.12"))) ((((xDecimal)).apply ("0"))))
+                          (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("1.25"))) ((((xDecimal)).apply ("0"))))
+                          xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xfilter)) (3)).xget)).apply)
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xn1)) ((((xDecimal)).apply ("3.12"))))

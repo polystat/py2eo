@@ -1,0 +1,88 @@
+memory > xValueError
+memory > xvalue
+memory > xconnection
+memory > xValue
+memory > xF
+memory > xCollate
+memory > xTestCase
+memory > xAuthor
+[] > test_collate
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_language_collation_order_by
+        memory > xtest_collate_order_by_cs
+        memory > xsetUpTestData
+        memory > xtest_collate_filter_ci
+        memory > xtest_invalid_collation
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xauthor1)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("a") ("Jones 1"))))
+                        (((unsupported)).apply (((xcls).xauthor2)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("A") ("Jones 2"))))
+                xtest_collate_filter_ci.write
+                  [xself]
+                    memory > xqs
+                    memory > xcollation
+                    seq > @
+                      seq
+                        xcollation.write ((((((xconnection).xfeatures).xtest_collations).xget)).apply ("ci"))
+                        ((xcollation).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("This backend does not support case-insensitive collations."))
+                        xqs.write (((unsupported)).apply ((((xAuthor).xobjects).xfilter)) ((((xCollate)).apply ((((xValue)).apply ("a"))) ((xcollation)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xqs).xcount)).apply)) (2))
+                xtest_collate_order_by_cs.write
+                  [xself]
+                    memory > xqs
+                    memory > xcollation
+                    seq > @
+                      seq
+                        xcollation.write ((((((xconnection).xfeatures).xtest_collations).xget)).apply ("cs"))
+                        ((xcollation).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("This backend does not support case-sensitive collations."))
+                        xqs.write (((((xAuthor).xobjects).xorder_by)).apply ((((xCollate)).apply ("alias") ((xcollation)))))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((xqs)) ((((unsupported)).apply (((xself).xauthor2)) (((xself).xauthor1)))))
+                xtest_language_collation_order_by.write
+                  [xself]
+                    memory > xauthor4
+                    memory > xqs
+                    memory > xauthor5
+                    memory > xcollation
+                    memory > xauthor3
+                    seq > @
+                      seq
+                        xcollation.write ((((((xconnection).xfeatures).xtest_collations).xget)).apply ("swedish_ci"))
+                        ((xcollation).not).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("This backend does not support language collations."))
+                        xauthor3.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("O") ("Jones"))
+                        xauthor4.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Ö") ("Jones"))
+                        xauthor5.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("P") ("Jones"))
+                        xqs.write (((((xAuthor).xobjects).xorder_by)).apply ((((xCollate)).apply ((((xF)).apply ("alias"))) ((xcollation)))) ("name"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((xqs)) ((((unsupported)).apply (((xself).xauthor1)) (((xself).xauthor2)) ((xauthor3)) ((xauthor5)) ((xauthor4)))))
+                xtest_invalid_collation.write
+                  [xself]
+                    memory > xtests
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ("None: is there a None literal in the EO language?") ("") ("et-x-icu\" OR ") ("\"schema\".\"collation\""))
+                        xmsg.write "Invalid collation name: %r."
+                        (((unsupported)).apply ((xvalue)) ((xtests)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xvalue)))) (((((xself).xassertRaisesMessage)).apply ((xValueError)) (((xmsg).mod (xvalue))))))
+                            bogusForceDataize.write (((xCollate)).apply ((((xF)).apply ("alias"))) ((xvalue)))

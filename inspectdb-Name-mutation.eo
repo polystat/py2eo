@@ -1,0 +1,33 @@
+memory > xfield_params
+memory > xfield_notes
+memory > xgeo_params
+memory > xfield_type
+memory > xsuper
+[] > inspectdb
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdb_module2
+        memory > xget_field_type
+        memory > xInspectDBCommand
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xInspectDBCommand)))
+              seq
+                xdb_module2.write "django.contrib.gis.db"
+                xget_field_type.write
+                  [xself xconnection xtable_name xrow]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xfield_type)) ((xfield_params)) ((xfield_notes)))) (((((((xsuper)).apply).xget_field_type)).apply ((xconnection)) ((xtable_name)) ((xrow)))))
+                        ((xfield_type).eq "GeometryField").if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xfield_type)) ((xgeo_params)))) ((((((xconnection).xintrospection).xget_geometry_type)).apply ((xtable_name)) ((xrow)))))
+                            bogusForceDataize.write ((((xfield_params).xupdate)).apply ((xgeo_params)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xfield_type)) ((xfield_params)) ((xfield_notes)))))

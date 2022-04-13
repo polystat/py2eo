@@ -1,0 +1,114 @@
+memory > xcm
+memory > xValidationError
+memory > xTestCase
+memory > xmodels
+[] > test_error_messages
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_autofield_field_raises_error_message
+        memory > xtest_boolean_field_raises_error_message
+        memory > x_test_validation_messages
+        memory > xtest_integer_field_raises_error_message
+        memory > xtest_nullable_boolean_field_raises_error_message
+        memory > xtest_float_field_raises_error_message
+        memory > xtest_null_boolean_field_raises_error_message
+        memory > xtest_decimal_field_raises_error_message
+        memory > xtest_date_field_raises_error_message
+        memory > xtest_time_field_raises_error_message
+        memory > xtest_datetime_field_raises_error_message
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                x_test_validation_messages.write
+                  [xself xfield xvalue xexpected]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write ((((xfield).xclean)).apply ((xvalue)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((xexpected)))
+                xtest_autofield_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xAutoField)) (TRUE))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value must be an integer."))))
+                xtest_integer_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xIntegerField)).apply)
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value must be an integer."))))
+                xtest_boolean_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xBooleanField)).apply)
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value must be either True or False."))))
+                xtest_nullable_boolean_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xBooleanField)) (TRUE))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value must be either True, False, or None."))))
+                xtest_float_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xFloatField)).apply)
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value must be a float."))))
+                xtest_decimal_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xDecimalField)).apply)
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value must be a decimal number."))))
+                xtest_null_boolean_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xBooleanField)) (TRUE))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value must be either True, False, or None."))))
+                xtest_date_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xDateField)).apply)
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value has an invalid date format. It must be in YYYY-MM-DD format."))))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("aaaa-10-10") ((((unsupported)).apply ("“aaaa-10-10” value has an invalid date format. It must be in YYYY-MM-DD format."))))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("2011-13-10") ((((unsupported)).apply ("“2011-13-10” value has the correct format (YYYY-MM-DD) but it is an invalid date."))))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("2011-10-32") ((((unsupported)).apply ("“2011-10-32” value has the correct format (YYYY-MM-DD) but it is an invalid date."))))
+                xtest_datetime_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xDateTimeField)).apply)
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format."))))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("2011-10-32") ((((unsupported)).apply ("“2011-10-32” value has the correct format (YYYY-MM-DD) but it is an invalid date."))))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("2011-10-32 10:10") ((((unsupported)).apply ("“2011-10-32 10:10” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."))))
+                xtest_time_field_raises_error_message.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xTimeField)).apply)
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("fõo") ((((unsupported)).apply ("“fõo” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] format."))))
+                        bogusForceDataize.write ((((xself).x_test_validation_messages)).apply ((xf)) ("25:50") ((((unsupported)).apply ("“25:50” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an invalid time."))))

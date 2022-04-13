@@ -1,0 +1,83 @@
+memory > xforms
+memory > xTestCase
+memory > x_
+memory > xPost
+memory > xmodels
+memory > xkwargs
+memory > xSimpleTestCase
+[] > test_textfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_deconstruct
+        memory > xtest_lookup_integer_in_textfield
+        memory > xtest_emoji
+        memory > xtest_to_python
+        memory > xtest_max_length_passed_to_formfield
+        memory > xtest_choices_generates_select_widget
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_max_length_passed_to_formfield.write
+                  [xself]
+                    memory > xtf2
+                    memory > xtf1
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtf1.write ((((xmodels).xTextField)).apply)
+                        xtf2.write (((unsupported)).apply (((xmodels).xTextField)) (2345))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((((xtf1).xformfield)).apply).xmax_length)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (2345) ((((((xtf2).xformfield)).apply).xmax_length)))
+                xtest_choices_generates_select_widget.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        unsupported
+                        xf.write (((unsupported)).apply (((xmodels).xTextField)) ((((unsupported)).apply ((((unsupported)).apply ("A") ("A"))) ((((unsupported)).apply ("B") ("B"))))))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((((xf).xformfield)).apply).xwidget)) (((xforms).xSelect)))
+                xtest_to_python.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        unsupported
+                        xf.write ((((xmodels).xTextField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply (1))) ("1"))
+                xtest_lookup_integer_in_textfield.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xPost).xobjects).xfilter)) (24)).xcount)).apply)) (0))
+                xtest_emoji.write
+                  [xself]
+                    memory > xp
+                    seq > @
+                      seq
+                        xp.write (((unsupported)).apply ((((xPost).xobjects).xcreate)) ("Whatever") ("Smile 😀."))
+                        bogusForceDataize.write ((((xp).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp).xbody)) ("Smile 😀."))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_deconstruct.write
+                [xself]
+                  memory > xfield
+                  seq > @
+                    seq
+                      xfield.write ((((xmodels).xTextField)).apply)
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xkwargs)))) (((((xfield).xdeconstruct)).apply)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xkwargs)) ((((unsupported)).apply)))
+                      xfield.write (((unsupported)).apply (((xmodels).xTextField)) ("utf8_esperanto_ci"))
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xkwargs)))) (((((xfield).xdeconstruct)).apply)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xkwargs)) ((((unsupported)).apply ("db_collation") ("utf8_esperanto_ci"))))

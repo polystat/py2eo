@@ -1,0 +1,33 @@
+memory > xHttpRequest
+memory > xCsrfFunctionTestMixin
+memory > xcsrf
+memory > xSimpleTestCase
+[] > test_context_processor
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_force_token_to_string
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xCsrfFunctionTestMixin)) ((xSimpleTestCase)))
+              xtest_force_token_to_string.write
+                [xself]
+                  memory > xtoken
+                  memory > xrequest
+                  memory > xtest_secret
+                  seq > @
+                    seq
+                      xrequest.write (xHttpRequest)
+                      xtest_secret.write (32.mul "a")
+                      (((unsupported)).apply ((((unsupported)).apply (((xrequest).xMETA)) ("CSRF_COOKIE"))) ((xtest_secret)))
+                      xtoken.write ((((((xcsrf)).apply ((xrequest))).xget)).apply ("csrf_token"))
+                      bogusForceDataize.write ((((xself).xassertMaskedSecretCorrect)).apply ((xtoken)) ((xtest_secret)))

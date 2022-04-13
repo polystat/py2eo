@@ -1,0 +1,35 @@
+memory > xCustomMessagesModel
+memory > xValidationAssertions
+memory > xSimpleTestCase
+[] > test_custom_messages
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_custom_simple_validator_message
+        memory > xtest_custom_null_message
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xValidationAssertions)) ((xSimpleTestCase)))
+              seq
+                xtest_custom_simple_validator_message.write
+                  [xself]
+                    memory > xcmm
+                    seq > @
+                      seq
+                        xcmm.write (((unsupported)).apply ((xCustomMessagesModel)) (12))
+                        bogusForceDataize.write ((((xself).xassertFieldFailsValidationWithMessage)).apply (((xcmm).xfull_clean)) ("number") ((((unsupported)).apply ("AAARGH"))))
+                xtest_custom_null_message.write
+                  [xself]
+                    memory > xcmm
+                    seq > @
+                      seq
+                        xcmm.write (xCustomMessagesModel)
+                        bogusForceDataize.write ((((xself).xassertFieldFailsValidationWithMessage)).apply (((xcmm).xfull_clean)) ("number") ((((unsupported)).apply ("NULL"))))

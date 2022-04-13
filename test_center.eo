@@ -1,0 +1,48 @@
+memory > xcenter
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_center
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_center02
+        memory > xtest_non_string_input
+        memory > xtest_center
+        memory > xtest_center01
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_center01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("center01") ((((unsupported)).apply ("a") ("a&b") ("b") ((((xmark_safe)).apply ("a&b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (". a&b . . a&b ."))
+                xtest_center02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("center02") ((((unsupported)).apply ("a") ("a&b") ("b") ((((xmark_safe)).apply ("a&b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (". a&amp;b . . a&b ."))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_center.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcenter)).apply ("test") (6))) (" test "))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcenter)).apply (123) (5))) (" 123 "))

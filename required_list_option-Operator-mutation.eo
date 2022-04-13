@@ -1,0 +1,31 @@
+memory > xoption
+memory > xvalue
+memory > xBaseCommand
+memory > xint
+memory > xoptions
+[] > required_list_option
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      (((unsupported)).apply (((xparser).xadd_argument)) ("--foo-list") ("-") ((xint)) (TRUE))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xoption)) ((xvalue)))) (((((xoptions).xitems)).apply)))
+                          bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("%s=%s".mod (((unsupported)).apply ((xoption)) ((xvalue))))))

@@ -1,0 +1,130 @@
+memory > xtimezone
+memory > xdatetime
+memory > xtranslation
+memory > xdate
+memory > xtime
+memory > xTimezoneTestCase
+memory > xSimpleTestCase
+[] > test_date
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_no_args
+        memory > xtest_date03
+        memory > xtest_date08
+        memory > xtest_escape_characters
+        memory > xtest_date04
+        memory > xtest_date06
+        memory > xtest_date05
+        memory > xtest_date01
+        memory > xtest_date09
+        memory > xtest_date02_l10n
+        memory > xtest_date02
+        memory > xtest_date07
+        memory > xtest_date
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTimezoneTestCase)))
+              seq
+                xtest_date01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date01") ((((unsupported)).apply ("d") ((((xdatetime)).apply (2008) (1) (1))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("01"))
+                xtest_date02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date02") ((((unsupported)).apply ("d") ((((xdatetime)).apply (2008) (1) (1))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Jan. 1, 2008"))
+                xtest_date02_l10n.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date02_l10n") ((((unsupported)).apply ("d") ((((xdatetime)).apply (2008) (1) (1))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1 janvier 2008"))
+                xtest_date03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date03") ((((unsupported)).apply ("d") ("fail_string"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))
+                xtest_date04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date04") ((((unsupported)).apply ("d") ((((xdatetime)).apply (2008) (12) (29))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("2009"))
+                xtest_date05.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date05") ((((unsupported)).apply ("d") ((((xdatetime)).apply (2010) (1) (3))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("2009"))
+                xtest_date06.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date06") ((((unsupported)).apply ("d") ((((unsupported)).apply ((xdatetime)) (2009) (3) (12) (((((xtimezone).xget_fixed_timezone)).apply (30))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("+0030"))
+                xtest_date07.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date07") ((((unsupported)).apply ("d") ((((xdatetime)).apply (2009) (3) (12))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))
+                xtest_date08.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date08") ((((unsupported)).apply ("t") ((((xtime)).apply (0) (1))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("00:01"))
+                xtest_date09.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("date09") ((((unsupported)).apply ("t") ((((xtime)).apply (0) (0))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("00:00"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_date.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply ((((xdatetime)).apply (2005) (12) (29))) ("d F Y"))) ("29 December 2005"))
+                xtest_no_args.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (""))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply ("None: is there a None literal in the EO language?"))) (""))
+                xtest_escape_characters.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply ((((xdatetime)).apply (2005) (12) (29))) ("jS of F"))) ("29th of December"))

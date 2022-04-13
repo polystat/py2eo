@@ -1,0 +1,112 @@
+memory > xTestCase
+memory > xDTDForbidden
+memory > xSerializersTransactionTestBase
+memory > xException
+memory > xTransactionTestCase
+memory > xserializers
+memory > xchild
+memory > xfalse
+memory > xfield
+memory > xSerializersTestBase
+memory > xValueError
+memory > xminidom
+memory > xnext
+[] > test_xml
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_control_char_failure
+        memory > x_get_pk_values
+        memory > x_validate_output
+        memory > xserializer_name
+        memory > xmapping_ordering_str
+        memory > xfwd_ref_str
+        memory > xtest_no_dtd
+        memory > xpkless_str
+        memory > x_get_field_values
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xSerializersTestBase)) ((xTestCase)))
+              seq
+                xserializer_name.write "xml"
+                xpkless_str.write (((unsupported)).apply)
+                xmapping_ordering_str.write (((unsupported)).apply)
+                x_validate_output.write
+                  [xserial_str]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xException)))
+                          bogusForceDataize.write ((((xminidom).xparseString)).apply ((xserial_str)))
+                          (((unsupported)).apply ((xfalse)))
+                          (((unsupported)).apply (TRUE))
+                x_get_pk_values.write
+                  [xserial_str]
+                    memory > xret_list
+                    memory > xfields
+                    memory > xdom
+                    seq > @
+                      (((unsupported)).apply)
+                        xret_list.write (((unsupported)).apply)
+                        xdom.write ((((xminidom).xparseString)).apply ((xserial_str)))
+                        xfields.write ((((xdom).xgetElementsByTagName)).apply ("object"))
+                        (((unsupported)).apply ((xfield)) ((xfields)))
+                          bogusForceDataize.write ((((xret_list).xappend)).apply (((((xfield).xgetAttribute)).apply ("pk"))))
+                        (((unsupported)).apply ((xret_list)))
+                x_get_field_values.write
+                  [xserial_str xfield_name]
+                    memory > xret_list
+                    memory > xtemp
+                    memory > xfields
+                    memory > xdom
+                    seq > @
+                      (((unsupported)).apply)
+                        xret_list.write (((unsupported)).apply)
+                        xdom.write ((((xminidom).xparseString)).apply ((xserial_str)))
+                        xfields.write ((((xdom).xgetElementsByTagName)).apply ("field"))
+                        (((unsupported)).apply ((xfield)) ((xfields)))
+                          (((((xfield).xgetAttribute)).apply ("name")).eq (xfield_name)).if
+                            seq
+                              xtemp.write (((unsupported)).apply)
+                              (((unsupported)).apply ((xchild)) (((xfield).xchildNodes)))
+                                bogusForceDataize.write ((((xtemp).xappend)).apply (((xchild).xnodeValue)))
+                              bogusForceDataize.write ((((xret_list).xappend)).apply (((("".xjoin)).apply ((xtemp)))))
+                        (((unsupported)).apply ((xret_list)))
+                xtest_control_char_failure.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xa1).xheadline)) ("This contains u0001 control u0011 chars"))
+                        xmsg.write ("Article.headline (pk:%s) contains unserializable characters".mod (((xself).xa1).xpk))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xserializers).xserialize)).apply (((xself).xserializer_name)) ((((unsupported)).apply (((xself).xa1)))))
+                        (((unsupported)).apply ((((xself).xa1).xheadline)) ("HT u0009, LF u000A, and CR u000D are allowed"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("HT t, LF n, and CR r are allowed") (((((xserializers).xserialize)).apply (((xself).xserializer_name)) ((((unsupported)).apply (((xself).xa1)))))))
+                xtest_no_dtd.write
+                  [xself]
+                    memory > xxml
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xxml.write "<?xml version=\"1.0\" standalone=\"no\"?><!DOCTYPE example SYSTEM \"http://example.com/example.dtd\">"
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xDTDForbidden)))))
+                          bogusForceDataize.write (((xnext)).apply (((((xserializers).xdeserialize)).apply ("xml") ((xxml)))))
+            (((unsupported)).apply ((xSerializersTransactionTestBase)) ((xTransactionTestCase)))
+              seq
+                xserializer_name.write "xml"
+                xfwd_ref_str.write (((unsupported)).apply)

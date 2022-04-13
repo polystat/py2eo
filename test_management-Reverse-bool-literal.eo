@@ -1,0 +1,131 @@
+memory > xmodify_settings
+memory > xModelWithNullFKToSite
+memory > xApps
+memory > xmock
+memory > xPost
+memory > xContentType
+memory > xstdout
+memory > xapps
+memory > xcaptured_stdout
+memory > xTestCase
+memory > xcall_command
+[] > test_management
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_interactive_false
+        memory > xsetUpTestData
+        memory > xsetUp
+        memory > xtest_contenttypes_removed_for_apps_not_in_installed_apps
+        memory > xtest_interactive_false_with_dependent_objects
+        memory > xtest_contenttypes_removed_in_installed_apps_without_models
+        memory > xtest_interactive_false_without_dependent_objects
+        memory > xtest_unavailable_content_type_model
+        memory > xcontenttypes_management
+        memory > xavailable_apps
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ((((unsupported)).apply ("empty_models") ("no_models"))))))))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("contenttypes_tests") ("empty_models") ("no_models") ("django.contrib.contenttypes"))
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xcaptured_stdout)).apply)))
+                          (((unsupported)).apply ((xcall_command)) ("remove_stale_contenttypes") (FALSE) (TRUE) (2))
+                        (((unsupported)).apply (((xcls).xbefore_count)) ((((((xContentType).xobjects).xcount)).apply)))
+                        (((unsupported)).apply (((xcls).xcontent_type)) ((((unsupported)).apply ((((xContentType).xobjects).xcreate)) ("contenttypes_tests") ("Fake"))))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xapp_config)) (((((xapps).xget_app_config)).apply ("contenttypes_tests"))))
+                xtest_interactive_false_with_dependent_objects.write
+                  [xself]
+                    memory > xpost
+                    memory > xoutput
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xpost.write (((unsupported)).apply ((((xPost).xobjects).xcreate)) ("post") (((xself).xcontent_type)))
+                        (((unsupported)).apply ((((xModelWithNullFKToSite).xobjects).xcreate)) ((xpost)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("builtins.input") ("yes"))))
+                          (((unsupported)).apply ((((xcaptured_stdout)).apply)) ((xstdout)))
+                            (((unsupported)).apply ((xcall_command)) ("remove_stale_contenttypes") (2) ((xstdout)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xPost).xobjects).xcount)).apply)) (0))
+                        xoutput.write ((((xstdout).xgetvalue)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("- Content type for contenttypes_tests.Fake") ((xoutput)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("- 1 contenttypes_tests.Post object(s)") ((xoutput)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("- 1 contenttypes_tests.ModelWithNullFKToSite") ((xoutput)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Deleting stale content type") ((xoutput)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xContentType).xobjects).xcount)).apply)) (((xself).xbefore_count)))
+                xtest_interactive_false_without_dependent_objects.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("builtins.input") ("yes"))))
+                          (((unsupported)).apply ((((xcaptured_stdout)).apply)) ((xstdout)))
+                            (((unsupported)).apply ((xcall_command)) ("remove_stale_contenttypes") (2))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Deleting stale content type") (((((xstdout).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xContentType).xobjects).xcount)).apply)) (((xself).xbefore_count)))
+                xtest_interactive_false.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((xcaptured_stdout)).apply)) ((xstdout)))
+                          (((unsupported)).apply ((xcall_command)) ("remove_stale_contenttypes") (FALSE) (2))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Deleting stale content type") (((((xstdout).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xContentType).xobjects).xcount)).apply)) (((xself).xbefore_count)))
+                xtest_unavailable_content_type_model.write
+                  [xself]
+                    memory > xapps
+                    seq > @
+                      seq
+                        unsupported
+                        xapps.write (((xApps)).apply)
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          (((unsupported)).apply (((xcontenttypes_management).xcreate_contenttypes)) (((xself).xapp_config)) (FALSE) (0) ((xapps)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xContentType).xobjects).xcount)).apply)) ((((xself).xbefore_count).add 1)))
+                xtest_contenttypes_removed_in_installed_apps_without_models.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xContentType).xobjects).xcreate)) ("empty_models") ("Fake 1"))
+                        (((unsupported)).apply ((((xContentType).xobjects).xcreate)) ("no_models") ("Fake 2"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("builtins.input") ("yes"))) ((((xcaptured_stdout)).apply)) ((xstdout)))
+                          (((unsupported)).apply ((xcall_command)) ("remove_stale_contenttypes") (2))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("Deleting stale content type 'empty_models | Fake 1'") (((((xstdout).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Deleting stale content type 'no_models | Fake 2'") (((((xstdout).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xContentType).xobjects).xcount)).apply)) ((((xself).xbefore_count).add 1)))
+                xtest_contenttypes_removed_for_apps_not_in_installed_apps.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xContentType).xobjects).xcreate)) ("empty_models") ("Fake 1"))
+                        (((unsupported)).apply ((((xContentType).xobjects).xcreate)) ("no_models") ("Fake 2"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("builtins.input") ("yes"))) ((((xcaptured_stdout)).apply)) ((xstdout)))
+                          (((unsupported)).apply ((xcall_command)) ("remove_stale_contenttypes") (TRUE) (2))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Deleting stale content type 'empty_models | Fake 1'") (((((xstdout).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Deleting stale content type 'no_models | Fake 2'") (((((xstdout).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xContentType).xobjects).xcount)).apply)) (((xself).xbefore_count)))

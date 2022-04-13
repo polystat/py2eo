@@ -1,0 +1,88 @@
+memory > xget_current_site
+memory > xtemplate
+memory > xsettings
+memory > xFlatpageNode
+memory > xFlatPage
+memory > xlen
+[] > flatpages
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xregister
+        memory > x__init__
+        memory > xget_flatpages
+        memory > xrender
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xregister.write ((((xtemplate).xLibrary)).apply)
+            (((unsupported)).apply (((xtemplate).xNode)))
+              seq
+                x__init__.write
+                  [xself xcontext_name xstarts_with xuser]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcontext_name)) ((xcontext_name)))
+                        (xstarts_with).if
+                          (((unsupported)).apply (((xself).xstarts_with)) (((((xtemplate).xVariable)).apply ((xstarts_with)))))
+                          (((unsupported)).apply (((xself).xstarts_with)) ("None: is there a None literal in the EO language?"))
+                        (xuser).if
+                          (((unsupported)).apply (((xself).xuser)) (((((xtemplate).xVariable)).apply ((xuser)))))
+                          (((unsupported)).apply (((xself).xuser)) ("None: is there a None literal in the EO language?"))
+                xrender.write
+                  [xself xcontext]
+                    memory > xflatpages
+                    memory > xuser
+                    memory > xsite_pk
+                    seq > @
+                      seq
+                        (((unsupported)).apply ("request") ((xcontext))).if
+                          xsite_pk.write ((((xget_current_site)).apply ((((unsupported)).apply ((xcontext)) ("request")))).xpk)
+                          xsite_pk.write ((xsettings).xSITE_ID)
+                        xflatpages.write (((unsupported)).apply ((((xFlatPage).xobjects).xfilter)) ((xsite_pk)))
+                        ((xself).xstarts_with).if
+                          xflatpages.write (((unsupported)).apply (((xflatpages).xfilter)) ((((((xself).xstarts_with).xresolve)).apply ((xcontext)))))
+                        ((xself).xuser).if
+                          seq
+                            xuser.write (((((xself).xuser).xresolve)).apply ((xcontext)))
+                            (((xuser).xis_authenticated).not).if
+                              xflatpages.write (((unsupported)).apply (((xflatpages).xfilter)) (FALSE))
+                          xflatpages.write (((unsupported)).apply (((xflatpages).xfilter)) (FALSE))
+                        (((unsupported)).apply ((((unsupported)).apply ((xcontext)) (((xself).xcontext_name)))) ((xflatpages)))
+                        (((unsupported)).apply (""))
+            xget_flatpages.write
+              [xparser xtoken]
+                memory > xbits
+                memory > xprefix
+                memory > xcontext_name
+                memory > xsyntax_message
+                memory > xuser
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xbits.write ((((xtoken).xsplit_contents)).apply)
+                    xsyntax_message.write ("%(tag_name)s expects a syntax of %(tag_name)s ['url_starts_with'] [for user] as context_name".mod (((unsupported)).apply ("tag_name") ((((unsupported)).apply ((xbits)) (0)))))
+                    (((unsupported)).apply (3) ((((xlen)).apply ((xbits)))) (6)).if
+                      seq
+                        (((((xlen)).apply ((xbits))).mod 2).eq 0).if
+                          xprefix.write (((unsupported)).apply ((xbits)) (1))
+                          xprefix.write "None: is there a None literal in the EO language?"
+                        ((((unsupported)).apply ((xbits)) ((2.neg))).neq "as").if
+                          (((unsupported)).apply (((((xtemplate).xTemplateSyntaxError)).apply ((xsyntax_message)))))
+                        xcontext_name.write (((unsupported)).apply ((xbits)) ((1.neg)))
+                        ((((xlen)).apply ((xbits))).geq 5).if
+                          seq
+                            ((((unsupported)).apply ((xbits)) ((4.neg))).neq "for").if
+                              (((unsupported)).apply (((((xtemplate).xTemplateSyntaxError)).apply ((xsyntax_message)))))
+                            xuser.write (((unsupported)).apply ((xbits)) ((3.neg)))
+                          xuser.write "None: is there a None literal in the EO language?"
+                        (((unsupported)).apply ((((unsupported)).apply ((xFlatpageNode)) ((xcontext_name)) ((xprefix)) ((xuser)))))
+                      (((unsupported)).apply (((((xtemplate).xTemplateSyntaxError)).apply ((xsyntax_message)))))

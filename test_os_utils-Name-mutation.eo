@@ -1,0 +1,65 @@
+memory > xsafe_join
+memory > xdrive
+memory > xSuspiciousFileOperation
+memory > xos
+memory > xunittest
+memory > xto_path
+memory > xTypeError
+memory > xpath
+memory > xPath
+[] > test_os_utils
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_parent_path
+        memory > xtest_to_path_invalid_value
+        memory > xtest_base_path_ends_with_sep
+        memory > xtest_to_path
+        memory > xtest_root_path
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_base_path_ends_with_sep.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xdrive)) ((xpath)))) ((((((xos).xpath).xsplitdrive)).apply ((((xsafe_join)).apply ("/abc/") ("abc"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpath)) (((("{0}abc{0}abc".xformat)).apply ((((xos).xpath).xsep)))))
+                xtest_root_path.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xdrive)) ((xpath)))) ((((((xos).xpath).xsplitdrive)).apply ((((xsafe_join)).apply ("/") ("path"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpath)) (((("{}path".xformat)).apply ((((xos).xpath).xsep)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xdrive)) ((xpath)))) ((((((xos).xpath).xsplitdrive)).apply ((((xsafe_join)).apply ("/") (""))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpath)) ((((xos).xpath).xsep)))
+                xtest_parent_path.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSuspiciousFileOperation)))))
+                        bogusForceDataize.write (((xsafe_join)).apply ("/abc/") ("../def"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_to_path.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xpath)) ((((unsupported)).apply ("/tmp/some_file.txt") ((((xPath)).apply ("/tmp/some_file.txt"))))))
+                        (((unsupported)).apply (((((xself).xsubTest)).apply ((xpath)))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xto_path)).apply ((xpath)))) ((((xPath)).apply ("/tmp/some_file.txt"))))
+                xtest_to_path_invalid_value.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                        bogusForceDataize.write (((xto_path)).apply (42))

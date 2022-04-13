@@ -1,0 +1,51 @@
+memory > xtimezone
+memory > xsocket
+memory > xmail_managers
+memory > xBaseCommand
+memory > xkwargs
+memory > xsend_mail
+memory > xmail_admins
+[] > sendtestemail
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xmissing_args_message
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Sends a test email to the email addresses specified as arguments."
+                xmissing_args_message.write "You must specify some email recipients, or pass the --managers or --admin options."
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("email") ("*") ("One or more email addresses to send a test email to."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--managers") ("store_true") ("Send a test email to the addresses specified in settings.MANAGERS."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--admins") ("store_true") ("Send a test email to the addresses specified in settings.ADMINS."))
+                xhandle.write
+                  [xself]
+                    memory > xsubject
+                    seq > @
+                      (((unsupported)).apply)
+                        xsubject.write ("Test email from %s on %s".mod (((unsupported)).apply (((((xsocket).xgethostname)).apply)) (((((xtimezone).xnow)).apply))))
+                        (((unsupported)).apply ((xsend_mail)) ((xsubject)) ("If you're reading this, it was successful.") ("None: is there a None literal in the EO language?") ((((unsupported)).apply ((xkwargs)) ("email"))))
+                        (((unsupported)).apply ((xkwargs)) ("managers")).if
+                          bogusForceDataize.write (((xmail_managers)).apply ((xsubject)) ("This email was sent to the site managers."))
+                        (((unsupported)).apply ((xkwargs)) ("admins")).if
+                          bogusForceDataize.write (((xmail_admins)).apply ((xsubject)) ("This email was sent to the site admins."))

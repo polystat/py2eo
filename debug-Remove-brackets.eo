@@ -1,0 +1,74 @@
+memory > xfunc_kwargs
+memory > xHttpRequest
+memory > xfunc_args
+memory > xvariables
+memory > xcallable
+memory > xargs
+memory > xparameters
+memory > xkwargs
+memory > xTypeError
+memory > xisinstance
+memory > xlen
+[] > debug
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsensitive_variables
+        memory > xsensitive_post_parameters
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xsensitive_variables.write
+              []
+                memory > xdecorator
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((((xlen)).apply ((xvariables))).eq 1).and (((xcallable)).apply ((((unsupported)).apply ((xvariables)) (0))))).if
+                      (((unsupported)).apply ((((xTypeError)).apply ("sensitive_variables must be called to use it as a decorator, e.g., use @sensitive_variables, not @sensitive_variables."))))
+                    xdecorator.write
+                      [xfunc]
+                        memory > xsensitive_variables_wrapper
+                        seq > @
+                          seq
+                            xsensitive_variables_wrapper.write
+                              []
+                                seq > @
+                                  (((unsupported)).apply)
+                                    (xvariables).if
+                                      (((unsupported)).apply (((xsensitive_variables_wrapper).xsensitive_variables)) ((xvariables)))
+                                      (((unsupported)).apply (((xsensitive_variables_wrapper).xsensitive_variables)) ("__ALL__"))
+                                    (((unsupported)).apply ((((xfunc)).apply ((((unsupported)).apply ((xfunc_args)))) ((((unsupported)).apply ((xfunc_kwargs)))))))
+                            (((unsupported)).apply ((xsensitive_variables_wrapper)))
+                    (((unsupported)).apply ((xdecorator)))
+            xsensitive_post_parameters.write
+              []
+                memory > xdecorator
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((((xlen)).apply ((xparameters))).eq 1).and (((xcallable)).apply ((((unsupported)).apply ((xparameters)) (0))))).if
+                      (((unsupported)).apply ((((xTypeError)).apply ("sensitive_post_parameters must be called to use it as a decorator, e.g., use @sensitive_post_parameters, not @sensitive_post_parameters."))))
+                    xdecorator.write
+                      [xview]
+                        memory > xsensitive_post_parameters_wrapper
+                        seq > @
+                          seq
+                            xsensitive_post_parameters_wrapper.write
+                              [xrequest]
+                                seq > @
+                                  (((unsupported)).apply)
+                                    ((((xisinstance)).apply ((xrequest)) ((xHttpRequest))).not).if
+                                      (((unsupported)).apply ((((xTypeError)).apply ("sensitive_post_parameters didn't receive an HttpRequest object. If you are decorating a classmethod, make sure to use @method_decorator."))))
+                                    (xparameters).if
+                                      (((unsupported)).apply (((xrequest).xsensitive_post_parameters)) ((xparameters)))
+                                      (((unsupported)).apply (((xrequest).xsensitive_post_parameters)) ("__ALL__"))
+                                    (((unsupported)).apply ((((xview)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                            (((unsupported)).apply ((xsensitive_post_parameters_wrapper)))
+                    (((unsupported)).apply ((xdecorator)))

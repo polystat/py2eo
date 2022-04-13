@@ -1,0 +1,73 @@
+memory > xfd
+memory > xFileProxyMixin
+memory > xtempfile
+memory > xname
+memory > xTemporaryFile
+memory > xOSError
+memory > xos
+[] > temp
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xclose
+        memory > xgettempdir
+        memory > x__exit__
+        memory > x__enter__
+        memory > x__init__
+        memory > x__del__
+        memory > xNamedTemporaryFile
+        memory > x__all__
+        memory > xunlink
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("NamedTemporaryFile") ("gettempdir"))
+            (((xos).xname).eq "nt").if
+              seq
+                (((unsupported)).apply ((xFileProxyMixin)))
+                  seq
+                    (((unsupported)).apply)
+                    x__init__.write
+                      [xself xmode xbufsize xsuffix xprefix xdir]
+                        seq > @
+                          (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xfd)) ((xname)))) ((((unsupported)).apply (((xtempfile).xmkstemp)) ((xsuffix)) ((xprefix)) ((xdir)))))
+                            (((unsupported)).apply (((xself).xname)) ((xname)))
+                            (((unsupported)).apply (((xself).xfile)) (((((xos).xfdopen)).apply ((xfd)) ((xmode)) ((xbufsize)))))
+                            (((unsupported)).apply (((xself).xclose_called)) (FALSE))
+                    xunlink.write ((xos).xunlink)
+                    xclose.write
+                      [xself]
+                        seq > @
+                          (((xself).xclose_called).not).if
+                            seq
+                              (((unsupported)).apply (((xself).xclose_called)) (TRUE))
+                              (((unsupported)).apply ((xOSError)))
+                                unsupported
+                              (((unsupported)).apply ((xOSError)))
+                                bogusForceDataize.write ((((xself).xunlink)).apply (((xself).xname)))
+                    x__del__.write
+                      [xself]
+                        seq > @
+                          unsupported
+                    x__enter__.write
+                      [xself]
+                        seq > @
+                          seq
+                            unsupported
+                            (((unsupported)).apply ((xself)))
+                    x__exit__.write
+                      [xself xexc xvalue xtb]
+                        seq > @
+                          bogusForceDataize.write (((((xself).xfile).x__exit__)).apply ((xexc)) ((xvalue)) ((xtb)))
+                xNamedTemporaryFile.write (xTemporaryFile)
+              xNamedTemporaryFile.write ((xtempfile).xNamedTemporaryFile)
+            xgettempdir.write ((xtempfile).xgettempdir)

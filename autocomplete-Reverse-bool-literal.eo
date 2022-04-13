@@ -1,0 +1,132 @@
+memory > xsearch_use_distinct
+memory > xstr
+memory > xapps
+memory > xBaseListView
+memory > xKeyError
+memory > xJsonResponse
+memory > xto_field_name
+memory > xtype
+memory > xPermissionDenied
+memory > xHttp404
+memory > xgetattr
+memory > xe
+memory > xkwargs
+memory > xAttributeError
+memory > xFieldDoesNotExist
+memory > xargs
+memory > xobj
+memory > xLookupError
+[] > autocomplete
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget
+        memory > xget_queryset
+        memory > xpaginate_by
+        memory > xserialize_result
+        memory > xprocess_request
+        memory > xhas_perm
+        memory > xadmin_site
+        memory > xget_paginator
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseListView)))
+              seq
+                unsupported
+                xpaginate_by.write 20
+                xadmin_site.write "None: is there a None literal in the EO language?"
+                xget.write
+                  [xself xrequest]
+                    memory > xcontext
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xterm)) (((xself).xmodel_admin)) (((xself).xsource_field)) ((xto_field_name)))) (((((xself).xprocess_request)).apply ((xrequest)))))
+                        (((((xself).xhas_perm)).apply ((xrequest))).not).if
+                          (((unsupported)).apply ((xPermissionDenied)))
+                        (((unsupported)).apply (((xself).xobject_list)) (((((xself).xget_queryset)).apply)))
+                        xcontext.write ((((xself).xget_context_data)).apply)
+                        (((unsupported)).apply ((((xJsonResponse)).apply ((((unsupported)).apply ("results") ((((unsupported)).apply (((((xself).xserialize_result)).apply ((xobj)) ((xto_field_name)))) ((xobj)) ((((unsupported)).apply ((xcontext)) ("object_list"))))) ("pagination") ((((unsupported)).apply ("more") (((((((unsupported)).apply ((xcontext)) ("page_obj")).xhas_next)).apply)))))))))
+                xserialize_result.write
+                  [xself xobj xto_field_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ("id") ((((xstr)).apply ((((xgetattr)).apply ((xobj)) ((xto_field_name)))))) ("text") ((((xstr)).apply ((xobj)))))))
+                xget_paginator.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((((xself).xmodel_admin).xget_paginator)).apply (((xself).xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                xget_queryset.write
+                  [xself]
+                    memory > xqs
+                    seq > @
+                      seq
+                        unsupported
+                        xqs.write (((((xself).xmodel_admin).xget_queryset)).apply (((xself).xrequest)))
+                        xqs.write ((((xqs).xcomplex_filter)).apply ((((((xself).xsource_field).xget_limit_choices_to)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xqs)) ((xsearch_use_distinct)))) ((((((xself).xmodel_admin).xget_search_results)).apply (((xself).xrequest)) ((xqs)) (((xself).xterm)))))
+                        (xsearch_use_distinct).if
+                          xqs.write ((((xqs).xdistinct)).apply)
+                        (((unsupported)).apply ((xqs)))
+                xprocess_request.write
+                  [xself xrequest]
+                    memory > xsource_field
+                    memory > xterm
+                    memory > xapp_label
+                    memory > xmodel_admin
+                    memory > xto_field_name
+                    memory > xsource_model
+                    memory > xmodel_name
+                    memory > xremote_model
+                    memory > xfield_name
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xterm.write (((((xrequest).xGET).xget)).apply ("term") (""))
+                        (((unsupported)).apply ((xKeyError)))
+                          seq
+                            xapp_label.write (((unsupported)).apply (((xrequest).xGET)) ("app_label"))
+                            xmodel_name.write (((unsupported)).apply (((xrequest).xGET)) ("model_name"))
+                            xfield_name.write (((unsupported)).apply (((xrequest).xGET)) ("field_name"))
+                          (((unsupported)).apply ((xPermissionDenied)) ((xe)))
+                        (((unsupported)).apply ((xLookupError)))
+                          xsource_model.write ((((xapps).xget_model)).apply ((xapp_label)) ((xmodel_name)))
+                          (((unsupported)).apply ((xPermissionDenied)) ((xe)))
+                        (((unsupported)).apply ((xFieldDoesNotExist)))
+                          xsource_field.write (((((xsource_model).x_meta).xget_field)).apply ((xfield_name)))
+                          (((unsupported)).apply ((xPermissionDenied)) ((xe)))
+                        (((unsupported)).apply ((xAttributeError)))
+                          xremote_model.write (((xsource_field).xremote_field).xmodel)
+                          (((unsupported)).apply ((xPermissionDenied)) ((xe)))
+                        (((unsupported)).apply ((xKeyError)))
+                          xmodel_admin.write (((unsupported)).apply ((((xself).xadmin_site).x_registry)) ((xremote_model)))
+                          (((unsupported)).apply ((xPermissionDenied)) ((xe)))
+                        (((((xmodel_admin).xget_search_fields)).apply ((xrequest))).not).if
+                          (((unsupported)).apply ((((xHttp404)).apply (("%s must have search_fields for the autocomplete_view.".mod ((((xtype)).apply ((xmodel_admin))).x__qualname__))))))
+                        xto_field_name.write (((xgetattr)).apply (((xsource_field).xremote_field)) ("field_name") (((((xremote_model).x_meta).xpk).xattname)))
+                        xto_field_name.write ((((((xremote_model).x_meta).xget_field)).apply ((xto_field_name))).xattname)
+                        (((((xmodel_admin).xto_field_allowed)).apply ((xrequest)) ((xto_field_name))).not).if
+                          (((unsupported)).apply ((xPermissionDenied)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xterm)) ((xmodel_admin)) ((xsource_field)) ((xto_field_name)))))
+                xhas_perm.write
+                  [xself xrequest xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xmodel_admin).xhas_view_permission)) ((xrequest)) ((xobj)))))

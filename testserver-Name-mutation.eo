@@ -1,0 +1,51 @@
+memory > xfixture_labels
+memory > xcall_command
+memory > xconnection
+memory > xBaseCommand
+memory > xoptions
+[] > testserver
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xadd_arguments
+        memory > xhelp2
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp2.write "Runs a development server with data from the given fixture(s)."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("args") ("fixture") ("*") ("Path(s) to fixtures to load before running the server."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--noinput") ("--no-input") ("store_false") ("interactive") ("Tells Django to NOT prompt the user for input of any kind."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--addrport") ("") ("Port number or ipaddr:port to run the server on."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--ipv6") ("-6") ("store_true") ("use_ipv6") ("Tells Django to use an IPv6 address."))
+                xhandle.write
+                  [xself]
+                    memory > xinteractive
+                    memory > xdb_name
+                    memory > xshutdown_message
+                    memory > xuse_threading
+                    memory > xverbosity
+                    seq > @
+                      (((unsupported)).apply)
+                        xverbosity.write (((unsupported)).apply ((xoptions)) ("verbosity"))
+                        xinteractive.write (((unsupported)).apply ((xoptions)) ("interactive"))
+                        xdb_name.write (((unsupported)).apply ((((xconnection).xcreation).xcreate_test_db)) ((xverbosity)) (((xinteractive).not)) (FALSE))
+                        bogusForceDataize.write (((xcall_command)).apply ("loaddata") ((((unsupported)).apply ((xfixture_labels)))) ((((unsupported)).apply ((((unsupported)).apply ("verbosity") ((xverbosity)))))))
+                        xshutdown_message.write ("nServer stopped.nNote that the test database, %r, has not been deleted. You can explore it on your own.".mod (xdb_name))
+                        xuse_threading.write (((xconnection).xfeatures).xtest_db_allows_multiple_connections)
+                        (((unsupported)).apply ((xcall_command)) ("runserver") ((((unsupported)).apply ((xoptions)) ("addrport"))) ((xshutdown_message)) (FALSE) ((((unsupported)).apply ((xoptions)) ("use_ipv6"))) ((xuse_threading)))

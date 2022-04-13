@@ -1,0 +1,76 @@
+memory > xmodify_settings
+memory > xUnaccentTest
+memory > xCharFieldModel
+memory > xinstance
+memory > xcursor
+memory > xPostgreSQLTestCase
+memory > xTextFieldModel
+memory > xconnection
+[] > test_unaccent
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_unaccent_with_conforming_strings_off
+        memory > xsetUpTestData
+        memory > xModel2
+        memory > xtest_unaccent
+        memory > xModel
+        memory > xtest_unaccent_chained
+        memory > xtest_unaccent_accentuated_needle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xPostgreSQLTestCase)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ("django.contrib.postgres"))))))
+              seq
+                xModel2.write (xCharFieldModel)
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xcls).xModel).xobjects).xbulk_create)).apply ((((unsupported)).apply ((((unsupported)).apply (((xcls).xModel)) ("àéÖ"))) ((((unsupported)).apply (((xcls).xModel)) ("aeO"))) ((((unsupported)).apply (((xcls).xModel)) ("aeo"))))))
+                xtest_unaccent.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ("aeO"))) ((((unsupported)).apply ("àéÖ") ("aeO"))) ((((unsupported)).apply (((xinstance).xfield)))) (FALSE))
+                xtest_unaccent_chained.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ("aeO"))) ((((unsupported)).apply ("àéÖ") ("aeO") ("aeo"))) ((((unsupported)).apply (((xinstance).xfield)))) (FALSE))
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ("éÖ"))) ((((unsupported)).apply ("àéÖ") ("aeO"))) ((((unsupported)).apply (((xinstance).xfield)))) (FALSE))
+                xtest_unaccent_with_conforming_strings_off.write
+                  [xself]
+                    memory > xdisable_conforming_strings
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ("SHOW standard_conforming_strings"))
+                            xdisable_conforming_strings.write ((((unsupported)).apply ((((unsupported)).apply (((((xcursor).xfetchall)).apply)) (0))) (0)).eq "on")
+                            (xdisable_conforming_strings).if
+                              bogusForceDataize.write ((((xcursor).xexecute)).apply ("SET standard_conforming_strings TO off"))
+                            (((unsupported)).apply)
+                              (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ("éÖ"))) ((((unsupported)).apply ("àéÖ") ("aeO"))) ((((unsupported)).apply (((xinstance).xfield)))) (FALSE))
+                              (xdisable_conforming_strings).if
+                                bogusForceDataize.write ((((xcursor).xexecute)).apply ("SET standard_conforming_strings TO on"))
+                xtest_unaccent_accentuated_needle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ("aéÖ"))) ((((unsupported)).apply ("àéÖ") ("aeO"))) ((((unsupported)).apply (((xinstance).xfield)))) (FALSE))
+            (((unsupported)).apply ((xUnaccentTest)))
+              seq
+                (((unsupported)).apply)
+                xModel.write (xTextFieldModel)

@@ -1,0 +1,342 @@
+memory > xauthenticate
+memory > xdatetime
+memory > xmodify_settings
+memory > xCustomRemoteUserBackend
+memory > xTestCase
+memory > xoverride_settings
+memory > xRemoteUserBackend
+memory > xRemoteUserMiddleware
+memory > xUser
+memory > xtimezone
+memory > x_mask_cipher_secret
+memory > x_get_new_csrf_string
+memory > xClient
+memory > xRemoteUserTest
+memory > xignore_warnings
+memory > xsettings
+memory > xsuper
+memory > xRemovedInDjango50Warning
+[] > test_remote_user
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xheader
+        memory > xtest_user_switch_forces_new_login
+        memory > xtest_known_user_sync
+        memory > xtest_unknown_user
+        memory > xtest_no_remote_user
+        memory > xsetUp
+        memory > xemail_header
+        memory > xcreate_unknown_user
+        memory > xtest_inactive_user
+        memory > xtest_known_user
+        memory > xrequire_header
+        memory > xtest_header_disappears
+        memory > xclean_username
+        memory > xtearDown
+        memory > xknown_user
+        memory > xmiddleware
+        memory > xtest_last_login
+        memory > xconfigure_user
+        memory > xbackend
+        memory > xtest_csrf_validation_passes_after_process_request_login
+        memory > xknown_user2
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("auth_tests.urls"))))
+              seq
+                xmiddleware.write "django.contrib.auth.middleware.RemoteUserMiddleware"
+                xbackend.write "django.contrib.auth.backends.RemoteUserBackend"
+                xheader.write "REMOTE_USER"
+                xemail_header.write "REMOTE_EMAIL"
+                xknown_user.write "knownuser"
+                xknown_user2.write "knownuser2"
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xpatched_settings)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") (((xself).xbackend)))) ((((unsupported)).apply ("append") (((xself).xmiddleware)))))))
+                        bogusForceDataize.write (((((xself).xpatched_settings).xenable)).apply)
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xpatched_settings).xdisable)).apply)
+                xtest_no_remote_user.write
+                  [xself]
+                    memory > xnum_users
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xnum_users.write (((((xUser).xobjects).xcount)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xis_anonymous)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) ((xnum_users)))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) ("None: is there a None literal in the EO language?"))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xis_anonymous)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) ((xnum_users)))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (""))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xis_anonymous)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) ((xnum_users)))
+                xtest_csrf_validation_passes_after_process_request_login.write
+                  [xself]
+                    memory > xheaders
+                    memory > xdata
+                    memory > xcsrf_token_form
+                    memory > xcsrf_secret
+                    memory > xcsrf_client
+                    memory > xcsrf_token
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xcsrf_client.write (((unsupported)).apply ((xClient)) (TRUE))
+                        xcsrf_secret.write (((x_get_new_csrf_string)).apply)
+                        xcsrf_token.write (((x_mask_cipher_secret)).apply ((xcsrf_secret)))
+                        xcsrf_token_form.write (((x_mask_cipher_secret)).apply ((xcsrf_secret)))
+                        xheaders.write (((unsupported)).apply (((xself).xheader)) ("fakeuser"))
+                        xdata.write (((unsupported)).apply ("csrfmiddlewaretoken") ((xcsrf_token_form)))
+                        bogusForceDataize.write (((((xcsrf_client).xcookies).xload)).apply ((((unsupported)).apply (((xsettings).xCSRF_COOKIE_NAME)) ((xcsrf_token)))))
+                        xresponse.write ((((xcsrf_client).xpost)).apply ("/remote_user/") ((((unsupported)).apply ((xheaders)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (403))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("CSRF verification failed.") (((xresponse).xcontent)))
+                        bogusForceDataize.write (((((xcsrf_client).xcookies).xload)).apply ((((unsupported)).apply (((xsettings).xCSRF_COOKIE_NAME)) ((xcsrf_token)))))
+                        xresponse.write ((((xcsrf_client).xpost)).apply ("/remote_user/") ((xdata)) ((((unsupported)).apply ((xheaders)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                xtest_unknown_user.write
+                  [xself]
+                    memory > xnum_users
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xnum_users.write (((((xUser).xobjects).xcount)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) ("newuser"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("newuser"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) (((xnum_users).add 1)))
+                        (((unsupported)).apply ((((xUser).xobjects).xget)) ("newuser"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) ("newuser"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) (((xnum_users).add 1)))
+                xtest_known_user.write
+                  [xself]
+                    memory > xnum_users
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser"))
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser2"))
+                        xnum_users.write (((((xUser).xobjects).xcount)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("knownuser"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) ((xnum_users)))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user2)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("knownuser2"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) ((xnum_users)))
+                xtest_last_login.write
+                  [xself]
+                    memory > xuser
+                    memory > xresponse
+                    memory > xdefault_login
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xuser.write (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser"))
+                        xdefault_login.write (((xdatetime)).apply (2000) (1) (1))
+                        ((xsettings).xUSE_TZ).if
+                          xdefault_login.write (((unsupported)).apply (((xdefault_login).xreplace)) (((xtimezone).xutc)))
+                        (((unsupported)).apply (((xuser).xlast_login)) ((xdefault_login)))
+                        bogusForceDataize.write ((((xuser).xsave)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user)))))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xdefault_login)) (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xlast_login)))
+                        xuser.write (((unsupported)).apply ((((xUser).xobjects).xget)) ("knownuser"))
+                        (((unsupported)).apply (((xuser).xlast_login)) ((xdefault_login)))
+                        bogusForceDataize.write ((((xuser).xsave)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xdefault_login)) (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xlast_login)))
+                xtest_header_disappears.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("knownuser"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xis_anonymous)))
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate_user)) ("modeluser") ("foo"))
+                        (((unsupported)).apply ((((xself).xclient).xlogin)) ("modeluser") ("foo"))
+                        (((unsupported)).apply ((xauthenticate)) ("modeluser") ("foo"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("modeluser"))
+                xtest_user_switch_forces_new_login.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("knownuser"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) ("newnewuser"))))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("knownuser"))
+                xtest_inactive_user.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser") (FALSE))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) ("knownuser"))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xis_anonymous)))
+            (((unsupported)).apply ((xRemoteUserBackend)))
+              seq
+                unsupported
+                xcreate_unknown_user.write FALSE
+            (((unsupported)).apply ((xRemoteUserTest)))
+              seq
+                (((unsupported)).apply)
+                xbackend.write "auth_tests.test_remote_user.RemoteUserNoCreateBackend"
+                xtest_unknown_user.write
+                  [xself]
+                    memory > xnum_users
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xnum_users.write (((((xUser).xobjects).xcount)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) ("newuser"))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xis_anonymous)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) ((xnum_users)))
+            (((unsupported)).apply ((xRemoteUserTest)))
+              seq
+                unsupported
+                xbackend.write "django.contrib.auth.backends.AllowAllUsersRemoteUserBackend"
+                xtest_inactive_user.write
+                  [xself]
+                    memory > xuser
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xuser.write (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser") (FALSE))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) (((xuser).xusername)))
+            (((unsupported)).apply ((xRemoteUserBackend)))
+              seq
+                (((unsupported)).apply)
+                xclean_username.write
+                  [xself xusername]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xusername).xsplit)).apply ("@"))) (0))))
+                xconfigure_user.write
+                  [xself xrequest xuser xcreated]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xuser).xemail)) ((((((xrequest).xMETA).xget)).apply (((xRemoteUserTest).xemail_header)) (""))))
+                        ((xcreated).not).if
+                          (((unsupported)).apply (((xuser).xlast_name)) (((xuser).xusername)))
+                        bogusForceDataize.write ((((xuser).xsave)).apply)
+                        (((unsupported)).apply ((xuser)))
+            (((unsupported)).apply ((xRemoteUserTest)))
+              seq
+                (((unsupported)).apply)
+                xbackend.write "auth_tests.test_remote_user.CustomRemoteUserBackend"
+                xknown_user.write "knownuser@example.com"
+                xknown_user2.write "knownuser2@example.com"
+                xtest_known_user.write
+                  [xself]
+                    memory > xknownuser
+                    memory > xknownuser2
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).xtest_known_user)).apply)
+                        xknownuser.write (((unsupported)).apply ((((xUser).xobjects).xget)) ("knownuser"))
+                        xknownuser2.write (((unsupported)).apply ((((xUser).xobjects).xget)) ("knownuser2"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xknownuser).xemail)) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xknownuser2).xemail)) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xknownuser).xlast_name)) ("knownuser"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xknownuser2).xlast_name)) ("knownuser2"))
+                xtest_unknown_user.write
+                  [xself]
+                    memory > xnum_users
+                    memory > xresponse
+                    memory > xnewuser
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xnum_users.write (((((xUser).xobjects).xcount)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) ("newuser") (((xself).xemail_header)) ("user@example.com"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("newuser"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xemail)) ("user@example.com"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xlast_name)) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xUser).xobjects).xcount)).apply)) (((xnum_users).add 1)))
+                        xnewuser.write (((unsupported)).apply ((((xUser).xobjects).xget)) ("newuser"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xnewuser).xemail)) ("user@example.com"))
+            (((unsupported)).apply ((xCustomRemoteUserBackend)))
+              xconfigure_user.write
+                [xself xrequest xuser]
+                  seq > @
+                    (((unsupported)).apply (((((((xsuper)).apply).xconfigure_user)).apply ((xrequest)) ((xuser)))))
+            (((unsupported)).apply ((xRemoteUserTest)) ((((unsupported)).apply ((xignore_warnings)) ((xRemovedInDjango50Warning)))))
+              xbackend.write "auth_tests.test_remote_user.CustomRemoteUserNoCreatedArgumentBackend"
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("auth_tests.urls"))) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ("auth_tests.test_remote_user.CustomRemoteUserNoCreatedArgumentBackend"))) ((((unsupported)).apply ("append") ("django.contrib.auth.middleware.RemoteUserMiddleware"))))))
+              xtest_known_user_sync.write
+                [xself]
+                  memory > xmsg
+                  seq > @
+                    seq
+                      xmsg.write "`created=True` must be added to the signature of CustomRemoteUserNoCreatedArgumentBackend.configure_user()."
+                      (((unsupported)).apply (((((xself).xassertWarnsMessage)).apply ((xRemovedInDjango50Warning)) ((xmsg)))))
+                        bogusForceDataize.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xRemoteUserTest).xheader)) ("newuser"))))))
+            (((unsupported)).apply ((xRemoteUserMiddleware)))
+              seq
+                (((unsupported)).apply)
+                xheader.write "HTTP_AUTHUSER"
+            (((unsupported)).apply ((xRemoteUserTest)))
+              seq
+                (((unsupported)).apply)
+                xmiddleware.write "auth_tests.test_remote_user.CustomHeaderMiddleware"
+                xheader.write "HTTP_AUTHUSER"
+            (((unsupported)).apply ((xRemoteUserTest)))
+              seq
+                (((unsupported)).apply)
+                xmiddleware.write "django.contrib.auth.middleware.PersistentRemoteUserMiddleware"
+                xrequire_header.write FALSE
+                xtest_header_disappears.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xUser).xobjects).xcreate)) ("knownuser"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/") ((((unsupported)).apply ((((unsupported)).apply (((xself).xheader)) (((xself).xknown_user)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("knownuser"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/remote_user/"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xis_anonymous)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xresponse).xcontext)) ("user")).xusername)) ("knownuser"))

@@ -1,0 +1,71 @@
+memory > xhours
+memory > xdatetime
+memory > xmicroseconds
+memory > xdays
+memory > xseconds
+memory > xminutes
+[] > duration
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xduration_iso_string
+        memory > xduration_string
+        memory > xduration_microseconds
+        memory > x_get_duration_components
+        seq > @
+          seq
+            (((unsupported)).apply)
+            x_get_duration_components.write
+              [xduration]
+                memory > xhours
+                memory > xmicroseconds
+                memory > xdays
+                memory > xseconds
+                memory > xseconds2
+                memory > xminutes
+                seq > @
+                  seq
+                    xdays.write ((xduration).xdays)
+                    xseconds2.write ((xduration).xseconds)
+                    xmicroseconds.write ((xduration).xmicroseconds)
+                    xminutes.write (((unsupported)).apply ((xseconds)) (60))
+                    xseconds.write ((xseconds).mod 60)
+                    xhours.write (((unsupported)).apply ((xminutes)) (60))
+                    xminutes.write ((xminutes).mod 60)
+                    (((unsupported)).apply ((((unsupported)).apply ((xdays)) ((xhours)) ((xminutes)) ((xseconds)) ((xmicroseconds)))))
+            xduration_string.write
+              [xduration]
+                memory > xstring
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((unsupported)).apply ((xdays)) ((xhours)) ((xminutes)) ((xseconds)) ((xmicroseconds)))) ((((x_get_duration_components)).apply ((xduration)))))
+                    xstring.write ((("{:02d}:{:02d}:{:02d}".xformat)).apply ((xhours)) ((xminutes)) ((xseconds)))
+                    (xdays).if
+                      xstring.write (((("{} ".xformat)).apply ((xdays))).add (xstring))
+                    (xmicroseconds).if
+                      (((unsupported)).apply ((xstring)) ((((".{:06d}".xformat)).apply ((xmicroseconds)))))
+                    (((unsupported)).apply ((xstring)))
+            xduration_iso_string.write
+              [xduration]
+                memory > xms
+                memory > xsign
+                seq > @
+                  seq
+                    ((xduration).less ((((xdatetime).xtimedelta)).apply (0))).if
+                      seq
+                        xsign.write "-"
+                        (((unsupported)).apply ((xduration)) ((1.neg)))
+                      xsign.write ""
+                    (((unsupported)).apply ((((unsupported)).apply ((xdays)) ((xhours)) ((xminutes)) ((xseconds)) ((xmicroseconds)))) ((((x_get_duration_components)).apply ((xduration)))))
+                    xms.write ((xmicroseconds).if (((".{:06d}".xformat)).apply ((xmicroseconds))) "")
+                    (((unsupported)).apply (((("{}P{}DT{:02d}H{:02d}M{:02d}{}S".xformat)).apply ((xsign)) ((xdays)) ((xhours)) ((xminutes)) ((xseconds)) ((xms)))))
+            xduration_microseconds.write
+              [xdelta]
+                seq > @
+                  (((unsupported)).apply (((((((24.mul 60).mul 60).mul ((xdelta).xdays)).add ((xdelta).xseconds)).mul 1000000).add ((xdelta).xmicroseconds))))

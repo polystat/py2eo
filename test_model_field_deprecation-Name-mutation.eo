@@ -1,0 +1,79 @@
+memory > xchecks
+memory > xMyField
+memory > xModel
+memory > xmodels
+memory > xisolate_apps
+memory > xSimpleTestCase
+[] > test_model_field_deprecation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_default_details
+        memory > xtest_user_specified_details
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((xisolate_apps)).apply ("check_framework"))))
+              seq
+                xtest_default_details.write
+                  [xself]
+                    memory > xname
+                    memory > xsystem_check_deprecated_details2
+                    memory > xmodel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xField)))
+                          xsystem_check_deprecated_details2.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xname.write (((xMyField)).apply)
+                        xmodel.write (((xModel)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmodel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xWarning)) ("MyField has been deprecated.") ((((((xModel).x_meta).xget_field)).apply ("name"))) ("fields.WXXX"))))))
+                xtest_user_specified_details.write
+                  [xself]
+                    memory > xname
+                    memory > xsystem_check_deprecated_details
+                    memory > xmodel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xField)))
+                          xsystem_check_deprecated_details.write (((unsupported)).apply ("msg") ("This field is deprecated and will be removed soon.") ("hint") ("Use something else.") ("id") ("fields.W999"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xname.write (((xMyField)).apply)
+                        xmodel.write (((xModel)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmodel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xWarning)) ("This field is deprecated and will be removed soon.") ("Use something else.") ((((((xModel).x_meta).xget_field)).apply ("name"))) ("fields.W999"))))))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((xisolate_apps)).apply ("check_framework"))))
+              seq
+                xtest_default_details.write
+                  [xself]
+                    memory > xname
+                    memory > xmodel
+                    memory > xsystem_check_removed_details
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xField)))
+                          xsystem_check_removed_details.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xname.write (((xMyField)).apply)
+                        xmodel.write (((xModel)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmodel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("MyField has been removed except for support in historical migrations.") ((((((xModel).x_meta).xget_field)).apply ("name"))) ("fields.EXXX"))))))
+                xtest_user_specified_details.write
+                  [xself]
+                    memory > xname
+                    memory > xmodel
+                    memory > xsystem_check_removed_details
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xField)))
+                          xsystem_check_removed_details.write (((unsupported)).apply ("msg") ("Support for this field is gone.") ("hint") ("Use something else.") ("id") ("fields.E999"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xname.write (((xMyField)).apply)
+                        xmodel.write (((xModel)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmodel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("Support for this field is gone.") ("Use something else.") ((((((xModel).x_meta).xget_field)).apply ("name"))) ("fields.E999"))))))

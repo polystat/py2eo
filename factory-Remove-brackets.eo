@@ -1,0 +1,51 @@
+memory > xUnicodeDecodeError
+memory > xwkt_regex
+memory > xstr
+memory > xopen
+memory > xhex_regex
+memory > xbytes
+memory > xmemoryview
+memory > xkwargs
+memory > xisinstance
+memory > xGEOSGeometry
+[] > factory
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xfromstr
+        memory > xfromfile
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xfromfile.write
+              [xfile_h]
+                memory > xbuf
+                memory > xdecoded
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xisinstance)).apply ((xfile_h)) ((xstr))).if
+                      (((unsupported)).apply ((((xopen)).apply ((xfile_h)) ("rb"))) ((xfile_h)))
+                        xbuf.write ((xfile_h).xread)
+                      xbuf.write ((xfile_h).xread)
+                    (((xisinstance)).apply ((xbuf)) ((xbytes))).if
+                      (((unsupported)).apply ((xUnicodeDecodeError)))
+                        xdecoded.write ((xbuf).xdecode)
+                        (((((xwkt_regex).xmatch)).apply ((xdecoded))).or ((((xhex_regex).xmatch)).apply ((xdecoded)))).if
+                          (((unsupported)).apply ((((xGEOSGeometry)).apply ((xdecoded)))))
+                      (((unsupported)).apply ((((xGEOSGeometry)).apply ((xbuf)))))
+                    (((unsupported)).apply ((((xGEOSGeometry)).apply ((((xmemoryview)).apply ((xbuf)))))))
+            xfromstr.write
+              [xstring]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((((xGEOSGeometry)).apply ((xstring)) ((((unsupported)).apply ((xkwargs)))))))

@@ -1,0 +1,213 @@
+memory > xdb_table
+memory > xlist
+memory > xsignal
+memory > xerror
+memory > xapps
+memory > xError
+memory > xindex_name
+memory > xchain
+memory > xkeywords
+memory > xsorted
+memory > xgetattr
+memory > xmodel_key
+memory > xinspect
+memory > xtypes
+memory > xfunc
+memory > xWarning
+memory > xset
+memory > xindexes
+memory > xsettings
+memory > xconstraint_name
+memory > xmodel_index
+memory > xhasattr
+memory > xargs
+memory > xLookupError
+memory > xvars
+memory > xdefaultdict
+memory > xapp_config
+memory > xname
+memory > xmodel_constraint
+memory > xerror_class
+memory > xfilter
+memory > xkwargs
+memory > xmodel
+memory > xerror_id
+memory > xsignals
+memory > xisinstance
+memory > xlen
+[] > model_checks
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_check_lazy_references
+        memory > xcheck_all_models
+        memory > xcheck_lazy_references
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcheck_all_models.write
+              [xapp_configs]
+                memory > xconstraints
+                memory > xerrors
+                memory > xdb_table_models
+                memory > xindexes2
+                memory > xmodels
+                memory > xmodel_labels
+                memory > xerror_hint
+                memory > xmodel_labels_str
+                seq > @
+                  (((unsupported)).apply)
+                    xdb_table_models.write (((xdefaultdict)).apply ((xlist)))
+                    xindexes2.write (((xdefaultdict)).apply ((xlist)))
+                    xconstraints.write (((xdefaultdict)).apply ((xlist)))
+                    xerrors.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xapp_configs)) ("None: is there a None literal in the EO language?")).if
+                      xmodels.write ((((xapps).xget_models)).apply)
+                      xmodels.write ((((xchain).xfrom_iterable)).apply ((((unsupported)).apply (((((xapp_config).xget_models)).apply)) ((xapp_config)) ((xapp_configs)))))
+                    (((unsupported)).apply ((xmodel)) ((xmodels)))
+                      seq
+                        ((((xmodel).x_meta).xmanaged).and ((((xmodel).x_meta).xproxy).not)).if
+                          bogusForceDataize.write ((((((unsupported)).apply ((xdb_table_models)) ((((xmodel).x_meta).xdb_table))).xappend)).apply ((((xmodel).x_meta).xlabel)))
+                        (((((xinspect).xismethod)).apply (((xmodel).xcheck))).not).if
+                          bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xError)) (("The '%s.check()' class method is currently overridden by %r.".mod (((unsupported)).apply (((xmodel).x__name__)) (((xmodel).xcheck))))) ((xmodel)) ("models.E020"))))
+                          bogusForceDataize.write ((((xerrors).xextend)).apply (((((xmodel).xcheck)).apply ((((unsupported)).apply ((xkwargs)))))))
+                        (((unsupported)).apply ((xmodel_index)) ((((xmodel).x_meta).xindexes)))
+                          bogusForceDataize.write ((((((unsupported)).apply ((xindexes)) (((xmodel_index).xname))).xappend)).apply ((((xmodel).x_meta).xlabel)))
+                        (((unsupported)).apply ((xmodel_constraint)) ((((xmodel).x_meta).xconstraints)))
+                          bogusForceDataize.write ((((((unsupported)).apply ((xconstraints)) (((xmodel_constraint).xname))).xappend)).apply ((((xmodel).x_meta).xlabel)))
+                    ((xsettings).xDATABASE_ROUTERS).if
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xerror_class)) ((xerror_id)))) ((((unsupported)).apply ((xWarning)) ("models.W035"))))
+                        xerror_hint.write "You have configured settings.DATABASE_ROUTERS. Verify that %s are correctly routed to separate databases."
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xerror_class)) ((xerror_id)))) ((((unsupported)).apply ((xError)) ("models.E028"))))
+                        xerror_hint.write "None: is there a None literal in the EO language?"
+                    (((unsupported)).apply ((((unsupported)).apply ((xdb_table)) ((xmodel_labels)))) (((((xdb_table_models).xitems)).apply)))
+                      ((((xlen)).apply ((xmodel_labels))).neq 1).if
+                        seq
+                          xmodel_labels_str.write (((", ".xjoin)).apply ((xmodel_labels)))
+                          bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xerror_class)) (("db_table '%s' is used by multiple models: %s.".mod (((unsupported)).apply ((xdb_table)) ((xmodel_labels_str))))) ((xdb_table)) (((xerror_hint).if ((xerror_hint).mod (xmodel_labels_str)) "None: is there a None literal in the EO language?")) ((xerror_id)))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xindex_name)) ((xmodel_labels)))) (((((xindexes).xitems)).apply)))
+                      ((((xlen)).apply ((xmodel_labels))).greater 1).if
+                        seq
+                          xmodel_labels.write (((xset)).apply ((xmodel_labels)))
+                          bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xError)) (("index name '%s' is not unique %s %s.".mod (((unsupported)).apply ((xindex_name)) ((((((xlen)).apply ((xmodel_labels))).eq 1).if "for model" "among models:")) ((((", ".xjoin)).apply ((((xsorted)).apply ((xmodel_labels))))))))) ((((((xlen)).apply ((xmodel_labels))).eq 1).if "models.E029" "models.E030")))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xconstraint_name)) ((xmodel_labels)))) (((((xconstraints).xitems)).apply)))
+                      ((((xlen)).apply ((xmodel_labels))).greater 1).if
+                        seq
+                          xmodel_labels.write (((xset)).apply ((xmodel_labels)))
+                          bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xError)) (("constraint name '%s' is not unique %s %s.".mod (((unsupported)).apply ((xconstraint_name)) ((((((xlen)).apply ((xmodel_labels))).eq 1).if "for model" "among models:")) ((((", ".xjoin)).apply ((((xsorted)).apply ((xmodel_labels))))))))) ((((((xlen)).apply ((xmodel_labels))).eq 1).if "models.E031" "models.E032")))))
+                    (((unsupported)).apply ((xerrors)))
+            x_check_lazy_references.write
+              [xapps xignore]
+                memory > xpending_models
+                memory > xknown_lazy
+                memory > xsignal_connect_error
+                memory > xdefault_error
+                memory > xmodel_signals
+                memory > xbuild_error
+                memory > xfield_error
+                memory > xextract_operation
+                memory > xapp_model_error
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xpending_models.write ((((xset)).apply (((xapps).x_pending_operations))).sub ((xignore).or (((xset)).apply)))
+                    ((xpending_models).not).if
+                      (((unsupported)).apply ((((unsupported)).apply)))
+                    (((unsupported)).apply)
+                    xmodel_signals.write (((unsupported)).apply ((xsignal)) ((xname)) ((((unsupported)).apply ((xname)) ((xsignal)))) (((((((xvars)).apply ((xsignals))).xitems)).apply)) ((((xisinstance)).apply ((xsignal)) (((xsignals).xModelSignal)))))
+                    xextract_operation.write
+                      [xobj]
+                        memory > xoperation
+                        seq > @
+                          seq
+                            (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xoperation)) ((xargs)) ((xkeywords)))) ((((unsupported)).apply ((xobj)) ((((unsupported)).apply)) ((((unsupported)).apply)))))
+                            while.
+                              (((xhasattr)).apply ((xoperation)) ("func"))
+                              [unused]
+                                seq > @
+                                  seq
+                                    bogusForceDataize.write ((((xargs).xextend)).apply ((((xgetattr)).apply ((xoperation)) ("args") ((((unsupported)).apply)))))
+                                    bogusForceDataize.write ((((xkeywords).xupdate)).apply ((((xgetattr)).apply ((xoperation)) ("keywords") ((((unsupported)).apply)))))
+                                    xoperation.write ((xoperation).xfunc)
+                            (((unsupported)).apply ((((unsupported)).apply ((xoperation)) ((xargs)) ((xkeywords)))))
+                    xapp_model_error.write
+                      [xmodel_key]
+                        memory > xmodel_error
+                        seq > @
+                          seq
+                            (((unsupported)).apply ((xLookupError)))
+                              seq
+                                bogusForceDataize.write ((((xapps).xget_app_config)).apply ((((unsupported)).apply ((xmodel_key)) (0))))
+                                xmodel_error.write ("app '%s' doesn't provide model '%s'".mod (xmodel_key))
+                              xmodel_error.write ("app '%s' isn't installed".mod (((unsupported)).apply ((xmodel_key)) (0)))
+                            (((unsupported)).apply ((xmodel_error)))
+                    xfield_error.write
+                      [xmodel_key xfunc xargs xkeywords]
+                        memory > xerror_msg
+                        memory > xparams
+                        seq > @
+                          seq
+                            xerror_msg.write "The field %(field)s was declared with a lazy reference to '%(model)s', but %(model_error)s."
+                            xparams.write (((unsupported)).apply ("model") ((((".".xjoin)).apply ((xmodel_key)))) ("field") ((((unsupported)).apply ((xkeywords)) ("field"))) ("model_error") ((((xapp_model_error)).apply ((xmodel_key)))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xError)) (((xerror_msg).mod (xparams))) ((((unsupported)).apply ((xkeywords)) ("field"))) ("fields.E307"))))
+                    xsignal_connect_error.write
+                      [xmodel_key xfunc xargs xkeywords]
+                        memory > xreceiver
+                        memory > xparams
+                        memory > xsignal_name
+                        memory > xerror_msg
+                        memory > xdescription
+                        seq > @
+                          seq
+                            xerror_msg.write "%(receiver)s was connected to the '%(signal)s' signal with a lazy reference to the sender '%(model)s', but %(model_error)s."
+                            xreceiver.write (((unsupported)).apply ((xargs)) (0))
+                            (((xisinstance)).apply ((xreceiver)) (((xtypes).xFunctionType))).if
+                              xdescription.write ("The function '%s'".mod ((xreceiver).x__name__))
+                              (((xisinstance)).apply ((xreceiver)) (((xtypes).xMethodType))).if
+                                xdescription.write ("Bound method '%s.%s'".mod (((unsupported)).apply (((((xreceiver).x__self__).x__class__).x__name__)) (((xreceiver).x__name__))))
+                                xdescription.write ("An instance of class '%s'".mod (((xreceiver).x__class__).x__name__))
+                            xsignal_name.write ((((xmodel_signals).xget)).apply (((xfunc).x__self__)) ("unknown"))
+                            xparams.write (((unsupported)).apply ("model") ((((".".xjoin)).apply ((xmodel_key)))) ("receiver") ((xdescription)) ("signal") ((xsignal_name)) ("model_error") ((((xapp_model_error)).apply ((xmodel_key)))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xError)) (((xerror_msg).mod (xparams))) (((xreceiver).x__module__)) ("signals.E001"))))
+                    xdefault_error.write
+                      [xmodel_key xfunc xargs xkeywords]
+                        memory > xerror_msg
+                        memory > xparams
+                        seq > @
+                          seq
+                            xerror_msg.write "%(op)s contains a lazy reference to %(model)s, but %(model_error)s."
+                            xparams.write (((unsupported)).apply ("op") ((xfunc)) ("model") ((((".".xjoin)).apply ((xmodel_key)))) ("model_error") ((((xapp_model_error)).apply ((xmodel_key)))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xError)) (((xerror_msg).mod (xparams))) ((xfunc)) ("models.E022"))))
+                    xknown_lazy.write (((unsupported)).apply ((((unsupported)).apply ("django.db.models.fields.related") ("resolve_related_class"))) ((xfield_error)) ((((unsupported)).apply ("django.db.models.fields.related") ("set_managed"))) ("None: is there a None literal in the EO language?") ((((unsupported)).apply ("django.dispatch.dispatcher") ("connect"))) ((xsignal_connect_error)))
+                    xbuild_error.write
+                      [xmodel_key xfunc xargs xkeywords]
+                        memory > xerror_fn
+                        memory > xkey
+                        seq > @
+                          seq
+                            xkey.write (((unsupported)).apply (((xfunc).x__module__)) (((xfunc).x__name__)))
+                            xerror_fn.write ((((xknown_lazy).xget)).apply ((xkey)) ((xdefault_error)))
+                            (((unsupported)).apply (((xerror_fn).if (((xerror_fn)).apply ((xmodel_key)) ((xfunc)) ((xargs)) ((xkeywords))) "None: is there a None literal in the EO language?")))
+                    (((unsupported)).apply ((((unsupported)).apply ((xsorted)) ((((xfilter)).apply ("None: is there a None literal in the EO language?") ((((unsupported)).apply ((((xbuild_error)).apply ((xmodel_key)) ((((unsupported)).apply ((((xextract_operation)).apply ((xfunc)))))))) ((xmodel_key)) ((xpending_models)) ((xfunc)) ((((unsupported)).apply (((xapps).x_pending_operations)) ((xmodel_key)))))))) ((((unsupported)).apply (((xerror).xmsg)))))))
+            xcheck_lazy_references.write
+              [xapp_configs]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((((x_check_lazy_references)).apply ((xapps)))))

@@ -1,0 +1,468 @@
+memory > xACTION_CHECKBOX_NAME
+memory > xExternalSubscriber
+memory > xBook
+memory > xTestCase
+memory > xUnchangeableObject
+memory > xAnswer
+memory > xActor
+memory > xoverride_settings
+memory > xmail
+memory > xSubscriber
+memory > xreverse
+memory > xfalse
+memory > xQuestion
+memory > xrender_to_string
+memory > xTemplateResponse
+memory > xMediaActionForm
+memory > xPermission
+memory > xjson
+memory > xIS_POPUP_VAR
+memory > xSubscriberAdmin
+memory > xUser
+memory > xlen
+[] > test_actions
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_custom_function_mail_action
+        memory > xtest_popup_template_response_on_add
+        memory > xtest_model_admin_default_delete_action
+        memory > xsetUpTestData
+        memory > xtest_custom_function_action_streaming_response
+        memory > xtest_model_admin_default_delete_action_protected
+        memory > xtest_model_admin_no_delete_permission
+        memory > xtest_default_delete_action_nonexistent_pk
+        memory > xtest_popup_actions
+        memory > xtest_popup_template_escaping
+        memory > xtest_popup_template_response_on_change
+        memory > xtest_model_admin_default_delete_action_no_change_url
+        memory > xtest_model_without_action_still_has_jquery
+        memory > xtest_popup_template_response_on_delete
+        memory > xtest_media_from_actions_form
+        memory > xtest_action_column_class
+        memory > xtest_model_admin_no_delete_permission_externalsubscriber
+        memory > xtest_delete_selected_uses_get_deleted_objects
+        memory > xtest_non_localized_pk
+        memory > xtest_user_message_on_none_selected
+        memory > xsetUp
+        memory > xtest_delete_queryset_hook
+        memory > xtest_model_without_action
+        memory > xtest_multiple_actions_form
+        memory > xtest_model_admin_custom_action
+        memory > xtest_selection_counter
+        memory > xtest_custom_function_action_no_perm_response
+        memory > xtest_user_message_on_no_action
+        memory > xtest_default_redirect
+        memory > xtest_custom_function_action_with_redirect
+        memory > xtest_actions_ordering
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.urls"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                        (((unsupported)).apply (((xcls).xs1)) ((((unsupported)).apply ((((xExternalSubscriber).xobjects).xcreate)) ("John Doe") ("john@example.org"))))
+                        (((unsupported)).apply (((xcls).xs2)) ((((unsupported)).apply ((((xSubscriber).xobjects).xcreate)) ("Max Mustermann") ("max@example.org"))))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xsuperuser)))
+                xtest_model_admin_custom_action.write
+                  [xself]
+                    memory > xaction_data
+                    seq > @
+                      seq
+                        unsupported
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ("mail_admin") ("index") (0))
+                        bogusForceDataize.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xmail).xoutbox)))) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xmail).xoutbox)) (0)).xsubject)) ("Greetings from a ModelAdmin action"))
+                xtest_model_admin_default_delete_action.write
+                  [xself]
+                    memory > xconfirmation
+                    memory > xdelete_confirmation_data
+                    memory > xaction_data
+                    seq > @
+                      seq
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)) ((((xself).xs2).xpk)))) ("action") ("delete_selected") ("index") (0))
+                        xdelete_confirmation_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)) ((((xself).xs2).xpk)))) ("action") ("delete_selected") ("post") ("yes"))
+                        xconfirmation.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xconfirmation)) ((xTemplateResponse)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xconfirmation)) ("Are you sure you want to delete the selected subscribers?"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xconfirmation)) ("<h2>Summary</h2>"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xconfirmation)) ("<li>Subscribers: 2</li>"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xconfirmation)) ("<li>External subscribers: 1</li>"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xconfirmation)) ((xACTION_CHECKBOX_NAME)) (2))
+                        bogusForceDataize.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))) ((xdelete_confirmation_data)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xSubscriber).xobjects).xcount)).apply)) (0))
+                xtest_default_delete_action_nonexistent_pk.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((((unsupported)).apply ((((xSubscriber).xobjects).xfilter)) (9998)).xexists)).apply)))
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ("9998"))) ("action") ("delete_selected") ("index") (0))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Are you sure you want to delete the selected subscribers?"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("<ul></ul>") (TRUE))
+                xtest_non_localized_pk.write
+                  [xself]
+                    memory > xs
+                    memory > xaction_data
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xs.write (((unsupported)).apply ((((xExternalSubscriber).xobjects).xcreate)) (9999))
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply (((xs).xpk)) ((((xself).xs2).xpk)))) ("action") ("delete_selected") ("index") (0))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xresponse)) ("admin/delete_selected_confirmation.html"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("value=\"9999\""))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) (("value=\"%s\"".mod (((xself).xs2).xpk))))
+                xtest_model_admin_default_delete_action_protected.write
+                  [xself]
+                    memory > xa1
+                    memory > xaction_data
+                    memory > xdelete_confirmation_data
+                    memory > xa2
+                    memory > xq1
+                    memory > xresponse
+                    memory > xq2
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xq1.write (((unsupported)).apply ((((xQuestion).xobjects).xcreate)) ("Why?"))
+                        xa1.write (((unsupported)).apply ((((xAnswer).xobjects).xcreate)) ((xq1)) ("Because."))
+                        xa2.write (((unsupported)).apply ((((xAnswer).xobjects).xcreate)) ((xq1)) ("Yes."))
+                        xq2.write (((unsupported)).apply ((((xQuestion).xobjects).xcreate)) ("Wherefore?"))
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply (((xq1).xpk)) (((xq2).xpk)))) ("action") ("delete_selected") ("index") (0))
+                        xdelete_confirmation_data.write ((((xaction_data).xcopy)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xdelete_confirmation_data)) ("post"))) ("yes"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_question_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("would require deleting the following protected related objects"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) (("<li>Answer: <a href=\"%s\">Because.</a></li>".mod (((unsupported)).apply ((xreverse)) ("admin:admin_views_answer_change") ((((unsupported)).apply (((xa1).xpk))))))) (TRUE))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) (("<li>Answer: <a href=\"%s\">Yes.</a></li>".mod (((unsupported)).apply ((xreverse)) ("admin:admin_views_answer_change") ((((unsupported)).apply (((xa2).xpk))))))) (TRUE))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_question_changelist"))) ((xdelete_confirmation_data)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("would require deleting the following protected related objects"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xQuestion).xobjects).xcount)).apply)) (2))
+                xtest_model_admin_default_delete_action_no_change_url.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xobj.write (((((xUnchangeableObject).xobjects).xcreate)).apply)
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) (((xobj).xpk)) ("action") ("delete_selected") ("index") ("0"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_unchangeableobject_changelist"))) ((xaction_data)))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) (("<li>Unchangeable object: %s</li>".mod (xobj))) (1) (TRUE))
+                xtest_delete_queryset_hook.write
+                  [xself]
+                    memory > xdelete_confirmation_data
+                    seq > @
+                      seq
+                        xdelete_confirmation_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)) ((((xself).xs2).xpk)))) ("action") ("delete_selected") ("post") ("yes") ("index") (0))
+                        (((unsupported)).apply (((xSubscriberAdmin).xoverridden)) ((xfalse)))
+                        bogusForceDataize.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))) ((xdelete_confirmation_data)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((xSubscriberAdmin).xoverridden)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xSubscriber).xobjects).xcount)).apply)) (0))
+                xtest_delete_selected_uses_get_deleted_objects.write
+                  [xself]
+                    memory > xbook
+                    memory > xresponse
+                    memory > xdata
+                    seq > @
+                      seq
+                        unsupported
+                        xbook.write (((unsupported)).apply ((((xBook).xobjects).xcreate)) ("Test Book"))
+                        xdata.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply (((xbook).xpk)))) ("action") ("delete_selected") ("index") (0))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin2:admin_views_book_changelist"))) ((xdata)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("a deletable object"))
+                xtest_custom_function_mail_action.write
+                  [xself]
+                    memory > xaction_data
+                    seq > @
+                      seq
+                        unsupported
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ("external_mail") ("index") (0))
+                        bogusForceDataize.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_externalsubscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xmail).xoutbox)))) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xmail).xoutbox)) (0)).xsubject)) ("Greetings from a function action"))
+                xtest_custom_function_action_with_redirect.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ("redirect_to") ("index") (0))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_externalsubscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (302))
+                xtest_default_redirect.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    memory > xurl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ("external_mail") ("index") (0))
+                        xurl.write ((((xreverse)).apply ("admin:admin_views_externalsubscriber_changelist")).add "?o=1")
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xurl)) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((xurl)))
+                xtest_custom_function_action_streaming_response.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    memory > xcontent
+                    seq > @
+                      seq
+                        unsupported
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ("download") ("index") (0))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_externalsubscriber_changelist"))) ((xaction_data)))
+                        xcontent.write ((("".xjoin)).apply (((xresponse).xstreaming_content)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcontent)) ("This is the content of the file"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                xtest_custom_function_action_no_perm_response.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ("no_perm") ("index") (0))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_externalsubscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (403))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("No permission to perform this action"))
+                xtest_actions_ordering.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:admin_views_externalsubscriber_changelist"))))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ((((unsupported)).apply)) (TRUE))
+                xtest_model_without_action.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:admin_views_oldsubscriber_changelist"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("action_form"))))
+                        (((unsupported)).apply (((xself).xassertNotContains)) ((xresponse)) ("<input type=\"checkbox\" class=\"action-select\"") ("Found an unexpected action toggle checkboxbox in response"))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("<input type=\"checkbox\" class=\"action-select\""))
+                xtest_model_without_action_still_has_jquery.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:admin_views_oldsubscriber_changelist"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("action_form"))))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("jquery.min.js") ("jQuery missing from admin pages for model with no admin actions"))
+                xtest_action_column_class.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))))
+                        bogusForceDataize.write ((((xself).xassertIsNotNone)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("action_form"))))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("action-checkbox-column"))
+                xtest_multiple_actions_form.write
+                  [xself]
+                    memory > xaction_data
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ((((unsupported)).apply ("external_mail") ("delete_selected"))) ("index") (0))
+                        bogusForceDataize.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_externalsubscriber_changelist"))) ((xaction_data)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xmail).xoutbox)))) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xmail).xoutbox)) (0)).xsubject)) ("Greetings from a function action"))
+                xtest_media_from_actions_form.write
+                  [xself]
+                    memory > xresponse
+                    memory > xmedia_path
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))))
+                        xmedia_path.write (((unsupported)).apply ((((xMediaActionForm).xMedia).xjs)) (0))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("action_form"))) ((xMediaActionForm)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("media") (((xresponse).xcontext)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xmedia_path)) (((((unsupported)).apply (((xresponse).xcontext)) ("media")).x_js)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ((xmedia_path)))
+                xtest_user_message_on_none_selected.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    memory > xmsg
+                    memory > xurl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply)) ("action") ("delete_selected") ("index") (0))
+                        xurl.write (((xreverse)).apply ("admin:admin_views_subscriber_changelist"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xurl)) ((xaction_data)))
+                        (((unsupported)).apply (((xself).xassertRedirects)) ((xresponse)) ((xurl)) ((xfalse)))
+                        xresponse.write (((((xself).xclient).xget)).apply (((xresponse).xurl)))
+                        xmsg.write "Items must be selected in order to perform actions on them. No items have been changed."
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ((xmsg)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xSubscriber).xobjects).xcount)).apply)) (2))
+                xtest_user_message_on_no_action.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    memory > xurl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)) ((((xself).xs2).xpk)))) ("action") ("") ("index") (0))
+                        xurl.write (((xreverse)).apply ("admin:admin_views_subscriber_changelist"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xurl)) ((xaction_data)))
+                        (((unsupported)).apply (((xself).xassertRedirects)) ((xresponse)) ((xurl)) ((xfalse)))
+                        xresponse.write (((((xself).xclient).xget)).apply (((xresponse).xurl)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("No action selected."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xSubscriber).xobjects).xcount)).apply)) (2))
+                xtest_selection_counter.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("0 of 2 selected"))
+                xtest_popup_actions.write
+                  [xself]
+                    memory > xchangelist_url
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xchangelist_url.write (((xreverse)).apply ("admin:admin_views_subscriber_changelist"))
+                        xresponse.write (((((xself).xclient).xget)).apply ((xchangelist_url)))
+                        bogusForceDataize.write ((((xself).xassertIsNotNone)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("action_form"))))
+                        xresponse.write (((((xself).xclient).xget)).apply (((xchangelist_url).add ("?%s".mod (xIS_POPUP_VAR)))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("action_form"))))
+                xtest_popup_template_response_on_add.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xpost)).apply (((((xreverse)).apply ("admin:admin_views_actor_add")).add ("?%s=1".mod (xIS_POPUP_VAR)))) ((((unsupported)).apply ("name") ("Troy McClure") ("age") ("55") ((xIS_POPUP_VAR)) ("1"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xtemplate_name)) ((((unsupported)).apply ("admin/admin_views/actor/popup_response.html") ("admin/admin_views/popup_response.html") ("admin/popup_response.html"))))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xresponse)) ("admin/popup_response.html"))
+                xtest_popup_template_response_on_change.write
+                  [xself]
+                    memory > xresponse
+                    memory > xinstance
+                    seq > @
+                      seq
+                        xinstance.write (((unsupported)).apply ((((xActor).xobjects).xcreate)) ("David Tennant") (45))
+                        xresponse.write (((((xself).xclient).xpost)).apply (((((unsupported)).apply ((xreverse)) ("admin:admin_views_actor_change") ((((unsupported)).apply (((xinstance).xpk))))).add ("?%s=1".mod (xIS_POPUP_VAR)))) ((((unsupported)).apply ("name") ("David Tennant") ("age") ("46") ((xIS_POPUP_VAR)) ("1"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xtemplate_name)) ((((unsupported)).apply ("admin/admin_views/actor/popup_response.html") ("admin/admin_views/popup_response.html") ("admin/popup_response.html"))))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xresponse)) ("admin/popup_response.html"))
+                xtest_popup_template_response_on_delete.write
+                  [xself]
+                    memory > xresponse
+                    memory > xinstance
+                    seq > @
+                      seq
+                        xinstance.write (((unsupported)).apply ((((xActor).xobjects).xcreate)) ("David Tennant") (45))
+                        xresponse.write (((((xself).xclient).xpost)).apply (((((unsupported)).apply ((xreverse)) ("admin:admin_views_actor_delete") ((((unsupported)).apply (((xinstance).xpk))))).add ("?%s=1".mod (xIS_POPUP_VAR)))) ((((unsupported)).apply ((xIS_POPUP_VAR)) ("1"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xtemplate_name)) ((((unsupported)).apply ("admin/admin_views/actor/popup_response.html") ("admin/admin_views/popup_response.html") ("admin/popup_response.html"))))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xresponse)) ("admin/popup_response.html"))
+                xtest_popup_template_escaping.write
+                  [xself]
+                    memory > xcontext
+                    memory > xpopup_response_data
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xpopup_response_data.write ((((xjson).xdumps)).apply ((((unsupported)).apply ("new_value") ("new_value\\") ("obj") ("obj\\") ("value") ("value\\"))))
+                        xcontext.write (((unsupported)).apply ("popup_response_data") ((xpopup_response_data)))
+                        xoutput.write (((xrender_to_string)).apply ("admin/popup_response.html") ((xcontext)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply)) ((xoutput)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply)) ((xoutput)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply)) ((xoutput)))
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.urls"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    memory > xpermission
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xs1)) ((((unsupported)).apply ((((xExternalSubscriber).xobjects).xcreate)) ("John Doe") ("john@example.org"))))
+                        (((unsupported)).apply (((xcls).xs2)) ((((unsupported)).apply ((((xSubscriber).xobjects).xcreate)) ("Max Mustermann") ("max@example.org"))))
+                        (((unsupported)).apply (((xcls).xuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_user)) ("user") ("secret") ("user@example.com") (TRUE))))
+                        xpermission.write (((unsupported)).apply ((((xPermission).xobjects).xget)) ("change_subscriber"))
+                        bogusForceDataize.write ((((((xcls).xuser).xuser_permissions).xadd)).apply ((xpermission)))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xuser)))
+                xtest_model_admin_no_delete_permission.write
+                  [xself]
+                    memory > xaction_data
+                    memory > xresponse
+                    memory > xurl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xaction_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)))) ("action") ("delete_selected"))
+                        xurl.write (((xreverse)).apply ("admin:admin_views_subscriber_changelist"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xurl)) ((xaction_data)))
+                        (((unsupported)).apply (((xself).xassertRedirects)) ((xresponse)) ((xurl)) ((xfalse)))
+                        xresponse.write (((((xself).xclient).xget)).apply (((xresponse).xurl)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("No action selected."))
+                xtest_model_admin_no_delete_permission_externalsubscriber.write
+                  [xself]
+                    memory > xdelete_confirmation_data
+                    memory > xresponse
+                    memory > xpermission
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xpermission.write (((unsupported)).apply ((((xPermission).xobjects).xget)) ("delete_subscriber"))
+                        bogusForceDataize.write ((((((xself).xuser).xuser_permissions).xadd)).apply ((xpermission)))
+                        xdelete_confirmation_data.write (((unsupported)).apply ((xACTION_CHECKBOX_NAME)) ((((unsupported)).apply ((((xself).xs1).xpk)) ((((xself).xs2).xpk)))) ("action") ("delete_selected") ("post") ("yes"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("admin:admin_views_subscriber_changelist"))) ((xdelete_confirmation_data)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (403))

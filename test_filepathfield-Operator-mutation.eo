@@ -1,0 +1,129 @@
+memory > xlist
+memory > xstr
+memory > xValidationError
+memory > xFileNotFoundError
+memory > xFilePathField
+memory > xtuple
+memory > xos
+memory > x__file__
+memory > xy
+memory > xisinstance
+memory > xlen
+memory > xSimpleTestCase
+[] > test_filepathfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xassertChoices
+        memory > xtest_fix_os_paths
+        memory > xexpected_choices
+        memory > xpath
+        memory > xtest_nonexistent_path
+        memory > xtest_recursive
+        memory > xtest_allow_folders
+        memory > xtest_recursive_folders_without_files
+        memory > xtest_match
+        memory > xtest_clean
+        memory > xtest_no_options
+        memory > xPATH
+        memory > xfix_os_paths
+        memory > xtest_recursive_no_folders_or_files
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xPATH.write (((((xos).xpath).xdirname)).apply ((((((xos).xpath).xabspath)).apply ((x__file__)))))
+            xfix_os_paths.write
+              [xx]
+                seq > @
+                  (((xisinstance)).apply ((xx)) ((xstr))).if
+                    seq
+                      ((((xx).xstartswith)).apply ((xPATH))).if
+                        xx.write (((unsupported)).apply ((xx)) ((((unsupported)).apply ((((xlen)).apply ((xPATH)))))))
+                      (((unsupported)).apply (((((xx).xreplace)).apply ("\\") ("/"))))
+                    (((xisinstance)).apply ((xx)) ((xtuple))).if
+                      (((unsupported)).apply ((((xtuple)).apply ((((xfix_os_paths)).apply ((((xlist)).apply ((xx)))))))))
+                      (((xisinstance)).apply ((xx)) ((xlist))).if
+                        (((unsupported)).apply ((((unsupported)).apply ((((xfix_os_paths)).apply ((xy)))) ((xy)) ((xx)))))
+                        (((unsupported)).apply ((xx)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xexpected_choices.write (((unsupported)).apply ((((unsupported)).apply ("/filepathfield_test_dir/__init__.py") ("__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/a.py") ("a.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/ab.py") ("ab.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/b.py") ("b.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/__init__.py") ("__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/d.py") ("d.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/e.py") ("e.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/f/__init__.py") ("__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/f/g.py") ("g.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/h/__init__.py") ("__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/j/__init__.py") ("__init__.py"))))
+                xpath.write ((((((xos).xpath).xjoin)).apply ((xPATH)) ("filepathfield_test_dir")).sub "/")
+                xassertChoices.write
+                  [xself xfield xexpected_choices]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xfix_os_paths)).apply (((xfield).xchoices)))) ((xexpected_choices)))
+                xtest_fix_os_paths.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xfix_os_paths)).apply (((xself).xpath)))) ("/filepathfield_test_dir/"))
+                xtest_nonexistent_path.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xFileNotFoundError)) ("nonexistent"))))
+                        (((unsupported)).apply ((xFilePathField)) ("nonexistent"))
+                xtest_no_options.write
+                  [xself]
+                    memory > xexpected
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFilePathField)) (((xself).xpath)))
+                        xexpected.write ((((unsupported)).apply ((((unsupported)).apply ("/filepathfield_test_dir/README") ("README")))).sub (((unsupported)).apply (((xself).xexpected_choices)) ((((unsupported)).apply (4)))))
+                        bogusForceDataize.write ((((xself).xassertChoices)).apply ((xf)) ((xexpected)))
+                xtest_clean.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFilePathField)) (((xself).xpath)))
+                        xmsg.write "'Select a valid choice. a.py is not one of the available choices.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("a.py"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xfix_os_paths)).apply (((((xf).xclean)).apply ((((xself).xpath).sub "a.py")))))) ("/filepathfield_test_dir/a.py"))
+                xtest_match.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFilePathField)) (((xself).xpath)) ("^.*?.py$"))
+                        bogusForceDataize.write ((((xself).xassertChoices)).apply ((xf)) ((((unsupported)).apply (((xself).xexpected_choices)) ((((unsupported)).apply (4))))))
+                xtest_recursive.write
+                  [xself]
+                    memory > xexpected
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFilePathField)) (((xself).xpath)) (TRUE) ("^.*?.py$"))
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("/filepathfield_test_dir/__init__.py") ("__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/a.py") ("a.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/ab.py") ("ab.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/b.py") ("b.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/__init__.py") ("c/__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/d.py") ("c/d.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/e.py") ("c/e.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/f/__init__.py") ("c/f/__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/f/g.py") ("c/f/g.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/h/__init__.py") ("h/__init__.py"))) ((((unsupported)).apply ("/filepathfield_test_dir/j/__init__.py") ("j/__init__.py"))))
+                        bogusForceDataize.write ((((xself).xassertChoices)).apply ((xf)) ((xexpected)))
+                xtest_allow_folders.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFilePathField)) (((xself).xpath)) (TRUE) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertChoices)).apply ((xf)) ((((unsupported)).apply ((((unsupported)).apply ("/filepathfield_test_dir/c") ("c"))) ((((unsupported)).apply ("/filepathfield_test_dir/h") ("h"))) ((((unsupported)).apply ("/filepathfield_test_dir/j") ("j"))))))
+                xtest_recursive_no_folders_or_files.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFilePathField)) (((xself).xpath)) (TRUE) (FALSE) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertChoices)).apply ((xf)) ((((unsupported)).apply)))
+                xtest_recursive_folders_without_files.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFilePathField)) (((xself).xpath)) (TRUE) (TRUE) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertChoices)).apply ((xf)) ((((unsupported)).apply ((((unsupported)).apply ("/filepathfield_test_dir/c") ("c"))) ((((unsupported)).apply ("/filepathfield_test_dir/h") ("h"))) ((((unsupported)).apply ("/filepathfield_test_dir/j") ("j"))) ((((unsupported)).apply ("/filepathfield_test_dir/c/f") ("c/f"))))))

@@ -1,0 +1,37 @@
+memory > xTemplateSyntaxError
+memory > xSimpleTestCase
+[] > test_get_available_languages
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_no_as_var
+        memory > xlibraries2
+        memory > xtest_i18n12
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xlibraries2.write (((unsupported)).apply ("i18n") ("django.templatetags.i18n"))
+                xtest_i18n12.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n12"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("de"))
+                xtest_no_as_var.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "'get_available_languages' requires 'as variable' (got ['get_available_languages', 'a', 'langs'])"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xrender_to_string)).apply ("syntax_i18n"))

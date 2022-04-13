@@ -1,0 +1,99 @@
+memory > xinspect
+memory > xparam
+memory > xp
+memory > xany
+memory > xtuple
+memory > xlen
+[] > inspect
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_func_args
+        memory > xfunc_accepts_var_args
+        memory > xfunc_accepts_kwargs
+        memory > xfunc_supports_parameter
+        memory > xget_func_full_args
+        memory > xmethod_has_no_args
+        memory > x_get_callable_parameters
+        memory > x_get_func_parameters
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x_get_func_parameters.write
+              [xfunc xremove_first]
+                memory > xparameters
+                seq > @
+                  (((unsupported)).apply)
+                    xparameters.write (((xtuple)).apply (((((((xinspect).xsignature)).apply ((xfunc))).xparameters).xvalues)))
+                    (xremove_first).if
+                      xparameters.write (((unsupported)).apply ((xparameters)) ((((unsupported)).apply (1))))
+                    (((unsupported)).apply ((xparameters)))
+            x_get_callable_parameters.write
+              [xmeth_or_func]
+                memory > xfunc
+                memory > xis_method
+                seq > @
+                  seq
+                    xis_method.write ((((xinspect).xismethod)).apply ((xmeth_or_func)))
+                    xfunc.write ((xis_method).if ((xmeth_or_func).x__func__) (xmeth_or_func))
+                    (((unsupported)).apply ((((unsupported)).apply ((x_get_func_parameters)) ((xfunc)) ((xis_method)))))
+            xget_func_args.write
+              [xfunc]
+                memory > xparams
+                seq > @
+                  seq
+                    xparams.write (((x_get_callable_parameters)).apply ((xfunc)))
+                    (((unsupported)).apply ((((unsupported)).apply (((xparam).xname)) ((xparam)) ((xparams)) ((((xparam).xkind).eq (((xinspect).xParameter).xPOSITIONAL_OR_KEYWORD))))))
+            xget_func_full_args.write
+              [xfunc]
+                memory > xname
+                memory > xargs
+                memory > xparams
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xparams.write (((x_get_callable_parameters)).apply ((xfunc)))
+                    xargs.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xparam)) ((xparams)))
+                      seq
+                        xname.write ((xparam).xname)
+                        ((xname).eq "self").if
+                          (((unsupported)).apply)
+                        (((xparam).xkind).eq (((xinspect).xParameter).xVAR_POSITIONAL)).if
+                          xname.write ("*".add (xname))
+                          (((xparam).xkind).eq (((xinspect).xParameter).xVAR_KEYWORD)).if
+                            xname.write ("**".add (xname))
+                        (((xparam).xdefault).neq (((xinspect).xParameter).xempty)).if
+                          bogusForceDataize.write ((((xargs).xappend)).apply ((((unsupported)).apply ((xname)) (((xparam).xdefault)))))
+                          bogusForceDataize.write ((((xargs).xappend)).apply ((((unsupported)).apply ((xname)))))
+                    (((unsupported)).apply ((xargs)))
+            xfunc_accepts_kwargs.write
+              [xfunc]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply ((xp)) ((xp)) ((((x_get_callable_parameters)).apply ((xfunc)))) ((((xp).xkind).eq ((xp).xVAR_KEYWORD))))))))
+            xfunc_accepts_var_args.write
+              [xfunc]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply ((xp)) ((xp)) ((((x_get_callable_parameters)).apply ((xfunc)))) ((((xp).xkind).eq ((xp).xVAR_POSITIONAL))))))))
+            xmethod_has_no_args.write
+              [xmeth]
+                memory > xcount
+                seq > @
+                  seq
+                    unsupported
+                    xcount.write (((xlen)).apply ((((unsupported)).apply ((xp)) ((xp)) ((((x_get_callable_parameters)).apply ((xmeth)))) ((((xp).xkind).eq ((xp).xPOSITIONAL_OR_KEYWORD))))))
+                    (((unsupported)).apply ((((((xinspect).xismethod)).apply ((xmeth))).if ((xcount).eq 0) ((xcount).eq 1))))
+            xfunc_supports_parameter.write
+              [xfunc xname]
+                seq > @
+                  (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply ((((xparam).xname).eq (xname))) ((xparam)) ((((x_get_callable_parameters)).apply ((xfunc)))))))))

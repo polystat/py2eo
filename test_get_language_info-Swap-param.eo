@@ -1,0 +1,56 @@
+memory > xTemplateSyntaxError
+memory > xtranslation
+memory > xSimpleTestCase
+[] > test_get_language_info
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xlibraries
+        memory > xtest_i18n38
+        memory > xtest_no_for_as
+        memory > xtest_i18n29
+        memory > xtest_i18n28_2
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xlibraries.write (((unsupported)).apply ("custom") ("template_tests.templatetags.custom") ("i18n") ("django.templatetags.i18n"))
+                xtest_i18n28_2.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n28_2"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("de: German/Deutsch bidi=False") ((xoutput)))
+                xtest_i18n29.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n29") ((((unsupported)).apply ("LANGUAGE_CODE") ("fi"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("fi: Finnish/suomi bidi=False"))
+                xtest_i18n38.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("cs"))))
+                          xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n38"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("de: German/Deutsch/německy bidi=False"))
+                xtest_no_for_as.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "'get_language_info' requires 'for string as variable' (got [])"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xrender_to_string)).apply ("template"))

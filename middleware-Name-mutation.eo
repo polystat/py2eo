@@ -1,0 +1,40 @@
+memory > xget_view_name
+memory > xhasattr
+memory > xresponse
+memory > xMiddlewareMixin
+memory > xImproperlyConfigured
+memory > xHttpResponse
+memory > xsettings
+[] > middleware
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xprocess_view
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                (((unsupported)).apply)
+                xprocess_view.write
+                  [xself xrequest xview_func xview_args xview_kwargs]
+                    memory > xresponse2
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((((xhasattr)).apply ((xrequest)) ("user")).not).if
+                          (((unsupported)).apply ((((xImproperlyConfigured)).apply ("The XView middleware requires authentication middleware to be installed. Edit your MIDDLEWARE setting to insert 'django.contrib.auth.middleware.AuthenticationMiddleware'."))))
+                        ((((xrequest).xmethod).eq "HEAD").and ((((unsupported)).apply ((((((xrequest).xMETA).xget)).apply ("REMOTE_ADDR"))) (((xsettings).xINTERNAL_IPS))).or ((((xrequest).xuser).xis_active).and (((xrequest).xuser).xis_staff)))).if
+                          seq
+                            xresponse2.write (((xHttpResponse)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-View"))) ((((xget_view_name)).apply ((xview_func)))))
+                            (((unsupported)).apply ((xresponse)))

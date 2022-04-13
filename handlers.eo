@@ -1,0 +1,126 @@
+memory > xWSGIHandler
+memory > xresponse_for_exception
+memory > xsync_to_async
+memory > xurlparse
+memory > xget_path_info
+memory > xsettings
+memory > xsuper
+memory > xHttp404
+memory > xurl2pathname
+memory > xe
+memory > xutils
+memory > xASGIHandler
+memory > xlen
+memory > xStaticFilesHandlerMixin
+[] > handlers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xfile_path
+        memory > xserve
+        memory > xget_response
+        memory > xget_base_url
+        memory > x_should_handle
+        memory > x__init__
+        memory > xload_middleware
+        memory > xget_response_async
+        memory > x__call__
+        memory > xhandles_files
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xhandles_files.write TRUE
+                xload_middleware.write
+                  [xself]
+                    seq > @
+                xget_base_url.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xutils).xcheck_settings)).apply)
+                        (((unsupported)).apply (((xsettings).xSTATIC_URL)))
+                x_should_handle.write
+                  [xself xpath]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xpath).xstartswith)).apply ((((unsupported)).apply (((xself).xbase_url)) (2)))).and ((((unsupported)).apply (((xself).xbase_url)) (1)).not))))
+                xfile_path.write
+                  [xself xurl]
+                    memory > xrelative_url
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xrelative_url.write (((unsupported)).apply ((xurl)) ((((unsupported)).apply ((((xlen)).apply ((((unsupported)).apply (((xself).xbase_url)) (2))))))))
+                        (((unsupported)).apply ((((xurl2pathname)).apply ((xrelative_url)))))
+                xserve.write
+                  [xself xrequest]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xserve)) ((xrequest)) (((((xself).xfile_path)).apply (((xrequest).xpath)))) (TRUE))))
+                xget_response.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply ((xHttp404)))
+                        (((unsupported)).apply (((((xself).xserve)).apply ((xrequest)))))
+                        (((unsupported)).apply ((((xresponse_for_exception)).apply ((xrequest)) ((xe)))))
+                xget_response_async.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xHttp404)))
+                          (((unsupported)).apply ((((unsupported)).apply ((((((unsupported)).apply ((xsync_to_async)) (((xself).xserve)) (FALSE))).apply ((xrequest)))))))
+                          (((unsupported)).apply ((((unsupported)).apply ((((((unsupported)).apply ((xsync_to_async)) ((xresponse_for_exception)) (FALSE))).apply ((xrequest)) ((xe)))))))
+            (((unsupported)).apply ((xStaticFilesHandlerMixin)) ((xWSGIHandler)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xapplication]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xapplication)) ((xapplication)))
+                        (((unsupported)).apply (((xself).xbase_url)) ((((xurlparse)).apply (((((xself).xget_base_url)).apply)))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply)
+                x__call__.write
+                  [xself xenviron xstart_response]
+                    seq > @
+                      seq
+                        (((((xself).x_should_handle)).apply ((((xget_path_info)).apply ((xenviron))))).not).if
+                          (((unsupported)).apply (((((xself).xapplication)).apply ((xenviron)) ((xstart_response)))))
+                        (((unsupported)).apply (((((((xsuper)).apply).x__call__)).apply ((xenviron)) ((xstart_response)))))
+            (((unsupported)).apply ((xStaticFilesHandlerMixin)) ((xASGIHandler)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xapplication]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xapplication)) ((xapplication)))
+                        (((unsupported)).apply (((xself).xbase_url)) ((((xurlparse)).apply (((((xself).xget_base_url)).apply)))))
+                x__call__.write
+                  [xself xscope xreceive xsend]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((unsupported)).apply ((xscope)) ("type")).eq "http").and ((((xself).x_should_handle)).apply ((((unsupported)).apply ((xscope)) ("path"))))).if
+                          (((unsupported)).apply ((((unsupported)).apply (((((((xsuper)).apply).x__call__)).apply ((xscope)) ((xreceive)) ((xsend)))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((((xself).xapplication)).apply ((xscope)) ((xreceive)) ((xsend)))))))

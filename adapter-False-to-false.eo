@@ -1,0 +1,88 @@
+memory > xPostGISAdapter
+memory > xException
+memory > xbytes
+memory > xISQLQuote
+memory > xhash
+memory > xto_pgraster
+memory > xBinary
+memory > xisinstance
+memory > xGEOSGeometry
+[] > adapter
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__str__
+        memory > x__eq__
+        memory > x_fix_polygon
+        memory > xprepare
+        memory > x__init__
+        memory > xgetquoted
+        memory > x__hash__
+        memory > x__conform__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xobj xgeography]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xis_geometry)) ((((xisinstance)).apply ((xobj)) ((((unsupported)).apply ((xGEOSGeometry)) ((xPostGISAdapter)))))))
+                        ((xself).xis_geometry).if
+                          seq
+                            (((unsupported)).apply (((xself).xewkb)) ((((xbytes)).apply (((xobj).xewkb)))))
+                            (((unsupported)).apply (((xself).x_adapter)) ((((xBinary)).apply (((xself).xewkb)))))
+                          (((unsupported)).apply (((xself).xewkb)) ((((xto_pgraster)).apply ((xobj)))))
+                        (((unsupported)).apply (((xself).xsrid)) (((xobj).xsrid)))
+                        (((unsupported)).apply (((xself).xgeography)) ((xgeography)))
+                x__conform__.write
+                  [xself xproto]
+                    seq > @
+                      seq
+                        unsupported
+                        ((xproto).eq (xISQLQuote)).if
+                          (((unsupported)).apply ((xself)))
+                          (((unsupported)).apply ((((xException)).apply ("Error implementing psycopg2 protocol. Is psycopg2 installed?"))))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      (((unsupported)).apply (((((xisinstance)).apply ((xother)) ((xPostGISAdapter))).and (((xself).xewkb).eq ((xother).xewkb)))))
+                x__hash__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xhash)).apply (((xself).xewkb)))))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xgetquoted)).apply)))
+                x_fix_polygon.write
+                  [xcls xpoly]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xpoly)))
+                xprepare.write
+                  [xself xconn]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xself).xis_geometry).if
+                          bogusForceDataize.write (((((xself).x_adapter).xprepare)).apply ((xconn)))
+                xgetquoted.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xself).xis_geometry).if
+                          (((unsupported)).apply (("%s(%s)".mod (((unsupported)).apply ((((xself).xgeography).if "ST_GeogFromWKB" "ST_GeomFromEWKB")) ((((((xself).x_adapter).xgetquoted)).apply))))))
+                          (((unsupported)).apply (("'%s'::raster".mod (((((xself).xewkb).xencode)).apply))))

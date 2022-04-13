@@ -1,0 +1,118 @@
+memory > xCity
+memory > xPennsylvaniaCity
+memory > xstr
+memory > xMultiFields
+memory > xTestCase
+memory > xLinearRing
+memory > xset
+memory > xserializers
+memory > xPoint
+memory > xjson
+memory > xlen
+memory > xPolygon
+[] > test_serializers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_serialization_base
+        memory > xtest_builtin_serializers
+        memory > xfixtures
+        memory > xtest_deserialization_exception
+        memory > xtest_srid_option
+        memory > xtest_fields_option
+        memory > xtest_geometry_field_option
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xfixtures.write (((unsupported)).apply ("initial"))
+                xtest_builtin_serializers.write
+                  [xself]
+                    memory > xall_formats
+                    memory > xpublic_formats
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xall_formats.write (((xset)).apply (((xserializers).xget_serializer_formats)))
+                        xpublic_formats.write (((xset)).apply (((xserializers).xget_public_serializer_formats)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("geojson") ((xall_formats)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("geojson") ((xpublic_formats)))
+                xtest_serialization_base.write
+                  [xself]
+                    memory > xgeojson
+                    memory > xfirst_city
+                    memory > xgeodata
+                    seq > @
+                      seq
+                        xgeojson.write ((((xserializers).xserialize)).apply ("geojson") ((((((xCity).xobjects).xorder_by)).apply ("name"))))
+                        xgeodata.write ((((xjson).xloads)).apply ((xgeojson)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((unsupported)).apply ((xgeodata)) ("features"))))) ((((xlen)).apply ((((xCity).xobjects).xall)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("geometry"))) ("type"))) ("Point"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("properties"))) ("name"))) ("Chicago"))
+                        xfirst_city.write ((((((xCity).xobjects).xorder_by)).apply ("name")).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("properties"))) ("pk"))) ((((xstr)).apply (((xfirst_city).xpk)))))
+                xtest_geometry_field_option.write
+                  [xself]
+                    memory > xgeodata
+                    memory > xgeojson
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xMultiFields).xobjects).xcreate)) ((((xCity).xobjects).xfirst)) ("Name") ((((xPoint)).apply (5) (23))) ((((xPolygon)).apply ((((xLinearRing)).apply ((((unsupported)).apply (0) (0))) ((((unsupported)).apply (0) (5))) ((((unsupported)).apply (5) (5))) ((((unsupported)).apply (5) (0))) ((((unsupported)).apply (0) (0))))))))
+                        xgeojson.write ((((xserializers).xserialize)).apply ("geojson") ((((xMultiFields).xobjects).xall)))
+                        xgeodata.write ((((xjson).xloads)).apply ((xgeojson)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("geometry"))) ("type"))) ("Point"))
+                        xgeojson.write (((unsupported)).apply (((xserializers).xserialize)) ("geojson") ((((xMultiFields).xobjects).xall)) ("poly"))
+                        xgeodata.write ((((xjson).xloads)).apply ((xgeojson)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("geometry"))) ("type"))) ("Polygon"))
+                        xgeojson.write (((unsupported)).apply (((xserializers).xserialize)) ("geojson") ((((xMultiFields).xobjects).xall)) ("poly") ((((unsupported)).apply ("city"))))
+                        xgeodata.write ((((xjson).xloads)).apply ((xgeojson)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("geometry"))) ("type"))) ("Polygon"))
+                xtest_fields_option.write
+                  [xself]
+                    memory > xgeodata
+                    memory > xgeojson
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xPennsylvaniaCity).xobjects).xcreate)) ("Mansfield") ("Tioga") ("POINT(-77.071445 41.823881)"))
+                        xgeojson.write (((unsupported)).apply (((xserializers).xserialize)) ("geojson") ((((xPennsylvaniaCity).xobjects).xall)) ((((unsupported)).apply ("county") ("point"))))
+                        xgeodata.write ((((xjson).xloads)).apply ((xgeojson)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("county") ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("properties"))))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("founded") ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("properties"))))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("pk") ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("properties"))))
+                xtest_srid_option.write
+                  [xself]
+                    memory > xcoordinates
+                    memory > xgeodata
+                    memory > xgeojson
+                    seq > @
+                      seq
+                        xgeojson.write (((unsupported)).apply (((xserializers).xserialize)) ("geojson") ((((((xCity).xobjects).xorder_by)).apply ("name"))) (2847))
+                        xgeodata.write ((((xjson).xloads)).apply ((xgeojson)))
+                        xcoordinates.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xgeodata)) ("features"))) (0))) ("geometry"))) ("coordinates"))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply ((((unsupported)).apply ((xcoordinates)) (0))) (1564802) ((1.neg)))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply ((((unsupported)).apply ((xcoordinates)) (1))) (5613214) ((1.neg)))
+                xtest_deserialization_exception.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((((xserializers).xbase).xSerializerDoesNotExist)))))
+                          bogusForceDataize.write ((((xserializers).xdeserialize)).apply ("geojson") ("{}"))

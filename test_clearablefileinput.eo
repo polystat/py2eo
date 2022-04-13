@@ -1,0 +1,214 @@
+memory > xMultiWidget
+memory > xFileField
+memory > xURLFieldFile
+memory > xSimpleUploadedFile
+memory > xTestForm
+memory > xForm
+memory > xFakeFieldFile
+memory > xWidgetTest
+memory > xClearableFileInput
+memory > xValueError
+memory > xFailingURLFieldFile
+memory > xNoURLFieldFile
+memory > xStrangeFieldFile
+[] > test_clearablefileinput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_clear_input_renders
+        memory > xtest_clear_input_renders_only_if_not_required
+        memory > xtest_use_required_attribute
+        memory > xtest_return_false_if_url_does_not_exists
+        memory > xtest_value_omitted_from_data
+        memory > xtest_html_escaped
+        memory > x__str__
+        memory > xtest_fieldset
+        memory > xwidget
+        memory > xtest_clear_input_checked_returns_false
+        memory > xtest_clear_input_checked_returns_false_only_if_not_required
+        memory > xtest_render_as_subwidget
+        memory > xurl
+        memory > xtest_clear_input_renders_only_if_initial
+        memory > xtest_html_does_not_mask_exceptions
+        memory > xtest_render_disabled
+        memory > xtest_url_as_property
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xurl.write "something"
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xurl)))
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (((xClearableFileInput)).apply)
+                xtest_clear_input_renders.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("myfile") ((((xFakeFieldFile)).apply)) ((((unsupported)).apply)))
+                xtest_html_escaped.write
+                  [xself]
+                    memory > x__str__
+                    memory > xurl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xurl.write "something?chapter=1&sect=2&copy=3&lang=en"
+                            x__str__.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply ("something<div onclick=\"alert('oops')\">.jpg"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((xClearableFileInput)).apply)) ("my<div>file") ((((xStrangeFieldFile)).apply)) ((((unsupported)).apply)))
+                xtest_clear_input_renders_only_if_not_required.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((xClearableFileInput)).apply)
+                        (((unsupported)).apply (((xwidget).xis_required)) (TRUE))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("myfile") ((((xFakeFieldFile)).apply)) ((((unsupported)).apply)))
+                xtest_clear_input_renders_only_if_initial.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("myfile") ("None: is there a None literal in the EO language?") ("<input type=\"file\" name=\"myfile\">"))
+                xtest_render_disabled.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("myfile") ((((xFakeFieldFile)).apply)) ((((unsupported)).apply ("disabled") (TRUE))) ("Currently: <a href=\"something\">something</a><input type=\"checkbox\" name=\"myfile-clear\" id=\"myfile-clear_id\" disabled><label for=\"myfile-clear_id\">Clear</label><br>Change: <input type=\"file\" name=\"myfile\" disabled>"))
+                xtest_render_as_subwidget.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        unsupported
+                        xwidget.write (((unsupported)).apply ((xMultiWidget)) ((((unsupported)).apply (((xself).xwidget)))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("myfile") ((((unsupported)).apply ((((xFakeFieldFile)).apply)))) ((((unsupported)).apply)))
+                xtest_clear_input_checked_returns_false.write
+                  [xself]
+                    memory > xvalue
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xvalue.write (((unsupported)).apply ((((xself).xwidget).xvalue_from_datadict)) ((((unsupported)).apply ("myfile-clear") (TRUE))) ((((unsupported)).apply)) ("myfile"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((xvalue)) (FALSE))
+                xtest_clear_input_checked_returns_false_only_if_not_required.write
+                  [xself]
+                    memory > xfield
+                    memory > xvalue
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((xClearableFileInput)).apply)
+                        (((unsupported)).apply (((xwidget).xis_required)) (TRUE))
+                        xfield.write (((xSimpleUploadedFile)).apply ("something.txt") ("content"))
+                        xvalue.write (((unsupported)).apply (((xwidget).xvalue_from_datadict)) ((((unsupported)).apply ("myfile-clear") (TRUE))) ((((unsupported)).apply ("myfile") ((xfield)))) ("myfile"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) ((xfield)))
+                xtest_html_does_not_mask_exceptions.write
+                  [xself]
+                    memory > x__str__
+                    memory > xurl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          seq
+                            xurl.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply)
+                                    (((unsupported)).apply ((((xValueError)).apply ("Canary"))))
+                            x__str__.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply ("value"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Canary"))))
+                          bogusForceDataize.write (((((xself).xwidget).xrender)).apply ("myfile") ((((xFailingURLFieldFile)).apply)))
+                xtest_url_as_property.write
+                  [xself]
+                    memory > x__str__
+                    memory > xhtml
+                    memory > xurl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          seq
+                            xurl.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply)
+                                    (((unsupported)).apply ("https://www.python.org/"))
+                            x__str__.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply ("value"))
+                        xhtml.write (((((xself).xwidget).xrender)).apply ("myfile") ((((xURLFieldFile)).apply)))
+                        bogusForceDataize.write ((((xself).xassertInHTML)).apply ("<a href=\"https://www.python.org/\">value</a>") ((xhtml)))
+                xtest_return_false_if_url_does_not_exists.write
+                  [xself]
+                    memory > x__str__
+                    memory > xhtml
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          x__str__.write
+                            [xself]
+                              seq > @
+                                (((unsupported)).apply ("value"))
+                        xhtml.write (((((xself).xwidget).xrender)).apply ("myfile") ((((xNoURLFieldFile)).apply)))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ((xhtml)) ("<input name=\"myfile\" type=\"file\">"))
+                xtest_use_required_attribute.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xself).xwidget).xuse_required_attribute)).apply ("None: is there a None literal in the EO language?"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xself).xwidget).xuse_required_attribute)).apply ("resume.txt"))) (FALSE))
+                xtest_value_omitted_from_data.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((xClearableFileInput)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ("field"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply)) ((((unsupported)).apply ("field") ("x"))) ("field"))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply ("field-clear") ("y"))) ((((unsupported)).apply)) ("field"))) (FALSE))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xwith_file
+                    memory > xfield
+                    memory > xform
+                    memory > xtemplate_name
+                    memory > xclearable_file
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xFileField)) (((xself).xwidget)))
+                            xwith_file.write (((unsupported)).apply ((xFileField)) (((xself).xwidget)) ((((xFakeFieldFile)).apply)))
+                            xclearable_file.write (((unsupported)).apply ((xFileField)) (((xself).xwidget)) ((((xFakeFieldFile)).apply)) (FALSE))
+                        xform.write (((xTestForm)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><label for=\"id_field\">Field:</label><input id=\"id_field\" name=\"field\" type=\"file\" required></div><div><label for=\"id_with_file\">With file:</label>Currently: <a href=\"something\">something</a><br>Change:<input type=\"file\" name=\"with_file\" id=\"id_with_file\"></div><div><label for=\"id_clearable_file\">Clearable file:</label>Currently: <a href=\"something\">something</a><input type=\"checkbox\" name=\"clearable_file-clear\" id=\"clearable_file-clear_id\"><label for=\"clearable_file-clear_id\">Clear</label><br>Change:<input type=\"file\" name=\"clearable_file\" id=\"id_clearable_file\"></div>") (((((xform).xrender)).apply)))

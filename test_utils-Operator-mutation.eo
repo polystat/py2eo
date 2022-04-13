@@ -1,0 +1,151 @@
+memory > xtzname
+memory > xexpected
+memory > xsplit_tzname_delta
+memory > xconnection
+memory > xformat_number
+memory > xsplit_identifier
+memory > xeditor
+memory > xDecimal
+memory > xRounded
+memory > xcursor
+memory > xTransactionTestCase
+memory > xNotSupportedError
+memory > xtruncate_name
+memory > xSimpleTestCase
+[] > test_utils
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_test_procedure
+        memory > xtest_split_identifier
+        memory > xtest_format_number
+        memory > xtest_callproc_without_params
+        memory > xavailable_apps
+        memory > xtest_callproc_with_int_params
+        memory > xtest_unsupported_callproc_kparams_raises_error
+        memory > xtest_callproc_kparams
+        memory > xtest_truncate_name
+        memory > xtest_split_tzname_delta
+        seq > @
+          seq
+            unsupported
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_truncate_name.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncate_name)).apply ("some_table") (10))) ("some_table"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncate_name)).apply ("some_long_table") (10))) ("some_la38a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncate_name)).apply ("some_long_table") (10) (3))) ("some_loa38"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncate_name)).apply ("some_long_table"))) ("some_long_table"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncate_name)).apply ("username\".\"some_table") (10))) ("username\".\"some_table"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncate_name)).apply ("username\".\"some_long_table") (10))) ("username\".\"some_la38a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncate_name)).apply ("username\".\"some_long_table") (10) (3))) ("username\".\"some_loa38"))
+                xtest_split_identifier.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsplit_identifier)).apply ("some_table"))) ((((unsupported)).apply ("") ("some_table"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsplit_identifier)).apply ("\"some_table\""))) ((((unsupported)).apply ("") ("some_table"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsplit_identifier)).apply ("namespace\".\"some_table"))) ((((unsupported)).apply ("namespace") ("some_table"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsplit_identifier)).apply ("\"namespace\".\"some_table\""))) ((((unsupported)).apply ("namespace") ("some_table"))))
+                xtest_format_number.write
+                  [xself]
+                    memory > xequal
+                    seq > @
+                      seq
+                        xequal.write
+                          [xvalue xmax_d xplaces xresult]
+                            seq > @
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xformat_number)).apply ((((xDecimal)).apply ((xvalue)))) ((xmax_d)) ((xplaces)))) ((xresult)))
+                        bogusForceDataize.write (((xequal)).apply ("0") (12) (3) ("0.000"))
+                        bogusForceDataize.write (((xequal)).apply ("0") (12) (8) ("0.00000000"))
+                        bogusForceDataize.write (((xequal)).apply ("1") (12) (9) ("1.000000000"))
+                        bogusForceDataize.write (((xequal)).apply ("0.00000000") (12) (8) ("0.00000000"))
+                        bogusForceDataize.write (((xequal)).apply ("0.000000004") (12) (8) ("0.00000000"))
+                        bogusForceDataize.write (((xequal)).apply ("0.000000008") (12) (8) ("0.00000001"))
+                        bogusForceDataize.write (((xequal)).apply ("0.000000000000000000999") (10) (8) ("0.00000000"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") (12) (10) ("0.1234567890"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") (12) (9) ("0.123456789"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") (12) (8) ("0.12345679"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") (12) (5) ("0.12346"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") (12) (3) ("0.123"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") (12) (1) ("0.1"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") (12) (0) ("0"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234567890") ("None: is there a None literal in the EO language?") (0) ("0"))
+                        bogusForceDataize.write (((xequal)).apply ("1234567890.1234567890") ("None: is there a None literal in the EO language?") (0) ("1234567890"))
+                        bogusForceDataize.write (((xequal)).apply ("1234567890.1234567890") ("None: is there a None literal in the EO language?") (2) ("1234567890.12"))
+                        bogusForceDataize.write (((xequal)).apply ("0.1234") (5) ("None: is there a None literal in the EO language?") ("0.1234"))
+                        bogusForceDataize.write (((xequal)).apply ("123.12") (5) ("None: is there a None literal in the EO language?") ("123.12"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xRounded)))))
+                          bogusForceDataize.write (((xequal)).apply ("0.1234567890") (5) ("None: is there a None literal in the EO language?") ("0.12346"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xRounded)))))
+                          bogusForceDataize.write (((xequal)).apply ("1234567890.1234") (5) ("None: is there a None literal in the EO language?") ("1234600000"))
+                xtest_split_tzname_delta.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("Asia/Ust-Nera") ((((unsupported)).apply ("Asia/Ust-Nera") ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ("Asia/Ust-Nera") ((((unsupported)).apply ("Asia/Ust-Nera") ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ("Asia/Ust-Nera-02:00") ((((unsupported)).apply ("Asia/Ust-Nera") ("-") ("02:00"))))) ((((unsupported)).apply ("Asia/Ust-Nera-05:00") ((((unsupported)).apply ("Asia/Ust-Nera") ("-") ("05:00"))))) ((((unsupported)).apply ("America/Coral_Harbour-01:00") ((((unsupported)).apply ("America/Coral_Harbour") ("-") ("01:00"))))) ((((unsupported)).apply ("America/Coral_Harbour-02:30") ((((unsupported)).apply ("America/Coral_Harbour") ("-") ("02:30"))))) ((((unsupported)).apply ("UTC-15:00") ((((unsupported)).apply ("UTC") ("-") ("15:00"))))) ((((unsupported)).apply ("UTC-04:43") ((((unsupported)).apply ("UTC") ("-") ("04:43"))))) ((((unsupported)).apply ("UTC") ((((unsupported)).apply ("UTC") ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))) ((((unsupported)).apply ("UTC-1") ((((unsupported)).apply ("UTC-1") ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xtzname)) ((xexpected)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xtzname)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsplit_tzname_delta)).apply ((xtzname)))) ((xexpected)))
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply)
+                x_test_procedure.write
+                  [xself xprocedure_sql xparams xparam_types xkparams]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          bogusForceDataize.write ((((xcursor).xexecute)).apply ((xprocedure_sql)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          bogusForceDataize.write ((((xcursor).xcallproc)).apply ("test_procedure") ((xparams)) ((xkparams)))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xremove_procedure)).apply ("test_procedure") ((xparam_types)))
+                xtest_callproc_without_params.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).x_test_procedure)).apply ((((xconnection).xfeatures).xcreate_test_procedure_without_params_sql)) ((((unsupported)).apply)) ((((unsupported)).apply)))
+                xtest_callproc_with_int_params.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).x_test_procedure)).apply ((((xconnection).xfeatures).xcreate_test_procedure_with_int_param_sql)) ((((unsupported)).apply (1))) ((((unsupported)).apply ("INTEGER"))))
+                xtest_callproc_kparams.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).x_test_procedure)).apply ((((xconnection).xfeatures).xcreate_test_procedure_with_int_param_sql)) ((((unsupported)).apply)) ((((unsupported)).apply ("INTEGER"))) ((((unsupported)).apply ("P_I") (1))))
+                xtest_unsupported_callproc_kparams_raises_error.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "Keyword parameters for callproc are not supported on this database backend."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xNotSupportedError)) ((xmsg)))))
+                          (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                            bogusForceDataize.write ((((xcursor).xcallproc)).apply ("test_procedure") ((((unsupported)).apply)) ((((unsupported)).apply ("P_I") (1))))

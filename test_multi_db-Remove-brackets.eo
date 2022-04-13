@@ -1,0 +1,78 @@
+memory > xconnections
+memory > xTestRouter
+memory > xmock
+memory > xModel
+memory > xmodels
+memory > xmock_check_field_other
+memory > xOtherModel
+memory > xoverride_settings
+memory > xmock_check_field_default
+memory > xisolate_apps
+memory > xSimpleTestCase
+[] > test_multi_db
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_patch_check_field_on
+        memory > xtest_checks_called_on_the_other_database
+        memory > xallow_migrate
+        memory > xtest_checks_called_on_the_default_database
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xallow_migrate.write
+                  [xself xdb xapp_label xmodel_name]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xdb).eq (((((xmodel_name).xstartswith)).apply ("other")).if "other" "default"))))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((xTestRouter)))))) ((((xisolate_apps)).apply ("check_framework"))))
+              seq
+                x_patch_check_field_on.write
+                  [xself xdb]
+                    seq > @
+                      (((unsupported)).apply ((((((xmock).xpatch).xobject)).apply (((((unsupported)).apply ((xconnections)) ((xdb))).xvalidation)) ("check_field"))))
+                xtest_checks_called_on_the_default_database.write
+                  [xself]
+                    memory > xfield
+                    memory > xmodel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xfield.write (((unsupported)).apply (((xmodels).xCharField)) (100))
+                        xmodel.write (xModel)
+                        (((unsupported)).apply (((((xself).x_patch_check_field_on)).apply ("default"))) ((xmock_check_field_default)))
+                          (((unsupported)).apply (((((xself).x_patch_check_field_on)).apply ("other"))) ((xmock_check_field_other)))
+                            seq
+                              (((unsupported)).apply (((xmodel).xcheck)) ((((unsupported)).apply ("default") ("other"))))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply (((xmock_check_field_default).xcalled)))
+                              bogusForceDataize.write ((((xself).xassertFalse)).apply (((xmock_check_field_other).xcalled)))
+                xtest_checks_called_on_the_other_database.write
+                  [xself]
+                    memory > xfield
+                    memory > xmodel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xfield.write (((unsupported)).apply (((xmodels).xCharField)) (100))
+                        xmodel.write (xOtherModel)
+                        (((unsupported)).apply (((((xself).x_patch_check_field_on)).apply ("other"))) ((xmock_check_field_other)))
+                          (((unsupported)).apply (((((xself).x_patch_check_field_on)).apply ("default"))) ((xmock_check_field_default)))
+                            seq
+                              (((unsupported)).apply (((xmodel).xcheck)) ((((unsupported)).apply ("default") ("other"))))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply (((xmock_check_field_other).xcalled)))
+                              bogusForceDataize.write ((((xself).xassertFalse)).apply (((xmock_check_field_default).xcalled)))

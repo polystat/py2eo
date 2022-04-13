@@ -1,0 +1,355 @@
+memory > xOperation
+memory > xDeleteModel
+memory > xFieldOperation
+memory > xAlterField
+memory > xbool
+memory > xRenameField
+memory > xNOT_PROVIDED
+memory > xfield_references
+memory > xhasattr
+memory > xAddField
+memory > xRemoveField
+memory > xsuper
+memory > xisinstance
+memory > xmodel_name2
+[] > fields
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xis_same_field_operation
+        memory > xdatabase_backwards
+        memory > xold_name_lower
+        memory > xreferences_model
+        memory > xmigration_name_fragment
+        memory > xdescribe
+        memory > xdatabase_forwards
+        memory > xname_lower
+        memory > xis_same_model_operation
+        memory > x__init__
+        memory > xreferences_field
+        memory > xreduce
+        memory > xdeconstruct
+        memory > xstate_forwards
+        memory > xnew_name_lower
+        memory > xmodel_name_lower
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xOperation)))
+              seq
+                x__init__.write
+                  [xself xmodel_name xname xfield]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xmodel_name)) ((xmodel_name2)))
+                        (((unsupported)).apply (((xself).xname)) ((xname)))
+                        (((unsupported)).apply (((xself).xfield)) ((xfield)))
+                xmodel_name_lower.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xmodel_name).xlower)).apply)))
+                xname_lower.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xname).xlower)).apply)))
+                xis_same_model_operation.write
+                  [xself xoperation]
+                    seq > @
+                      (((unsupported)).apply ((((xself).xmodel_name_lower).eq ((xoperation).xmodel_name_lower))))
+                xis_same_field_operation.write
+                  [xself xoperation]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xis_same_model_operation)).apply ((xoperation))).and (((xself).xname_lower).eq ((xoperation).xname_lower)))))
+                xreferences_model.write
+                  [xself xname xapp_label]
+                    memory > xname_lower
+                    seq > @
+                      seq
+                        xname_lower.write ((((xname).xlower)).apply)
+                        ((xname_lower).eq ((xself).xmodel_name_lower)).if
+                          (((unsupported)).apply (TRUE))
+                        ((xself).xfield).if
+                          (((unsupported)).apply ((((xbool)).apply ((((xfield_references)).apply ((((unsupported)).apply ((xapp_label)) (((xself).xmodel_name_lower)))) (((xself).xfield)) ((((unsupported)).apply ((xapp_label)) ((xname_lower)))))))))
+                        (((unsupported)).apply (FALSE))
+                xreferences_field.write
+                  [xself xmodel_name xname xapp_label]
+                    memory > xmodel_name_lower
+                    seq > @
+                      seq
+                        xmodel_name_lower.write ((((xmodel_name).xlower)).apply)
+                        ((xmodel_name_lower).eq ((xself).xmodel_name_lower)).if
+                          ((xname).eq ((xself).xname)).if
+                            (((unsupported)).apply (TRUE))
+                            ((((xself).xfield).and (((xhasattr)).apply (((xself).xfield)) ("from_fields"))).and (((unsupported)).apply ((xname)) ((((xself).xfield).xfrom_fields)))).if
+                              (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (((xself).xfield)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply ((((xbool)).apply ((((xfield_references)).apply ((((unsupported)).apply ((xapp_label)) (((xself).xmodel_name_lower)))) (((xself).xfield)) ((((unsupported)).apply ((xapp_label)) ((xmodel_name_lower)))) ((xname)))))))
+                xreduce.write
+                  [xself xoperation xapp_label]
+                    seq > @
+                      (((unsupported)).apply ((((((((xsuper)).apply).xreduce)).apply ((xoperation)) ((xapp_label))).or (((((xoperation).xreferences_field)).apply (((xself).xmodel_name)) (((xself).xname)) ((xapp_label))).not))))
+            (((unsupported)).apply ((xFieldOperation)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xmodel_name xname xfield xpreserve_default]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xpreserve_default)) ((xpreserve_default)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xmodel_name)) ((xname)) ((xfield)))
+                xdeconstruct.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply ("model_name") (((xself).xmodel_name)) ("name") (((xself).xname)) ("field") (((xself).xfield)))
+                        (((unsupported)).apply (((xself).xpreserve_default)) (TRUE)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("preserve_default"))) (((xself).xpreserve_default)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).x__class__).x__name__)) ((((unsupported)).apply)) ((xkwargs)))))
+                xstate_forwards.write
+                  [xself xapp_label xstate]
+                    seq > @
+                      bogusForceDataize.write ((((xstate).xadd_field)).apply ((xapp_label)) (((xself).xmodel_name_lower)) (((xself).xname)) (((xself).xfield)) (((xself).xpreserve_default)))
+                xdatabase_forwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xfrom_model
+                    memory > xfield
+                    memory > xto_model
+                    seq > @
+                      seq
+                        xto_model.write (((((xto_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                        ((((xself).xallow_migrate_model)).apply ((((xschema_editor).xconnection).xalias)) ((xto_model))).if
+                          seq
+                            xfrom_model.write (((((xfrom_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                            xfield.write (((((xto_model).x_meta).xget_field)).apply (((xself).xname)))
+                            (((xself).xpreserve_default).not).if
+                              (((unsupported)).apply (((xfield).xdefault)) ((((xself).xfield).xdefault)))
+                            bogusForceDataize.write ((((xschema_editor).xadd_field)).apply ((xfrom_model)) ((xfield)))
+                            (((xself).xpreserve_default).not).if
+                              (((unsupported)).apply (((xfield).xdefault)) ((xNOT_PROVIDED)))
+                xdatabase_backwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xfrom_model
+                    seq > @
+                      seq
+                        xfrom_model.write (((((xfrom_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                        ((((xself).xallow_migrate_model)).apply ((((xschema_editor).xconnection).xalias)) ((xfrom_model))).if
+                          bogusForceDataize.write ((((xschema_editor).xremove_field)).apply ((xfrom_model)) ((((((xfrom_model).x_meta).xget_field)).apply (((xself).xname)))))
+                xdescribe.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("Add field %s to %s".mod (((unsupported)).apply (((xself).xname)) (((xself).xmodel_name))))))
+                xmigration_name_fragment.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (("%s_%s".mod (((unsupported)).apply (((xself).xmodel_name_lower)) (((xself).xname_lower))))))
+                xreduce.write
+                  [xself xoperation xapp_label]
+                    seq > @
+                      seq
+                        ((((xisinstance)).apply ((xoperation)) ((xFieldOperation))).and ((((xself).xis_same_field_operation)).apply ((xoperation)))).if
+                          (((xisinstance)).apply ((xoperation)) ((xAlterField))).if
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xAddField)) (((xself).xmodel_name)) (((xoperation).xname)) (((xoperation).xfield)))))))
+                            (((xisinstance)).apply ((xoperation)) ((xRemoveField))).if
+                              (((unsupported)).apply ((((unsupported)).apply)))
+                              (((xisinstance)).apply ((xoperation)) ((xRenameField))).if
+                                (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xAddField)) (((xself).xmodel_name)) (((xoperation).xnew_name)) (((xself).xfield)))))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xreduce)).apply ((xoperation)) ((xapp_label)))))
+            (((unsupported)).apply ((xFieldOperation)))
+              seq
+                unsupported
+                xdeconstruct.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply ("model_name") (((xself).xmodel_name)) ("name") (((xself).xname)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).x__class__).x__name__)) ((((unsupported)).apply)) ((xkwargs)))))
+                xstate_forwards.write
+                  [xself xapp_label xstate]
+                    seq > @
+                      bogusForceDataize.write ((((xstate).xremove_field)).apply ((xapp_label)) (((xself).xmodel_name_lower)) (((xself).xname)))
+                xdatabase_forwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xfrom_model
+                    seq > @
+                      seq
+                        xfrom_model.write (((((xfrom_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                        ((((xself).xallow_migrate_model)).apply ((((xschema_editor).xconnection).xalias)) ((xfrom_model))).if
+                          bogusForceDataize.write ((((xschema_editor).xremove_field)).apply ((xfrom_model)) ((((((xfrom_model).x_meta).xget_field)).apply (((xself).xname)))))
+                xdatabase_backwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xfrom_model
+                    memory > xto_model
+                    seq > @
+                      seq
+                        xto_model.write (((((xto_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                        ((((xself).xallow_migrate_model)).apply ((((xschema_editor).xconnection).xalias)) ((xto_model))).if
+                          seq
+                            xfrom_model.write (((((xfrom_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                            bogusForceDataize.write ((((xschema_editor).xadd_field)).apply ((xfrom_model)) ((((((xto_model).x_meta).xget_field)).apply (((xself).xname)))))
+                xdescribe.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("Remove field %s from %s".mod (((unsupported)).apply (((xself).xname)) (((xself).xmodel_name))))))
+                xmigration_name_fragment.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (("remove_%s_%s".mod (((unsupported)).apply (((xself).xmodel_name_lower)) (((xself).xname_lower))))))
+                xreduce.write
+                  [xself xoperation xapp_label]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((((xisinstance)).apply ((xoperation)) ((xDeleteModel))).and (((xoperation).xname_lower).eq ((xself).xmodel_name_lower))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xoperation)))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xreduce)).apply ((xoperation)) ((xapp_label)))))
+            (((unsupported)).apply ((xFieldOperation)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xmodel_name xname xfield xpreserve_default]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xpreserve_default)) ((xpreserve_default)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xmodel_name)) ((xname)) ((xfield)))
+                xdeconstruct.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply ("model_name") (((xself).xmodel_name)) ("name") (((xself).xname)) ("field") (((xself).xfield)))
+                        (((unsupported)).apply (((xself).xpreserve_default)) (TRUE)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("preserve_default"))) (((xself).xpreserve_default)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).x__class__).x__name__)) ((((unsupported)).apply)) ((xkwargs)))))
+                xstate_forwards.write
+                  [xself xapp_label xstate]
+                    seq > @
+                      bogusForceDataize.write ((((xstate).xalter_field)).apply ((xapp_label)) (((xself).xmodel_name_lower)) (((xself).xname)) (((xself).xfield)) (((xself).xpreserve_default)))
+                xdatabase_forwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xfrom_model
+                    memory > xto_model
+                    memory > xto_field
+                    memory > xfrom_field
+                    seq > @
+                      seq
+                        xto_model.write (((((xto_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                        ((((xself).xallow_migrate_model)).apply ((((xschema_editor).xconnection).xalias)) ((xto_model))).if
+                          seq
+                            xfrom_model.write (((((xfrom_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                            xfrom_field.write (((((xfrom_model).x_meta).xget_field)).apply (((xself).xname)))
+                            xto_field.write (((((xto_model).x_meta).xget_field)).apply (((xself).xname)))
+                            (((xself).xpreserve_default).not).if
+                              (((unsupported)).apply (((xto_field).xdefault)) ((((xself).xfield).xdefault)))
+                            bogusForceDataize.write ((((xschema_editor).xalter_field)).apply ((xfrom_model)) ((xfrom_field)) ((xto_field)))
+                            (((xself).xpreserve_default).not).if
+                              (((unsupported)).apply (((xto_field).xdefault)) ((xNOT_PROVIDED)))
+                xdatabase_backwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xdatabase_forwards)).apply ((xapp_label)) ((xschema_editor)) ((xfrom_state)) ((xto_state)))
+                xdescribe.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("Alter field %s on %s".mod (((unsupported)).apply (((xself).xname)) (((xself).xmodel_name))))))
+                xmigration_name_fragment.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (("alter_%s_%s".mod (((unsupported)).apply (((xself).xmodel_name_lower)) (((xself).xname_lower))))))
+                xreduce.write
+                  [xself xoperation xapp_label]
+                    seq > @
+                      seq
+                        ((((xisinstance)).apply ((xoperation)) ((xRemoveField))).and ((((xself).xis_same_field_operation)).apply ((xoperation)))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xoperation)))))
+                          (((((xisinstance)).apply ((xoperation)) ((xRenameField))).and ((((xself).xis_same_field_operation)).apply ((xoperation)))).and (((unsupported)).apply ((((xself).xfield).xdb_column)) ("None: is there a None literal in the EO language?"))).if
+                            (((unsupported)).apply ((((unsupported)).apply ((xoperation)) ((((unsupported)).apply ((xAlterField)) (((xself).xmodel_name)) (((xoperation).xnew_name)) (((xself).xfield)))))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xreduce)).apply ((xoperation)) ((xapp_label)))))
+            (((unsupported)).apply ((xFieldOperation)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xmodel_name xold_name xnew_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xold_name)) ((xold_name)))
+                        (((unsupported)).apply (((xself).xnew_name)) ((xnew_name)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xmodel_name)) ((xold_name)))
+                xold_name_lower.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xold_name).xlower)).apply)))
+                xnew_name_lower.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xnew_name).xlower)).apply)))
+                xdeconstruct.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply ("model_name") (((xself).xmodel_name)) ("old_name") (((xself).xold_name)) ("new_name") (((xself).xnew_name)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).x__class__).x__name__)) ((((unsupported)).apply)) ((xkwargs)))))
+                xstate_forwards.write
+                  [xself xapp_label xstate]
+                    seq > @
+                      bogusForceDataize.write ((((xstate).xrename_field)).apply ((xapp_label)) (((xself).xmodel_name_lower)) (((xself).xold_name)) (((xself).xnew_name)))
+                xdatabase_forwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xfrom_model
+                    memory > xto_model
+                    seq > @
+                      seq
+                        xto_model.write (((((xto_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                        ((((xself).xallow_migrate_model)).apply ((((xschema_editor).xconnection).xalias)) ((xto_model))).if
+                          seq
+                            xfrom_model.write (((((xfrom_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                            bogusForceDataize.write ((((xschema_editor).xalter_field)).apply ((xfrom_model)) ((((((xfrom_model).x_meta).xget_field)).apply (((xself).xold_name)))) ((((((xto_model).x_meta).xget_field)).apply (((xself).xnew_name)))))
+                xdatabase_backwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xfrom_model
+                    memory > xto_model
+                    seq > @
+                      seq
+                        xto_model.write (((((xto_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                        ((((xself).xallow_migrate_model)).apply ((((xschema_editor).xconnection).xalias)) ((xto_model))).if
+                          seq
+                            xfrom_model.write (((((xfrom_state).xapps).xget_model)).apply ((xapp_label)) (((xself).xmodel_name)))
+                            bogusForceDataize.write ((((xschema_editor).xalter_field)).apply ((xfrom_model)) ((((((xfrom_model).x_meta).xget_field)).apply (((xself).xnew_name)))) ((((((xto_model).x_meta).xget_field)).apply (((xself).xold_name)))))
+                xdescribe.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("Rename field %s on %s to %s".mod (((unsupported)).apply (((xself).xold_name)) (((xself).xmodel_name)) (((xself).xnew_name))))))
+                xmigration_name_fragment.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (("rename_%s_%s_%s".mod (((unsupported)).apply (((xself).xold_name_lower)) (((xself).xmodel_name_lower)) (((xself).xnew_name_lower))))))
+                xreferences_field.write
+                  [xself xmodel_name xname xapp_label]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xreferences_model)).apply ((xmodel_name)) ((xapp_label))).and ((((((xname).xlower)).apply).eq ((xself).xold_name_lower)).or (((((xname).xlower)).apply).eq ((xself).xnew_name_lower))))))
+                xreduce.write
+                  [xself xoperation xapp_label]
+                    seq > @
+                      seq
+                        (((((xisinstance)).apply ((xoperation)) ((xRenameField))).and ((((xself).xis_same_model_operation)).apply ((xoperation)))).and (((xself).xnew_name_lower).eq ((xoperation).xold_name_lower))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((((xRenameField)).apply (((xself).xmodel_name)) (((xself).xold_name)) (((xoperation).xnew_name)))))))
+                        (((unsupported)).apply ((((((((xsuper)).apply ((xFieldOperation)) ((xself))).xreduce)).apply ((xoperation)) ((xapp_label))).or ((((((xoperation).xreferences_field)).apply (((xself).xmodel_name)) (((xself).xold_name)) ((xapp_label))).or ((((xoperation).xreferences_field)).apply (((xself).xmodel_name)) (((xself).xnew_name)) ((xapp_label)))).not))))

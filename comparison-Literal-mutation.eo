@@ -1,0 +1,252 @@
+memory > xCoalesce
+memory > x_lazy_re_compile
+memory > xFunc
+memory > xValueError
+memory > xfields
+memory > xvalue
+memory > xextra
+memory > xValue
+memory > xArgJoiner
+memory > xextra_context
+memory > xzip
+memory > xkey
+memory > xparams
+memory > xNotSupportedError
+memory > xarg
+memory > xsuper
+memory > xexpressions
+memory > xJSONField
+memory > xNotImplemented
+memory > xsql
+memory > xexpression
+memory > xisinstance
+memory > xlen
+[] > comparison
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xempty_result_set_value
+        memory > xcollation_re
+        memory > xtemplate
+        memory > xas_postgresql
+        memory > xarity
+        memory > xas_sql
+        memory > xas_sqlite
+        memory > x__init__
+        memory > xoutput_field
+        memory > xfunction
+        memory > xas_oracle
+        memory > xas_mysql
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFunc)))
+              seq
+                unsupported
+                xfunction.write "CAST"
+                xtemplate.write "%(function)s(%(expressions)s AS %(db_type)s)"
+                x__init__.write
+                  [xself xexpression xoutput_field]
+                    seq > @
+                      (((unsupported)).apply (((((xsuper)).apply).x__init__)) ((xexpression)) ((xoutput_field)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xextra_context)) ("db_type"))) ((((((xself).xoutput_field).xcast_db_type)).apply ((xconnection)))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    memory > xformat_string
+                    memory > xtemplate
+                    memory > xdb_type
+                    seq > @
+                      (((unsupported)).apply)
+                        xdb_type.write (((((xself).xoutput_field).xdb_type)).apply ((xconnection)))
+                        (((unsupported)).apply ((xdb_type)) ((((unsupported)).apply ("datetime") ("time")))).if
+                          seq
+                            xtemplate.write "strftime(%%s, %(expressions)s)"
+                            (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ((xtemplate)) ((((unsupported)).apply ((xextra_context)))))))
+                            xformat_string.write (((xdb_type).eq "time").if "%H:%M:%f" "%Y-%m-%d %H:%M:%f")
+                            bogusForceDataize.write ((((xparams).xinsert)).apply (0) ((xformat_string)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))))
+                          ((xdb_type).eq "date").if
+                            seq
+                              xtemplate.write "date(%(expressions)s)"
+                              (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ((xtemplate)) ((((unsupported)).apply ((xextra_context)))))))
+                        (((unsupported)).apply (((((xself).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+                xas_mysql.write
+                  [xself xcompiler xconnection]
+                    memory > xtemplate
+                    memory > xoutput_type
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate.write "None: is there a None literal in the EO language?"
+                        xoutput_type.write (((((xself).xoutput_field).xget_internal_type)).apply)
+                        ((xoutput_type).eq "FloatField").if
+                          xtemplate.write "(%(expressions)s + 0.0)"
+                          (((xoutput_type).eq "JSONField").and ((xconnection).xmysql_is_mariadb)).if
+                            xtemplate.write "JSON_EXTRACT(%(expressions)s, '$')"
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xas_sql)) ((xcompiler)) ((xconnection)) ((xtemplate)) ((((unsupported)).apply ((xextra_context)))))))
+                xas_postgresql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xas_sql)) ((xcompiler)) ((xconnection)) ("(%(expressions)s)::%(db_type)s") ((((unsupported)).apply ((xextra_context)))))))
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    memory > xtemplate
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((((xself).xoutput_field).xget_internal_type)).apply).eq "JSONField").if
+                          seq
+                            xtemplate.write "JSON_QUERY(%(expressions)s, '$')"
+                            (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ((xtemplate)) ((((unsupported)).apply ((xextra_context)))))))
+                        (((unsupported)).apply (((((xself).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                unsupported
+                xfunction.write "COALESCE"
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xlen)).apply ((xexpressions))).less 2).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Coalesce must take at least two expressions"))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xexpressions)))) ((((unsupported)).apply ((xextra)))))
+                xempty_result_set_value.write
+                  [xself]
+                    memory > xresult
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xexpression)) (((((xself).xget_source_expressions)).apply)))
+                          seq
+                            xresult.write ((xexpression).xempty_result_set_value)
+                            ((((unsupported)).apply ((xresult)) ((xNotImplemented))).or (((unsupported)).apply ((xresult)) ("None: is there a None literal in the EO language?"))).if
+                              (((unsupported)).apply ((xresult)))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    memory > xclone
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((((xself).xoutput_field).xget_internal_type)).apply).eq "TextField").if
+                          seq
+                            xclone.write ((((xself).xcopy)).apply)
+                            bogusForceDataize.write ((((xclone).xset_source_expressions)).apply ((((unsupported)).apply ((((unsupported)).apply ((xFunc)) ((xexpression)) ("TO_NCLOB"))) ((xexpression)) (((((xself).xget_source_expressions)).apply)))))
+                            (((unsupported)).apply (((((((xsuper)).apply ((xCoalesce)) ((xclone))).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+                        (((unsupported)).apply (((((xself).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "COLLATE"
+                xtemplate.write "%(expressions)s %(function)s %(collation)s"
+                xcollation_re.write (((x_lazy_re_compile)).apply ("^[w-]+$"))
+                x__init__.write
+                  [xself xexpression xcollation]
+                    seq > @
+                      seq
+                        (((xcollation).and (((((xself).xcollation_re).xmatch)).apply ((xcollation)))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply (("Invalid collation name: %r.".mod (xcollation))))))
+                        (((unsupported)).apply (((xself).xcollation)) ((xcollation)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xextra_context).xsetdefault)).apply ("collation") ((((((xconnection).xops).xquote_name)).apply (((xself).xcollation)))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                (((unsupported)).apply)
+                xfunction.write "GREATEST"
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xlen)).apply ((xexpressions))).less 2).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Greatest must take at least two expressions"))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xexpressions)))) ((((unsupported)).apply ((xextra)))))
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sqlite)) ((xcompiler)) ((xconnection)) ("MAX") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "JSON_OBJECT"
+                xoutput_field.write (((xJSONField)).apply)
+                x__init__.write
+                  [xself]
+                    memory > xexpressions
+                    seq > @
+                      (((unsupported)).apply)
+                        xexpressions.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xkey)) ((xvalue)))) (((((xfields).xitems)).apply)))
+                          bogusForceDataize.write ((((xexpressions).xextend)).apply ((((unsupported)).apply ((((xValue)).apply ((xkey)))) ((xvalue)))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xexpressions)))))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xconnection).xfeatures).xhas_json_object_function).not).if
+                          (((unsupported)).apply ((((xNotSupportedError)).apply ("JSONObject() is not supported on this database backend."))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+                xas_postgresql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xas_sql)) ((xcompiler)) ((xconnection)) ("JSONB_BUILD_OBJECT") ((((unsupported)).apply ((xextra_context)))))))
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    memory > xjoin
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          xjoin.write
+                            [xself xargs]
+                              seq > @
+                                seq
+                                  xargs.write (((unsupported)).apply ((((" VALUE ".xjoin)).apply ((xarg)))) ((xarg)) ((((xzip)).apply ((((unsupported)).apply ((xargs)) ((((unsupported)).apply (2))))) ((((unsupported)).apply ((xargs)) ((((unsupported)).apply (1) (2))))))))
+                                  (((unsupported)).apply ((((", ".xjoin)).apply ((xargs)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xas_sql)) ((xcompiler)) ((xconnection)) ((((xArgJoiner)).apply)) ("%(function)s(%(expressions)s RETURNING CLOB)") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                (((unsupported)).apply)
+                xfunction.write "LEAST"
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xlen)).apply ((xexpressions))).less 2).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Least must take at least two expressions"))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xexpressions)))) ((((unsupported)).apply ((xextra)))))
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sqlite)) ((xcompiler)) ((xconnection)) ("MIN") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "NULLIF"
+                xarity.write 2
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    memory > xexpression1
+                    seq > @
+                      (((unsupported)).apply)
+                        xexpression1.write (((unsupported)).apply (((((xself).xget_source_expressions)).apply)) (0))
+                        ((((xisinstance)).apply ((xexpression1)) ((xValue))).and (((unsupported)).apply (((xexpression1).xvalue)) ("None: is there a None literal in the EO language?"))).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Oracle does not allow Value(None) for expression1."))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))

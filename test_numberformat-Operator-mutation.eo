@@ -1,0 +1,126 @@
+memory > xvalue
+memory > xEuroDecimal
+memory > xint
+memory > xfloat_info
+memory > xdecimal_pos
+memory > xDecimal
+memory > xkwargs
+memory > xSimpleTestCase
+memory > xexpected_value
+memory > xsuper
+[] > test_numberformat
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_decimal_subclass
+        memory > xtest_format_number
+        memory > xtest_float_numbers
+        memory > xnformat
+        memory > xtest_format_string
+        memory > xtest_large_number
+        memory > xtest_decimal_numbers
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_format_number.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply (1234) ("."))) ("1234"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply (1234.2) ("."))) ("1234.2"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) (1234) (".") (2))) ("1234.00"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) (1234) (".") (2) (","))) ("1234"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) (1234) (".") (2) (",") (TRUE))) ("12,34"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((1234.33.neg)) (".") (1))) ("-1234.3"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (TRUE))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) (1234) (".") (3) (",") (FALSE))) ("1234"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) (1234) (".") (3) (",") (TRUE))) ("1,234"))
+                xtest_format_string.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ("1234") ("."))) ("1234"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ("1234.2") ("."))) ("1234.2"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ("1234") (".") (2))) ("1234.00"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ("1234") (".") (2) (","))) ("1234"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ("1234") (".") (2) (",") (TRUE))) ("12,34"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ("-1234.33") (".") (1))) ("-1234.3"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ("10000") (".") (3) ("comma") (TRUE))) ("10comma000"))
+                xtest_large_number.write
+                  [xself]
+                    memory > xint_max
+                    memory > xmost_max2
+                    memory > xmost_max
+                    seq > @
+                      seq
+                        xmost_max.write "{}17976931348623157081452742373170435679807056752584499659891747680315726078002853876058955863276687817154045895351438246423432132688946418276846754670353751698604991057655128207624549009038932894407586850845513394230458323690322294816580855933212334827479782620414472316873817718091929988125040402618412485836{}"
+                        xmost_max2.write "{}359538626972463141629054847463408713596141135051689993197834953606314521560057077521179117265533756343080917907028764928468642653778928365536935093407075033972099821153102564152490980180778657888151737016910267884609166473806445896331617118664246696549595652408289446337476354361838599762500808052368249716736"
+                        xint_max.write (((xint)).apply (((xfloat_info).xmax)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((xint_max)) ("."))) (((((xmost_max).xformat)).apply ("") ("8"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply (((xint_max).sub 1)) ("."))) (((((xmost_max).xformat)).apply ("") ("9"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply (((xint_max).mul 2)) ("."))) (((((xmost_max2).xformat)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((0.sub (xint_max))) ("."))) (((((xmost_max).xformat)).apply ("-") ("8"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply (((1.neg).sub (xint_max))) ("."))) (((((xmost_max).xformat)).apply ("-") ("9"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply (((2.neg).mul (xint_max))) ("."))) (((((xmost_max2).xformat)).apply ("-"))))
+                xtest_float_numbers.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply)) (10) ("0.0000000009"))) ((((unsupported)).apply ((((unsupported)).apply)) (2) ("0.00"))) ((((unsupported)).apply (0.00000000000099) (0) ("0"))) ((((unsupported)).apply (0.00000000000099) (13) ("0.0000000000009"))) ((((unsupported)).apply ((((unsupported)).apply)) ("None: is there a None literal in the EO language?") ("10000000000000000"))) ((((unsupported)).apply ((((unsupported)).apply)) (2) ("10000000000000000.00"))) ((((unsupported)).apply (3.0) ("None: is there a None literal in the EO language?") ("3.0"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xdecimal_pos)) ((xexpected_value)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)) ((xdecimal_pos)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((xvalue)) (".") ((xdecimal_pos)))) ((xexpected_value)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((unsupported)).apply)) (".") (",") (3) (TRUE))) ("10,000,000,000,000,000"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((unsupported)).apply)) (".") (2) (",") (3) (TRUE))) ("10,000,000,000,000,000.00"))
+                xtest_decimal_numbers.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((((xDecimal)).apply ("1234"))) ("."))) ("1234"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((((xDecimal)).apply ("1234.2"))) ("."))) ("1234.2"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("1234"))) (".") (2))) ("1234.00"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("1234"))) (".") (2) (","))) ("1234"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("1234"))) (".") (2) (",") (TRUE))) ("12,34"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("-1234.33"))) (".") (1))) ("-1234.3"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("0.00000001"))) (".") (8))) ("0.00000001"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("9e-19"))) (".") (2))) ("0.00"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply (".00000000000099"))) (".") (0))) ("0"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("1e16"))) (".") (",") (3) (TRUE))) ("10,000,000,000,000,000"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xnformat)) ((((xDecimal)).apply ("1e16"))) (".") (2) (",") (3) (TRUE))) ("10,000,000,000,000,000.00"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((((xDecimal)).apply ("3."))) ("."))) ("3"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((((xDecimal)).apply ("3.0"))) ("."))) ("3.0"))
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("9e9999") ("None: is there a None literal in the EO language?") ("9e-9999"))) ((((unsupported)).apply ("9e9999") (3) ("9.000e-9999"))) ((((unsupported)).apply ("9e201") ("None: is there a None literal in the EO language?") ("9e-201"))) ((((unsupported)).apply ("9e200") ("None: is there a None literal in the EO language?") ("9e-200"))) ((((unsupported)).apply ("1.2345e999") (2) ("1.23e-999"))) ((((unsupported)).apply ("9e-999") ("None: is there a None literal in the EO language?") ("9e-999"))) ((((unsupported)).apply ("1e-7") (8) ("0.00000010"))) ((((unsupported)).apply ("1e-8") (8) ("0.00000001"))) ((((unsupported)).apply ("1e-9") (8) ("0.00000000"))) ((((unsupported)).apply ("1e-10") (8) ("0.00000000"))) ((((unsupported)).apply ("1e-11") (8) ("0.00000000"))) ((((unsupported)).apply (("1".sub ("0".mul 300))) (3) ("1.000e-300"))) ((((unsupported)).apply (((("0.{}1234".xformat)).apply (("0".mul 299)))) (3) ("0.000"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xdecimal_pos)) ((xexpected_value)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((((xDecimal)).apply ((xvalue)))) (".") ((xdecimal_pos)))) ((xexpected_value)))
+                xtest_decimal_subclass.write
+                  [xself]
+                    memory > x__format__
+                    memory > xprice
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xDecimal)))
+                          seq
+                            (((unsupported)).apply)
+                            x__format__.write
+                              [xself xspecifier]
+                                memory > xamount
+                                seq > @
+                                  (((unsupported)).apply)
+                                    xamount.write ((((((xsuper)).apply).x__format__)).apply ((xspecifier)) ((((unsupported)).apply ((xkwargs)))))
+                                    (((unsupported)).apply (((("€ {}".xformat)).apply ((xamount)))))
+                        xprice.write (((xEuroDecimal)).apply ("1.23"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnformat)).apply ((xprice)) (","))) ("€ 1,23"))

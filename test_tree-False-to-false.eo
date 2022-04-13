@@ -1,0 +1,163 @@
+memory > xNode
+memory > xstr
+memory > xrepr
+memory > xunittest
+memory > xhash
+memory > xlen
+memory > xcopy
+memory > xfalse
+[] > test_tree
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_add_eq_child_mixed_connector
+        memory > xtest_repr
+        memory > xtest_add
+        memory > xtest_negate
+        memory > xtest_str
+        memory > xtest_contains
+        memory > xtest_eq_children
+        memory > xtest_len
+        memory > xtest_bool
+        memory > xtest_hash
+        memory > xsetUp
+        memory > xtest_deepcopy
+        memory > xtest_eq_negated
+        memory > xtest_eq_connector
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xnode1_children)) ((((unsupported)).apply ((((unsupported)).apply ("a") (1))) ((((unsupported)).apply ("b") (2))))))
+                        (((unsupported)).apply (((xself).xnode1)) ((((xNode)).apply (((xself).xnode1_children)))))
+                        (((unsupported)).apply (((xself).xnode2)) ((((xNode)).apply)))
+                xtest_str.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply (((xself).xnode1)))) ("(DEFAULT: ('a', 1), ('b', 2))"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply (((xself).xnode2)))) ("(DEFAULT: )"))
+                xtest_repr.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply (((xself).xnode1)))) ("<Node: (DEFAULT: ('a', 1), ('b', 2))>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply (((xself).xnode2)))) ("<Node: (DEFAULT: )>"))
+                xtest_hash.write
+                  [xself]
+                    memory > xnode4
+                    memory > xnode6
+                    memory > xnode7
+                    memory > xnode8
+                    memory > xnode3
+                    memory > xnode5
+                    seq > @
+                      seq
+                        xnode3.write (((unsupported)).apply ((xNode)) (((xself).xnode1_children)) (TRUE))
+                        xnode4.write (((unsupported)).apply ((xNode)) (((xself).xnode1_children)) ("OTHER"))
+                        xnode5.write (((xNode)).apply (((xself).xnode1_children)))
+                        xnode6.write (((xNode)).apply ((((unsupported)).apply ((((unsupported)).apply ("a") (1))) ((((unsupported)).apply ("b") (2))))))
+                        xnode7.write (((xNode)).apply ((((unsupported)).apply ((((unsupported)).apply ("a") ((((unsupported)).apply (1) (2))))))))
+                        xnode8.write (((xNode)).apply ((((unsupported)).apply ((((unsupported)).apply ("a") ((((unsupported)).apply (1) (2))))))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xhash)).apply (((xself).xnode1)))) ((((xhash)).apply (((xself).xnode2)))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xhash)).apply (((xself).xnode1)))) ((((xhash)).apply ((xnode3)))))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xhash)).apply (((xself).xnode1)))) ((((xhash)).apply ((xnode4)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xhash)).apply (((xself).xnode1)))) ((((xhash)).apply ((xnode5)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xhash)).apply (((xself).xnode1)))) ((((xhash)).apply ((xnode6)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xhash)).apply (((xself).xnode2)))) ((((xhash)).apply ((((xNode)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xhash)).apply ((xnode7)))) ((((xhash)).apply ((xnode8)))))
+                xtest_len.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xself).xnode1)))) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xself).xnode2)))) (0))
+                xtest_bool.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xself).xnode1)))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xself).xnode2)))
+                xtest_contains.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply ("a") (1))) (((xself).xnode1)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ((((unsupported)).apply ("a") (1))) (((xself).xnode2)))
+                xtest_add.write
+                  [xself]
+                    memory > xnode3
+                    memory > xnode3_added_child
+                    seq > @
+                      seq
+                        xnode3.write (((xNode)).apply (((xself).xnode1_children)))
+                        xnode3_added_child.write (((unsupported)).apply ("c") (3))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xnode3).xadd)).apply ((xnode3_added_child)) (((xNode).xdefault)))) ((xnode3_added_child)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlen)).apply (((xself).xnode1))).add 1)) ((((xlen)).apply ((xnode3)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xnode3)))) ("(DEFAULT: ('a', 1), ('b', 2), ('c', 3))"))
+                xtest_add_eq_child_mixed_connector.write
+                  [xself]
+                    memory > xnode
+                    seq > @
+                      seq
+                        xnode.write (((xNode)).apply ((((unsupported)).apply ("a") ("b"))) ("OR"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xnode).xadd)).apply ("a") ("AND"))) ("a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xnode)) ((((xNode)).apply ((((unsupported)).apply ((((xNode)).apply ((((unsupported)).apply ("a") ("b"))) ("OR"))) ("a"))) ("AND"))))
+                xtest_negate.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xself).xnode1).xnegated)))
+                        bogusForceDataize.write (((((xself).xnode1).xnegate)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xself).xnode1).xnegated)))
+                        bogusForceDataize.write (((((xself).xnode1).xnegate)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xself).xnode1).xnegated)))
+                xtest_deepcopy.write
+                  [xself]
+                    memory > xnode4
+                    memory > xnode5
+                    seq > @
+                      seq
+                        xnode4.write ((((xcopy).xcopy)).apply (((xself).xnode1)))
+                        xnode5.write ((((xcopy).xdeepcopy)).apply (((xself).xnode1)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xnode1).xchildren)) (((xnode4).xchildren)))
+                        bogusForceDataize.write ((((xself).xassertIsNot)).apply ((((xself).xnode1).xchildren)) (((xnode5).xchildren)))
+                xtest_eq_children.write
+                  [xself]
+                    memory > xnode
+                    seq > @
+                      seq
+                        xnode.write (((xNode)).apply (((xself).xnode1_children)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xnode)) (((xself).xnode1)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xnode)) (((xself).xnode2)))
+                xtest_eq_connector.write
+                  [xself]
+                    memory > xnew_node
+                    memory > xdefault_node
+                    seq > @
+                      seq
+                        xnew_node.write (((unsupported)).apply ((xNode)) ("NEW"))
+                        xdefault_node.write (((unsupported)).apply ((xNode)) ("DEFAULT"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xdefault_node)) (((xself).xnode2)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xdefault_node)) ((xnew_node)))
+                xtest_eq_negated.write
+                  [xself]
+                    memory > xnegated
+                    memory > xnode
+                    seq > @
+                      seq
+                        xnode.write (((unsupported)).apply ((xNode)) ((xfalse)))
+                        xnegated.write (((unsupported)).apply ((xNode)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xnegated)) ((xnode)))

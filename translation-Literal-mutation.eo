@@ -1,0 +1,75 @@
+memory > xstr
+memory > xError
+memory > x_
+memory > xsettings
+memory > xtag
+memory > xLookupError
+memory > xget_supported_language_variant
+memory > xisinstance
+memory > xlanguage_code_re
+[] > translation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xE001
+        memory > xE003
+        memory > xcheck_language_settings_consistent
+        memory > xE004
+        memory > xcheck_setting_language_code
+        memory > xcheck_setting_languages_bidi
+        memory > xE002
+        memory > xcheck_setting_languages
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            xE001.write (((unsupported)).apply ((xError)) ("You have provided an invalid value for the LANGUAGE_CODE setting: {!r}.") ("translation.E001"))
+            xE002.write (((unsupported)).apply ((xError)) ("You have provided an invalid language code in the LANGUAGES setting: {!r}.") ("translation.E002"))
+            xE003.write (((unsupported)).apply ((xError)) ("You have provided an invalid language code in the LANGUAGES_BIDI setting: {!r}.") ("translation.E003"))
+            xE004.write (((unsupported)).apply ((xError)) ("You have provided a value for the LANGUAGE_CODE setting that is not in the LANGUAGES setting.") ("translation.E004"))
+            xcheck_setting_language_code.write
+              [xapp_configs]
+                memory > xtag
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    xtag.write ((xsettings).xLANGUAGE_CODE)
+                    (((((xisinstance)).apply ((xtag)) ((xstr))).not).or (((((xlanguage_code_re).xmatch)).apply ((xtag))).not)).if
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xError)) ((((((xE001).xmsg).xformat)).apply ((xtag)))) (((xE001).xid)))))))
+                    (((unsupported)).apply ((((unsupported)).apply)))
+            xcheck_setting_languages.write
+              [xapp_configs]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xError)) ((((((xE002).xmsg).xformat)).apply ((xtag)))) (((xE002).xid)))) ((((unsupported)).apply ((xtag)) ((x_)))) (((xsettings).xLANGUAGES)) ((((((xisinstance)).apply ((xtag)) ((xstr))).not).or (((((xlanguage_code_re).xmatch)).apply ((xtag))).not))))))
+            xcheck_setting_languages_bidi.write
+              [xapp_configs]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xError)) ((((((xE003).xmsg).xformat)).apply ((xtag)))) (((xE003).xid)))) ((xtag)) (((xsettings).xLANGUAGES_BIDI)) ((((((xisinstance)).apply ((xtag)) ((xstr))).not).or (((((xlanguage_code_re).xmatch)).apply ((xtag))).not))))))
+            xcheck_language_settings_consistent.write
+              [xapp_configs]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xLookupError)))
+                      bogusForceDataize.write (((xget_supported_language_variant)).apply (((xsettings).xLANGUAGE_CODE)))
+                      (((unsupported)).apply ((((unsupported)).apply ((xE004)))))
+                      (((unsupported)).apply ((((unsupported)).apply)))

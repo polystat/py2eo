@@ -1,0 +1,114 @@
+memory > xCharField
+memory > xTestForm
+memory > xmark_safe
+memory > xForm
+memory > xWidgetTest
+memory > xTextInput
+[] > test_textinput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_use_required_attribute
+        memory > xtest_render
+        memory > xtest_render_unicode
+        memory > xtest_attrs_precedence
+        memory > xtest_render_custom_attrs
+        memory > xtest_render_quoted
+        memory > xtest_render_value
+        memory > xtest_fieldset
+        memory > xwidget
+        memory > xtest_constructor_attrs
+        memory > xtest_attrs_safestring
+        memory > xtest_render_none
+        memory > xtest_render_boolean
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (xTextInput)
+                xtest_render.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ("") ("<input type=\"text\" name=\"email\">"))
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ("None: is there a None literal in the EO language?") ("<input type=\"text\" name=\"email\">"))
+                xtest_render_value.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ("test@example.com") ("<input type=\"text\" name=\"email\" value=\"test@example.com\">"))
+                xtest_render_boolean.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("get_spam") (FALSE) ("<input type=\"text\" name=\"get_spam\" value=\"False\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("get_spam") (TRUE) ("<input type=\"text\" name=\"get_spam\" value=\"True\">"))
+                xtest_render_quoted.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ("some \"quoted\" & ampersanded value") ("<input type=\"text\" name=\"email\" value=\"some &quot;quoted&quot; &amp; ampersanded value\">"))
+                xtest_render_custom_attrs.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ("test@example.com") ((((unsupported)).apply ("class") ("fun"))) ("<input type=\"text\" name=\"email\" value=\"test@example.com\" class=\"fun\">"))
+                xtest_render_unicode.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ("ŠĐĆŽćžšđ") ((((unsupported)).apply ("class") ("fun"))) ("<input type=\"text\" name=\"email\" value=\"u0160u0110u0106u017du0107u017eu0161u0111\" class=\"fun\">"))
+                xtest_constructor_attrs.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((unsupported)).apply ((xTextInput)) ((((unsupported)).apply ("class") ("fun") ("type") ("email"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("email") ("") ("<input type=\"email\" class=\"fun\" name=\"email\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("email") ("foo@example.com") ("<input type=\"email\" class=\"fun\" value=\"foo@example.com\" name=\"email\">"))
+                xtest_attrs_precedence.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((unsupported)).apply ((xTextInput)) ((((unsupported)).apply ("class") ("pretty"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("email") ("") ((((unsupported)).apply ("class") ("special"))) ("<input type=\"text\" class=\"special\" name=\"email\">"))
+                xtest_attrs_safestring.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((unsupported)).apply ((xTextInput)) ((((unsupported)).apply ("onBlur") ((((xmark_safe)).apply ("function('foo')"))))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("email") ("") ("<input onBlur=\"function('foo')\" type=\"text\" name=\"email\">"))
+                xtest_use_required_attribute.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xself).xwidget).xuse_required_attribute)).apply ("None: is there a None literal in the EO language?"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xself).xwidget).xuse_required_attribute)).apply (""))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xself).xwidget).xuse_required_attribute)).apply ("resume.txt"))) (TRUE))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xCharField)) (((xself).xwidget)))
+                        xform.write (xTestForm)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><label for=\"id_field\">Field:</label><input type=\"text\" name=\"field\" required id=\"id_field\"></div>") (((xform).xrender)))

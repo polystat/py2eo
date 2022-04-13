@@ -1,0 +1,76 @@
+memory > xCar
+memory > xTestCase
+memory > xalias
+memory > xconnections
+memory > xTransactionTestCase
+memory > xoverride_settings
+memory > xDatabaseOperationForbidden
+memory > xlen
+[] > test_transactiontestcase
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdatabases
+        memory > xserialized_rollback
+        memory > xsetUp
+        memory > xtearDown
+        memory > xavailable_apps
+        memory > xtest_queries_cleared
+        memory > xtest
+        memory > xtest_disallowed_database_queries
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                (((unsupported)).apply)
+                xavailable_apps.write (((unsupported)).apply ("test_utils"))
+                xserialized_rollback.write TRUE
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xavailable_apps)) ("None: is there a None literal in the EO language?"))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xavailable_apps)) ((((unsupported)).apply ("test_utils"))))
+                xtest.write
+                  [xself xcall_command]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).x_fixture_teardown)).apply)
+                        (((unsupported)).apply (((xcall_command).xassert_called_with)) ("flush") (FALSE) (FALSE) (FALSE) (TRUE) ("default") (0))
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) (TRUE))))
+              seq
+                xavailable_apps.write (((unsupported)).apply)
+                xdatabases.write (((unsupported)).apply ("default") ("other"))
+                xtest_queries_cleared.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xalias)) (((xself).xdatabases)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((((unsupported)).apply ((xconnections)) ((xalias))).xqueries_log)))) (0) (("Failed for alias %s".mod (xalias))))
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("test_utils"))
+                xtest_disallowed_database_queries.write
+                  [xself]
+                    memory > xmessage
+                    seq > @
+                      seq
+                        xmessage.write "Database queries to 'other' are not allowed in this test. Add 'other' to test_utils.test_transactiontestcase.DisallowedDatabaseQueriesTests.databases to ensure proper test isolation and silence this failure."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDatabaseOperationForbidden)) ((xmessage)))))
+                          bogusForceDataize.write ((((((((xCar).xobjects).xusing)).apply ("other")).xget)).apply)

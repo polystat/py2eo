@@ -1,0 +1,33 @@
+memory > xoutput
+memory > xSimpleTestCase
+[] > test_safe
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_safe01
+        memory > xtest_safe02
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_safe01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("safe01") ((((unsupported)).apply ("a") ("<b>hello</b>"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&lt;b&gt;hello&lt;/b&gt; -- <b>hello</b>"))
+                xtest_safe02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("safe02") ((((unsupported)).apply ("a") ("<b>hello</b>"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<b>hello</b> -- <b>hello</b>"))

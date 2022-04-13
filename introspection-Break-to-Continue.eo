@@ -1,0 +1,380 @@
+memory > xtoken
+memory > xend_token
+memory > xstr
+memory > x_
+memory > xindex_rank
+memory > xnamedtuple
+memory > xpk
+memory > xIndex
+memory > xunique
+memory > xnotnull
+memory > xcolumn
+memory > xname
+memory > xdata_type
+memory > x_lazy_re_compile
+memory > xnumber
+memory > xcid
+memory > xTableInfo
+memory > xindex
+memory > xenumerate
+memory > xcheck
+memory > xinfo
+memory > xcolumn_name
+memory > xdefault
+memory > xset
+memory > xint
+memory > xDatabaseError
+memory > xconstraint_name
+memory > xsuper
+memory > xrow
+memory > xbool
+memory > xsqlparse
+memory > xsql
+memory > xBaseDatabaseIntrospection
+memory > xcolumn_rank
+memory > xref_column_name
+memory > xisinstance
+memory > xref_table_name
+memory > xline
+memory > xTypeError
+memory > xFlexibleFieldLookupDict
+[] > introspection
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_relations
+        memory > xBaseFieldInfo
+        memory > xget_table_description
+        memory > x_parse_table_constraints
+        memory > xdata_types_reverse
+        memory > xFieldInfo
+        memory > x_get_index_columns_orders
+        memory > xget_field_type
+        memory > x_get_column_collations
+        memory > xget_table_list
+        memory > xbase_data_types_reverse
+        memory > xget_primary_key_column
+        memory > x__getitem__
+        memory > xfield_size_re
+        memory > xget_field_size
+        memory > x_parse_column_or_constraint_definition
+        memory > xget_sequences
+        memory > xget_constraints
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xFieldInfo.write (((xnamedtuple)).apply ("FieldInfo") ((((xBaseFieldInfo).x_fields).add (((unsupported)).apply ("pk") ("has_json_constraint")))))
+            xfield_size_re.write (((x_lazy_re_compile)).apply ("^s*(?:var)?chars*(s*(d+)s*)s*$"))
+            xget_field_size.write
+              [xname]
+                memory > xm
+                seq > @
+                  seq
+                    unsupported
+                    xm.write ((((xfield_size_re).xsearch)).apply ((xname)))
+                    (((unsupported)).apply (((xm).if (((xint)).apply ((((unsupported)).apply ((xm)) (1)))) "None: is there a None literal in the EO language?")))
+            (((unsupported)).apply)
+              seq
+                xbase_data_types_reverse.write (((unsupported)).apply ("bool") ("BooleanField") ("boolean") ("BooleanField") ("smallint") ("SmallIntegerField") ("smallint unsigned") ("PositiveSmallIntegerField") ("smallinteger") ("SmallIntegerField") ("int") ("IntegerField") ("integer") ("IntegerField") ("bigint") ("BigIntegerField") ("integer unsigned") ("PositiveIntegerField") ("bigint unsigned") ("PositiveBigIntegerField") ("decimal") ("DecimalField") ("real") ("FloatField") ("text") ("TextField") ("char") ("CharField") ("varchar") ("CharField") ("blob") ("BinaryField") ("date") ("DateField") ("datetime") ("DateTimeField") ("time") ("TimeField"))
+                x__getitem__.write
+                  [xself xkey]
+                    seq > @
+                      seq
+                        xkey.write ((((((unsupported)).apply ((((((((xkey).xlower)).apply).xsplit)).apply ("(") (1))) (0)).xstrip)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xbase_data_types_reverse)) ((xkey)))))
+            (((unsupported)).apply ((xBaseDatabaseIntrospection)))
+              seq
+                xdata_types_reverse.write (((xFlexibleFieldLookupDict)).apply)
+                xget_field_type.write
+                  [xself xdata_type xdescription]
+                    memory > xfield_type
+                    seq > @
+                      seq
+                        xfield_type.write ((((((xsuper)).apply).xget_field_type)).apply ((xdata_type)) ((xdescription)))
+                        (((xdescription).xpk).and (((unsupported)).apply ((xfield_type)) ((((unsupported)).apply ("BigIntegerField") ("IntegerField") ("SmallIntegerField"))))).if
+                          (((unsupported)).apply ("AutoField"))
+                        ((xdescription).xhas_json_constraint).if
+                          (((unsupported)).apply ("JSONField"))
+                        (((unsupported)).apply ((xfield_type)))
+                xget_table_list.write
+                  [xself xcursor]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcursor).xexecute)).apply ((((unsupported)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xTableInfo)).apply ((((unsupported)).apply ((xrow)) (0))) ((((unsupported)).apply ((((unsupported)).apply ((xrow)) (1))) (0))))) ((xrow)) (((((xcursor).xfetchall)).apply)))))
+                xget_table_description.write
+                  [xself xcursor xtable_name]
+                    memory > xjson_constraint_sql
+                    memory > xhas_json_constraint
+                    memory > xjson_columns
+                    memory > xtable_info
+                    memory > xcolumn
+                    memory > xcollations
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xcursor).xexecute)).apply (("PRAGMA table_info(%s)".mod ((((((xself).xconnection).xops).xquote_name)).apply ((xtable_name))))))
+                        xtable_info.write ((((xcursor).xfetchall)).apply)
+                        ((xtable_info).not).if
+                          (((unsupported)).apply ((((xDatabaseError)).apply ("Table {table_name} does not exist (empty pragma)."))))
+                        xcollations.write ((((xself).x_get_column_collations)).apply ((xcursor)) ((xtable_name)))
+                        xjson_columns.write (((xset)).apply)
+                        ((((xself).xconnection).xfeatures).xcan_introspect_json_field).if
+                          (((unsupported)).apply ((xline)) ((xtable_info)))
+                            seq
+                              xcolumn.write (((unsupported)).apply ((xline)) (1))
+                              xjson_constraint_sql.write ("%%json_valid(\"%s\")%%".mod (xcolumn))
+                              xhas_json_constraint.write (((((((xcursor).xexecute)).apply ((((unsupported)).apply)) ((((unsupported)).apply ((xtable_name)) ((xjson_constraint_sql))))).xfetchone)).apply)
+                              (xhas_json_constraint).if
+                                bogusForceDataize.write ((((xjson_columns).xadd)).apply ((xcolumn)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xFieldInfo)).apply ((xname)) ((xdata_type)) ("None: is there a None literal in the EO language?") ((((xget_field_size)).apply ((xdata_type)))) ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?") (((xnotnull).not)) ((xdefault)) (((((xcollations).xget)).apply ((xname)))) (((xpk).eq 1)) ((((unsupported)).apply ((xname)) ((xjson_columns)))))) ((((unsupported)).apply ((xcid)) ((xname)) ((xdata_type)) ((xnotnull)) ((xdefault)) ((xpk)))) ((xtable_info)))))
+                xget_sequences.write
+                  [xself xcursor xtable_name xtable_fields]
+                    memory > xpk_col
+                    seq > @
+                      (((unsupported)).apply)
+                        xpk_col.write ((((xself).xget_primary_key_column)).apply ((xcursor)) ((xtable_name)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ("table") ((xtable_name)) ("column") ((xpk_col)))))))
+                xget_relations.write
+                  [xself xcursor xtable_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xcursor).xexecute)).apply (("PRAGMA foreign_key_list(%s)".mod ((((((xself).xconnection).xops).xquote_name)).apply ((xtable_name))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xcolumn_name)) ((((unsupported)).apply ((xref_column_name)) ((xref_table_name)))) ((((unsupported)).apply ((x_)) ((x_)) ((xref_table_name)) ((xcolumn_name)) ((xref_column_name)) ((((unsupported)).apply ((x_)))))) (((((xcursor).xfetchall)).apply)))))
+                xget_primary_key_column.write
+                  [xself xcursor xtable_name]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcursor).xexecute)).apply (("PRAGMA table_info(%s)".mod ((((((xself).xconnection).xops).xquote_name)).apply ((xtable_name))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((x_)) ((xname)) ((((unsupported)).apply ((x_)))) ((xpk)))) (((((xcursor).xfetchall)).apply)))
+                          (xpk).if
+                            (((unsupported)).apply ((xname)))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                x_parse_column_or_constraint_definition.write
+                  [xself xtokens xcolumns]
+                    memory > xtoken
+                    memory > xcheck_braces_deep
+                    memory > xcheck_constraint
+                    memory > xcheck
+                    memory > xunique
+                    memory > xbraces_deep
+                    memory > xunique_constraint
+                    memory > xunique_columns
+                    memory > xcheck_columns
+                    memory > xunique_braces_deep
+                    memory > xfield_name
+                    memory > xis_constraint_definition
+                    memory > xconstraint_name
+                    seq > @
+                      seq
+                        xtoken.write "None: is there a None literal in the EO language?"
+                        xis_constraint_definition.write "None: is there a None literal in the EO language?"
+                        xfield_name.write "None: is there a None literal in the EO language?"
+                        xconstraint_name.write "None: is there a None literal in the EO language?"
+                        xunique.write FALSE
+                        xunique_columns.write (((unsupported)).apply)
+                        xcheck.write FALSE
+                        xcheck_columns.write (((unsupported)).apply)
+                        xbraces_deep.write 0
+                        (((unsupported)).apply ((xtoken)) ((xtokens)))
+                          seq
+                            ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xPunctuation)) ("(")).if
+                              (((unsupported)).apply ((xbraces_deep)) (1))
+                              ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xPunctuation)) (")")).if
+                                seq
+                                  (((unsupported)).apply ((xbraces_deep)) (1))
+                                  ((xbraces_deep).less 0).if
+                                    (((unsupported)).apply)
+                                (((xbraces_deep).eq 0).and ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xPunctuation)) (","))).if
+                                  (((unsupported)).apply)
+                            (((unsupported)).apply ((xis_constraint_definition)) ("None: is there a None literal in the EO language?")).if
+                              seq
+                                xis_constraint_definition.write ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xKeyword)) ("CONSTRAINT"))
+                                (xis_constraint_definition).if
+                                  (((unsupported)).apply)
+                            (xis_constraint_definition).if
+                              seq
+                                (((unsupported)).apply ((xconstraint_name)) ("None: is there a None literal in the EO language?")).if
+                                  (((unsupported)).apply (((xtoken).xttype)) ((((unsupported)).apply ((((xsqlparse).xtokens).xName)) ((((xsqlparse).xtokens).xKeyword))))).if
+                                    xconstraint_name.write ((xtoken).xvalue)
+                                    (((xtoken).xttype).eq (((((xsqlparse).xtokens).xLiteral).xString).xSymbol)).if
+                                      xconstraint_name.write (((unsupported)).apply (((xtoken).xvalue)) ((((unsupported)).apply (1) ((1.neg)))))
+                                ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xKeyword)) ("UNIQUE")).if
+                                  seq
+                                    xunique.write TRUE
+                                    xunique_braces_deep.write (xbraces_deep)
+                                  (xunique).if
+                                    seq
+                                      ((xunique_braces_deep).eq (xbraces_deep)).if
+                                        seq
+                                          (xunique_columns).if
+                                            xunique.write FALSE
+                                          (((unsupported)).apply)
+                                      (((unsupported)).apply (((xtoken).xttype)) ((((unsupported)).apply ((((xsqlparse).xtokens).xName)) ((((xsqlparse).xtokens).xKeyword))))).if
+                                        bogusForceDataize.write ((((xunique_columns).xappend)).apply (((xtoken).xvalue)))
+                                        (((xtoken).xttype).eq (((((xsqlparse).xtokens).xLiteral).xString).xSymbol)).if
+                                          bogusForceDataize.write ((((xunique_columns).xappend)).apply ((((unsupported)).apply (((xtoken).xvalue)) ((((unsupported)).apply (1) ((1.neg)))))))
+                              seq
+                                (((unsupported)).apply ((xfield_name)) ("None: is there a None literal in the EO language?")).if
+                                  (((unsupported)).apply (((xtoken).xttype)) ((((unsupported)).apply ((((xsqlparse).xtokens).xName)) ((((xsqlparse).xtokens).xKeyword))))).if
+                                    xfield_name.write ((xtoken).xvalue)
+                                    (((xtoken).xttype).eq (((((xsqlparse).xtokens).xLiteral).xString).xSymbol)).if
+                                      xfield_name.write (((unsupported)).apply (((xtoken).xvalue)) ((((unsupported)).apply (1) ((1.neg)))))
+                                ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xKeyword)) ("UNIQUE")).if
+                                  xunique_columns.write (((unsupported)).apply ((xfield_name)))
+                            ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xKeyword)) ("CHECK")).if
+                              seq
+                                xcheck.write TRUE
+                                xcheck_braces_deep.write (xbraces_deep)
+                              (xcheck).if
+                                seq
+                                  ((xcheck_braces_deep).eq (xbraces_deep)).if
+                                    seq
+                                      (xcheck_columns).if
+                                        xcheck.write FALSE
+                                      (((unsupported)).apply)
+                                  (((unsupported)).apply (((xtoken).xttype)) ((((unsupported)).apply ((((xsqlparse).xtokens).xName)) ((((xsqlparse).xtokens).xKeyword))))).if
+                                    (((unsupported)).apply (((xtoken).xvalue)) ((xcolumns))).if
+                                      bogusForceDataize.write ((((xcheck_columns).xappend)).apply (((xtoken).xvalue)))
+                                    (((xtoken).xttype).eq (((((xsqlparse).xtokens).xLiteral).xString).xSymbol)).if
+                                      (((unsupported)).apply ((((unsupported)).apply (((xtoken).xvalue)) ((((unsupported)).apply (1) ((1.neg)))))) ((xcolumns))).if
+                                        bogusForceDataize.write ((((xcheck_columns).xappend)).apply ((((unsupported)).apply (((xtoken).xvalue)) ((((unsupported)).apply (1) ((1.neg)))))))
+                        xunique_constraint.write ((xunique_columns).if (((unsupported)).apply ("unique") (TRUE) ("columns") ((xunique_columns)) ("primary_key") (FALSE) ("foreign_key") ("None: is there a None literal in the EO language?") ("check") (FALSE) ("index") (FALSE)) "None: is there a None literal in the EO language?")
+                        xcheck_constraint.write ((xcheck_columns).if (((unsupported)).apply ("check") (TRUE) ("columns") ((xcheck_columns)) ("primary_key") (FALSE) ("unique") (FALSE) ("foreign_key") ("None: is there a None literal in the EO language?") ("index") (FALSE)) "None: is there a None literal in the EO language?")
+                        (((unsupported)).apply ((((unsupported)).apply ((xconstraint_name)) ((xunique_constraint)) ((xcheck_constraint)) ((xtoken)))))
+                x_parse_table_constraints.write
+                  [xself xsql xcolumns]
+                    memory > xunnamed_constrains_index
+                    memory > xconstraints
+                    memory > xstatement
+                    memory > xtokens
+                    seq > @
+                      seq
+                        xstatement.write (((unsupported)).apply (((((xsqlparse).xparse)).apply ((xsql)))) (0))
+                        xconstraints.write (((unsupported)).apply)
+                        xunnamed_constrains_index.write 0
+                        xtokens.write (((unsupported)).apply ((xtoken)) ((xtoken)) (((((xstatement).xflatten)).apply)) ((((xtoken).xis_whitespace).not)))
+                        (((unsupported)).apply ((xtoken)) ((xtokens)))
+                          ((((xtoken).xmatch)).apply ((((xsqlparse).xtokens).xPunctuation)) ("(")).if
+                            (((unsupported)).apply)
+                        while.
+                          TRUE
+                          [unused]
+                            seq > @
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((xconstraint_name)) ((xunique)) ((xcheck)) ((xend_token)))) (((((xself).x_parse_column_or_constraint_definition)).apply ((xtokens)) ((xcolumns)))))
+                                (xunique).if
+                                  (xconstraint_name).if
+                                    (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xconstraint_name)))) ((xunique)))
+                                    seq
+                                      (((unsupported)).apply ((xunnamed_constrains_index)) (1))
+                                      (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) (("__unnamed_constraint_%s__".mod (xunnamed_constrains_index))))) ((xunique)))
+                                (xcheck).if
+                                  (xconstraint_name).if
+                                    (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xconstraint_name)))) ((xcheck)))
+                                    seq
+                                      (((unsupported)).apply ((xunnamed_constrains_index)) (1))
+                                      (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) (("__unnamed_constraint_%s__".mod (xunnamed_constrains_index))))) ((xcheck)))
+                                ((((xend_token).xmatch)).apply ((((xsqlparse).xtokens).xPunctuation)) (")")).if
+                                  (((unsupported)).apply)
+                        (((unsupported)).apply ((xconstraints)))
+                xget_constraints.write
+                  [xself xcursor xtable_name]
+                    memory > xconstraints
+                    memory > xtable_schema
+                    memory > xorders
+                    memory > xcolumns
+                    memory > xpk_column
+                    memory > xrelations
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xconstraints.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xTypeError)))
+                          xtable_schema.write (((unsupported)).apply ((((((((xcursor).xexecute)).apply (("SELECT sql FROM sqlite_master WHERE type='table' and name=%s".mod (((unsupported)).apply (((((((xself).xconnection).xops).xquote_name)).apply ((xtable_name)))))))).xfetchone)).apply)) (0))
+                          seq
+                            xcolumns.write (((unsupported)).apply (((xinfo).xname)) ((xinfo)) (((((xself).xget_table_description)).apply ((xcursor)) ((xtable_name)))))
+                            bogusForceDataize.write ((((xconstraints).xupdate)).apply (((((xself).x_parse_table_constraints)).apply ((xtable_schema)) ((xcolumns)))))
+                        bogusForceDataize.write ((((xcursor).xexecute)).apply (("PRAGMA index_list(%s)".mod ((((((xself).xconnection).xops).xquote_name)).apply ((xtable_name))))))
+                        (((unsupported)).apply ((xrow)) (((((xcursor).xfetchall)).apply)))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xnumber)) ((xindex)) ((xunique)))) ((((unsupported)).apply ((xrow)) ((((unsupported)).apply (3))))))
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply (("SELECT sql FROM sqlite_master WHERE type='index' AND name=%s".mod ((((((xself).xconnection).xops).xquote_name)).apply ((xindex))))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xsql)))) ((((((xcursor).xfetchone)).apply).or (((unsupported)).apply ("None: is there a None literal in the EO language?")))))
+                            ((xsql).not).if
+                              (((unsupported)).apply)
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply (("PRAGMA index_info(%s)".mod ((((((xself).xconnection).xops).xquote_name)).apply ((xindex))))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xindex_rank)) ((xcolumn_rank)) ((xcolumn)))) (((((xcursor).xfetchall)).apply)))
+                              seq
+                                (((unsupported)).apply ((xindex)) ((xconstraints))).if
+                                  (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xindex)))) ((((unsupported)).apply ("columns") ((((unsupported)).apply)) ("primary_key") (FALSE) ("unique") ((((xbool)).apply ((xunique)))) ("foreign_key") ("None: is there a None literal in the EO language?") ("check") (FALSE) ("index") (TRUE))))
+                                bogusForceDataize.write ((((((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xindex)))) ("columns")).xappend)).apply ((xcolumn)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xindex)))) ("index")).if
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xindex)))) ("type"))) (((xIndex).xsuffix)))
+                                xorders.write ((((xself).x_get_index_columns_orders)).apply ((xsql)))
+                                (((unsupported)).apply ((xorders)) ("None: is there a None literal in the EO language?")).if
+                                  (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xindex)))) ("orders"))) ((xorders)))
+                        xpk_column.write ((((xself).xget_primary_key_column)).apply ((xcursor)) ((xtable_name)))
+                        (xpk_column).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ("__primary__"))) ((((unsupported)).apply ("columns") ((((unsupported)).apply ((xpk_column)))) ("primary_key") (TRUE) ("unique") (FALSE) ("foreign_key") ("None: is there a None literal in the EO language?") ("check") (FALSE) ("index") (FALSE))))
+                        xrelations.write (((xenumerate)).apply ((((((((xself).xget_relations)).apply ((xcursor)) ((xtable_name))).xitems)).apply)))
+                        bogusForceDataize.write ((((xconstraints).xupdate)).apply ((((unsupported)).apply ("fk_{index}") ((((unsupported)).apply ("columns") ((((unsupported)).apply ((xcolumn_name)))) ("primary_key") (FALSE) ("unique") (FALSE) ("foreign_key") ((((unsupported)).apply ((xref_table_name)) ((xref_column_name)))) ("check") (FALSE) ("index") (FALSE))) ((((unsupported)).apply ((xindex)) ((((unsupported)).apply ((xcolumn_name)) ((((unsupported)).apply ((xref_column_name)) ((xref_table_name)))))))) ((xrelations)))))
+                        (((unsupported)).apply ((xconstraints)))
+                x_get_index_columns_orders.write
+                  [xself xsql]
+                    memory > xcolumns
+                    memory > xtokens
+                    seq > @
+                      seq
+                        xtokens.write (((unsupported)).apply (((((xsqlparse).xparse)).apply ((xsql)))) (0))
+                        (((unsupported)).apply ((xtoken)) ((xtokens)))
+                          (((xisinstance)).apply ((xtoken)) ((((xsqlparse).xsql).xParenthesis))).if
+                            seq
+                              xcolumns.write (((((((((xstr)).apply ((xtoken))).xstrip)).apply ("()")).xsplit)).apply (", "))
+                              (((unsupported)).apply ((((unsupported)).apply ((((((xinfo).xendswith)).apply ("DESC")).if "DESC" "ASC")) ((xinfo)) ((xcolumns)))))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                x_get_column_collations.write
+                  [xself xcursor xtable_name]
+                    memory > xcolumn_name
+                    memory > xcollation
+                    memory > xsql
+                    memory > xcollations
+                    memory > xcolumns
+                    memory > xtokens
+                    memory > xrow
+                    seq > @
+                      seq
+                        xrow.write (((((((xcursor).xexecute)).apply ((((unsupported)).apply)) ((((unsupported)).apply ((xtable_name))))).xfetchone)).apply)
+                        ((xrow).not).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        xsql.write (((unsupported)).apply ((xrow)) (0))
+                        xcolumns.write (((((((((xstr)).apply ((((unsupported)).apply ((((unsupported)).apply (((((xsqlparse).xparse)).apply ((xsql)))) (0))) ((1.neg))))).xstrip)).apply ("()")).xsplit)).apply (", "))
+                        xcollations.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xcolumn)) ((xcolumns)))
+                          seq
+                            xtokens.write ((((((unsupported)).apply ((xcolumn)) ((((unsupported)).apply (1)))).xsplit)).apply)
+                            xcolumn_name.write ((((((unsupported)).apply ((xtokens)) (0)).xstrip)).apply ("\""))
+                            (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xtoken)))) ((((xenumerate)).apply ((xtokens)))))
+                              ((xtoken).eq "COLLATE").if
+                                seq
+                                  xcollation.write (((unsupported)).apply ((xtokens)) (((xindex).add 1)))
+                                  (((unsupported)).apply)
+                              xcollation.write "None: is there a None literal in the EO language?"
+                            (((unsupported)).apply ((((unsupported)).apply ((xcollations)) ((xcolumn_name)))) ((xcollation)))
+                        (((unsupported)).apply ((xcollations)))

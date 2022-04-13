@@ -1,0 +1,37 @@
+memory > xget_user_model
+memory > xadmin
+memory > xCustomUserAdmin
+memory > xpath
+memory > xUserAdmin
+memory > xsuper
+[] > urls_custom_user_admin
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsite
+        memory > xlog_change
+        memory > xurlpatterns
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xsite.write (((unsupported)).apply (((xadmin).xAdminSite)) ("custom_user_admin"))
+            (((unsupported)).apply ((xUserAdmin)))
+              xlog_change.write
+                [xself xrequest xobj xmessage]
+                  memory > xoriginal_pk
+                  seq > @
+                    seq
+                      xoriginal_pk.write (((xrequest).xuser).xpk)
+                      (((unsupported)).apply ((((xrequest).xuser).xpk)) (1))
+                      bogusForceDataize.write ((((xsuper).xlog_change)).apply ((xrequest)) ((xobj)) ((xmessage)))
+                      (((unsupported)).apply ((((xrequest).xuser).xpk)) ((xoriginal_pk)))
+            bogusForceDataize.write ((((xsite).xregister)).apply ((xget_user_model)) ((xCustomUserAdmin)))
+            xurlpatterns.write (((unsupported)).apply ((((xpath)).apply ("admin/") (((xsite).xurls)))))

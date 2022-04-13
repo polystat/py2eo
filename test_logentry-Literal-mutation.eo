@@ -1,0 +1,292 @@
+memory > xdatetime
+memory > xtranslation
+memory > xaction_flag
+memory > xTestCase
+memory > xdisplay_name
+memory > xADDITION
+memory > xSite
+memory > xoverride_settings
+memory > xescape
+memory > xArticle
+memory > xLogEntry
+memory > xreverse
+memory > xContentType
+memory > xquote
+memory > xstr
+memory > xrepr
+memory > xDELETION
+memory > xjson
+memory > xCHANGE
+memory > xUser
+memory > xArticleProxy
+[] > test_logentry
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_recentactions_without_content_type
+        memory > xtest_logentry_change_message_not_json
+        memory > xsetUpTestData
+        memory > xtest_logentry_unicode
+        memory > xsetUp
+        memory > xtest_logentry_change_message_localized_datetime_input
+        memory > xtest_action_flag_choices
+        memory > xtest_logentry_save
+        memory > xtest_logentry_repr
+        memory > xtest_logentry_change_message
+        memory > xtest_logentry_get_admin_url
+        memory > xtest_logentry_get_edited_object
+        memory > xtest_log_action
+        memory > xtest_logentry_change_message_formsets
+        memory > xtest_proxy_model_content_type_is_used_for_log_entries
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_utils.urls"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    memory > xcontent_type_pk
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                        (((unsupported)).apply (((xcls).xsite)) ((((unsupported)).apply ((((xSite).xobjects).xcreate)) ("example.org"))))
+                        (((unsupported)).apply (((xcls).xa1)) ((((unsupported)).apply ((((xArticle).xobjects).xcreate)) (((xcls).xsite)) ("Title") ((((xdatetime)).apply (2008) (3) (12) (11) (54))))))
+                        xcontent_type_pk.write ((((((xContentType).xobjects).xget_for_model)).apply ((xArticle))).xpk)
+                        (((unsupported)).apply ((((xLogEntry).xobjects).xlog_action)) ((((xcls).xuser).xpk)) ((xcontent_type_pk)) ((((xcls).xa1).xpk)) ((((xrepr)).apply (((xcls).xa1)))) ((xCHANGE)) ("Changed something"))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xuser)))
+                xtest_logentry_save.write
+                  [xself]
+                    memory > xaction_time
+                    memory > xlogentry
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xlogentry.write (((unsupported)).apply ((((xLogEntry).xobjects).xget)) ("article"))
+                        xaction_time.write ((xlogentry).xaction_time)
+                        bogusForceDataize.write ((((xlogentry).xsave)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xlogentry).xaction_time)) ((xaction_time)))
+                xtest_logentry_change_message.write
+                  [xself]
+                    memory > xlogentry
+                    memory > xchange_url
+                    memory > xresponse
+                    memory > xadd_url
+                    memory > xpost_data
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xpost_data.write (((unsupported)).apply ("site") ((((xself).xsite).xpk)) ("title") ("Changed") ("hist") ("Some content") ("created_0") ("2008-03-12") ("created_1") ("11:54"))
+                        xchange_url.write (((unsupported)).apply ((xreverse)) ("admin:admin_utils_article_change") ((((unsupported)).apply ((((xquote)).apply ((((xself).xa1).xpk)))))))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xchange_url)) ((xpost_data)))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((((xreverse)).apply ("admin:admin_utils_article_changelist"))))
+                        xlogentry.write ((((((unsupported)).apply ((((xLogEntry).xobjects).xfilter)) ("article")).xlatest)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) ("Changed Title and History."))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) ("Modification de Title et Historique."))
+                        xadd_url.write (((xreverse)).apply ("admin:admin_utils_article_add"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xpost_data)) ("title"))) ("New"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xadd_url)) ((xpost_data)))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((((xreverse)).apply ("admin:admin_utils_article_changelist"))))
+                        xlogentry.write ((((((unsupported)).apply ((((xLogEntry).xobjects).xfilter)) ("article")).xlatest)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) ("Added."))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) ("Ajout."))
+                xtest_logentry_change_message_not_json.write
+                  [xself]
+                    memory > xlogentry
+                    seq > @
+                      seq
+                        unsupported
+                        xlogentry.write (((unsupported)).apply ((xLogEntry)) ("non-JSON string"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) (((xlogentry).xchange_message)))
+                xtest_logentry_change_message_localized_datetime_input.write
+                  [xself]
+                    memory > xpost_data
+                    memory > xresponse
+                    memory > xchange_url
+                    memory > xlogentry
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xpost_data.write (((unsupported)).apply ("site") ((((xself).xsite).xpk)) ("title") ("Changed") ("hist") ("Some content") ("created_0") ("12/03/2008") ("created_1") ("11:54"))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          seq
+                            xchange_url.write (((unsupported)).apply ((xreverse)) ("admin:admin_utils_article_change") ((((unsupported)).apply ((((xquote)).apply ((((xself).xa1).xpk)))))))
+                            xresponse.write (((((xself).xclient).xpost)).apply ((xchange_url)) ((xpost_data)))
+                            bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((((xreverse)).apply ("admin:admin_utils_article_changelist"))))
+                        xlogentry.write ((((((unsupported)).apply ((((xLogEntry).xobjects).xfilter)) ("article")).xlatest)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) ("Changed Title and History."))
+                xtest_logentry_change_message_formsets.write
+                  [xself]
+                    memory > xlogentry
+                    memory > xpost_data
+                    memory > xchange_url
+                    memory > xa2
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xa2.write (((unsupported)).apply ((((xArticle).xobjects).xcreate)) (((xself).xsite)) ("Title second article") ((((xdatetime)).apply (2012) (3) (18) (11) (54))))
+                        xpost_data.write (((unsupported)).apply ("domain") ("example.com") ("admin_articles-TOTAL_FORMS") ("5") ("admin_articles-INITIAL_FORMS") ("2") ("admin_articles-MIN_NUM_FORMS") ("0") ("admin_articles-MAX_NUM_FORMS") ("1000") ("admin_articles-0-id") ((((xstr)).apply ((((xself).xa1).xpk)))) ("admin_articles-0-site") ((((xstr)).apply ((((xself).xsite).xpk)))) ("admin_articles-0-title") ("Changed Title") ("admin_articles-1-id") ((((xstr)).apply (((xa2).xpk)))) ("admin_articles-1-site") ((((xstr)).apply ((((xself).xsite).xpk)))) ("admin_articles-1-title") ("Title second article") ("admin_articles-1-DELETE") ("on") ("admin_articles-2-site") ((((xstr)).apply ((((xself).xsite).xpk)))) ("admin_articles-2-title") ("Added article"))
+                        xchange_url.write (((unsupported)).apply ((xreverse)) ("admin:admin_utils_site_change") ((((unsupported)).apply ((((xquote)).apply ((((xself).xsite).xpk)))))))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xchange_url)) ((xpost_data)))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((((xreverse)).apply ("admin:admin_utils_site_changelist"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((((unsupported)).apply ((((xArticle).xobjects).xfilter)) (((xa2).xpk)))) ((((unsupported)).apply)))
+                        xlogentry.write ((((((unsupported)).apply ((((xLogEntry).xobjects).xfilter)) ("site")).xlatest)).apply ("action_time"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xjson).xloads)).apply (((xlogentry).xchange_message)))) ((((unsupported)).apply ((((unsupported)).apply ("changed") ((((unsupported)).apply ("fields") ((((unsupported)).apply ("Domain"))))))) ((((unsupported)).apply ("added") ((((unsupported)).apply ("object") ("Added article") ("name") ("article"))))) ((((unsupported)).apply ("changed") ((((unsupported)).apply ("fields") ((((unsupported)).apply ("Title") ("not_a_form_field"))) ("object") ("Changed Title") ("name") ("article"))))) ((((unsupported)).apply ("deleted") ((((unsupported)).apply ("object") ("Title second article") ("name") ("article"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) ("Changed Domain. Added article “Added article”. Changed Title and not_a_form_field for article “Changed Title”. Deleted article “Title second article”."))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) ("Modification de Domain. Ajout de article « Added article ». Modification de Title et not_a_form_field pour l'objet article « Changed Title ». Suppression de article « Title second article »."))
+                xtest_logentry_get_edited_object.write
+                  [xself]
+                    memory > xedited_obj
+                    memory > xlogentry
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xlogentry.write (((unsupported)).apply ((((xLogEntry).xobjects).xget)) ("article"))
+                        xedited_obj.write ((((xlogentry).xget_edited_object)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xlogentry).xobject_id)) ((((xstr)).apply (((xedited_obj).xpk)))))
+                xtest_logentry_get_admin_url.write
+                  [xself]
+                    memory > xexpected_url
+                    memory > xlogentry
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xlogentry.write (((unsupported)).apply ((((xLogEntry).xobjects).xget)) ("article"))
+                        xexpected_url.write (((unsupported)).apply ((xreverse)) ("admin:admin_utils_article_change") ((((unsupported)).apply ((((xquote)).apply ((((xself).xa1).xpk)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_admin_url)).apply)) ((xexpected_url)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("article/%d/change/".mod (((xself).xa1).xpk))) (((((xlogentry).xget_admin_url)).apply)))
+                        (((unsupported)).apply ((((xlogentry).xcontent_type).xmodel)) ("nonexistent"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xlogentry).xget_admin_url)).apply)))
+                xtest_logentry_unicode.write
+                  [xself]
+                    memory > xlog_entry
+                    seq > @
+                      seq
+                        xlog_entry.write (((xLogEntry)).apply)
+                        (((unsupported)).apply (((xlog_entry).xaction_flag)) ((xADDITION)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((xstr)).apply ((xlog_entry))).xstartswith)).apply ("Added "))))
+                        (((unsupported)).apply (((xlog_entry).xaction_flag)) ((xCHANGE)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((xstr)).apply ((xlog_entry))).xstartswith)).apply ("Changed "))))
+                        (((unsupported)).apply (((xlog_entry).xaction_flag)) ((xDELETION)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((xstr)).apply ((xlog_entry))).xstartswith)).apply ("Deleted "))))
+                        (((unsupported)).apply (((xlog_entry).xaction_flag)) (4))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xlog_entry)))) ("LogEntry Object"))
+                xtest_logentry_repr.write
+                  [xself]
+                    memory > xlogentry
+                    seq > @
+                      seq
+                        xlogentry.write (((((xLogEntry).xobjects).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xlogentry)))) ((((xstr)).apply (((xlogentry).xaction_time)))))
+                xtest_log_action.write
+                  [xself]
+                    memory > xlog_entry
+                    memory > xcontent_type_pk
+                    seq > @
+                      seq
+                        xcontent_type_pk.write ((((((xContentType).xobjects).xget_for_model)).apply ((xArticle))).xpk)
+                        xlog_entry.write (((unsupported)).apply ((((xLogEntry).xobjects).xlog_action)) ((((xself).xuser).xpk)) ((xcontent_type_pk)) ((((xself).xa1).xpk)) ((((xrepr)).apply (((xself).xa1)))) ((xCHANGE)) ("Changed something else"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xlog_entry)) ((((((xLogEntry).xobjects).xlatest)).apply ("id"))))
+                xtest_recentactions_without_content_type.write
+                  [xself]
+                    memory > xcounted_presence_after
+                    memory > xresponse
+                    memory > xshould_contain
+                    memory > xlink
+                    memory > xcounted_presence_before
+                    memory > xlogentry
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:index"))))
+                        xlink.write (((unsupported)).apply ((xreverse)) ("admin:admin_utils_article_change") ((((unsupported)).apply ((((xquote)).apply ((((xself).xa1).xpk)))))))
+                        xshould_contain.write ("<a href=\"%s\">%s</a>".mod (((unsupported)).apply ((((xescape)).apply ((xlink)))) ((((xescape)).apply ((((xrepr)).apply (((xself).xa1))))))))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ((xshould_contain)))
+                        xshould_contain.write "Article"
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ((xshould_contain)))
+                        xlogentry.write (((unsupported)).apply ((((xLogEntry).xobjects).xget)) ("article"))
+                        (((unsupported)).apply (((xlogentry).xcontent_type)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xlogentry).xsave)).apply)
+                        xshould_contain.write ((((xshould_contain).xencode)).apply)
+                        xcounted_presence_before.write (((((xresponse).xcontent).xcount)).apply ((xshould_contain)))
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("admin:index"))))
+                        xcounted_presence_after.write (((((xresponse).xcontent).xcount)).apply ((xshould_contain)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xcounted_presence_before).sub 1)) ((xcounted_presence_after)))
+                xtest_proxy_model_content_type_is_used_for_log_entries.write
+                  [xself]
+                    memory > xproxy_add_url
+                    memory > xpost_data
+                    memory > xproxy_content_type
+                    memory > xproxy_addition_log
+                    memory > xproxy_change_url
+                    memory > xproxy_change_log
+                    memory > xproxy_delete_url
+                    memory > xresponse
+                    memory > xarticle_id
+                    memory > xchangelist_url
+                    memory > xproxy_delete_log
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xproxy_content_type.write (((unsupported)).apply ((((xContentType).xobjects).xget_for_model)) ((xArticleProxy)) (FALSE))
+                        xpost_data.write (((unsupported)).apply ("site") ((((xself).xsite).xpk)) ("title") ("Foo") ("hist") ("Bar") ("created_0") ("2015-12-25") ("created_1") ("00:00"))
+                        xchangelist_url.write (((xreverse)).apply ("admin:admin_utils_articleproxy_changelist"))
+                        xproxy_add_url.write (((xreverse)).apply ("admin:admin_utils_articleproxy_add"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xproxy_add_url)) ((xpost_data)))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((xchangelist_url)))
+                        xproxy_addition_log.write (((((xLogEntry).xobjects).xlatest)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xproxy_addition_log).xaction_flag)) ((xADDITION)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xproxy_addition_log).xcontent_type)) ((xproxy_content_type)))
+                        xarticle_id.write ((xproxy_addition_log).xobject_id)
+                        xproxy_change_url.write (((unsupported)).apply ((xreverse)) ("admin:admin_utils_articleproxy_change") ((((unsupported)).apply ((xarticle_id)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xpost_data)) ("title"))) ("New"))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xproxy_change_url)) ((xpost_data)))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((xchangelist_url)))
+                        xproxy_change_log.write (((((xLogEntry).xobjects).xlatest)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xproxy_change_log).xaction_flag)) ((xCHANGE)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xproxy_change_log).xcontent_type)) ((xproxy_content_type)))
+                        xproxy_delete_url.write (((unsupported)).apply ((xreverse)) ("admin:admin_utils_articleproxy_delete") ((((unsupported)).apply ((xarticle_id)))))
+                        xresponse.write (((((xself).xclient).xpost)).apply ((xproxy_delete_url)) ((((unsupported)).apply ("post") ("yes"))))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ((xchangelist_url)))
+                        xproxy_delete_log.write (((((xLogEntry).xobjects).xlatest)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xproxy_delete_log).xaction_flag)) ((xDELETION)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xproxy_delete_log).xcontent_type)) ((xproxy_content_type)))
+                xtest_action_flag_choices.write
+                  [xself]
+                    memory > xtests
+                    memory > xlog
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply (1) ("Addition"))) ((((unsupported)).apply (2) ("Change"))) ((((unsupported)).apply (3) ("Deletion"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xaction_flag)) ((xdisplay_name)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xaction_flag)))))
+                            seq
+                              xlog.write (((unsupported)).apply ((xLogEntry)) ((xaction_flag)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlog).xget_action_flag_display)).apply)) ((xdisplay_name)))

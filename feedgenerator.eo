@@ -1,0 +1,371 @@
+memory > xc
+memory > xValueError
+memory > xstr
+memory > xurlparse
+memory > xemail
+memory > xNotImplementedError
+memory > xdate_key
+memory > xiri_to_uri
+memory > xRss201rev2Feed
+memory > xbool
+memory > xitem
+memory > xStringIO
+memory > xRssFeed
+memory > xkwargs
+memory > xdatetime
+memory > xlist
+memory > xenclosure
+memory > xcat
+memory > xSyndicationFeed
+memory > xSimplerXMLGenerator
+memory > xisinstance
+memory > xlen
+[] > feedgenerator
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xendChannelElement
+        memory > xDefaultFeed
+        memory > xrfc2822_date
+        memory > xns
+        memory > xitem_attributes
+        memory > xwriteString
+        memory > x__init__
+        memory > xlatest_post_date
+        memory > xwrite
+        memory > xwrite_items
+        memory > xrfc3339_date
+        memory > xrss_attributes
+        memory > xroot_attributes
+        memory > x_version
+        memory > xcontent_type
+        memory > xadd_item
+        memory > xget_tag_uri
+        memory > xnum_items
+        memory > xadd_root_elements
+        memory > xadd_item_elements
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xrfc2822_date.write
+              [xdate]
+                seq > @
+                  seq
+                    ((((xisinstance)).apply ((xdate)) (((xdatetime).xdatetime))).not).if
+                      xdate.write (((((xdatetime).xdatetime).xcombine)).apply ((xdate)) (((((xdatetime).xtime)).apply)))
+                    (((unsupported)).apply ((((((xemail).xutils).xformat_datetime)).apply ((xdate)))))
+            xrfc3339_date.write
+              [xdate]
+                seq > @
+                  seq
+                    ((((xisinstance)).apply ((xdate)) (((xdatetime).xdatetime))).not).if
+                      xdate.write (((((xdatetime).xdatetime).xcombine)).apply ((xdate)) (((((xdatetime).xtime)).apply)))
+                    (((unsupported)).apply ((((((xdate).xisoformat)).apply).add ((((unsupported)).apply (((((xdate).xutcoffset)).apply)) ("None: is there a None literal in the EO language?")).if "Z" ""))))
+            xget_tag_uri.write
+              [xurl xdate]
+                memory > xd
+                memory > xbits
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xbits.write (((xurlparse)).apply ((xurl)))
+                    xd.write ""
+                    (((unsupported)).apply ((xdate)) ("None: is there a None literal in the EO language?")).if
+                      xd.write (",%s".mod ((((xdate).xstrftime)).apply ("%Y-%m-%d")))
+                    (((unsupported)).apply (("tag:%s%s:%s/%s".mod (((unsupported)).apply (((xbits).xhostname)) ((xd)) (((xbits).xpath)) (((xbits).xfragment))))))
+            (((unsupported)).apply)
+              seq
+                unsupported
+                x__init__.write
+                  [xself xtitle xlink xdescription xlanguage xauthor_email xauthor_name xauthor_link xsubtitle xcategories xfeed_url xfeed_copyright xfeed_guid xttl]
+                    memory > xto_str
+                    seq > @
+                      (((unsupported)).apply)
+                        xto_str.write
+                          [xs]
+                            seq > @
+                              (((unsupported)).apply (((((unsupported)).apply ((xs)) ("None: is there a None literal in the EO language?")).if (((xstr)).apply ((xs))) (xs))))
+                        xcategories.write ((xcategories).and (((unsupported)).apply ((((xstr)).apply ((xc)))) ((xc)) ((xcategories))))
+                        (((unsupported)).apply (((xself).xfeed)) ((((unsupported)).apply ("title") ((((xto_str)).apply ((xtitle)))) ("link") ((((xiri_to_uri)).apply ((xlink)))) ("description") ((((xto_str)).apply ((xdescription)))) ("language") ((((xto_str)).apply ((xlanguage)))) ("author_email") ((((xto_str)).apply ((xauthor_email)))) ("author_name") ((((xto_str)).apply ((xauthor_name)))) ("author_link") ((((xiri_to_uri)).apply ((xauthor_link)))) ("subtitle") ((((xto_str)).apply ((xsubtitle)))) ("categories") (((xcategories).or (((unsupported)).apply))) ("feed_url") ((((xiri_to_uri)).apply ((xfeed_url)))) ("feed_copyright") ((((xto_str)).apply ((xfeed_copyright)))) ("id") (((xfeed_guid).or (xlink))) ("ttl") ((((xto_str)).apply ((xttl)))) ((xkwargs)))))
+                        (((unsupported)).apply (((xself).xitems)) ((((unsupported)).apply)))
+                xadd_item.write
+                  [xself xtitle xlink xdescription xauthor_email xauthor_name xauthor_link xpubdate xcomments xunique_id xunique_id_is_permalink xcategories xitem_copyright xttl xupdateddate xenclosures]
+                    memory > xto_str
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xto_str.write
+                          [xs]
+                            seq > @
+                              (((unsupported)).apply (((((unsupported)).apply ((xs)) ("None: is there a None literal in the EO language?")).if (((xstr)).apply ((xs))) (xs))))
+                        xcategories.write ((xcategories).and (((unsupported)).apply ((((xto_str)).apply ((xc)))) ((xc)) ((xcategories))))
+                        bogusForceDataize.write (((((xself).xitems).xappend)).apply ((((unsupported)).apply ("title") ((((xto_str)).apply ((xtitle)))) ("link") ((((xiri_to_uri)).apply ((xlink)))) ("description") ((((xto_str)).apply ((xdescription)))) ("author_email") ((((xto_str)).apply ((xauthor_email)))) ("author_name") ((((xto_str)).apply ((xauthor_name)))) ("author_link") ((((xiri_to_uri)).apply ((xauthor_link)))) ("pubdate") ((xpubdate)) ("updateddate") ((xupdateddate)) ("comments") ((((xto_str)).apply ((xcomments)))) ("unique_id") ((((xto_str)).apply ((xunique_id)))) ("unique_id_is_permalink") ((xunique_id_is_permalink)) ("enclosures") (((xenclosures).or (((unsupported)).apply))) ("categories") (((xcategories).or (((unsupported)).apply))) ("item_copyright") ((((xto_str)).apply ((xitem_copyright)))) ("ttl") ((((xto_str)).apply ((xttl)))) ((xkwargs)))))
+                xnum_items.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xlen)).apply (((xself).xitems)))))
+                xroot_attributes.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply)))
+                xadd_root_elements.write
+                  [xself xhandler]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                xitem_attributes.write
+                  [xself xitem]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply)))
+                xadd_item_elements.write
+                  [xself xhandler xitem]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                xwrite.write
+                  [xself xoutfile xencoding]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotImplementedError)).apply ("subclasses of SyndicationFeed must provide a write() method"))))
+                xwriteString.write
+                  [xself xencoding]
+                    memory > xs
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xs.write (((xStringIO)).apply)
+                        bogusForceDataize.write ((((xself).xwrite)).apply ((xs)) ((xencoding)))
+                        (((unsupported)).apply (((((xs).xgetvalue)).apply)))
+                xlatest_post_date.write
+                  [xself]
+                    memory > xdate_keys
+                    memory > xitem_date
+                    memory > xlatest_date
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xlatest_date.write "None: is there a None literal in the EO language?"
+                        xdate_keys.write (((unsupported)).apply ("updateddate") ("pubdate"))
+                        (((unsupported)).apply ((xitem)) (((xself).xitems)))
+                          (((unsupported)).apply ((xdate_key)) ((xdate_keys)))
+                            seq
+                              xitem_date.write ((((xitem).xget)).apply ((xdate_key)))
+                              (xitem_date).if
+                                ((((unsupported)).apply ((xlatest_date)) ("None: is there a None literal in the EO language?")).or ((xitem_date).greater (xlatest_date))).if
+                                  xlatest_date.write (xitem_date)
+                        (((unsupported)).apply (((xlatest_date).or (((unsupported)).apply ((((xdatetime).xdatetime).xnow)) ((((xdatetime).xtimezone).xutc))))))
+            (((unsupported)).apply)
+              seq
+                unsupported
+                x__init__.write
+                  [xself xurl xlength xmime_type]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xlength)) (((xself).xmime_type)))) ((((unsupported)).apply ((xlength)) ((xmime_type)))))
+                        (((unsupported)).apply (((xself).xurl)) ((((xiri_to_uri)).apply ((xurl)))))
+            (((unsupported)).apply ((xSyndicationFeed)))
+              seq
+                xcontent_type.write "application/rss+xml; charset=utf-8"
+                xwrite.write
+                  [xself xoutfile xencoding]
+                    memory > xhandler
+                    seq > @
+                      seq
+                        xhandler.write (((unsupported)).apply ((xSimplerXMLGenerator)) ((xoutfile)) ((xencoding)) (TRUE))
+                        bogusForceDataize.write ((((xhandler).xstartDocument)).apply)
+                        bogusForceDataize.write ((((xhandler).xstartElement)).apply ("rss") (((((xself).xrss_attributes)).apply)))
+                        bogusForceDataize.write ((((xhandler).xstartElement)).apply ("channel") (((((xself).xroot_attributes)).apply)))
+                        bogusForceDataize.write ((((xself).xadd_root_elements)).apply ((xhandler)))
+                        bogusForceDataize.write ((((xself).xwrite_items)).apply ((xhandler)))
+                        bogusForceDataize.write ((((xself).xendChannelElement)).apply ((xhandler)))
+                        bogusForceDataize.write ((((xhandler).xendElement)).apply ("rss"))
+                xrss_attributes.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ("version") (((xself).x_version)) ("xmlns:atom") ("http://www.w3.org/2005/Atom"))))
+                xwrite_items.write
+                  [xself xhandler]
+                    seq > @
+                      (((unsupported)).apply ((xitem)) (((xself).xitems)))
+                        seq
+                          bogusForceDataize.write ((((xhandler).xstartElement)).apply ("item") (((((xself).xitem_attributes)).apply ((xitem)))))
+                          bogusForceDataize.write ((((xself).xadd_item_elements)).apply ((xhandler)) ((xitem)))
+                          bogusForceDataize.write ((((xhandler).xendElement)).apply ("item"))
+                xadd_root_elements.write
+                  [xself xhandler]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("title") ((((unsupported)).apply (((xself).xfeed)) ("title"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("link") ((((unsupported)).apply (((xself).xfeed)) ("link"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("description") ((((unsupported)).apply (((xself).xfeed)) ("description"))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("feed_url"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("atom:link") ("None: is there a None literal in the EO language?") ((((unsupported)).apply ("rel") ("self") ("href") ((((unsupported)).apply (((xself).xfeed)) ("feed_url"))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("language"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("language") ((((unsupported)).apply (((xself).xfeed)) ("language"))))
+                        (((unsupported)).apply ((xcat)) ((((unsupported)).apply (((xself).xfeed)) ("categories"))))
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("category") ((xcat)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("feed_copyright"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("copyright") ((((unsupported)).apply (((xself).xfeed)) ("feed_copyright"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("lastBuildDate") ((((xrfc2822_date)).apply (((((xself).xlatest_post_date)).apply)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("ttl"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("ttl") ((((unsupported)).apply (((xself).xfeed)) ("ttl"))))
+                xendChannelElement.write
+                  [xself xhandler]
+                    seq > @
+                      bogusForceDataize.write ((((xhandler).xendElement)).apply ("channel"))
+            (((unsupported)).apply ((xRssFeed)))
+              seq
+                x_version.write "0.91"
+                xadd_item_elements.write
+                  [xself xhandler xitem]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("title") ((((unsupported)).apply ((xitem)) ("title"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("link") ((((unsupported)).apply ((xitem)) ("link"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("description"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("description") ((((unsupported)).apply ((xitem)) ("description"))))
+            (((unsupported)).apply ((xRssFeed)))
+              seq
+                x_version.write "2.0"
+                xadd_item_elements.write
+                  [xself xhandler xitem]
+                    memory > xenclosures
+                    memory > xenclosure
+                    memory > xguid_attrs
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("title") ((((unsupported)).apply ((xitem)) ("title"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("link") ((((unsupported)).apply ((xitem)) ("link"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("description"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("description") ((((unsupported)).apply ((xitem)) ("description"))))
+                        ((((unsupported)).apply ((xitem)) ("author_name")).and (((unsupported)).apply ((xitem)) ("author_email"))).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("author") (("%s (%s)".mod (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("author_email"))) ((((unsupported)).apply ((xitem)) ("author_name")))))))
+                          (((unsupported)).apply ((xitem)) ("author_email")).if
+                            bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("author") ((((unsupported)).apply ((xitem)) ("author_email"))))
+                            (((unsupported)).apply ((xitem)) ("author_name")).if
+                              bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("dc:creator") ((((unsupported)).apply ((xitem)) ("author_name"))) ((((unsupported)).apply ("xmlns:dc") ("http://purl.org/dc/elements/1.1/"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("pubdate"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("pubDate") ((((xrfc2822_date)).apply ((((unsupported)).apply ((xitem)) ("pubdate"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("comments"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("comments") ((((unsupported)).apply ((xitem)) ("comments"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("unique_id"))) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            xguid_attrs.write (((unsupported)).apply)
+                            (((xisinstance)).apply (((((xitem).xget)).apply ("unique_id_is_permalink"))) ((xbool))).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xguid_attrs)) ("isPermaLink"))) (((((((xstr)).apply ((((unsupported)).apply ((xitem)) ("unique_id_is_permalink")))).xlower)).apply)))
+                            bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("guid") ((((unsupported)).apply ((xitem)) ("unique_id"))) ((xguid_attrs)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("ttl"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("ttl") ((((unsupported)).apply ((xitem)) ("ttl"))))
+                        (((unsupported)).apply ((xitem)) ("enclosures")).if
+                          seq
+                            xenclosures.write (((xlist)).apply ((((unsupported)).apply ((xitem)) ("enclosures"))))
+                            ((((xlen)).apply ((xenclosures))).greater 1).if
+                              (((unsupported)).apply ((((xValueError)).apply ("RSS feed items may only have one enclosure, see http://www.rssboard.org/rss-profile#element-channel-item-enclosure"))))
+                            xenclosure.write (((unsupported)).apply ((xenclosures)) (0))
+                            bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("enclosure") ("") ((((unsupported)).apply ("url") (((xenclosure).xurl)) ("length") (((xenclosure).xlength)) ("type") (((xenclosure).xmime_type)))))
+                        (((unsupported)).apply ((xcat)) ((((unsupported)).apply ((xitem)) ("categories"))))
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("category") ((xcat)))
+            (((unsupported)).apply ((xSyndicationFeed)))
+              seq
+                xcontent_type.write "application/atom+xml; charset=utf-8"
+                xns.write "http://www.w3.org/2005/Atom"
+                xwrite.write
+                  [xself xoutfile xencoding]
+                    memory > xhandler
+                    seq > @
+                      seq
+                        xhandler.write (((unsupported)).apply ((xSimplerXMLGenerator)) ((xoutfile)) ((xencoding)) (TRUE))
+                        bogusForceDataize.write ((((xhandler).xstartDocument)).apply)
+                        bogusForceDataize.write ((((xhandler).xstartElement)).apply ("feed") (((((xself).xroot_attributes)).apply)))
+                        bogusForceDataize.write ((((xself).xadd_root_elements)).apply ((xhandler)))
+                        bogusForceDataize.write ((((xself).xwrite_items)).apply ((xhandler)))
+                        bogusForceDataize.write ((((xhandler).xendElement)).apply ("feed"))
+                xroot_attributes.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("language"))) ("None: is there a None literal in the EO language?")).if
+                        (((unsupported)).apply ((((unsupported)).apply ("xmlns") (((xself).xns)) ("xml:lang") ((((unsupported)).apply (((xself).xfeed)) ("language"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ("xmlns") (((xself).xns)))))
+                xadd_root_elements.write
+                  [xself xhandler]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("title") ((((unsupported)).apply (((xself).xfeed)) ("title"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("link") ("") ((((unsupported)).apply ("rel") ("alternate") ("href") ((((unsupported)).apply (((xself).xfeed)) ("link"))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("feed_url"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("link") ("") ((((unsupported)).apply ("rel") ("self") ("href") ((((unsupported)).apply (((xself).xfeed)) ("feed_url"))))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("id") ((((unsupported)).apply (((xself).xfeed)) ("id"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("updated") ((((xrfc3339_date)).apply (((((xself).xlatest_post_date)).apply)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("author_name"))) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            bogusForceDataize.write ((((xhandler).xstartElement)).apply ("author") ((((unsupported)).apply)))
+                            bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("name") ((((unsupported)).apply (((xself).xfeed)) ("author_name"))))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("author_email"))) ("None: is there a None literal in the EO language?")).if
+                              bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("email") ((((unsupported)).apply (((xself).xfeed)) ("author_email"))))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("author_link"))) ("None: is there a None literal in the EO language?")).if
+                              bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("uri") ((((unsupported)).apply (((xself).xfeed)) ("author_link"))))
+                            bogusForceDataize.write ((((xhandler).xendElement)).apply ("author"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("subtitle"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("subtitle") ((((unsupported)).apply (((xself).xfeed)) ("subtitle"))))
+                        (((unsupported)).apply ((xcat)) ((((unsupported)).apply (((xself).xfeed)) ("categories"))))
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("category") ("") ((((unsupported)).apply ("term") ((xcat)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xfeed)) ("feed_copyright"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("rights") ((((unsupported)).apply (((xself).xfeed)) ("feed_copyright"))))
+                xwrite_items.write
+                  [xself xhandler]
+                    seq > @
+                      (((unsupported)).apply ((xitem)) (((xself).xitems)))
+                        seq
+                          bogusForceDataize.write ((((xhandler).xstartElement)).apply ("entry") (((((xself).xitem_attributes)).apply ((xitem)))))
+                          bogusForceDataize.write ((((xself).xadd_item_elements)).apply ((xhandler)) ((xitem)))
+                          bogusForceDataize.write ((((xhandler).xendElement)).apply ("entry"))
+                xadd_item_elements.write
+                  [xself xhandler xitem]
+                    memory > xunique_id
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("title") ((((unsupported)).apply ((xitem)) ("title"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("link") ("") ((((unsupported)).apply ("href") ((((unsupported)).apply ((xitem)) ("link"))) ("rel") ("alternate"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("pubdate"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("published") ((((xrfc3339_date)).apply ((((unsupported)).apply ((xitem)) ("pubdate"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("updateddate"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("updated") ((((xrfc3339_date)).apply ((((unsupported)).apply ((xitem)) ("updateddate"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("author_name"))) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            bogusForceDataize.write ((((xhandler).xstartElement)).apply ("author") ((((unsupported)).apply)))
+                            bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("name") ((((unsupported)).apply ((xitem)) ("author_name"))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("author_email"))) ("None: is there a None literal in the EO language?")).if
+                              bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("email") ((((unsupported)).apply ((xitem)) ("author_email"))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("author_link"))) ("None: is there a None literal in the EO language?")).if
+                              bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("uri") ((((unsupported)).apply ((xitem)) ("author_link"))))
+                            bogusForceDataize.write ((((xhandler).xendElement)).apply ("author"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("unique_id"))) ("None: is there a None literal in the EO language?")).if
+                          xunique_id.write (((unsupported)).apply ((xitem)) ("unique_id"))
+                          xunique_id.write (((xget_tag_uri)).apply ((((unsupported)).apply ((xitem)) ("link"))) ((((unsupported)).apply ((xitem)) ("pubdate"))))
+                        bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("id") ((xunique_id)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("description"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("summary") ((((unsupported)).apply ((xitem)) ("description"))) ((((unsupported)).apply ("type") ("html"))))
+                        (((unsupported)).apply ((xenclosure)) ((((unsupported)).apply ((xitem)) ("enclosures"))))
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("link") ("") ((((unsupported)).apply ("rel") ("enclosure") ("href") (((xenclosure).xurl)) ("length") (((xenclosure).xlength)) ("type") (((xenclosure).xmime_type)))))
+                        (((unsupported)).apply ((xcat)) ((((unsupported)).apply ((xitem)) ("categories"))))
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("category") ("") ((((unsupported)).apply ("term") ((xcat)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xitem)) ("item_copyright"))) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("rights") ((((unsupported)).apply ((xitem)) ("item_copyright"))))
+            xDefaultFeed.write (xRss201rev2Feed)

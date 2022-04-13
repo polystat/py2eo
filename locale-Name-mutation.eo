@@ -1,0 +1,85 @@
+memory > xprefixed_default_language
+memory > xtranslation
+memory > xis_valid_path
+memory > xget_script_prefix
+memory > xi18n_patterns_used
+memory > xsettings
+memory > xHttpResponseRedirect
+memory > xMiddlewareMixin
+memory > xpatch_vary_headers
+memory > xis_language_prefix_patterns_used
+memory > xgetattr
+[] > locale
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xresponse_redirect_class2
+        memory > xprocess_request
+        memory > xprocess_response
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                (((unsupported)).apply)
+                xresponse_redirect_class2.write (xHttpResponseRedirect)
+                xprocess_request.write
+                  [xself xrequest]
+                    memory > xurlconf
+                    memory > xlanguage
+                    memory > xlanguage_from_path
+                    seq > @
+                      seq
+                        xurlconf.write (((xgetattr)).apply ((xrequest)) ("urlconf") (((xsettings).xROOT_URLCONF)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xi18n_patterns_used)) ((xprefixed_default_language)))) ((((xis_language_prefix_patterns_used)).apply ((xurlconf)))))
+                        xlanguage.write (((unsupported)).apply (((xtranslation).xget_language_from_request)) ((xrequest)) ((xi18n_patterns_used)))
+                        xlanguage_from_path.write ((((xtranslation).xget_language_from_path)).apply (((xrequest).xpath_info)))
+                        ((((xlanguage_from_path).not).and (xi18n_patterns_used)).and ((xprefixed_default_language).not)).if
+                          xlanguage.write ((xsettings).xLANGUAGE_CODE)
+                        bogusForceDataize.write ((((xtranslation).xactivate)).apply ((xlanguage)))
+                        (((unsupported)).apply (((xrequest).xLANGUAGE_CODE)) (((((xtranslation).xget_language)).apply)))
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    memory > xpath_valid
+                    memory > xurlconf
+                    memory > xscript_prefix
+                    memory > xlanguage_path
+                    memory > xlanguage
+                    memory > xlanguage_from_path
+                    memory > xpath_needs_slash
+                    memory > xredirect
+                    memory > xlanguage_url
+                    seq > @
+                      seq
+                        xlanguage.write ((((xtranslation).xget_language)).apply)
+                        xlanguage_from_path.write ((((xtranslation).xget_language_from_path)).apply (((xrequest).xpath_info)))
+                        xurlconf.write (((xgetattr)).apply ((xrequest)) ("urlconf") (((xsettings).xROOT_URLCONF)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xi18n_patterns_used)) ((xprefixed_default_language)))) ((((xis_language_prefix_patterns_used)).apply ((xurlconf)))))
+                        ((((((xresponse).xstatus_code).eq 404).and ((xlanguage_from_path).not)).and (xi18n_patterns_used)).and (xprefixed_default_language)).if
+                          seq
+                            xlanguage_path.write ("/%s%s".mod (((unsupported)).apply ((xlanguage)) (((xrequest).xpath_info))))
+                            xpath_valid.write (((xis_valid_path)).apply ((xlanguage_path)) ((xurlconf)))
+                            xpath_needs_slash.write (((xpath_valid).not).and ((((xsettings).xAPPEND_SLASH).and (((((xlanguage_path).xendswith)).apply ("/")).not)).and (((xis_valid_path)).apply (("%s/".mod (xlanguage_path))) ((xurlconf)))))
+                            ((xpath_valid).or (xpath_needs_slash)).if
+                              seq
+                                xscript_prefix.write (((xget_script_prefix)).apply)
+                                xlanguage_url.write ((((((unsupported)).apply (((xrequest).xget_full_path)) ((xpath_needs_slash))).xreplace)).apply ((xscript_prefix)) (("%s%s/".mod (((unsupported)).apply ((xscript_prefix)) ((xlanguage))))) (1))
+                                xredirect.write ((((xself).xresponse_redirect_class)).apply ((xlanguage_url)))
+                                bogusForceDataize.write (((xpatch_vary_headers)).apply ((xredirect)) ((((unsupported)).apply ("Accept-Language") ("Cookie"))))
+                                (((unsupported)).apply ((xredirect)))
+                        (((xi18n_patterns_used).and (xlanguage_from_path)).not).if
+                          bogusForceDataize.write (((xpatch_vary_headers)).apply ((xresponse)) ((((unsupported)).apply ("Accept-Language"))))
+                        bogusForceDataize.write (((((xresponse).xheaders).xsetdefault)).apply ("Content-Language") ((xlanguage)))
+                        (((unsupported)).apply ((xresponse)))

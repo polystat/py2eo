@@ -1,0 +1,166 @@
+memory > xUrlArticle
+memory > xfalse
+memory > xdatetime
+memory > xpermission_denied
+memory > xurl
+memory > xserver_error
+memory > xpage_not_found
+memory > xRequestFactory
+memory > xgetattr
+memory > xArticle
+memory > xTestCase
+memory > xAuthor
+memory > xException
+memory > xbad_request
+memory > xtitle
+memory > xSite
+memory > xoverride_settings
+memory > xHttp404
+memory > xTemplateDoesNotExist
+memory > xresponse
+[] > test_defaults
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnonexistent_urls
+        memory > xtest_error_pages
+        memory > xtest_server_error
+        memory > xtest_custom_templates
+        memory > xrequest_factory
+        memory > xtest_custom_templates_wrong
+        memory > xtest_get_absolute_url_attributes
+        memory > xtest_csrf_token_in_404
+        memory > xtest_page_not_found
+        memory > xsetUpTestData
+        memory > xtest_bad_request
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("view_tests.urls"))))
+              seq
+                unsupported
+                xnonexistent_urls.write (((unsupported)).apply ("/nonexistent_url/") ("/other_nonexistent_url/"))
+                xrequest_factory.write (((xRequestFactory)).apply)
+                xsetUpTestData.write
+                  [xcls]
+                    memory > xauthor
+                    seq > @
+                      (((unsupported)).apply)
+                        xauthor.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Boris"))
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Old Article") ("old_article") ((xauthor)) (((((xdatetime).xdatetime)).apply (2001) (1) (1) (21) (22) (23))))
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Current Article") ("current_article") ((xauthor)) (((((xdatetime).xdatetime)).apply (2007) (9) (17) (21) (22) (23))))
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("Future Article") ("future_article") ((xauthor)) (((((xdatetime).xdatetime)).apply (3000) (1) (1) (21) (22) (23))))
+                        (((unsupported)).apply (((xcls).xurlarticle)) ((((unsupported)).apply ((((xUrlArticle).xobjects).xcreate)) ("Old Article") ("old_article") ((xauthor)) (((((xdatetime).xdatetime)).apply (2001) (1) (1) (21) (22) (23))))))
+                        bogusForceDataize.write ((((((unsupported)).apply ((xSite)) (1) ("testserver") ("testserver")).xsave)).apply)
+                xtest_page_not_found.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xurl)) (((xself).xnonexistent_urls)))
+                          seq
+                            xresponse.write (((((xself).xclient).xget)).apply ((xurl)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<h1>Not Found</h1>") (((xresponse).xcontent)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<p>The requested resource was not found on this server.</p>") (((xresponse).xcontent)))
+                xtest_csrf_token_in_404.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xurl)) (((xself).xnonexistent_urls)))
+                          seq
+                            xresponse.write (((((xself).xclient).xget)).apply ((xurl)))
+                            bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((xresponse).xcontent)) ("NOTPROVIDED"))
+                            bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((xresponse).xcontent)) (""))
+                xtest_server_error.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/server_error/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("<h1>Server Error (500)</h1>") (500))
+                xtest_bad_request.write
+                  [xself]
+                    memory > xresponse
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (((((xself).xrequest_factory).xget)).apply ("/"))
+                        xresponse.write (((xbad_request)).apply ((xrequest)) ((((xException)).apply)))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("<h1>Bad Request (400)</h1>") (400))
+                xtest_custom_templates.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/server_error/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("test template for a 500 error") (500))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/no_such_url/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("path: /no_such_url/") (404))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("exception: Resolver404") (404))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/technical404/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("exception: Testing technical 404.") (404))
+                xtest_get_absolute_url_attributes.write
+                  [xself]
+                    memory > xarticle
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply (((xUrlArticle).xget_absolute_url)) ("purge") ((xfalse)))) ("The attributes of the original get_absolute_url must be added."))
+                        xarticle.write (((unsupported)).apply ((((xUrlArticle).xobjects).xget)) ((((xself).xurlarticle).xpk)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply (((xarticle).xget_absolute_url)) ("purge") ((xfalse)))) ("The attributes of the original get_absolute_url must be added."))
+                xtest_custom_templates_wrong.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xrequest.write (((((xself).xrequest_factory).xget)).apply ("/"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          (((unsupported)).apply ((xbad_request)) ((xrequest)) ((((xException)).apply)) ("nonexistent"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          (((unsupported)).apply ((xpermission_denied)) ((xrequest)) ((((xException)).apply)) ("nonexistent"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          (((unsupported)).apply ((xpage_not_found)) ((xrequest)) ((((xHttp404)).apply)) ("nonexistent"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          (((unsupported)).apply ((xserver_error)) ((xrequest)) ("nonexistent"))
+                xtest_error_pages.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (((((xself).xrequest_factory).xget)).apply ("/"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xresponse)) ((xtitle)))) ((((unsupported)).apply ((((unsupported)).apply ((((xbad_request)).apply ((xrequest)) ((((xException)).apply)))) ("Bad Request (400)"))) ((((unsupported)).apply ((((xpermission_denied)).apply ((xrequest)) ((((xException)).apply)))) ("403 Forbidden"))) ((((unsupported)).apply ((((xpage_not_found)).apply ((xrequest)) ((((xHttp404)).apply)))) ("Not Found"))) ((((unsupported)).apply ((((xserver_error)).apply ((xrequest)))) ("Server Error (500)"))))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xtitle)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xassertIn)).apply ("<!doctype html>") (((xresponse).xcontent)))
+                              bogusForceDataize.write ((((xself).xassertIn)).apply ("<html lang=\"en\">") (((xresponse).xcontent)))
+                              bogusForceDataize.write ((((xself).xassertIn)).apply ("<head>") (((xresponse).xcontent)))
+                              bogusForceDataize.write ((((xself).xassertIn)).apply (("<title>%s</title>".mod (xtitle))) (((xresponse).xcontent)))
+                              bogusForceDataize.write ((((xself).xassertIn)).apply ("<body>") (((xresponse).xcontent)))

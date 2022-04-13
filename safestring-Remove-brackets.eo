@@ -1,0 +1,80 @@
+memory > xstr
+memory > xSafeData
+memory > xcallable
+memory > xhasattr
+memory > xsuper
+memory > xkwargs
+memory > xisinstance
+memory > xargs
+memory > xSafeString
+[] > safestring
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__str__
+        memory > xSafeText
+        memory > x__html__
+        memory > xmark_safe
+        memory > x__add__
+        memory > x_safety_decorator
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                seq
+                seq
+                x__html__.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xself)))
+            (((unsupported)).apply ((xstr)) ((xSafeData)))
+              seq
+                (((unsupported)).apply)
+                seq
+                seq
+                x__add__.write
+                  [xself xrhs]
+                    memory > xt
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xt.write ((((xsuper).x__add__)).apply ((xrhs)))
+                        (((xisinstance)).apply ((xrhs)) ((xSafeData))).if
+                          (((unsupported)).apply ((((xSafeString)).apply ((xt)))))
+                        (((unsupported)).apply ((xt)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xself)))
+            xSafeText.write (xSafeString)
+            x_safety_decorator.write
+              [xsafety_marker xfunc]
+                memory > xwrapped
+                seq > @
+                  seq
+                    xwrapped.write
+                      []
+                        seq > @
+                          (((unsupported)).apply)
+                            (((unsupported)).apply ((((xsafety_marker)).apply ((((xfunc)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))))
+                    (((unsupported)).apply ((xwrapped)))
+            xmark_safe.write
+              [xs]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((xhasattr)).apply ((xs)) ("__html__")).if
+                      (((unsupported)).apply ((xs)))
+                    (((xcallable)).apply ((xs))).if
+                      (((unsupported)).apply ((((x_safety_decorator)).apply ((xmark_safe)) ((xs)))))
+                    (((unsupported)).apply ((((xSafeString)).apply ((xs)))))

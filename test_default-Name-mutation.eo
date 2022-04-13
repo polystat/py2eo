@@ -1,0 +1,89 @@
+memory > xdefault
+memory > xoutput
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_default
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_default_if_none02
+        memory > xtest_value
+        memory > xtest_default03
+        memory > xtest_empty_string
+        memory > xtest_default02
+        memory > xtest_default01
+        memory > xtest_default_if_none01
+        memory > xtest_none
+        memory > xtest_default04
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_default01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("default01") ((((unsupported)).apply ("a") (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x<"))
+                xtest_default02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("default02") ((((unsupported)).apply ("a") (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x<"))
+                xtest_default03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("default03") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("x>"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x>"))
+                xtest_default04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("default04") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("x>"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x>"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_default_if_none01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("default_if_none01") ((((unsupported)).apply ("a") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x<"))
+                xtest_default_if_none02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("default_if_none02") ((((unsupported)).apply ("a") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x<"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_value.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdefault)).apply ("val") ("default"))) ("val"))
+                xtest_none.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdefault)).apply ("None: is there a None literal in the EO language?") ("default"))) ("default"))
+                xtest_empty_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdefault)).apply ("") ("default"))) ("default"))

@@ -1,0 +1,96 @@
+memory > xRuntimeError
+memory > xopen
+memory > xhasattr
+memory > xstruct
+memory > xe
+memory > xzlib
+memory > xOSError
+memory > xFile
+[] > images
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_image_dimensions
+        memory > xwidth
+        memory > xheight
+        memory > x_get_image_dimensions
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFile)))
+              seq
+                (((unsupported)).apply)
+                xwidth.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xself).x_get_image_dimensions)).apply)) (0))))
+                xheight.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xself).x_get_image_dimensions)).apply)) (1))))
+                x_get_image_dimensions.write
+                  [xself]
+                    memory > xclose
+                    seq > @
+                      seq
+                        ((((xhasattr)).apply ((xself)) ("_dimensions_cache")).not).if
+                          seq
+                            xclose.write ((xself).xclosed)
+                            bogusForceDataize.write ((((xself).xopen)).apply)
+                            (((unsupported)).apply (((xself).x_dimensions_cache)) ((((unsupported)).apply ((xget_image_dimensions)) ((xself)) ((xclose)))))
+                        (((unsupported)).apply (((xself).x_dimensions_cache)))
+            xget_image_dimensions.write
+              [xfile_or_path xclose]
+                memory > xPillowImageFile
+                memory > xdata
+                memory > xfile
+                memory > xp
+                memory > xfile_pos
+                memory > xchunk_size
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xp.write ((((xPillowImageFile).xParser)).apply)
+                    (((xhasattr)).apply ((xfile_or_path)) ("read")).if
+                      seq
+                        xfile.write (xfile_or_path)
+                        xfile_pos.write ((((xfile).xtell)).apply)
+                        bogusForceDataize.write ((((xfile).xseek)).apply (0))
+                      seq
+                        (((unsupported)).apply ((xOSError)))
+                          xfile.write (((xopen)).apply ((xfile_or_path)) ("rb"))
+                          (((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                        xclose.write TRUE
+                    (((unsupported)).apply)
+                      seq
+                        xchunk_size.write 1024
+                        while.
+                          1
+                          [unused]
+                            seq > @
+                              seq
+                                xdata.write ((((xfile).xread)).apply ((xchunk_size)))
+                                ((xdata).not).if
+                                  (((unsupported)).apply)
+                                (((unsupported)).apply (((xzlib).xerror)) (((xstruct).xerror)) ((xRuntimeError)))
+                                  bogusForceDataize.write ((((xp).xfeed)).apply ((xdata)))
+                                  ((((((unsupported)).apply (((xe).xargs)) (0)).xstartswith)).apply ("Error -5")).if
+                                    (((unsupported)).apply)
+                                ((xp).ximage).if
+                                  (((unsupported)).apply ((((xp).ximage).xsize)))
+                                (((unsupported)).apply ((xchunk_size)) (2))
+                        (((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                      (xclose).if
+                        bogusForceDataize.write ((((xfile).xclose)).apply)
+                        bogusForceDataize.write ((((xfile).xseek)).apply ((xfile_pos)))

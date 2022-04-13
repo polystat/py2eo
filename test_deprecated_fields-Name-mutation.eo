@@ -1,0 +1,71 @@
+memory > xNullBooleanFieldModel
+memory > xchecks
+memory > xIPAddressModel
+memory > xJSONField
+memory > xCommaSeparatedIntegerModel
+memory > xmodels
+memory > xPostgresJSONFieldModel
+memory > xisolate_apps
+memory > xSimpleTestCase
+[] > test_deprecated_fields
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_IPAddressField_deprecated
+        memory > xtest_nullbooleanfield_deprecated
+        memory > xtest_CommaSeparatedIntegerField_deprecated
+        memory > xtest_postgres_jsonfield_deprecated
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((xisolate_apps)).apply ("invalid_models_tests"))))
+              seq
+                xtest_IPAddressField_deprecated.write
+                  [xself]
+                    memory > xip2
+                    memory > xmodel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xip2.write ((((xmodels).xIPAddressField)).apply)
+                        xmodel.write (((xIPAddressModel)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmodel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("IPAddressField has been removed except for support in historical migrations.") ("Use GenericIPAddressField instead.") ((((((xIPAddressModel).x_meta).xget_field)).apply ("ip"))) ("fields.E900"))))))
+                xtest_CommaSeparatedIntegerField_deprecated.write
+                  [xself]
+                    memory > xcsi
+                    memory > xmodel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xcsi.write (((unsupported)).apply (((xmodels).xCommaSeparatedIntegerField)) (64))
+                        xmodel.write (((xCommaSeparatedIntegerModel)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmodel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("CommaSeparatedIntegerField is removed except for support in historical migrations.") ("Use CharField(validators=[validate_comma_separated_integer_list]) instead.") ((((((xCommaSeparatedIntegerModel).x_meta).xget_field)).apply ("csi"))) ("fields.E901"))))))
+                xtest_nullbooleanfield_deprecated.write
+                  [xself]
+                    memory > xnb
+                    memory > xmodel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xnb.write ((((xmodels).xNullBooleanField)).apply)
+                        xmodel.write (((xNullBooleanFieldModel)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmodel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("NullBooleanField is removed except for support in historical migrations.") ("Use BooleanField(null=True) instead.") ((((((xNullBooleanFieldModel).x_meta).xget_field)).apply ("nb"))) ("fields.E903"))))))
+                xtest_postgres_jsonfield_deprecated.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xfield.write (((xJSONField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xPostgresJSONFieldModel).xcheck)).apply)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("django.contrib.postgres.fields.JSONField is removed except for support in historical migrations.") ("Use django.db.models.JSONField instead.") ((((((xPostgresJSONFieldModel).x_meta).xget_field)).apply ("field"))) ("fields.E904"))))))

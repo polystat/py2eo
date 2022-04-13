@@ -1,0 +1,384 @@
+memory > xGDAL_VERSION
+memory > xValueError
+memory > xstr
+memory > xforce_str
+memory > xAxisOrder
+memory > xint
+memory > xc_int
+memory > xc_char_p
+memory > xSRSException
+memory > xGDALBase
+memory > xforce_bytes
+memory > xSpatialReference
+memory > xTypeError
+memory > xtype
+memory > xbyref
+memory > xbool
+memory > xtuple
+memory > xisinstance
+memory > xIntEnum
+[] > srs
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__str__
+        memory > xTRADITIONAL
+        memory > xpretty_wkt
+        memory > xAUTHORITY
+        memory > xsemi_major
+        memory > x__getitem__
+        memory > xangular_units
+        memory > xwkt
+        memory > ximport_proj
+        memory > xgeographic
+        memory > xclone
+        memory > xdestructor
+        memory > xsrid
+        memory > xattr_value
+        memory > xxml
+        memory > xauth_code
+        memory > xauth_name
+        memory > xto_esri
+        memory > xvalidate
+        memory > ximport_wkt
+        memory > xfrom_esri
+        memory > ximport_xml
+        memory > xlocal
+        memory > xangular_name
+        memory > ximport_user_input
+        memory > xinverse_flattening
+        memory > xproj4
+        memory > xprojected
+        memory > x__init__
+        memory > xlinear_units
+        memory > xunits
+        memory > xname
+        memory > xsemi_minor
+        memory > xidentify_epsg
+        memory > xlinear_name
+        memory > xellipsoid
+        memory > xproj
+        memory > ximport_epsg
+        memory > xcapi
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xIntEnum)))
+              seq
+                xTRADITIONAL.write 0
+                xAUTHORITY.write 1
+            (((unsupported)).apply ((xGDALBase)))
+              seq
+                (((unsupported)).apply)
+                xdestructor.write ((xcapi).xrelease_srs)
+                x__init__.write
+                  [xself xsrs_input xsrs_type xaxis_order]
+                    memory > xbuf
+                    memory > xsrs
+                    memory > xsrid
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((((xisinstance)).apply ((xaxis_order)) ((((unsupported)).apply ((((xtype)).apply ("None: is there a None literal in the EO language?"))) ((xAxisOrder))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("SpatialReference.axis_order must be an AxisOrder instance."))))
+                        (((unsupported)).apply (((xself).xaxis_order)) (((xaxis_order).or ((xAxisOrder).xTRADITIONAL))))
+                        ((xsrs_type).eq "wkt").if
+                          seq
+                            (((unsupported)).apply (((xself).xptr)) (((((xcapi).xnew_srs)).apply ((((xc_char_p)).apply (""))))))
+                            bogusForceDataize.write ((((xself).ximport_wkt)).apply ((xsrs_input)))
+                            ((((xself).xaxis_order).eq ((xAxisOrder).xTRADITIONAL)).and ((xGDAL_VERSION).geq (((unsupported)).apply (3) (0)))).if
+                              bogusForceDataize.write ((((xcapi).xset_axis_strategy)).apply (((xself).xptr)) (((xself).xaxis_order)))
+                              ((((xself).xaxis_order).neq ((xAxisOrder).xTRADITIONAL)).and ((xGDAL_VERSION).less (((unsupported)).apply (3) (0)))).if
+                                (((unsupported)).apply ((((xValueError)).apply (("%s is not supported in GDAL < 3.0.".mod ((xself).xaxis_order))))))
+                            (((unsupported)).apply)
+                          (((xisinstance)).apply ((xsrs_input)) ((xstr))).if
+                            (((unsupported)).apply ((xValueError)))
+                              seq
+                                xsrid.write (((xint)).apply ((xsrs_input)))
+                                xsrs_input.write ("EPSG:%d".mod (xsrid))
+                            (((xisinstance)).apply ((xsrs_input)) ((xint))).if
+                              xsrs_type.write "epsg"
+                              (((xisinstance)).apply ((xsrs_input)) (((xself).xptr_type))).if
+                                seq
+                                  xsrs.write (xsrs_input)
+                                  xsrs_type.write "ogr"
+                                (((unsupported)).apply ((((xTypeError)).apply (("Invalid SRS type \"%s\"".mod (xsrs_type))))))
+                        ((xsrs_type).eq "ogr").if
+                          xsrs.write (xsrs_input)
+                          seq
+                            xbuf.write (((xc_char_p)).apply (""))
+                            xsrs.write ((((xcapi).xnew_srs)).apply ((xbuf)))
+                        ((xsrs).not).if
+                          (((unsupported)).apply ((((xSRSException)).apply (("Could not create spatial reference from: %s".mod (xsrs_input))))))
+                          (((unsupported)).apply (((xself).xptr)) ((xsrs)))
+                        ((((xself).xaxis_order).eq ((xAxisOrder).xTRADITIONAL)).and ((xGDAL_VERSION).geq (((unsupported)).apply (3) (0)))).if
+                          bogusForceDataize.write ((((xcapi).xset_axis_strategy)).apply (((xself).xptr)) (((xself).xaxis_order)))
+                          ((((xself).xaxis_order).neq ((xAxisOrder).xTRADITIONAL)).and ((xGDAL_VERSION).less (((unsupported)).apply (3) (0)))).if
+                            (((unsupported)).apply ((((xValueError)).apply (("%s is not supported in GDAL < 3.0.".mod ((xself).xaxis_order))))))
+                        ((xsrs_type).eq "user").if
+                          bogusForceDataize.write ((((xself).ximport_user_input)).apply ((xsrs_input)))
+                          ((xsrs_type).eq "epsg").if
+                            bogusForceDataize.write ((((xself).ximport_epsg)).apply ((xsrs_input)))
+                x__getitem__.write
+                  [xself xtarget]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xisinstance)).apply ((xtarget)) ((xtuple))).if
+                          (((unsupported)).apply (((((xself).xattr_value)).apply ((((unsupported)).apply ((xtarget)))))))
+                          (((unsupported)).apply (((((xself).xattr_value)).apply ((xtarget)))))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xpretty_wkt)))
+                xattr_value.write
+                  [xself xtarget xindex]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((((xisinstance)).apply ((xtarget)) ((xstr))).not).or ((((xisinstance)).apply ((xindex)) ((xint))).not)).if
+                          (((unsupported)).apply ((xTypeError)))
+                        (((unsupported)).apply (((((xcapi).xget_attr_value)).apply (((xself).xptr)) ((((xforce_bytes)).apply ((xtarget)))) ((xindex)))))
+                xauth_name.write
+                  [xself xtarget]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xget_auth_name)).apply (((xself).xptr)) ((((xforce_bytes)).apply ((xtarget)))))))
+                xauth_code.write
+                  [xself xtarget]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xget_auth_code)).apply (((xself).xptr)) ((((xforce_bytes)).apply ((xtarget)))))))
+                xclone.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xSpatialReference)) (((((xcapi).xclone_srs)).apply (((xself).xptr)))) (((xself).xaxis_order)))))
+                xfrom_esri.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xmorph_from_esri)).apply (((xself).xptr)))
+                xidentify_epsg.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xcapi).xidentify_epsg)).apply (((xself).xptr)))
+                xto_esri.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xmorph_to_esri)).apply (((xself).xptr)))
+                xvalidate.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xsrs_validate)).apply (((xself).xptr)))
+                xname.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        ((xself).xprojected).if
+                          (((unsupported)).apply (((((xself).xattr_value)).apply ("PROJCS"))))
+                          ((xself).xgeographic).if
+                            (((unsupported)).apply (((((xself).xattr_value)).apply ("GEOGCS"))))
+                            ((xself).xlocal).if
+                              (((unsupported)).apply (((((xself).xattr_value)).apply ("LOCAL_CS"))))
+                              (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xsrid.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xTypeError)) ((xValueError)))))
+                          (((unsupported)).apply ((((xint)).apply (((((xself).xattr_value)).apply ("AUTHORITY") (1))))))
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xlinear_name.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))) (((((xcapi).xlinear_units)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                        (((unsupported)).apply ((xname)))
+                xlinear_units.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))) (((((xcapi).xlinear_units)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                        (((unsupported)).apply ((xunits)))
+                xangular_name.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))) (((((xcapi).xangular_units)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                        (((unsupported)).apply ((xname)))
+                xangular_units.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))) (((((xcapi).xangular_units)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                        (((unsupported)).apply ((xunits)))
+                xunits.write
+                  [xself]
+                    memory > xname
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                        (((xself).xprojected).or ((xself).xlocal)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))) (((((xcapi).xlinear_units)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                          ((xself).xgeographic).if
+                            (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))) (((((xcapi).xangular_units)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                        (((unsupported)).apply ((xname)) ("None: is there a None literal in the EO language?")).if
+                          xname.write (((xforce_str)).apply ((xname)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xunits)) ((xname)))))
+                xellipsoid.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsemi_major)) (((xself).xsemi_minor)) (((xself).xinverse_flattening)))))
+                xsemi_major.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xsemi_major)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_int)).apply)))))))
+                xsemi_minor.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xsemi_minor)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_int)).apply)))))))
+                xinverse_flattening.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xinvflattening)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_int)).apply)))))))
+                xgeographic.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xbool)).apply (((((xcapi).xisgeographic)).apply (((xself).xptr)))))))
+                xlocal.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xbool)).apply (((((xcapi).xislocal)).apply (((xself).xptr)))))))
+                xprojected.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xbool)).apply (((((xcapi).xisprojected)).apply (((xself).xptr)))))))
+                ximport_epsg.write
+                  [xself xepsg]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xfrom_epsg)).apply (((xself).xptr)) ((xepsg)))
+                ximport_proj.write
+                  [xself xproj]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xfrom_proj)).apply (((xself).xptr)) ((xproj)))
+                ximport_user_input.write
+                  [xself xuser_input]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xfrom_user_input)).apply (((xself).xptr)) ((((xforce_bytes)).apply ((xuser_input)))))
+                ximport_wkt.write
+                  [xself xwkt]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xfrom_wkt)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply ((((xforce_bytes)).apply ((xwkt)))))))))
+                ximport_xml.write
+                  [xself xxml]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xfrom_xml)).apply (((xself).xptr)) ((xxml)))
+                xwkt.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xto_wkt)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                xpretty_wkt.write
+                  [xself xsimplify]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xto_pretty_wkt)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))) ((xsimplify)))))
+                xproj.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xto_proj)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))))))
+                xproj4.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((xself).xproj)))
+                xxml.write
+                  [xself xdialect]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xto_xml)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_char_p)).apply)))) ((((xforce_bytes)).apply ((xdialect)))))))
+            (((unsupported)).apply ((xGDALBase)))
+              seq
+                unsupported
+                xdestructor.write ((xcapi).xdestroy_ct)
+                x__init__.write
+                  [xself xsource xtarget]
+                    seq > @
+                      seq
+                        unsupported
+                        (((((xisinstance)).apply ((xsource)) ((xSpatialReference))).not).or ((((xisinstance)).apply ((xtarget)) ((xSpatialReference))).not)).if
+                          (((unsupported)).apply ((((xTypeError)).apply ("source and target must be of type SpatialReference"))))
+                        (((unsupported)).apply (((xself).xptr)) (((((xcapi).xnew_ct)).apply (((xsource).x_ptr)) (((xtarget).x_ptr)))))
+                        (((unsupported)).apply (((xself).x_srs1_name)) (((xsource).xname)))
+                        (((unsupported)).apply (((xself).x_srs2_name)) (((xtarget).xname)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("Transform from \"%s\" to \"%s\"".mod (((unsupported)).apply (((xself).x_srs1_name)) (((xself).x_srs2_name))))))

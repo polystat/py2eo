@@ -1,0 +1,100 @@
+memory > xfield
+memory > xSerializerDoesNotExist
+memory > xhasattr
+memory > xsuper
+memory > xCoordTransform
+memory > xjson
+memory > xSpatialReference
+[] > geojson
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xstart_serialization
+        memory > xJSONSerializer
+        memory > x__init__
+        memory > x_init_options
+        memory > xhandle_field
+        memory > xstart_object
+        memory > xend_serialization
+        memory > xget_dump_object
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xJSONSerializer)))
+              seq
+                (((unsupported)).apply)
+                x_init_options.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).x_init_options)).apply)
+                        (((unsupported)).apply (((xself).xgeometry_field)) ((((((xself).xjson_kwargs).xpop)).apply ("geometry_field") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply (((xself).xsrid)) ((((((xself).xjson_kwargs).xpop)).apply ("srid") (4326))))
+                        (((((unsupported)).apply (((xself).xselected_fields)) ("None: is there a None literal in the EO language?")).and (((unsupported)).apply (((xself).xgeometry_field)) ("None: is there a None literal in the EO language?"))).and (((unsupported)).apply (((xself).xgeometry_field)) (((xself).xselected_fields)))).if
+                          (((unsupported)).apply (((xself).xselected_fields)) ((((unsupported)).apply ((((unsupported)).apply (((xself).xselected_fields)))) (((xself).xgeometry_field)))))
+                xstart_serialization.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).x_init_options)).apply)
+                        (((unsupported)).apply (((xself).x_cts)) ((((unsupported)).apply)))
+                        bogusForceDataize.write (((((xself).xstream).xwrite)).apply (("{\"type\": \"FeatureCollection\", \"crs\": {\"type\": \"name\", \"properties\": {\"name\": \"EPSG:%d\"}}, \"features\": [".mod ((xself).xsrid))))
+                xend_serialization.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xstream).xwrite)).apply ("]}"))
+                xstart_object.write
+                  [xself xobj]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xstart_object)).apply ((xobj)))
+                        (((unsupported)).apply (((xself).x_geometry)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xself).xgeometry_field)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xfield)) ((((xobj).x_meta).xfields)))
+                            (((xhasattr)).apply ((xfield)) ("geom_type")).if
+                              seq
+                                (((unsupported)).apply (((xself).xgeometry_field)) (((xfield).xname)))
+                                (((unsupported)).apply)
+                xget_dump_object.write
+                  [xself xobj]
+                    memory > xsrs
+                    memory > xdata
+                    seq > @
+                      seq
+                        xdata.write (((unsupported)).apply ("type") ("Feature") ("properties") (((xself).x_current)))
+                        (((((unsupported)).apply (((xself).xselected_fields)) ("None: is there a None literal in the EO language?")).or (((unsupported)).apply ("pk") (((xself).xselected_fields)))).and (((unsupported)).apply ("pk") ((((unsupported)).apply ((xdata)) ("properties"))))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xdata)) ("properties"))) ("pk"))) (((((((xobj).x_meta).xpk).xvalue_to_string)).apply ((xobj)))))
+                        ((xself).x_geometry).if
+                          seq
+                            ((((xself).x_geometry).xsrid).neq ((xself).xsrid)).if
+                              seq
+                                (((unsupported)).apply ((((xself).x_geometry).xsrid)) (((xself).x_cts))).if
+                                  seq
+                                    xsrs.write (((xSpatialReference)).apply (((xself).xsrid)))
+                                    (((unsupported)).apply ((((unsupported)).apply (((xself).x_cts)) ((((xself).x_geometry).xsrid)))) ((((xCoordTransform)).apply ((((xself).x_geometry).xsrs)) ((xsrs)))))
+                                bogusForceDataize.write (((((xself).x_geometry).xtransform)).apply ((((unsupported)).apply (((xself).x_cts)) ((((xself).x_geometry).xsrid)))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xdata)) ("geometry"))) (((((xjson).xloads)).apply ((((xself).x_geometry).xgeojson)))))
+                          (((unsupported)).apply ((((unsupported)).apply ((xdata)) ("geometry"))) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((xdata)))
+                xhandle_field.write
+                  [xself xobj xfield]
+                    seq > @
+                      (((xfield).xname).eq ((xself).xgeometry_field)).if
+                        (((unsupported)).apply (((xself).x_geometry)) (((((xfield).xvalue_from_object)).apply ((xobj)))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xhandle_field)).apply ((xobj)) ((xfield)))
+            (((unsupported)).apply)
+              x__init__.write
+                [xself]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ((((xSerializerDoesNotExist)).apply ("geojson is a serialization-only serializer"))))

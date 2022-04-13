@@ -1,0 +1,347 @@
+memory > xk
+memory > xc
+memory > xref_db_column
+memory > xref_db_table
+memory > xinfo
+memory > xNotImplementedError
+memory > xKeyError
+memory > xrow
+memory > xtuple
+memory > xsorted
+memory > xe
+memory > xoptions
+memory > xDEFAULT_DB_ALIAS
+memory > xtable_name
+memory > xatt_name
+memory > xfield_params
+memory > xstr
+memory > xLOOKUP_SEP
+memory > xfield_notes
+memory > xnotes
+memory > xkeyword
+memory > xcallable
+memory > xany
+memory > xBaseCommand
+memory > xint
+memory > xre
+memory > xException
+memory > xconnections
+memory > xcursor
+memory > xx
+memory > xparams
+memory > xv
+memory > xnum_repl
+memory > xline
+memory > xCommandError
+memory > xlen
+[] > inspectdb
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdb_module
+        memory > xget_field_type
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xnormalize_col_name
+        memory > xrequires_system_checks
+        memory > xget_meta
+        memory > xstealth_options
+        memory > xhandle_inspection
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Introspects the database tables in the given database and outputs a Django model module."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xstealth_options.write (((unsupported)).apply ("table_name_filter"))
+                xdb_module.write "django.db"
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("table") ("*") ((xstr)) ("Selects what tables or views should be introspected."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ((xDEFAULT_DB_ALIAS)) ("Nominates a database to introspect. Defaults to using the \"default\" database."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--include-partitions") ("store_true") ("Also output models for partition tables."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--include-views") ("store_true") ("Also output models for database views."))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xNotImplementedError)))
+                          (((unsupported)).apply ((xline)) (((((xself).xhandle_inspection)).apply ((xoptions)))))
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((xline)))
+                          (((unsupported)).apply ((((xCommandError)).apply ("Database inspection isn't supported for the currently selected database backend."))))
+                xhandle_inspection.write
+                  [xself xoptions]
+                    memory > xtypes
+                    memory > xrel_to
+                    memory > xtable_description
+                    memory > xconstraints
+                    memory > xref_pk_column
+                    memory > xcomment_notes
+                    memory > xused_column_names
+                    memory > xcolumn_name
+                    memory > xprimary_key_column
+                    memory > xtable_info
+                    memory > xis_view
+                    memory > xfield_type
+                    memory > xextra_params
+                    memory > xtable_name_filter
+                    memory > xfield_desc
+                    memory > xknown_models
+                    memory > xtable2model
+                    memory > xrel_type
+                    memory > xis_relation
+                    memory > xcolumn_to_field_name
+                    memory > xconnection
+                    memory > xrelations
+                    memory > xis_partition
+                    memory > xunique_columns
+                    seq > @
+                      seq
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((((unsupported)).apply ((xoptions)) ("database"))))
+                        xtable_name_filter.write ((((xoptions).xget)).apply ("table_name_filter"))
+                        xtable2model.write
+                          [xtable_name]
+                            seq > @
+                              (((unsupported)).apply (((((xre).xsub)).apply ("[^a-zA-Z0-9]") ("") (((((xtable_name).xtitle)).apply)))))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            (((unsupported)).apply ("# This is an auto-generated Django model module."))
+                            (((unsupported)).apply ("# You'll have to do the following manually to clean this up:"))
+                            (((unsupported)).apply ("#   * Rearrange models' order"))
+                            (((unsupported)).apply ("#   * Make sure each model has one field with primary_key=True"))
+                            (((unsupported)).apply ("#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior"))
+                            (((unsupported)).apply ("#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table"))
+                            (((unsupported)).apply ("# Feel free to rename the models, but don't rename db_table values or field names."))
+                            (((unsupported)).apply (("from %s import models".mod ((xself).xdb_module))))
+                            xknown_models.write (((unsupported)).apply)
+                            xtable_info.write (((((xconnection).xintrospection).xget_table_list)).apply ((xcursor)))
+                            xtypes.write (((unsupported)).apply ("t"))
+                            (((unsupported)).apply ((xoptions)) ("include_partitions")).if
+                              bogusForceDataize.write ((((xtypes).xadd)).apply ("p"))
+                            (((unsupported)).apply ((xoptions)) ("include_views")).if
+                              bogusForceDataize.write ((((xtypes).xadd)).apply ("v"))
+                            (((unsupported)).apply ((xtable_name)) (((((unsupported)).apply ((xoptions)) ("table")).or (((xsorted)).apply ((((unsupported)).apply (((xinfo).xname)) ((xinfo)) ((xtable_info)) ((((unsupported)).apply (((xinfo).xtype)) ((xtypes))))))))))
+                              seq
+                                ((((unsupported)).apply ((xtable_name_filter)) ("None: is there a None literal in the EO language?")).and (((xcallable)).apply ((xtable_name_filter)))).if
+                                  ((((xtable_name_filter)).apply ((xtable_name))).not).if
+                                    (((unsupported)).apply)
+                                (((unsupported)).apply ((xException)))
+                                  seq
+                                    (((unsupported)).apply ((xNotImplementedError)))
+                                      xrelations.write (((((xconnection).xintrospection).xget_relations)).apply ((xcursor)) ((xtable_name)))
+                                      xrelations.write (((unsupported)).apply)
+                                    (((unsupported)).apply ((xNotImplementedError)))
+                                      xconstraints.write (((((xconnection).xintrospection).xget_constraints)).apply ((xcursor)) ((xtable_name)))
+                                      xconstraints.write (((unsupported)).apply)
+                                    xprimary_key_column.write (((((xconnection).xintrospection).xget_primary_key_column)).apply ((xcursor)) ((xtable_name)))
+                                    xunique_columns.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xc)) ("columns"))) (0))) ((xc)) (((((xconstraints).xvalues)).apply)) (((((unsupported)).apply ((xc)) ("unique")).and ((((xlen)).apply ((((unsupported)).apply ((xc)) ("columns")))).eq 1))))
+                                    xtable_description.write (((((xconnection).xintrospection).xget_table_description)).apply ((xcursor)) ((xtable_name)))
+                                  seq
+                                    (((unsupported)).apply (("# Unable to inspect table '%s'".mod (xtable_name))))
+                                    (((unsupported)).apply (("# The error was: %s".mod (xe))))
+                                    (((unsupported)).apply)
+                                (((unsupported)).apply (""))
+                                (((unsupported)).apply (""))
+                                (((unsupported)).apply (("class %s(models.Model):".mod (((xtable2model)).apply ((xtable_name))))))
+                                bogusForceDataize.write ((((xknown_models).xappend)).apply ((((xtable2model)).apply ((xtable_name)))))
+                                xused_column_names.write (((unsupported)).apply)
+                                xcolumn_to_field_name.write (((unsupported)).apply)
+                                (((unsupported)).apply ((xrow)) ((xtable_description)))
+                                  seq
+                                    xcomment_notes.write (((unsupported)).apply)
+                                    xextra_params.write (((unsupported)).apply)
+                                    xcolumn_name.write ((xrow).xname)
+                                    xis_relation.write (((unsupported)).apply ((xcolumn_name)) ((xrelations)))
+                                    (((unsupported)).apply ((((unsupported)).apply ((xatt_name)) ((xparams)) ((xnotes)))) (((((xself).xnormalize_col_name)).apply ((xcolumn_name)) ((xused_column_names)) ((xis_relation)))))
+                                    bogusForceDataize.write ((((xextra_params).xupdate)).apply ((xparams)))
+                                    bogusForceDataize.write ((((xcomment_notes).xextend)).apply ((xnotes)))
+                                    bogusForceDataize.write ((((xused_column_names).xappend)).apply ((xatt_name)))
+                                    (((unsupported)).apply ((((unsupported)).apply ((xcolumn_to_field_name)) ((xcolumn_name)))) ((xatt_name)))
+                                    ((xcolumn_name).eq (xprimary_key_column)).if
+                                      (((unsupported)).apply ((((unsupported)).apply ((xextra_params)) ("primary_key"))) (TRUE))
+                                      (((unsupported)).apply ((xcolumn_name)) ((xunique_columns))).if
+                                        (((unsupported)).apply ((((unsupported)).apply ((xextra_params)) ("unique"))) (TRUE))
+                                    (xis_relation).if
+                                      seq
+                                        (((unsupported)).apply ((((unsupported)).apply ((xref_db_column)) ((xref_db_table)))) ((((unsupported)).apply ((xrelations)) ((xcolumn_name)))))
+                                        (((((xextra_params).xpop)).apply ("unique") (FALSE)).or ((((xextra_params).xget)).apply ("primary_key"))).if
+                                          xrel_type.write "OneToOneField"
+                                          seq
+                                            xrel_type.write "ForeignKey"
+                                            xref_pk_column.write (((((xconnection).xintrospection).xget_primary_key_column)).apply ((xcursor)) ((xref_db_table)))
+                                            ((xref_pk_column).and ((xref_pk_column).neq (xref_db_column))).if
+                                              (((unsupported)).apply ((((unsupported)).apply ((xextra_params)) ("to_field"))) ((xref_db_column)))
+                                        xrel_to.write (((xref_db_table).eq (xtable_name)).if "self" (((xtable2model)).apply ((xref_db_table))))
+                                        (((unsupported)).apply ((xrel_to)) ((xknown_models))).if
+                                          xfield_type.write ("%s(%s".mod (((unsupported)).apply ((xrel_type)) ((xrel_to))))
+                                          xfield_type.write ("%s('%s'".mod (((unsupported)).apply ((xrel_type)) ((xrel_to))))
+                                      seq
+                                        (((unsupported)).apply ((((unsupported)).apply ((xfield_type)) ((xfield_params)) ((xfield_notes)))) (((((xself).xget_field_type)).apply ((xconnection)) ((xtable_name)) ((xrow)))))
+                                        bogusForceDataize.write ((((xextra_params).xupdate)).apply ((xfield_params)))
+                                        bogusForceDataize.write ((((xcomment_notes).xextend)).apply ((xfield_notes)))
+                                        (((unsupported)).apply ((xfield_type)) ("("))
+                                    (((xatt_name).eq "id").and ((xextra_params).eq (((unsupported)).apply ("primary_key") (TRUE)))).if
+                                      ((xfield_type).eq "AutoField(").if
+                                        (((unsupported)).apply)
+                                        ((xfield_type).eq ((((unsupported)).apply ((((xconnection).xfeatures).xintrospected_field_types)) ("AutoField")).sub "(")).if
+                                          bogusForceDataize.write ((((xcomment_notes).xappend)).apply ("AutoField?"))
+                                    ((xrow).xnull_ok).if
+                                      seq
+                                        (((unsupported)).apply ((((unsupported)).apply ((xextra_params)) ("blank"))) (TRUE))
+                                        (((unsupported)).apply ((((unsupported)).apply ((xextra_params)) ("null"))) (TRUE))
+                                    xfield_desc.write ("%s = %s%s".mod (((unsupported)).apply ((xatt_name)) (((((unsupported)).apply (".") ((xfield_type))).if "" "models.")) ((xfield_type))))
+                                    ((((xfield_type).xstartswith)).apply ((((unsupported)).apply ("ForeignKey(") ("OneToOneField(")))).if
+                                      (((unsupported)).apply ((xfield_desc)) (", models.DO_NOTHING"))
+                                    (xextra_params).if
+                                      seq
+                                        (((((xfield_desc).xendswith)).apply ("(")).not).if
+                                          (((unsupported)).apply ((xfield_desc)) (", "))
+                                        (((unsupported)).apply ((xfield_desc)) ((((", ".xjoin)).apply ((((unsupported)).apply (("%s=%r".mod (((unsupported)).apply ((xk)) ((xv))))) ((((unsupported)).apply ((xk)) ((xv)))) (((((xextra_params).xitems)).apply)))))))
+                                    (((unsupported)).apply ((xfield_desc)) (")"))
+                                    (xcomment_notes).if
+                                      (((unsupported)).apply ((xfield_desc)) (("  # ".sub (((" ".xjoin)).apply ((xcomment_notes))))))
+                                    (((unsupported)).apply (("    %s".mod (xfield_desc))))
+                                xis_view.write (((xany)).apply ((((unsupported)).apply (((((xinfo).xname).eq (xtable_name)).and (((xinfo).xtype).eq "v"))) ((xinfo)) ((xtable_info)))))
+                                xis_partition.write (((xany)).apply ((((unsupported)).apply (((((xinfo).xname).eq (xtable_name)).and (((xinfo).xtype).eq "p"))) ((xinfo)) ((xtable_info)))))
+                                (((unsupported)).apply (((((xself).xget_meta)).apply ((xtable_name)) ((xconstraints)) ((xcolumn_to_field_name)) ((xis_view)) ((xis_partition)))))
+                xnormalize_col_name.write
+                  [xself xcol_name xused_column_names xis_relation]
+                    memory > xnum
+                    memory > xfield_notes
+                    memory > xfield_params
+                    memory > xnew_name
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xfield_params.write (((unsupported)).apply)
+                        xfield_notes.write (((unsupported)).apply)
+                        xnew_name.write ((((xcol_name).xlower)).apply)
+                        ((xnew_name).neq (xcol_name)).if
+                          bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field name made lowercase."))
+                        (xis_relation).if
+                          ((((xnew_name).xendswith)).apply ("_id")).if
+                            xnew_name.write (((unsupported)).apply ((xnew_name)) ((((unsupported)).apply ((3.neg)))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("db_column"))) ((xcol_name)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xnew_name)) ((xnum_repl)))) (((((xre).xsubn)).apply ("W") ("_") ((xnew_name)))))
+                        ((xnum_repl).greater 0).if
+                          bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field renamed to remove unsuitable characters."))
+                        (((((xnew_name).xfind)).apply ((xLOOKUP_SEP))).geq 0).if
+                          seq
+                            while.
+                              (((((xnew_name).xfind)).apply ((xLOOKUP_SEP))).geq 0)
+                              [unused]
+                                seq > @
+                                  xnew_name.write ((((xnew_name).xreplace)).apply ((xLOOKUP_SEP)) ("_"))
+                            ((((((((xcol_name).xlower)).apply).xfind)).apply ((xLOOKUP_SEP))).geq 0).if
+                              bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field renamed because it contained more than one '_' in a row."))
+                        ((((xnew_name).xstartswith)).apply ("_")).if
+                          seq
+                            xnew_name.write ("field%s".mod (xnew_name))
+                            bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field renamed because it started with '_'."))
+                        ((((xnew_name).xendswith)).apply ("_")).if
+                          seq
+                            xnew_name.write ("%sfield".mod (xnew_name))
+                            bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field renamed because it ended with '_'."))
+                        ((((xkeyword).xiskeyword)).apply ((xnew_name))).if
+                          seq
+                            (((unsupported)).apply ((xnew_name)) ("_field"))
+                            bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field renamed because it was a Python reserved word."))
+                        ((((((unsupported)).apply ((xnew_name)) (0)).xisdigit)).apply).if
+                          seq
+                            xnew_name.write ("number_%s".mod (xnew_name))
+                            bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field renamed because it wasn't a valid Python identifier."))
+                        (((unsupported)).apply ((xnew_name)) ((xused_column_names))).if
+                          seq
+                            xnum.write 0
+                            while.
+                              (((unsupported)).apply (("%s_%d".mod (((unsupported)).apply ((xnew_name)) ((xnum))))) ((xused_column_names)))
+                              [unused]
+                                seq > @
+                                  (((unsupported)).apply ((xnum)) (1))
+                            xnew_name.write ("%s_%d".mod (((unsupported)).apply ((xnew_name)) ((xnum))))
+                            bogusForceDataize.write ((((xfield_notes).xappend)).apply ("Field renamed because of name conflict."))
+                        (((xcol_name).neq (xnew_name)).and (xfield_notes)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("db_column"))) ((xcol_name)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xnew_name)) ((xfield_params)) ((xfield_notes)))))
+                xget_field_type.write
+                  [xself xconnection xtable_name xrow]
+                    memory > xfield_params
+                    memory > xfield_notes
+                    memory > xfield_type
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xfield_params.write (((unsupported)).apply)
+                        xfield_notes.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xKeyError)))
+                          xfield_type.write (((((xconnection).xintrospection).xget_field_type)).apply (((xrow).xtype_code)) ((xrow)))
+                          seq
+                            xfield_type.write "TextField"
+                            bogusForceDataize.write ((((xfield_notes).xappend)).apply ("This field type is a guess."))
+                        (((xfield_type).eq "CharField").and ((xrow).xinternal_size)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("max_length"))) ((((xint)).apply (((xrow).xinternal_size)))))
+                        ((((unsupported)).apply ((xfield_type)) ((((unsupported)).apply ("CharField") ("TextField")))).and ((xrow).xcollation)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("db_collation"))) (((xrow).xcollation)))
+                        ((xfield_type).eq "DecimalField").if
+                          ((((unsupported)).apply (((xrow).xprecision)) ("None: is there a None literal in the EO language?")).or (((unsupported)).apply (((xrow).xscale)) ("None: is there a None literal in the EO language?"))).if
+                            seq
+                              bogusForceDataize.write ((((xfield_notes).xappend)).apply ("max_digits and decimal_places have been guessed, as this database handles decimal fields as float"))
+                              (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("max_digits"))) (((((unsupported)).apply (((xrow).xprecision)) ("None: is there a None literal in the EO language?")).if ((xrow).xprecision) 10)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("decimal_places"))) (((((unsupported)).apply (((xrow).xscale)) ("None: is there a None literal in the EO language?")).if ((xrow).xscale) 5)))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("max_digits"))) (((xrow).xprecision)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("decimal_places"))) (((xrow).xscale)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xfield_type)) ((xfield_params)) ((xfield_notes)))))
+                xget_meta.write
+                  [xself xtable_name xconstraints xcolumn_to_field_name xis_view xis_partition]
+                    memory > xmeta
+                    memory > xunique_together
+                    memory > xmanaged_comment
+                    memory > xcolumns
+                    memory > xhas_unsupported_constraint
+                    memory > xtup
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xunique_together.write (((unsupported)).apply)
+                        xhas_unsupported_constraint.write FALSE
+                        (((unsupported)).apply ((xparams)) (((((xconstraints).xvalues)).apply)))
+                          (((unsupported)).apply ((xparams)) ("unique")).if
+                            seq
+                              xcolumns.write (((unsupported)).apply ((xparams)) ("columns"))
+                              (((unsupported)).apply ("None: is there a None literal in the EO language?") ((xcolumns))).if
+                                xhas_unsupported_constraint.write TRUE
+                              xcolumns.write (((unsupported)).apply ((xx)) ((xx)) ((xcolumns)) ((((unsupported)).apply ((xx)) ("None: is there a None literal in the EO language?"))))
+                              ((((xlen)).apply ((xcolumns))).greater 1).if
+                                bogusForceDataize.write ((((xunique_together).xappend)).apply ((((xstr)).apply ((((xtuple)).apply ((((unsupported)).apply ((((unsupported)).apply ((xcolumn_to_field_name)) ((xc)))) ((xc)) ((xcolumns)))))))))
+                        (xis_view).if
+                          xmanaged_comment.write "  # Created from a view. Don't remove."
+                          (xis_partition).if
+                            xmanaged_comment.write "  # Created from a partition. Don't remove."
+                            xmanaged_comment.write ""
+                        xmeta.write (((unsupported)).apply (""))
+                        (xhas_unsupported_constraint).if
+                          bogusForceDataize.write ((((xmeta).xappend)).apply ("    # A unique constraint could not be introspected."))
+                        (((unsupported)).apply ((xmeta)) ((((unsupported)).apply ("    class Meta:") (("        managed = False%s".mod (xmanaged_comment))) (("        db_table = %r".mod (xtable_name))))))
+                        (xunique_together).if
+                          seq
+                            xtup.write (("(".sub (((", ".xjoin)).apply ((xunique_together)))).sub ",)")
+                            (((unsupported)).apply ((xmeta)) ((((unsupported)).apply (("        unique_together = %s".mod (xtup))))))
+                        (((unsupported)).apply ((xmeta)))

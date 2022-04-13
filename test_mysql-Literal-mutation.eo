@@ -1,0 +1,136 @@
+memory > xdatabase
+memory > xstr
+memory > xkeys
+memory > xpassword
+memory > xDatabaseClient
+memory > xKeyError
+memory > xPath
+memory > xsys
+memory > xctx
+memory > x__file__
+memory > xSimpleTestCase
+memory > xargs
+memory > xsubprocess
+memory > xos
+[] > test_mysql
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_can_connect_using_sockets
+        memory > xtest_options_charset
+        memory > xtest_ssl_certificate_is_added
+        memory > xsettings_to_cmd_args_env
+        memory > xtest_parameters
+        memory > xtest_fails_with_keyerror_on_incomplete_config
+        memory > xtest_options_non_deprecated_keys_preferred
+        memory > xtest_options_override_settings_proper_values
+        memory > xtest_crash_password_does_not_leak
+        memory > xtest_basic_params_specified_in_settings
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsettings_to_cmd_args_env.write
+                  [xself xsettings_dict xparameters]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xparameters)) ("None: is there a None literal in the EO language?")).if
+                          xparameters.write (((unsupported)).apply)
+                        (((unsupported)).apply (((((xDatabaseClient).xsettings_to_cmd_args_env)).apply ((xsettings_dict)) ((xparameters)))))
+                xtest_fails_with_keyerror_on_incomplete_config.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xKeyError)))))
+                        bogusForceDataize.write ((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply)))
+                xtest_basic_params_specified_in_settings.write
+                  [xself]
+                    memory > xexpected_env
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("mysql") ("--user=someuser") ("--host=somehost") ("--port=444") ("somedbname"))
+                        xexpected_env.write (((unsupported)).apply ("MYSQL_PWD") ("somepassword"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("somedbname") ("USER") ("someuser") ("PASSWORD") ("somepassword") ("HOST") ("somehost") ("PORT") (444) ("OPTIONS") ((((unsupported)).apply)))))) ((((unsupported)).apply ((xexpected_args)) ((xexpected_env)))))
+                xtest_options_override_settings_proper_values.write
+                  [xself]
+                    memory > xexpected_env
+                    memory > xsettings_port
+                    memory > xexpected_args
+                    memory > xoptions_port
+                    seq > @
+                      seq
+                        xsettings_port.write 444
+                        xoptions_port.write 556
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xsettings_port)) ((xoptions_port)) ("test pre-req"))
+                        xexpected_args.write (((unsupported)).apply ("mysql") ("--user=optionuser") ("--host=optionhost") (("--port=%s".mod (xoptions_port))) ("optiondbname"))
+                        xexpected_env.write (((unsupported)).apply ("MYSQL_PWD") ("optionpassword"))
+                        (((unsupported)).apply ((xkeys)) ((((unsupported)).apply ((((unsupported)).apply ("database") ("password"))) ((((unsupported)).apply ("db") ("passwd"))))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xkeys)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xdatabase)) ((xpassword)))) ((xkeys)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("settingdbname") ("USER") ("settinguser") ("PASSWORD") ("settingpassword") ("HOST") ("settinghost") ("PORT") ((xsettings_port)) ("OPTIONS") ((((unsupported)).apply ((xdatabase)) ("optiondbname") ("user") ("optionuser") ((xpassword)) ("optionpassword") ("host") ("optionhost") ("port") ((xoptions_port)))))))) ((((unsupported)).apply ((xexpected_args)) ((xexpected_env)))))
+                xtest_options_non_deprecated_keys_preferred.write
+                  [xself]
+                    memory > xexpected_env
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("mysql") ("--user=someuser") ("--host=somehost") ("--port=444") ("optiondbname"))
+                        xexpected_env.write (((unsupported)).apply ("MYSQL_PWD") ("optionpassword"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("settingdbname") ("USER") ("someuser") ("PASSWORD") ("settingpassword") ("HOST") ("somehost") ("PORT") (444) ("OPTIONS") ((((unsupported)).apply ("database") ("optiondbname") ("db") ("deprecatedoptiondbname") ("password") ("optionpassword") ("passwd") ("deprecatedoptionpassword"))))))) ((((unsupported)).apply ((xexpected_args)) ((xexpected_env)))))
+                xtest_options_charset.write
+                  [xself]
+                    memory > xexpected_env
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("mysql") ("--user=someuser") ("--host=somehost") ("--port=444") ("--default-character-set=utf8") ("somedbname"))
+                        xexpected_env.write (((unsupported)).apply ("MYSQL_PWD") ("somepassword"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("somedbname") ("USER") ("someuser") ("PASSWORD") ("somepassword") ("HOST") ("somehost") ("PORT") (444) ("OPTIONS") ((((unsupported)).apply ("charset") ("utf8"))))))) ((((unsupported)).apply ((xexpected_args)) ((xexpected_env)))))
+                xtest_can_connect_using_sockets.write
+                  [xself]
+                    memory > xexpected_env
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("mysql") ("--user=someuser") ("--socket=/path/to/mysql.socket.file") ("somedbname"))
+                        xexpected_env.write (((unsupported)).apply ("MYSQL_PWD") ("somepassword"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("somedbname") ("USER") ("someuser") ("PASSWORD") ("somepassword") ("HOST") ("/path/to/mysql.socket.file") ("PORT") ("None: is there a None literal in the EO language?") ("OPTIONS") ((((unsupported)).apply)))))) ((((unsupported)).apply ((xexpected_args)) ((xexpected_env)))))
+                xtest_ssl_certificate_is_added.write
+                  [xself]
+                    memory > xexpected_env
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("mysql") ("--user=someuser") ("--host=somehost") ("--port=444") ("--ssl-ca=sslca") ("--ssl-cert=sslcert") ("--ssl-key=sslkey") ("somedbname"))
+                        xexpected_env.write (((unsupported)).apply ("MYSQL_PWD") ("somepassword"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("somedbname") ("USER") ("someuser") ("PASSWORD") ("somepassword") ("HOST") ("somehost") ("PORT") (444) ("OPTIONS") ((((unsupported)).apply ("ssl") ((((unsupported)).apply ("ca") ("sslca") ("cert") ("sslcert") ("key") ("sslkey"))))))))) ((((unsupported)).apply ((xexpected_args)) ((xexpected_env)))))
+                xtest_parameters.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("somedbname") ("USER") ("None: is there a None literal in the EO language?") ("PASSWORD") ("None: is there a None literal in the EO language?") ("HOST") ("None: is there a None literal in the EO language?") ("PORT") ("None: is there a None literal in the EO language?") ("OPTIONS") ((((unsupported)).apply)))) ((((unsupported)).apply ("--help"))))) ((((unsupported)).apply ((((unsupported)).apply ("mysql") ("somedbname") ("--help"))) ("None: is there a None literal in the EO language?"))))
+                xtest_crash_password_does_not_leak.write
+                  [xself]
+                    memory > xenv
+                    memory > xfake_client
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xargs)) ((xenv)))) (((((xDatabaseClient).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("somedbname") ("USER") ("someuser") ("PASSWORD") ("somepassword") ("HOST") ("somehost") ("PORT") (444) ("OPTIONS") ((((unsupported)).apply)))) ((((unsupported)).apply)))))
+                        (xenv).if
+                          xenv.write (((unsupported)).apply (((xos).xenviron)) ((xenv)))
+                        xfake_client.write ((((((xPath)).apply ((x__file__))).xwith_name)).apply ("fake_client.py"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xargs)) ((((unsupported)).apply (0) (1))))) ((((unsupported)).apply (((xsys).xexecutable)) ((((xstr)).apply ((xfake_client)))))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply (((xsubprocess).xCalledProcessError)))) ((xctx)))
+                          (((unsupported)).apply (((xsubprocess).xrun)) ((xargs)) (TRUE) ((xenv)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("somepassword") ((((xstr)).apply (((xctx).xexception)))))

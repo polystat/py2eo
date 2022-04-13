@@ -1,0 +1,29 @@
+memory > xBaseCommand
+memory > xoptions
+[] > required_option
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("-n") ("--need-me") (TRUE))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("-t") ("--need-me-too") (TRUE) ("needme2"))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((",".xjoin)).apply ((xoptions)))))

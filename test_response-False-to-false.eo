@@ -1,0 +1,435 @@
+memory > xAttributeError
+memory > xmodify_settings
+memory > xTemplateResponse
+memory > xRequestFactory
+memory > xoverride_settings
+memory > xargs
+memory > xgetattr
+memory > xSimpleTemplateResponse
+memory > xContentNotRenderedError
+memory > xkwargs
+memory > xSimpleTestCase
+memory > xdatetime
+memory > xpickle
+memory > xlist
+memory > xhasattr
+memory > xtime
+memory > xTEMPLATE_DIR
+memory > xattr
+memory > xengines
+[] > test_response
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_iteration_rendered
+        memory > x_response
+        memory > xtest_iteration_unrendered
+        memory > xtest_pickling_cookie
+        memory > xtest_custom_urlconf
+        memory > xtest_args
+        memory > xtest_kwargs
+        memory > xtest_render_with_requestcontext
+        memory > xtest_set_content
+        memory > xtest_post_callbacks
+        memory > xtest_using
+        memory > xtest_processor_name
+        memory > xtest_template_resolving
+        memory > xtest_content_access_rendered
+        memory > xtest_processor
+        memory > xfactory
+        memory > xtest_context_processor_priority
+        memory > xtest_pickling
+        memory > xtest_dict_context
+        memory > xtest_explicit_baking
+        memory > xcustom_urlconf_middleware
+        memory > xtest_render
+        memory > xtest_content_access_unrendered
+        memory > xtest_headers
+        memory > xtest_middleware_caching
+        memory > xtest_repickling
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xtest_processor.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ("processors") ("yes"))))
+            xtest_processor_name.write "template_tests.test_response.test_processor"
+            xcustom_urlconf_middleware.write
+              [xget_response]
+                memory > xmiddleware
+                seq > @
+                  seq
+                    xmiddleware.write
+                      [xrequest]
+                        seq > @
+                          seq
+                            (((unsupported)).apply (((xrequest).xurlconf)) ("template_tests.alternate_urls"))
+                            (((unsupported)).apply ((((xget_response)).apply ((xrequest)))))
+                    (((unsupported)).apply ((xmiddleware)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                x_response.write
+                  [xself xtemplate]
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate.write ((((((unsupported)).apply ((xengines)) ("django")).xfrom_string)).apply ((xtemplate)))
+                        (((unsupported)).apply ((((xSimpleTemplateResponse)).apply ((xtemplate)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                xtest_template_resolving.write
+                  [xself]
+                    memory > xresponse
+                    memory > xtemplates
+                    seq > @
+                      seq
+                        xresponse.write (((xSimpleTemplateResponse)).apply ("first/test.html"))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("First templaten"))
+                        xtemplates.write (((unsupported)).apply ("foo.html") ("second/test.html") ("first/test.html"))
+                        xresponse.write (((xSimpleTemplateResponse)).apply ((xtemplates)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("Second templaten"))
+                        xresponse.write ((((xself).x_response)).apply)
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("foo"))
+                xtest_explicit_baking.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write ((((xself).x_response)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xresponse).xis_rendered)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xresponse).xis_rendered)))
+                xtest_render.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((((xself).x_response)).apply).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("foo"))
+                        xtemplate.write ((((((unsupported)).apply ((xengines)) ("django")).xfrom_string)).apply ("bar{{ baz }}"))
+                        (((unsupported)).apply (((xresponse).xtemplate_name)) ((xtemplate)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("foo"))
+                        (((unsupported)).apply (((xresponse).xcontent)) ("bar"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("bar"))
+                xtest_iteration_unrendered.write
+                  [xself]
+                    memory > xresponse
+                    memory > xmsg
+                    memory > xiteration
+                    seq > @
+                      seq
+                        xresponse.write ((((xself).x_response)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xresponse).xis_rendered)))
+                        xiteration.write
+                          []
+                            seq > @
+                              bogusForceDataize.write (((xlist)).apply ((xresponse)))
+                        xmsg.write "The response content must be rendered before it can be iterated over."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xContentNotRenderedError)) ((xmsg)))))
+                          bogusForceDataize.write (((xiteration)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xresponse).xis_rendered)))
+                xtest_iteration_rendered.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((((xself).x_response)).apply).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xresponse)))) ((((unsupported)).apply ("foo"))))
+                xtest_content_access_unrendered.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write ((((xself).x_response)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xresponse).xis_rendered)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xContentNotRenderedError)))))
+                          unsupported
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xresponse).xis_rendered)))
+                xtest_content_access_rendered.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((((xself).x_response)).apply).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("foo"))
+                xtest_set_content.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write ((((xself).x_response)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xresponse).xis_rendered)))
+                        (((unsupported)).apply (((xresponse).xcontent)) ("spam"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xresponse).xis_rendered)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("spam"))
+                        (((unsupported)).apply (((xresponse).xcontent)) ("baz"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("baz"))
+                xtest_dict_context.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write ((((xself).x_response)).apply ("{{ foo }}{{ processors }}") ((((unsupported)).apply ("foo") ("bar"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontext_data)) ((((unsupported)).apply ("foo") ("bar"))))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("bar"))
+                xtest_kwargs.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((unsupported)).apply (((xself).x_response)) ("application/json") (504) ("ascii"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("content-type"))) ("application/json"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (504))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcharset)) ("ascii"))
+                xtest_args.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xSimpleTemplateResponse)).apply ("") ((((unsupported)).apply)) ("application/json") (504))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("content-type"))) ("application/json"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (504))
+                xtest_using.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        xresponse.write ((((((xSimpleTemplateResponse)).apply ("template_tests/using.html")).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("DTLn"))
+                        xresponse.write ((((((unsupported)).apply ((xSimpleTemplateResponse)) ("template_tests/using.html") ("django")).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("DTLn"))
+                        xresponse.write ((((((unsupported)).apply ((xSimpleTemplateResponse)) ("template_tests/using.html") ("jinja2")).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("Jinja2n"))
+                xtest_post_callbacks.write
+                  [xself]
+                    memory > xpost1
+                    memory > xpost
+                    memory > xresponse
+                    memory > xpost2
+                    seq > @
+                      seq
+                        unsupported
+                        xpost.write (((unsupported)).apply)
+                        xpost1.write
+                          [xobj]
+                            seq > @
+                              bogusForceDataize.write ((((xpost).xappend)).apply ("post1"))
+                        xpost2.write
+                          [xobj]
+                            seq > @
+                              bogusForceDataize.write ((((xpost).xappend)).apply ("post2"))
+                        xresponse.write (((xSimpleTemplateResponse)).apply ("first/test.html") ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xresponse).xadd_post_render_callback)).apply ((xpost1)))
+                        bogusForceDataize.write ((((xresponse).xadd_post_render_callback)).apply ((xpost2)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("First templaten"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpost)) ((((unsupported)).apply ("post1") ("post2"))))
+                xtest_pickling.write
+                  [xself]
+                    memory > xtemplate_attrs
+                    memory > xresponse
+                    memory > xunpickled_response
+                    memory > xpickled_response
+                    seq > @
+                      seq
+                        xresponse.write (((xSimpleTemplateResponse)).apply ("first/test.html") ((((unsupported)).apply ("value") (123) ("fn") (((xdatetime).xnow)))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xContentNotRenderedError)))))
+                          bogusForceDataize.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        xpickled_response.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        xunpickled_response.write ((((xpickle).xloads)).apply ((xpickled_response)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xunpickled_response).xcontent)) (((xresponse).xcontent)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xunpickled_response).xheaders)) ("content-type"))) ((((unsupported)).apply (((xresponse).xheaders)) ("content-type"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xunpickled_response).xstatus_code)) (((xresponse).xstatus_code)))
+                        xtemplate_attrs.write (((unsupported)).apply ("template_name") ("context_data") ("_post_render_callbacks"))
+                        (((unsupported)).apply ((xattr)) ((xtemplate_attrs)))
+                          bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xhasattr)).apply ((xunpickled_response)) ((xattr)))))
+                        (((unsupported)).apply ((xattr)) ((xtemplate_attrs)))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xAttributeError)))))
+                            bogusForceDataize.write (((xgetattr)).apply ((xunpickled_response)) ((xattr)))
+                xtest_repickling.write
+                  [xself]
+                    memory > xresponse
+                    memory > xunpickled_response
+                    memory > xpickled_response
+                    seq > @
+                      seq
+                        xresponse.write (((xSimpleTemplateResponse)).apply ("first/test.html") ((((unsupported)).apply ("value") (123) ("fn") (((xdatetime).xnow)))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xContentNotRenderedError)))))
+                          bogusForceDataize.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        xpickled_response.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        xunpickled_response.write ((((xpickle).xloads)).apply ((xpickled_response)))
+                        bogusForceDataize.write ((((xpickle).xdumps)).apply ((xunpickled_response)))
+                xtest_pickling_cookie.write
+                  [xself]
+                    memory > xresponse
+                    memory > xunpickled_response
+                    memory > xpickled_response
+                    seq > @
+                      seq
+                        xresponse.write (((xSimpleTemplateResponse)).apply ("first/test.html") ((((unsupported)).apply ("value") (123) ("fn") (((xdatetime).xnow)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xresponse).xcookies)) ("key"))) ("value"))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        xpickled_response.write ((((xpickle).xdumps)).apply ((xresponse)) (((xpickle).xHIGHEST_PROTOCOL)))
+                        xunpickled_response.write ((((xpickle).xloads)).apply ((xpickled_response)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xunpickled_response).xcookies)) ("key")).xvalue)) ("value"))
+                xtest_headers.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((unsupported)).apply ((xSimpleTemplateResponse)) ("first/test.html") ((((unsupported)).apply ("value") (123) ("fn") (((xdatetime).xnow)))) ((((unsupported)).apply ("X-Foo") ("foo"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-Foo"))) ("foo"))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((unsupported)).apply ("BACKEND") ("django.template.backends.django.DjangoTemplates") ("DIRS") ((((unsupported)).apply ((xTEMPLATE_DIR)))) ("OPTIONS") ((((unsupported)).apply ("context_processors") ((((unsupported)).apply ((xtest_processor_name)))))))))))))
+              seq
+                xfactory.write (((xRequestFactory)).apply)
+                x_response.write
+                  [xself xtemplate]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).x_request)) ((((((xself).xfactory).xget)).apply ("/"))))
+                        xtemplate.write ((((((unsupported)).apply ((xengines)) ("django")).xfrom_string)).apply ((xtemplate)))
+                        (((unsupported)).apply ((((xTemplateResponse)).apply (((xself).x_request)) ((xtemplate)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                xtest_render.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((((xself).x_response)).apply ("{{ foo }}{{ processors }}")).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("yes"))
+                xtest_render_with_requestcontext.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((((xself).x_response)).apply ("{{ foo }}{{ processors }}") ((((unsupported)).apply ("foo") ("bar")))).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("baryes"))
+                xtest_context_processor_priority.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((((xself).x_response)).apply ("{{ foo }}{{ processors }}") ((((unsupported)).apply ("processors") ("no")))).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("no"))
+                xtest_kwargs.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((unsupported)).apply (((xself).x_response)) ("application/json") (504))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("content-type"))) ("application/json"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (504))
+                xtest_args.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((xTemplateResponse)).apply ((((((xself).xfactory).xget)).apply ("/"))) ("") ((((unsupported)).apply)) ("application/json") (504))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("content-type"))) ("application/json"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (504))
+                xtest_using.write
+                  [xself]
+                    memory > xresponse
+                    memory > xrequest
+                    seq > @
+                      (((unsupported)).apply)
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/"))
+                        xresponse.write ((((((xTemplateResponse)).apply ((xrequest)) ("template_tests/using.html")).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("DTLn"))
+                        xresponse.write ((((((unsupported)).apply ((xTemplateResponse)) ((xrequest)) ("template_tests/using.html") ("django")).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("DTLn"))
+                        xresponse.write ((((((unsupported)).apply ((xTemplateResponse)) ((xrequest)) ("template_tests/using.html") ("jinja2")).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("Jinja2n"))
+                xtest_pickling.write
+                  [xself]
+                    memory > xtemplate_attrs
+                    memory > xresponse
+                    memory > xunpickled_response
+                    memory > xpickled_response
+                    seq > @
+                      seq
+                        xresponse.write (((xTemplateResponse)).apply ((((((xself).xfactory).xget)).apply ("/"))) ("first/test.html") ((((unsupported)).apply ("value") (123) ("fn") (((xdatetime).xnow)))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xContentNotRenderedError)))))
+                          bogusForceDataize.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        xpickled_response.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        xunpickled_response.write ((((xpickle).xloads)).apply ((xpickled_response)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xunpickled_response).xcontent)) (((xresponse).xcontent)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xunpickled_response).xheaders)) ("content-type"))) ((((unsupported)).apply (((xresponse).xheaders)) ("content-type"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xunpickled_response).xstatus_code)) (((xresponse).xstatus_code)))
+                        xtemplate_attrs.write (((unsupported)).apply ("template_name") ("context_data") ("_post_render_callbacks") ("_request"))
+                        (((unsupported)).apply ((xattr)) ((xtemplate_attrs)))
+                          bogusForceDataize.write ((((xself).xassertfalse)).apply ((((xhasattr)).apply ((xunpickled_response)) ((xattr)))))
+                        (((unsupported)).apply ((xattr)) ((xtemplate_attrs)))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xAttributeError)))))
+                            bogusForceDataize.write (((xgetattr)).apply ((xunpickled_response)) ((xattr)))
+                xtest_repickling.write
+                  [xself]
+                    memory > xresponse
+                    memory > xunpickled_response
+                    memory > xpickled_response
+                    seq > @
+                      seq
+                        xresponse.write (((xSimpleTemplateResponse)).apply ("first/test.html") ((((unsupported)).apply ("value") (123) ("fn") (((xdatetime).xnow)))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xContentNotRenderedError)))))
+                          bogusForceDataize.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        bogusForceDataize.write ((((xresponse).xrender)).apply)
+                        xpickled_response.write ((((xpickle).xdumps)).apply ((xresponse)))
+                        xunpickled_response.write ((((xpickle).xloads)).apply ((xpickled_response)))
+                        bogusForceDataize.write ((((xpickle).xdumps)).apply ((xunpickled_response)))
+                xtest_headers.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((unsupported)).apply ((xTemplateResponse)) ((((((xself).xfactory).xget)).apply ("/"))) ("first/test.html") ((((unsupported)).apply ("value") (123) ("fn") (((xdatetime).xnow)))) ((((unsupported)).apply ("X-Foo") ("foo"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-Foo"))) ("foo"))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ((((unsupported)).apply ("template_tests.test_response.custom_urlconf_middleware"))))))) ((((unsupported)).apply ((xoverride_settings)) ("template_tests.urls"))))
+              xtest_custom_urlconf.write
+                [xself]
+                  memory > xresponse
+                  seq > @
+                    seq
+                      xresponse.write (((((xself).xclient).xget)).apply ("/template_response_view/"))
+                      bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("This is where you can find the snark: /snark/"))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ((((unsupported)).apply ("django.middleware.cache.FetchFromCacheMiddleware") ("django.middleware.cache.UpdateCacheMiddleware"))))))) ((((unsupported)).apply ((xoverride_settings)) (2.0) ("template_tests.alternate_urls"))))
+              xtest_middleware_caching.write
+                [xself]
+                  memory > xresponse
+                  memory > xresponse2
+                  seq > @
+                    seq
+                      xresponse.write (((((xself).xclient).xget)).apply ("/template_response_view/"))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                      bogusForceDataize.write ((((xtime).xsleep)).apply (1.0))
+                      xresponse2.write (((((xself).xclient).xget)).apply ("/template_response_view/"))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse2).xstatus_code)) (200))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) (((xresponse2).xcontent)))
+                      bogusForceDataize.write ((((xtime).xsleep)).apply (2.0))
+                      xresponse2.write (((((xself).xclient).xget)).apply ("/template_response_view/"))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse2).xstatus_code)) (200))
+                      bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((xresponse).xcontent)) (((xresponse2).xcontent)))

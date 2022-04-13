@@ -1,0 +1,102 @@
+memory > xClient
+memory > xcsrf_failure
+memory > xoverride
+memory > xoverride_settings
+memory > xTemplateDoesNotExist
+memory > xSimpleTestCase
+memory > xRequestFactory
+memory > xsuper
+[] > test_csrf
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_custom_template
+        memory > xsetUp
+        memory > xtest_no_cookies
+        memory > xtest_translation
+        memory > xtest_no_django_template_engine
+        memory > xtest_custom_template_does_not_exist
+        memory > xtest_no_referer
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("view_tests.urls"))))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        (((unsupported)).apply (((xself).xclient)) ((((unsupported)).apply ((xClient)) (TRUE))))
+                xtest_translation.write
+                  [xself]
+                    memory > xresponse
+                    memory > xresponse2
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xresponse2.write (((((xself).xclient).xpost)).apply ("/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("Forbidden") (403))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("CSRF verification failed. Request aborted.") (403))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ("nl"))) ((((xoverride)).apply ("en-us"))))
+                          seq
+                            xresponse.write (((((xself).xclient).xpost)).apply ("/"))
+                            (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("Verboden") (403))
+                            (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("CSRF-verificatie mislukt. Verzoek afgebroken.") (403))
+                xtest_no_referer.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply ((((xself).xclient).xpost)) ("/") ("https"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("You are seeing this message because this HTTPS site requires a “Referer header” to be sent by your web browser, but none was sent.") (403))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("If you have configured your browser to disable “Referer” headers, please re-enable them, at least for this site, or for HTTPS connections, or for “same-origin” requests.") (403))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("If you are using the &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt; tag or including the “Referrer-Policy: no-referrer” header, please remove them.") (403))
+                xtest_no_cookies.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xpost)).apply ("/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("You are seeing this message because this site requires a CSRF cookie when submitting forms. This cookie is required for security reasons, to ensure that your browser is not being hijacked by third parties.") (403))
+                xtest_no_django_template_engine.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xpost)).apply ("/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("Forbidden") (403))
+                xtest_custom_template.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xresponse.write (((((xself).xclient).xpost)).apply ("/"))
+                        (((unsupported)).apply (((xself).xassertContains)) ((xresponse)) ("Test template for CSRF failure") (403))
+                xtest_custom_template_does_not_exist.write
+                  [xself]
+                    memory > xfactory
+                    memory > xrequest
+                    seq > @
+                      seq
+                        unsupported
+                        xfactory.write (((xRequestFactory)).apply)
+                        xrequest.write ((((xfactory).xpost)).apply ("/"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          (((unsupported)).apply ((xcsrf_failure)) ((xrequest)) ("nonexistent.html"))

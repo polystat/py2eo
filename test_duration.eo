@@ -1,0 +1,160 @@
+memory > xdatetime
+memory > xparse_duration
+memory > xduration_iso_string
+memory > xduration_string
+memory > xduration_microseconds
+memory > xdelta
+memory > xunittest
+[] > test_duration
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_simple
+        memory > xtest_days
+        memory > xtest
+        memory > xtest_negative
+        memory > xtest_microseconds
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_simple.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_string)).apply ((xduration)))) ("01:03:05"))
+                xtest_days.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_string)).apply ((xduration)))) ("1 01:03:05"))
+                xtest_microseconds.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5) (12345))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_string)).apply ((xduration)))) ("01:03:05.012345"))
+                xtest_negative.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) ((1.neg)) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_string)).apply ((xduration)))) ("-1 01:03:05"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_simple.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xduration_string)).apply ((xduration)))))) ((xduration)))
+                xtest_days.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xduration_string)).apply ((xduration)))))) ((xduration)))
+                xtest_microseconds.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5) (12345))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xduration_string)).apply ((xduration)))))) ((xduration)))
+                xtest_negative.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) ((1.neg)) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xduration_string)).apply ((xduration)))))) ((xduration)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_simple.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_iso_string)).apply ((xduration)))) ("P0DT01H03M05S"))
+                xtest_days.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_iso_string)).apply ((xduration)))) ("P1DT01H03M05S"))
+                xtest_microseconds.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5) (12345))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_iso_string)).apply ((xduration)))) ("P0DT01H03M05.012345S"))
+                xtest_negative.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write ((1.neg).mul (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1) (3) (5)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xduration_iso_string)).apply ((xduration)))) ("-P1DT01H03M05S"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_simple.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xduration_iso_string)).apply ((xduration)))))) ((xduration)))
+                xtest_days.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xduration_iso_string)).apply ((xduration)))))) ((xduration)))
+                xtest_microseconds.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (3) (5) (12345))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_duration)).apply ((((xduration_iso_string)).apply ((xduration)))))) ((xduration)))
+                xtest_negative.write
+                  [xself]
+                    memory > xduration
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) ((1.neg)) (1) (3) (5))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xparse_duration)).apply ((((xduration_iso_string)).apply ((xduration))))).xtotal_seconds)).apply)) (((((xduration).xtotal_seconds)).apply)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              xtest.write
+                [xself]
+                  memory > xdeltas
+                  seq > @
+                    seq
+                      xdeltas.write (((unsupported)).apply ((((xdatetime).xtimedelta).xmax)) ((((xdatetime).xtimedelta).xmin)) ((((xdatetime).xtimedelta).xresolution)) (((((xdatetime).xtimedelta).xresolution).neg)) ((((unsupported)).apply (((xdatetime).xtimedelta)) ((((unsupported)).apply)))))
+                      (((unsupported)).apply ((xdelta)) ((xdeltas)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xdelta)))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xdatetime).xtimedelta)) ((((xduration_microseconds)).apply ((xdelta)))))) ((xdelta)))

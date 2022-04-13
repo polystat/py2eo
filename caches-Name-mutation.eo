@@ -1,0 +1,115 @@
+memory > xlist
+memory > xtuple
+memory > xgetattr
+memory > xname
+memory > xconfig
+memory > xisinstance
+memory > xFileBasedCache
+memory > xerrors
+memory > xcaches
+memory > xWarning
+memory > xstaticfiles_dir
+memory > xError
+memory > x_
+memory > xalias
+memory > xpath
+memory > xpathlib
+memory > xany
+memory > xDEFAULT_CACHE_ALIAS
+memory > xset
+memory > xsettings
+[] > caches
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck_default_cache_is_configured
+        memory > xcheck_file_based_cache_is_absolute
+        memory > xcheck_cache_location_not_exposed
+        memory > xE001
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            xE001.write (((unsupported)).apply ((xError)) (("You must define a '%s' cache in your CACHES setting.".mod (xDEFAULT_CACHE_ALIAS))) ("caches.E001"))
+            xcheck_default_cache_is_configured.write
+              [xapp_configs]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((xDEFAULT_CACHE_ALIAS)) (((xsettings).xCACHES))).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xE001)))))
+                    (((unsupported)).apply ((((unsupported)).apply)))
+            xcheck_cache_location_not_exposed.write
+              [xapp_configs]
+                memory > xcache_path
+                memory > xsetting
+                memory > xpaths
+                memory > xerrors2
+                memory > xcache
+                memory > xrelation
+                seq > @
+                  (((unsupported)).apply)
+                    xerrors2.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xname)) ((((unsupported)).apply ("MEDIA_ROOT") ("STATIC_ROOT") ("STATICFILES_DIRS"))))
+                      seq
+                        xsetting.write (((xgetattr)).apply ((xsettings)) ((xname)) ("None: is there a None literal in the EO language?"))
+                        ((xsetting).not).if
+                          (((unsupported)).apply)
+                        ((xname).eq "STATICFILES_DIRS").if
+                          seq
+                            xpaths.write (((xset)).apply)
+                            (((unsupported)).apply ((xstaticfiles_dir)) ((xsetting)))
+                              seq
+                                (((xisinstance)).apply ((xstaticfiles_dir)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                                  (((unsupported)).apply ((((unsupported)).apply ((x_)) ((xstaticfiles_dir)))) ((xstaticfiles_dir)))
+                                bogusForceDataize.write ((((xpaths).xadd)).apply ((((((((xpathlib).xPath)).apply ((xstaticfiles_dir))).xresolve)).apply)))
+                          xpaths.write (((unsupported)).apply ((((((((xpathlib).xPath)).apply ((xsetting))).xresolve)).apply)))
+                        (((unsupported)).apply ((xalias)) (((xsettings).xCACHES)))
+                          seq
+                            xcache.write (((unsupported)).apply ((xcaches)) ((xalias)))
+                            ((((xisinstance)).apply ((xcache)) ((xFileBasedCache))).not).if
+                              (((unsupported)).apply)
+                            xcache_path.write (((((((xpathlib).xPath)).apply (((xcache).x_dir))).xresolve)).apply)
+                            (((xany)).apply ((((unsupported)).apply (((xpath).eq (xcache_path))) ((xpath)) ((xpaths))))).if
+                              xrelation.write "matches"
+                              (((xany)).apply ((((unsupported)).apply ((((unsupported)).apply ((xpath)) (((xcache_path).xparents)))) ((xpath)) ((xpaths))))).if
+                                xrelation.write "is inside"
+                                (((xany)).apply ((((unsupported)).apply ((((unsupported)).apply ((xcache_path)) (((xpath).xparents)))) ((xpath)) ((xpaths))))).if
+                                  xrelation.write "contains"
+                                  (((unsupported)).apply)
+                            bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xWarning)) ("Your '{alias}' cache configuration might expose your cache or lead to corruption of your data because its LOCATION {relation} {name}.") ("caches.W002"))))
+                    (((unsupported)).apply ((xerrors)))
+            xcheck_file_based_cache_is_absolute.write
+              [xapp_configs]
+                memory > xcache
+                memory > xerrors
+                seq > @
+                  (((unsupported)).apply)
+                    xerrors.write (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xalias)) ((xconfig)))) ((((((xsettings).xCACHES).xitems)).apply)))
+                      seq
+                        xcache.write (((unsupported)).apply ((xcaches)) ((xalias)))
+                        ((((xisinstance)).apply ((xcache)) ((xFileBasedCache))).not).if
+                          (((unsupported)).apply)
+                        ((((((((xpathlib).xPath)).apply ((((unsupported)).apply ((xconfig)) ("LOCATION")))).xis_absolute)).apply).not).if
+                          bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xWarning)) ("Your '{alias}' cache LOCATION path is relative. Use an absolute path instead.") ("caches.W003"))))
+                    (((unsupported)).apply ((xerrors)))

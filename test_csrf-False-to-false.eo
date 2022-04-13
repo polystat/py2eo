@@ -1,0 +1,128 @@
+memory > xmodify_settings
+memory > xClient
+memory > xTestCase
+memory > xSite
+memory > xUser
+memory > xfalse
+memory > xFLATPAGES_TEMPLATES
+memory > xoverride_settings
+memory > xFlatPage
+[] > test_csrf
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xsetUp
+        memory > xtest_post_unknown_page
+        memory > xtest_post_fallback_flatpage
+        memory > xtest_fallback_flatpage
+        memory > xtest_view_non_existent_flatpage
+        memory > xtest_post_view_flatpage
+        memory > xtest_view_flatpage
+        memory > xtest_view_authenticated_flatpage
+        memory > xtest_fallback_non_existent_flatpage
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ("django.contrib.flatpages"))))) ((((unsupported)).apply ((xoverride_settings)) ("/accounts/login/") ((((unsupported)).apply ("django.middleware.common.CommonMiddleware") ("django.contrib.sessions.middleware.SessionMiddleware") ("django.middleware.csrf.CsrfViewMiddleware") ("django.contrib.auth.middleware.AuthenticationMiddleware") ("django.contrib.messages.middleware.MessageMiddleware") ("django.contrib.flatpages.middleware.FlatpageFallbackMiddleware"))) ("flatpages_tests.urls") ("django.views.csrf.csrf_failure") ((xFLATPAGES_TEMPLATES)) (1))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsite1)) ((((unsupported)).apply ((xSite)) (1) ("example.com") ("example.com"))))
+                        bogusForceDataize.write (((((xcls).xsite1).xsave)).apply)
+                        (((unsupported)).apply (((xcls).xfp1)) ((((unsupported)).apply ((((xFlatPage).xobjects).xcreate)) ("/flatpage/") ("A Flatpage") ("Isn't it flat!") ((xfalse)) ("") ((xfalse)))))
+                        (((unsupported)).apply (((xcls).xfp2)) ((((unsupported)).apply ((((xFlatPage).xobjects).xcreate)) ("/location/flatpage/") ("A Nested Flatpage") ("Isn't it flat and deep!") ((xfalse)) ("") ((xfalse)))))
+                        (((unsupported)).apply (((xcls).xfp3)) ((((unsupported)).apply ((((xFlatPage).xobjects).xcreate)) ("/sekrit/") ("Sekrit Flatpage") ("Isn't it sekrit!") ((xfalse)) ("") (TRUE))))
+                        (((unsupported)).apply (((xcls).xfp4)) ((((unsupported)).apply ((((xFlatPage).xobjects).xcreate)) ("/location/sekrit/") ("Sekrit Nested Flatpage") ("Isn't it sekrit and deep!") ((xfalse)) ("") (TRUE))))
+                        bogusForceDataize.write ((((((xcls).xfp1).xsites).xadd)).apply (((xcls).xsite1)))
+                        bogusForceDataize.write ((((((xcls).xfp2).xsites).xadd)).apply (((xcls).xsite1)))
+                        bogusForceDataize.write ((((((xcls).xfp3).xsites).xadd)).apply (((xcls).xsite1)))
+                        bogusForceDataize.write ((((((xcls).xfp4).xsites).xadd)).apply (((xcls).xsite1)))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xclient)) ((((unsupported)).apply ((xClient)) (TRUE))))
+                xtest_view_flatpage.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/flatpage_root/flatpage/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<p>Isn't it flat!</p>"))
+                xtest_view_non_existent_flatpage.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/flatpage_root/no_such_flatpage/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))
+                xtest_view_authenticated_flatpage.write
+                  [xself]
+                    memory > xuser
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/flatpage_root/sekrit/"))
+                        bogusForceDataize.write ((((xself).xassertRedirects)).apply ((xresponse)) ("/accounts/login/?next=/flatpage_root/sekrit/"))
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("testuser") ("test@example.com") ("s3krit"))
+                        bogusForceDataize.write (((((xself).xclient).xforce_login)).apply ((xuser)))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/flatpage_root/sekrit/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<p>Isn't it sekrit!</p>"))
+                xtest_fallback_flatpage.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/flatpage/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<p>Isn't it flat!</p>"))
+                xtest_fallback_non_existent_flatpage.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/no_such_flatpage/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))
+                xtest_post_view_flatpage.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xpost)).apply ("/flatpage_root/flatpage/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (403))
+                xtest_post_fallback_flatpage.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xpost)).apply ("/flatpage/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (403))
+                xtest_post_unknown_page.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xpost)).apply ("/no_such_page/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))

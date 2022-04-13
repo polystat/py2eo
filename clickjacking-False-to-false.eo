@@ -1,0 +1,39 @@
+memory > xfalse
+memory > xsettings
+memory > xgetattr
+memory > xMiddlewareMixin
+[] > clickjacking
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_xframe_options_value
+        memory > xprocess_response
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                (((unsupported)).apply)
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xresponse).xget)).apply ("X-Frame-Options"))) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xresponse)))
+                        (((xgetattr)).apply ((xresponse)) ("xframe_options_exempt") ((xfalse))).if
+                          (((unsupported)).apply ((xresponse)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-Frame-Options"))) (((((xself).xget_xframe_options_value)).apply ((xrequest)) ((xresponse)))))
+                        (((unsupported)).apply ((xresponse)))
+                xget_xframe_options_value.write
+                  [xself xrequest xresponse]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((((xgetattr)).apply ((xsettings)) ("X_FRAME_OPTIONS") ("DENY")).xupper)).apply)))

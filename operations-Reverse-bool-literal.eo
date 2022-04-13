@@ -1,0 +1,471 @@
+memory > xFieldError
+memory > xOnConflict
+memory > xhasattr
+memory > xsql
+memory > xzip
+memory > xfield
+memory > xlhs_params
+memory > xrhs_params
+memory > xAttributeError
+memory > xtimezone
+memory > xtable
+memory > xdatetime
+memory > xlist
+memory > xdecimal
+memory > xindex
+memory > xuuid
+memory > xrhs_sql
+memory > xValueError
+memory > xfrozenset
+memory > xBaseDatabaseOperations
+memory > xstr
+memory > xrange
+memory > xexpr
+memory > xparse_time
+memory > xlhs_sql
+memory > xset
+memory > xsettings
+memory > xlru_cache
+memory > xDatabaseError
+memory > xcursor
+memory > xNotSupportedError
+memory > xsuper
+memory > xchain
+memory > xrow
+memory > xbool
+memory > xtuple
+memory > xCol
+memory > xparse_date
+memory > xmodels
+memory > xmap
+memory > xisinstance
+memory > xlen
+memory > xdict
+memory > xparse_datetime
+memory > xsequence_info
+[] > operations
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xexplain_prefix
+        memory > xadapt_datetimefield_value
+        memory > xtime_extract_sql
+        memory > x__references_graph
+        memory > xget_db_converters
+        memory > xconvert_datefield_value
+        memory > xsql_flush
+        memory > xcast_char_field_without_max_length
+        memory > xdatetime_cast_date_sql
+        memory > xformat_for_duration_arithmetic
+        memory > xdate_extract_sql
+        memory > xjsonfield_datatype_values
+        memory > xdatetime_trunc_sql
+        memory > xcombine_duration_expression
+        memory > xbulk_batch_size
+        memory > xdatetime_cast_time_sql
+        memory > x_quote_params_for_last_executed_query
+        memory > xconvert_booleanfield_value
+        memory > x_convert_tznames_to_sql
+        memory > xreturn_insert_columns
+        memory > xpk_default_value
+        memory > xno_limit_value
+        memory > xinsert_statement
+        memory > xsubtract_temporals
+        memory > xinteger_field_range
+        memory > xsequence_reset_by_name_sql
+        memory > xdatetime_extract_sql
+        memory > xcast_data_types
+        memory > xconvert_uuidfield_value
+        memory > xcombine_expression
+        memory > xcheck_expression_support
+        memory > xbulk_insert_sql
+        memory > xfetch_returned_insert_rows
+        memory > xconvert_datetimefield_value
+        memory > xon_conflict_suffix_sql
+        memory > xtime_trunc_sql
+        memory > xget_decimalfield_converter
+        memory > xconvert_timefield_value
+        memory > xdate_trunc_sql
+        memory > xquote_name
+        memory > xlast_executed_query
+        memory > xadapt_timefield_value
+        memory > x_references_graph
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseOperations)))
+              seq
+                xcast_char_field_without_max_length.write "text"
+                xcast_data_types.write (((unsupported)).apply ("DateField") ("TEXT") ("DateTimeField") ("TEXT"))
+                xexplain_prefix.write "EXPLAIN QUERY PLAN"
+                xjsonfield_datatype_values.write (((xfrozenset)).apply ((((unsupported)).apply ("null") ("false") ("false"))))
+                xbulk_batch_size.write
+                  [xself xfields xobjs]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((((xlen)).apply ((xfields))).eq 1).if
+                          (((unsupported)).apply (500))
+                          ((((xlen)).apply ((xfields))).greater 1).if
+                            (((unsupported)).apply ((((unsupported)).apply (((((xself).xconnection).xfeatures).xmax_query_params)) ((((xlen)).apply ((xfields)))))))
+                            (((unsupported)).apply ((((xlen)).apply ((xobjs)))))
+                xcheck_expression_support.write
+                  [xself xexpression]
+                    memory > xoutput_field
+                    memory > xbad_aggregates
+                    memory > xbad_fields
+                    seq > @
+                      seq
+                        xbad_fields.write (((unsupported)).apply (((xmodels).xDateField)) (((xmodels).xDateTimeField)) (((xmodels).xTimeField)))
+                        xbad_aggregates.write (((unsupported)).apply (((xmodels).xSum)) (((xmodels).xAvg)) (((xmodels).xVariance)) (((xmodels).xStdDev)))
+                        (((xisinstance)).apply ((xexpression)) ((xbad_aggregates))).if
+                          (((unsupported)).apply ((xexpr)) (((((xexpression).xget_source_expressions)).apply)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xAttributeError)) ((xFieldError)))))
+                              xoutput_field.write ((xexpr).xoutput_field)
+                              (((xisinstance)).apply ((xoutput_field)) ((xbad_fields))).if
+                                (((unsupported)).apply ((((xNotSupportedError)).apply ("You cannot use Sum, Avg, StdDev, and Variance aggregations on date/time fields in sqlite3 since date/time is saved as text."))))
+                        (((((xisinstance)).apply ((xexpression)) (((xmodels).xAggregate))).and ((xexpression).xdistinct)).and ((((xlen)).apply (((xexpression).xsource_expressions))).greater 1)).if
+                          (((unsupported)).apply ((((xNotSupportedError)).apply ("SQLite doesn't support DISTINCT on aggregate functions accepting multiple arguments."))))
+                xdate_extract_sql.write
+                  [xself xlookup_type xfield_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (("django_date_extract('%s', %s)".mod (((unsupported)).apply (((((xlookup_type).xlower)).apply)) ((xfield_name))))))
+                xfetch_returned_insert_rows.write
+                  [xself xcursor]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xcursor).xfetchall)).apply)))
+                xformat_for_duration_arithmetic.write
+                  [xself xsql]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xsql)))
+                xdate_trunc_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (("django_date_trunc('%s', %s, %s, %s)".mod (((unsupported)).apply (((((xlookup_type).xlower)).apply)) ((xfield_name)) ((((unsupported)).apply (((((xself).x_convert_tznames_to_sql)).apply ((xtzname))))))))))
+                xtime_trunc_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (("django_time_trunc('%s', %s, %s, %s)".mod (((unsupported)).apply (((((xlookup_type).xlower)).apply)) ((xfield_name)) ((((unsupported)).apply (((((xself).x_convert_tznames_to_sql)).apply ((xtzname))))))))))
+                x_convert_tznames_to_sql.write
+                  [xself xtzname]
+                    seq > @
+                      seq
+                        ((xtzname).and ((xsettings).xUSE_TZ)).if
+                          (((unsupported)).apply ((((unsupported)).apply (("'%s'".mod (xtzname))) (("'%s'".mod (((xself).xconnection).xtimezone_name))))))
+                        (((unsupported)).apply ((((unsupported)).apply ("NULL") ("NULL"))))
+                xdatetime_cast_date_sql.write
+                  [xself xfield_name xtzname]
+                    seq > @
+                      (((unsupported)).apply (("django_datetime_cast_date(%s, %s, %s)".mod (((unsupported)).apply ((xfield_name)) ((((unsupported)).apply (((((xself).x_convert_tznames_to_sql)).apply ((xtzname))))))))))
+                xdatetime_cast_time_sql.write
+                  [xself xfield_name xtzname]
+                    seq > @
+                      (((unsupported)).apply (("django_datetime_cast_time(%s, %s, %s)".mod (((unsupported)).apply ((xfield_name)) ((((unsupported)).apply (((((xself).x_convert_tznames_to_sql)).apply ((xtzname))))))))))
+                xdatetime_extract_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    seq > @
+                      (((unsupported)).apply (("django_datetime_extract('%s', %s, %s, %s)".mod (((unsupported)).apply (((((xlookup_type).xlower)).apply)) ((xfield_name)) ((((unsupported)).apply (((((xself).x_convert_tznames_to_sql)).apply ((xtzname))))))))))
+                xdatetime_trunc_sql.write
+                  [xself xlookup_type xfield_name xtzname]
+                    seq > @
+                      (((unsupported)).apply (("django_datetime_trunc('%s', %s, %s, %s)".mod (((unsupported)).apply (((((xlookup_type).xlower)).apply)) ((xfield_name)) ((((unsupported)).apply (((((xself).x_convert_tznames_to_sql)).apply ((xtzname))))))))))
+                xtime_extract_sql.write
+                  [xself xlookup_type xfield_name]
+                    seq > @
+                      (((unsupported)).apply (("django_time_extract('%s', %s)".mod (((unsupported)).apply (((((xlookup_type).xlower)).apply)) ((xfield_name))))))
+                xpk_default_value.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("NULL"))
+                x_quote_params_for_last_executed_query.write
+                  [xself xparams]
+                    memory > xcursor
+                    memory > xBATCH_SIZE
+                    memory > xsql
+                    memory > xresults
+                    memory > xchunk
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xBATCH_SIZE.write 999
+                        ((((xlen)).apply ((xparams))).greater (xBATCH_SIZE)).if
+                          seq
+                            xresults.write (((unsupported)).apply)
+                            (((unsupported)).apply ((xindex)) ((((xrange)).apply (0) ((((xlen)).apply ((xparams)))) ((xBATCH_SIZE)))))
+                              seq
+                                xchunk.write (((unsupported)).apply ((xparams)) ((((unsupported)).apply ((xindex)) (((xindex).add (xBATCH_SIZE))))))
+                                (((unsupported)).apply ((xresults)) (((((xself).x_quote_params_for_last_executed_query)).apply ((xchunk)))))
+                            (((unsupported)).apply ((xresults)))
+                        xsql.write ("SELECT ".add (((", ".xjoin)).apply (((((unsupported)).apply ("QUOTE(?)")).mul (((xlen)).apply ((xparams)))))))
+                        xcursor.write ((((((xself).xconnection).xconnection).xcursor)).apply)
+                        (((unsupported)).apply)
+                          (((unsupported)).apply ((((((((xcursor).xexecute)).apply ((xsql)) ((xparams))).xfetchone)).apply)))
+                          bogusForceDataize.write ((((xcursor).xclose)).apply)
+                xlast_executed_query.write
+                  [xself xcursor xsql xparams]
+                    memory > xvalues
+                    seq > @
+                      (xparams).if
+                        seq
+                          (((xisinstance)).apply ((xparams)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                            xparams.write ((((xself).x_quote_params_for_last_executed_query)).apply ((xparams)))
+                            seq
+                              xvalues.write (((xtuple)).apply (((((xparams).xvalues)).apply)))
+                              xvalues.write ((((xself).x_quote_params_for_last_executed_query)).apply ((xvalues)))
+                              xparams.write (((xdict)).apply ((((xzip)).apply ((xparams)) ((xvalues)))))
+                          (((unsupported)).apply (((xsql).mod (xparams))))
+                        (((unsupported)).apply ((xsql)))
+                xquote_name.write
+                  [xself xname]
+                    seq > @
+                      seq
+                        (((((xname).xstartswith)).apply ("\"")).and ((((xname).xendswith)).apply ("\""))).if
+                          (((unsupported)).apply ((xname)))
+                        (((unsupported)).apply (("\"%s\"".mod (xname))))
+                xno_limit_value.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((1.neg)))
+                x__references_graph.write
+                  [xself xtable_name]
+                    memory > xparams
+                    memory > xresults
+                    memory > xquery
+                    seq > @
+                      seq
+                        xquery.write (((unsupported)).apply)
+                        xparams.write (((unsupported)).apply ((xtable_name)) ("(?i)s+referencess+(\"|')?") ("(\"|')?s*("))
+                        (((unsupported)).apply ((((((xself).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            xresults.write ((((xcursor).xexecute)).apply ((xquery)) ((xparams)))
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xrow)) (0))) ((xrow)) (((((xresults).xfetchall)).apply)))))
+                x_references_graph.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((unsupported)).apply ((xlru_cache)) (512))).apply (((xself).x__references_graph)))))
+                xsql_flush.write
+                  [xself xstyle xtables xreset_sequences xallow_cascade]
+                    memory > xsql
+                    memory > xsequences
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xtables).and (xallow_cascade)).if
+                          xtables.write (((xset)).apply (((((xchain).xfrom_iterable)).apply ((((unsupported)).apply (((((xself).x_references_graph)).apply ((xtable)))) ((xtable)) ((xtables)))))))
+                        xsql.write (((unsupported)).apply (("%s %s %s;".mod (((unsupported)).apply (((((xstyle).xSQL_KEYWORD)).apply ("DELETE"))) (((((xstyle).xSQL_KEYWORD)).apply ("FROM"))) (((((xstyle).xSQL_FIELD)).apply (((((xself).xquote_name)).apply ((xtable))))))))) ((xtable)) ((xtables)))
+                        (xreset_sequences).if
+                          seq
+                            xsequences.write (((unsupported)).apply ((((unsupported)).apply ("table") ((xtable)))) ((xtable)) ((xtables)))
+                            bogusForceDataize.write ((((xsql).xextend)).apply (((((xself).xsequence_reset_by_name_sql)).apply ((xstyle)) ((xsequences)))))
+                        (((unsupported)).apply ((xsql)))
+                xsequence_reset_by_name_sql.write
+                  [xself xstyle xsequences]
+                    seq > @
+                      seq
+                        ((xsequences).not).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply (("%s %s %s %s = 0 %s %s %s (%s);".mod (((unsupported)).apply (((((xstyle).xSQL_KEYWORD)).apply ("UPDATE"))) (((((xstyle).xSQL_TABLE)).apply (((((xself).xquote_name)).apply ("sqlite_sequence"))))) (((((xstyle).xSQL_KEYWORD)).apply ("SET"))) (((((xstyle).xSQL_FIELD)).apply (((((xself).xquote_name)).apply ("seq"))))) (((((xstyle).xSQL_KEYWORD)).apply ("WHERE"))) (((((xstyle).xSQL_FIELD)).apply (((((xself).xquote_name)).apply ("name"))))) (((((xstyle).xSQL_KEYWORD)).apply ("IN"))) ((((", ".xjoin)).apply ((((unsupported)).apply (("'%s'".mod (((unsupported)).apply ((xsequence_info)) ("table")))) ((xsequence_info)) ((xsequences))))))))))))
+                xadapt_datetimefield_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((xhasattr)).apply ((xvalue)) ("resolve_expression")).if
+                          (((unsupported)).apply ((xvalue)))
+                        ((((xtimezone).xis_aware)).apply ((xvalue))).if
+                          ((xsettings).xUSE_TZ).if
+                            xvalue.write ((((xtimezone).xmake_naive)).apply ((xvalue)) ((((xself).xconnection).xtimezone)))
+                            (((unsupported)).apply ((((xValueError)).apply ("SQLite backend does not support timezone-aware datetimes when USE_TZ is False."))))
+                        (((unsupported)).apply ((((xstr)).apply ((xvalue)))))
+                xadapt_timefield_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((xhasattr)).apply ((xvalue)) ("resolve_expression")).if
+                          (((unsupported)).apply ((xvalue)))
+                        ((((xtimezone).xis_aware)).apply ((xvalue))).if
+                          (((unsupported)).apply ((((xValueError)).apply ("SQLite backend does not support timezone-aware times."))))
+                        (((unsupported)).apply ((((xstr)).apply ((xvalue)))))
+                xget_db_converters.write
+                  [xself xexpression]
+                    memory > xconverters
+                    memory > xinternal_type
+                    seq > @
+                      seq
+                        xconverters.write ((((((xsuper)).apply).xget_db_converters)).apply ((xexpression)))
+                        xinternal_type.write (((((xexpression).xoutput_field).xget_internal_type)).apply)
+                        ((xinternal_type).eq "DateTimeField").if
+                          bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_datetimefield_value)))
+                          ((xinternal_type).eq "DateField").if
+                            bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_datefield_value)))
+                            ((xinternal_type).eq "TimeField").if
+                              bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_timefield_value)))
+                              ((xinternal_type).eq "DecimalField").if
+                                bogusForceDataize.write ((((xconverters).xappend)).apply (((((xself).xget_decimalfield_converter)).apply ((xexpression)))))
+                                ((xinternal_type).eq "UUIDField").if
+                                  bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_uuidfield_value)))
+                                  ((xinternal_type).eq "BooleanField").if
+                                    bogusForceDataize.write ((((xconverters).xappend)).apply (((xself).xconvert_booleanfield_value)))
+                        (((unsupported)).apply ((xconverters)))
+                xconvert_datetimefield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            ((((xisinstance)).apply ((xvalue)) (((xdatetime).xdatetime))).not).if
+                              xvalue.write (((xparse_datetime)).apply ((xvalue)))
+                            (((xsettings).xUSE_TZ).and (((((xtimezone).xis_aware)).apply ((xvalue))).not)).if
+                              xvalue.write ((((xtimezone).xmake_aware)).apply ((xvalue)) ((((xself).xconnection).xtimezone)))
+                        (((unsupported)).apply ((xvalue)))
+                xconvert_datefield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          ((((xisinstance)).apply ((xvalue)) (((xdatetime).xdate))).not).if
+                            xvalue.write (((xparse_date)).apply ((xvalue)))
+                        (((unsupported)).apply ((xvalue)))
+                xconvert_timefield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          ((((xisinstance)).apply ((xvalue)) (((xdatetime).xtime))).not).if
+                            xvalue.write (((xparse_time)).apply ((xvalue)))
+                        (((unsupported)).apply ((xvalue)))
+                xget_decimalfield_converter.write
+                  [xself xexpression]
+                    memory > xcreate_decimal
+                    memory > xconverter
+                    memory > xquantize_value
+                    seq > @
+                      seq
+                        xcreate_decimal.write ((((unsupported)).apply (((xdecimal).xContext)) (15)).xcreate_decimal_from_float)
+                        (((xisinstance)).apply ((xexpression)) ((xCol))).if
+                          seq
+                            xquantize_value.write (((((((xdecimal).xDecimal)).apply (1)).xscaleb)).apply (((((xexpression).xoutput_field).xdecimal_places).neg)))
+                            xconverter.write
+                              [xvalue xexpression xconnection]
+                                seq > @
+                                  (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                                    (((unsupported)).apply ((((unsupported)).apply (((((xcreate_decimal)).apply ((xvalue))).xquantize)) ((xquantize_value)) ((((xexpression).xoutput_field).xcontext)))))
+                          xconverter.write
+                            [xvalue xexpression xconnection]
+                              seq > @
+                                (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                                  (((unsupported)).apply ((((xcreate_decimal)).apply ((xvalue)))))
+                        (((unsupported)).apply ((xconverter)))
+                xconvert_uuidfield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          xvalue.write ((((xuuid).xUUID)).apply ((xvalue)))
+                        (((unsupported)).apply ((xvalue)))
+                xconvert_booleanfield_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      (((unsupported)).apply (((((unsupported)).apply ((xvalue)) ((((unsupported)).apply (1) (0)))).if (((xbool)).apply ((xvalue))) (xvalue))))
+                xbulk_insert_sql.write
+                  [xself xfields xplaceholder_rows]
+                    memory > xvalues_sql
+                    memory > xplaceholder_rows_sql
+                    seq > @
+                      seq
+                        xplaceholder_rows_sql.write (((unsupported)).apply ((((", ".xjoin)).apply ((xrow)))) ((xrow)) ((xplaceholder_rows)))
+                        xvalues_sql.write (((", ".xjoin)).apply ((((unsupported)).apply ("({sql})") ((xsql)) ((xplaceholder_rows_sql)))))
+                        (((unsupported)).apply ("VALUES {values_sql}"))
+                xcombine_expression.write
+                  [xself xconnector xsub_expressions]
+                    seq > @
+                      seq
+                        ((xconnector).eq "^").if
+                          (((unsupported)).apply (("POWER(%s)".mod (((",".xjoin)).apply ((xsub_expressions))))))
+                          ((xconnector).eq "#").if
+                            (((unsupported)).apply (("BITXOR(%s)".mod (((",".xjoin)).apply ((xsub_expressions))))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xcombine_expression)).apply ((xconnector)) ((xsub_expressions)))))
+                xcombine_duration_expression.write
+                  [xself xconnector xsub_expressions]
+                    memory > xfn_params
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xconnector)) ((((unsupported)).apply ("+") ("-") ("*") ("/")))).if
+                          (((unsupported)).apply ((((xDatabaseError)).apply (("Invalid connector for timedelta: %s.".mod (xconnector))))))
+                        xfn_params.write ((((unsupported)).apply (("'%s'".mod (xconnector)))).add (xsub_expressions))
+                        ((((xlen)).apply ((xfn_params))).greater 3).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Too many params for timedelta operations."))))
+                        (((unsupported)).apply (("django_format_dtdelta(%s)".mod (((", ".xjoin)).apply ((xfn_params))))))
+                xinteger_field_range.write
+                  [xself xinternal_type]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                xsubtract_temporals.write
+                  [xself xinternal_type xlhs xrhs]
+                    memory > xparams
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xlhs_sql)) ((xlhs_params)))) ((xlhs)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xrhs_sql)) ((xrhs_params)))) ((xrhs)))
+                        xparams.write (((unsupported)).apply ((((unsupported)).apply ((xlhs_params)))) ((((unsupported)).apply ((xrhs_params)))))
+                        ((xinternal_type).eq "TimeField").if
+                          (((unsupported)).apply ((((unsupported)).apply (("django_time_diff(%s, %s)".mod (((unsupported)).apply ((xlhs_sql)) ((xrhs_sql))))) ((xparams)))))
+                        (((unsupported)).apply ((((unsupported)).apply (("django_timestamp_diff(%s, %s)".mod (((unsupported)).apply ((xlhs_sql)) ((xrhs_sql))))) ((xparams)))))
+                xinsert_statement.write
+                  [xself xon_conflict]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xon_conflict).eq ((xOnConflict).xIGNORE)).if
+                          (((unsupported)).apply ("INSERT OR IGNORE INTO"))
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xinsert_statement)) ((xon_conflict)))))
+                xreturn_insert_columns.write
+                  [xself xfields]
+                    memory > xcolumns
+                    seq > @
+                      seq
+                        ((xfields).not).if
+                          (((unsupported)).apply ((((unsupported)).apply ("") ((((unsupported)).apply)))))
+                        xcolumns.write (((unsupported)).apply (("%s.%s".mod (((unsupported)).apply (((((xself).xquote_name)).apply (((((xfield).xmodel).x_meta).xdb_table)))) (((((xself).xquote_name)).apply (((xfield).xcolumn))))))) ((xfield)) ((xfields)))
+                        (((unsupported)).apply ((((unsupported)).apply (("RETURNING %s".mod (((", ".xjoin)).apply ((xcolumns))))) ((((unsupported)).apply)))))
+                xon_conflict_suffix_sql.write
+                  [xself xfields xon_conflict xupdate_fields xunique_fields]
+                    seq > @
+                      seq
+                        (((xon_conflict).eq ((xOnConflict).xUPDATE)).and ((((xself).xconnection).xfeatures).xsupports_update_conflicts_with_target)).if
+                          (((unsupported)).apply (("ON CONFLICT(%s) DO UPDATE SET %s".mod (((unsupported)).apply ((((", ".xjoin)).apply ((((xmap)).apply (((xself).xquote_name)) ((xunique_fields)))))) ((((", ".xjoin)).apply ((((unsupported)).apply ("{field} = EXCLUDED.{field}") ((xfield)) ((((xmap)).apply (((xself).xquote_name)) ((xupdate_fields))))))))))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xon_conflict_suffix_sql)).apply ((xfields)) ((xon_conflict)) ((xupdate_fields)) ((xunique_fields)))))

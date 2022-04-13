@@ -1,0 +1,92 @@
+memory > xcaches
+memory > xsettings
+memory > xException
+memory > xsuper
+[] > cached_db
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xKEY_PREFIX
+        memory > xcache_key_prefix
+        memory > xsave
+        memory > xcache_key
+        memory > xflush
+        memory > xexists
+        memory > x__init__
+        memory > xload
+        memory > xdelete
+        memory > xDBStore
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xKEY_PREFIX.write "django.contrib.sessions.cached_db"
+            (((unsupported)).apply ((xDBStore)))
+              seq
+                (((unsupported)).apply)
+                xcache_key_prefix.write (xKEY_PREFIX)
+                x__init__.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).x_cache)) ((((unsupported)).apply ((xcaches)) (((xsettings).xSESSION_CACHE_ALIAS)))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xsession_key)))
+                xcache_key.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xcache_key_prefix).add ((((xself).x_get_or_create_session_key)).apply))))
+                xload.write
+                  [xself]
+                    memory > xs
+                    memory > xdata
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xException)))
+                          xdata.write (((((xself).x_cache).xget)).apply (((xself).xcache_key)))
+                          xdata.write "None: is there a None literal in the EO language?"
+                        (((unsupported)).apply ((xdata)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            xs.write ((((xself).x_get_session_from_db)).apply)
+                            (xs).if
+                              seq
+                                xdata.write ((((xself).xdecode)).apply (((xs).xsession_data)))
+                                bogusForceDataize.write (((((xself).x_cache).xset)).apply (((xself).xcache_key)) ((xdata)) ((((unsupported)).apply (((xself).xget_expiry_age)) (((xs).xexpire_date)))))
+                              xdata.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xdata)))
+                xexists.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply ((((xsession_key).and (((unsupported)).apply ((((xself).xcache_key_prefix).add (xsession_key))) (((xself).x_cache)))).or ((((((xsuper)).apply).xexists)).apply ((xsession_key))))))
+                xsave.write
+                  [xself xmust_create]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).xsave)).apply ((xmust_create)))
+                        bogusForceDataize.write (((((xself).x_cache).xset)).apply (((xself).xcache_key)) (((xself).x_session)) (((((xself).xget_expiry_age)).apply)))
+                xdelete.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).xdelete)).apply ((xsession_key)))
+                        (((unsupported)).apply ((xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            (((unsupported)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply)
+                            xsession_key.write ((xself).xsession_key)
+                        bogusForceDataize.write (((((xself).x_cache).xdelete)).apply ((((xself).xcache_key_prefix).add (xsession_key))))
+                xflush.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xclear)).apply)
+                        bogusForceDataize.write ((((xself).xdelete)).apply (((xself).xsession_key)))
+                        (((unsupported)).apply (((xself).x_session_key)) ("None: is there a None literal in the EO language?"))

@@ -1,0 +1,77 @@
+memory > xword
+memory > xTemplateSyntaxError
+memory > xCOMMON_P
+memory > xWORDS
+memory > xlen
+memory > xSimpleTestCase
+[] > test_lorem
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_lorem_incorrect_count
+        memory > xtest_lorem_default
+        memory > xtest_lorem1
+        memory > xtest_lorem_multiple_paragraphs
+        memory > xtest_lorem_syntax
+        memory > xtest_lorem_random
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_lorem1.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("lorem1"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("lorem ipsum dolor"))
+                xtest_lorem_random.write
+                  [xself]
+                    memory > xwords
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("lorem_random"))
+                        xwords.write ((((xoutput).xsplit)).apply (" "))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xwords)))) (3))
+                        (((unsupported)).apply ((xword)) ((xwords)))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply ((xword)) ((xWORDS)))
+                xtest_lorem_default.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("lorem_default"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ((xCOMMON_P)))
+                xtest_lorem_syntax.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "Incorrect format for 'lorem' tag"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xrender_to_string)).apply ("lorem_syntax_error"))
+                xtest_lorem_multiple_paragraphs.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("lorem_multiple_paragraphs"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xcount)).apply ("<p>"))) (2))
+                xtest_lorem_incorrect_count.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("lorem_incorrect_count"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xcount)).apply ("<p>"))) (1))

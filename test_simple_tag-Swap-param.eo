@@ -1,0 +1,43 @@
+memory > xTemplateSyntaxError
+memory > xSimpleTestCase
+[] > test_simple_tag
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_simpletag_renamed01
+        memory > xlibraries
+        memory > xtest_simpletag_renamed03
+        memory > xtest_simpletag_renamed02
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xlibraries.write (((unsupported)).apply ("custom") ("template_tests.templatetags.custom"))
+                xtest_simpletag_renamed01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("simpletag-renamed01"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("6") ((xoutput)))
+                xtest_simpletag_renamed02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("simpletag-renamed02"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("5"))
+                xtest_simpletag_renamed03.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("simpletag-renamed03"))

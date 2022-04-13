@@ -1,0 +1,147 @@
+memory > xArticleRef
+memory > xstr
+memory > xapps
+memory > xAuthors
+memory > xconnection
+memory > xScientistRef
+memory > xsettings
+memory > xTransactionTestCase
+memory > xReviewers
+memory > xeditor
+memory > xScientist
+memory > xmodel
+memory > xsql
+memory > xArticle
+[] > test_tablespaces
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_tablespace_for_indexed_field
+        memory > xtest_tablespace_ignored_for_model
+        memory > xsetUp
+        memory > xtest_tablespace_for_model
+        memory > xsql_for_table
+        memory > xsql_for_index
+        memory > xtest_tablespace_ignored_for_indexed_field
+        memory > xtearDown
+        memory > xavailable_apps
+        memory > xassertNumContains
+        memory > xtest_tablespace_for_many_to_many_field
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xsql_for_table.write
+              [xmodel]
+                seq > @
+                  seq
+                    (((unsupported)).apply ((((unsupported)).apply (((xconnection).xschema_editor)) (TRUE))) ((xeditor)))
+                      bogusForceDataize.write ((((xeditor).xcreate_model)).apply ((xmodel)))
+                    (((unsupported)).apply ((((unsupported)).apply (((xeditor).xcollected_sql)) (0))))
+            xsql_for_index.write
+              [xmodel]
+                seq > @
+                  (((unsupported)).apply (((("n".xjoin)).apply ((((unsupported)).apply ((((xstr)).apply ((xsql)))) ((xsql)) ((((((xconnection).xschema_editor).x_model_indexes_sql)).apply ((xmodel)))))))))
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("model_options"))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).x_old_models)) ((((((unsupported)).apply (((xapps).xapp_configs)) ("model_options")).xmodels).xcopy)))
+                        (((unsupported)).apply ((xmodel)) ((((unsupported)).apply ((xArticle)) ((xAuthors)) ((xReviewers)) ((xScientist)))))
+                          (((unsupported)).apply ((((xmodel).x_meta).xmanaged)) (TRUE))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xmodel)) ((((unsupported)).apply ((xArticle)) ((xAuthors)) ((xReviewers)) ((xScientist)))))
+                          (((unsupported)).apply ((((xmodel).x_meta).xmanaged)) (FALSE))
+                        (((unsupported)).apply (((((unsupported)).apply (((xapps).xapp_configs)) ("model_options")).xmodels)) (((xself).x_old_models)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xapps).xall_models)) ("model_options"))) (((xself).x_old_models)))
+                        unsupported
+                xassertNumContains.write
+                  [xself xhaystack xneedle xcount]
+                    memory > xreal_count
+                    seq > @
+                      seq
+                        xreal_count.write ((((xhaystack).xcount)).apply ((xneedle)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xreal_count)) ((xcount)) (("Found %d instances of '%s', expected %d".mod (((unsupported)).apply ((xreal_count)) ((xneedle)) ((xcount))))))
+                xtest_tablespace_for_model.write
+                  [xself]
+                    memory > xsql
+                    seq > @
+                      (((unsupported)).apply)
+                        xsql.write ((((xsql_for_table)).apply ((xScientist))).xlower)
+                        ((xsettings).xDEFAULT_INDEX_TABLESPACE).if
+                          seq
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (1))
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) (((xsettings).xDEFAULT_INDEX_TABLESPACE)) (1))
+                          bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (2))
+                xtest_tablespace_ignored_for_model.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsql_for_table)).apply ((xScientist)))) ((((xsql_for_table)).apply ((xScientistRef)))))
+                xtest_tablespace_for_indexed_field.write
+                  [xself]
+                    memory > xsql
+                    seq > @
+                      (((unsupported)).apply)
+                        xsql.write ((((xsql_for_table)).apply ((xArticle))).xlower)
+                        ((xsettings).xDEFAULT_INDEX_TABLESPACE).if
+                          seq
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (1))
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) (((xsettings).xDEFAULT_INDEX_TABLESPACE)) (2))
+                          bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (3))
+                        bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("idx_tbsp") (1))
+                xtest_tablespace_ignored_for_indexed_field.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsql_for_table)).apply ((xArticle)))) ((((xsql_for_table)).apply ((xArticleRef)))))
+                xtest_tablespace_for_many_to_many_field.write
+                  [xself]
+                    memory > xsql
+                    seq > @
+                      (((unsupported)).apply)
+                        xsql.write ((((xsql_for_table)).apply ((xAuthors))).xlower)
+                        ((xsettings).xDEFAULT_INDEX_TABLESPACE).if
+                          seq
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (1))
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) (((xsettings).xDEFAULT_INDEX_TABLESPACE)) (1))
+                          bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (2))
+                        bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("idx_tbsp") (0))
+                        xsql.write ((((xsql_for_index)).apply ((xAuthors))).xlower)
+                        ((xsettings).xDEFAULT_INDEX_TABLESPACE).if
+                          bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) (((xsettings).xDEFAULT_INDEX_TABLESPACE)) (2))
+                          bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (2))
+                        bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("idx_tbsp") (0))
+                        xsql.write ((((xsql_for_table)).apply ((xReviewers))).xlower)
+                        ((xsettings).xDEFAULT_INDEX_TABLESPACE).if
+                          seq
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (1))
+                            bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) (((xsettings).xDEFAULT_INDEX_TABLESPACE)) (1))
+                          bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (2))
+                        bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("idx_tbsp") (0))
+                        xsql.write ((((xsql_for_index)).apply ((xReviewers))).xlower)
+                        bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("tbl_tbsp") (0))
+                        bogusForceDataize.write ((((xself).xassertNumContains)).apply ((xsql)) ("idx_tbsp") (2))

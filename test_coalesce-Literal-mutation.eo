@@ -1,0 +1,96 @@
+memory > xCoalesce
+memory > xSubquery
+memory > xTextField
+memory > xValueError
+memory > xLower
+memory > xArticle
+memory > xa
+memory > xtimezone
+memory > xempty_query
+memory > xTestCase
+memory > xAuthor
+[] > test_coalesce
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_gt_two_expressions
+        memory > xtest_mixed_values
+        memory > xlorem_ipsum
+        memory > xtest_basic
+        memory > xtest_ordering
+        memory > xtest_empty_queryset
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xlorem_ipsum.write (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCoalesce)).apply ("alias") ("name"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("smithj") ("Rhonda"))) ((((unsupported)).apply (((xa).xdisplay_name)))))
+                xtest_gt_two_expressions.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Coalesce must take at least two expressions"))))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCoalesce)).apply ("alias"))))
+                xtest_mixed_values.write
+                  [xself]
+                    memory > xarticle
+                    memory > xar1
+                    memory > xa2
+                    memory > xa1
+                    seq > @
+                      seq
+                        xa1.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                        xa2.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                        xar1.write (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("How to Django") ((xlorem_ipsum)) (((((xtimezone).xnow)).apply)))
+                        bogusForceDataize.write (((((xar1).xauthors).xadd)).apply ((xa1)))
+                        bogusForceDataize.write (((((xar1).xauthors).xadd)).apply ((xa2)))
+                        xarticle.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((unsupported)).apply ((xCoalesce)) ("summary") ("text") ((((xTextField)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xarticle).xorder_by)).apply ("title"))) ((((unsupported)).apply ((xlorem_ipsum)))) ((((unsupported)).apply (((xa).xheadline)))))
+                        xarticle.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((unsupported)).apply ((xCoalesce)) ((((xLower)).apply ("summary"))) ((((xLower)).apply ("text"))) ((((xTextField)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xarticle).xorder_by)).apply ("title"))) ((((unsupported)).apply (((((xlorem_ipsum).xlower)).apply)))) ((((unsupported)).apply (((xa).xheadline)))))
+                xtest_ordering.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                        xauthors.write (((((xAuthor).xobjects).xorder_by)).apply ((((xCoalesce)).apply ("alias") ("name"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((xauthors)) ((((unsupported)).apply ("Rhonda") ("John Smith"))) ((((unsupported)).apply (((xa).xname)))))
+                        xauthors.write (((((xAuthor).xobjects).xorder_by)).apply (((((((xCoalesce)).apply ("alias") ("name")).xasc)).apply)))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((xauthors)) ((((unsupported)).apply ("Rhonda") ("John Smith"))) ((((unsupported)).apply (((xa).xname)))))
+                        xauthors.write (((((xAuthor).xobjects).xorder_by)).apply (((((((xCoalesce)).apply ("alias") ("name")).xdesc)).apply)))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((xauthors)) ((((unsupported)).apply ("John Smith") ("Rhonda"))) ((((unsupported)).apply (((xa).xname)))))
+                xtest_empty_queryset.write
+                  [xself]
+                    memory > xqs
+                    memory > xtests
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith"))
+                        xtests.write (((unsupported)).apply ((((((xAuthor).xobjects).xnone)).apply)) ((((xSubquery)).apply ((((((xAuthor).xobjects).xnone)).apply)))))
+                        (((unsupported)).apply ((xempty_query)) ((xtests)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((((xempty_query).x__class__).x__name__)))))
+                            seq
+                              xqs.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCoalesce)).apply ((xempty_query)) (42))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xqs).xfirst)).apply).xannotation)) (42))

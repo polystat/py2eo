@@ -1,0 +1,155 @@
+memory > xtypes
+memory > xfalse
+memory > xforms
+memory > xstr
+memory > xValidationError
+memory > xrange
+memory > xvalue
+memory > x_
+memory > xSimpleUploadedFile
+memory > xtype
+memory > xre
+memory > xcode
+memory > xMyForm
+memory > xe
+memory > xUserForm
+memory > xTestCase
+memory > xvalidators
+memory > xisinstance
+memory > xvalidator
+memory > xlen
+[] > test_validators
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_value_placeholder_with_decimal_field
+        memory > xtest_all_errors_get_reported
+        memory > xtest_value_placeholder_with_char_field
+        memory > xtest_value_placeholder_with_integer_field
+        memory > xtest_value_placeholder_with_file_field
+        memory > xtest_value_placeholder_with_null_character
+        memory > xtest_field_validators_can_be_any_iterable
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_all_errors_get_reported.write
+                  [xself]
+                    memory > xfull_name
+                    memory > xform
+                    memory > xignore_case_string
+                    memory > xstring
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xforms).xForm)))
+                          seq
+                            xfull_name.write (((unsupported)).apply (((xforms).xCharField)) (50) ((((unsupported)).apply (((xvalidators).xvalidate_integer)) (((xvalidators).xvalidate_email)))))
+                            xstring.write (((unsupported)).apply (((xforms).xCharField)) (50) ((((unsupported)).apply ((((unsupported)).apply (((xvalidators).xRegexValidator)) ("^[a-zA-Z]*$") ("Letters only."))))))
+                            xignore_case_string.write (((unsupported)).apply (((xforms).xCharField)) (50) ((((unsupported)).apply ((((unsupported)).apply (((xvalidators).xRegexValidator)) ("^[a-z]*$") ("Letters only.") (((xre).xIGNORECASE)))))))
+                        xform.write (((xUserForm)).apply ((((unsupported)).apply ("full_name") ("not int nor mail") ("string") ("2 is not correct") ("ignore_case_string") ("IgnORE Case strIng"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xe)))
+                          bogusForceDataize.write ((((((unsupported)).apply (((xform).xfields)) ("full_name")).xclean)).apply ("not int nor mail"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (2) ((((xlen)).apply ((((xe).xexception).xmessages)))))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xform).xis_valid)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xform).xerrors)) ("string"))) ((((unsupported)).apply ("Letters only."))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xform).xerrors)) ("string"))) ((((unsupported)).apply ("Letters only."))))
+                xtest_field_validators_can_be_any_iterable.write
+                  [xself]
+                    memory > xfull_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xforms).xForm)))
+                          xfull_name.write (((unsupported)).apply (((xforms).xCharField)) (50) ((((unsupported)).apply (((xvalidators).xvalidate_integer)) (((xvalidators).xvalidate_email)))))
+                        xform.write (((xUserForm)).apply ((((unsupported)).apply ("full_name") ("not int nor mail"))))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xform).xis_valid)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xform).xerrors)) ("full_name"))) ((((unsupported)).apply ("Enter a valid integer.") ("Enter a valid email address."))))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_value_placeholder_with_char_field.write
+                  [xself]
+                    memory > xname
+                    memory > xfield
+                    memory > xcases
+                    memory > xform
+                    seq > @
+                      seq
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply (((xvalidators).xvalidate_integer)) ("-42.5") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_email)) ("a") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_email)) ("a@bn.com") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_email)) ("an@b.com") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_slug)) ("你 好") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_unicode_slug)) ("你 好") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_ipv4_address)) ("256.1.1.1") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_ipv6_address)) ("1:2") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_ipv46_address)) ("256.1.1.1") ("invalid"))) ((((unsupported)).apply (((xvalidators).xvalidate_comma_separated_integer_list)) ("a,b,c") ("invalid"))) ((((unsupported)).apply (((((xvalidators).xint_list_validator)).apply)) ("-1,2,3") ("invalid"))) ((((unsupported)).apply (((((xvalidators).xMaxLengthValidator)).apply (10))) ((11.mul "x")) ("max_length"))) ((((unsupported)).apply (((((xvalidators).xMinLengthValidator)).apply (10))) ((9.mul "x")) ("min_length"))) ((((unsupported)).apply (((((xvalidators).xURLValidator)).apply)) ("no_scheme") ("invalid"))) ((((unsupported)).apply (((((xvalidators).xURLValidator)).apply)) ("http://test[.com") ("invalid"))) ((((unsupported)).apply (((((xvalidators).xURLValidator)).apply)) ("http://[::1:2::3]/") ("invalid"))) ((((unsupported)).apply (((((xvalidators).xURLValidator)).apply)) (("http://".add (((".".xjoin)).apply ((((unsupported)).apply (("a".mul 35)) ((x_)) ((((xrange)).apply (9)))))))) ("invalid"))) ((((unsupported)).apply (((((xvalidators).xRegexValidator)).apply ("[0-9]+"))) ("xxxxxx") ("invalid"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalidator)) ((xvalue)) ((xcode)))) ((xcases)))
+                          seq
+                            (((xisinstance)).apply ((xvalidator)) (((xtypes).xFunctionType))).if
+                              xname.write ((xvalidator).x__name__)
+                              xname.write ((((xtype)).apply ((xvalidator))).x__name__)
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xname)) ((xvalue)))))
+                              seq
+                                (((unsupported)).apply (((xforms).xForm)))
+                                  xfield.write (((unsupported)).apply (((xforms).xCharField)) ((((unsupported)).apply ((xvalidator)))) ((((unsupported)).apply ((xcode)) ("%(value)s"))))
+                                xform.write (((xMyForm)).apply ((((unsupported)).apply ("field") ((xvalue)))))
+                                bogusForceDataize.write ((((xself).xassertIs)).apply (((((xform).xis_valid)).apply)) ((xfalse)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((xform).xerrors)) ((((unsupported)).apply ("field") ((((unsupported)).apply ((xvalue)))))))
+                xtest_value_placeholder_with_null_character.write
+                  [xself]
+                    memory > xfield
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xforms).xForm)))
+                          xfield.write (((unsupported)).apply (((xforms).xCharField)) ((((unsupported)).apply ("null_characters_not_allowed") ("%(value)s"))))
+                        xform.write (((xMyForm)).apply ((((unsupported)).apply ("field") ("a0b"))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xform).xis_valid)).apply)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xform).xerrors)) ((((unsupported)).apply ("field") ((((unsupported)).apply ("ax00b"))))))
+                xtest_value_placeholder_with_integer_field.write
+                  [xself]
+                    memory > xfield
+                    memory > xcases
+                    memory > xform
+                    seq > @
+                      seq
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply (((((xvalidators).xMaxValueValidator)).apply (0))) (1) ("max_value"))) ((((unsupported)).apply (((((xvalidators).xMinValueValidator)).apply (0))) ((1.neg)) ("min_value"))) ((((unsupported)).apply (((((xvalidators).xURLValidator)).apply)) ("1") ("invalid"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalidator)) ((xvalue)) ((xcode)))) ((xcases)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) (((((xtype)).apply ((xvalidator))).x__name__)) ((xvalue)))))
+                            seq
+                              (((unsupported)).apply (((xforms).xForm)))
+                                xfield.write (((unsupported)).apply (((xforms).xIntegerField)) ((((unsupported)).apply ((xvalidator)))) ((((unsupported)).apply ((xcode)) ("%(value)s"))))
+                              xform.write (((xMyForm)).apply ((((unsupported)).apply ("field") ((xvalue)))))
+                              bogusForceDataize.write ((((xself).xassertIs)).apply (((((xform).xis_valid)).apply)) ((xfalse)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((xform).xerrors)) ((((unsupported)).apply ("field") ((((unsupported)).apply ((((xstr)).apply ((xvalue)))))))))
+                xtest_value_placeholder_with_decimal_field.write
+                  [xself]
+                    memory > xfield
+                    memory > xcases
+                    memory > xform
+                    seq > @
+                      seq
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply ("NaN") ("invalid"))) ((((unsupported)).apply ("123") ("max_digits"))) ((((unsupported)).apply ("0.12") ("max_decimal_places"))) ((((unsupported)).apply ("12") ("max_whole_digits"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xcode)))) ((xcases)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))))
+                            seq
+                              (((unsupported)).apply (((xforms).xForm)))
+                                xfield.write (((unsupported)).apply (((xforms).xDecimalField)) (2) (1) ((((unsupported)).apply ((xcode)) ("%(value)s"))))
+                              xform.write (((xMyForm)).apply ((((unsupported)).apply ("field") ((xvalue)))))
+                              bogusForceDataize.write ((((xself).xassertIs)).apply (((((xform).xis_valid)).apply)) ((xfalse)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((xform).xerrors)) ((((unsupported)).apply ("field") ((((unsupported)).apply ((xvalue)))))))
+                xtest_value_placeholder_with_file_field.write
+                  [xself]
+                    memory > xfield
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xforms).xForm)))
+                          xfield.write (((unsupported)).apply (((xforms).xFileField)) ((((unsupported)).apply (((xvalidators).xvalidate_image_file_extension)))) ((((unsupported)).apply ("invalid_extension") ("%(value)s"))))
+                        xform.write (((unsupported)).apply ((xMyForm)) ((((unsupported)).apply ("field") ((((xSimpleUploadedFile)).apply ("myfile.txt") ("abc"))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xform).xis_valid)).apply)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xform).xerrors)) ((((unsupported)).apply ("field") ((((unsupported)).apply ("myfile.txt"))))))

@@ -1,0 +1,126 @@
+memory > xsignal
+memory > xstr
+memory > xDatabaseClient
+memory > xconnection
+memory > xPath
+memory > xsys
+memory > xctx
+memory > x__file__
+memory > xSimpleTestCase
+memory > xargs
+memory > xsubprocess
+memory > xmock
+memory > xos
+[] > test_postgresql
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_accent
+        memory > xsettings_to_cmd_args_env
+        memory > xtest_passfile
+        memory > xtest_basic
+        memory > xtest_crash_password_does_not_leak
+        memory > xtest_sigint_handler
+        memory > xtest_column
+        memory > xtest_ssl_certificate
+        memory > xtest_service
+        memory > xtest_parameters
+        memory > xtest_nopass
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsettings_to_cmd_args_env.write
+                  [xself xsettings_dict xparameters]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xparameters)) ("None: is there a None literal in the EO language?")).if
+                          xparameters.write (((unsupported)).apply)
+                        (((unsupported)).apply (((((xDatabaseClient).xsettings_to_cmd_args_env)).apply ((xsettings_dict)) ((xparameters)))))
+                xtest_basic.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("dbname") ("USER") ("someuser") ("PASSWORD") ("somepassword") ("HOST") ("somehost") ("PORT") ("444"))))) ((((unsupported)).apply ((((unsupported)).apply ("psql") ("-U") ("someuser") ("-h") ("somehost") ("-p") ("444") ("dbname"))) ((((unsupported)).apply ("PGPASSWORD") ("somepassword"))))))
+                xtest_nopass.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("dbname") ("USER") ("someuser") ("HOST") ("somehost") ("PORT") ("444"))))) ((((unsupported)).apply ((((unsupported)).apply ("psql") ("-U") ("someuser") ("-h") ("somehost") ("-p") ("444") ("dbname"))) ("None: is there a None literal in the EO language?"))))
+                xtest_ssl_certificate.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("dbname") ("USER") ("someuser") ("HOST") ("somehost") ("PORT") ("444") ("OPTIONS") ((((unsupported)).apply ("sslmode") ("verify-ca") ("sslrootcert") ("root.crt") ("sslcert") ("client.crt") ("sslkey") ("client.key"))))))) ((((unsupported)).apply ((((unsupported)).apply ("psql") ("-U") ("someuser") ("-h") ("somehost") ("-p") ("444") ("dbname"))) ((((unsupported)).apply ("PGSSLCERT") ("client.crt") ("PGSSLKEY") ("client.key") ("PGSSLMODE") ("verify-ca") ("PGSSLROOTCERT") ("root.crt"))))))
+                xtest_service.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("OPTIONS") ((((unsupported)).apply ("service") ("django_test"))))))) ((((unsupported)).apply ((((unsupported)).apply ("psql"))) ((((unsupported)).apply ("PGSERVICE") ("django_test"))))))
+                xtest_passfile.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("dbname") ("USER") ("someuser") ("HOST") ("somehost") ("PORT") ("444") ("OPTIONS") ((((unsupported)).apply ("passfile") ("~/.custompgpass"))))))) ((((unsupported)).apply ((((unsupported)).apply ("psql") ("-U") ("someuser") ("-h") ("somehost") ("-p") ("444") ("dbname"))) ((((unsupported)).apply ("PGPASSFILE") ("~/.custompgpass"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("OPTIONS") ((((unsupported)).apply ("service") ("django_test") ("passfile") ("~/.custompgpass"))))))) ((((unsupported)).apply ((((unsupported)).apply ("psql"))) ((((unsupported)).apply ("PGSERVICE") ("django_test") ("PGPASSFILE") ("~/.custompgpass"))))))
+                xtest_column.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("dbname") ("USER") ("some:user") ("PASSWORD") ("some:password") ("HOST") ("::1") ("PORT") ("444"))))) ((((unsupported)).apply ((((unsupported)).apply ("psql") ("-U") ("some:user") ("-h") ("::1") ("-p") ("444") ("dbname"))) ((((unsupported)).apply ("PGPASSWORD") ("some:password"))))))
+                xtest_accent.write
+                  [xself]
+                    memory > xpassword
+                    memory > xusername
+                    seq > @
+                      seq
+                        xusername.write "rôle"
+                        xpassword.write "sésame"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("dbname") ("USER") ((xusername)) ("PASSWORD") ((xpassword)) ("HOST") ("somehost") ("PORT") ("444"))))) ((((unsupported)).apply ((((unsupported)).apply ("psql") ("-U") ((xusername)) ("-h") ("somehost") ("-p") ("444") ("dbname"))) ((((unsupported)).apply ("PGPASSWORD") ((xpassword)))))))
+                xtest_parameters.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("NAME") ("dbname"))) ((((unsupported)).apply ("--help"))))) ((((unsupported)).apply ((((unsupported)).apply ("psql") ("dbname") ("--help"))) ("None: is there a None literal in the EO language?"))))
+                xtest_sigint_handler.write
+                  [xself]
+                    memory > x_mock_subprocess_run
+                    memory > xsigint_handler
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        x_mock_subprocess_run.write
+                          []
+                            memory > xhandler
+                            seq > @
+                              (((unsupported)).apply)
+                                xhandler.write ((((xsignal).xgetsignal)).apply (((xsignal).xSIGINT)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((xhandler)) (((xsignal).xSIG_IGN)))
+                        xsigint_handler.write ((((xsignal).xgetsignal)).apply (((xsignal).xSIGINT)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xsigint_handler)) (((xsignal).xSIG_IGN)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("subprocess.run") ((x_mock_subprocess_run)))))
+                          bogusForceDataize.write (((((xconnection).xclient).xrunshell)).apply ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xsigint_handler)) (((((xsignal).xgetsignal)).apply (((xsignal).xSIGINT)))))
+                xtest_crash_password_does_not_leak.write
+                  [xself]
+                    memory > xenv
+                    memory > xfake_client
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xargs)) ((xenv)))) (((((xself).xsettings_to_cmd_args_env)).apply ((((unsupported)).apply ("PASSWORD") ("somepassword"))) ((((unsupported)).apply)))))
+                        (xenv).if
+                          xenv.write (((unsupported)).apply (((xos).xenviron)) ((xenv)))
+                        xfake_client.write ((((((xPath)).apply ((x__file__))).xwith_name)).apply ("fake_client.py"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xargs)) ((((unsupported)).apply (0) (1))))) ((((unsupported)).apply (((xsys).xexecutable)) ((((xstr)).apply ((xfake_client)))))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply (((xsubprocess).xCalledProcessError)))) ((xctx)))
+                          (((unsupported)).apply (((xsubprocess).xrun)) ((xargs)) (TRUE) ((xenv)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("somepassword") ((((xstr)).apply (((xctx).xexception)))))

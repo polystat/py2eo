@@ -1,0 +1,27 @@
+memory > xBaseCommand
+memory > xoptions
+[] > set_option
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      bogusForceDataize.write ((((xparser).xadd_argument)).apply ("--set"))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("Set %s".mod (((unsupported)).apply ((xoptions)) ("set")))))

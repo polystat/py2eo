@@ -1,0 +1,66 @@
+memory > xoutput
+memory > xmake_list
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_make_list
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_make_list04
+        memory > xtest_make_list01
+        memory > xtest_make_list02
+        memory > xtest_make_list03
+        memory > xtest_integer
+        memory > xtest_string
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_make_list01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("make_list01") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("&"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("['&']"))
+                xtest_make_list02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("make_list02") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("&"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("[&#x27;&amp;&#x27;]"))
+                xtest_make_list03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("make_list03") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("&"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("['&']"))
+                xtest_make_list04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("make_list04") ((((unsupported)).apply ("a") ((((xmark_safe)).apply ("&"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("['&']"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xmake_list)).apply ("abc"))) ((((unsupported)).apply ("a") ("b") ("c"))))
+                xtest_integer.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xmake_list)).apply (1234))) ((((unsupported)).apply ("1") ("2") ("3") ("4"))))

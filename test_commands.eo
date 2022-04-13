@@ -1,0 +1,67 @@
+memory > xcall_command
+memory > xNotImplementedError
+memory > xconnection
+memory > xcursor
+memory > xTransactionTestCase
+[] > test_commands
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_table_description
+        memory > xtest_migrate_gis
+        memory > xassertTableExists
+        memory > xassertTableNotExists
+        memory > xavailable_apps
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                (((unsupported)).apply)
+                xavailable_apps.write (((unsupported)).apply ("gis_tests.gis_migrations"))
+                xget_table_description.write
+                  [xself xtable]
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                        (((unsupported)).apply ((((((xconnection).xintrospection).xget_table_description)).apply ((xcursor)) ((xtable)))))
+                xassertTableExists.write
+                  [xself xtable]
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xtable)) ((((((xconnection).xintrospection).xtable_names)).apply ((xcursor)))))
+                xassertTableNotExists.write
+                  [xself xtable]
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ((xtable)) ((((((xconnection).xintrospection).xtable_names)).apply ((xcursor)))))
+                xtest_migrate_gis.write
+                  [xself]
+                    memory > xqs
+                    memory > xGeoColumn
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertTableExists)).apply ("gis_migrations_neighborhood"))
+                        bogusForceDataize.write ((((xself).xassertTableExists)).apply ("gis_migrations_household"))
+                        bogusForceDataize.write ((((xself).xassertTableExists)).apply ("gis_migrations_family"))
+                        (((xconnection).xfeatures).xsupports_raster).if
+                          bogusForceDataize.write ((((xself).xassertTableExists)).apply ("gis_migrations_heatmap"))
+                        (((unsupported)).apply ((xcall_command)) ("migrate") ("gis_migrations") ("0001") (0))
+                        bogusForceDataize.write ((((xself).xassertTableNotExists)).apply ("gis_migrations_neighborhood"))
+                        bogusForceDataize.write ((((xself).xassertTableNotExists)).apply ("gis_migrations_household"))
+                        bogusForceDataize.write ((((xself).xassertTableNotExists)).apply ("gis_migrations_family"))
+                        (((xconnection).xfeatures).xsupports_raster).if
+                          bogusForceDataize.write ((((xself).xassertTableNotExists)).apply ("gis_migrations_heatmap"))
+                        (((unsupported)).apply ((xNotImplementedError)))
+                          xGeoColumn.write (((((xconnection).xops).xgeometry_columns)).apply)
+                          seq
+                            xqs.write (((((xGeoColumn).xobjects).xfilter)).apply ((((unsupported)).apply ((((unsupported)).apply (("%s__in".mod ((((xGeoColumn).xtable_name_col)).apply))) ((((unsupported)).apply ("gis_neighborhood") ("gis_household"))))))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xqs).xcount)).apply)) (0))
+                        (((unsupported)).apply ((xcall_command)) ("migrate") ("gis_migrations") (0))

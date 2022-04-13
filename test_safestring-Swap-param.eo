@@ -1,0 +1,206 @@
+memory > xObj
+memory > xAttributeError
+memory > xSafeStringContainer
+memory > xtranslation
+memory > xstr
+memory > xSafeData
+memory > xtype
+memory > xmark_safe
+memory > xSafeString
+memory > xlazy
+memory > xhtml
+memory > xlazystr
+memory > xgettext_lazy
+memory > xContext
+memory > xTemplate
+memory > xcustomescape
+memory > xPromise
+memory > xSimpleTestCase
+[] > test_safestring
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_mark_safe_as_decorator
+        memory > xtest_mark_safe_decorator_does_not_affect_promises
+        memory > xtest_mark_safe_str
+        memory > xtest_mark_safe_lazy
+        memory > x__html__
+        memory > xtest_mark_safe_object_implementing_dunder_str
+        memory > xtest_default_safe_data_additional_attrs
+        memory > xtest_mark_safe_lazy_result_implements_dunder_html
+        memory > xtest_default_additional_attrs
+        memory > xtest_mark_safe
+        memory > xtest_mark_safe_object_implementing_dunder_html
+        memory > xtest_mark_safe_lazy_i18n
+        memory > xtest_add_lazy_safe_text_and_safe_text
+        memory > xtest_mark_safe_result_implements_dunder_html
+        memory > xtest_mark_safe_decorator_does_not_affect_dunder_html
+        memory > xassertRenderEqual
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xstr)))
+              x__html__.write
+                [xself]
+                  seq > @
+                    (((unsupported)).apply ((((((((xself).xreplace)).apply ("<") ("<<")).xreplace)).apply (">") (">>"))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xassertRenderEqual.write
+                  [xself xtpl xexpected]
+                    memory > xcontext
+                    seq > @
+                      (((unsupported)).apply)
+                        xcontext.write (((xContext)).apply ((xcontext)))
+                        xtpl.write (((xTemplate)).apply ((xtpl)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtpl).xrender)).apply ((xcontext)))) ((xexpected)))
+                xtest_mark_safe.write
+                  [xself]
+                    memory > xs
+                    seq > @
+                      seq
+                        xs.write (((xmark_safe)).apply ("a&b"))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s }}") ("a&b") ((xs)))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s|force_escape }}") ("a&amp;b") ((xs)))
+                xtest_mark_safe_str.write
+                  [xself]
+                    memory > xs
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xs.write (((xmark_safe)).apply ("a&b"))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((xstr)).apply ((xs)))) ((((xtype)).apply ((xs)))))
+                xtest_mark_safe_object_implementing_dunder_html.write
+                  [xself]
+                    memory > xe
+                    memory > xs
+                    seq > @
+                      seq
+                        xe.write (((xcustomescape)).apply ("<a&b>"))
+                        xs.write (((xmark_safe)).apply ((xe)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((xs)) ((xe)))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s }}") ("<<a&b>>") ((xs)))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s|force_escape }}") ("&lt;a&amp;b&gt;") ((xs)))
+                xtest_mark_safe_lazy.write
+                  [xself]
+                    memory > xsafe_s
+                    seq > @
+                      seq
+                        xsafe_s.write (((xmark_safe)).apply ((((xlazystr)).apply ("a&b"))))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xsafe_s)) ((xPromise)))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s }}") ("a&b") ((xsafe_s)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((xstr)).apply ((xsafe_s)))) ((xSafeData)))
+                xtest_mark_safe_lazy_i18n.write
+                  [xself]
+                    memory > xtpl
+                    memory > xs
+                    seq > @
+                      seq
+                        xs.write (((xmark_safe)).apply ((((xgettext_lazy)).apply ("name"))))
+                        xtpl.write (((xTemplate)).apply ("{{ s }}"))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply ("s") ((xs)))))))) ("nom"))
+                xtest_mark_safe_object_implementing_dunder_str.write
+                  [xself]
+                    memory > xs
+                    memory > x__str__
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          x__str__.write
+                            [xself]
+                              seq > @
+                                (((unsupported)).apply ("<obj>"))
+                        xs.write (((xmark_safe)).apply ((((xObj)).apply)))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s }}") ("<obj>") ((xs)))
+                xtest_mark_safe_result_implements_dunder_html.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xmark_safe)).apply ("a&b")).x__html__)).apply)) ("a&b"))
+                xtest_mark_safe_lazy_result_implements_dunder_html.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xmark_safe)).apply ((((xlazystr)).apply ("a&b")))).x__html__)).apply)) ("a&b"))
+                xtest_add_lazy_safe_text_and_safe_text.write
+                  [xself]
+                    memory > xs
+                    seq > @
+                      seq
+                        xs.write ((((xhtml).xescape)).apply ((((xlazystr)).apply ("a"))))
+                        (((unsupported)).apply ((xs)) ((((xmark_safe)).apply ("&b"))))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s }}") ("a&b") ((xs)))
+                        xs.write ((((xhtml).xescapejs)).apply ((((xlazystr)).apply ("a"))))
+                        (((unsupported)).apply ((xs)) ((((xmark_safe)).apply ("&b"))))
+                        (((unsupported)).apply (((xself).xassertRenderEqual)) ("{{ s }}") ("a&b") ((xs)))
+                xtest_mark_safe_as_decorator.write
+                  [xself]
+                    memory > xclean_string_provider
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xclean_string_provider.write
+                          []
+                            seq > @
+                              (((unsupported)).apply ("<html><body>dummy</body></html>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xmark_safe)).apply ((xclean_string_provider)))).apply)) ((((xclean_string_provider)).apply)))
+                xtest_mark_safe_decorator_does_not_affect_dunder_html.write
+                  [xself]
+                    memory > x__html__
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          x__html__.write
+                            [xself]
+                              seq > @
+                                (((unsupported)).apply ("<html></html>"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xmark_safe)).apply ((xSafeStringContainer)))) ((xSafeStringContainer)))
+                xtest_mark_safe_decorator_does_not_affect_promises.write
+                  [xself]
+                    memory > xlazy_str
+                    memory > xhtml_str
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xhtml_str.write
+                          []
+                            seq > @
+                              (((unsupported)).apply ("<html></html>"))
+                        xlazy_str.write (((((xlazy)).apply ((xhtml_str)) ((xstr)))).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xmark_safe)).apply ((xlazy_str)))) ((((xhtml_str)).apply)))
+                xtest_default_additional_attrs.write
+                  [xself]
+                    memory > xs
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xs.write (((xSafeString)).apply ("a&b"))
+                        xmsg.write "object has no attribute 'dynamic_attr'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xAttributeError)) ((xmsg)))))
+                          (((unsupported)).apply (((xs).xdynamic_attr)) (TRUE))
+                xtest_default_safe_data_additional_attrs.write
+                  [xself]
+                    memory > xs
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xs.write (((xSafeData)).apply)
+                        xmsg.write "object has no attribute 'dynamic_attr'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xAttributeError)) ((xmsg)))))
+                          (((unsupported)).apply (((xs).xdynamic_attr)) (TRUE))

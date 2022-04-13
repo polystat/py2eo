@@ -1,0 +1,80 @@
+memory > xSitemapNotFound
+memory > x_get_sitemap_full_url
+memory > xurlencode
+memory > xping_google
+memory > xImproperlyConfigured
+memory > xSitemapTestsBase
+memory > xparams
+[] > test_utils
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_get_sitemap_full_url_exact_url
+        memory > xtest_get_sitemap_full_url_index
+        memory > xtest_get_sitemap_full_url_not_detected
+        memory > xtest_get_sitemap_full_url_no_sites
+        memory > xtest_get_sitemap_full_url_insecure
+        memory > xtest_something
+        memory > xtest_get_sitemap_full_url_global
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSitemapTestsBase)))
+              seq
+                xtest_something.write
+                  [xself xurlopen]
+                    memory > xfull_url
+                    memory > xparams2
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((xping_google)).apply)
+                        xparams2.write (((xurlencode)).apply ((((unsupported)).apply ("sitemap") ("https://example.com/sitemap-without-entries/sitemap.xml"))))
+                        xfull_url.write ("https://www.google.com/webmasters/tools/ping?%s".mod (xparams))
+                        bogusForceDataize.write ((((xurlopen).xassert_called_with)).apply ((xfull_url)))
+                xtest_get_sitemap_full_url_global.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((x_get_sitemap_full_url)).apply ("None: is there a None literal in the EO language?"))) ("https://example.com/sitemap-without-entries/sitemap.xml"))
+                xtest_get_sitemap_full_url_index.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((x_get_sitemap_full_url)).apply ("None: is there a None literal in the EO language?"))) ("https://example.com/simple/index.xml"))
+                xtest_get_sitemap_full_url_not_detected.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "You didn't provide a sitemap_url, and the sitemap URL couldn't be auto-detected."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSitemapNotFound)) ((xmsg)))))
+                          bogusForceDataize.write (((x_get_sitemap_full_url)).apply ("None: is there a None literal in the EO language?"))
+                xtest_get_sitemap_full_url_exact_url.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((x_get_sitemap_full_url)).apply ("/foo.xml"))) ("https://example.com/foo.xml"))
+                xtest_get_sitemap_full_url_insecure.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((x_get_sitemap_full_url)) ("/foo.xml") (FALSE))) ("http://example.com/foo.xml"))
+                xtest_get_sitemap_full_url_no_sites.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "ping_google requires django.contrib.sites, which isn't installed."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          bogusForceDataize.write (((x_get_sitemap_full_url)).apply ("None: is there a None literal in the EO language?"))

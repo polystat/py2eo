@@ -1,0 +1,69 @@
+memory > xdate
+memory > xSitemapTestsBase
+memory > xoverride_settings
+[] > test_https
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_secure_sitemap_section
+        memory > xextra
+        memory > xtest_sitemap_section_with_https_request
+        memory > xtest_sitemap_index_with_https_request
+        memory > xtest_secure_sitemap_index
+        memory > xprotocol
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSitemapTestsBase)) ((((unsupported)).apply ((xoverride_settings)) ("sitemaps_tests.urls.https"))))
+              seq
+                xprotocol.write "https"
+                xtest_secure_sitemap_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/secure/index.xml"))
+                        xexpected_content.write ((((unsupported)).apply).mod (((unsupported)).apply (((xself).xbase_url)) (((xdate).xtoday))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((xresponse).xcontent).xdecode)) ((xexpected_content)))
+                xtest_secure_sitemap_section.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/secure/sitemap-simple.xml"))
+                        xexpected_content.write ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>%s/location/</loc><lastmod>%s</lastmod><changefreq>never</changefreq><priority>0.5</priority></url>n</urlset>".mod (((unsupported)).apply (((xself).xbase_url)) (((xdate).xtoday))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((xresponse).xcontent).xdecode)) ((xexpected_content)))
+            (((unsupported)).apply ((xSitemapTestsBase)) ((((unsupported)).apply ((xoverride_settings)) (FALSE))))
+              seq
+                xextra.write (((unsupported)).apply ("wsgi.url_scheme") ("https"))
+                xtest_sitemap_index_with_https_request.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/index.xml") ((((unsupported)).apply (((xself).xextra)))))
+                        xexpected_content.write ((((unsupported)).apply).mod (((unsupported)).apply ((((((xself).xbase_url).xreplace)).apply ("http://") ("https://"))) (((xdate).xtoday))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((xresponse).xcontent).xdecode)) ((xexpected_content)))
+                xtest_sitemap_section_with_https_request.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap-simple.xml") ((((unsupported)).apply (((xself).xextra)))))
+                        xexpected_content.write ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>%s/location/</loc><lastmod>%s</lastmod><changefreq>never</changefreq><priority>0.5</priority></url>n</urlset>".mod (((unsupported)).apply ((((((xself).xbase_url).xreplace)).apply ("http://") ("https://"))) (((xdate).xtoday))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((xresponse).xcontent).xdecode)) ((xexpected_content)))

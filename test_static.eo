@@ -1,0 +1,264 @@
+memory > xstatic
+memory > xquote
+memory > xopen
+memory > xpath
+memory > xsuper
+memory > xoverride_settings
+memory > xFileResponse
+memory > xunittest
+memory > xnext
+memory > xImproperlyConfigured
+memory > xhttp_date
+memory > xfilename
+memory > xmedia_dir
+memory > xHttpResponseNotModified
+memory > xint
+memory > xwas_modified_since
+memory > xStaticTests
+memory > xurls
+memory > xlen
+memory > xSimpleTestCase
+memory > xfp
+memory > xmimetypes
+[] > test_static
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_404
+        memory > xtest_is_modified_since
+        memory > xtest_unknown_mime_type
+        memory > xtest_copes_with_empty_path_component
+        memory > xtest_index_subdir
+        memory > xtest_prefix
+        memory > xtest_invalid_if_modified_since2
+        memory > xtest_was_modified_since_empty_string
+        memory > xtest_serve
+        memory > xtest_index_custom_template
+        memory > xtest_empty_prefix
+        memory > xtest_was_modified_since_fp
+        memory > xtest_index
+        memory > xprefix
+        memory > xsetUp
+        memory > xtest_special_prefix
+        memory > xtest_debug_off
+        memory > xtest_not_modified_since
+        memory > xtest_invalid_if_modified_since
+        memory > xtearDown
+        memory > xtest_chunked
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) (TRUE) ("view_tests.urls"))))
+              seq
+                unsupported
+                xprefix.write "site_media"
+                xtest_serve.write
+                  [xself]
+                    memory > xresponse
+                    memory > xmedia_files
+                    memory > xfile_path
+                    memory > xresponse_content
+                    seq > @
+                      seq
+                        unsupported
+                        xmedia_files.write (((unsupported)).apply ("file.txt") ("file.txt.gz") ("%2F.txt"))
+                        (((unsupported)).apply ((xfilename)) ((xmedia_files)))
+                          seq
+                            xresponse.write (((((xself).xclient).xget)).apply (("/%s/%s".mod (((unsupported)).apply (((xself).xprefix)) ((((xquote)).apply ((xfilename))))))))
+                            xresponse_content.write ((("".xjoin)).apply ((xresponse)))
+                            xfile_path.write ((((xpath).xjoin)).apply ((xmedia_dir)) ((xfilename)))
+                            (((unsupported)).apply ((((xopen)).apply ((xfile_path)) ("rb"))) ((xfp)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfp).xread)).apply)) ((xresponse_content)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xresponse_content)))) ((((xint)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Length"))))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((xmimetypes).xguess_type)).apply ((xfile_path)))) (1))) (((((xresponse).xget)).apply ("Content-Encoding") ("None: is there a None literal in the EO language?"))))
+                xtest_chunked.write
+                  [xself]
+                    memory > xfirst_chunk
+                    memory > xresponse
+                    memory > xsecond_chunk
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply (("/%s/%s".mod (((unsupported)).apply (((xself).xprefix)) ("long-line.txt")))))
+                        xfirst_chunk.write (((xnext)).apply (((xresponse).xstreaming_content)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xfirst_chunk)))) (((xFileResponse).xblock_size)))
+                        xsecond_chunk.write (((xnext)).apply (((xresponse).xstreaming_content)))
+                        bogusForceDataize.write ((((xresponse).xclose)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((((xsecond_chunk).xstrip)).apply)))) (1449))
+                xtest_unknown_mime_type.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply (("/%s/file.unknown".mod ((xself).xprefix))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("application/octet-stream") ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Type"))))
+                        bogusForceDataize.write ((((xresponse).xclose)).apply)
+                xtest_copes_with_empty_path_component.write
+                  [xself]
+                    memory > xfile_name
+                    memory > xresponse
+                    memory > xresponse_content
+                    seq > @
+                      seq
+                        xfile_name.write "file.txt"
+                        xresponse.write (((((xself).xclient).xget)).apply (("/%s//%s".mod (((unsupported)).apply (((xself).xprefix)) ((xfile_name))))))
+                        xresponse_content.write ((("".xjoin)).apply ((xresponse)))
+                        (((unsupported)).apply ((((xopen)).apply (((((xpath).xjoin)).apply ((xmedia_dir)) ((xfile_name)))) ("rb"))) ((xfp)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfp).xread)).apply)) ((xresponse_content)))
+                xtest_is_modified_since.write
+                  [xself]
+                    memory > xfile_name
+                    memory > xresponse
+                    memory > xresponse_content
+                    seq > @
+                      seq
+                        xfile_name.write "file.txt"
+                        xresponse.write (((unsupported)).apply ((((xself).xclient).xget)) (("/%s/%s".mod (((unsupported)).apply (((xself).xprefix)) ((xfile_name))))) ("Thu, 1 Jan 1970 00:00:00 GMT"))
+                        xresponse_content.write ((("".xjoin)).apply ((xresponse)))
+                        (((unsupported)).apply ((((xopen)).apply (((((xpath).xjoin)).apply ((xmedia_dir)) ((xfile_name)))) ("rb"))) ((xfp)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfp).xread)).apply)) ((xresponse_content)))
+                xtest_not_modified_since.write
+                  [xself]
+                    memory > xfile_name
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xfile_name.write "file.txt"
+                        xresponse.write (((unsupported)).apply ((((xself).xclient).xget)) (("/%s/%s".mod (((unsupported)).apply (((xself).xprefix)) ((xfile_name))))) ("Mon, 18 Jan 2038 05:14:07 GMT"))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xresponse)) ((xHttpResponseNotModified)))
+                xtest_invalid_if_modified_since.write
+                  [xself]
+                    memory > xfile_name
+                    memory > xresponse
+                    memory > xresponse_content
+                    memory > xinvalid_date
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xfile_name.write "file.txt"
+                        xinvalid_date.write "Mon, 28 May 999999999999 28:25:26 GMT"
+                        xresponse.write (((unsupported)).apply ((((xself).xclient).xget)) (("/%s/%s".mod (((unsupported)).apply (((xself).xprefix)) ((xfile_name))))) ((xinvalid_date)))
+                        xresponse_content.write ((("".xjoin)).apply ((xresponse)))
+                        (((unsupported)).apply ((((xopen)).apply (((((xpath).xjoin)).apply ((xmedia_dir)) ((xfile_name)))) ("rb"))) ((xfp)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfp).xread)).apply)) ((xresponse_content)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xresponse_content)))) ((((xint)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Length"))))))
+                xtest_invalid_if_modified_since2.write
+                  [xself]
+                    memory > xfile_name
+                    memory > xresponse
+                    memory > xresponse_content
+                    memory > xinvalid_date
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xfile_name.write "file.txt"
+                        xinvalid_date.write ": 1291108438, Wed, 20 Oct 2010 14:05:00 GMT"
+                        xresponse.write (((unsupported)).apply ((((xself).xclient).xget)) (("/%s/%s".mod (((unsupported)).apply (((xself).xprefix)) ((xfile_name))))) ((xinvalid_date)))
+                        xresponse_content.write ((("".xjoin)).apply ((xresponse)))
+                        (((unsupported)).apply ((((xopen)).apply (((((xpath).xjoin)).apply ((xmedia_dir)) ((xfile_name)))) ("rb"))) ((xfp)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfp).xread)).apply)) ((xresponse_content)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xresponse_content)))) ((((xint)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Length"))))))
+                xtest_404.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply (("/%s/nonexistent_resource".mod ((xself).xprefix))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (404) (((xresponse).xstatus_code)))
+                xtest_index.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply (("/%s/".mod ((xself).xprefix))))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Index of ./"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("subdir/") ((((unsupported)).apply (((xresponse).xcontext)) ("file_list"))))
+                xtest_index_subdir.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply (("/%s/subdir/".mod ((xself).xprefix))))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Index of subdir/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("file_list"))) ((((unsupported)).apply ("visible"))))
+                xtest_index_custom_template.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply (("/%s/".mod ((xself).xprefix))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xcontent)) ("Test index"))
+            (((unsupported)).apply ((xStaticTests)))
+              seq
+                (((unsupported)).apply)
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        (((unsupported)).apply (((xself).x_old_views_urlpatterns)) ((((unsupported)).apply (((xurls).xurlpatterns)) ((((unsupported)).apply)))))
+                        (((unsupported)).apply (((xurls).xurlpatterns)) ((((unsupported)).apply ((xstatic)) ("media/") ((xmedia_dir)))))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xtearDown)).apply)
+                        (((unsupported)).apply (((xurls).xurlpatterns)) (((xself).x_old_views_urlpatterns)))
+                xtest_prefix.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xstatic)).apply ("test"))) (0)).xpattern).xregex).xpattern)) ("^test(?P<path>.*)$"))
+                xtest_debug_off.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstatic)).apply ("test"))) ((((unsupported)).apply)))
+                xtest_empty_prefix.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ("Empty static prefix not permitted"))))
+                        bogusForceDataize.write (((xstatic)).apply (""))
+                xtest_special_prefix.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstatic)).apply ("http://example.org"))) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstatic)).apply ("//example.org"))) ((((unsupported)).apply)))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_was_modified_since_fp.write
+                  [xself]
+                    memory > xmtime
+                    memory > xheader
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xmtime.write 1343416141.107817
+                        xheader.write (((xhttp_date)).apply ((xmtime)))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xwas_modified_since)).apply ((xheader)) ((xmtime)))))
+                xtest_was_modified_since_empty_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertTrue)).apply ((((unsupported)).apply ((xwas_modified_since)) ("") (1))))

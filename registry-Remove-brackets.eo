@@ -1,0 +1,136 @@
+memory > xlist
+memory > xCheckRegistry
+memory > xcallable
+memory > xchain
+memory > xis_iterable
+memory > xkwargs
+memory > xTypeError
+memory > xfunc_accepts_kwargs
+memory > xcheck
+memory > xtags
+memory > xset
+[] > registry
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xstaticfiles
+        memory > xsecurity
+        memory > xsites
+        memory > xrun_checks
+        memory > xcaches
+        memory > xregistry
+        memory > xcompatibility
+        memory > xregister
+        memory > xurls
+        memory > xfiles
+        memory > x__init__
+        memory > xmodels
+        memory > xasync_support
+        memory > xget_checks
+        memory > xtemplates
+        memory > xdatabase
+        memory > xadmin
+        memory > xtranslation
+        memory > xtags_available
+        memory > xsignals
+        memory > xtag_exists
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xadmin.write "admin"
+                xasync_support.write "async_support"
+                xcaches.write "caches"
+                xcompatibility.write "compatibility"
+                xdatabase.write "database"
+                xfiles.write "files"
+                xmodels.write "models"
+                xsecurity.write "security"
+                xsignals.write "signals"
+                xsites.write "sites"
+                xstaticfiles.write "staticfiles"
+                xtemplates.write "templates"
+                xtranslation.write "translation"
+                xurls.write "urls"
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xregistered_checks)) ((xset)))
+                        (((unsupported)).apply (((xself).xdeployment_checks)) ((xset)))
+                xregister.write
+                  [xself xcheck]
+                    memory > xinner
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xinner.write
+                          [xcheck]
+                            memory > xchecks
+                            seq > @
+                              seq
+                                ((((xfunc_accepts_kwargs)).apply ((xcheck))).not).if
+                                  (((unsupported)).apply ((((xTypeError)).apply ("Check functions must accept keyword arguments (**kwargs)."))))
+                                (((unsupported)).apply (((xcheck).xtags)) ((xtags)))
+                                xchecks.write (((((xkwargs).xget)).apply ("deploy")).if ((xself).xdeployment_checks) ((xself).xregistered_checks))
+                                bogusForceDataize.write ((((xchecks).xadd)).apply ((xcheck)))
+                                (((unsupported)).apply ((xcheck)))
+                        (((xcallable)).apply ((xcheck))).if
+                          (((unsupported)).apply ((((xinner)).apply ((xcheck)))))
+                          seq
+                            (xcheck).if
+                              (((unsupported)).apply ((xtags)) ((((unsupported)).apply ((xcheck)))))
+                            (((unsupported)).apply ((xinner)))
+                xrun_checks.write
+                  [xself xapp_configs xtags xinclude_deployment_checks xdatabases]
+                    memory > xerrors
+                    memory > xnew_errors
+                    memory > xchecks
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xerrors.write (((unsupported)).apply)
+                        xchecks.write ((((xself).xget_checks)).apply ((xinclude_deployment_checks)))
+                        (((unsupported)).apply ((xtags)) ("None: is there a None literal in the EO language?")).if
+                          xchecks.write (((unsupported)).apply ((xcheck)) ((xcheck)) ((xchecks)) ((((((((xset)).apply (((xcheck).xtags))).xisdisjoint)).apply ((xtags))).not)))
+                        (((unsupported)).apply ((xcheck)) ((xchecks)))
+                          seq
+                            xnew_errors.write (((unsupported)).apply ((xcheck)) ((xapp_configs)) ((xdatabases)))
+                            ((((xis_iterable)).apply ((xnew_errors))).not).if
+                              (((unsupported)).apply ((((xTypeError)).apply (("The function %r did not return a list. All functions registered with the checks registry must return a list.".mod (xcheck))))))
+                            bogusForceDataize.write ((((xerrors).xextend)).apply ((xnew_errors)))
+                        (((unsupported)).apply ((xerrors)))
+                xtag_exists.write
+                  [xself xtag xinclude_deployment_checks]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xtag)) (((((xself).xtags_available)).apply ((xinclude_deployment_checks)))))))
+                xtags_available.write
+                  [xself xdeployment_checks]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xset)).apply (((((xchain).xfrom_iterable)).apply ((((unsupported)).apply (((xcheck).xtags)) ((xcheck)) (((((xself).xget_checks)).apply ((xdeployment_checks)))))))))))
+                xget_checks.write
+                  [xself xinclude_deployment_checks]
+                    memory > xchecks
+                    seq > @
+                      (((unsupported)).apply)
+                        xchecks.write (((xlist)).apply (((xself).xregistered_checks)))
+                        (xinclude_deployment_checks).if
+                          bogusForceDataize.write ((((xchecks).xextend)).apply (((xself).xdeployment_checks)))
+                        (((unsupported)).apply ((xchecks)))
+            xregistry.write (xCheckRegistry)
+            xregister.write ((xregistry).xregister)
+            xrun_checks.write ((xregistry).xrun_checks)
+            xtag_exists.write ((xregistry).xtag_exists)

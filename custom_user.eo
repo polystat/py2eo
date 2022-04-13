@@ -1,0 +1,155 @@
+memory > xCustomUserManager
+memory > xUserManager
+memory > xfields
+memory > xset
+memory > xPermission
+memory > xAbstractBaseUser
+memory > xAbstractUser
+memory > xPermissionsMixin
+memory > xValueError
+memory > xGroup
+memory > xBaseUserManager
+memory > xRemoveGroupsAndPermissions
+memory > xmodels
+[] > custom_user
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_all_permissions
+        memory > xobjects
+        memory > xREQUIRED_FIELDS
+        memory > x__exit__
+        memory > x__enter__
+        memory > xhas_perm
+        memory > xget_group_permissions
+        memory > xcustom_objects
+        memory > xdate_of_birth
+        memory > xis_staff
+        memory > x__str__
+        memory > xis_active
+        memory > xemail
+        memory > xis_admin
+        memory > xUSERNAME_FIELD
+        memory > xhas_module_perms
+        memory > xcreate_superuser
+        memory > xcreate_user
+        memory > xhas_perms
+        memory > xfirst_name
+        memory > xusername
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseUserManager)))
+              seq
+                xcreate_user.write
+                  [xself xemail xdate_of_birth xpassword]
+                    memory > xuser
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((xemail).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Users must have an email address"))))
+                        xuser.write (((unsupported)).apply (((xself).xmodel)) (((((xself).xnormalize_email)).apply ((xemail)))) ((xdate_of_birth)) ((((unsupported)).apply ((xfields)))))
+                        bogusForceDataize.write ((((xuser).xset_password)).apply ((xpassword)))
+                        (((unsupported)).apply (((xuser).xsave)) (((xself).x_db)))
+                        (((unsupported)).apply ((xuser)))
+                xcreate_superuser.write
+                  [xself xemail xpassword xdate_of_birth]
+                    memory > xu
+                    seq > @
+                      (((unsupported)).apply)
+                        xu.write (((unsupported)).apply (((xself).xcreate_user)) ((xemail)) ((xpassword)) ((xdate_of_birth)) ((((unsupported)).apply ((xfields)))))
+                        (((unsupported)).apply (((xu).xis_admin)) (TRUE))
+                        (((unsupported)).apply (((xu).xsave)) (((xself).x_db)))
+                        (((unsupported)).apply ((xu)))
+            (((unsupported)).apply ((xAbstractBaseUser)))
+              seq
+                xemail.write (((unsupported)).apply (((xmodels).xEmailField)) ("email address") (255) (TRUE))
+                xis_active.write (((unsupported)).apply (((xmodels).xBooleanField)) (TRUE))
+                xis_admin.write (((unsupported)).apply (((xmodels).xBooleanField)) (FALSE))
+                xdate_of_birth.write ((((xmodels).xDateField)).apply)
+                xfirst_name.write (((unsupported)).apply (((xmodels).xCharField)) (50))
+                xcustom_objects.write (((xCustomUserManager)).apply)
+                xUSERNAME_FIELD.write "email"
+                xREQUIRED_FIELDS.write (((unsupported)).apply ("date_of_birth") ("first_name"))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xemail)))
+                xget_group_permissions.write
+                  [xself xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xset)).apply)))
+                xget_all_permissions.write
+                  [xself xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xset)).apply)))
+                xhas_perm.write
+                  [xself xperm xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (TRUE))
+                xhas_perms.write
+                  [xself xperm_list xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (TRUE))
+                xhas_module_perms.write
+                  [xself xapp_label]
+                    seq > @
+                      (((unsupported)).apply (TRUE))
+                xis_staff.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xis_admin)))
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x__enter__.write
+                  [xself]
+                    memory > xgroups
+                    memory > xuser_permissions
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).x_old_au_local_m2m)) ((((xAbstractUser).x_meta).xlocal_many_to_many)))
+                        (((unsupported)).apply (((xself).x_old_pm_local_m2m)) ((((xPermissionsMixin).x_meta).xlocal_many_to_many)))
+                        xgroups.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xGroup)) (TRUE))
+                        bogusForceDataize.write ((((xgroups).xcontribute_to_class)).apply ((xPermissionsMixin)) ("groups"))
+                        xuser_permissions.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xPermission)) (TRUE))
+                        bogusForceDataize.write ((((xuser_permissions).xcontribute_to_class)).apply ((xPermissionsMixin)) ("user_permissions"))
+                        (((unsupported)).apply ((((xPermissionsMixin).x_meta).xlocal_many_to_many)) ((((unsupported)).apply ((xgroups)) ((xuser_permissions)))))
+                        (((unsupported)).apply ((((xAbstractUser).x_meta).xlocal_many_to_many)) ((((unsupported)).apply ((xgroups)) ((xuser_permissions)))))
+                x__exit__.write
+                  [xself xexc_type xexc_value xtraceback]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAbstractUser).x_meta).xlocal_many_to_many)) (((xself).x_old_au_local_m2m)))
+                        (((unsupported)).apply ((((xPermissionsMixin).x_meta).xlocal_many_to_many)) (((xself).x_old_pm_local_m2m)))
+            (((unsupported)).apply ((xAbstractBaseUser)))
+              seq
+                xusername.write (((unsupported)).apply (((xmodels).xCharField)) (150) (TRUE))
+                xemail.write (((unsupported)).apply (((xmodels).xEmailField)) (TRUE))
+                xobjects.write (((xUserManager)).apply)
+                xUSERNAME_FIELD.write "username"
+            (((unsupported)).apply ((((xRemoveGroupsAndPermissions)).apply)))
+              (((unsupported)).apply ((xAbstractUser)))
+                seq
+                  xdate_of_birth.write ((((xmodels).xDateField)).apply)
+                  xcustom_objects.write (((xUserManager)).apply)
+                  xREQUIRED_FIELDS.write (((xAbstractUser).xREQUIRED_FIELDS).add (((unsupported)).apply ("date_of_birth")))

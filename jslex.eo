@@ -1,0 +1,152 @@
+memory > xc
+memory > xLexer
+memory > xTok
+memory > xsuper
+memory > xmatch
+memory > xlen
+memory > xstate
+memory > xtok
+memory > xJsLexer
+memory > xre
+memory > xname
+memory > xrules
+[] > jslex
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnum
+        memory > xboth_after
+        memory > xliterals
+        memory > xstates
+        memory > xboth_before
+        memory > x__init__
+        memory > xprepare_js_for_gettext
+        memory > xlex
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xnum.write 0
+                x__init__.write
+                  [xself xname xregex xnext]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xid)) (((xTok).xnum)))
+                        (((unsupported)).apply (((xTok).xnum)) (1))
+                        (((unsupported)).apply (((xself).xname)) ((xname)))
+                        (((unsupported)).apply (((xself).xregex)) ((xregex)))
+                        (((unsupported)).apply (((xself).xnext)) ((xnext)))
+            xliterals.write
+              [xchoices xprefix xsuffix]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((("|".xjoin)).apply ((((unsupported)).apply ((((xprefix).add ((((xre).xescape)).apply ((xc)))).add (xsuffix))) ((xc)) (((((xchoices).xsplit)).apply)))))))
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xstates xfirst]
+                    memory > xparts
+                    memory > xgroupid
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xregexes)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xtoks)) ((((unsupported)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xstate)) ((xrules)))) (((((xstates).xitems)).apply)))
+                          seq
+                            xparts.write (((unsupported)).apply)
+                            (((unsupported)).apply ((xtok)) ((xrules)))
+                              seq
+                                xgroupid.write ("t%d".mod ((xtok).xid))
+                                (((unsupported)).apply ((((unsupported)).apply (((xself).xtoks)) ((xgroupid)))) ((xtok)))
+                                bogusForceDataize.write ((((xparts).xappend)).apply (("(?P<%s>%s)".mod (((unsupported)).apply ((xgroupid)) (((xtok).xregex))))))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xregexes)) ((xstate)))) (((((xre).xcompile)).apply (((("|".xjoin)).apply ((xparts)))) ((((xre).xMULTILINE).or ((xre).xVERBOSE))))))
+                        (((unsupported)).apply (((xself).xstate)) ((xfirst)))
+                xlex.write
+                  [xself xtext]
+                    memory > xtoks
+                    memory > xregexes
+                    memory > xtok
+                    memory > xend
+                    memory > xname
+                    memory > xstate
+                    memory > xtoktext
+                    memory > xstart
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xend.write (((xlen)).apply ((xtext)))
+                        xstate.write ((xself).xstate)
+                        xregexes.write ((xself).xregexes)
+                        xtoks.write ((xself).xtoks)
+                        xstart.write 0
+                        while.
+                          ((xstart).less (xend))
+                          [unused]
+                            seq > @
+                              (((unsupported)).apply ((xmatch)) (((((((unsupported)).apply ((xregexes)) ((xstate))).xfinditer)).apply ((xtext)) ((xstart)))))
+                                seq
+                                  xname.write ((xmatch).xlastgroup)
+                                  xtok.write (((unsupported)).apply ((xtoks)) ((xname)))
+                                  xtoktext.write (((unsupported)).apply ((xmatch)) ((xname)))
+                                  (((unsupported)).apply ((xstart)) ((((xlen)).apply ((xtoktext)))))
+                                  (((unsupported)).apply ((((unsupported)).apply (((xtok).xname)) ((xtoktext)))))
+                                  ((xtok).xnext).if
+                                    seq
+                                      xstate.write ((xtok).xnext)
+                                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xstate)) ((xstate)))
+            (((unsupported)).apply ((xLexer)))
+              seq
+                (((unsupported)).apply)
+                xboth_before.write (((unsupported)).apply ((((xTok)).apply ("comment") ("/*(.|n)*?*/"))) ((((xTok)).apply ("linecomment") ("//.*?$"))) ((((xTok)).apply ("ws") ("s+"))) ((((unsupported)).apply ((xTok)) ("keyword") ((((unsupported)).apply ((xliterals)) ((((unsupported)).apply)) ("b"))) ("reg"))) ((((unsupported)).apply ((xTok)) ("reserved") ((((unsupported)).apply ((xliterals)) ("null true false") ("b"))) ("div"))) ((((unsupported)).apply ((xTok)) ("id") ((((unsupported)).apply)) ("div"))) ((((unsupported)).apply ((xTok)) ("hnum") ("0[xX][0-9a-fA-F]+") ("div"))) ((((xTok)).apply ("onum") ("0[0-7]+"))) ((((unsupported)).apply ((xTok)) ("dnum") ((((unsupported)).apply)) ("div"))) ((((unsupported)).apply ((xTok)) ("punct") ((((xliterals)).apply ((((unsupported)).apply)))) ("reg"))) ((((unsupported)).apply ((xTok)) ("punct") ((((xliterals)).apply ("++ -- ) ]"))) ("div"))) ((((unsupported)).apply ((xTok)) ("punct") ((((xliterals)).apply ("{ } ( [ . ; , < > + - * % & | ^ ! ~ ? : ="))) ("reg"))) ((((unsupported)).apply ((xTok)) ("string") ((((unsupported)).apply)) ("div"))) ((((unsupported)).apply ((xTok)) ("string") ((((unsupported)).apply)) ("div"))))
+                xboth_after.write (((unsupported)).apply ((((xTok)).apply ("other") ("."))))
+                xstates.write (((unsupported)).apply ("div") ((((xboth_before).add (((unsupported)).apply ((((unsupported)).apply ((xTok)) ("punct") ((((xliterals)).apply ("/= /"))) ("reg"))))).add (xboth_after))) ("reg") ((((xboth_before).add (((unsupported)).apply ((((unsupported)).apply ((xTok)) ("regex") ((((unsupported)).apply)) ("div"))))).add (xboth_after))))
+                x__init__.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply (((xself).xstates)) ("reg"))
+            xprepare_js_for_gettext.write
+              [xjs]
+                memory > xc
+                memory > xguts
+                memory > xescape_quotes
+                memory > xtok
+                memory > xlexer
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xescape_quotes.write
+                      [xm]
+                        memory > xs
+                        seq > @
+                          seq
+                            unsupported
+                            xs.write (((unsupported)).apply ((xm)) (0))
+                            ((xs).eq "\"").if
+                              (((unsupported)).apply ("\""))
+                              (((unsupported)).apply ((xs)))
+                    xlexer.write (((xJsLexer)).apply)
+                    xc.write (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xname)) ((xtok)))) (((((xlexer).xlex)).apply ((xjs)))))
+                      seq
+                        ((xname).eq "regex").if
+                          xtok.write "\"REGEX\""
+                          ((xname).eq "string").if
+                            ((((xtok).xstartswith)).apply ("'")).if
+                              seq
+                                xguts.write ((((xre).xsub)).apply ((((unsupported)).apply)) ((xescape_quotes)) ((((unsupported)).apply ((xtok)) ((((unsupported)).apply (1) ((1.neg)))))))
+                                xtok.write (("\"".add (xguts)).add "\"")
+                            ((xname).eq "id").if
+                              xtok.write ((((xtok).xreplace)).apply ("\\") ("U"))
+                        bogusForceDataize.write ((((xc).xappend)).apply ((xtok)))
+                    (((unsupported)).apply (((("".xjoin)).apply ((xc)))))

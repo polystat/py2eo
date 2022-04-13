@@ -1,0 +1,72 @@
+memory > xdatetime
+memory > xdate
+memory > xignore_warnings
+memory > xRemovedInDjango50Warning
+memory > xSimpleTestCase
+memory > xTypeError
+[] > test_datetime_safe
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xoriginal_datetime
+        memory > xtest_zero_padding
+        memory > xoriginal_date
+        memory > xsetUp
+        memory > xtest_safe_strftime
+        memory > xtest_compare_datetimes
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((((unsupported)).apply ((xignore_warnings)) ((xRemovedInDjango50Warning)))))
+              seq
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xpercent_y_safe)) ((((unsupported)).apply (1900) (1) (1))))
+                        (((unsupported)).apply (((xself).xjust_safe)) ((((unsupported)).apply (1000) (1) (1))))
+                        (((unsupported)).apply (((xself).xjust_unsafe)) ((((unsupported)).apply (999) (12) (31) (23) (59) (59))))
+                        (((unsupported)).apply (((xself).xreally_old)) ((((unsupported)).apply (20) (1) (1))))
+                        (((unsupported)).apply (((xself).xmore_recent)) ((((unsupported)).apply (2006) (1) (1))))
+                xtest_compare_datetimes.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdatetime)).apply ((((unsupported)).apply (((xself).xmore_recent)))))) ((((xoriginal_datetime)).apply ((((unsupported)).apply (((xself).xmore_recent)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xoriginal_datetime)).apply ((((unsupported)).apply (((xself).xreally_old)))))) ((((xdatetime)).apply ((((unsupported)).apply (((xself).xreally_old)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xoriginal_date)).apply ((((unsupported)).apply (((xself).xmore_recent)))))) ((((xdate)).apply ((((unsupported)).apply (((xself).xmore_recent)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xoriginal_date)).apply ((((unsupported)).apply (((xself).xreally_old)))))) ((((xdate)).apply ((((unsupported)).apply (((xself).xreally_old)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xoriginal_date)).apply ((((unsupported)).apply (((xself).xjust_safe))))).xstrftime)).apply ("%Y-%m-%d"))) (((((((xdate)).apply ((((unsupported)).apply (((xself).xjust_safe))))).xstrftime)).apply ("%Y-%m-%d"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xoriginal_datetime)).apply ((((unsupported)).apply (((xself).xjust_safe))))).xstrftime)).apply ("%Y-%m-%d"))) (((((((xdatetime)).apply ((((unsupported)).apply (((xself).xjust_safe))))).xstrftime)).apply ("%Y-%m-%d"))))
+                xtest_safe_strftime.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdate)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).xjust_unsafe)) ((((unsupported)).apply (3)))))))).xstrftime)).apply ("%Y-%m-%d (weekday %w)"))) ("0999-12-31 (weekday 2)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdate)).apply ((((unsupported)).apply (((xself).xjust_safe))))).xstrftime)).apply ("%Y-%m-%d (weekday %w)"))) ("1000-01-01 (weekday 3)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdatetime)).apply ((((unsupported)).apply (((xself).xjust_unsafe))))).xstrftime)).apply ("%Y-%m-%d %H:%M:%S (weekday %w)"))) ("0999-12-31 23:59:59 (weekday 2)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdatetime)).apply ((((unsupported)).apply (((xself).xjust_safe))))).xstrftime)).apply ("%Y-%m-%d %H:%M:%S (weekday %w)"))) ("1000-01-01 00:00:00 (weekday 3)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdate)).apply ((((unsupported)).apply (((xself).xpercent_y_safe))))).xstrftime)).apply ("%y"))) ("00"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdatetime)).apply ((((unsupported)).apply (((xself).xpercent_y_safe))))).xstrftime)).apply ("%y"))) ("00"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ("strftime of dates before 1000 does not handle %y"))))
+                          bogusForceDataize.write ((((((xdatetime)).apply ((((unsupported)).apply (((xself).xjust_unsafe))))).xstrftime)).apply ("%y"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdate)).apply (1850) (8) (2)).xstrftime)).apply ("%Y/%m/%d was a %A"))) ("1850/08/02 was a Friday"))
+                xtest_zero_padding.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xdate)).apply (1) (1) (1)).xstrftime)).apply ("%Y/%m/%d was a %A"))) ("0001/01/01 was a Monday"))

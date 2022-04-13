@@ -1,0 +1,46 @@
+memory > xWSGIHandler
+memory > xFakePayload
+memory > xlen
+memory > xSimpleTestCase
+[] > test_exception
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_suspicious_environ
+        memory > xtest_data_upload_max_memory_size_exceeded
+        memory > xtest_data_upload_max_number_fields_exceeded
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xget_suspicious_environ.write
+                  [xself]
+                    memory > xpayload
+                    seq > @
+                      seq
+                        xpayload.write (((xFakePayload)).apply ("a=1&a=2&a=3rn"))
+                        (((unsupported)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("POST") ("CONTENT_TYPE") ("application/x-www-form-urlencoded") ("CONTENT_LENGTH") ((((xlen)).apply ((xpayload)))) ("wsgi.input") ((xpayload)) ("SERVER_NAME") ("test") ("SERVER_PORT") ("8000"))))
+                xtest_data_upload_max_memory_size_exceeded.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        xresponse.write (((xWSGIHandler)).apply (((xself).xget_suspicious_environ)) ((((unsupported)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (400))
+                xtest_data_upload_max_number_fields_exceeded.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        xresponse.write (((xWSGIHandler)).apply (((xself).xget_suspicious_environ)) ((((unsupported)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (400))

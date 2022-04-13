@@ -1,0 +1,127 @@
+memory > xdecorator_from_middleware
+memory > xhttp_date
+memory > xdatetime
+memory > xHttpResponseNotAllowed
+memory > xConditionalGetMiddleware
+memory > xint
+memory > xlog_response
+memory > xget_conditional_response
+memory > xargs
+memory > xkwargs
+memory > xquote_etag
+memory > xtimezone
+[] > http
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequire_GET
+        memory > xlast_modified
+        memory > xconditional_page
+        memory > xrequire_safe
+        memory > xrequire_POST
+        memory > xrequire_http_methods
+        memory > xetag
+        memory > xcondition
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xconditional_page.write (((xdecorator_from_middleware)).apply ((xConditionalGetMiddleware)))
+            xrequire_http_methods.write
+              [xrequest_method_list]
+                memory > xdecorator
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xdecorator.write
+                      [xfunc]
+                        memory > xinner
+                        seq > @
+                          seq
+                            xinner.write
+                              [xrequest]
+                                memory > xresponse
+                                seq > @
+                                  (((unsupported)).apply)
+                                    (((unsupported)).apply (((xrequest).xmethod)) ((xrequest_method_list))).if
+                                      seq
+                                        xresponse.write (((xHttpResponseNotAllowed)).apply ((xrequest_method_list)))
+                                        (((unsupported)).apply ((xlog_response)) ("Method Not Allowed (%s): %s") (((xrequest).xmethod)) (((xrequest).xpath)) ((xresponse)) ((xrequest)))
+                                        (((unsupported)).apply ((xresponse)))
+                                    (((unsupported)).apply ((((xfunc)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                            (((unsupported)).apply ((xinner)))
+                    (((unsupported)).apply ((xdecorator)))
+            xrequire_GET.write (((xrequire_http_methods)).apply ((((unsupported)).apply ("GET"))))
+            (((unsupported)).apply (((xrequire_GET).x__doc__)) ("Decorator to require that a view only accepts the GET method."))
+            xrequire_POST.write (((xrequire_http_methods)).apply ((((unsupported)).apply ("POST"))))
+            (((unsupported)).apply (((xrequire_POST).x__doc__)) ("Decorator to require that a view only accepts the POST method."))
+            xrequire_safe.write (((xrequire_http_methods)).apply ((((unsupported)).apply ("GET") ("HEAD"))))
+            (((unsupported)).apply (((xrequire_safe).x__doc__)) ("Decorator to require that a view only accepts safe methods: GET and HEAD."))
+            xcondition.write
+              [xetag_func xlast_modified_func]
+                memory > xdecorator
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xdecorator.write
+                      [xfunc]
+                        memory > xinner
+                        seq > @
+                          seq
+                            xinner.write
+                              [xrequest]
+                                memory > xres_etag
+                                memory > xget_last_modified
+                                memory > xres_last_modified
+                                memory > xresponse
+                                seq > @
+                                  (((unsupported)).apply)
+                                    xget_last_modified.write
+                                      []
+                                        memory > xdt
+                                        seq > @
+                                          (xlast_modified_func).if
+                                            seq
+                                              xdt.write (((xlast_modified_func)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                                              (xdt).if
+                                                seq
+                                                  (((((xtimezone).xis_aware)).apply ((xdt))).not).if
+                                                    xdt.write ((((xtimezone).xmake_aware)).apply ((xdt)) ((((xdatetime).xtimezone).xutc)))
+                                                  (((unsupported)).apply ((((xint)).apply (((((xdt).xtimestamp)).apply)))))
+                                    xres_etag.write ((xetag_func).if (((xetag_func)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs))))) "None: is there a None literal in the EO language?")
+                                    xres_etag.write ((((unsupported)).apply ((xres_etag)) ("None: is there a None literal in the EO language?")).if (((xquote_etag)).apply ((xres_etag))) "None: is there a None literal in the EO language?")
+                                    xres_last_modified.write (((xget_last_modified)).apply)
+                                    xresponse.write (((unsupported)).apply ((xget_conditional_response)) ((xrequest)) ((xres_etag)) ((xres_last_modified)))
+                                    (((unsupported)).apply ((xresponse)) ("None: is there a None literal in the EO language?")).if
+                                      xresponse.write (((xfunc)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                                    (((unsupported)).apply (((xrequest).xmethod)) ((((unsupported)).apply ("GET") ("HEAD")))).if
+                                      seq
+                                        ((xres_last_modified).and (((((xresponse).xhas_header)).apply ("Last-Modified")).not)).if
+                                          (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ((((xhttp_date)).apply ((xres_last_modified)))))
+                                        (xres_etag).if
+                                          bogusForceDataize.write (((((xresponse).xheaders).xsetdefault)).apply ("ETag") ((xres_etag)))
+                                    (((unsupported)).apply ((xresponse)))
+                            (((unsupported)).apply ((xinner)))
+                    (((unsupported)).apply ((xdecorator)))
+            xetag.write
+              [xetag_func]
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ((xcondition)) ((xetag_func)))))
+            xlast_modified.write
+              [xlast_modified_func]
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ((xcondition)) ((xlast_modified_func)))))

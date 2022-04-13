@@ -1,0 +1,74 @@
+memory > xIfParser
+memory > xvar
+memory > xrepr
+memory > xunittest
+[] > test_smartif
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_not_in
+        memory > xassertCalcEqual
+        memory > xtest_in
+        memory > xtest_or
+        memory > xtest_not
+        memory > xtest_precedence
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xassertCalcEqual.write
+                  [xself xexpected xtokens]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xexpected)) ((((((((((xIfParser)).apply ((xtokens))).xparse)).apply).xeval)).apply ((((unsupported)).apply)))))
+                xtest_not.write
+                  [xself]
+                    memory > xvar
+                    seq > @
+                      seq
+                        xvar.write ((((((xIfParser)).apply ((((unsupported)).apply ("not") (FALSE)))).xparse)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("(not (literal False))") ((((xrepr)).apply ((xvar)))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xvar).xeval)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((((((xIfParser)).apply ((((unsupported)).apply ("not") (TRUE)))).xparse)).apply).xeval)).apply ((((unsupported)).apply)))))
+                xtest_or.write
+                  [xself]
+                    memory > xvar2
+                    seq > @
+                      seq
+                        xvar2.write ((((((xIfParser)).apply ((((unsupported)).apply (TRUE) ("or") (FALSE)))).xparse)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("(or (literal True) (literal False))") ((((xrepr)).apply ((xvar)))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xvar).xeval)).apply ((((unsupported)).apply)))))
+                xtest_in.write
+                  [xself]
+                    memory > xlist_
+                    seq > @
+                      seq
+                        xlist_.write (((unsupported)).apply (1) (2) (3))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (TRUE) ((((unsupported)).apply (1) ("in") ((xlist_)))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (FALSE) ((((unsupported)).apply (1) ("in") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (FALSE) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("in") ((xlist_)))))
+                xtest_not_in.write
+                  [xself]
+                    memory > xlist_
+                    seq > @
+                      seq
+                        xlist_.write (((unsupported)).apply (1) (2) (3))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (FALSE) ((((unsupported)).apply (1) ("not") ("in") ((xlist_)))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (TRUE) ((((unsupported)).apply (4) ("not") ("in") ((xlist_)))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (FALSE) ((((unsupported)).apply (1) ("not") ("in") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (TRUE) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("not") ("in") ((xlist_)))))
+                xtest_precedence.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (TRUE) ((((unsupported)).apply (FALSE) ("and") (FALSE) ("or") (TRUE))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (TRUE) ((((unsupported)).apply (TRUE) ("or") (FALSE) ("and") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (TRUE) ((((unsupported)).apply (1) ("or") (1) ("==") (2))))
+                        bogusForceDataize.write ((((xself).xassertCalcEqual)).apply (TRUE) ((((unsupported)).apply (TRUE) ("==") (TRUE) ("or") (TRUE) ("==") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("(or (and (== (literal 1) (literal 2)) (literal 3)) (literal 4))") ((((xrepr)).apply (((((((xIfParser)).apply ((((unsupported)).apply (1) ("==") (2) ("and") (3) ("or") (4)))).xparse)).apply)))))

@@ -1,0 +1,36 @@
+memory > xoption
+memory > xvalue
+memory > xBaseCommand
+memory > xoptions
+[] > required_constant_option
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--append_const") ("append_const") (42) (TRUE))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--const") ("store_const") (31) (TRUE))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--count") ("count") (TRUE))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--flag_false") ("store_false") (TRUE))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--flag_false") ("store_false") (TRUE))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xoption)) ((xvalue)))) (((((xoptions).xitems)).apply)))
+                          (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("%s=%s".mod (((unsupported)).apply ((xoption)) ((xvalue))))))

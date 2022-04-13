@@ -1,0 +1,110 @@
+memory > xk
+memory > xgdal
+memory > xget_func_args
+memory > xogr_fld
+memory > xmsg
+memory > x_ogrinspect
+memory > xdata_source
+memory > xBaseCommand
+memory > xint
+memory > xs
+memory > xargparse
+memory > xmodel_name
+memory > xv
+memory > xsetattr
+memory > xoptions
+memory > xmapping
+memory > xListOptionAction
+memory > xValueError
+memory > xLayerOptionAction
+memory > xCommandError
+[] > ogrinspect
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > x__call__
+        memory > xhandle
+        memory > xadd_arguments
+        memory > xhelp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xargparse).xAction)))
+              seq
+                (((unsupported)).apply)
+                x__call__.write
+                  [xself xparser xnamespace xvalue xoption_string]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xValueError)))
+                          bogusForceDataize.write (((xsetattr)).apply ((xnamespace)) (((xself).xdest)) ((((xint)).apply ((xvalue)))))
+                          bogusForceDataize.write (((xsetattr)).apply ((xnamespace)) (((xself).xdest)) ((xvalue)))
+            (((unsupported)).apply (((xargparse).xAction)))
+              seq
+                (((unsupported)).apply)
+                x__call__.write
+                  [xself xparser xnamespace xvalue xoption_string]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((xvalue).xlower)).apply).eq "false").if
+                          bogusForceDataize.write (((xsetattr)).apply ((xnamespace)) (((xself).xdest)) (TRUE))
+                          bogusForceDataize.write (((xsetattr)).apply ((xnamespace)) (((xself).xdest)) (((((xvalue).xsplit)).apply (","))))
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Inspects the given OGR-compatible data source (e.g., a shapefile) and outputsna GeoDjango model with the given model name. For example:n ./manage.py ogrinspect zipcode.shp Zipcode"
+                xrequires_system_checks.write (((unsupported)).apply)
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("data_source") ("Path to the data source."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("model_name") ("Name of the model to create."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--blank") ((xListOptionAction)) (FALSE) ("Use a comma separated list of OGR field names to add the `blank=True` option to the field definition. Set to `false` to apply to all applicable fields."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--decimal") ((xListOptionAction)) (FALSE) ("Use a comma separated list of OGR float fields to generate `DecimalField` instead of the default `FloatField`. Set to `false` to apply to all OGR float fields."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--geom-name") ("geom") ("Specifies the model name for the Geometry Field (defaults to `geom`)"))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--layer") ("layer_key") ((xLayerOptionAction)) (0) ("The key for specifying which layer in the OGR data source to use. Defaults to 0 (the first layer). May be an integer or a string identifier for the layer."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--multi-geom") ("store_false") ("Treat the geometry in the data source as a geometry collection."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--name-field") ("Specifies a field name to return for the __str__() method."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--no-imports") ("store_false") ("imports") ("Do not include `from django.contrib.gis.db import models` statement."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--null") ((xListOptionAction)) (FALSE) ("Use a comma separated list of OGR field names to add the `null=True` option to the field definition. Set to `false` to apply to all applicable fields."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--srid") ("The SRID to use for the Geometry Field. If it can be determined, the SRID of the data source is used."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--mapping") ("store_false") ("Generate mapping dictionary for use with `LayerMapping`."))
+                xhandle.write
+                  [xself]
+                    memory > xmapping_dict
+                    memory > xrev_mapping
+                    memory > xoutput
+                    memory > xkwargs
+                    memory > xds
+                    memory > xogr_options
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xdata_source)) ((xmodel_name)))) ((((unsupported)).apply (((((xoptions).xpop)).apply ("data_source"))) (((((xoptions).xpop)).apply ("model_name"))))))
+                        (((unsupported)).apply (((xgdal).xGDALException)))
+                          xds.write ((((xgdal).xDataSource)).apply ((xdata_source)))
+                          (((unsupported)).apply ((((xCommandError)).apply ((xmsg)))))
+                        seq
+                          (((unsupported)).apply)
+                          (((unsupported)).apply)
+                        xogr_options.write (((unsupported)).apply ((xk)) ((xv)) ((((unsupported)).apply ((xk)) ((xv)))) (((((xoptions).xitems)).apply)) (((((unsupported)).apply ((xk)) ((((xget_func_args)).apply ((x_ogrinspect))))).and (((unsupported)).apply ((xv)) ("None: is there a None literal in the EO language?")))))
+                        xoutput.write (((unsupported)).apply ((xs)) ((xs)) ((((x_ogrinspect)).apply ((xds)) ((xmodel_name)) ((((unsupported)).apply ((xogr_options)))))))
+                        (((unsupported)).apply ((xoptions)) ("mapping")).if
+                          seq
+                            xkwargs.write (((unsupported)).apply ("geom_name") ((((unsupported)).apply ((xoptions)) ("geom_name"))) ("layer_key") ((((unsupported)).apply ((xoptions)) ("layer_key"))) ("multi_geom") ((((unsupported)).apply ((xoptions)) ("multi_geom"))))
+                            xmapping_dict.write (((xmapping)).apply ((xds)) ((((unsupported)).apply ((xkwargs)))))
+                            xrev_mapping.write (((unsupported)).apply ((xv)) ((xk)) ((((unsupported)).apply ((xk)) ((xv)))) (((((xmapping_dict).xitems)).apply)))
+                            bogusForceDataize.write ((((xoutput).xextend)).apply ((((unsupported)).apply ("") ("") (("# Auto-generated `LayerMapping` dictionary for %s model".mod (xmodel_name))) (("%s_mapping = {".mod ((((xmodel_name).xlower)).apply))))))
+                            bogusForceDataize.write ((((xoutput).xextend)).apply ((((unsupported)).apply (("    '%s': '%s',".mod (((unsupported)).apply ((((unsupported)).apply ((xrev_mapping)) ((xogr_fld)))) ((xogr_fld))))) ((xogr_fld)) (((((unsupported)).apply ((xds)) ((((unsupported)).apply ((xoptions)) ("layer_key")))).xfields)))))
+                            bogusForceDataize.write ((((xoutput).xextend)).apply ((((unsupported)).apply (("    '%s': '%s',".mod (((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("geom_name"))) ((((unsupported)).apply ((xmapping_dict)) ((((unsupported)).apply ((xoptions)) ("geom_name")))))))) ("}"))))
+                        (((unsupported)).apply (((("n".xjoin)).apply ((xoutput)))))

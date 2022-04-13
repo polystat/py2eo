@@ -1,0 +1,50 @@
+memory > xdirpath
+memory > xrepr
+memory > xSimpleTestCase
+memory > xos
+memory > xTranslatableFile
+[] > test_management
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_eq
+        memory > xtest_repr
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_repr.write
+                  [xself]
+                    memory > xfile_name
+                    memory > xdirpath2
+                    memory > xtrans_file
+                    seq > @
+                      seq
+                        xdirpath2.write "dir"
+                        xfile_name.write "example"
+                        xtrans_file.write (((unsupported)).apply ((xTranslatableFile)) ((xdirpath)) ((xfile_name)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xtrans_file)))) (("<TranslatableFile: %s>".mod (((((xos).xpath).xjoin)).apply ((xdirpath)) ((xfile_name))))))
+                xtest_eq.write
+                  [xself]
+                    memory > xtrans_file_eq
+                    memory > xtrans_file
+                    memory > xtrans_file_not_eq
+                    memory > xdirpath
+                    memory > xfile_name
+                    seq > @
+                      seq
+                        xdirpath.write "dir"
+                        xfile_name.write "example"
+                        xtrans_file.write (((unsupported)).apply ((xTranslatableFile)) ((xdirpath)) ((xfile_name)) ("None: is there a None literal in the EO language?"))
+                        xtrans_file_eq.write (((unsupported)).apply ((xTranslatableFile)) ((xdirpath)) ((xfile_name)) ("None: is there a None literal in the EO language?"))
+                        xtrans_file_not_eq.write (((unsupported)).apply ((xTranslatableFile)) ("tmp") ((xfile_name)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xtrans_file)) ((xtrans_file_eq)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((xtrans_file)) ((xtrans_file_not_eq)))

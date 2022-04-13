@@ -1,0 +1,268 @@
+memory > xValueError
+memory > ximport_string
+memory > xTimestampSigner
+memory > xdivmod
+memory > xremainder
+memory > xsig
+memory > xBadSignature
+memory > xjson
+memory > xkey
+memory > x_lazy_re_compile
+memory > xdatetime
+memory > xconstant_time_compare
+memory > xSigner
+memory > xvalue
+memory > xsettings
+memory > xint
+memory > xdigit
+memory > xException
+memory > xbase64
+memory > xtime
+memory > xsalted_hmac
+memory > xsuper
+memory > xforce_bytes
+memory > xSignatureExpired
+memory > xmap
+memory > xzlib
+memory > xkwargs
+memory > xabs
+memory > xisinstance
+memory > xlen
+[] > signing
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsign
+        memory > xb62_encode
+        memory > xdumps
+        memory > xb64_encode
+        memory > xtimestamp
+        memory > xb62_decode
+        memory > x_cookie_signer_key
+        memory > xsignature
+        memory > x__init__
+        memory > xunsign_object
+        memory > xloads
+        memory > xbase64_hmac
+        memory > xsign_object
+        memory > xget_cookie_signer
+        memory > xBASE62_ALPHABET
+        memory > x_SEP_UNSAFE
+        memory > xb64_decode
+        memory > xunsign
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x_SEP_UNSAFE.write (((x_lazy_re_compile)).apply ("^[A-z0-9-_=]*$"))
+            xBASE62_ALPHABET.write "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+            (((unsupported)).apply ((xException)))
+              seq
+                unsupported
+            (((unsupported)).apply ((xBadSignature)))
+              seq
+                unsupported
+            xb62_encode.write
+              [xs]
+                memory > xencoded
+                memory > xsign
+                seq > @
+                  seq
+                    ((xs).eq 0).if
+                      (((unsupported)).apply ("0"))
+                    xsign.write (((xs).less 0).if "-" "")
+                    xs.write (((xabs)).apply ((xs)))
+                    xencoded.write ""
+                    while.
+                      ((xs).greater 0)
+                      [unused]
+                        seq > @
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xs)) ((xremainder)))) ((((xdivmod)).apply ((xs)) (62))))
+                            xencoded.write ((((unsupported)).apply ((xBASE62_ALPHABET)) ((xremainder))).add (xencoded))
+                    (((unsupported)).apply (((xsign).add (xencoded))))
+            xb62_decode.write
+              [xs]
+                memory > xsign
+                memory > xdecoded
+                seq > @
+                  seq
+                    ((xs).eq "0").if
+                      (((unsupported)).apply (0))
+                    xsign.write 1
+                    ((((unsupported)).apply ((xs)) (0)).eq "-").if
+                      seq
+                        xs.write (((unsupported)).apply ((xs)) ((((unsupported)).apply (1))))
+                        xsign.write (1.neg)
+                    xdecoded.write 0
+                    (((unsupported)).apply ((xdigit)) ((xs)))
+                      xdecoded.write (((xdecoded).mul 62).add ((((xBASE62_ALPHABET).xindex)).apply ((xdigit))))
+                    (((unsupported)).apply (((xsign).mul (xdecoded))))
+            xb64_encode.write
+              [xs]
+                seq > @
+                  (((unsupported)).apply ((((((((xbase64).xurlsafe_b64encode)).apply ((xs))).xstrip)).apply ("="))))
+            xb64_decode.write
+              [xs]
+                memory > xpad
+                seq > @
+                  seq
+                    xpad.write ("=".mul (((((xlen)).apply ((xs))).neg).mod 4))
+                    (((unsupported)).apply (((((xbase64).xurlsafe_b64decode)).apply (((xs).add (xpad))))))
+            xbase64_hmac.write
+              [xsalt xvalue xkey xalgorithm]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply (((((xb64_encode)).apply (((((unsupported)).apply ((xsalted_hmac)) ((xsalt)) ((xvalue)) ((xkey)) ((xalgorithm))).xdigest))).xdecode)))
+            x_cookie_signer_key.write
+              [xkey]
+                seq > @
+                  (((unsupported)).apply (("django.http.cookies".add (((xforce_bytes)).apply ((xkey))))))
+            xget_cookie_signer.write
+              [xsalt]
+                memory > xSigner
+                seq > @
+                  (((unsupported)).apply)
+                    xSigner.write (((ximport_string)).apply (((xsettings).xSIGNING_BACKEND)))
+                    (((unsupported)).apply ((((unsupported)).apply ((xSigner)) ((((x_cookie_signer_key)).apply (((xsettings).xSECRET_KEY)))) ((((xmap)).apply ((x_cookie_signer_key)) (((xsettings).xSECRET_KEY_FALLBACKS)))) ((xsalt)))))
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xdumps.write
+                  [xself xobj]
+                    seq > @
+                      (((unsupported)).apply (((((((unsupported)).apply (((xjson).xdumps)) ((xobj)) ((((unsupported)).apply (",") (":")))).xencode)).apply ("latin-1"))))
+                xloads.write
+                  [xself xdata]
+                    seq > @
+                      (((unsupported)).apply (((((xjson).xloads)).apply (((((xdata).xdecode)).apply ("latin-1"))))))
+            xdumps.write
+              [xobj xkey xsalt xserializer xcompress]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply (((((unsupported)).apply ((xTimestampSigner)) ((xkey)) ((xsalt))).xsign_object)) ((xobj)) ((xserializer)) ((xcompress)))))
+            xloads.write
+              [xs xkey xsalt xserializer xmax_age xfallback_keys]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply (((((unsupported)).apply ((xTimestampSigner)) ((xkey)) ((xsalt)) ((xfallback_keys))).xunsign_object)) ((xs)) ((xserializer)) ((xmax_age)))))
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xkey xsep xsalt xalgorithm xfallback_keys]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xkey)) (((xkey).or ((xsettings).xSECRET_KEY))))
+                        (((unsupported)).apply (((xself).xfallback_keys)) (((((unsupported)).apply ((xfallback_keys)) ("None: is there a None literal in the EO language?")).if (xfallback_keys) ((xsettings).xSECRET_KEY_FALLBACKS))))
+                        (((unsupported)).apply (((xself).xsep)) ((xsep)))
+                        ((((x_SEP_UNSAFE).xmatch)).apply (((xself).xsep))).if
+                          (((unsupported)).apply ((((xValueError)).apply (("Unsafe Signer separator: %r (cannot be empty or consist of only A-z0-9-_=)".mod (xsep))))))
+                        (((unsupported)).apply (((xself).xsalt)) (((xsalt).or ("%s.%s".mod (((unsupported)).apply ((((xself).x__class__).x__module__)) ((((xself).x__class__).x__name__)))))))
+                        (((unsupported)).apply (((xself).xalgorithm)) (((xalgorithm).or "sha256")))
+                xsignature.write
+                  [xself xvalue xkey]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write ((xkey).or ((xself).xkey))
+                        (((unsupported)).apply ((((unsupported)).apply ((xbase64_hmac)) ((((xself).xsalt).add "signer")) ((xvalue)) ((xkey)) (((xself).xalgorithm)))))
+                xsign.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply (("%s%s%s".mod (((unsupported)).apply ((xvalue)) (((xself).xsep)) (((((xself).xsignature)).apply ((xvalue))))))))
+                xunsign.write
+                  [xself xsigned_value]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsep)) ((xsigned_value))).if
+                          (((unsupported)).apply ((((xBadSignature)).apply (("No \"%s\" found in value".mod ((xself).xsep))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xsig)))) (((((xsigned_value).xrsplit)).apply (((xself).xsep)) (1))))
+                        (((unsupported)).apply ((xkey)) ((((unsupported)).apply (((xself).xkey)) ((((unsupported)).apply (((xself).xfallback_keys)))))))
+                          (((xconstant_time_compare)).apply ((xsig)) (((((xself).xsignature)).apply ((xvalue)) ((xkey))))).if
+                            (((unsupported)).apply ((xvalue)))
+                        (((unsupported)).apply ((((xBadSignature)).apply (("Signature \"%s\" does not match".mod (xsig))))))
+                xsign_object.write
+                  [xself xobj xserializer xcompress]
+                    memory > xcompressed
+                    memory > xbase64d
+                    memory > xis_compressed
+                    memory > xdata
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xdata.write ((((xserializer).xdumps)).apply ((xobj)))
+                        xis_compressed.write FALSE
+                        (xcompress).if
+                          seq
+                            xcompressed.write ((((xzlib).xcompress)).apply ((xdata)))
+                            ((((xlen)).apply ((xcompressed))).less ((((xlen)).apply ((xdata))).sub 1)).if
+                              seq
+                                xdata.write (xcompressed)
+                                xis_compressed.write TRUE
+                        xbase64d.write ((((xb64_encode)).apply ((xdata))).xdecode)
+                        (xis_compressed).if
+                          xbase64d.write (".".add (xbase64d))
+                        (((unsupported)).apply (((((xself).xsign)).apply ((xbase64d)))))
+                xunsign_object.write
+                  [xself xsigned_obj xserializer]
+                    memory > xbase64d
+                    memory > xdata
+                    memory > xdecompress
+                    seq > @
+                      (((unsupported)).apply)
+                        xbase64d.write (((((xself).xunsign)).apply ((xsigned_obj)) ((((unsupported)).apply ((xkwargs))))).xencode)
+                        xdecompress.write ((((unsupported)).apply ((xbase64d)) ((((unsupported)).apply (1)))).eq ".")
+                        (xdecompress).if
+                          xbase64d.write (((unsupported)).apply ((xbase64d)) ((((unsupported)).apply (1))))
+                        xdata.write (((xb64_decode)).apply ((xbase64d)))
+                        (xdecompress).if
+                          xdata.write ((((xzlib).xdecompress)).apply ((xdata)))
+                        (((unsupported)).apply (((((xserializer).xloads)).apply ((xdata)))))
+            (((unsupported)).apply ((xSigner)))
+              seq
+                xtimestamp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xb62_encode)).apply ((((xint)).apply (((xtime).xtime)))))))
+                xsign.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        xvalue.write ("%s%s%s".mod (((unsupported)).apply ((xvalue)) (((xself).xsep)) (((xself).xtimestamp))))
+                        (((unsupported)).apply (((((xsuper).xsign)).apply ((xvalue)))))
+                xunsign.write
+                  [xself xvalue xmax_age]
+                    memory > xtimestamp
+                    memory > xresult
+                    memory > xage
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresult.write ((((xsuper).xunsign)).apply ((xvalue)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xtimestamp)))) (((((xresult).xrsplit)).apply (((xself).xsep)) (1))))
+                        xtimestamp.write (((xb62_decode)).apply ((xtimestamp)))
+                        (((unsupported)).apply ((xmax_age)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            (((xisinstance)).apply ((xmax_age)) (((xdatetime).xtimedelta))).if
+                              xmax_age.write ((xmax_age).xtotal_seconds)
+                            xage.write (((xtime).xtime).sub (xtimestamp))
+                            ((xage).greater (xmax_age)).if
+                              (((unsupported)).apply ((((xSignatureExpired)).apply (("Signature age %s > %s seconds".mod (((unsupported)).apply ((xage)) ((xmax_age))))))))
+                        (((unsupported)).apply ((xvalue)))

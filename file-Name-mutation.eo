@@ -1,0 +1,235 @@
+memory > xCreateError
+memory > xAttributeError2
+memory > xdatetime
+memory > xVALID_KEY_CHARS
+memory > xstr
+memory > xsession_file
+memory > xFileNotFoundError
+memory > xUpdateError
+memory > xtempfile
+memory > xopen
+memory > xgetattr
+memory > xe
+memory > xEOFError
+memory > xSessionBase
+memory > xprefix
+memory > xInvalidSessionKey
+memory > xset
+memory > xsettings
+memory > xsuper
+memory > xSuspiciousOperation
+memory > xOSError
+memory > xos
+memory > xdir
+memory > xshutil
+memory > xoutput_file_fd
+memory > xImproperlyConfigured
+memory > xoutput_file_name
+memory > xisinstance
+memory > xlen
+memory > xFileExistsError
+memory > xlogging
+[] > file
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsave
+        memory > x_get_storage_path
+        memory > xclear_expired
+        memory > x_key_to_file
+        memory > x_last_modification
+        memory > xexists
+        memory > xdelete
+        memory > xclean
+        memory > x_expiry_date
+        memory > x__init__
+        memory > xcreate
+        memory > xload
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSessionBase)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xstorage_path)) (((((xself).x_get_storage_path)).apply)))
+                        (((unsupported)).apply (((xself).xfile_prefix)) (((xsettings).xSESSION_COOKIE_NAME)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xsession_key)))
+                x_get_storage_path.write
+                  [xcls]
+                    memory > xstorage_path
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xAttributeError2)))
+                          (((unsupported)).apply (((xcls).x_storage_path)))
+                          seq
+                            xstorage_path.write ((((xgetattr)).apply ((xsettings)) ("SESSION_FILE_PATH") ("None: is there a None literal in the EO language?")).or ((((xtempfile).xgettempdir)).apply))
+                            ((((((xos).xpath).xisdir)).apply ((xstorage_path))).not).if
+                              (((unsupported)).apply ((((xImproperlyConfigured)).apply (("The session storage path %r doesn't exist. Please set your SESSION_FILE_PATH setting to an existing directory in which Django can store session data.".mod (xstorage_path))))))
+                            (((unsupported)).apply (((xcls).x_storage_path)) ((xstorage_path)))
+                            (((unsupported)).apply ((xstorage_path)))
+                x_key_to_file.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          xsession_key.write ((((xself).x_get_or_create_session_key)).apply)
+                        (((((((xset)).apply ((xsession_key))).xissubset)).apply ((xVALID_KEY_CHARS))).not).if
+                          (((unsupported)).apply ((((xInvalidSessionKey)).apply ("Invalid characters in session key"))))
+                        (((unsupported)).apply ((((((xos).xpath).xjoin)).apply (((xself).xstorage_path)) ((((xself).xfile_prefix).add (xsession_key))))))
+                x_last_modification.write
+                  [xself]
+                    memory > xmodification
+                    memory > xtz
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xmodification.write (((((xos).xstat)).apply (((((xself).x_key_to_file)).apply))).xst_mtime)
+                        xtz.write (((xsettings).xUSE_TZ).if (((xdatetime).xtimezone).xutc) "None: is there a None literal in the EO language?")
+                        (((unsupported)).apply ((((unsupported)).apply ((((xdatetime).xdatetime).xfromtimestamp)) ((xmodification)) ((xtz)))))
+                x_expiry_date.write
+                  [xself xsession_data]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xsession_data).xget)).apply ("_session_expiry")).or (((((xself).x_last_modification)).apply).add (((unsupported)).apply (((xdatetime).xtimedelta)) (((((xself).xget_session_cookie_age)).apply)))))))
+                xload.write
+                  [xself]
+                    memory > xsession_data
+                    memory > xlogger
+                    memory > xexpiry_age
+                    memory > xfile_data
+                    seq > @
+                      seq
+                        xsession_data.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xOSError)) ((xSuspiciousOperation)))))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xopen)) (((((xself).x_key_to_file)).apply)) ("ascii"))) ((xsession_file)))
+                              xfile_data.write ((((xsession_file).xread)).apply)
+                            (xfile_data).if
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((xEOFError)) ((xSuspiciousOperation)))))
+                                  xsession_data.write ((((xself).xdecode)).apply ((xfile_data)))
+                                  seq
+                                    (((xisinstance)).apply ((xe)) ((xSuspiciousOperation))).if
+                                      seq
+                                        xlogger.write ((((xlogging).xgetLogger)).apply (("django.security.%s".mod (((xe).x__class__).x__name__))))
+                                        bogusForceDataize.write ((((xlogger).xwarning)).apply ((((xstr)).apply ((xe)))))
+                                    bogusForceDataize.write ((((xself).xcreate)).apply)
+                                xexpiry_age.write (((unsupported)).apply (((xself).xget_expiry_age)) (((((xself).x_expiry_date)).apply ((xsession_data)))))
+                                ((xexpiry_age).leq 0).if
+                                  seq
+                                    xsession_data.write (((unsupported)).apply)
+                                    bogusForceDataize.write ((((xself).xdelete)).apply)
+                                    bogusForceDataize.write ((((xself).xcreate)).apply)
+                          (((unsupported)).apply (((xself).x_session_key)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((xsession_data)))
+                xcreate.write
+                  [xself]
+                    seq > @
+                      while.
+                        TRUE
+                        [unused]
+                          seq > @
+                            seq
+                              (((unsupported)).apply (((xself).x_session_key)) (((((xself).x_get_new_session_key)).apply)))
+                              (((unsupported)).apply ((xCreateError)))
+                                (((unsupported)).apply (((xself).xsave)) (TRUE))
+                                (((unsupported)).apply)
+                              (((unsupported)).apply (((xself).xmodified)) (TRUE))
+                              (((unsupported)).apply)
+                xsave.write
+                  [xself xmust_create]
+                    memory > xsession_file_name
+                    memory > xrenamed
+                    memory > xflags
+                    memory > xsession_data
+                    memory > xfd
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (((((xself).xcreate)).apply)))
+                        xsession_data.write (((unsupported)).apply (((xself).x_get_session)) ((xmust_create)))
+                        xsession_file_name.write ((((xself).x_key_to_file)).apply)
+                        (((unsupported)).apply ((xFileNotFoundError)) ((xFileExistsError)))
+                          seq
+                            xflags.write (((xos).xO_WRONLY).or (((xgetattr)).apply ((xos)) ("O_BINARY") (0)))
+                            (xmust_create).if
+                              (((unsupported)).apply ((xflags)) ((((xos).xO_EXCL).or ((xos).xO_CREAT))))
+                            xfd.write ((((xos).xopen)).apply ((xsession_file_name)) ((xflags)))
+                            bogusForceDataize.write ((((xos).xclose)).apply ((xfd)))
+                          ((xmust_create).not).if
+                            (((unsupported)).apply ((xUpdateError)))
+                          (xmust_create).if
+                            (((unsupported)).apply ((xCreateError)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xdir)) ((xprefix)))) ((((((xos).xpath).xsplit)).apply ((xsession_file_name)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xEOFError)) ((xOSError)))))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xoutput_file_fd)) ((xoutput_file_name)))) ((((unsupported)).apply (((xtempfile).xmkstemp)) ((xdir)) (((xprefix).add "_out_")))))
+                            xrenamed.write FALSE
+                            (((unsupported)).apply)
+                              seq
+                                (((unsupported)).apply)
+                                  bogusForceDataize.write ((((xos).xwrite)).apply ((xoutput_file_fd)) ((((((((xself).xencode)).apply ((xsession_data))).xencode)).apply)))
+                                  bogusForceDataize.write ((((xos).xclose)).apply ((xoutput_file_fd)))
+                                bogusForceDataize.write ((((xshutil).xmove)).apply ((xoutput_file_name)) ((xsession_file_name)))
+                                xrenamed.write TRUE
+                              ((xrenamed).not).if
+                                bogusForceDataize.write ((((xos).xunlink)).apply ((xoutput_file_name)))
+                xexists.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply ((((((xos).xpath).xexists)).apply (((((xself).x_key_to_file)).apply ((xsession_key)))))))
+                xdelete.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            (((unsupported)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply)
+                            xsession_key.write ((xself).xsession_key)
+                        (((unsupported)).apply ((xOSError)))
+                          bogusForceDataize.write ((((xos).xunlink)).apply (((((xself).x_key_to_file)).apply ((xsession_key)))))
+                xclean.write
+                  [xself]
+                    seq > @
+                xclear_expired.write
+                  [xcls]
+                    memory > xstorage_path
+                    memory > xsession
+                    memory > xfile_prefix
+                    memory > xsession_key
+                    seq > @
+                      (((unsupported)).apply)
+                        xstorage_path.write ((((xcls).x_get_storage_path)).apply)
+                        xfile_prefix.write ((xsettings).xSESSION_COOKIE_NAME)
+                        (((unsupported)).apply ((xsession_file)) (((((xos).xlistdir)).apply ((xstorage_path)))))
+                          seq
+                            (((((xsession_file).xstartswith)).apply ((xfile_prefix))).not).if
+                              (((unsupported)).apply)
+                            xsession_key.write (((unsupported)).apply ((xsession_file)) ((((unsupported)).apply ((((xlen)).apply ((xfile_prefix)))))))
+                            xsession.write (((xcls)).apply ((xsession_key)))
+                            (((unsupported)).apply (((xsession).xcreate)) ((((unsupported)).apply ("None: is there a None literal in the EO language?"))))
+                            bogusForceDataize.write ((((xsession).xload)).apply)

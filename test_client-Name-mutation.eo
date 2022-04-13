@@ -1,0 +1,50 @@
+memory > xBaseDatabaseClient
+memory > xNotImplementedError
+memory > xrun
+memory > xmock
+memory > xenv
+memory > xSimpleTestCase
+memory > xmsg
+memory > xconnection
+[] > test_client
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUp
+        memory > xtest_settings_to_cmd_args_env
+        memory > xtest_runshell_use_environ
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xclient)) ((((unsupported)).apply ((xBaseDatabaseClient)) ((xconnection)))))
+                xtest_settings_to_cmd_args_env.write
+                  [xself]
+                    memory > xmsg2
+                    seq > @
+                      seq
+                        xmsg2.write "subclasses of BaseDatabaseClient must provide a settings_to_cmd_args_env() method or override a runshell()."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xNotImplementedError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xclient).xsettings_to_cmd_args_env)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))
+                xtest_runshell_use_environ.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xenv)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ((((unsupported)).apply)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xenv)))))
+                          (((unsupported)).apply (((((xmock).xpatch)).apply ("subprocess.run"))) ((xrun)))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((((xmock).xpatch).xobject)) ((xBaseDatabaseClient)) ("settings_to_cmd_args_env") ((((unsupported)).apply ((((unsupported)).apply)) ((xenv)))))))
+                                bogusForceDataize.write (((((xself).xclient).xrunshell)).apply ("None: is there a None literal in the EO language?"))
+                              (((unsupported)).apply (((xrun).xassert_called_once_with)) ((((unsupported)).apply)) ("None: is there a None literal in the EO language?") (TRUE))

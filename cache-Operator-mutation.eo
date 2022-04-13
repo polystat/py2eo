@@ -1,0 +1,113 @@
+memory > xCreateError
+memory > xRuntimeError
+memory > xSessionBase
+memory > xUpdateError
+memory > xsettings
+memory > xException
+memory > xi
+memory > xsuper
+memory > xbool
+memory > xrange
+memory > xcaches
+[] > cache
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdelete
+        memory > xKEY_PREFIX
+        memory > xcache_key_prefix
+        memory > xsave
+        memory > xclear_expired
+        memory > xcache_key
+        memory > xexists
+        memory > x__init__
+        memory > xcreate
+        memory > xload
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xKEY_PREFIX.write "django.contrib.sessions.cache"
+            (((unsupported)).apply ((xSessionBase)))
+              seq
+                (((unsupported)).apply)
+                xcache_key_prefix.write (xKEY_PREFIX)
+                x__init__.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).x_cache)) ((((unsupported)).apply ((xcaches)) (((xsettings).xSESSION_CACHE_ALIAS)))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xsession_key)))
+                xcache_key.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xcache_key_prefix).sub ((((xself).x_get_or_create_session_key)).apply))))
+                xload.write
+                  [xself]
+                    memory > xsession_data
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xException)))
+                          xsession_data.write (((((xself).x_cache).xget)).apply (((xself).xcache_key)))
+                          xsession_data.write "None: is there a None literal in the EO language?"
+                        (((unsupported)).apply ((xsession_data)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xsession_data)))
+                        (((unsupported)).apply (((xself).x_session_key)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((((unsupported)).apply)))
+                xcreate.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (10000))))
+                          seq
+                            (((unsupported)).apply (((xself).x_session_key)) (((((xself).x_get_new_session_key)).apply)))
+                            (((unsupported)).apply ((xCreateError)))
+                              (((unsupported)).apply (((xself).xsave)) (TRUE))
+                              (((unsupported)).apply)
+                            (((unsupported)).apply (((xself).xmodified)) (TRUE))
+                            (((unsupported)).apply)
+                        (((unsupported)).apply ((((xRuntimeError)).apply ("Unable to create a new session key. It is likely that the cache is unavailable."))))
+                xsave.write
+                  [xself xmust_create]
+                    memory > xresult
+                    memory > xfunc
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (((((xself).xcreate)).apply)))
+                        (xmust_create).if
+                          xfunc.write (((xself).x_cache).xadd)
+                          (((unsupported)).apply ((((((xself).x_cache).xget)).apply (((xself).xcache_key)))) ("None: is there a None literal in the EO language?")).if
+                            xfunc.write (((xself).x_cache).xset)
+                            (((unsupported)).apply ((xUpdateError)))
+                        xresult.write (((xfunc)).apply (((xself).xcache_key)) ((((unsupported)).apply (((xself).x_get_session)) ((xmust_create)))) (((((xself).xget_expiry_age)).apply)))
+                        ((xmust_create).and ((xresult).not)).if
+                          (((unsupported)).apply ((xCreateError)))
+                xexists.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply (((((xbool)).apply ((xsession_key))).and (((unsupported)).apply ((((xself).xcache_key_prefix).sub (xsession_key))) (((xself).x_cache))))))
+                xdelete.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            (((unsupported)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply)
+                            xsession_key.write ((xself).xsession_key)
+                        bogusForceDataize.write (((((xself).x_cache).xdelete)).apply ((((xself).xcache_key_prefix).sub (xsession_key))))
+                xclear_expired.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)

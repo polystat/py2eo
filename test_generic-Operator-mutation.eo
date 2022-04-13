@@ -1,0 +1,128 @@
+memory > xdatetime
+memory > xpk
+memory > xSitemapTestsBase
+memory > xoverride_settings
+memory > xTestModel
+memory > xexpected_value
+memory > xRemovedInDjango50Warning
+memory > xgetattr
+memory > xprotocol
+memory > xattr_name
+memory > xGenericSitemap
+[] > test_generic
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_generic_sitemap_index
+        memory > xtest_generic_sitemap
+        memory > xtest_get_protocol_default
+        memory > xtest_get_protocol_passed_as_argument
+        memory > xtest_get_protocol_defined_in_constructor
+        memory > xtest_generic_sitemap_attributes
+        memory > xtest_generic_sitemap_lastmod
+        memory > xtest_get_protocol_default_warning
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSitemapTestsBase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply)))))
+              seq
+                xtest_generic_sitemap_attributes.write
+                  [xself]
+                    memory > xattr_values
+                    memory > xgeneric_sitemap
+                    memory > xdatetime_value
+                    memory > xqueryset
+                    seq > @
+                      seq
+                        xdatetime_value.write ((((xdatetime).xnow)).apply)
+                        xqueryset.write (((((xTestModel).xobjects).xall)).apply)
+                        xgeneric_sitemap.write (((unsupported)).apply ((xGenericSitemap)) ((((unsupported)).apply ("queryset") ((xqueryset)) ("date_field") ((xdatetime_value)))) (0.6) ("monthly") ("https"))
+                        xattr_values.write (((unsupported)).apply ((((unsupported)).apply ("date_field") ((xdatetime_value)))) ((((unsupported)).apply ("priority") (0.6))) ((((unsupported)).apply ("changefreq") ("monthly"))) ((((unsupported)).apply ("protocol") ("https"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xattr_name)) ((xexpected_value)))) ((xattr_values)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xattr_name)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xgetattr)).apply ((xgeneric_sitemap)) ((xattr_name)))) ((xexpected_value)))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((xgeneric_sitemap).xqueryset)) ((xqueryset)))
+                xtest_generic_sitemap.write
+                  [xself]
+                    memory > xexpected
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/generic/sitemap.xml"))
+                        xexpected.write ""
+                        (((unsupported)).apply ((xpk)) ((((unsupported)).apply ((((xTestModel).xobjects).xvalues_list)) ("id") (TRUE))))
+                          (((unsupported)).apply ((xexpected)) (("<url><loc>%s/testmodel/%s/</loc></url>".mod (((unsupported)).apply (((xself).xbase_url)) ((xpk))))))
+                        xexpected_content.write ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n%sn</urlset>".mod (xexpected))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_generic_sitemap_lastmod.write
+                  [xself]
+                    memory > xresponse
+                    memory > xtest_model
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        xtest_model.write (((((xTestModel).xobjects).xfirst)).apply)
+                        (((unsupported)).apply ((((xTestModel).xobjects).xupdate)) ((((xdatetime)).apply (2013) (3) (13) (10) (0) (0))))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/generic-lastmod/sitemap.xml"))
+                        xexpected_content.write ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>%s/testmodel/%s/</loc><lastmod>2013-03-13</lastmod></url>n</urlset>".mod (((unsupported)).apply (((xself).xbase_url)) (((xtest_model).xpk))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ("Wed, 13 Mar 2013 10:00:00 GMT"))
+                xtest_get_protocol_defined_in_constructor.write
+                  [xself]
+                    memory > xsitemap
+                    seq > @
+                      (((unsupported)).apply ((xprotocol)) ((((unsupported)).apply ("http") ("https"))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xprotocol)))))
+                          seq
+                            xsitemap.write (((unsupported)).apply ((xGenericSitemap)) ((((unsupported)).apply ("queryset") ("None: is there a None literal in the EO language?"))) ((xprotocol)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xsitemap).xget_protocol)).apply)) ((xprotocol)))
+                xtest_get_protocol_passed_as_argument.write
+                  [xself]
+                    memory > xsitemap
+                    seq > @
+                      seq
+                        xsitemap.write (((xGenericSitemap)).apply ((((unsupported)).apply ("queryset") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply ((xprotocol)) ((((unsupported)).apply ("http") ("https"))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xprotocol)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xsitemap).xget_protocol)).apply ((xprotocol)))) ((xprotocol)))
+                xtest_get_protocol_default.write
+                  [xself]
+                    memory > xsitemap
+                    seq > @
+                      (((unsupported)).apply)
+                        xsitemap.write (((xGenericSitemap)).apply ((((unsupported)).apply ("queryset") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xsitemap).xget_protocol)).apply)) ("http"))
+                xtest_get_protocol_default_warning.write
+                  [xself]
+                    memory > xsitemap
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xsitemap.write (((xGenericSitemap)).apply ((((unsupported)).apply ("queryset") ("None: is there a None literal in the EO language?"))))
+                        xmsg.write "The default sitemap protocol will be changed from 'http' to 'https' in Django 5.0. Set Sitemap.protocol to silence this warning."
+                        (((unsupported)).apply (((((xself).xassertWarnsMessage)).apply ((xRemovedInDjango50Warning)) ((xmsg)))))
+                          bogusForceDataize.write ((((xsitemap).xget_protocol)).apply)
+                xtest_generic_sitemap_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xTestModel).xobjects).xupdate)) ((((xdatetime)).apply (2013) (3) (13) (10) (0) (0))))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/generic-lastmod/index.xml"))
+                        xexpected_content.write (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply ("utf-8"))) ((xexpected_content)))

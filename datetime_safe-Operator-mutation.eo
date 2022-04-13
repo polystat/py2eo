@@ -1,0 +1,134 @@
+memory > xsite
+memory > xstr
+memory > xwarnings
+memory > xtype
+memory > xtime
+memory > xisinstance
+memory > xTypeError
+memory > x_lazy_re_compile
+memory > xdatetime
+memory > xsuper
+memory > xRemovedInDjango50Warning
+[] > datetime_safe
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_illegal_formatting
+        memory > x_findall
+        memory > xreal_datetime
+        memory > xdate
+        memory > xstrftime
+        memory > xnew_date
+        memory > xcombine
+        memory > xreal_date
+        memory > xnew_datetime
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xwarnings).xwarn)) ("The django.utils.datetime_safe module is deprecated.") ((xRemovedInDjango50Warning)) (2))
+            (((unsupported)).apply ((xreal_date)))
+              xstrftime.write
+                [xself xfmt]
+                  seq > @
+                    (((unsupported)).apply ((((xstrftime)).apply ((xself)) ((xfmt)))))
+            (((unsupported)).apply ((xreal_datetime)))
+              seq
+                xstrftime.write
+                  [xself xfmt]
+                    seq > @
+                      (((unsupported)).apply ((((xstrftime)).apply ((xself)) ((xfmt)))))
+                xcombine.write
+                  [xcls xdate xtime]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xcls)).apply (((xdate).xyear)) (((xdate).xmonth)) (((xdate).xday)) (((xtime).xhour)) (((xtime).xminute)) (((xtime).xsecond)) (((xtime).xmicrosecond)) (((xtime).xtzinfo)))))
+                xdate.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xdate)).apply (((xself).xyear)) (((xself).xmonth)) (((xself).xday)))))
+            xnew_date.write
+              [xd]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xdate)).apply (((xd).xyear)) (((xd).xmonth)) (((xd).xday)))))
+            xnew_datetime.write
+              [xd]
+                memory > xkw
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xkw.write (((unsupported)).apply (((xd).xyear)) (((xd).xmonth)) (((xd).xday)))
+                    (((xisinstance)).apply ((xd)) ((xreal_datetime))).if
+                      bogusForceDataize.write ((((xkw).xextend)).apply ((((unsupported)).apply (((xd).xhour)) (((xd).xminute)) (((xd).xsecond)) (((xd).xmicrosecond)) (((xd).xtzinfo)))))
+                    (((unsupported)).apply ((((xdatetime)).apply ((((unsupported)).apply ((xkw)))))))
+            x_illegal_formatting.write (((x_lazy_re_compile)).apply ("((^|[^%])(%%)*%[sy])"))
+            x_findall.write
+              [xtext xsubstr]
+                memory > xsites
+                memory > xi
+                seq > @
+                  seq
+                    xsites.write (((unsupported)).apply)
+                    xi.write 0
+                    while.
+                      TRUE
+                      [unused]
+                        seq > @
+                          seq
+                            xi.write ((((xtext).xfind)).apply ((xsubstr)) ((xi)))
+                            ((xi).eq (1.neg)).if
+                              (((unsupported)).apply)
+                            bogusForceDataize.write ((((xsites).xappend)).apply ((xi)))
+                            (((unsupported)).apply ((xi)) (1))
+                    (((unsupported)).apply ((xsites)))
+            xstrftime.write
+              [xdt xfmt]
+                memory > xsites
+                memory > xs1
+                memory > xsyear
+                memory > xs
+                memory > xs2
+                memory > xoff
+                memory > xsites1
+                memory > xyear
+                memory > xsites2
+                memory > xillegal_formatting
+                memory > xdelta
+                memory > xtimetuple
+                seq > @
+                  seq
+                    (((xdt).xyear).geq 1000).if
+                      (((unsupported)).apply (((((((xsuper)).apply ((((xtype)).apply ((xdt)))) ((xdt))).xstrftime)).apply ((xfmt)))))
+                    xillegal_formatting.write ((((x_illegal_formatting).xsearch)).apply ((xfmt)))
+                    (xillegal_formatting).if
+                      (((unsupported)).apply ((((xTypeError)).apply (("strftime of dates before 1000 does not handle ".sub (((unsupported)).apply ((xillegal_formatting)) (0)))))))
+                    xyear.write ((xdt).xyear)
+                    xdelta.write (2000.sub (xyear))
+                    xoff.write (6.mul ((((unsupported)).apply ((xdelta)) (100)).sub (((unsupported)).apply ((xdelta)) (400))))
+                    xyear.write ((xyear).sub (xoff))
+                    xyear.write ((xyear).sub ((((unsupported)).apply ((2000.sub (xyear))) (28)).mul 28))
+                    xtimetuple.write ((((xdt).xtimetuple)).apply)
+                    xs1.write ((((xtime).xstrftime)).apply ((xfmt)) (((((unsupported)).apply ((xyear))).sub (((unsupported)).apply ((xtimetuple)) ((((unsupported)).apply (1)))))))
+                    xsites1.write (((x_findall)).apply ((xs1)) ((((xstr)).apply ((xyear)))))
+                    xs2.write ((((xtime).xstrftime)).apply ((xfmt)) (((((unsupported)).apply (((xyear).sub 28))).sub (((unsupported)).apply ((xtimetuple)) ((((unsupported)).apply (1)))))))
+                    xsites2.write (((x_findall)).apply ((xs2)) ((((xstr)).apply (((xyear).sub 28)))))
+                    xsites.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xsite)) ((xsites1)))
+                      (((unsupported)).apply ((xsite)) ((xsites2))).if
+                        bogusForceDataize.write ((((xsites).xappend)).apply ((xsite)))
+                    xs.write (xs1)
+                    xsyear.write ("%04d".mod ((xdt).xyear))
+                    (((unsupported)).apply ((xsite)) ((xsites)))
+                      xs.write (((((unsupported)).apply ((xs)) ((((unsupported)).apply ((xsite))))).sub (xsyear)).sub (((unsupported)).apply ((xs)) ((((unsupported)).apply (((xsite).sub 4))))))
+                    (((unsupported)).apply ((xs)))

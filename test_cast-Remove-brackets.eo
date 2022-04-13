@@ -1,0 +1,216 @@
+memory > xround
+memory > xdecimal
+memory > xFloatModel
+memory > xCast
+memory > xint
+memory > xCaptureQueriesContext
+memory > xfloat
+memory > xmodels
+memory > xfield_class
+memory > xdatetime
+memory > xlist
+memory > xTestCase
+memory > xAuthor
+memory > xcaptured_queries
+memory > xDTModel
+memory > xFan
+memory > xconnection
+[] > test_cast
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_cast_to_integer
+        memory > xtest_cast_to_char_field_without_max_length
+        memory > xtest_expression_wrapped_with_parentheses_on_postgresql
+        memory > xtest_cast_from_db_date_to_datetime
+        memory > xtest_cast_from_python
+        memory > xtest_cast_from_db_datetime_to_time
+        memory > xtest_cast_from_python_to_datetime
+        memory > xtest_cast_to_char_field_with_max_length
+        memory > xtest_cast_from_value
+        memory > xtest_cast_to_duration
+        memory > xsetUpTestData
+        memory > xtest_cast_to_text_field
+        memory > xtest_cast_from_field
+        memory > xtest_cast_from_db_datetime_to_date
+        memory > xtest_cast_from_python_to_date
+        memory > xtest_cast_from_db_datetime_to_date_group_by
+        memory > xtest_cast_to_decimal_field
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Bob") (1) ("1"))
+                xtest_cast_from_value.write
+                  [xself]
+                    memory > xnumbers
+                    seq > @
+                      seq
+                        xnumbers.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply (((((xmodels).xValue)).apply ("0"))) (((xmodels).xIntegerField)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnumbers).xget).xcast_integer)) (0))
+                xtest_cast_from_field.write
+                  [xself]
+                    memory > xnumbers
+                    seq > @
+                      seq
+                        xnumbers.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply ("age") ((((unsupported)).apply (((xmodels).xCharField)) (255))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnumbers).xget).xcast_string)) ("1"))
+                xtest_cast_to_char_field_without_max_length.write
+                  [xself]
+                    memory > xnumbers
+                    seq > @
+                      seq
+                        xnumbers.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply ("age") (((xmodels).xCharField)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnumbers).xget).xcast_string)) ("1"))
+                xtest_cast_to_char_field_with_max_length.write
+                  [xself]
+                    memory > xnames
+                    seq > @
+                      (((unsupported)).apply)
+                        xnames.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply ("name") ((((unsupported)).apply (((xmodels).xCharField)) (1))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnames).xget).xcast_string)) ("B"))
+                xtest_cast_to_decimal_field.write
+                  [xself]
+                    memory > xfloat_obj
+                    memory > xauthor_obj
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) ((1.934.neg)) (3.467))
+                        xfloat_obj.write ((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xCast)).apply ("f1") ((((unsupported)).apply (((xmodels).xDecimalField)) (8) (2))))) ((((xCast)).apply ("f2") ((((unsupported)).apply (((xmodels).xDecimalField)) (8) (1)))))).xget)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xfloat_obj).xcast_f1_decimal)) (((((xdecimal).xDecimal)).apply ("-1.93"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xfloat_obj).xcast_f2_decimal)) (((((xdecimal).xDecimal)).apply ("3.5"))))
+                        xauthor_obj.write ((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply ("alias") ((((unsupported)).apply (((xmodels).xDecimalField)) (8) (2)))))).xget)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xauthor_obj).xcast_alias_decimal)) (((((xdecimal).xDecimal)).apply ("1"))))
+                xtest_cast_to_integer.write
+                  [xself]
+                    memory > xnumbers
+                    seq > @
+                      (((unsupported)).apply ((xfield_class)) ((((unsupported)).apply (((xmodels).xAutoField)) (((xmodels).xBigAutoField)) (((xmodels).xSmallAutoField)) (((xmodels).xIntegerField)) (((xmodels).xBigIntegerField)) (((xmodels).xSmallIntegerField)) (((xmodels).xPositiveBigIntegerField)) (((xmodels).xPositiveIntegerField)) (((xmodels).xPositiveSmallIntegerField)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfield_class)))))
+                          seq
+                            xnumbers.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply ("alias") ((xfield_class)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xnumbers).xget).xcast_int)) (1))
+                xtest_cast_to_duration.write
+                  [xself]
+                    memory > xduration
+                    memory > xdtm
+                    seq > @
+                      seq
+                        xduration.write (((unsupported)).apply (((xdatetime).xtimedelta)) (1) (2) (3))
+                        (((unsupported)).apply ((((xDTModel).xobjects).xcreate)) ((xduration)))
+                        xdtm.write ((((unsupported)).apply ((((xDTModel).xobjects).xannotate)) ((((xCast)).apply ("duration") (((xmodels).xDurationField)))) ((((xCast)).apply (((xduration).neg)) (((xmodels).xDurationField))))).xget)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdtm).xcast_duration)) ((xduration)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdtm).xcast_neg_duration)) (((xduration).neg)))
+                xtest_cast_from_db_datetime_to_date.write
+                  [xself]
+                    memory > xdt_value
+                    memory > xdtm
+                    seq > @
+                      seq
+                        xdt_value.write ((((xdatetime).xdatetime)).apply (2018) (9) (28) (12) (42) (10) (234567))
+                        (((unsupported)).apply ((((xDTModel).xobjects).xcreate)) ((xdt_value)))
+                        xdtm.write ((((unsupported)).apply ((((xDTModel).xobjects).xannotate)) ((((xCast)).apply ("start_datetime") (((xmodels).xDateField))))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdtm).xstart_datetime_as_date)) (((((xdatetime).xdate)).apply (2018) (9) (28))))
+                xtest_cast_from_db_datetime_to_time.write
+                  [xself]
+                    memory > xrounded_ms
+                    memory > xdt_value
+                    memory > xdtm
+                    seq > @
+                      seq
+                        xdt_value.write ((((xdatetime).xdatetime)).apply (2018) (9) (28) (12) (42) (10) (234567))
+                        (((unsupported)).apply ((((xDTModel).xobjects).xcreate)) ((xdt_value)))
+                        xdtm.write ((((unsupported)).apply ((((xDTModel).xobjects).xannotate)) ((((xCast)).apply ("start_datetime") (((xmodels).xTimeField))))).xfirst)
+                        xrounded_ms.write (((xint)).apply (((((xround)).apply (0.234567) ((((xconnection).xfeatures).xtime_cast_precision))).mul (((unsupported)).apply (10) (6)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdtm).xstart_datetime_as_time)) (((((xdatetime).xtime)).apply (12) (42) (10) ((xrounded_ms)))))
+                xtest_cast_from_db_date_to_datetime.write
+                  [xself]
+                    memory > xdt_value
+                    memory > xdtm
+                    seq > @
+                      seq
+                        xdt_value.write ((((xdatetime).xdate)).apply (2018) (9) (28))
+                        (((unsupported)).apply ((((xDTModel).xobjects).xcreate)) ((xdt_value)))
+                        xdtm.write ((((unsupported)).apply ((((xDTModel).xobjects).xannotate)) ((((xCast)).apply ("start_date") (((xmodels).xDateTimeField))))).xfirst)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdtm).xstart_as_datetime)) (((((xdatetime).xdatetime)).apply (2018) (9) (28) (0) (0) (0) (0))))
+                xtest_cast_from_db_datetime_to_date_group_by.write
+                  [xself]
+                    memory > xdt_value
+                    memory > xfans
+                    memory > xauthor
+                    seq > @
+                      seq
+                        xauthor.write (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") (45))
+                        xdt_value.write ((((xdatetime).xdatetime)).apply (2018) (9) (28) (12) (42) (10) (234567))
+                        (((unsupported)).apply ((((xFan).xobjects).xcreate)) ("Margaret") (50) ((xauthor)) ((xdt_value)))
+                        xfans.write ((((unsupported)).apply (((((((xFan).xobjects).xvalues)).apply ("author")).xannotate)) ((((xCast)).apply ("fan_since") (((xmodels).xDateField)))) (((((xmodels).xCount)).apply ("*")))).xvalues)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xfans)) (0))) ("fan_for_day"))) (((((xdatetime).xdate)).apply (2018) (9) (28))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xfans)) (0))) ("fans"))) (1))
+                xtest_cast_from_python_to_date.write
+                  [xself]
+                    memory > xtoday
+                    memory > xdates
+                    seq > @
+                      seq
+                        xtoday.write (((xdatetime).xdate).xtoday)
+                        xdates.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply ((xtoday)) (((xmodels).xDateField)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdates).xget).xcast_date)) ((xtoday)))
+                xtest_cast_from_python_to_datetime.write
+                  [xself]
+                    memory > xdates
+                    memory > xtime_precision
+                    memory > xnow
+                    seq > @
+                      seq
+                        xnow.write (((xdatetime).xdatetime).xnow)
+                        xdates.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply ((xnow)) (((xmodels).xDateTimeField)))))
+                        xtime_precision.write (((unsupported)).apply (((xdatetime).xtimedelta)) ((((unsupported)).apply (10) ((6.sub (((xconnection).xfeatures).xtime_cast_precision))))))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) ((((xdates).xget).xcast_datetime)) ((xnow)) ((xtime_precision)))
+                xtest_cast_from_python.write
+                  [xself]
+                    memory > xcast_float
+                    memory > xnumbers
+                    seq > @
+                      seq
+                        xnumbers.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply (((((xdecimal).xDecimal)).apply (0.125))) (((xmodels).xFloatField)))))
+                        xcast_float.write (((xnumbers).xget).xcast_float)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xcast_float)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcast_float)) (0.125))
+                xtest_expression_wrapped_with_parentheses_on_postgresql.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                          bogusForceDataize.write (((xlist)).apply ((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xCast)).apply (((((xmodels).xAvg)).apply ("age"))) (((xmodels).xFloatField)))))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("(AVG(\"db_functions_author\".\"age\"))::double precision") ((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) (0))) ("sql"))))
+                xtest_cast_to_text_field.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((xAuthor).xobjects).xvalues_list)) ((((xCast)).apply ("age") (((xmodels).xTextField)))) (TRUE)).xget)) ("1"))

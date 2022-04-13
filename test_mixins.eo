@@ -1,0 +1,55 @@
+memory > xreverse
+memory > xDeleteFormViewWithMsg
+memory > xContactFormViewWithMsg
+memory > xb64_decode
+memory > xoverride_settings
+memory > xTestCase
+memory > xSomeObject
+[] > test_mixins
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_set_messages_success_on_delete
+        memory > xtest_set_messages_success
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("messages_tests.urls"))))
+              seq
+                xtest_set_messages_success.write
+                  [xself]
+                    memory > xreq
+                    memory > xadd_url
+                    memory > xvalue
+                    memory > xauthor
+                    seq > @
+                      seq
+                        xauthor.write (((unsupported)).apply ("name") ("John Doe") ("slug") ("success-msg"))
+                        xadd_url.write (((xreverse)).apply ("add_success_msg"))
+                        xreq.write (((((xself).xclient).xpost)).apply ((xadd_url)) ((xauthor)))
+                        xvalue.write ((((((xb64_decode)).apply (((((((unsupported)).apply ((((((((unsupported)).apply (((xreq).xcookies)) ("messages")).xvalue).xsplit)).apply (":"))) (0)).xencode)).apply))).xdecode)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((xContactFormViewWithMsg).xsuccess_message).mod (xauthor))) ((xvalue)))
+                xtest_set_messages_success_on_delete.write
+                  [xself]
+                    memory > xresponse
+                    memory > xobject_to_delete
+                    memory > xdelete_url
+                    seq > @
+                      seq
+                        xobject_to_delete.write (((unsupported)).apply ((((xSomeObject).xobjects).xcreate)) ("MyObject"))
+                        xdelete_url.write (((unsupported)).apply ((xreverse)) ("success_msg_on_delete") ((((unsupported)).apply (((xobject_to_delete).xpk)))))
+                        xresponse.write (((unsupported)).apply ((((xself).xclient).xpost)) ((xdelete_url)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) (((xDeleteFormViewWithMsg).xsuccess_message)))

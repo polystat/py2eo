@@ -1,0 +1,221 @@
+memory > xlist
+memory > xdecimal
+memory > xSerializersTestBase
+memory > xstr
+memory > xTestCase
+memory > xCustomJSONEncoder
+memory > xDeserializationError
+memory > xScoreDecimal
+memory > xobj_dict
+memory > xException
+memory > xTransactionTestCase
+memory > xobj
+memory > xjson
+memory > xScore
+memory > xSerializersTransactionTestBase
+memory > xre
+memory > xsuper
+memory > xs
+memory > xserializers
+memory > xmodels
+memory > xnext
+memory > xisinstance
+memory > xline
+[] > test_jsonl
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_get_pk_values
+        memory > xtest_helpful_error_message_for_foreign_keys
+        memory > x_validate_output
+        memory > xmapping_ordering_str
+        memory > xtest_helpful_error_message_invalid_pk
+        memory > xtest_json_deserializer_exception
+        memory > xpkless_str
+        memory > xtest_no_indentation
+        memory > x_get_field_values
+        memory > xtest_helpful_error_message_for_many2many_natural2
+        memory > xserializer_name
+        memory > xtest_custom_encoder
+        memory > xtest_helpful_error_message_for_many2many_non_natural
+        memory > xtest_helpful_error_message_for_many2many_natural1
+        memory > xfwd_ref_str
+        memory > xtest_helpful_error_message_for_many2many_not_iterable
+        memory > xtest_helpful_error_message_invalid_field
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSerializersTestBase)) ((xTestCase)))
+              seq
+                xserializer_name.write "jsonl"
+                xpkless_str.write (((unsupported)).apply ("{\"pk\": null,\"model\": \"serializers.category\",\"fields\": {\"name\": \"Reference\"}}") ("{\"model\": \"serializers.category\",\"fields\": {\"name\": \"Non-fiction\"}}"))
+                xpkless_str.write ((("n".xjoin)).apply ((((unsupported)).apply (((((xs).xreplace)).apply ("n") (""))) ((xs)) ((xpkless_str)))))
+                xmapping_ordering_str.write "{\"model\": \"serializers.article\",\"pk\": %(article_pk)s,\"fields\": {\"author\": %(author_pk)s,\"headline\": \"Poker has no place on ESPN\",\"pub_date\": \"2006-06-16T11:00:00\",\"categories\": [%(first_category_pk)s,%(second_category_pk)s],\"meta_data\": []}}n"
+                x_validate_output.write
+                  [xserial_str]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xException)))
+                          (((unsupported)).apply ((xline)) (((((xserial_str).xsplit)).apply ("n"))))
+                            (xline).if
+                              bogusForceDataize.write ((((xjson).xloads)).apply ((xline)))
+                          (((unsupported)).apply (FALSE))
+                          (((unsupported)).apply (TRUE))
+                x_get_pk_values.write
+                  [xserial_str]
+                    memory > xserial_list
+                    seq > @
+                      (((unsupported)).apply)
+                        xserial_list.write (((unsupported)).apply (((((xjson).xloads)).apply ((xline)))) ((xline)) (((((xserial_str).xsplit)).apply ("n"))) ((xline)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xobj_dict)) ("pk"))) ((xobj_dict)) ((xserial_list)))))
+                x_get_field_values.write
+                  [xserial_str xfield_name]
+                    memory > xserial_list
+                    seq > @
+                      (((unsupported)).apply)
+                        xserial_list.write (((unsupported)).apply (((((xjson).xloads)).apply ((xline)))) ((xline)) (((((xserial_str).xsplit)).apply ("n"))) ((xline)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xobj_dict)) ("fields"))) ((xfield_name)))) ((xobj_dict)) ((xserial_list)) ((((unsupported)).apply ((xfield_name)) ((((unsupported)).apply ((xobj_dict)) ("fields"))))))))
+                xtest_no_indentation.write
+                  [xself]
+                    memory > xs
+                    memory > xjson_data
+                    seq > @
+                      seq
+                        xs.write (((((xserializers).xjsonl).xSerializer)).apply)
+                        xjson_data.write (((unsupported)).apply (((xs).xserialize)) ((((unsupported)).apply ((((unsupported)).apply ((xScore)) (5.0))) ((((unsupported)).apply ((xScore)) (6.0))))) (2))
+                        (((unsupported)).apply ((xline)) (((((xjson_data).xsplitlines)).apply)))
+                          bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xre).xsearch)).apply (".+,s*$") ((xline)))))
+                xtest_custom_encoder.write
+                  [xself]
+                    memory > xscore
+                    memory > xs
+                    memory > xjson_data
+                    memory > xdefault
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xscore.write ((((xmodels).xDecimalField)).apply)
+                        (((unsupported)).apply (((xjson).xJSONEncoder)))
+                          xdefault.write
+                            [xself xo]
+                              seq > @
+                                seq
+                                  (((xisinstance)).apply ((xo)) (((xdecimal).xDecimal))).if
+                                    (((unsupported)).apply ((((xstr)).apply ((xo)))))
+                                  (((unsupported)).apply (((((((xsuper)).apply).xdefault)).apply ((xo)))))
+                        xs.write (((((xserializers).xjsonl).xSerializer)).apply)
+                        xjson_data.write (((unsupported)).apply (((xs).xserialize)) ((((unsupported)).apply ((((unsupported)).apply ((xScoreDecimal)) (((((xdecimal).xDecimal)).apply (1.0))))))) ((xCustomJSONEncoder)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("\"fields\": {\"score\": \"1\"}") ((xjson_data)))
+                xtest_json_deserializer_exception.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xDeserializationError)))))
+                        (((unsupported)).apply ((xobj)) (((((xserializers).xdeserialize)).apply ("jsonl") ("[{\"pk\":1}"))))
+                xtest_helpful_error_message_invalid_pk.write
+                  [xself]
+                    memory > xtest_string
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtest_string.write "{\"pk\": \"badpk\",\"model\": \"serializers.player\",\"fields\": {\"name\": \"Bob\",\"rank\": 1,\"team\": \"Team\"}}"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDeserializationError)) ("(serializers.player:pk=badpk)"))))
+                          bogusForceDataize.write (((xlist)).apply (((((xserializers).xdeserialize)).apply ("jsonl") ((xtest_string)))))
+                xtest_helpful_error_message_invalid_field.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtest_string
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtest_string.write "{\"pk\": \"1\",\"model\": \"serializers.player\",\"fields\": {\"name\": \"Bob\",\"rank\": \"invalidint\",\"team\": \"Team\"}}"
+                        xexpected.write "(serializers.player:pk=1) field_value was 'invalidint'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDeserializationError)) ((xexpected)))))
+                          bogusForceDataize.write (((xlist)).apply (((((xserializers).xdeserialize)).apply ("jsonl") ((xtest_string)))))
+                xtest_helpful_error_message_for_foreign_keys.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtest_string
+                    memory > xkey
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtest_string.write "{\"pk\": 1, \"model\": \"serializers.category\",\"fields\": {\"name\": \"Unknown foreign key\",\"meta_data\": [\"doesnotexist\",\"metadata\"]}}"
+                        xkey.write (((unsupported)).apply ("doesnotexist") ("metadata"))
+                        xexpected.write ("(serializers.category:pk=1) field_value was '%r'".mod (xkey))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDeserializationError)) ((xexpected)))))
+                          bogusForceDataize.write (((xlist)).apply (((((xserializers).xdeserialize)).apply ("jsonl") ((xtest_string)))))
+                xtest_helpful_error_message_for_many2many_non_natural.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtest_string
+                    memory > xtest_strings
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtest_strings.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ((((unsupported)).apply)))
+                        xtest_string.write ((("n".xjoin)).apply ((((unsupported)).apply (((((xs).xreplace)).apply ("n") (""))) ((xs)) ((xtest_strings)))))
+                        xexpected.write "(serializers.article:pk=1) field_value was 'doesnotexist'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDeserializationError)) ((xexpected)))))
+                          bogusForceDataize.write (((xlist)).apply (((((xserializers).xdeserialize)).apply ("jsonl") ((xtest_string)))))
+                xtest_helpful_error_message_for_many2many_natural1.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtest_string
+                    memory > xtest_strings
+                    memory > xkey
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtest_strings.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ((((unsupported)).apply)))
+                        xtest_string.write ((("n".xjoin)).apply ((((unsupported)).apply (((((xs).xreplace)).apply ("n") (""))) ((xs)) ((xtest_strings)))))
+                        xkey.write (((unsupported)).apply ("doesnotexist") ("meta1"))
+                        xexpected.write ("(serializers.article:pk=1) field_value was '%r'".mod (xkey))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDeserializationError)) ((xexpected)))))
+                          (((unsupported)).apply ((xobj)) (((((xserializers).xdeserialize)).apply ("jsonl") ((xtest_string)))))
+                            bogusForceDataize.write ((((xobj).xsave)).apply)
+                xtest_helpful_error_message_for_many2many_natural2.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtest_string
+                    memory > xtest_strings
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtest_strings.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ((((unsupported)).apply)))
+                        xtest_string.write ((("n".xjoin)).apply ((((unsupported)).apply (((((xs).xreplace)).apply ("n") (""))) ((xs)) ((xtest_strings)))))
+                        xexpected.write "(serializers.article:pk=1) field_value was 'doesnotexist'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDeserializationError)) ((xexpected)))))
+                          (((unsupported)).apply ((xobj)) ((((unsupported)).apply (((xserializers).xdeserialize)) ("jsonl") ((xtest_string)) (FALSE))))
+                            bogusForceDataize.write ((((xobj).xsave)).apply)
+                xtest_helpful_error_message_for_many2many_not_iterable.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtest_string
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtest_string.write "{\"pk\": 1,\"model\": \"serializers.m2mdata\",\"fields\": {\"data\": null}}"
+                        xexpected.write "(serializers.m2mdata:pk=1) field_value was 'None'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xDeserializationError)) ((xexpected)))))
+                          bogusForceDataize.write (((xnext)).apply ((((unsupported)).apply (((xserializers).xdeserialize)) ("jsonl") ((xtest_string)) (FALSE))))
+            (((unsupported)).apply ((xSerializersTransactionTestBase)) ((xTransactionTestCase)))
+              seq
+                xserializer_name.write "jsonl"
+                xfwd_ref_str.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ((((unsupported)).apply)))
+                xfwd_ref_str.write ((("n".xjoin)).apply ((((unsupported)).apply (((((xs).xreplace)).apply ("n") (""))) ((xs)) ((xfwd_ref_str)))))

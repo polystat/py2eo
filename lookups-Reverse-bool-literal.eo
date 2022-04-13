@@ -1,0 +1,303 @@
+memory > xDistanceLookupBase
+memory > xstr
+memory > xBaseSpatialField
+memory > xrhs
+memory > xRasterBandTransform
+memory > xhasattr
+memory > xsuper
+memory > xGISLookup
+memory > xdist_params
+memory > xlhs_params
+memory > xrhs_params
+memory > x_lazy_re_compile
+memory > xlist
+memory > xrhs_sql
+memory > xValueError
+memory > xSameAsLookup
+memory > xdist_sql
+memory > xQuery
+memory > xExpression
+memory > xlhs_sql
+memory > xTransform
+memory > xDistance
+memory > xparams
+memory > xNotSupportedError
+memory > xDistanceLookupFromFunction
+memory > xtuple
+memory > xsql
+memory > xLookup
+memory > xisinstance
+memory > xlen
+[] > lookups
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_db_prep_lookup
+        memory > xdistance
+        memory > xtransform_func
+        memory > xband_lhs
+        memory > xpattern_regex
+        memory > xlookup_name
+        memory > xprocess_band_indices
+        memory > x__init__
+        memory > xprocess_rhs
+        memory > xsql_template
+        memory > xop
+        memory > xprocess_rhs_params
+        memory > xprocess_distance
+        memory > xband_rhs
+        memory > xas_sql
+        memory > xget_rhs_op
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTransform)))
+              xas_sql.write
+                [xself xcompiler xconnection]
+                  seq > @
+                    (((unsupported)).apply (((((xcompiler).xcompile)).apply (((xself).xlhs)))))
+            (((unsupported)).apply ((xLookup)))
+              seq
+                xsql_template.write "None: is there a None literal in the EO language?"
+                xtransform_func.write "None: is there a None literal in the EO language?"
+                xdistance.write FALSE
+                xband_rhs.write "None: is there a None literal in the EO language?"
+                xband_lhs.write "None: is there a None literal in the EO language?"
+                x__init__.write
+                  [xself xlhs xrhs]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xrhs)) ((((unsupported)).apply (((xself).xrhs_params)))))) (((((xisinstance)).apply ((xrhs)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if (xrhs) (((unsupported)).apply ((xrhs))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xlhs)) ((xrhs)))
+                        (((unsupported)).apply (((xself).xtemplate_params)) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xprocess_rhs_params)).apply)
+                xprocess_rhs_params.write
+                  [xself]
+                    seq > @
+                      ((xself).xrhs_params).if
+                        ((((xlen)).apply (((xself).xrhs_params))).eq ((((xself).xlookup_name).eq "relate").if 2 1)).if
+                          bogusForceDataize.write ((((xself).xprocess_band_indices)).apply)
+                          ((((xlen)).apply (((xself).xrhs_params))).greater 1).if
+                            (((unsupported)).apply ((((xValueError)).apply (("Tuple too long for lookup %s.".mod ((xself).xlookup_name))))))
+                        (((xisinstance)).apply (((xself).xlhs)) ((xRasterBandTransform))).if
+                          (((unsupported)).apply (((xself).xprocess_band_indices)) (TRUE))
+                xprocess_band_indices.write
+                  [xself xonly_lhs]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (xonly_lhs).if
+                          seq
+                            (((unsupported)).apply (((xself).xband_rhs)) (1))
+                            (((unsupported)).apply (((xself).xband_lhs)) (((((xself).xlhs).xband_index).add 1)))
+                            (((unsupported)).apply)
+                        (((xisinstance)).apply (((xself).xlhs)) ((xRasterBandTransform))).if
+                          (((unsupported)).apply (((xself).xband_lhs)) (((((xself).xlhs).xband_index).add 1)))
+                          (((unsupported)).apply (((xself).xband_lhs)) (1))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xband_rhs)) ((((unsupported)).apply (((xself).xrhs_params)))))) (((xself).xrhs_params)))
+                xget_db_prep_lookup.write
+                  [xself xvalue xconnection]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ("%s") ((((unsupported)).apply ((((((xconnection).xops).xAdapter)).apply ((xvalue)))))))))
+                xprocess_rhs.write
+                  [xself xcompiler xconnection]
+                    memory > xplaceholder
+                    seq > @
+                      seq
+                        (((xisinstance)).apply (((xself).xrhs)) ((xQuery))).if
+                          (((unsupported)).apply (((((((xsuper)).apply).xprocess_rhs)).apply ((xcompiler)) ((xconnection)))))
+                        (((xisinstance)).apply (((xself).xrhs)) ((xExpression))).if
+                          (((unsupported)).apply (((xself).xrhs)) ((((((xself).xrhs).xresolve_expression)).apply (((xcompiler).xquery)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xrhs)) ((xrhs_params)))) (((((((xsuper)).apply).xprocess_rhs)).apply ((xcompiler)) ((xconnection)))))
+                        xplaceholder.write (((((xconnection).xops).xget_geom_placeholder)).apply ((((xself).xlhs).xoutput_field)) (((xself).xrhs)) ((xcompiler)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xplaceholder).mod (xrhs))) ((xrhs_params)))))
+                xget_rhs_op.write
+                  [xself xconnection xrhs]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((((xconnection).xops).xgis_operators)) (((xself).xlookup_name)))))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xsql_params
+                    memory > xrhs_op
+                    memory > xtemplate_params
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xlhs_sql)) ((xlhs_params)))) (((((xself).xprocess_lhs)).apply ((xcompiler)) ((xconnection)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xrhs_sql)) ((xrhs_params)))) (((((xself).xprocess_rhs)).apply ((xcompiler)) ((xconnection)))))
+                        xsql_params.write (((unsupported)).apply ((((unsupported)).apply ((xlhs_params)))) ((((unsupported)).apply ((xrhs_params)))))
+                        xtemplate_params.write (((unsupported)).apply ("lhs") ((xlhs_sql)) ("rhs") ((xrhs_sql)) ("value") ("%s") (((xself).xtemplate_params)))
+                        xrhs_op.write ((((xself).xget_rhs_op)).apply ((xconnection)) ((xrhs_sql)))
+                        (((unsupported)).apply (((((xrhs_op).xas_sql)).apply ((xconnection)) ((xself)) ((xtemplate_params)) ((xsql_params)))))
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "overlaps_left"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "overlaps_right"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "overlaps_below"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "overlaps_above"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "left"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "right"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "strictly_below"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "strictly_above"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "same_as"
+            bogusForceDataize.write ((((xBaseSpatialField).xregister_lookup)).apply ((xSameAsLookup)) ("exact"))
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "bbcontains"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "bboverlaps"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "contained"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "contains"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "contains_properly"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "coveredby"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "covers"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "crosses"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "disjoint"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "equals"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "intersects"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "overlaps"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                xlookup_name.write "relate"
+                xsql_template.write "%(func)s(%(lhs)s, %(rhs)s, %%s)"
+                xpattern_regex.write (((x_lazy_re_compile)).apply ("^[012TF*]{9}$"))
+                xprocess_rhs.write
+                  [xself xcompiler xconnection]
+                    memory > xbackend_op
+                    memory > xpattern
+                    seq > @
+                      seq
+                        xpattern.write (((unsupported)).apply (((xself).xrhs_params)) (0))
+                        xbackend_op.write (((unsupported)).apply ((((xconnection).xops).xgis_operators)) (((xself).xlookup_name)))
+                        (((xhasattr)).apply ((xbackend_op)) ("check_relate_argument")).if
+                          bogusForceDataize.write ((((xbackend_op).xcheck_relate_argument)).apply ((xpattern)))
+                          (((((xisinstance)).apply ((xpattern)) ((xstr))).not).or ((((((xself).xpattern_regex).xmatch)).apply ((xpattern))).not)).if
+                            (((unsupported)).apply ((((xValueError)).apply (("Invalid intersection matrix pattern \"%s\".".mod (xpattern))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) (((((((xsuper)).apply).xprocess_rhs)).apply ((xcompiler)) ((xconnection)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) (((xparams).add (((unsupported)).apply ((xpattern))))))))
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "touches"
+            (((unsupported)).apply ((xGISLookup)) (((xBaseSpatialField).xregister_lookup)))
+              xlookup_name.write "within"
+            (((unsupported)).apply ((xGISLookup)))
+              seq
+                xdistance.write TRUE
+                xsql_template.write "%(func)s(%(lhs)s, %(rhs)s) %(op)s %(value)s"
+                xprocess_rhs_params.write
+                  [xself]
+                    seq > @
+                      seq
+                        ((((unsupported)).apply (1) ((((xlen)).apply (((xself).xrhs_params)))) (3)).not).if
+                          (((unsupported)).apply ((((xValueError)).apply (("2, 3, or 4-element tuple required for '%s' lookup.".mod ((xself).xlookup_name))))))
+                          (((((xlen)).apply (((xself).xrhs_params))).eq 3).and ((((unsupported)).apply (((xself).xrhs_params)) (2)).neq "spheroid")).if
+                            (((unsupported)).apply ((((xValueError)).apply ("For 4-element tuples the last argument must be the 'spheroid' directive."))))
+                        (((((xlen)).apply (((xself).xrhs_params))).greater 1).and ((((unsupported)).apply (((xself).xrhs_params)) (1)).neq "spheroid")).if
+                          bogusForceDataize.write ((((xself).xprocess_band_indices)).apply)
+                xprocess_distance.write
+                  [xself xcompiler xconnection]
+                    memory > xdist_param
+                    seq > @
+                      seq
+                        xdist_param.write (((unsupported)).apply (((xself).xrhs_params)) (0))
+                        (((unsupported)).apply (((((xhasattr)).apply ((xdist_param)) ("resolve_expression")).if ((((xcompiler).xcompile)).apply (((((xdist_param).xresolve_expression)).apply (((xcompiler).xquery))))) (((unsupported)).apply ("%s") ((((((xconnection).xops).xget_distance)).apply ((((xself).xlhs).xoutput_field)) (((xself).xrhs_params)) (((xself).xlookup_name))))))))
+            (((unsupported)).apply ((xDistanceLookupBase)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                xlookup_name.write "dwithin"
+                xsql_template.write "%(func)s(%(lhs)s, %(rhs)s, %(value)s)"
+                xprocess_distance.write
+                  [xself xcompiler xconnection]
+                    memory > xdist_param
+                    seq > @
+                      seq
+                        xdist_param.write (((unsupported)).apply (((xself).xrhs_params)) (0))
+                        ((((((xconnection).xfeatures).xsupports_dwithin_distance_expr).not).and (((xhasattr)).apply ((xdist_param)) ("resolve_expression"))).and ((((xisinstance)).apply ((xdist_param)) ((xDistance))).not)).if
+                          (((unsupported)).apply ((((xNotSupportedError)).apply ("This backend does not support expressions for specifying distance in the dwithin lookup."))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xprocess_distance)).apply ((xcompiler)) ((xconnection)))))
+                xprocess_rhs.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xdist_sql)) ((xdist_params)))) (((((xself).xprocess_distance)).apply ((xcompiler)) ((xconnection)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xtemplate_params)) ("value"))) ((xdist_sql)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xrhs_sql)) ((xparams)))) (((((((xsuper)).apply).xprocess_rhs)).apply ((xcompiler)) ((xconnection)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xrhs_sql)) (((xparams).add (xdist_params))))))
+            (((unsupported)).apply ((xDistanceLookupBase)))
+              xas_sql.write
+                [xself xcompiler xconnection]
+                  memory > xspheroid
+                  memory > xdistance_expr
+                  seq > @
+                    seq
+                      xspheroid.write ((((((xlen)).apply (((xself).xrhs_params))).eq 2).and ((((unsupported)).apply (((xself).xrhs_params)) ((1.neg))).eq "spheroid")).or "None: is there a None literal in the EO language?")
+                      xdistance_expr.write (((unsupported)).apply ((((xconnection).xops).xdistance_expr_for_lookup)) (((xself).xlhs)) (((xself).xrhs)) ((xspheroid)))
+                      (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) (((((xcompiler).xcompile)).apply (((((xdistance_expr).xresolve_expression)).apply (((xcompiler).xquery)))))))
+                      (((unsupported)).apply ((((unsupported)).apply ((xdist_sql)) ((xdist_params)))) (((((xself).xprocess_distance)).apply ((xcompiler)) ((xconnection)))))
+                      (((unsupported)).apply ((((unsupported)).apply (("%(func)s %(op)s %(dist)s".mod (((unsupported)).apply ("func") ((xsql)) ("op") (((xself).xop)) ("dist") ((xdist_sql))))) (((xparams).add (xdist_params))))))
+            (((unsupported)).apply ((xDistanceLookupFromFunction)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                xlookup_name.write "distance_gt"
+                xop.write ">"
+            (((unsupported)).apply ((xDistanceLookupFromFunction)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                xlookup_name.write "distance_gte"
+                xop.write ">="
+            (((unsupported)).apply ((xDistanceLookupFromFunction)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                xlookup_name.write "distance_lt"
+                xop.write "<"
+            (((unsupported)).apply ((xDistanceLookupFromFunction)) (((xBaseSpatialField).xregister_lookup)))
+              seq
+                xlookup_name.write "distance_lte"
+                xop.write "<="

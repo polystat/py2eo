@@ -1,0 +1,51 @@
+memory > xDEFAULT_DB_ALIAS
+memory > xf
+memory > xSpatialReference
+memory > xisinstance
+memory > xException
+memory > xconnections
+memory > xhasattr
+[] > srs
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_srs_entry
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xadd_srs_entry.write
+              [xsrs xauth_name xauth_srid xref_sys_name xdatabase]
+                memory > xconnection
+                memory > xSpatialRefSys
+                memory > xsrs_field_names
+                memory > xkwargs
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xdatabase.write ((xdatabase).or (xDEFAULT_DB_ALIAS))
+                    xconnection.write (((unsupported)).apply ((xconnections)) ((xdatabase)))
+                    ((((xhasattr)).apply (((xconnection).xops)) ("spatial_version")).not).if
+                      (((unsupported)).apply ((((xException)).apply ("The `add_srs_entry` utility only works with spatial backends."))))
+                    ((((xconnection).xfeatures).xsupports_add_srs_entry).not).if
+                      (((unsupported)).apply ((((xException)).apply ("This utility does not support your database backend."))))
+                    xSpatialRefSys.write (((((xconnection).xops).xspatial_ref_sys)).apply)
+                    ((((xisinstance)).apply ((xsrs)) ((xSpatialReference))).not).if
+                      xsrs.write (((xSpatialReference)).apply ((xsrs)))
+                    (((unsupported)).apply (((xsrs).xsrid)) ("None: is there a None literal in the EO language?")).if
+                      (((unsupported)).apply ((((xException)).apply ("Spatial reference requires an SRID to be compatible with the spatial backend."))))
+                    xkwargs.write (((unsupported)).apply ("srid") (((xsrs).xsrid)) ("auth_name") ((xauth_name)) ("auth_srid") (((xauth_srid).or ((xsrs).xsrid))) ("proj4text") (((xsrs).xproj4)))
+                    xsrs_field_names.write (((unsupported)).apply (((xf).xname)) ((xf)) ((((((xSpatialRefSys).x_meta).xget_fields)).apply)))
+                    (((unsupported)).apply ("srtext") ((xsrs_field_names))).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("srtext"))) (((xsrs).xwkt)))
+                    (((unsupported)).apply ("ref_sys_name") ((xsrs_field_names))).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("ref_sys_name"))) (((xref_sys_name).or ((xsrs).xname))))
+                    (((unsupported)).apply (((xSpatialRefSys).xDoesNotExist)))
+                      (((unsupported)).apply (((((((xSpatialRefSys).xobjects).xusing)).apply ((xdatabase))).xget)) (((xsrs).xsrid)))
+                      bogusForceDataize.write ((((((((xSpatialRefSys).xobjects).xusing)).apply ((xdatabase))).xcreate)).apply ((((unsupported)).apply ((xkwargs)))))

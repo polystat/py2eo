@@ -1,0 +1,87 @@
+memory > xValueError
+memory > xNtile
+memory > xLead
+memory > xSimpleTestCase
+memory > xLag
+memory > xNthValue
+[] > test_validation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_nth_null_expression
+        memory > xtest_negative_num_buckets_ntile
+        memory > xtest_null_source_lead
+        memory > xtest_null_source_lag
+        memory > xtest_nth_negative_nth_value
+        memory > xtest_lead_negative_offset
+        memory > xtest_lag_negative_offset
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_nth_negative_nth_value.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "NthValue requires a positive integer as for nth"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xNthValue)) ((1.neg)) ("salary"))
+                xtest_nth_null_expression.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "NthValue requires a non-null source expression"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xNthValue)) ("None: is there a None literal in the EO language?"))
+                xtest_lag_negative_offset.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Lag requires a positive integer for the offset"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xLag)) ("salary") ((1.neg)))
+                xtest_lead_negative_offset.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Lead requires a positive integer for the offset"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xLead)) ("salary") ((1.neg)))
+                xtest_null_source_lead.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Lead requires a non-null source expression"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xLead)) ("None: is there a None literal in the EO language?"))
+                xtest_null_source_lag.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Lag requires a non-null source expression"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xLag)) ("None: is there a None literal in the EO language?"))
+                xtest_negative_num_buckets_ntile.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "num_buckets must be greater than 0"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xNtile)) ((1.neg)))

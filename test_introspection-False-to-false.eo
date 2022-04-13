@@ -1,0 +1,188 @@
+memory > xcheck
+memory > xTestCase
+memory > x_
+memory > xconnection
+memory > xexpected_string
+memory > xcursor
+memory > xsqlparse
+memory > xcolumn
+memory > xunittest
+memory > xfalse
+memory > xtoken
+memory > xset
+memory > xconstraint_name
+memory > xsql
+memory > xconstraint
+memory > xcolumns
+memory > xdetails
+[] > test_introspection
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xparse_definition
+        memory > xtest_check_constraint
+        memory > xtest_get_primary_key_column
+        memory > xtest_check_column_with_operators_and_functions
+        memory > xtest_check_and_unique_column
+        memory > xtest_get_primary_key_column_pk_constraint
+        memory > xtest_check_column
+        memory > xassertConstraint
+        memory > xtest_unique_constraint_multicolumn
+        memory > xtest_unique_column
+        memory > xtest_unique_constraint
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) (((((xunittest).xskipUnless)).apply ((((xconnection).xvendor).eq "sqlite")) ("SQLite tests"))))
+              seq
+                xtest_get_primary_key_column.write
+                  [xself]
+                    memory > xsql
+                    memory > xfield
+                    memory > xtestable_column_strings
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtestable_column_strings.write (((unsupported)).apply ((((unsupported)).apply ("id") ("id"))) ((((unsupported)).apply ("[id]") ("id"))) ((((unsupported)).apply ("`id`") ("id"))) ((((unsupported)).apply ("\"id\"") ("id"))) ((((unsupported)).apply ("[id col]") ("id col"))) ((((unsupported)).apply ("`id col`") ("id col"))) ((((unsupported)).apply ("\"id col\"") ("id col"))))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xcolumn)) ((xexpected_string)))) ((xtestable_column_strings)))
+                            seq
+                              xsql.write ("CREATE TABLE test_primary (%s int PRIMARY KEY NOT NULL)".mod (xcolumn))
+                              (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xcolumn)))))
+                                (((unsupported)).apply)
+                                  seq
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply ((xsql)))
+                                    xfield.write (((((xconnection).xintrospection).xget_primary_key_column)).apply ((xcursor)) ("test_primary"))
+                                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((xfield)) ((xexpected_string)))
+                                  bogusForceDataize.write ((((xcursor).xexecute)).apply ("DROP TABLE test_primary"))
+                xtest_get_primary_key_column_pk_constraint.write
+                  [xself]
+                    memory > xsql
+                    memory > xfield
+                    seq > @
+                      seq
+                        xsql.write (((unsupported)).apply)
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          (((unsupported)).apply)
+                            seq
+                              bogusForceDataize.write ((((xcursor).xexecute)).apply ((xsql)))
+                              xfield.write (((((xconnection).xintrospection).xget_primary_key_column)).apply ((xcursor)) ("test_primary"))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xfield)) ("id"))
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ("DROP TABLE test_primary"))
+            (((unsupported)).apply ((xTestCase)) (((((xunittest).xskipUnless)).apply ((((xconnection).xvendor).eq "sqlite")) ("SQLite tests"))))
+              seq
+                xparse_definition.write
+                  [xself xsql xcolumns]
+                    memory > xstatement
+                    memory > xtokens
+                    seq > @
+                      seq
+                        unsupported
+                        xstatement.write (((unsupported)).apply (((((xsqlparse).xparse)).apply ((xsql)))) (0))
+                        xtokens.write (((unsupported)).apply ((xtoken)) ((xtoken)) (((((xstatement).xflatten)).apply)) ((((xtoken).xis_whitespace).not)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)))
+                          (((unsupported)).apply ((((((xconnection).xintrospection).x_parse_column_or_constraint_definition)).apply ((xtokens)) ((((xset)).apply ((xcolumns)))))))
+                xassertConstraint.write
+                  [xself xconstraint_details xcols xunique xcheck]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xconstraint_details)) ((((unsupported)).apply ("unique") ((xunique)) ("columns") ((xcols)) ("primary_key") ((xfalse)) ("foreign_key") ("None: is there a None literal in the EO language?") ("check") ((xcheck)) ("index") ((xfalse)))))
+                xtest_unique_column.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("\"ref\" integer UNIQUE,") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("ref integer UNIQUE,") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("\"customname\" integer UNIQUE,") ((((unsupported)).apply ("customname"))))) ((((unsupported)).apply ("customname integer UNIQUE,") ((((unsupported)).apply ("customname"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xcolumns)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsql)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ((xdetails)) ((xcheck)) ((x_)))) (((((xself).xparse_definition)).apply ((xsql)) ((xcolumns)))))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xconstraint)))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xdetails)) ((xcolumns)) (TRUE))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xcheck)))
+                xtest_unique_constraint.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("CONSTRAINT \"ref\" UNIQUE (\"ref\"),") ("ref") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("CONSTRAINT ref UNIQUE (ref),") ("ref") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("CONSTRAINT \"customname1\" UNIQUE (\"customname2\"),") ("customname1") ((((unsupported)).apply ("customname2"))))) ((((unsupported)).apply ("CONSTRAINT customname1 UNIQUE (customname2),") ("customname1") ((((unsupported)).apply ("customname2"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xconstraint_name)) ((xcolumns)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsql)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ((xdetails)) ((xcheck)) ((x_)))) (((((xself).xparse_definition)).apply ((xsql)) ((xcolumns)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xconstraint)) ((xconstraint_name)))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xdetails)) ((xcolumns)) (TRUE))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xcheck)))
+                xtest_unique_constraint_multicolumn.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("CONSTRAINT \"ref\" UNIQUE (\"ref\", \"customname\"),") ("ref") ((((unsupported)).apply ("ref") ("customname"))))) ((((unsupported)).apply ("CONSTRAINT ref UNIQUE (ref, customname),") ("ref") ((((unsupported)).apply ("ref") ("customname"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xconstraint_name)) ((xcolumns)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsql)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ((xdetails)) ((xcheck)) ((x_)))) (((((xself).xparse_definition)).apply ((xsql)) ((xcolumns)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xconstraint)) ((xconstraint_name)))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xdetails)) ((xcolumns)) (TRUE))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xcheck)))
+                xtest_check_column.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("\"ref\" varchar(255) CHECK (\"ref\" != 'test'),") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("ref varchar(255) CHECK (ref != 'test'),") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("\"customname1\" varchar(255) CHECK (\"customname2\" != 'test'),") ((((unsupported)).apply ("customname2"))))) ((((unsupported)).apply ("customname1 varchar(255) CHECK (customname2 != 'test'),") ((((unsupported)).apply ("customname2"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xcolumns)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsql)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ((xdetails)) ((xcheck)) ((x_)))) (((((xself).xparse_definition)).apply ((xsql)) ((xcolumns)))))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xconstraint)))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xdetails)))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xcheck)) ((xcolumns)) (TRUE))
+                xtest_check_constraint.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("CONSTRAINT \"ref\" CHECK (\"ref\" != 'test'),") ("ref") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("CONSTRAINT ref CHECK (ref != 'test'),") ("ref") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("CONSTRAINT \"customname1\" CHECK (\"customname2\" != 'test'),") ("customname1") ((((unsupported)).apply ("customname2"))))) ((((unsupported)).apply ("CONSTRAINT customname1 CHECK (customname2 != 'test'),") ("customname1") ((((unsupported)).apply ("customname2"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xconstraint_name)) ((xcolumns)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsql)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ((xdetails)) ((xcheck)) ((x_)))) (((((xself).xparse_definition)).apply ((xsql)) ((xcolumns)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xconstraint)) ((xconstraint_name)))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xdetails)))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xcheck)) ((xcolumns)) (TRUE))
+                xtest_check_column_with_operators_and_functions.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("\"ref\" integer CHECK (\"ref\" BETWEEN 1 AND 10),") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("\"ref\" varchar(255) CHECK (\"ref\" LIKE 'test%'),") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("\"ref\" varchar(255) CHECK (LENGTH(ref) > \"max_length\"),") ((((unsupported)).apply ("ref") ("max_length"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xcolumns)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsql)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ((xdetails)) ((xcheck)) ((x_)))) (((((xself).xparse_definition)).apply ((xsql)) ((xcolumns)))))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xconstraint)))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xdetails)))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xcheck)) ((xcolumns)) (TRUE))
+                xtest_check_and_unique_column.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("\"ref\" varchar(255) CHECK (\"ref\" != 'test') UNIQUE,") ((((unsupported)).apply ("ref"))))) ((((unsupported)).apply ("ref varchar(255) UNIQUE CHECK (ref != 'test'),") ((((unsupported)).apply ("ref"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xcolumns)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsql)))))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint)) ((xdetails)) ((xcheck)) ((x_)))) (((((xself).xparse_definition)).apply ((xsql)) ((xcolumns)))))
+                              bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xconstraint)))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xdetails)) ((xcolumns)) (TRUE))
+                              (((unsupported)).apply (((xself).xassertConstraint)) ((xcheck)) ((xcolumns)) (TRUE))

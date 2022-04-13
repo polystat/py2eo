@@ -1,0 +1,44 @@
+memory > xSettings
+memory > xglobal_settings
+memory > xexecute_from_command_line
+memory > xsettings
+memory > xdir
+memory > xgetattr
+memory > x__name__
+memory > xsuper
+memory > xsys
+[] > configured_dynamic_settings_manage
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__getattr__
+        memory > x__dir__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                x__getattr__.write
+                  [xself xname]
+                    seq > @
+                      seq
+                        ((xname).eq "FOO").if
+                          (((unsupported)).apply ("bar"))
+                        (((unsupported)).apply ((((xgetattr)).apply ((xglobal_settings)) ((xname)))))
+                x__dir__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((((((xsuper)).apply).x__dir__)).apply).add (((xdir)).apply ((xglobal_settings)))).add (((unsupported)).apply ("FOO")))))
+            ((x__name__).eq "__main__").if
+              seq
+                bogusForceDataize.write ((((xsettings).xconfigure)).apply ((((xSettings)).apply)))
+                bogusForceDataize.write (((xexecute_from_command_line)).apply (((xsys).xargv)))

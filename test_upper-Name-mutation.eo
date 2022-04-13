@@ -1,0 +1,48 @@
+memory > xCharField
+memory > xUpper
+memory > xregister_lookup
+memory > xTestCase
+memory > xAuthor
+memory > xauthors
+memory > xa
+[] > test_upper
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_transform
+        memory > xtest_basic
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xauthors2
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                        xauthors2.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xUpper)).apply ("name"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("JOHN SMITH") ("RHONDA"))) ((((unsupported)).apply (((xa).xupper_name)))))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xupdate)) ((((xUpper)).apply ("name"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ((((unsupported)).apply ("JOHN SMITH") ("JOHN SMITH"))) ((((unsupported)).apply ("RHONDA") ("RHONDA"))))) ((((unsupported)).apply ((((unsupported)).apply (((xa).xupper_name)) (((xa).xname)))))))
+                xtest_transform.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      (((unsupported)).apply ((((xregister_lookup)).apply ((xCharField)) ((xUpper)))))
+                        seq
+                          (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))
+                          (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))
+                          xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xfilter)) ("JOHN SMITH"))
+                          bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("John Smith"))) ((((unsupported)).apply (((xa).xname)))))

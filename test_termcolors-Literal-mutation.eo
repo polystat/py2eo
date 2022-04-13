@@ -1,0 +1,193 @@
+memory > xLIGHT_PALETTE
+memory > xNOCOLOR_PALETTE
+memory > xDARK_PALETTE
+memory > xDEFAULT_PALETTE
+memory > xPALETTES
+memory > xparse_color_setting
+memory > xdict
+memory > xcolorize
+memory > xunittest
+[] > test_termcolors
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_fg_opts
+        memory > xtest_simple_palette
+        memory > xtest_multiple_roles
+        memory > xtest_role_case
+        memory > xtest_reverse_override
+        memory > xtest_override_with_multiple_roles
+        memory > xtest_empty_string
+        memory > xtest_colorize_empty_text
+        memory > xtest_empty_options
+        memory > xtest_bad_palette
+        memory > xtest_fg
+        memory > xtest_colorize_opts
+        memory > xtest_bad_role
+        memory > xtest_colorize_reset
+        memory > xtest_empty_definition
+        memory > xtest_color_case
+        memory > xtest_fg_bg
+        memory > xtest_opts_case
+        memory > xtest_bad_color
+        memory > xtest_colorize_fg_bg
+        memory > xtest_override_palette
+        memory > xtest_fg_bg_opts
+        memory > xtest_override_nocolor
+        memory > xtest_bad_option
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_empty_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply (""))) ((((unsupported)).apply ((xPALETTES)) ((xDEFAULT_PALETTE)))))
+                xtest_simple_palette.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("light"))) ((((unsupported)).apply ((xPALETTES)) ((xLIGHT_PALETTE)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("dark"))) ((((unsupported)).apply ((xPALETTES)) ((xDARK_PALETTE)))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply ("nocolor"))))
+                xtest_fg.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                xtest_fg_bg.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green/blue"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("bg") ("blue"))))))
+                xtest_fg_opts.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,blink"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("blink"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,bold,blink"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("blink") ("bold"))))))))
+                xtest_fg_bg_opts.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green/blue,blink"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("bg") ("blue") ("opts") ((((unsupported)).apply ("blink"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green/blue,bold,blink"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("bg") ("blue") ("opts") ((((unsupported)).apply ("blink") ("bold"))))))))
+                xtest_override_palette.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("light;error=green"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xLIGHT_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                xtest_override_nocolor.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("nocolor;error=green"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                xtest_reverse_override.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green;light"))) ((((unsupported)).apply ((xPALETTES)) ((xLIGHT_PALETTE)))))
+                xtest_multiple_roles.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green;sql_field=blue"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))) ((((unsupported)).apply ("fg") ("blue"))))))
+                xtest_override_with_multiple_roles.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("light;error=green;sql_field=blue"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xLIGHT_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))) ((((unsupported)).apply ("fg") ("blue"))))))
+                xtest_empty_definition.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply (";"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("light;"))) ((((unsupported)).apply ((xPALETTES)) ((xLIGHT_PALETTE)))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply (";;;"))))
+                xtest_empty_options.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,,,"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,,blink,,"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("blink"))))))))
+                xtest_bad_palette.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply ("unknown"))))
+                xtest_bad_role.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply ("unknown="))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply ("unknown=green"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("unknown=green;sql_field=blue"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("blue"))))))
+                xtest_bad_color.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply ("error="))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=;sql_field=blue"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("blue"))))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xparse_color_setting)).apply ("error=unknown"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=unknown;sql_field=blue"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("blue"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green/unknown"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green/blue/something"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("bg") ("blue"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green/blue/something,blink"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("bg") ("blue") ("opts") ((((unsupported)).apply ("blink"))))))))
+                xtest_bad_option.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,unknown"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,unknown,blink"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("blink"))))))))
+                xtest_role_case.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("ERROR=green"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("eRrOr=green"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                xtest_color_case.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=GREEN"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=GREEN/BLUE"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("bg") ("blue"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=gReEn"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=gReEn/bLuE"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("bg") ("blue"))))))
+                xtest_opts_case.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,BLINK"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("blink"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_color_setting)).apply ("error=green,bLiNk"))) ((((unsupported)).apply ((xdict)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))) ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("blink"))))))))
+                xtest_colorize_empty_text.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("None: is there a None literal in the EO language?"))) ("x1b[mx1b[0m"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) (""))) ("x1b[mx1b[0m"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("None: is there a None literal in the EO language?") ((((unsupported)).apply ("noreset"))))) ("x1b[m"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("") ((((unsupported)).apply ("noreset"))))) ("x1b[m"))
+                xtest_colorize_reset.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("") ((((unsupported)).apply ("reset"))))) ("x1b[0m"))
+                xtest_colorize_fg_bg.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("Test") ("red"))) ("x1b[31mTestx1b[0m"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("Test") ("red"))) ("x1b[41mTestx1b[0m"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("Test") ("red"))) ("x1b[mTestx1b[0m"))
+                xtest_colorize_opts.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("Test") ((((unsupported)).apply ("bold") ("underscore"))))) ("x1b[1;4mTestx1b[0m"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("Test") ((((unsupported)).apply ("blink"))))) ("x1b[5mTestx1b[0m"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcolorize)) ("Test") ((((unsupported)).apply ("not_an_option"))))) ("x1b[mTestx1b[0m"))

@@ -1,0 +1,189 @@
+memory > xfalse
+memory > xdjango
+memory > xeval
+memory > xcontrib_name
+memory > xprint
+memory > xname
+memory > xlen
+memory > xd
+memory > xlang
+memory > xcall_command
+memory > xld
+memory > xsettings
+memory > xint
+memory > xsorted
+memory > xrun
+memory > xexit
+memory > xresource
+memory > xdir_
+memory > xos
+memory > xArgumentParser
+memory > x__name__
+[] > manage_translations
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xRUNABLE_SCRIPTS
+        memory > xupdate_catalogs
+        memory > xfetch
+        memory > xparser
+        memory > x_check_diff
+        memory > x_get_locale_dirs
+        memory > xlang_stats
+        memory > xoptions
+        memory > xHAVE_JS
+        memory > x_tx_resource_for_name
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xHAVE_JS.write (((unsupported)).apply ("admin"))
+            x_get_locale_dirs.write
+              [xresources xinclude_core]
+                memory > xdirs
+                memory > xcontrib_dir
+                memory > xres_names
+                memory > xpath
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xcontrib_dir.write (((((xos).xpath).xjoin)).apply (((((xos).xgetcwd)).apply)) ("django") ("contrib"))
+                    xdirs.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xcontrib_name)) (((((xos).xlistdir)).apply ((xcontrib_dir)))))
+                      seq
+                        xpath.write (((((xos).xpath).xjoin)).apply ((xcontrib_dir)) ((xcontrib_name)) ("locale"))
+                        (((((xos).xpath).xisdir)).apply ((xpath))).if
+                          seq
+                            bogusForceDataize.write ((((xdirs).xappend)).apply ((((unsupported)).apply ((xcontrib_name)) ((xpath)))))
+                            (((unsupported)).apply ((xcontrib_name)) ((xHAVE_JS))).if
+                              bogusForceDataize.write ((((xdirs).xappend)).apply ((((unsupported)).apply (("%s-js".mod (xcontrib_name))) ((xpath)))))
+                    (xinclude_core).if
+                      bogusForceDataize.write ((((xdirs).xinsert)).apply (0) ((((unsupported)).apply ("core") ((((((xos).xpath).xjoin)).apply (((((xos).xgetcwd)).apply)) ("django") ("conf") ("locale"))))))
+                    (((unsupported)).apply ((xresources)) ("None: is there a None literal in the EO language?")).if
+                      seq
+                        xres_names.write (((unsupported)).apply ((((unsupported)).apply ((xd)) (0))) ((xd)) ((xdirs)))
+                        xdirs.write (((unsupported)).apply ((xld)) ((xld)) ((xdirs)) ((((unsupported)).apply ((((unsupported)).apply ((xld)) (0))) ((xresources)))))
+                        ((((xlen)).apply ((xresources))).greater (((xlen)).apply ((xdirs)))).if
+                          seq
+                            bogusForceDataize.write (((xprint)).apply (("You have specified some unknown resources. Available resource names are: %s".mod (((unsupported)).apply ((((", ".xjoin)).apply ((xres_names))))))))
+                            bogusForceDataize.write (((xexit)).apply (1))
+                    (((unsupported)).apply ((xdirs)))
+            x_tx_resource_for_name.write
+              [xname]
+                seq > @
+                  seq
+                    unsupported
+                    ((xname).eq "core").if
+                      (((unsupported)).apply ("django.core"))
+                      (((unsupported)).apply (("django.contrib-%s".mod (xname))))
+            x_check_diff.write
+              [xcat_name xbase_path]
+                memory > xnum_changes
+                memory > xp
+                memory > xpo_path
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xpo_path.write ("%(path)s/en/LC_MESSAGES/django%(ext)s.po".mod (((unsupported)).apply ("path") ((xbase_path)) ("ext") ((((((xcat_name).xendswith)).apply ("-js")).if "js" ""))))
+                    xp.write (((unsupported)).apply ((xrun)) (("git diff -U0 %s | egrep '^[-+]msgid' | wc -l".mod (xpo_path))) (TRUE) (TRUE))
+                    xnum_changes.write (((xint)).apply ((((((xp).xstdout).xstrip)).apply)))
+                    bogusForceDataize.write (((xprint)).apply (("%d changed/added messages in '%s' catalog.".mod (((unsupported)).apply ((xnum_changes)) ((xcat_name))))))
+            xupdate_catalogs.write
+              [xresources xlanguages]
+                memory > xcontrib_dirs
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    bogusForceDataize.write ((((xsettings).xconfigure)).apply)
+                    bogusForceDataize.write ((((xdjango).xsetup)).apply)
+                    (((unsupported)).apply ((xresources)) ("None: is there a None literal in the EO language?")).if
+                      bogusForceDataize.write (((xprint)).apply ("`update_catalogs` will always process all resources."))
+                    xcontrib_dirs.write (((unsupported)).apply ((x_get_locale_dirs)) ("None: is there a None literal in the EO language?") ((xfalse)))
+                    bogusForceDataize.write ((((xos).xchdir)).apply ((((((xos).xpath).xjoin)).apply (((((xos).xgetcwd)).apply)) ("django"))))
+                    bogusForceDataize.write (((xprint)).apply ("Updating en catalogs for Django and contrib apps..."))
+                    (((unsupported)).apply ((xcall_command)) ("makemessages") ((((unsupported)).apply ("en"))))
+                    bogusForceDataize.write (((xprint)).apply ("Updating en JS catalogs for Django and contrib apps..."))
+                    (((unsupported)).apply ((xcall_command)) ("makemessages") ((((unsupported)).apply ("en"))) ("djangojs"))
+                    bogusForceDataize.write (((x_check_diff)).apply ("core") ((((((xos).xpath).xjoin)).apply (((((xos).xgetcwd)).apply)) ("conf") ("locale"))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xname)) ((xdir_)))) ((xcontrib_dirs)))
+                      bogusForceDataize.write (((x_check_diff)).apply ((xname)) ((xdir_)))
+            xlang_stats.write
+              [xresources xlanguages]
+                memory > xlocale_dirs
+                memory > xpo_path
+                memory > xp
+                memory > xlangs
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xlocale_dirs.write (((x_get_locale_dirs)).apply ((xresources)))
+                    (((unsupported)).apply ((((unsupported)).apply ((xname)) ((xdir_)))) ((xlocale_dirs)))
+                      seq
+                        bogusForceDataize.write (((xprint)).apply (("nShowing translations stats for '%s':".mod (xname))))
+                        xlangs.write (((xsorted)).apply ((((unsupported)).apply ((xd)) ((xd)) (((((xos).xlistdir)).apply ((xdir_)))) ((((((xd).xstartswith)).apply ("_")).not)))))
+                        (((unsupported)).apply ((xlang)) ((xlangs)))
+                          seq
+                            ((xlanguages).and (((unsupported)).apply ((xlang)) ((xlanguages)))).if
+                              (((unsupported)).apply)
+                            xpo_path.write (((unsupported)).apply (("{path}/{lang}/LC_MESSAGES/django{ext}.po".xformat)) ((xdir_)) ((xlang)) ((((((xname).xendswith)).apply ("-js")).if "js" "")))
+                            xp.write (((unsupported)).apply ((xrun)) ((((unsupported)).apply ("msgfmt") ("-vc") ("-o") ("/dev/null") ((xpo_path)))) (TRUE) ((((unsupported)).apply ("LANG") ("C"))) ("utf-8"))
+                            (((xp).xreturncode).eq 0).if
+                              bogusForceDataize.write (((xprint)).apply (("%s: %s".mod (((unsupported)).apply ((xlang)) ((((((xp).xstderr).xstrip)).apply))))))
+                              bogusForceDataize.write (((xprint)).apply (("Errors happened when checking %s translation for %s:n%s".mod (((unsupported)).apply ((xlang)) ((xname)) (((xp).xstderr))))))
+            xfetch.write
+              [xresources xlanguages]
+                memory > xpo_path
+                memory > xerrors
+                memory > xmsgfmt
+                memory > xlocale_dirs
+                memory > xtarget_langs
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xlocale_dirs.write (((x_get_locale_dirs)).apply ((xresources)))
+                    xerrors.write (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xname)) ((xdir_)))) ((xlocale_dirs)))
+                      seq
+                        (((unsupported)).apply ((xlanguages)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            bogusForceDataize.write (((xrun)).apply ((((unsupported)).apply ("tx") ("pull") ("-r") ((((x_tx_resource_for_name)).apply ((xname)))) ("-a") ("-f") ("--minimum-perc=5"))))
+                            xtarget_langs.write (((xsorted)).apply ((((unsupported)).apply ((xd)) ((xd)) (((((xos).xlistdir)).apply ((xdir_)))) (((((((xd).xstartswith)).apply ("_")).not).and ((xd).neq "en"))))))
+                          seq
+                            (((unsupported)).apply ((xlang)) ((xlanguages)))
+                              bogusForceDataize.write (((xrun)).apply ((((unsupported)).apply ("tx") ("pull") ("-r") ((((x_tx_resource_for_name)).apply ((xname)))) ("-f") ("-l") ((xlang)))))
+                            xtarget_langs.write (xlanguages)
+                        (((unsupported)).apply ((xlang)) ((xtarget_langs)))
+                          seq
+                            xpo_path.write ("%(path)s/%(lang)s/LC_MESSAGES/django%(ext)s.po".mod (((unsupported)).apply ("path") ((xdir_)) ("lang") ((xlang)) ("ext") ((((((xname).xendswith)).apply ("-js")).if "js" ""))))
+                            ((((((xos).xpath).xexists)).apply ((xpo_path))).not).if
+                              seq
+                                bogusForceDataize.write (((xprint)).apply (("No %(lang)s translation for resource %(name)s".mod (((unsupported)).apply ("lang") ((xlang)) ("name") ((xname))))))
+                                (((unsupported)).apply)
+                            bogusForceDataize.write (((xrun)).apply ((((unsupported)).apply ("msgcat") ("--no-location") ("-o") ((xpo_path)) ((xpo_path)))))
+                            xmsgfmt.write (((xrun)).apply ((((unsupported)).apply ("msgfmt") ("-c") ("-o") (("%s.mo".mod (((unsupported)).apply ((xpo_path)) ((((unsupported)).apply ((3.neg))))))) ((xpo_path)))))
+                            (((xmsgfmt).xreturncode).neq 0).if
+                              bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xname)) ((xlang)))))
+                    (xerrors).if
+                      seq
+                        bogusForceDataize.write (((xprint)).apply ("nWARNING: Errors have occurred in following cases:"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xresource)) ((xlang)))) ((xerrors)))
+                          bogusForceDataize.write (((xprint)).apply (("tResource %s for language %s".mod (((unsupported)).apply ((xresource)) ((xlang))))))
+                        bogusForceDataize.write (((xexit)).apply (1))
+            ((x__name__).eq "__main__").if
+              seq
+                xRUNABLE_SCRIPTS.write (((unsupported)).apply ("update_catalogs") ("lang_stats") ("fetch"))
+                xparser.write (((xArgumentParser)).apply)
+                (((unsupported)).apply (((xparser).xadd_argument)) ("cmd") (1) ((xRUNABLE_SCRIPTS)))
+                (((unsupported)).apply (((xparser).xadd_argument)) ("-r") ("--resources") ("append") ("limit operation to the specified resources"))
+                (((unsupported)).apply (((xparser).xadd_argument)) ("-l") ("--languages") ("append") ("limit operation to the specified languages"))
+                xoptions.write ((((xparser).xparse_args)).apply)
+                bogusForceDataize.write (((((xeval)).apply ((((unsupported)).apply (((xoptions).xcmd)) (0))))).apply (((xoptions).xresources)) (((xoptions).xlanguages)))

@@ -1,0 +1,184 @@
+memory > xstr
+memory > xNOT_PROVIDED
+memory > xsuper
+memory > xbytes
+memory > xBaseDatabaseSchemaEditor
+memory > xargs
+memory > xisinstance
+[] > schema
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsql_create_column_inline_fk
+        memory > xsql_rename_table
+        memory > xsql_rename_column
+        memory > xsql_delete_index
+        memory > x_supports_limited_data_type_defaults
+        memory > xskip_default_on_alter
+        memory > xskip_default
+        memory > xsql_alter_column_type
+        memory > x_alter_column_type_sql
+        memory > x_is_limited_data_type
+        memory > xsql_alter_column_null
+        memory > xsql_create_index
+        memory > xadd_field
+        memory > xsql_delete_check
+        memory > xsql_delete_column
+        memory > xsql_alter_column_no_default_null
+        memory > xquote_value
+        memory > xsql_delete_fk
+        memory > x_field_should_be_indexed
+        memory > x_rename_field_sql
+        memory > x_set_field_new_type_null_status
+        memory > xsql_delete_pk
+        memory > xsql_alter_column_not_null
+        memory > xsql_alter_column_collate
+        memory > xsql_delete_unique
+        memory > x_delete_composed_index
+        memory > x_column_default_sql
+        memory > xsql_create_pk
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseSchemaEditor)))
+              seq
+                xsql_rename_table.write "RENAME TABLE %(old_table)s TO %(new_table)s"
+                xsql_alter_column_null.write "MODIFY %(column)s %(type)s NULL"
+                xsql_alter_column_not_null.write "MODIFY %(column)s %(type)s NOT NULL"
+                xsql_alter_column_type.write "MODIFY %(column)s %(type)s"
+                xsql_alter_column_collate.write "MODIFY %(column)s %(type)s%(collation)s"
+                xsql_alter_column_no_default_null.write "ALTER COLUMN %(column)s SET DEFAULT NULL"
+                xsql_delete_column.write "ALTER TABLE %(table)s DROP COLUMN %(column)s"
+                xsql_delete_unique.write "ALTER TABLE %(table)s DROP INDEX %(name)s"
+                xsql_create_column_inline_fk.write ", ADD CONSTRAINT %(name)s FOREIGN KEY (%(column)s) REFERENCES %(to_table)s(%(to_column)s)"
+                xsql_delete_fk.write "ALTER TABLE %(table)s DROP FOREIGN KEY %(name)s"
+                xsql_delete_index.write "DROP INDEX %(name)s ON %(table)s"
+                xsql_create_pk.write "ALTER TABLE %(table)s ADD CONSTRAINT %(name)s PRIMARY KEY (%(columns)s)"
+                xsql_delete_pk.write "ALTER TABLE %(table)s DROP PRIMARY KEY"
+                xsql_create_index.write "CREATE INDEX %(name)s ON %(table)s (%(columns)s)%(extra)s"
+                xsql_delete_check.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply ("ALTER TABLE %(table)s DROP CONSTRAINT IF EXISTS %(name)s"))
+                        (((unsupported)).apply ("ALTER TABLE %(table)s DROP CHECK %(name)s"))
+                xsql_rename_column.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (10) (5) (2))).if
+                            (((unsupported)).apply (((xsuper).xsql_rename_column)))
+                          ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (4))).if
+                            (((unsupported)).apply (((xsuper).xsql_rename_column)))
+                        (((unsupported)).apply ("ALTER TABLE %(table)s CHANGE %(old_column)s %(new_column)s %(type)s"))
+                xquote_value.write
+                  [xself xvalue]
+                    memory > xquoted
+                    seq > @
+                      seq
+                        unsupported
+                        (((xisinstance)).apply ((xvalue)) ((xstr))).if
+                          xvalue.write ((((xvalue).xreplace)).apply ("%") ("%%"))
+                        xquoted.write ((((((xself).xconnection).xconnection).xescape)).apply ((xvalue)) (((((xself).xconnection).xconnection).xencoders)))
+                        ((((xisinstance)).apply ((xvalue)) ((xstr))).and (((xisinstance)).apply ((xquoted)) ((xbytes)))).if
+                          xquoted.write ((xquoted).xdecode)
+                        (((unsupported)).apply ((xquoted)))
+                x_is_limited_data_type.write
+                  [xself xfield]
+                    memory > xdb_type
+                    seq > @
+                      seq
+                        xdb_type.write ((((xfield).xdb_type)).apply (((xself).xconnection)))
+                        (((unsupported)).apply (((((unsupported)).apply ((xdb_type)) ("None: is there a None literal in the EO language?")).and (((unsupported)).apply (((xdb_type).xlower)) ((((xself).xconnection).x_limited_data_types))))))
+                xskip_default.write
+                  [xself xfield]
+                    seq > @
+                      seq
+                        (((xself).x_supports_limited_data_type_defaults).not).if
+                          (((unsupported)).apply (((((xself).x_is_limited_data_type)).apply ((xfield)))))
+                        (((unsupported)).apply (FALSE))
+                xskip_default_on_alter.write
+                  [xself xfield]
+                    seq > @
+                      seq
+                        (((((xself).x_is_limited_data_type)).apply ((xfield))).and ((((xself).xconnection).xmysql_is_mariadb).not)).if
+                          (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (FALSE))
+                x_supports_limited_data_type_defaults.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (13)))))
+                x_column_default_sql.write
+                  [xself xfield]
+                    seq > @
+                      seq
+                        ((((((xself).xconnection).xmysql_is_mariadb).not).and ((xself).x_supports_limited_data_type_defaults)).and ((((xself).x_is_limited_data_type)).apply ((xfield)))).if
+                          (((unsupported)).apply ("(%s)"))
+                        (((unsupported)).apply (((((xsuper).x_column_default_sql)).apply ((xfield)))))
+                xadd_field.write
+                  [xself xmodel xfield]
+                    memory > xeffective_default
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsuper).xadd_field)).apply ((xmodel)) ((xfield)))
+                        (((((xself).xskip_default)).apply ((xfield))).and (((unsupported)).apply (((xfield).xdefault)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") ((xNOT_PROVIDED)))))).if
+                          seq
+                            xeffective_default.write ((((xself).xeffective_default)).apply ((xfield)))
+                            bogusForceDataize.write ((((xself).xexecute)).apply (("UPDATE %(table)s SET %(column)s = %%s".mod (((unsupported)).apply ("table") (((((xself).xquote_name)).apply ((((xmodel).x_meta).xdb_table)))) ("column") (((((xself).xquote_name)).apply (((xfield).xcolumn))))))) ((((unsupported)).apply ((xeffective_default)))))
+                x_field_should_be_indexed.write
+                  [xself xmodel xfield]
+                    memory > xstorage
+                    seq > @
+                      seq
+                        (((((xsuper).x_field_should_be_indexed)).apply ((xmodel)) ((xfield))).not).if
+                          (((unsupported)).apply (FALSE))
+                        xstorage.write ((((((xself).xconnection).xintrospection).xget_storage_engine)).apply ((((xself).xconnection).xcursor)) ((((xmodel).x_meta).xdb_table)))
+                        ((((xstorage).eq "InnoDB").and (((xfield).xget_internal_type).eq "ForeignKey")).and ((xfield).xdb_constraint)).if
+                          (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply ((((((xself).x_is_limited_data_type)).apply ((xfield))).not)))
+                x_delete_composed_index.write
+                  [xself xmodel xfields]
+                    memory > xfirst_field
+                    memory > xconstraint_names
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xfirst_field.write (((((xmodel).x_meta).xget_field)).apply ((((unsupported)).apply ((xfields)) (0))))
+                        (((xfirst_field).xget_internal_type).eq "ForeignKey").if
+                          seq
+                            xconstraint_names.write (((unsupported)).apply (((xself).x_constraint_names)) ((xmodel)) ((((unsupported)).apply (((xfirst_field).xcolumn)))) (TRUE))
+                            ((xconstraint_names).not).if
+                              bogusForceDataize.write ((((xself).xexecute)).apply ((((unsupported)).apply (((xself).x_create_index_sql)) ((xmodel)) ((((unsupported)).apply ((xfirst_field)))) (""))))
+                        (((unsupported)).apply (((((xsuper).x_delete_composed_index)).apply ((xmodel)) ((xfields)) ((((unsupported)).apply ((xargs)))))))
+                x_set_field_new_type_null_status.write
+                  [xself xfield xnew_type]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xfield).xnull).if
+                          (((unsupported)).apply ((xnew_type)) (" NULL"))
+                          (((unsupported)).apply ((xnew_type)) (" NOT NULL"))
+                        (((unsupported)).apply ((xnew_type)))
+                x_alter_column_type_sql.write
+                  [xself xmodel xold_field xnew_field xnew_type]
+                    seq > @
+                      seq
+                        xnew_type.write ((((xself).x_set_field_new_type_null_status)).apply ((xold_field)) ((xnew_type)))
+                        (((unsupported)).apply (((((xsuper).x_alter_column_type_sql)).apply ((xmodel)) ((xold_field)) ((xnew_field)) ((xnew_type)))))
+                x_rename_field_sql.write
+                  [xself xtable xold_field xnew_field xnew_type]
+                    seq > @
+                      seq
+                        xnew_type.write ((((xself).x_set_field_new_type_null_status)).apply ((xold_field)) ((xnew_type)))
+                        (((unsupported)).apply (((((xsuper).x_rename_field_sql)).apply ((xtable)) ((xold_field)) ((xnew_field)) ((xnew_type)))))

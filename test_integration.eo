@@ -1,0 +1,34 @@
+memory > x__file__
+memory > xPostgreSQLSimpleTestCase
+memory > xsys
+memory > xsubprocess
+memory > xos
+[] > test_integration
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_check
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xPostgreSQLSimpleTestCase)))
+              xtest_check.write
+                [xself]
+                  memory > xtest_environ
+                  memory > xresult
+                  seq > @
+                    seq
+                      xtest_environ.write (((((xos).xenviron).xcopy)).apply)
+                      (((unsupported)).apply ("DJANGO_SETTINGS_MODULE") ((xtest_environ))).if
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xtest_environ)) ("DJANGO_SETTINGS_MODULE"))))))
+                      (((unsupported)).apply ((((unsupported)).apply ((xtest_environ)) ("PYTHONPATH"))) ((((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply ((x__file__)))) ("../../"))))
+                      xresult.write (((unsupported)).apply (((xsubprocess).xrun)) ((((unsupported)).apply (((xsys).xexecutable)) ("-m") ("django") ("check") ("--settings") ("integration_settings"))) (((xsubprocess).xDEVNULL)) (((xsubprocess).xPIPE)) ((((((xos).xpath).xdirname)).apply ((x__file__)))) ((xtest_environ)) ("utf-8"))
+                      (((unsupported)).apply (((xself).xassertEqual)) (((xresult).xreturncode)) (0) (((xresult).xstderr)))

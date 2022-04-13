@@ -1,0 +1,110 @@
+memory > xAttributeError
+memory > xApiTests
+memory > xmessages
+memory > xDummyStorage
+memory > xgetattr
+memory > xSimpleTestCase
+memory > xTypeError
+memory > xRequestFactory
+memory > xsuper
+memory > xCustomRequest
+[] > test_api
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__getattribute__
+        memory > xtest_ok
+        memory > xrf
+        memory > xtest_request_is_none
+        memory > xsetUp
+        memory > xtest_middleware_missing_silently
+        memory > x__init__
+        memory > xadd
+        memory > xtest_middleware_missing
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xstore)) ((((unsupported)).apply)))
+                xadd.write
+                  [xself xlevel xmessage xextra_tags]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xstore).xappend)).apply ((xmessage)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xrf.write (((xRequestFactory)).apply)
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xrequest)) ((((((xself).xrf).xrequest)).apply)))
+                        (((unsupported)).apply (((xself).xstorage)) ((((xDummyStorage)).apply)))
+                xtest_ok.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "some message"
+                        (((unsupported)).apply ((((xself).xrequest).x_messages)) (((xself).xstorage)))
+                        bogusForceDataize.write ((((xmessages).xadd_message)).apply (((xself).xrequest)) (((xmessages).xDEBUG)) ((xmsg)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xmsg)) ((((xself).xstorage).xstore)))
+                xtest_request_is_none.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "add_message() argument must be an HttpRequest object, not 'NoneType'."
+                        (((unsupported)).apply ((((xself).xrequest).x_messages)) (((xself).xstorage)))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xmessages).xadd_message)).apply ("None: is there a None literal in the EO language?") (((xmessages).xDEBUG)) ("some message"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xstorage).xstore)) ((((unsupported)).apply)))
+                xtest_middleware_missing.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "You cannot add messages without installing django.contrib.messages.middleware.MessageMiddleware"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply (((xmessages).xMessageFailure)) ((xmsg)))))
+                          bogusForceDataize.write ((((xmessages).xadd_message)).apply (((xself).xrequest)) (((xmessages).xDEBUG)) ("some message"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xstorage).xstore)) ((((unsupported)).apply)))
+                xtest_middleware_missing_silently.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmessages).xadd_message)) (((xself).xrequest)) (((xmessages).xDEBUG)) ("some message") (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xstorage).xstore)) ((((unsupported)).apply)))
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply (((xself).x_request)) ((xrequest)))
+                x__getattribute__.write
+                  [xself xattr]
+                    seq > @
+                      (((unsupported)).apply ((xAttributeError)))
+                        (((unsupported)).apply (((((((xsuper)).apply).x__getattribute__)).apply ((xattr)))))
+                        (((unsupported)).apply ((((xgetattr)).apply (((xself).x_request)) ((xattr)))))
+            (((unsupported)).apply ((xApiTests)))
+              seq
+                (((unsupported)).apply)
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        (((unsupported)).apply (((xself).xrequest)) ((((xCustomRequest)).apply (((xself).xrequest)))))

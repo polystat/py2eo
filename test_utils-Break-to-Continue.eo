@@ -1,0 +1,124 @@
+memory > xparse_docstring
+memory > xdescription
+memory > x_
+memory > xbody
+memory > xtitle
+memory > xstderr
+memory > xmetadata
+memory > xunittest
+memory > xdocutils_is_available
+memory > xdocutils
+memory > xparse_rst
+memory > xcaptured_stderr
+memory > xAdminDocsSimpleTestCase
+[] > test_utils
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_description_output
+        memory > xtest_parse_rst
+        memory > xsetUp
+        memory > xtest_parse_rst_with_docstring_no_leading_line_feed
+        memory > xtest_parse_docstring
+        memory > xtest_publish_parts
+        memory > xtest_initial_header_level
+        memory > xtest_title_output
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xAdminDocsSimpleTestCase)) (((((xunittest).xskipUnless)).apply ((xdocutils_is_available)) ("no docutils installed."))))
+              seq
+                (((unsupported)).apply)
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xdocstring)) (((xself).x__doc__)))
+                xtest_parse_docstring.write
+                  [xself]
+                    memory > xdocstring_description
+                    memory > xdocstring_title
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xtitle)) ((xdescription)) ((xmetadata)))) ((((xparse_docstring)).apply (((xself).xdocstring)))))
+                        xdocstring_title.write "This __doc__ output is required for testing. I copied this example fromn`admindocs` documentation. (TITLE)"
+                        xdocstring_description.write "Display an individual :model:`myapp.MyModel`.nn**Context**nn``RequestContext``nn``mymodel``n    An instance of :model:`myapp.MyModel`.nn**Template:**nn:template:`myapp/my_template.html` (DESCRIPTION)"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xtitle)) ((xdocstring_title)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xdescription)) ((xdocstring_description)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xmetadata)) ((((unsupported)).apply ("some_metadata") ("some data"))))
+                xtest_title_output.write
+                  [xself]
+                    memory > xtitle_rendered
+                    memory > xtitle_output
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xtitle)) ((xdescription)) ((xmetadata)))) ((((xparse_docstring)).apply (((xself).xdocstring)))))
+                        xtitle_output.write (((xparse_rst)).apply ((xtitle)) ("model") ("model:admindocs"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("TITLE") ((xtitle_output)))
+                        xtitle_rendered.write "<p>This __doc__ output is required for testing. I copied this example fromn<a class=\"reference external\" href=\"/admindocs/models/admindocs/\">admindocs</a> documentation. (TITLE)</p>n"
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ((xtitle_output)) ((xtitle_rendered)))
+                xtest_description_output.write
+                  [xself]
+                    memory > xdescription_output
+                    memory > xdescription_rendered
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xtitle)) ((xdescription)) ((xmetadata)))) ((((xparse_docstring)).apply (((xself).xdocstring)))))
+                        xdescription_output.write (((xparse_rst)).apply ((xdescription)) ("model") ("model:admindocs"))
+                        xdescription_rendered.write "<p>Display an individual <a class=\"reference external\" href=\"/admindocs/models/myapp.mymodel/\">myapp.MyModel</a>.</p>n<p><strong>Context</strong></p>n<p><tt class=\"docutils literal\">RequestContext</tt></p>n<dl class=\"docutils\">n<dt><tt class=\"docutils literal\">mymodel</tt></dt>n<dd>An instance of <a class=\"reference external\" href=\"/admindocs/models/myapp.mymodel/\">myapp.MyModel</a>.</dd>n</dl>n<p><strong>Template:</strong></p>n<p><a class=\"reference external\" href=\"/admindocs/templates/myapp/my_template.html/\">myapp/my_template.html</a> (DESCRIPTION)</p>n"
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ((xdescription_output)) ((xdescription_rendered)))
+                xtest_initial_header_level.write
+                  [xself]
+                    memory > xheader
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xheader.write "should be h3...nnHeadern------n"
+                        xoutput.write (((xparse_rst)).apply ((xheader)) ("header"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<h3>Header</h3>") ((xoutput)))
+                xtest_parse_rst.write
+                  [xself]
+                    memory > xmarkup
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xmarkup.write "<p><a class=\"reference external\" href=\"/admindocs/%s\">title</a></p>n"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_rst)).apply ("`title`") ("model"))) (((xmarkup).mod "models/title/")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_rst)).apply ("`title`") ("view"))) (((xmarkup).mod "views/title/")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_rst)).apply ("`title`") ("template"))) (((xmarkup).mod "templates/title/")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_rst)).apply ("`title`") ("filter"))) (((xmarkup).mod "filters/#title")))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_rst)).apply ("`title`") ("tag"))) (((xmarkup).mod "tags/#title")))
+                xtest_parse_rst_with_docstring_no_leading_line_feed.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xtitle)) ((xbody)) ((x_)))) ((((xparse_docstring)).apply ("firstlinenn    second line"))))
+                        (((unsupported)).apply ((((xcaptured_stderr)).apply)) ((xstderr)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_rst)).apply ((xtitle)) (""))) ("<p>firstline</p>n"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparse_rst)).apply ((xbody)) (""))) ("<p>second line</p>n"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xstderr).xgetvalue)).apply)) (""))
+                xtest_publish_parts.write
+                  [xself]
+                    memory > xmarkup
+                    memory > xparts
+                    memory > xsource
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((((xdocutils).xparsers).xrst).xroles).xDEFAULT_INTERPRETED_ROLE)) ("cmsreference"))
+                        xsource.write "reST, `interpreted text`, default role."
+                        xmarkup.write "<p>reST, <cite>interpreted text</cite>, default role.</p>n"
+                        xparts.write (((unsupported)).apply ((((xdocutils).xcore).xpublish_parts)) ((xsource)) ("html4css1"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xparts)) ("fragment"))) ((xmarkup)))

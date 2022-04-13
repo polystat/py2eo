@@ -1,0 +1,121 @@
+memory > xband
+memory > xSTRUCT_SIZE
+memory > xGDAL_TO_STRUCT
+memory > xPOSTGIS_HEADER_STRUCTURE
+memory > xBANDTYPE_PIXTYPE_MASK
+memory > xGDAL_TO_POSTGIS
+memory > xstruct
+memory > xbytes
+memory > xBANDTYPE_FLAG_HASNODATA
+memory > xlen
+memory > xValidationError
+memory > xPOSTGIS_TO_GDAL
+memory > xset
+memory > xint
+[] > pgraster
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xto_pgraster
+        memory > xunpack
+        memory > xfrom_pgraster
+        memory > xpack
+        memory > xchunk
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xpack.write
+              [xstructure xdata]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((((xstruct).xpack)).apply (("<".add (xstructure))) ((((unsupported)).apply ((xdata)))))))
+            xunpack.write
+              [xstructure xdata]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((((xstruct).xunpack)).apply (("<".add (xstructure))) (((((xbytes).xfromhex)).apply ((xdata)))))))
+            xchunk.write
+              [xdata xindex]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xdata)) ((((unsupported)).apply ((xindex)))))) ((((unsupported)).apply ((xdata)) ((((unsupported)).apply ((xindex)))))))))
+            xfrom_pgraster.write
+              [xdata]
+                memory > xpack_size
+                memory > xheader
+                memory > xpixeltype_with_flags
+                memory > xpack_type
+                memory > xbands
+                memory > xnodata
+                memory > xpixeltype
+                memory > xband_result
+                memory > xpixeltypes
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xdata)) ("None: is there a None literal in the EO language?")).if
+                      (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xheader)) ((xdata)))) ((((xchunk)).apply ((xdata)) (122))))
+                    xheader.write (((xunpack)).apply ((xPOSTGIS_HEADER_STRUCTURE)) ((xheader)))
+                    xbands.write (((unsupported)).apply)
+                    xpixeltypes.write (((unsupported)).apply)
+                    while.
+                      (xdata)
+                      [unused]
+                        seq > @
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xpixeltype_with_flags)) ((xdata)))) ((((xchunk)).apply ((xdata)) (2))))
+                            xpixeltype_with_flags.write (((unsupported)).apply ((((xunpack)).apply ("B") ((xpixeltype_with_flags)))) (0))
+                            xpixeltype.write ((xpixeltype_with_flags).and (xBANDTYPE_PIXTYPE_MASK))
+                            xpixeltype.write (((unsupported)).apply ((xPOSTGIS_TO_GDAL)) ((xpixeltype)))
+                            xpack_type.write (((unsupported)).apply ((xGDAL_TO_STRUCT)) ((xpixeltype)))
+                            xpack_size.write (2.mul (((unsupported)).apply ((xSTRUCT_SIZE)) ((xpack_type))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xnodata)) ((xdata)))) ((((xchunk)).apply ((xdata)) ((xpack_size)))))
+                            xnodata.write (((unsupported)).apply ((((xunpack)).apply ((xpack_type)) ((xnodata)))) (0))
+                            (((unsupported)).apply ((((unsupported)).apply ((xband)) ((xdata)))) ((((xchunk)).apply ((xdata)) ((((xpack_size).mul (((unsupported)).apply ((xheader)) (10))).mul (((unsupported)).apply ((xheader)) (11)))))))
+                            xband_result.write (((unsupported)).apply ("data") (((((xbytes).xfromhex)).apply ((xband)))))
+                            ((xpixeltype_with_flags).and (xBANDTYPE_FLAG_HASNODATA)).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xband_result)) ("nodata_value"))) ((xnodata)))
+                            bogusForceDataize.write ((((xbands).xappend)).apply ((xband_result)))
+                            bogusForceDataize.write ((((xpixeltypes).xappend)).apply ((xpixeltype)))
+                    ((((xlen)).apply ((((xset)).apply ((xpixeltypes))))).neq 1).if
+                      (((unsupported)).apply ((((xValidationError)).apply ("Band pixeltypes are not all equal."))))
+                    (((unsupported)).apply ((((unsupported)).apply ("srid") ((((xint)).apply ((((unsupported)).apply ((xheader)) (9))))) ("width") ((((unsupported)).apply ((xheader)) (10))) ("height") ((((unsupported)).apply ((xheader)) (11))) ("datatype") ((((unsupported)).apply ((xpixeltypes)) (0))) ("origin") ((((unsupported)).apply ((((unsupported)).apply ((xheader)) (5))) ((((unsupported)).apply ((xheader)) (6))))) ("scale") ((((unsupported)).apply ((((unsupported)).apply ((xheader)) (3))) ((((unsupported)).apply ((xheader)) (4))))) ("skew") ((((unsupported)).apply ((((unsupported)).apply ((xheader)) (7))) ((((unsupported)).apply ((xheader)) (8))))) ("bands") ((xbands)))))
+            xto_pgraster.write
+              [xrast]
+                memory > xrasterheader
+                memory > xstructure
+                memory > xpixeltype
+                memory > xbandheader
+                memory > xresult
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xrasterheader.write (((unsupported)).apply (1) (0) ((((xlen)).apply (((xrast).xbands)))) ((((xrast).xscale).xx)) ((((xrast).xscale).xy)) ((((xrast).xorigin).xx)) ((((xrast).xorigin).xy)) ((((xrast).xskew).xx)) ((((xrast).xskew).xy)) ((((xrast).xsrs).xsrid)) (((xrast).xwidth)) (((xrast).xheight)))
+                    xresult.write (((xpack)).apply ((xPOSTGIS_HEADER_STRUCTURE)) ((xrasterheader)))
+                    (((unsupported)).apply ((xband)) (((xrast).xbands)))
+                      seq
+                        xstructure.write ("B".add (((unsupported)).apply ((xGDAL_TO_STRUCT)) (((xband).xdatatype))))
+                        xpixeltype.write (((unsupported)).apply ((xGDAL_TO_POSTGIS)) (((xband).xdatatype)))
+                        (((unsupported)).apply (((xband).xnodata_value)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xpixeltype)) ((xBANDTYPE_FLAG_HASNODATA)))
+                        xbandheader.write (((xpack)).apply ((xstructure)) ((((unsupported)).apply ((xpixeltype)) ((((xband).xnodata_value).or 0)))))
+                        (((unsupported)).apply ((xresult)) (((xbandheader).add (((unsupported)).apply (((xband).xdata)) (TRUE)))))
+                    (((unsupported)).apply (((xresult).xhex)))

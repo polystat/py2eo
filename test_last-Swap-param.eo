@@ -1,0 +1,42 @@
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_last
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_last02
+        memory > xtest_last01
+        memory > xtest_empty_list
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_last01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("last01") ((((unsupported)).apply ("a") ((((unsupported)).apply ("x") ("a&b"))) ("b") ((((unsupported)).apply ("x") ((((xmark_safe)).apply ("a&b"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("a&amp;b a&b") ((xoutput)))
+                xtest_last02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("last02") ((((unsupported)).apply ("a") ((((unsupported)).apply ("x") ("a&b"))) ("b") ((((unsupported)).apply ("x") ((((xmark_safe)).apply ("a&b"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a&b a&b"))
+                xtest_empty_list.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("empty_list") ((((unsupported)).apply ("a") ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))

@@ -1,0 +1,95 @@
+memory > xk
+memory > xSettings
+memory > xglobal_settings
+memory > xBaseCommand
+memory > xsorted
+memory > xdir
+memory > xgetattr
+memory > xoptions
+memory > xkey
+memory > xrepr
+memory > xsettings
+[] > diffsettings
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xoutput_hash
+        memory > xhelp2
+        memory > xhandle
+        memory > xmodule_to_dict
+        memory > xoutput_unified
+        memory > xadd_arguments
+        seq > @
+          seq
+            (((unsupported)).apply)
+            xmodule_to_dict.write
+              [xmodule xomittable]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((((unsupported)).apply ((xk)) ((((xrepr)).apply ((((xgetattr)).apply ((xmodule)) ((xk)))))) ((xk)) ((((xdir)).apply ((xmodule)))) (((((xomittable)).apply ((xk))).not)))))
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp2.write (((unsupported)).apply)
+                xrequires_system_checks.write (((unsupported)).apply)
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--all") ("store_true") ("Display all settings, regardless of their value. In \"hash\" mode, default values are prefixed by \"###\"."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--default") ("MODULE") ("The settings module to compare the current settings against. Leave empty to compare against Django's default settings."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--output") ("hash") ((((unsupported)).apply ("hash") ("unified"))) ("Selects the output format. 'hash' mode displays each changed setting, with the settings that don't appear in the defaults followed by ###. 'unified' mode prefixes the default setting with a minus sign, followed by the changed setting prefixed with a plus sign."))
+                xhandle.write
+                  [xself]
+                    memory > xuser_settings
+                    memory > xdefault
+                    memory > xdefault_settings
+                    memory > xoutput_func
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((xsettings).xconfigured).not).if
+                          bogusForceDataize.write ((((xsettings).x_setup)).apply)
+                        xuser_settings.write (((xmodule_to_dict)).apply (((xsettings).x_wrapped)))
+                        xdefault.write (((unsupported)).apply ((xoptions)) ("default"))
+                        xdefault_settings.write (((xmodule_to_dict)).apply (((xdefault).if (((xSettings)).apply ((xdefault))) (xglobal_settings))))
+                        xoutput_func.write (((unsupported)).apply ((((unsupported)).apply ("hash") (((xself).xoutput_hash)) ("unified") (((xself).xoutput_unified)))) ((((unsupported)).apply ((xoptions)) ("output"))))
+                        (((unsupported)).apply (((("n".xjoin)).apply ((((xoutput_func)).apply ((xuser_settings)) ((xdefault_settings)) ((((unsupported)).apply ((xoptions)))))))))
+                xoutput_hash.write
+                  [xself xuser_settings xdefault_settings]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xkey)) ((((xsorted)).apply ((xuser_settings)))))
+                          (((unsupported)).apply ((xkey)) ((xdefault_settings))).if
+                            bogusForceDataize.write ((((xoutput).xappend)).apply (("%s = %s  ###".mod (((unsupported)).apply ((xkey)) ((((unsupported)).apply ((xuser_settings)) ((xkey))))))))
+                            ((((unsupported)).apply ((xuser_settings)) ((xkey))).neq (((unsupported)).apply ((xdefault_settings)) ((xkey)))).if
+                              bogusForceDataize.write ((((xoutput).xappend)).apply (("%s = %s".mod (((unsupported)).apply ((xkey)) ((((unsupported)).apply ((xuser_settings)) ((xkey))))))))
+                              (((unsupported)).apply ((xoptions)) ("all")).if
+                                bogusForceDataize.write ((((xoutput).xappend)).apply (("### %s = %s".mod (((unsupported)).apply ((xkey)) ((((unsupported)).apply ((xuser_settings)) ((xkey))))))))
+                        (((unsupported)).apply ((xoutput)))
+                xoutput_unified.write
+                  [xself xuser_settings xdefault_settings]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xkey)) ((((xsorted)).apply ((xuser_settings)))))
+                          (((unsupported)).apply ((xkey)) ((xdefault_settings))).if
+                            bogusForceDataize.write ((((xoutput).xappend)).apply ((((((xself).xstyle).xSUCCESS)).apply (("+ %s = %s".mod (((unsupported)).apply ((xkey)) ((((unsupported)).apply ((xuser_settings)) ((xkey))))))))))
+                            ((((unsupported)).apply ((xuser_settings)) ((xkey))).neq (((unsupported)).apply ((xdefault_settings)) ((xkey)))).if
+                              seq
+                                bogusForceDataize.write ((((xoutput).xappend)).apply ((((((xself).xstyle).xERROR)).apply (("- %s = %s".mod (((unsupported)).apply ((xkey)) ((((unsupported)).apply ((xdefault_settings)) ((xkey))))))))))
+                                bogusForceDataize.write ((((xoutput).xappend)).apply ((((((xself).xstyle).xSUCCESS)).apply (("+ %s = %s".mod (((unsupported)).apply ((xkey)) ((((unsupported)).apply ((xuser_settings)) ((xkey))))))))))
+                              (((unsupported)).apply ((xoptions)) ("all")).if
+                                bogusForceDataize.write ((((xoutput).xappend)).apply (("  %s = %s".mod (((unsupported)).apply ((xkey)) ((((unsupported)).apply ((xuser_settings)) ((xkey))))))))
+                        (((unsupported)).apply ((xoutput)))

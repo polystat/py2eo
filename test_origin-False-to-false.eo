@@ -1,0 +1,62 @@
+memory > xfalse
+memory > xTestCase
+memory > xEngine
+memory > xrepr
+memory > xos
+memory > xTEMPLATE_DIR
+[] > test_origin
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_origin_compares_not_equal
+        memory > xsetUp
+        memory > xtest_origin_compares_equal
+        memory > xtest_repr
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xengine)) ((((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))))))
+                xtest_origin_compares_equal.write
+                  [xself]
+                    memory > xb
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        xb.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xa).xorigin)) (((xb).xorigin)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xa).xorigin).eq ((xb).xorigin))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xa).xorigin).neq ((xb).xorigin))) ((xfalse)))
+                xtest_origin_compares_not_equal.write
+                  [xself]
+                    memory > xb
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((((xself).xengine).xget_template)).apply ("first/test.html"))
+                        xb.write (((((xself).xengine).xget_template)).apply ("second/test.html"))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((xa).xorigin)) (((xb).xorigin)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xa).xorigin).eq ((xb).xorigin))) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xa).xorigin).neq ((xb).xorigin))) (TRUE))
+                xtest_repr.write
+                  [xself]
+                    memory > xname
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        xname.write (((((xos).xpath).xjoin)).apply ((xTEMPLATE_DIR)) ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply (((xa).xorigin)))) (("<Origin name=%r>".mod (xname))))

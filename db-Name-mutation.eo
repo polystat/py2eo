@@ -1,0 +1,150 @@
+memory > xCreateError
+memory > xtimezone
+memory > xSession2
+memory > xstr
+memory > xrouter
+memory > xSessionBase
+memory > xUpdateError
+memory > xDatabaseError
+memory > xlogging
+memory > xsuper
+memory > xSuspiciousOperation
+memory > xIntegrityError
+memory > xe
+memory > xisinstance
+memory > xtransaction
+[] > db
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_get_session_from_db
+        memory > xsave
+        memory > xget_model_class
+        memory > xclear_expired
+        memory > xexists
+        memory > x__init__
+        memory > xmodel
+        memory > xdelete
+        memory > xcreate_model_instance
+        memory > xcreate
+        memory > xload
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSessionBase)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xsession_key)))
+                xget_model_class.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xSession2)))
+                xmodel.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xget_model_class)).apply)))
+                x_get_session_from_db.write
+                  [xself]
+                    memory > xlogger
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((((xself).xmodel).xDoesNotExist)) ((xSuspiciousOperation)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((((xself).xmodel).xobjects).xget)) (((xself).xsession_key)) (((((xtimezone).xnow)).apply)))))
+                        seq
+                          (((xisinstance)).apply ((xe)) ((xSuspiciousOperation))).if
+                            seq
+                              xlogger.write ((((xlogging).xgetLogger)).apply (("django.security.%s".mod (((xe).x__class__).x__name__))))
+                              bogusForceDataize.write ((((xlogger).xwarning)).apply ((((xstr)).apply ((xe)))))
+                          (((unsupported)).apply (((xself).x_session_key)) ("None: is there a None literal in the EO language?"))
+                xload.write
+                  [xself]
+                    memory > xs
+                    seq > @
+                      seq
+                        xs.write ((((xself).x_get_session_from_db)).apply)
+                        (((unsupported)).apply (((xs).if ((((xself).xdecode)).apply (((xs).xsession_data))) (((unsupported)).apply))))
+                xexists.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply (((((((unsupported)).apply (((((xself).xmodel).xobjects).xfilter)) ((xsession_key))).xexists)).apply)))
+                xcreate.write
+                  [xself]
+                    seq > @
+                      while.
+                        TRUE
+                        [unused]
+                          seq > @
+                            seq
+                              (((unsupported)).apply (((xself).x_session_key)) (((((xself).x_get_new_session_key)).apply)))
+                              (((unsupported)).apply ((xCreateError)))
+                                (((unsupported)).apply (((xself).xsave)) (TRUE))
+                                (((unsupported)).apply)
+                              (((unsupported)).apply (((xself).xmodified)) (TRUE))
+                              (((unsupported)).apply)
+                xcreate_model_instance.write
+                  [xself xdata]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xmodel)) (((((xself).x_get_or_create_session_key)).apply)) (((((xself).xencode)).apply ((xdata)))) (((((xself).xget_expiry_date)).apply)))))
+                xsave.write
+                  [xself xmust_create]
+                    memory > xusing
+                    memory > xobj
+                    memory > xdata
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (((((xself).xcreate)).apply)))
+                        xdata.write (((unsupported)).apply (((xself).x_get_session)) ((xmust_create)))
+                        xobj.write ((((xself).xcreate_model_instance)).apply ((xdata)))
+                        xusing.write (((unsupported)).apply (((xrouter).xdb_for_write)) (((xself).xmodel)) ((xobj)))
+                        (((unsupported)).apply ((xIntegrityError)) ((xDatabaseError)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xtransaction).xatomic)) ((xusing)))))
+                            (((unsupported)).apply (((xobj).xsave)) ((xmust_create)) (((xmust_create).not)) ((xusing)))
+                          seq
+                            (xmust_create).if
+                              (((unsupported)).apply ((xCreateError)))
+                            (((unsupported)).apply)
+                          seq
+                            ((xmust_create).not).if
+                              (((unsupported)).apply ((xUpdateError)))
+                            (((unsupported)).apply)
+                xdelete.write
+                  [xself xsession_key]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xsession_key)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            (((unsupported)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply)
+                            xsession_key.write ((xself).xsession_key)
+                        (((unsupported)).apply ((((xself).xmodel).xDoesNotExist)))
+                          bogusForceDataize.write ((((((unsupported)).apply (((((xself).xmodel).xobjects).xget)) ((xsession_key))).xdelete)).apply)
+                xclear_expired.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((unsupported)).apply (((((((xcls).xget_model_class)).apply).xobjects).xfilter)) (((((xtimezone).xnow)).apply))).xdelete)).apply)

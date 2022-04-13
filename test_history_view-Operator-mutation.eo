@@ -1,0 +1,117 @@
+memory > xCity
+memory > xAdminSeleniumTestCase
+memory > xstr
+memory > xTestCase
+memory > xrange
+memory > xState
+memory > xBy
+memory > xrepr
+memory > xi
+memory > xoverride_settings
+memory > xLogEntry
+memory > xUser
+memory > xreverse
+memory > xContentType
+memory > xPaginator
+memory > xCHANGE
+[] > test_history_view
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_pagination
+        memory > xsetUpTestData
+        memory > xsetUp
+        memory > xtest_changed_message_uses_form_labels
+        memory > xavailable_apps
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.urls"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xsuperuser)))
+                xtest_changed_message_uses_form_labels.write
+                  [xself]
+                    memory > xlogentry
+                    memory > xchange_dict
+                    memory > xstate
+                    memory > xcity
+                    memory > xstate_change_url
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xstate.write (((unsupported)).apply ((((xState).xobjects).xcreate)) ("My State Name"))
+                        xcity.write (((unsupported)).apply ((((xCity).xobjects).xcreate)) ("My City Name") ((xstate)))
+                        xchange_dict.write (((unsupported)).apply ("name") ("My State Name 2") ("nolabel_form_field") (TRUE) ("city_set-0-name") ("My City name 2") ("city_set-0-id") (((xcity).xpk)) ("city_set-TOTAL_FORMS") ("3") ("city_set-INITIAL_FORMS") ("1") ("city_set-MAX_NUM_FORMS") ("0"))
+                        xstate_change_url.write (((unsupported)).apply ((xreverse)) ("admin:admin_views_state_change") ((((unsupported)).apply (((xstate).xpk)))))
+                        bogusForceDataize.write (((((xself).xclient).xpost)).apply ((xstate_change_url)) ((xchange_dict)))
+                        xlogentry.write ((((((unsupported)).apply ((((xLogEntry).xobjects).xfilter)) ("state")).xlatest)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlogentry).xget_change_message)).apply)) (("Changed State name (from form’s Meta.labels), nolabel_form_field and not_a_form_field. Changed City verbose_name for city “%s”.".mod (xcity))))
+            (((unsupported)).apply ((xAdminSeleniumTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.urls"))))
+              seq
+                xavailable_apps.write ((((unsupported)).apply ("admin_views")).sub ((xAdminSeleniumTestCase).xavailable_apps))
+                xsetUp.write
+                  [xself]
+                    memory > xcontent_type_pk
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                        xcontent_type_pk.write ((((((xContentType).xobjects).xget_for_model)).apply ((xUser))).xpk)
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (1) (1101))))
+                          (((unsupported)).apply ((((xLogEntry).xobjects).xlog_action)) ((((xself).xsuperuser).xpk)) ((xcontent_type_pk)) ((((xself).xsuperuser).xpk)) ((((xrepr)).apply (((xself).xsuperuser)))) ((xCHANGE)) ("Changed something {i}"))
+                        (((unsupported)).apply (((xself).xadmin_login)) ("super") ("secret") ((((xreverse)).apply ("admin:index"))))
+                xtest_pagination.write
+                  [xself]
+                    memory > xcurrent_page_link
+                    memory > xpaginator
+                    memory > xlast_page_link
+                    memory > xrows
+                    memory > xpages
+                    memory > xuser_history_url
+                    memory > xsecond_page_link
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xuser_history_url.write (((unsupported)).apply ((xreverse)) ("admin:auth_user_history") ((((unsupported)).apply ((((xself).xsuperuser).xpk)))))
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).sub (xuser_history_url))))
+                        xpaginator.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) (".paginator"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xpaginator).xis_displayed)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("%s entries".mod (((((xLogEntry).xobjects).xcount)).apply))) (((xpaginator).xtext)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((xstr)).apply (((xPaginator).xELLIPSIS)))) (((xpaginator).xtext)))
+                        xcurrent_page_link.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("span.this-page"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xcurrent_page_link).xtext)) ("1"))
+                        xlast_page_link.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) (".end"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xlast_page_link).xtext)) ("20"))
+                        xpages.write ((((xpaginator).xfind_elements)).apply (((xBy).xTAG_NAME)) ("a"))
+                        xsecond_page_link.write (((unsupported)).apply ((xpages)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xsecond_page_link).xtext)) ("2"))
+                        bogusForceDataize.write ((((xsecond_page_link).xclick)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("?p=2") ((((xself).xselenium).xcurrent_url)))
+                        xrows.write (((((xself).xselenium).xfind_elements)).apply (((xBy).xCSS_SELECTOR)) ("#change-history tbody tr"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Changed something 101") (((((unsupported)).apply ((xrows)) (0)).xtext)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Changed something 200") (((((unsupported)).apply ((xrows)) ((1.neg))).xtext)))

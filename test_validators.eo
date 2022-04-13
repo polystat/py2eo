@@ -1,0 +1,45 @@
+memory > xValidationAssertions
+memory > xModelToValidate
+memory > xSimpleTestCase
+[] > test_validators
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_custom_validator_raises_error_for_incorrect_value
+        memory > xtest_custom_validator_passes_for_correct_value
+        memory > xtest_field_validators_can_be_any_iterable
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xValidationAssertions)) ((xSimpleTestCase)))
+              seq
+                xtest_custom_validator_passes_for_correct_value.write
+                  [xself]
+                    memory > xmtv
+                    seq > @
+                      seq
+                        xmtv.write (((unsupported)).apply ((xModelToValidate)) (10) ("Some Name") (42) (42))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xmtv).xfull_clean)).apply)))
+                xtest_custom_validator_raises_error_for_incorrect_value.write
+                  [xself]
+                    memory > xmtv
+                    seq > @
+                      seq
+                        xmtv.write (((unsupported)).apply ((xModelToValidate)) (10) ("Some Name") (12) (42))
+                        bogusForceDataize.write ((((xself).xassertFailsValidation)).apply (((xmtv).xfull_clean)) ((((unsupported)).apply ("f_with_custom_validator"))))
+                        bogusForceDataize.write ((((xself).xassertFieldFailsValidationWithMessage)).apply (((xmtv).xfull_clean)) ("f_with_custom_validator") ((((unsupported)).apply ("This is not the answer to life, universe and everything!"))))
+                xtest_field_validators_can_be_any_iterable.write
+                  [xself]
+                    memory > xmtv
+                    seq > @
+                      seq
+                        xmtv.write (((unsupported)).apply ((xModelToValidate)) (10) ("Some Name") (42) (12))
+                        bogusForceDataize.write ((((xself).xassertFailsValidation)).apply (((xmtv).xfull_clean)) ((((unsupported)).apply ("f_with_iterable_of_validators"))))
+                        bogusForceDataize.write ((((xself).xassertFieldFailsValidationWithMessage)).apply (((xmtv).xfull_clean)) ("f_with_iterable_of_validators") ((((unsupported)).apply ("This is not the answer to life, universe and everything!"))))

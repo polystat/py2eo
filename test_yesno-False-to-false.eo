@@ -1,0 +1,70 @@
+memory > xfalse
+memory > xyesno
+memory > xSimpleTestCase
+[] > test_yesno
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_none_two_arguments
+        memory > xtest_none
+        memory > xtest_true_arguments
+        memory > xtest_false_arguments
+        memory > xtest_invalid_value
+        memory > xtest_true
+        memory > xtest_none_three_arguments
+        memory > xtest_false
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_true.write
+                [xself]
+                  memory > xoutput
+                  seq > @
+                    (((unsupported)).apply)
+                      xoutput.write (((((xself).xengine).xrender_to_string)).apply ("t") ((((unsupported)).apply ("var") (TRUE))))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("yup yes"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_true.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xyesno)).apply (TRUE))) ("yes"))
+                xtest_false.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xyesno)).apply ((xfalse)))) ("no"))
+                xtest_none.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xyesno)).apply ("None: is there a None literal in the EO language?"))) ("maybe"))
+                xtest_true_arguments.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xyesno)).apply (TRUE) ("certainly,get out of town,perhaps"))) ("certainly"))
+                xtest_false_arguments.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xyesno)).apply ((xfalse)) ("certainly,get out of town,perhaps"))) ("get out of town"))
+                xtest_none_two_arguments.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xyesno)).apply ("None: is there a None literal in the EO language?") ("certainly,get out of town"))) ("get out of town"))
+                xtest_none_three_arguments.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xyesno)).apply ("None: is there a None literal in the EO language?") ("certainly,get out of town,perhaps"))) ("perhaps"))
+                xtest_invalid_value.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xyesno)).apply (TRUE) ("yes"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xyesno)).apply ((xfalse)) ("yes"))) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xyesno)).apply ("None: is there a None literal in the EO language?") ("yes"))))

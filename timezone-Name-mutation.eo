@@ -1,0 +1,292 @@
+memory > xdatetime
+memory > xValueError
+memory > xstr
+memory > xwarnings
+memory > xdivmod
+memory > xtimedelta
+memory > xtype
+memory > xsettings
+memory > xpytz
+memory > xsorted
+memory > xdir
+memory > xabs
+memory > xisinstance
+memory > xImportError
+memory > xAttributeError
+memory > xtimezone
+memory > xLocal
+memory > xhasattr
+memory > xRemovedInDjango50Warning
+memory > xContextDecorator
+memory > xsys
+memory > xgetattr
+memory > xzoneinfo
+memory > xobject
+memory > xtzinfo
+[] > timezone
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_PYTZ_IMPORTED
+        memory > x__all__2
+        memory > xget_default_timezone
+        memory > x__exit__
+        memory > x_is_pytz_zone
+        memory > xis_aware
+        memory > x__dir__
+        memory > x__init__
+        memory > xNOT_PASSED
+        memory > xmake_naive
+        memory > xdeactivate
+        memory > xtemplate_localtime
+        memory > xis_naive
+        memory > x_get_timezone_name
+        memory > xget_fixed_timezone
+        memory > xlocaldate
+        memory > x__getattr__
+        memory > xget_current_timezone_name
+        memory > x_active
+        memory > x_DIR
+        memory > xget_default_timezone_name
+        memory > xmake_aware
+        memory > xlocaltime
+        memory > xactivate
+        memory > x_pytz_imported
+        memory > x__enter__
+        memory > xget_current_timezone
+        memory > x_datetime_ambiguous_or_imaginary
+        memory > xnow
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xImportError)))
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__2.write (((unsupported)).apply ("utc") ("get_fixed_timezone") ("get_default_timezone") ("get_default_timezone_name") ("get_current_timezone") ("get_current_timezone_name") ("activate") ("deactivate") ("override") ("localtime") ("now") ("is_aware") ("is_naive") ("make_aware") ("make_naive"))
+            xNOT_PASSED.write (((xobject)).apply)
+            x__getattr__.write
+              [xname]
+                seq > @
+                  seq
+                    ((xname).neq "utc").if
+                      (((unsupported)).apply ((((xAttributeError)).apply ("module {__name__!r} has no attribute {name!r}"))))
+                    (((unsupported)).apply (((xwarnings).xwarn)) ("The django.utils.timezone.utc alias is deprecated. Please update your code to use datetime.timezone.utc instead.") ((xRemovedInDjango50Warning)) (2))
+                    (((unsupported)).apply (((xtimezone).xutc)))
+            xget_fixed_timezone.write
+              [xoffset]
+                memory > xhhmm
+                memory > xname
+                memory > xsign
+                seq > @
+                  seq
+                    unsupported
+                    (((xisinstance)).apply ((xoffset)) ((xtimedelta))).if
+                      xoffset.write (((unsupported)).apply (((((xoffset).xtotal_seconds)).apply)) (60))
+                    xsign.write (((xoffset).less 0).if "-" "+")
+                    xhhmm.write ("%02d%02d".mod (((xdivmod)).apply ((((xabs)).apply ((xoffset)))) (60)))
+                    xname.write ((xsign).add (xhhmm))
+                    (((unsupported)).apply ((((xtimezone)).apply ((((unsupported)).apply ((xtimedelta)) ((xoffset)))) ((xname)))))
+            xget_default_timezone.write
+              []
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    ((xsettings).xUSE_DEPRECATED_PYTZ).if
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xpytz).xtimezone)).apply (((xsettings).xTIME_ZONE)))))
+                    (((unsupported)).apply (((((xzoneinfo).xZoneInfo)).apply (((xsettings).xTIME_ZONE)))))
+            xget_default_timezone_name.write
+              []
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((x_get_timezone_name)).apply ((((xget_default_timezone)).apply)))))
+            x_active.write (((xLocal)).apply)
+            xget_current_timezone.write
+              []
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xgetattr)).apply ((x_active)) ("value") ((((xget_default_timezone)).apply)))))
+            xget_current_timezone_name.write
+              []
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((x_get_timezone_name)).apply ((((xget_current_timezone)).apply)))))
+            x_get_timezone_name.write
+              [xtimezone]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((((xtimezone).xtzname)).apply ("None: is there a None literal in the EO language?")).or (((xstr)).apply ((xtimezone))))))
+            xactivate.write
+              [xtimezone]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xisinstance)).apply ((xtimezone)) ((xtzinfo))).if
+                      (((unsupported)).apply (((x_active).xvalue)) ((xtimezone)))
+                      (((xisinstance)).apply ((xtimezone)) ((xstr))).if
+                        ((xsettings).xUSE_DEPRECATED_PYTZ).if
+                          seq
+                            (((unsupported)).apply)
+                            (((unsupported)).apply (((x_active).xvalue)) (((((xpytz).xtimezone)).apply ((xtimezone)))))
+                          (((unsupported)).apply (((x_active).xvalue)) (((((xzoneinfo).xZoneInfo)).apply ((xtimezone)))))
+                        (((unsupported)).apply ((((xValueError)).apply (("Invalid timezone: %r".mod (xtimezone))))))
+            xdeactivate.write
+              []
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xhasattr)).apply ((x_active)) ("value")).if
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((x_active).xvalue)))))))
+            (((unsupported)).apply ((xContextDecorator)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xtimezone]
+                    seq > @
+                      (((unsupported)).apply (((xself).xtimezone)) ((xtimezone)))
+                x__enter__.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xold_timezone)) ((((xgetattr)).apply ((x_active)) ("value") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply (((xself).xtimezone)) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write (((xdeactivate)).apply)
+                          bogusForceDataize.write (((xactivate)).apply (((xself).xtimezone)))
+                x__exit__.write
+                  [xself xexc_type xexc_value xtraceback]
+                    seq > @
+                      (((unsupported)).apply (((xself).xold_timezone)) ("None: is there a None literal in the EO language?")).if
+                        bogusForceDataize.write (((xdeactivate)).apply)
+                        (((unsupported)).apply (((x_active).xvalue)) (((xself).xold_timezone)))
+            xtemplate_localtime.write
+              [xvalue xuse_tz]
+                memory > xshould_convert
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xshould_convert.write ((((((unsupported)).apply ((xuse_tz)) ("None: is there a None literal in the EO language?")).if ((((xisinstance)).apply ((xvalue)) ((xdatetime))).and ((xsettings).xUSE_TZ)) (xuse_tz)).and ((((xis_naive)).apply ((xvalue))).not)).and (((xgetattr)).apply ((xvalue)) ("convert_to_local_time") (TRUE)))
+                    (((unsupported)).apply (((xshould_convert).if (((xlocaltime)).apply ((xvalue))) (xvalue))))
+            xlocaltime.write
+              [xvalue xtimezone]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                      xvalue.write (((xnow)).apply)
+                    (((unsupported)).apply ((xtimezone)) ("None: is there a None literal in the EO language?")).if
+                      xtimezone.write (((xget_current_timezone)).apply)
+                    (((xis_naive)).apply ((xvalue))).if
+                      (((unsupported)).apply ((((xValueError)).apply ("localtime() cannot be applied to a naive datetime"))))
+                    (((unsupported)).apply (((((xvalue).xastimezone)).apply ((xtimezone)))))
+            xlocaldate.write
+              [xvalue xtimezone]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((((((xlocaltime)).apply ((xvalue)) ((xtimezone))).xdate)).apply)))
+            xnow.write
+              []
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply (((xdatetime).xnow)) ((((xsettings).xUSE_TZ).if ((xtimezone).xutc) "None: is there a None literal in the EO language?")))))
+            xis_aware.write
+              [xvalue]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply (((((xvalue).xutcoffset)).apply)) ("None: is there a None literal in the EO language?"))))
+            xis_naive.write
+              [xvalue]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply (((((xvalue).xutcoffset)).apply)) ("None: is there a None literal in the EO language?"))))
+            xmake_aware.write
+              [xvalue xtimezone xis_dst]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xis_dst)) ((xNOT_PASSED))).if
+                      xis_dst.write "None: is there a None literal in the EO language?"
+                      bogusForceDataize.write ((((xwarnings).xwarn)).apply ("The is_dst argument to make_aware(), used by the Trunc() database functions and QuerySet.datetimes(), is deprecated as it has no effect with zoneinfo time zones.") ((xRemovedInDjango50Warning)))
+                    (((unsupported)).apply ((xtimezone)) ("None: is there a None literal in the EO language?")).if
+                      xtimezone.write (((xget_current_timezone)).apply)
+                    (((x_is_pytz_zone)).apply ((xtimezone))).if
+                      (((unsupported)).apply ((((unsupported)).apply (((xtimezone).xlocalize)) ((xvalue)) ((xis_dst)))))
+                      seq
+                        (((xis_aware)).apply ((xvalue))).if
+                          (((unsupported)).apply ((((xValueError)).apply (("make_aware expects a naive datetime, got %s".mod (xvalue))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xvalue).xreplace)) ((xtimezone)))))
+            xmake_naive.write
+              [xvalue xtimezone]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xtimezone)) ("None: is there a None literal in the EO language?")).if
+                      xtimezone.write (((xget_current_timezone)).apply)
+                    (((xis_naive)).apply ((xvalue))).if
+                      (((unsupported)).apply ((((xValueError)).apply ("make_naive() cannot be applied to a naive datetime"))))
+                    (((unsupported)).apply ((((unsupported)).apply ((((((xvalue).xastimezone)).apply ((xtimezone))).xreplace)) ("None: is there a None literal in the EO language?"))))
+            x_PYTZ_IMPORTED.write FALSE
+            x_pytz_imported.write
+              []
+                memory > x_PYTZ_IMPORTED
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((x_PYTZ_IMPORTED).not).and (((unsupported)).apply ("pytz") (((xsys).xmodules)))).if
+                      x_PYTZ_IMPORTED.write TRUE
+                    (((unsupported)).apply ((x_PYTZ_IMPORTED)))
+            x_is_pytz_zone.write
+              [xtz]
+                memory > x_PYTZ_BASE_CLASSES
+                seq > @
+                  seq
+                    unsupported
+                    ((((x_pytz_imported)).apply).not).if
+                      (((unsupported)).apply (FALSE))
+                    (((unsupported)).apply)
+                    x_PYTZ_BASE_CLASSES.write (((unsupported)).apply ((((xpytz).xtzinfo).xBaseTzInfo)) (((xpytz).x_FixedOffset)))
+                    ((((xisinstance)).apply (((xpytz).xUTC)) (((xpytz).x_FixedOffset))).not).if
+                      x_PYTZ_BASE_CLASSES.write ((x_PYTZ_BASE_CLASSES).add (((unsupported)).apply ((((xtype)).apply (((xpytz).xUTC))))))
+                    (((unsupported)).apply ((((xisinstance)).apply ((xtz)) ((x_PYTZ_BASE_CLASSES)))))
+            x_datetime_ambiguous_or_imaginary.write
+              [xdt xtz]
+                seq > @
+                  seq
+                    (((x_is_pytz_zone)).apply ((xtz))).if
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xpytz).xAmbiguousTimeError)) (((xpytz).xNonExistentTimeError)))))
+                          bogusForceDataize.write ((((xtz).xutcoffset)).apply ((xdt)))
+                          (((unsupported)).apply (TRUE))
+                          (((unsupported)).apply (FALSE))
+                    (((unsupported)).apply ((((((xtz).xutcoffset)).apply ((((unsupported)).apply (((xdt).xreplace)) ((((xdt).xfold).not))))).neq ((((xtz).xutcoffset)).apply ((xdt))))))
+            x_DIR.write (((xdir)).apply)
+            x__dir__.write
+              []
+                seq > @
+                  (((unsupported)).apply ((((xsorted)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_DIR)))) ("utc"))))))

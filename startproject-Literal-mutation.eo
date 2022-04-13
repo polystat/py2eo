@@ -1,0 +1,36 @@
+memory > xget_random_secret_key
+memory > xsuper
+memory > xSECRET_KEY_INSECURE_PREFIX
+memory > xoptions
+memory > xTemplateCommand
+[] > startproject
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xhelp
+        memory > xmissing_args_message
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTemplateCommand)))
+              seq
+                xhelp.write "Creates a Django project directory structure for the given project name in the current directory or optionally in the given directory."
+                xmissing_args_message.write "You must provide a project name."
+                xhandle.write
+                  [xself]
+                    memory > xtarget
+                    memory > xproject_name
+                    seq > @
+                      (((unsupported)).apply)
+                        xproject_name.write ((((xoptions).xpop)).apply ("name"))
+                        xtarget.write ((((xoptions).xpop)).apply ("directory"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("secret_key"))) (((xSECRET_KEY_INSECURE_PREFIX).add (((xget_random_secret_key)).apply))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xhandle)).apply ("project") ((xproject_name)) ((xtarget)) ((((unsupported)).apply ((xoptions)))))

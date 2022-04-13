@@ -1,0 +1,140 @@
+memory > xfalse
+memory > xPennsylvaniaCity
+memory > xTestCase
+memory > xState
+memory > xval
+memory > xzip
+memory > xref_val
+memory > xMin
+memory > xCount
+memory > xCity
+memory > xdatetime
+memory > xlist
+memory > xrender_to_kmz
+memory > xExtent
+memory > xbool
+memory > xTruth
+[] > test_regress
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_kmz
+        memory > xtest_extent
+        memory > xtest_update
+        memory > xtest_empty_count
+        memory > xfixtures
+        memory > xtest_unicode_date
+        memory > xtest_defer_or_only_with_annotate
+        memory > xtest_boolean_conversion
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xfixtures.write (((unsupported)).apply ("initial"))
+                xtest_update.write
+                  [xself]
+                    memory > xbak
+                    memory > xpueblo
+                    seq > @
+                      seq
+                        unsupported
+                        xpueblo.write (((unsupported)).apply ((((xCity).xobjects).xget)) ("Pueblo"))
+                        xbak.write (((((xpueblo).xpoint).xclone)).apply)
+                        (((unsupported)).apply ((((xpueblo).xpoint).xy)) (0.005))
+                        (((unsupported)).apply ((((xpueblo).xpoint).xx)) (0.005))
+                        (((unsupported)).apply (((((unsupported)).apply ((((xCity).xobjects).xfilter)) ("Pueblo")).xupdate)) (((xpueblo).xpoint)))
+                        bogusForceDataize.write ((((xpueblo).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply ((((xbak).xy).add 0.005)) ((((xpueblo).xpoint).xy)) (6))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply ((((xbak).xx).add 0.005)) ((((xpueblo).xpoint).xx)) (6))
+                        (((unsupported)).apply (((((unsupported)).apply ((((xCity).xobjects).xfilter)) ("Pueblo")).xupdate)) ((xbak)))
+                        bogusForceDataize.write ((((xpueblo).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xbak).xy)) ((((xpueblo).xpoint).xy)) (6))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xbak).xx)) ((((xpueblo).xpoint).xx)) (6))
+                xtest_kmz.write
+                  [xself]
+                    memory > xname
+                    memory > xplaces
+                    seq > @
+                      seq
+                        unsupported
+                        xname.write "Åland Islands"
+                        xplaces.write (((unsupported)).apply ((((unsupported)).apply ("name") ((xname)) ("description") ((xname)) ("kml") ("<Point><coordinates>5.0,23.0</coordinates></Point>"))))
+                        bogusForceDataize.write (((xrender_to_kmz)).apply ("gis/kml/placemarks.kml") ((((unsupported)).apply ("places") ((xplaces)))))
+                xtest_extent.write
+                  [xself]
+                    memory > xpnt
+                    memory > xextent
+                    memory > xref_ext
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xpnt.write ((((unsupported)).apply ((((xCity).xobjects).xget)) ("Pueblo")).xpoint)
+                        xref_ext.write (((unsupported)).apply (((xpnt).xx)) (((xpnt).xy)) (((xpnt).xx)) (((xpnt).xy)))
+                        xextent.write (((unsupported)).apply (((((((unsupported)).apply ((((xCity).xobjects).xfilter)) ("Pueblo")).xaggregate)).apply ((((xExtent)).apply ("point"))))) ("point__extent"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xref_val)) ((xval)))) ((((xzip)).apply ((xref_ext)) ((xextent)))))
+                          bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply ((xref_val)) ((xval)) (4))
+                xtest_unicode_date.write
+                  [xself]
+                    memory > xfounded
+                    seq > @
+                      seq
+                        unsupported
+                        xfounded.write (((xdatetime)).apply (1857) (5) (23))
+                        (((unsupported)).apply ((((xPennsylvaniaCity).xobjects).xcreate)) ("Mansfield") ("Tioga") ("POINT(-77.071445 41.823881)") ((xfounded)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xfounded)) ((((unsupported)).apply ((((((xPennsylvaniaCity).xobjects).xdatetimes)).apply ("founded") ("day"))) (0))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xfounded)) ((((unsupported)).apply ((((((xPennsylvaniaCity).xobjects).xaggregate)).apply ((((xMin)).apply ("founded"))))) ("founded__min"))))
+                xtest_empty_count.write
+                  [xself]
+                    memory > xstate
+                    memory > xpueblo
+                    memory > xcities_within_state
+                    seq > @
+                      seq
+                        unsupported
+                        xpueblo.write (((unsupported)).apply ((((xCity).xobjects).xget)) ("Pueblo"))
+                        xstate.write (((unsupported)).apply ((((xState).xobjects).xfilter)) (((xpueblo).xpoint)))
+                        xcities_within_state.write (((unsupported)).apply ((((xCity).xobjects).xfilter)) ((xstate)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcities_within_state).xcount)).apply)) (1))
+                xtest_defer_or_only_with_annotate.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((xlist)).apply (((((((((xCity).xobjects).xannotate)).apply ((((xCount)).apply ("point")))).xdefer)).apply ("name"))))) ((xlist)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((xlist)).apply (((((((((xCity).xobjects).xannotate)).apply ((((xCount)).apply ("point")))).xonly)).apply ("name"))))) ((xlist)))
+                xtest_boolean_conversion.write
+                  [xself]
+                    memory > xval2
+                    memory > xt1
+                    memory > xt2
+                    memory > xval1
+                    seq > @
+                      seq
+                        unsupported
+                        xt1.write (((unsupported)).apply ((((xTruth).xobjects).xcreate)) (TRUE))
+                        xt2.write (((unsupported)).apply ((((xTruth).xobjects).xcreate)) ((xfalse)))
+                        xval1.write ((((unsupported)).apply ((((xTruth).xobjects).xget)) (((xt1).xpk))).xval)
+                        xval2.write ((((unsupported)).apply ((((xTruth).xobjects).xget)) (((xt2).xpk))).xval)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xval1)) ((xbool)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xval2)) ((xbool)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((xval1)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((xval2)) ((xfalse)))

@@ -1,0 +1,72 @@
+memory > xlist
+memory > xEditor
+memory > xFieldError
+memory > xBook
+memory > xTestCase
+memory > xAuthor
+[] > test_default_related_name
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_inheritance
+        memory > xtest_default_related_name_in_queryset_lookup
+        memory > xtest_inheritance_with_overridden_default_related_name
+        memory > xtest_model_name_not_available_in_queryset_lookup
+        memory > xsetUpTestData
+        memory > xtest_related_name_overrides_default_related_name
+        memory > xtest_no_default_related_name
+        memory > xtest_default_related_name
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xauthor)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Dave") ("Loper"))))
+                        (((unsupported)).apply (((xcls).xeditor)) ((((unsupported)).apply ((((xEditor).xobjects).xcreate)) (((xcls).xauthor)) ("Test Editions"))))
+                        (((unsupported)).apply (((xcls).xbook)) ((((unsupported)).apply ((((xBook).xobjects).xcreate)) ("Test Book") (((xcls).xeditor)))))
+                        bogusForceDataize.write ((((((xcls).xbook).xauthors).xadd)).apply (((xcls).xauthor)))
+                xtest_no_default_related_name.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply (((((((xself).xauthor).xeditor_set).xall)).apply)))) ((((unsupported)).apply (((xself).xeditor)))))
+                xtest_default_related_name.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply (((((((xself).xauthor).xbooks).xall)).apply)))) ((((unsupported)).apply (((xself).xbook)))))
+                xtest_default_related_name_in_queryset_lookup.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xAuthor).xobjects).xget)) (((xself).xbook)))) (((xself).xauthor)))
+                xtest_model_name_not_available_in_queryset_lookup.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Cannot resolve keyword 'book' into field."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xFieldError)) ((xmsg)))))
+                          (((unsupported)).apply ((((xAuthor).xobjects).xget)) (((xself).xbook)))
+                xtest_related_name_overrides_default_related_name.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply (((((((xself).xeditor).xedited_books).xall)).apply)))) ((((unsupported)).apply (((xself).xbook)))))
+                xtest_inheritance.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply (((((((xself).xbook).xmodel_options_bookstores).xall)).apply)))) ((((unsupported)).apply)))
+                xtest_inheritance_with_overridden_default_related_name.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply (((((((xself).xbook).xeditor_stores).xall)).apply)))) ((((unsupported)).apply)))

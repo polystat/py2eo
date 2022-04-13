@@ -1,0 +1,153 @@
+memory > xget_resolver
+memory > xdebug
+memory > xcallable
+memory > xException
+memory > xHttp404
+memory > xgetattr
+memory > xexc
+memory > xTooManyFieldsSent
+memory > xsignals
+memory > xisinstance
+memory > xMultiPartParserError
+memory > xget_urlconf
+memory > xstr
+memory > xsync_to_async
+memory > xPermissionDenied
+memory > xsettings
+memory > xlog_response
+memory > xBadRequest
+memory > xSuspiciousOperation
+memory > xRequestDataTooBig
+memory > xsys
+memory > xasyncio
+memory > xlogging
+[] > exception
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_exception_response
+        memory > xconvert_exception_to_response
+        memory > xhandle_uncaught_exception
+        memory > xresponse_for_exception
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xconvert_exception_to_response.write
+              [xget_response]
+                memory > xinner
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((((xasyncio).xiscoroutinefunction)).apply ((xget_response))).if
+                      seq
+                        xinner.write
+                          [xrequest]
+                            memory > xresponse
+                            seq > @
+                              (((unsupported)).apply)
+                                (((unsupported)).apply ((xException)))
+                                  xresponse.write (((unsupported)).apply ((((xget_response)).apply ((xrequest)))))
+                                  xresponse.write (((unsupported)).apply ((((((unsupported)).apply ((xsync_to_async)) ((xresponse_for_exception)) (FALSE))).apply ((xrequest)) ((xexc)))))
+                                (((unsupported)).apply ((xresponse)))
+                        (((unsupported)).apply ((xinner)))
+                      seq
+                        xinner.write
+                          [xrequest]
+                            memory > xresponse
+                            seq > @
+                              (((unsupported)).apply)
+                                (((unsupported)).apply ((xException)))
+                                  xresponse.write (((xget_response)).apply ((xrequest)))
+                                  xresponse.write (((xresponse_for_exception)).apply ((xrequest)) ((xexc)))
+                                (((unsupported)).apply ((xresponse)))
+                        (((unsupported)).apply ((xinner)))
+            xresponse_for_exception.write
+              [xrequest xexc]
+                memory > xsecurity_logger
+                memory > xresponse
+                seq > @
+                  seq
+                    (((xisinstance)).apply ((xexc)) ((xHttp404))).if
+                      ((xsettings).xDEBUG).if
+                        xresponse.write ((((xdebug).xtechnical_404_response)).apply ((xrequest)) ((xexc)))
+                        xresponse.write (((xget_exception_response)).apply ((xrequest)) ((((xget_resolver)).apply ((((xget_urlconf)).apply)))) (404) ((xexc)))
+                      (((xisinstance)).apply ((xexc)) ((xPermissionDenied))).if
+                        seq
+                          xresponse.write (((xget_exception_response)).apply ((xrequest)) ((((xget_resolver)).apply ((((xget_urlconf)).apply)))) (403) ((xexc)))
+                          (((unsupported)).apply ((xlog_response)) ("Forbidden (Permission denied): %s") (((xrequest).xpath)) ((xresponse)) ((xrequest)) ((xexc)))
+                        (((xisinstance)).apply ((xexc)) ((xMultiPartParserError))).if
+                          seq
+                            xresponse.write (((xget_exception_response)).apply ((xrequest)) ((((xget_resolver)).apply ((((xget_urlconf)).apply)))) (400) ((xexc)))
+                            (((unsupported)).apply ((xlog_response)) ("Bad request (Unable to parse request body): %s") (((xrequest).xpath)) ((xresponse)) ((xrequest)) ((xexc)))
+                          (((xisinstance)).apply ((xexc)) ((xBadRequest))).if
+                            seq
+                              ((xsettings).xDEBUG).if
+                                xresponse.write (((unsupported)).apply (((xdebug).xtechnical_500_response)) ((xrequest)) ((((unsupported)).apply (((((xsys).xexc_info)).apply)))) (400))
+                                xresponse.write (((xget_exception_response)).apply ((xrequest)) ((((xget_resolver)).apply ((((xget_urlconf)).apply)))) (400) ((xexc)))
+                              (((unsupported)).apply ((xlog_response)) ("%s: %s") ((((xstr)).apply ((xexc)))) (((xrequest).xpath)) ((xresponse)) ((xrequest)) ((xexc)))
+                            (((xisinstance)).apply ((xexc)) ((xSuspiciousOperation))).if
+                              seq
+                                (((xisinstance)).apply ((xexc)) ((((unsupported)).apply ((xRequestDataTooBig)) ((xTooManyFieldsSent))))).if
+                                  bogusForceDataize.write ((((xrequest).x_mark_post_parse_error)).apply)
+                                xsecurity_logger.write ((((xlogging).xgetLogger)).apply (("django.security.%s".mod (((xexc).x__class__).x__name__))))
+                                (((unsupported)).apply (((xsecurity_logger).xerror)) ((((xstr)).apply ((xexc)))) ((xexc)) ((((unsupported)).apply ("status_code") (400) ("request") ((xrequest)))))
+                                ((xsettings).xDEBUG).if
+                                  xresponse.write (((unsupported)).apply (((xdebug).xtechnical_500_response)) ((xrequest)) ((((unsupported)).apply (((((xsys).xexc_info)).apply)))) (400))
+                                  xresponse.write (((xget_exception_response)).apply ((xrequest)) ((((xget_resolver)).apply ((((xget_urlconf)).apply)))) (400) ((xexc)))
+                              seq
+                                (((unsupported)).apply ((((xsignals).xgot_request_exception).xsend)) ("None: is there a None literal in the EO language?") ((xrequest)))
+                                xresponse.write (((xhandle_uncaught_exception)).apply ((xrequest)) ((((xget_resolver)).apply ((((xget_urlconf)).apply)))) (((((xsys).xexc_info)).apply)))
+                                (((unsupported)).apply ((xlog_response)) ("%s: %s") (((xresponse).xreason_phrase)) (((xrequest).xpath)) ((xresponse)) ((xrequest)) ((xexc)))
+                    (((((xgetattr)).apply ((xresponse)) ("is_rendered") (TRUE)).not).and (((xcallable)).apply ((((xgetattr)).apply ((xresponse)) ("render") ("None: is there a None literal in the EO language?"))))).if
+                      xresponse.write ((((xresponse).xrender)).apply)
+                    (((unsupported)).apply ((xresponse)))
+            xget_exception_response.write
+              [xrequest xresolver xstatus_code xexception]
+                memory > xresponse
+                memory > xcallback
+                seq > @
+                  seq
+                    (((unsupported)).apply ((xException)))
+                      seq
+                        xcallback.write ((((xresolver).xresolve_error_handler)).apply ((xstatus_code)))
+                        xresponse.write (((unsupported)).apply ((xcallback)) ((xrequest)) ((xexception)))
+                      seq
+                        (((unsupported)).apply ((((xsignals).xgot_request_exception).xsend)) ("None: is there a None literal in the EO language?") ((xrequest)))
+                        xresponse.write (((xhandle_uncaught_exception)).apply ((xrequest)) ((xresolver)) (((((xsys).xexc_info)).apply)))
+                    (((unsupported)).apply ((xresponse)))
+            xhandle_uncaught_exception.write
+              [xrequest xresolver xexc_info]
+                memory > xcallback
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((xsettings).xDEBUG_PROPAGATE_EXCEPTIONS).if
+                      (((unsupported)).apply)
+                    ((xsettings).xDEBUG).if
+                      (((unsupported)).apply (((((xdebug).xtechnical_500_response)).apply ((xrequest)) ((((unsupported)).apply ((xexc_info)))))))
+                    xcallback.write ((((xresolver).xresolve_error_handler)).apply (500))
+                    (((unsupported)).apply ((((xcallback)).apply ((xrequest)))))

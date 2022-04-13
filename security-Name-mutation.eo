@@ -1,0 +1,77 @@
+memory > xstr
+memory > xr
+memory > xv
+memory > xisinstance
+memory > xpath
+memory > xany
+memory > xsettings
+memory > xre
+memory > xpattern
+memory > xsuper
+memory > xMiddlewareMixin
+memory > xHttpResponsePermanentRedirect
+[] > security
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xprocess_request
+        memory > xprocess_response
+        memory > x__init__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                x__init__.write
+                  [xself xget_response]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xget_response)))
+                        (((unsupported)).apply (((xself).xsts_seconds)) (((xsettings).xSECURE_HSTS_SECONDS)))
+                        (((unsupported)).apply (((xself).xsts_include_subdomains)) (((xsettings).xSECURE_HSTS_INCLUDE_SUBDOMAINS)))
+                        (((unsupported)).apply (((xself).xsts_preload)) (((xsettings).xSECURE_HSTS_PRELOAD)))
+                        (((unsupported)).apply (((xself).xcontent_type_nosniff)) (((xsettings).xSECURE_CONTENT_TYPE_NOSNIFF)))
+                        (((unsupported)).apply (((xself).xredirect)) (((xsettings).xSECURE_SSL_REDIRECT)))
+                        (((unsupported)).apply (((xself).xredirect_host)) (((xsettings).xSECURE_SSL_HOST)))
+                        (((unsupported)).apply (((xself).xredirect_exempt)) ((((unsupported)).apply (((((xre).xcompile)).apply ((xr)))) ((xr)) (((xsettings).xSECURE_REDIRECT_EXEMPT)))))
+                        (((unsupported)).apply (((xself).xreferrer_policy)) (((xsettings).xSECURE_REFERRER_POLICY)))
+                        (((unsupported)).apply (((xself).xcross_origin_opener_policy)) (((xsettings).xSECURE_CROSS_ORIGIN_OPENER_POLICY)))
+                xprocess_request.write
+                  [xself xrequest]
+                    memory > xhost
+                    memory > xpath2
+                    seq > @
+                      seq
+                        xpath2.write (((((xrequest).xpath).xlstrip)).apply ("/"))
+                        ((((xself).xredirect).and (((((xrequest).xis_secure)).apply).not)).and ((((xany)).apply ((((unsupported)).apply (((((xpattern).xsearch)).apply ((xpath)))) ((xpattern)) (((xself).xredirect_exempt))))).not)).if
+                          seq
+                            xhost.write (((xself).xredirect_host).or ((((xrequest).xget_host)).apply))
+                            (((unsupported)).apply ((((xHttpResponsePermanentRedirect)).apply (("https://%s%s".mod (((unsupported)).apply ((xhost)) (((((xrequest).xget_full_path)).apply))))))))
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    memory > xsts_header
+                    seq > @
+                      seq
+                        ((((xself).xsts_seconds).and ((((xrequest).xis_secure)).apply)).and (((unsupported)).apply ("Strict-Transport-Security") ((xresponse)))).if
+                          seq
+                            xsts_header.write ("max-age=%s".mod ((xself).xsts_seconds))
+                            ((xself).xsts_include_subdomains).if
+                              xsts_header.write ((xsts_header).add "; includeSubDomains")
+                            ((xself).xsts_preload).if
+                              xsts_header.write ((xsts_header).add "; preload")
+                            (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Strict-Transport-Security"))) ((xsts_header)))
+                        ((xself).xcontent_type_nosniff).if
+                          bogusForceDataize.write (((((xresponse).xheaders).xsetdefault)).apply ("X-Content-Type-Options") ("nosniff"))
+                        ((xself).xreferrer_policy).if
+                          bogusForceDataize.write (((((xresponse).xheaders).xsetdefault)).apply ("Referrer-Policy") ((((",".xjoin)).apply (((((xisinstance)).apply (((xself).xreferrer_policy)) ((xstr))).if (((unsupported)).apply (((((xv).xstrip)).apply)) ((xv)) ((((((xself).xreferrer_policy).xsplit)).apply (",")))) ((xself).xreferrer_policy))))))
+                        ((xself).xcross_origin_opener_policy).if
+                          bogusForceDataize.write ((((xresponse).xsetdefault)).apply ("Cross-Origin-Opener-Policy") (((xself).xcross_origin_opener_policy)))
+                        (((unsupported)).apply ((xresponse)))

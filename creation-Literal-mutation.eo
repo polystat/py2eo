@@ -1,0 +1,335 @@
+memory > xapp
+memory > xapps
+memory > xcall_command
+memory > xexpectedFailure
+memory > xmax
+memory > xtest_method_name
+memory > xException
+memory > xgetattr
+memory > xmodel
+memory > ximport_string
+memory > xstr
+memory > xrouter
+memory > xatomic
+memory > xNotImplementedError
+memory > x_
+memory > xset
+memory > xsettings
+memory > xcursor
+memory > xtest_name
+memory > xserializers
+memory > xsys
+memory > xobj
+memory > xos
+memory > xinput
+memory > xe
+memory > xapp_config
+memory > xStringIO
+memory > xsetattr
+memory > xreason
+memory > xMigrationLoader
+memory > xtests
+memory > xskip
+memory > xtest_case_name
+[] > creation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_clone_test_db
+        memory > xmark_expected_failures_and_skips
+        memory > xget_test_db_clone_settings
+        memory > xsetup_worker_connection
+        memory > xdeserialize_db_from_string
+        memory > xdestroy_test_db
+        memory > xlog
+        memory > x_nodb_cursor
+        memory > x_execute_create_test_db
+        memory > x__init__
+        memory > x_create_test_db
+        memory > xserialize_db_to_string
+        memory > xcreate_test_db
+        memory > xclone_test_db
+        memory > xsql_table_creation_suffix
+        memory > xTEST_DATABASE_PREFIX
+        memory > x_get_test_db_name
+        memory > x_destroy_test_db
+        memory > xset_as_test_mirror
+        memory > xtest_db_signature
+        memory > x_get_database_display_str
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xTEST_DATABASE_PREFIX.write "test_"
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xconnection]
+                    seq > @
+                      (((unsupported)).apply (((xself).xconnection)) ((xconnection)))
+                x_nodb_cursor.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xconnection).x_nodb_cursor)).apply)))
+                xlog.write
+                  [xself xmsg]
+                    seq > @
+                      bogusForceDataize.write (((((xsys).xstderr).xwrite)).apply (((xmsg).add ((xos).xlinesep))))
+                xcreate_test_db.write
+                  [xself xverbosity xautoclobber xserialize xkeepdb]
+                    memory > xaction
+                    memory > xold_migration_modules
+                    memory > xtest_database_name
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xtest_database_name.write ((((xself).x_get_test_db_name)).apply)
+                        ((xverbosity).geq 1).if
+                          seq
+                            xaction.write "Creating"
+                            (xkeepdb).if
+                              xaction.write "Using existing"
+                            bogusForceDataize.write ((((xself).xlog)).apply (("%s test database for alias %s...".mod (((unsupported)).apply ((xaction)) (((((xself).x_get_database_display_str)).apply ((xverbosity)) ((xtest_database_name))))))))
+                        bogusForceDataize.write ((((xself).x_create_test_db)).apply ((xverbosity)) ((xautoclobber)) ((xkeepdb)))
+                        bogusForceDataize.write (((((xself).xconnection).xclose)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xsettings).xDATABASES)) ((((xself).xconnection).xalias)))) ("NAME"))) ((xtest_database_name)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("NAME"))) ((xtest_database_name)))
+                        (((unsupported)).apply)
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("TEST"))) ("MIGRATE"))) (FALSE)).if
+                              seq
+                                xold_migration_modules.write ((xsettings).xMIGRATION_MODULES)
+                                (((unsupported)).apply (((xsettings).xMIGRATION_MODULES)) ((((unsupported)).apply (((xapp).xlabel)) ("None: is there a None literal in the EO language?") ((xapp)) (((((xapps).xget_app_configs)).apply)))))
+                            (((unsupported)).apply ((xcall_command)) ("migrate") ((((xmax)).apply (((xverbosity).sub 1)) (0))) (FALSE) ((((xself).xconnection).xalias)) (TRUE))
+                          (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("TEST"))) ("MIGRATE"))) (FALSE)).if
+                            (((unsupported)).apply (((xsettings).xMIGRATION_MODULES)) ((xold_migration_modules)))
+                        (xserialize).if
+                          (((unsupported)).apply ((((xself).xconnection).x_test_serialized_contents)) (((((xself).xserialize_db_to_string)).apply)))
+                        (((unsupported)).apply ((xcall_command)) ("createcachetable") ((((xself).xconnection).xalias)))
+                        bogusForceDataize.write (((((xself).xconnection).xensure_connection)).apply)
+                        ((((((xos).xenviron).xget)).apply ("RUNNING_DJANGOS_TEST_SUITE")).eq "true").if
+                          bogusForceDataize.write ((((xself).xmark_expected_failures_and_skips)).apply)
+                        (((unsupported)).apply ((xtest_database_name)))
+                xset_as_test_mirror.write
+                  [xself xprimary_settings_dict]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("NAME"))) ((((unsupported)).apply ((xprimary_settings_dict)) ("NAME"))))
+                xserialize_db_to_string.write
+                  [xself]
+                    memory > xout
+                    memory > xget_objects
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xget_objects.write
+                          []
+                            memory > xloader
+                            memory > xqueryset
+                            seq > @
+                              seq
+                                (((unsupported)).apply)
+                                xloader.write (((xMigrationLoader)).apply (((xself).xconnection)))
+                                (((unsupported)).apply ((xapp_config)) (((((xapps).xget_app_configs)).apply)))
+                                  (((((unsupported)).apply (((xapp_config).xmodels_module)) ("None: is there a None literal in the EO language?")).and (((unsupported)).apply (((xapp_config).xlabel)) (((xloader).xmigrated_apps)))).and (((unsupported)).apply (((xapp_config).xname)) (((xsettings).xTEST_NON_SERIALIZED_APPS)))).if
+                                    (((unsupported)).apply ((xmodel)) (((((xapp_config).xget_models)).apply)))
+                                      ((((((xmodel).x_meta).xcan_migrate)).apply (((xself).xconnection))).and ((((xrouter).xallow_migrate_model)).apply ((((xself).xconnection).xalias)) ((xmodel)))).if
+                                        seq
+                                          xqueryset.write ((((((((xmodel).x_base_manager).xusing)).apply ((((xself).xconnection).xalias))).xorder_by)).apply (((((xmodel).x_meta).xpk).xname)))
+                                          (((unsupported)).apply (((((xqueryset).xiterator)).apply)))
+                        xout.write (((xStringIO)).apply)
+                        (((unsupported)).apply (((xserializers).xserialize)) ("json") ((((xget_objects)).apply)) ("None: is there a None literal in the EO language?") ((xout)))
+                        (((unsupported)).apply (((((xout).xgetvalue)).apply)))
+                xdeserialize_db_from_string.write
+                  [xself xdata]
+                    memory > xtable_names
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xdata.write (((xStringIO)).apply ((xdata)))
+                        xtable_names.write (((xset)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xatomic)) ((((xself).xconnection).xalias)))))
+                          seq
+                            (((unsupported)).apply ((((((xself).xconnection).xconstraint_checks_disabled)).apply)))
+                              (((unsupported)).apply ((xobj)) ((((unsupported)).apply (((xserializers).xdeserialize)) ("json") ((xdata)) ((((xself).xconnection).xalias)))))
+                                seq
+                                  bogusForceDataize.write ((((xobj).xsave)).apply)
+                                  bogusForceDataize.write ((((xtable_names).xadd)).apply ((((((xobj).xobject).x__class__).x_meta).xdb_table)))
+                            (((unsupported)).apply ((((xself).xconnection).xcheck_constraints)) ((xtable_names)))
+                x_get_database_display_str.write
+                  [xself xverbosity xdatabase_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (("'%s'%s".mod (((unsupported)).apply ((((xself).xconnection).xalias)) ((((xverbosity).geq 2).if (" ('%s')".mod (xdatabase_name)) ""))))))
+                x_get_test_db_name.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("TEST"))) ("NAME")).if
+                          (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("TEST"))) ("NAME"))))
+                        (((unsupported)).apply (((xTEST_DATABASE_PREFIX).add (((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("NAME")))))
+                x_execute_create_test_db.write
+                  [xself xcursor xparameters xkeepdb]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xcursor).xexecute)).apply (("CREATE DATABASE %(dbname)s %(suffix)s".mod (xparameters))))
+                x_create_test_db.write
+                  [xself xverbosity xautoclobber xkeepdb]
+                    memory > xtest_db_params
+                    memory > xconfirm
+                    memory > xtest_database_name
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xtest_database_name.write ((((xself).x_get_test_db_name)).apply)
+                        xtest_db_params.write (((unsupported)).apply ("dbname") (((((((xself).xconnection).xops).xquote_name)).apply ((xtest_database_name)))) ("suffix") (((((xself).xsql_table_creation_suffix)).apply)))
+                        (((unsupported)).apply (((((xself).x_nodb_cursor)).apply)) ((xcursor)))
+                          (((unsupported)).apply ((xException)))
+                            bogusForceDataize.write ((((xself).x_execute_create_test_db)).apply ((xcursor)) ((xtest_db_params)) ((xkeepdb)))
+                            seq
+                              (xkeepdb).if
+                                (((unsupported)).apply ((xtest_database_name)))
+                              bogusForceDataize.write ((((xself).xlog)).apply (("Got an error creating the test database: %s".mod (xe))))
+                              ((xautoclobber).not).if
+                                xconfirm.write (((xinput)).apply (("Type 'yes' if you would like to try deleting the test database '%s', or 'no' to cancel: ".mod (xtest_database_name))))
+                              ((xautoclobber).or ((xconfirm).eq "yes")).if
+                                (((unsupported)).apply ((xException)))
+                                  seq
+                                    ((xverbosity).geq 1).if
+                                      bogusForceDataize.write ((((xself).xlog)).apply (("Destroying old test database for alias %s...".mod (((unsupported)).apply (((((xself).x_get_database_display_str)).apply ((xverbosity)) ((xtest_database_name))))))))
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply (("DROP DATABASE %(dbname)s".mod (xtest_db_params))))
+                                    bogusForceDataize.write ((((xself).x_execute_create_test_db)).apply ((xcursor)) ((xtest_db_params)) ((xkeepdb)))
+                                  seq
+                                    bogusForceDataize.write ((((xself).xlog)).apply (("Got an error recreating the test database: %s".mod (xe))))
+                                    bogusForceDataize.write ((((xsys).xexit)).apply (2))
+                                seq
+                                  bogusForceDataize.write ((((xself).xlog)).apply ("Tests cancelled."))
+                                  bogusForceDataize.write ((((xsys).xexit)).apply (1))
+                        (((unsupported)).apply ((xtest_database_name)))
+                xclone_test_db.write
+                  [xself xsuffix xverbosity xautoclobber xkeepdb]
+                    memory > xsource_database_name
+                    memory > xaction
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xsource_database_name.write (((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("NAME"))
+                        ((xverbosity).geq 1).if
+                          seq
+                            xaction.write "Cloning test database"
+                            (xkeepdb).if
+                              xaction.write "Using existing clone"
+                            bogusForceDataize.write ((((xself).xlog)).apply (("%s for alias %s...".mod (((unsupported)).apply ((xaction)) (((((xself).x_get_database_display_str)).apply ((xverbosity)) ((xsource_database_name))))))))
+                        bogusForceDataize.write ((((xself).x_clone_test_db)).apply ((xsuffix)) ((xverbosity)) ((xkeepdb)))
+                xget_test_db_clone_settings.write
+                  [xself xsuffix]
+                    memory > xorig_settings_dict
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xorig_settings_dict.write (((xself).xconnection).xsettings_dict)
+                        (((unsupported)).apply ((((unsupported)).apply ((xorig_settings_dict)) ("NAME") (((("{}_{}".xformat)).apply ((((unsupported)).apply ((xorig_settings_dict)) ("NAME"))) ((xsuffix)))))))
+                x_clone_test_db.write
+                  [xself xsuffix xverbosity xkeepdb]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotImplementedError)).apply ("The database backend doesn't support cloning databases. Disable the option to run tests in parallel processes."))))
+                xdestroy_test_db.write
+                  [xself xold_database_name xverbosity xkeepdb xsuffix]
+                    memory > xaction
+                    memory > xtest_database_name
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xconnection).xclose)).apply)
+                        (((unsupported)).apply ((xsuffix)) ("None: is there a None literal in the EO language?")).if
+                          xtest_database_name.write (((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("NAME"))
+                          xtest_database_name.write (((unsupported)).apply (((((xself).xget_test_db_clone_settings)).apply ((xsuffix)))) ("NAME"))
+                        ((xverbosity).geq 1).if
+                          seq
+                            xaction.write "Destroying"
+                            (xkeepdb).if
+                              xaction.write "Preserving"
+                            bogusForceDataize.write ((((xself).xlog)).apply (("%s test database for alias %s...".mod (((unsupported)).apply ((xaction)) (((((xself).x_get_database_display_str)).apply ((xverbosity)) ((xtest_database_name))))))))
+                        ((xkeepdb).not).if
+                          bogusForceDataize.write ((((xself).x_destroy_test_db)).apply ((xtest_database_name)) ((xverbosity)))
+                        (((unsupported)).apply ((xold_database_name)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xsettings).xDATABASES)) ((((xself).xconnection).xalias)))) ("NAME"))) ((xold_database_name)))
+                            (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xsettings_dict)) ("NAME"))) ((xold_database_name)))
+                x_destroy_test_db.write
+                  [xself xtest_database_name xverbosity]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).x_nodb_cursor)).apply)) ((xcursor)))
+                          bogusForceDataize.write ((((xcursor).xexecute)).apply (("DROP DATABASE %s".mod ((((((xself).xconnection).xops).xquote_name)).apply ((xtest_database_name))))))
+                xmark_expected_failures_and_skips.write
+                  [xself]
+                    memory > xtest_method
+                    memory > xtest_case
+                    memory > xtest_app
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xtest_name)) (((((xself).xconnection).xfeatures).xdjango_test_expected_failures)))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xtest_case_name)) ((x_)) ((xtest_method_name)))) (((((xtest_name).xrpartition)).apply ("."))))
+                            xtest_app.write (((unsupported)).apply (((((xtest_name).xsplit)).apply ("."))) (0))
+                            (((unsupported)).apply ((xtest_app)) (((xsettings).xINSTALLED_APPS))).if
+                              seq
+                                xtest_case.write (((ximport_string)).apply ((xtest_case_name)))
+                                xtest_method.write (((xgetattr)).apply ((xtest_case)) ((xtest_method_name)))
+                                bogusForceDataize.write (((xsetattr)).apply ((xtest_case)) ((xtest_method_name)) ((((xexpectedFailure)).apply ((xtest_method)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xreason)) ((xtests)))) ((((((((xself).xconnection).xfeatures).xdjango_test_skips).xitems)).apply)))
+                          (((unsupported)).apply ((xtest_name)) ((xtests)))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xtest_case_name)) ((x_)) ((xtest_method_name)))) (((((xtest_name).xrpartition)).apply ("."))))
+                              xtest_app.write (((unsupported)).apply (((((xtest_name).xsplit)).apply ("."))) (0))
+                              (((unsupported)).apply ((xtest_app)) (((xsettings).xINSTALLED_APPS))).if
+                                seq
+                                  xtest_case.write (((ximport_string)).apply ((xtest_case_name)))
+                                  xtest_method.write (((xgetattr)).apply ((xtest_case)) ((xtest_method_name)))
+                                  bogusForceDataize.write (((xsetattr)).apply ((xtest_case)) ((xtest_method_name)) ((((((xskip)).apply ((xreason)))).apply ((xtest_method)))))
+                xsql_table_creation_suffix.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (""))
+                xtest_db_signature.write
+                  [xself]
+                    memory > xsettings_dict
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xsettings_dict.write (((xself).xconnection).xsettings_dict)
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xsettings_dict)) ("HOST"))) ((((unsupported)).apply ((xsettings_dict)) ("PORT"))) ((((unsupported)).apply ((xsettings_dict)) ("ENGINE"))) (((((xself).x_get_test_db_name)).apply)))))
+                xsetup_worker_connection.write
+                  [xself x_worker_id]
+                    memory > xsettings_dict
+                    seq > @
+                      seq
+                        xsettings_dict.write ((((xself).xget_test_db_clone_settings)).apply ((((xstr)).apply ((x_worker_id)))))
+                        bogusForceDataize.write ((((((xself).xconnection).xsettings_dict).xupdate)).apply ((xsettings_dict)))
+                        bogusForceDataize.write (((((xself).xconnection).xclose)).apply)

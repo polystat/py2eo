@@ -1,0 +1,151 @@
+memory > xattrgetter
+memory > xlist
+memory > xo
+memory > xWriteToOtherRouter
+[] > base_tests
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdatabases
+        memory > xtest_database_routing
+        memory > xtest_default_to_insertion_order
+        memory > xtest_previous_and_next_in_order
+        memory > xsetUpTestData
+        memory > xAnswer
+        memory > xtest_item_ordering
+        memory > xQuestion
+        memory > xtest_delete_and_insert
+        memory > xPost
+        memory > xtest_set_order_unrelated_object
+        memory > xtest_recursive_ordering
+        memory > xtest_change_ordering
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                xdatabases.write (((unsupported)).apply ("default") ("other"))
+                xAnswer.write "None: is there a None literal in the EO language?"
+                xPost.write "None: is there a None literal in the EO language?"
+                xQuestion.write "None: is there a None literal in the EO language?"
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xq1)) ((((unsupported)).apply (((((xcls).xQuestion).xobjects).xcreate)) ("Which Beatle starts with the letter 'R'?"))))
+                        (((unsupported)).apply (((((xcls).xAnswer).xobjects).xcreate)) (((xcls).xq1)) ("John"))
+                        (((unsupported)).apply (((((xcls).xAnswer).xobjects).xcreate)) ("Paul") (((xcls).xq1)))
+                        (((unsupported)).apply (((((xcls).xAnswer).xobjects).xcreate)) ("George") (((xcls).xq1)))
+                        (((unsupported)).apply (((((xcls).xAnswer).xobjects).xcreate)) ("Ringo") (((xcls).xq1)))
+                xtest_default_to_insertion_order.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((((xself).xq1).xanswer_set).xall)).apply)) ((((unsupported)).apply ("John") ("Paul") ("George") ("Ringo"))) ((((xattrgetter)).apply ("text"))))
+                xtest_previous_and_next_in_order.write
+                  [xself]
+                    memory > xa2
+                    memory > xa1
+                    seq > @
+                      seq
+                        xa1.write (((unsupported)).apply (((((((xself).xq1).xanswer_set).xall)).apply)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xa1).xtext)) ("John"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xa1).xget_next_in_order)).apply).xtext)) ("Paul"))
+                        xa2.write (((unsupported)).apply ((((xlist)).apply (((((((xself).xq1).xanswer_set).xall)).apply)))) ((1.neg)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xa2).xtext)) ("Ringo"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xa2).xget_previous_in_order)).apply).xtext)) ("George"))
+                xtest_item_ordering.write
+                  [xself]
+                    memory > xa2
+                    memory > xid_list
+                    memory > xa1
+                    seq > @
+                      seq
+                        xa1.write (((unsupported)).apply (((((((xself).xq1).xanswer_set).xall)).apply)) (1))
+                        xid_list.write (((unsupported)).apply (((xo).xpk)) ((xo)) (((((((xself).xq1).xanswer_set).xall)).apply)))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((xa1).xquestion).xget_answer_order)).apply)) ((xid_list)))
+                        xa2.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Number five") (((xself).xq1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((((((xa1).xquestion).xget_answer_order)).apply)))) ((((xlist)).apply ((((((xa2).xquestion).xget_answer_order)).apply)))))
+                xtest_set_order_unrelated_object.write
+                  [xself]
+                    memory > xq
+                    memory > xa
+                    seq > @
+                      seq
+                        unsupported
+                        xq.write (((unsupported)).apply (((((xself).xQuestion).xobjects).xcreate)) ("other"))
+                        xa.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Number five") ((xq)))
+                        bogusForceDataize.write (((((xself).xq1).xset_answer_order)).apply (((((unsupported)).apply (((xo).xpk)) ((xo)) (((((((xself).xq1).xanswer_set).xall)).apply))).add (((unsupported)).apply (((xa).xpk))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((((xself).xAnswer).xobjects).xget)) (((xa).xpk))).x_order)) (0))
+                xtest_change_ordering.write
+                  [xself]
+                    memory > xx
+                    memory > xid_list
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Number five") (((xself).xq1)))
+                        xid_list.write (((unsupported)).apply (((xo).xpk)) ((xo)) (((((((xself).xq1).xanswer_set).xall)).apply)))
+                        xx.write ((((xid_list).xpop)).apply)
+                        bogusForceDataize.write ((((xid_list).xinsert)).apply ((1.neg)) ((xx)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply ((((xlist)).apply ((((((xa).xquestion).xget_answer_order)).apply)))) ((xid_list)))
+                        bogusForceDataize.write (((((xa).xquestion).xset_answer_order)).apply ((xid_list)))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((((xself).xq1).xanswer_set).xall)).apply)) ((((unsupported)).apply ("John") ("Paul") ("George") ("Number five") ("Ringo"))) ((((xattrgetter)).apply ("text"))))
+                xtest_recursive_ordering.write
+                  [xself]
+                    memory > xp2
+                    memory > xp1_1
+                    memory > xp1_3
+                    memory > xp1_2
+                    memory > xp1
+                    seq > @
+                      seq
+                        xp1.write (((unsupported)).apply (((((xself).xPost).xobjects).xcreate)) ("1"))
+                        xp2.write (((unsupported)).apply (((((xself).xPost).xobjects).xcreate)) ("2"))
+                        xp1_1.write (((unsupported)).apply (((((xself).xPost).xobjects).xcreate)) ("1.1") ((xp1)))
+                        xp1_2.write (((unsupported)).apply (((((xself).xPost).xobjects).xcreate)) ("1.2") ((xp1)))
+                        (((unsupported)).apply (((((xself).xPost).xobjects).xcreate)) ("2.1") ((xp2)))
+                        xp1_3.write (((unsupported)).apply (((((xself).xPost).xobjects).xcreate)) ("1.3") ((xp1)))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply (((((xp1).xget_post_order)).apply)) ((((unsupported)).apply (((xp1_1).xpk)) (((xp1_2).xpk)) (((xp1_3).xpk)))))
+                xtest_delete_and_insert.write
+                  [xself]
+                    memory > xa1
+                    memory > xa4
+                    memory > xa2
+                    memory > xnew_answer
+                    memory > xq2
+                    memory > xq1
+                    memory > xa3
+                    seq > @
+                      seq
+                        xq1.write (((unsupported)).apply (((((xself).xQuestion).xobjects).xcreate)) ("What is your favorite color?"))
+                        xq2.write (((unsupported)).apply (((((xself).xQuestion).xobjects).xcreate)) ("What color is it?"))
+                        xa1.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Blue") ((xq1)))
+                        xa2.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Red") ((xq1)))
+                        xa3.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Green") ((xq1)))
+                        xa4.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Yellow") ((xq1)))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((xq1).xanswer_set).xall)).apply)) ((((unsupported)).apply ((xa1)) ((xa2)) ((xa3)) ((xa4)))))
+                        (((unsupported)).apply (((xa3).xquestion)) ((xq2)))
+                        bogusForceDataize.write ((((xa3).xsave)).apply)
+                        bogusForceDataize.write ((((xa1).xdelete)).apply)
+                        xnew_answer.write (((unsupported)).apply (((((xself).xAnswer).xobjects).xcreate)) ("Black") ((xq1)))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((xq1).xanswer_set).xall)).apply)) ((((unsupported)).apply ((xa2)) ((xa4)) ((xnew_answer)))))
+                xtest_database_routing.write
+                  [xself]
+                    memory > xdb_for_write
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          xdb_for_write.write
+                            [xself xmodel]
+                              seq > @
+                                (((unsupported)).apply)
+                                  (((unsupported)).apply ("other"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ((((xWriteToOtherRouter)).apply)))))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xassertNumQueries)) (0) ("default"))) ((((unsupported)).apply (((xself).xassertNumQueries)) (1) ("other"))))
+                            bogusForceDataize.write (((((xself).xq1).xset_answer_order)).apply ((((unsupported)).apply (3) (1) (2) (4))))

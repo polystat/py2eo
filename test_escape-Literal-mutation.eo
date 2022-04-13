@@ -1,0 +1,76 @@
+memory > xstr
+memory > xstring
+memory > xmark_safe
+memory > xescape
+memory > xlazy
+memory > xPromise
+memory > xSimpleTestCase
+[] > test_escape
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_escape04
+        memory > xtest_escape01
+        memory > xtest_non_string_input
+        memory > xtest_escape02
+        memory > xtest_escape03
+        memory > xtest_escape_lazy_string
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_escape01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("escape01") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&amp;y x&y"))
+                xtest_escape02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("escape02") ((((unsupported)).apply ("a") ("x&y") ("b") ((((xmark_safe)).apply ("x&y"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&amp;y x&y"))
+                xtest_escape03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("escape03") ((((unsupported)).apply ("a") ("x&y"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&amp;y"))
+                xtest_escape04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("escape04") ((((unsupported)).apply ("a") ("x&y"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&amp;y"))
+                xtest_escape_lazy_string.write
+                  [xself]
+                    memory > xescaped
+                    memory > xadd_html
+                    seq > @
+                      seq
+                        xadd_html.write (((xlazy)).apply ((((unsupported)).apply (((xstring).add "special characters > here")))) ((xstr)))
+                        xescaped.write (((xescape)).apply ((((xadd_html)).apply ("<some html & "))))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xescaped)) ((xPromise)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xescaped)) ("&lt;some html &amp; special characters &gt; here"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_non_string_input.write
+                [xself]
+                  seq > @
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xescape)).apply (123))) ("123"))

@@ -1,0 +1,86 @@
+memory > xDEFAULT_DB_ALIAS
+memory > xstr
+memory > xapp_label
+memory > xKeyError
+memory > xerr
+memory > xBaseCommand
+memory > xconnections
+memory > xsuper
+memory > xmigration_name
+memory > xoptions
+memory > xapps
+memory > xAmbiguityError
+memory > xargs
+memory > xLookupError
+memory > xMigrationLoader
+memory > xCommandError
+[] > sqlmigrate
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xexecute
+        memory > xoutput_transaction
+        memory > xhandle
+        memory > xadd_arguments
+        memory > xhelp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Prints the SQL statements for the named migration."
+                xoutput_transaction.write TRUE
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("app_label") ("App label of the application containing the migration."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("migration_name") ("Migration name to print the SQL for."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ((xDEFAULT_DB_ALIAS)) ("Nominates a database to create SQL for. Defaults to the \"default\" database."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--backwards") ("store_true") ("Creates SQL to unapply the migration, rather than to apply it"))
+                xexecute.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("no_color"))) (TRUE))
+                        (((unsupported)).apply (((((((xsuper)).apply).xexecute)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xoptions)))))))
+                xhandle.write
+                  [xself]
+                    memory > xloader
+                    memory > xsql_statements
+                    memory > xplan
+                    memory > xconnection
+                    memory > xmigration
+                    memory > xtarget
+                    seq > @
+                      (((unsupported)).apply)
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((((unsupported)).apply ((xoptions)) ("database"))))
+                        xloader.write (((unsupported)).apply ((xMigrationLoader)) ((xconnection)) (FALSE))
+                        (((unsupported)).apply ((((unsupported)).apply ((xapp_label)) ((xmigration_name)))) ((((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("app_label"))) ((((unsupported)).apply ((xoptions)) ("migration_name"))))))
+                        (((unsupported)).apply ((xLookupError)))
+                          bogusForceDataize.write ((((xapps).xget_app_config)).apply ((xapp_label)))
+                          (((unsupported)).apply ((((xCommandError)).apply ((((xstr)).apply ((xerr)))))))
+                        (((unsupported)).apply ((xapp_label)) (((xloader).xmigrated_apps))).if
+                          (((unsupported)).apply ((((xCommandError)).apply (("App '%s' does not have migrations".mod (xapp_label))))))
+                        (((unsupported)).apply ((xAmbiguityError)) ((xKeyError)))
+                          xmigration.write ((((xloader).xget_migration_by_prefix)).apply ((xapp_label)) ((xmigration_name)))
+                          (((unsupported)).apply ((((xCommandError)).apply (("More than one migration matches '%s' in app '%s'. Please be more specific.".mod (((unsupported)).apply ((xmigration_name)) ((xapp_label))))))))
+                          (((unsupported)).apply ((((xCommandError)).apply (("Cannot find a migration matching '%s' from app '%s'. Is it in INSTALLED_APPS?".mod (((unsupported)).apply ((xmigration_name)) ((xapp_label))))))))
+                        xtarget.write (((unsupported)).apply ((xapp_label)) (((xmigration).xname)))
+                        (((unsupported)).apply (((xself).xoutput_transaction)) ((((xmigration).xatomic).and (((xconnection).xfeatures).xcan_rollback_ddl))))
+                        xplan.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xloader).xgraph).xnodes)) ((xtarget)))) ((((unsupported)).apply ((xoptions)) ("backwards"))))))
+                        xsql_statements.write ((((xloader).xcollect_sql)).apply ((xplan)))
+                        (((xsql_statements).not).and ((((unsupported)).apply ((xoptions)) ("verbosity")).geq 1)).if
+                          bogusForceDataize.write (((((xself).xstderr).xwrite)).apply ("No operations found."))
+                        (((unsupported)).apply (((("n".xjoin)).apply ((xsql_statements)))))

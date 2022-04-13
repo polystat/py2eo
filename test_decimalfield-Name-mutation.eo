@@ -1,0 +1,171 @@
+memory > xcomplex
+memory > xlist
+memory > xBigD
+memory > xValidationError
+memory > xmath
+memory > xvalue
+memory > xFoo
+memory > xfloat
+memory > xDecimal
+memory > xmodels
+memory > xobject
+memory > xTestCase
+memory > xvalidators
+memory > xf
+memory > xset
+[] > test_decimalfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_save_nan_invalid
+        memory > xtest_max_digits_validation
+        memory > xtest_default
+        memory > xtest_fetch_from_db_without_float_rounding
+        memory > xtest_get_prep_value
+        memory > xtest_roundtrip_with_trailing_zeros
+        memory > xtest_invalid_value
+        memory > xtest_max_decimal_places_validation
+        memory > xtest_lookup_really_big_value
+        memory > xtest_filter_with_strings
+        memory > xtest_to_python
+        memory > xtest_max_whole_digits_validation
+        memory > xtest_save_without_float_conversion
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_to_python.write
+                  [xself]
+                    memory > xf2
+                    seq > @
+                      seq
+                        xf2.write (((unsupported)).apply (((xmodels).xDecimalField)) (4) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply (3))) ((((xDecimal)).apply ("3"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply ("3.14"))) ((((xDecimal)).apply ("3.14"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply (3.1415926535897))) ((((xDecimal)).apply ("3.142"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply (2.4))) ((((xDecimal)).apply ("2.400"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply (2.0625))) ((((xDecimal)).apply ("2.062"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply (2.1875))) ((((xDecimal)).apply ("2.188"))))
+                xtest_invalid_value.write
+                  [xself]
+                    memory > xfield
+                    memory > xtests
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply (((xmodels).xDecimalField)) (4) (2))
+                        xmsg.write "“%s” value must be a decimal number."
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ((((unsupported)).apply)) ((((xset)).apply)) ((((xobject)).apply)) ((((xcomplex)).apply)) ("non-numeric string") ("non-numeric byte-string"))
+                        (((unsupported)).apply ((xvalue)) ((xtests)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xvalue)))))
+                            (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) (((xmsg).mod (((unsupported)).apply ((xvalue))))))))
+                              bogusForceDataize.write ((((xfield).xclean)).apply ((xvalue)) ("None: is there a None literal in the EO language?"))
+                xtest_default.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xDecimalField)) ((((xDecimal)).apply ("0.00"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xget_default)).apply)) ((((xDecimal)).apply ("0.00"))))
+                xtest_get_prep_value.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xDecimalField)) (5) (1))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xget_prep_value)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xget_prep_value)).apply ("2.4"))) ((((xDecimal)).apply ("2.4"))))
+                xtest_filter_with_strings.write
+                  [xself]
+                    memory > xfoo
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xfoo.write (((unsupported)).apply ((((xFoo).xobjects).xcreate)) ("abc") ((((xDecimal)).apply ("12.34"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((((unsupported)).apply ((((xFoo).xobjects).xfilter)) ("12.34"))))) ((((unsupported)).apply ((xfoo)))))
+                xtest_save_without_float_conversion.write
+                  [xself]
+                    memory > xbd
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xbd.write (((unsupported)).apply ((xBigD)) ("12.9"))
+                        bogusForceDataize.write ((((xbd).xsave)).apply)
+                        xbd.write (((unsupported)).apply ((((xBigD).xobjects).xget)) (((xbd).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xbd).xd)) ((((xDecimal)).apply ("12.9"))))
+                xtest_save_nan_invalid.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "“nan” value must be a decimal number."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          (((unsupported)).apply ((((xBigD).xobjects).xcreate)) ((((xfloat)).apply ("nan"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          (((unsupported)).apply ((((xBigD).xobjects).xcreate)) (((xmath).xnan)))
+                xtest_fetch_from_db_without_float_rounding.write
+                  [xself]
+                    memory > xbig_decimal
+                    seq > @
+                      seq
+                        xbig_decimal.write (((unsupported)).apply ((((xBigD).xobjects).xcreate)) ((((xDecimal)).apply (".100000000000000000000000000005"))))
+                        bogusForceDataize.write ((((xbig_decimal).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xbig_decimal).xd)) ((((xDecimal)).apply (".100000000000000000000000000005"))))
+                xtest_lookup_really_big_value.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xFoo).xobjects).xfilter)) ((((unsupported)).apply)))
+                xtest_max_digits_validation.write
+                  [xself]
+                    memory > xfield
+                    memory > xexpected_message
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply (((xmodels).xDecimalField)) (2))
+                        xexpected_message.write ((((unsupported)).apply ((((xvalidators).xDecimalValidator).xmessages)) ("max_digits")).mod (((unsupported)).apply ("max") (2)))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xexpected_message)))))
+                          bogusForceDataize.write ((((xfield).xclean)).apply (100) ("None: is there a None literal in the EO language?"))
+                xtest_max_decimal_places_validation.write
+                  [xself]
+                    memory > xfield
+                    memory > xexpected_message
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply (((xmodels).xDecimalField)) (1))
+                        xexpected_message.write ((((unsupported)).apply ((((xvalidators).xDecimalValidator).xmessages)) ("max_decimal_places")).mod (((unsupported)).apply ("max") (1)))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xexpected_message)))))
+                          bogusForceDataize.write ((((xfield).xclean)).apply ((((xDecimal)).apply ("0.99"))) ("None: is there a None literal in the EO language?"))
+                xtest_max_whole_digits_validation.write
+                  [xself]
+                    memory > xfield
+                    memory > xexpected_message
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply (((xmodels).xDecimalField)) (3) (1))
+                        xexpected_message.write ((((unsupported)).apply ((((xvalidators).xDecimalValidator).xmessages)) ("max_whole_digits")).mod (((unsupported)).apply ("max") (2)))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xexpected_message)))))
+                          bogusForceDataize.write ((((xfield).xclean)).apply ((((xDecimal)).apply ("999"))) ("None: is there a None literal in the EO language?"))
+                xtest_roundtrip_with_trailing_zeros.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        unsupported
+                        xobj.write (((unsupported)).apply ((((xFoo).xobjects).xcreate)) ("bar") ((((xDecimal)).apply ("8.320"))))
+                        bogusForceDataize.write ((((xobj).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xobj).xd).xcompare_total)).apply ((((xDecimal)).apply ("8.320"))))) ((((xDecimal)).apply ("0"))))

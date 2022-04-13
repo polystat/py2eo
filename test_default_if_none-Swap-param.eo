@@ -1,0 +1,32 @@
+memory > xdefault_if_none
+memory > xSimpleTestCase
+[] > test_default_if_none
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_none
+        memory > xtest_empty_string
+        memory > xtest_value
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_value.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdefault_if_none)).apply ("val") ("default"))) ("val"))
+                xtest_none.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ("default") ((((xdefault_if_none)).apply ("None: is there a None literal in the EO language?") ("default"))))
+                xtest_empty_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdefault_if_none)).apply ("") ("default"))) (""))

@@ -1,0 +1,87 @@
+memory > xTestDataMixin
+memory > xAdminDocsTestCase
+memory > xImproperlyConfigured
+memory > xUser
+[] > test_middleware
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_xview_func
+        memory > xtest_no_auth_middleware
+        memory > xtest_callable_object_view
+        memory > xtest_xview_class
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestDataMixin)) ((xAdminDocsTestCase)))
+              seq
+                xtest_xview_func.write
+                  [xself]
+                    memory > xuser
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xuser.write (((unsupported)).apply ((((xUser).xobjects).xget)) ("super"))
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/func/"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("X-View") ((xresponse)))
+                        bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xsuperuser)))
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/func/"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("X-View") ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-View"))) ("admin_docs.views.xview"))
+                        (((unsupported)).apply (((xuser).xis_staff)) (FALSE))
+                        unsupported
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/func/"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("X-View") ((xresponse)))
+                        (((unsupported)).apply (((xuser).xis_staff)) (TRUE))
+                        (((unsupported)).apply (((xuser).xis_active)) (FALSE))
+                        unsupported
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/func/"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("X-View") ((xresponse)))
+                xtest_xview_class.write
+                  [xself]
+                    memory > xuser
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xuser.write (((unsupported)).apply ((((xUser).xobjects).xget)) ("super"))
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/class/"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("X-View") ((xresponse)))
+                        bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xsuperuser)))
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/class/"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("X-View") ((xresponse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-View"))) ("admin_docs.views.XViewClass"))
+                        (((unsupported)).apply (((xuser).xis_staff)) (FALSE))
+                        unsupported
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/class/"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("X-View") ((xresponse)))
+                        (((unsupported)).apply (((xuser).xis_staff)) (TRUE))
+                        (((unsupported)).apply (((xuser).xis_active)) (FALSE))
+                        unsupported
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/class/"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("X-View") ((xresponse)))
+                xtest_callable_object_view.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xsuperuser)))
+                        xresponse.write (((((xself).xclient).xhead)).apply ("/xview/callable_object/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-View"))) ("admin_docs.views.XViewCallableObject"))
+                xtest_no_auth_middleware.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "The XView middleware requires authentication middleware to be installed. Edit your MIDDLEWARE setting to insert 'django.contrib.auth.middleware.AuthenticationMiddleware'."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xclient).xhead)).apply ("/xview/func/"))

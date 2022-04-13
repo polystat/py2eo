@@ -1,0 +1,118 @@
+memory > xFormFieldAssertionsMixin
+memory > xexpected
+memory > xValidationError
+memory > xSimpleTestCase2
+memory > xTypeError
+memory > xvalue
+memory > xurl
+memory > xURLField
+[] > test_urlfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_urlfield_strip_on_none_value
+        memory > xtest_urlfield_widget_max_min_length
+        memory > xtest_urlfield_clean_invalid
+        memory > xtest_urlfield_clean
+        memory > xtest_urlfield_unable_to_set_strip_kwarg
+        memory > xtest_urlfield_widget
+        memory > xtest_urlfield_clean_required
+        memory > xtest_urlfield_clean_not_required
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFormFieldAssertionsMixin)) ((xSimpleTestCase2)))
+              seq
+                xtest_urlfield_widget.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xURLField)).apply)
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input type=\"url\" name=\"f\" id=\"id_f\" required>"))
+                xtest_urlfield_widget_max_min_length.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xURLField)) (15) (20))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("http://example.com") (((((xf).xclean)).apply ("http://example.com"))))
+                        bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((xf)) ("<input id=\"id_f\" type=\"url\" name=\"f\" maxlength=\"20\" minlength=\"15\" required>"))
+                        xmsg.write "'Ensure this value has at least 15 characters (it has 12).'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("http://f.com"))
+                        xmsg.write "'Ensure this value has at most 20 characters (it has 37).'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("http://abcdefghijklmnopqrstuvwxyz.com"))
+                xtest_urlfield_clean.write
+                  [xself]
+                    memory > xtests
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xURLField)) (FALSE))
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("http://localhost") ("http://localhost"))) ((((unsupported)).apply ("http://example.com") ("http://example.com"))) ((((unsupported)).apply ("http://example.com/test") ("http://example.com/test"))) ((((unsupported)).apply ("http://example.com.") ("http://example.com."))) ((((unsupported)).apply ("http://www.example.com") ("http://www.example.com"))) ((((unsupported)).apply ("http://www.example.com:8000/test") ("http://www.example.com:8000/test"))) ((((unsupported)).apply ("http://example.com?some_param=some_value") ("http://example.com?some_param=some_value"))) ((((unsupported)).apply ("valid-with-hyphens.com") ("http://valid-with-hyphens.com"))) ((((unsupported)).apply ("subdomain.domain.com") ("http://subdomain.domain.com"))) ((((unsupported)).apply ("http://200.8.9.10") ("http://200.8.9.10"))) ((((unsupported)).apply ("http://200.8.9.10:8000/test") ("http://200.8.9.10:8000/test"))) ((((unsupported)).apply ("http://valid-----hyphens.com") ("http://valid-----hyphens.com"))) ((((unsupported)).apply ("http://some.idn.xyzäöüßabc.domain.com:123/blah") ("http://some.idn.xyzxe4xf6xfcxdfabc.domain.com:123/blah"))) ((((unsupported)).apply ("www.example.com/s/http://code.djangoproject.com/ticket/13804") ("http://www.example.com/s/http://code.djangoproject.com/ticket/13804"))) ((((unsupported)).apply ("http://example.com/     ") ("http://example.com/"))) ((((unsupported)).apply ("http://עברית.idn.icann.org/") ("http://עברית.idn.icann.org/"))) ((((unsupported)).apply ("http://sãopaulo.com/") ("http://sãopaulo.com/"))) ((((unsupported)).apply ("http://sãopaulo.com.br/") ("http://sãopaulo.com.br/"))) ((((unsupported)).apply ("http://пример.испытание/") ("http://пример.испытание/"))) ((((unsupported)).apply ("http://مثال.إختبار/") ("http://مثال.إختبار/"))) ((((unsupported)).apply ("http://例子.测试/") ("http://例子.测试/"))) ((((unsupported)).apply ("http://例子.測試/") ("http://例子.測試/"))) ((((unsupported)).apply ("http://उदाहरण.परीक्षा/") ("http://उदाहरण.परीक्षा/"))) ((((unsupported)).apply ("http://例え.テスト/") ("http://例え.テスト/"))) ((((unsupported)).apply ("http://مثال.آزمایشی/") ("http://مثال.آزمایشی/"))) ((((unsupported)).apply ("http://실례.테스트/") ("http://실례.테스트/"))) ((((unsupported)).apply ("http://العربية.idn.icann.org/") ("http://العربية.idn.icann.org/"))) ((((unsupported)).apply ("http://[12:34::3a53]/") ("http://[12:34::3a53]/"))) ((((unsupported)).apply ("http://[a34:9238::]:8080/") ("http://[a34:9238::]:8080/"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xurl)) ((xexpected)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xurl)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ((xurl)))) ((xexpected)))
+                xtest_urlfield_clean_invalid.write
+                  [xself]
+                    memory > xtests
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xURLField)).apply)
+                        xtests.write (((unsupported)).apply ("foo") ("com.") (".") ("http://") ("http://example") ("http://example.") ("http://.com") ("http://invalid-.com") ("http://-invalid.com") ("http://inv-.alid-.com") ("http://inv-.-alid.com") ("[a") ("http://[a") (23) (("http://%s".mod (((unsupported)).apply (("X".mul 60))))) (("http://%s".mod (((unsupported)).apply (("X".mul 200))))) ("////]@N.AN") ("#@A.bO"))
+                        xmsg.write "'Enter a valid URL.'"
+                        (((unsupported)).apply ((xvalue)) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))))
+                            (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                              bogusForceDataize.write ((((xf).xclean)).apply ((xvalue)))
+                xtest_urlfield_clean_required.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xURLField)).apply)
+                        xmsg.write "'This field is required.'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                xtest_urlfield_clean_not_required.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xURLField)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (""))) (""))
+                xtest_urlfield_strip_on_none_value.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xURLField)) (FALSE) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                xtest_urlfield_unable_to_set_strip_kwarg.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "__init__() got multiple values for keyword argument 'strip'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          (((unsupported)).apply ((xURLField)) (FALSE))

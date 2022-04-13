@@ -1,0 +1,256 @@
+memory > xbase_name
+memory > xFileField
+memory > xmsg_file_name
+memory > xFileSystemStorage
+memory > xpath
+memory > xSuspiciousFileOperation
+memory > xfile_name
+memory > xos
+memory > xStorage
+memory > xSimpleTestCase
+memory > xAWSS3Storage
+memory > xContentFile
+[] > test_generate_filename
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_filefield_generate_filename_upload_to_dangerous_filename
+        memory > xtest_filefield_awss3_storage
+        memory > xprefix
+        memory > xtest_filefield_dangerous_filename_dot_segments
+        memory > xtest_filefield_generate_filename_upload_to_overrides_dangerous_filename
+        memory > xtest_storage_dangerous_paths
+        memory > xtest_filefield_generate_filename_upload_to_absolute_path
+        memory > xtest_filefield_dangerous_filename
+        memory > xtest_filefield_generate_filename
+        memory > xtest_filefield_generate_filename_with_upload_to
+        memory > xtest_storage_dangerous_paths_dir_name
+        memory > xgenerate_filename
+        memory > xtest_filefield_generate_filename_absolute_path
+        memory > x_save
+        memory > xget_available_name
+        memory > xget_valid_name
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xStorage)))
+              seq
+                (((unsupported)).apply)
+                xprefix.write "mys3folder/"
+                x_save.write
+                  [xself xname xcontent]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xname)))
+                xget_valid_name.write
+                  [xself xname]
+                    seq > @
+                      (((unsupported)).apply ((xname)))
+                xget_available_name.write
+                  [xself xname xmax_length]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xname)))
+                xgenerate_filename.write
+                  [xself xfilename]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xprefix).add ((((xself).xget_valid_name)).apply ((xfilename))))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_storage_dangerous_paths.write
+                  [xself]
+                    memory > xs
+                    memory > xmsg
+                    memory > xcandidates
+                    seq > @
+                      seq
+                        xcandidates.write (((unsupported)).apply ((((unsupported)).apply ("/tmp/..") (".."))) ((((unsupported)).apply ("/tmp/.") ("."))) ((((unsupported)).apply ("") (""))))
+                        xs.write (xFileSystemStorage)
+                        xmsg.write "Could not derive file name from '%s'"
+                        (((unsupported)).apply ((((unsupported)).apply ((xfile_name)) ((xbase_name)))) ((xcandidates)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfile_name)))))
+                            seq
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) (((xmsg).mod (xbase_name))))))
+                                bogusForceDataize.write ((((xs).xget_available_name)).apply ((xfile_name)))
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) (((xmsg).mod (xbase_name))))))
+                                bogusForceDataize.write ((((xs).xgenerate_filename)).apply ((xfile_name)))
+                xtest_storage_dangerous_paths_dir_name.write
+                  [xself]
+                    memory > xs
+                    memory > xmsg
+                    memory > xcandidates
+                    seq > @
+                      seq
+                        xcandidates.write (((unsupported)).apply ((((unsupported)).apply ("tmp/../path") ("tmp/.."))) ((((unsupported)).apply ((((unsupported)).apply)) ("tmp/.."))) ((((unsupported)).apply ("/tmp/../path") ("/tmp/.."))) ((((unsupported)).apply ((((unsupported)).apply)) ("/tmp/.."))))
+                        xs.write (xFileSystemStorage)
+                        (((unsupported)).apply ((((unsupported)).apply ((xfile_name)) ((xpath)))) ((xcandidates)))
+                          seq
+                            xmsg.write ("Detected path traversal attempt in '%s'".mod (xpath))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfile_name)))))
+                              seq
+                                (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                                  bogusForceDataize.write ((((xs).xget_available_name)).apply ((xfile_name)))
+                                (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                                  bogusForceDataize.write ((((xs).xgenerate_filename)).apply ((xfile_name)))
+                xtest_filefield_dangerous_filename.write
+                  [xself]
+                    memory > xmsg
+                    memory > xcandidates
+                    memory > xf
+                    seq > @
+                      seq
+                        xcandidates.write (((unsupported)).apply ((((unsupported)).apply ("..") ("some/folder/.."))) ((((unsupported)).apply (".") ("some/folder/."))) ((((unsupported)).apply ("") ("some/folder/"))) ((((unsupported)).apply ("???") ("???"))) ((((unsupported)).apply ("$.$.$") ("$.$.$"))))
+                        xf.write (((unsupported)).apply ((xFileField)) ("some/folder/"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xfile_name)) ((xmsg_file_name)))) ((xcandidates)))
+                          seq
+                            xmsg.write "Could not derive file name from '{msg_file_name}'"
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfile_name)))))
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                                bogusForceDataize.write ((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ((xfile_name)))
+                xtest_filefield_dangerous_filename_dot_segments.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFileField)) ("some/folder/"))
+                        xmsg.write "Detected path traversal attempt in 'some/folder/../path'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ("../path"))
+                xtest_filefield_generate_filename_absolute_path.write
+                  [xself]
+                    memory > xmsg
+                    memory > xcandidates
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFileField)) ("some/folder/"))
+                        xcandidates.write (((unsupported)).apply ("/tmp/path") ("/tmp/../path"))
+                        (((unsupported)).apply ((xfile_name)) ((xcandidates)))
+                          seq
+                            xmsg.write "Detected path traversal attempt in '{file_name}'"
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfile_name)))))
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                                bogusForceDataize.write ((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ((xfile_name)))
+                xtest_filefield_generate_filename.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xFileField)) ("some/folder/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ("test with space.txt"))) ((((((xos).xpath).xnormpath)).apply ("some/folder/test_with_space.txt"))))
+                xtest_filefield_generate_filename_with_upload_to.write
+                  [xself]
+                    memory > xupload_to
+                    memory > xf
+                    seq > @
+                      seq
+                        xupload_to.write
+                          [xinstance xfilename]
+                            seq > @
+                              (((unsupported)).apply (("some/folder/".add (xfilename))))
+                        xf.write (((unsupported)).apply ((xFileField)) ((xupload_to)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ("test with space.txt"))) ((((((xos).xpath).xnormpath)).apply ("some/folder/test_with_space.txt"))))
+                xtest_filefield_generate_filename_upload_to_overrides_dangerous_filename.write
+                  [xself]
+                    memory > xupload_to
+                    memory > xcandidates
+                    memory > xf
+                    seq > @
+                      seq
+                        xupload_to.write
+                          [xinstance xfilename]
+                            seq > @
+                              (((unsupported)).apply ("test.txt"))
+                        xf.write (((unsupported)).apply ((xFileField)) ((xupload_to)))
+                        xcandidates.write (((unsupported)).apply ("/tmp/.") ("/tmp/..") ("/tmp/../path") ("/tmp/path") ("some/folder/") ("some/folder/.") ("some/folder/..") ("some/folder/???") ("some/folder/$.$.$") ("some/../test.txt") (""))
+                        (((unsupported)).apply ((xfile_name)) ((xcandidates)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfile_name)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ((xfile_name)))) ("test.txt"))
+                xtest_filefield_generate_filename_upload_to_absolute_path.write
+                  [xself]
+                    memory > xcandidates
+                    memory > xf
+                    memory > xmsg
+                    memory > xupload_to
+                    seq > @
+                      seq
+                        xupload_to.write
+                          [xinstance xfilename]
+                            seq > @
+                              (((unsupported)).apply (("/tmp/".add (xfilename))))
+                        xf.write (((unsupported)).apply ((xFileField)) ((xupload_to)))
+                        xcandidates.write (((unsupported)).apply ("path") ("../path") ("???") ("$.$.$"))
+                        (((unsupported)).apply ((xfile_name)) ((xcandidates)))
+                          seq
+                            xmsg.write "Detected path traversal attempt in '/tmp/{file_name}'"
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfile_name)))))
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                                bogusForceDataize.write ((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ((xfile_name)))
+                xtest_filefield_generate_filename_upload_to_dangerous_filename.write
+                  [xself]
+                    memory > xcandidates
+                    memory > xf
+                    memory > xmsg
+                    memory > xupload_to
+                    seq > @
+                      seq
+                        xupload_to.write
+                          [xinstance xfilename]
+                            seq > @
+                              (((unsupported)).apply (("/tmp/".add (xfilename))))
+                        xf.write (((unsupported)).apply ((xFileField)) ((xupload_to)))
+                        xcandidates.write (((unsupported)).apply ("..") (".") (""))
+                        (((unsupported)).apply ((xfile_name)) ((xcandidates)))
+                          seq
+                            xmsg.write "Could not derive file name from '/tmp/{file_name}'"
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xfile_name)))))
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                                bogusForceDataize.write ((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ((xfile_name)))
+                xtest_filefield_awss3_storage.write
+                  [xself]
+                    memory > xdata
+                    memory > xfolder
+                    memory > xf
+                    memory > xexpected_key
+                    memory > xupload_to
+                    memory > xstorage
+                    memory > xresult_key
+                    memory > xkey
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xstorage.write (xAWSS3Storage)
+                        xfolder.write "not/a/folder/"
+                        xf.write (((unsupported)).apply ((xFileField)) ((xfolder)) ((xstorage)))
+                        xkey.write (((unsupported)).apply)
+                        xdata.write (((xContentFile)).apply ("test"))
+                        xexpected_key.write ((((xAWSS3Storage).xprefix).add (xfolder)).add (xkey))
+                        xresult_key.write ((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ((xkey)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult_key)) ((xexpected_key)))
+                        xresult_key.write ((((xstorage).xsave)).apply ((xresult_key)) ((xdata)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult_key)) ((xexpected_key)))
+                        xupload_to.write
+                          [xinstance xfilename]
+                            seq > @
+                              (((unsupported)).apply (((xfolder).add (xfilename))))
+                        xf.write (((unsupported)).apply ((xFileField)) ((xupload_to)) ((xstorage)))
+                        xresult_key.write ((((xf).xgenerate_filename)).apply ("None: is there a None literal in the EO language?") ((xkey)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult_key)) ((xexpected_key)))
+                        xresult_key.write ((((xstorage).xsave)).apply ((xresult_key)) ((xdata)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult_key)) ((xexpected_key)))

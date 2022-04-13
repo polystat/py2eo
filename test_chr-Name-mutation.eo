@@ -1,0 +1,64 @@
+memory > xLeft
+memory > xOrd
+memory > xChr
+memory > xIntegerField
+memory > xregister_lookup
+memory > xord
+memory > xTestCase
+memory > xAuthor
+[] > test_chr
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_transform
+        memory > xtest_non_ascii
+        memory > xtest_basic
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xjohn)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))))
+                        (((unsupported)).apply (((xcls).xelena)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Élena Jordan") ("elena"))))
+                        (((unsupported)).apply (((xcls).xrhonda)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda"))))
+                xtest_basic.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xLeft)).apply ("name") (1))))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xfilter)) ((((xChr)).apply ((((xord)).apply ("J"))))))) ((((unsupported)).apply (((xself).xjohn)))))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xexclude)) ((((xChr)).apply ((((xord)).apply ("J"))))))) ((((unsupported)).apply (((xself).xelena)) (((xself).xrhonda)))))
+                xtest_non_ascii.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xLeft)).apply ("name") (1))))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xfilter)) ((((xChr)).apply ((((xord)).apply ("É"))))))) ((((unsupported)).apply (((xself).xelena)))))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xexclude)) ((((xChr)).apply ((((xord)).apply ("É"))))))) ((((unsupported)).apply (((xself).xjohn)) (((xself).xrhonda)))))
+                xtest_transform.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      (((unsupported)).apply ((((xregister_lookup)).apply ((xIntegerField)) ((xChr)))))
+                        seq
+                          xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xOrd)).apply ("name"))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xfilter)) ((((xChr)).apply ((((xord)).apply ("J"))))))) ((((unsupported)).apply (((xself).xjohn)))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xexclude)) ((((xChr)).apply ((((xord)).apply ("J"))))))) ((((unsupported)).apply (((xself).xelena)) (((xself).xrhonda)))))

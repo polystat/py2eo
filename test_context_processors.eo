@@ -1,0 +1,198 @@
+memory > xQ
+memory > xAUTH_TEMPLATES
+memory > xMockUser
+memory > xrepr
+memory > xPermission
+memory > xoverride_settings
+memory > xPermWrapper
+memory > xiter
+memory > xTypeError
+memory > xContentType
+memory > xauthenticate
+memory > xTestCase
+memory > xPermLookupDict
+memory > xUser
+memory > xSimpleTestCase
+[] > test_context_processors
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_iter
+        memory > xtest_permlookupdict_in
+        memory > xtest_perm_in_perms_attrs
+        memory > xtest_repr
+        memory > xtest_permwrapper_in
+        memory > x__init__
+        memory > xtest_user_attrs
+        memory > xtest_message_attrs
+        memory > x__eq__
+        memory > x__repr__
+        memory > xtest_perms_attrs
+        memory > xsetUpTestData
+        memory > xtest_session_is_accessed
+        memory > xhas_module_perms
+        memory > xhas_perm
+        memory > xtest_session_not_accessed
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("MockUser()"))
+                xhas_module_perms.write
+                  [xself xperm]
+                    seq > @
+                      (((unsupported)).apply (((xperm).eq "mockapp")))
+                xhas_perm.write
+                  [xself xperm xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xperm).eq "mockapp.someperm")))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+                  seq
+                    (((unsupported)).apply)
+                    x__init__.write
+                      [xself]
+                        seq > @
+                          (((unsupported)).apply (((xself).xeq_calls)) (0))
+                    x__eq__.write
+                      [xself xother]
+                        seq > @
+                          seq
+                            (((xself).xeq_calls).greater 0).if
+                              (((unsupported)).apply (TRUE))
+                            (((unsupported)).apply (((xself).xeq_calls)) (1))
+                            (((unsupported)).apply (FALSE))
+                xtest_repr.write
+                  [xself]
+                    memory > xperms
+                    seq > @
+                      seq
+                        xperms.write (((xPermWrapper)).apply ((((xMockUser)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xperms)))) ("PermWrapper(MockUser())"))
+                xtest_permwrapper_in.write
+                  [xself]
+                    memory > xperms
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xperms.write (((xPermWrapper)).apply ((((xMockUser)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("mockapp") ((xperms)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("nonexistent") ((xperms)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("mockapp.someperm") ((xperms)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("mockapp.nonexistent") ((xperms)))
+                xtest_permlookupdict_in.write
+                  [xself]
+                    memory > xpldict
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xpldict.write (((xPermLookupDict)).apply ((((xMockUser)).apply)) ("mockapp"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTypeError)))))
+                          (((unsupported)).apply (((((xself).xEQLimiterObject)).apply)) ((xpldict)))
+                xtest_iter.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ("PermWrapper is not iterable."))))
+                        bogusForceDataize.write (((xiter)).apply ((((xPermWrapper)).apply ((((xMockUser)).apply)))))
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("auth_tests.urls") ((xAUTH_TEMPLATES)))))
+              seq
+                (((unsupported)).apply)
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                xtest_session_not_accessed.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/auth_processor_no_attr_access/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Session not accessed"))
+                xtest_session_is_accessed.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/auth_processor_attr_access/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Session accessed"))
+                xtest_perms_attrs.write
+                  [xself]
+                    memory > xresponse
+                    memory > xu
+                    seq > @
+                      seq
+                        xu.write (((unsupported)).apply ((((xUser).xobjects).xcreate_user)) ("normal") ("secret"))
+                        bogusForceDataize.write (((((xu).xuser_permissions).xadd)).apply ((((unsupported)).apply ((((xPermission).xobjects).xget)) ((((((xContentType).xobjects).xget_for_model)).apply ((xPermission)))) ("add_permission"))))
+                        bogusForceDataize.write (((((xself).xclient).xforce_login)).apply ((xu)))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/auth_processor_perms/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Has auth permissions"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Has auth.add_permission permissions"))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("nonexistent"))
+                xtest_perm_in_perms_attrs.write
+                  [xself]
+                    memory > xresponse
+                    memory > xu
+                    seq > @
+                      seq
+                        xu.write (((unsupported)).apply ((((xUser).xobjects).xcreate_user)) ("normal") ("secret"))
+                        bogusForceDataize.write (((((xu).xuser_permissions).xadd)).apply ((((unsupported)).apply ((((xPermission).xobjects).xget)) ((((((xContentType).xobjects).xget_for_model)).apply ((xPermission)))) ("add_permission"))))
+                        (((unsupported)).apply ((((xself).xclient).xlogin)) ("normal") ("secret"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/auth_processor_perm_in_perms/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Has auth permissions"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Has auth.add_permission permissions"))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("nonexistent"))
+                xtest_message_attrs.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xsuperuser)))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/auth_processor_messages/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("Message 1"))
+                xtest_user_attrs.write
+                  [xself]
+                    memory > xuser
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xclient).xlogin)) ("super") ("secret"))
+                        xuser.write (((unsupported)).apply ((xauthenticate)) ("super") ("secret"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/auth_processor_user/"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("unicode: super"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) (("id: %d".mod (((xself).xsuperuser).xpk))))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("username: super"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("url: /userpage/super/"))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("user"))) ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xuser)) ((((unsupported)).apply (((xresponse).xcontext)) ("user"))))

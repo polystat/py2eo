@@ -1,0 +1,47 @@
+memory > xStaticFilesHandler
+memory > xsettings
+memory > xsuper
+memory > xargs
+memory > xoptions
+[] > runserver
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_handler
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xRunserverCommand
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xRunserverCommand)))
+              seq
+                xhelp.write "Starts a lightweight web server for development and also serves static files."
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_arguments)).apply ((xparser)))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--nostatic") ("store_false") ("use_static_handler") ("Tells Django to NOT automatically serve static files at STATIC_URL."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--insecure") ("store_false") ("insecure_serving") ("Allows serving static files even if DEBUG is False."))
+                xget_handler.write
+                  [xself]
+                    memory > xhandler
+                    memory > xuse_static_handler
+                    memory > xinsecure_serving
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xhandler.write ((((((xsuper)).apply).xget_handler)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xoptions)))))
+                        xuse_static_handler.write (((unsupported)).apply ((xoptions)) ("use_static_handler"))
+                        xinsecure_serving.write (((unsupported)).apply ((xoptions)) ("insecure_serving"))
+                        ((xuse_static_handler).and (((xsettings).xDEBUG).or (xinsecure_serving))).if
+                          (((unsupported)).apply ((((xStaticFilesHandler)).apply ((xhandler)))))
+                        (((unsupported)).apply ((xhandler)))

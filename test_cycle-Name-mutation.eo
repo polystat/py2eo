@@ -1,0 +1,226 @@
+memory > xTemplateSyntaxError
+memory > xlist
+memory > xrange
+memory > xmsg
+memory > xSimpleTestCase
+[] > test_cycle
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_cycle01
+        memory > xtest_cycle_undefined
+        memory > xtest_cycle11
+        memory > xtest_cycle05
+        memory > xtest_cycle22
+        memory > xtest_cycle13
+        memory > xtest_cycle24
+        memory > xtest_cycle17
+        memory > xtest_cycle28
+        memory > xtest_cycle21
+        memory > xtest_cycle10
+        memory > xtest_cycle18
+        memory > xtest_cycle25
+        memory > xtest_cycle07
+        memory > xtest_cycle20
+        memory > xtest_cycle19
+        memory > xtest_cycle26
+        memory > xtest_cycle12
+        memory > xtest_cycle23
+        memory > xtest_cycle16
+        memory > xtest_cycle27
+        memory > xtest_cycle14
+        memory > xtest_cycle29
+        memory > xtest_cycle15
+        memory > xtest_cycle30
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_cycle01.write
+                  [xself]
+                    memory > xmsg2
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg2.write "No named cycles in template. 'a' is not defined"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("cycle01"))
+                xtest_cycle05.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "'cycle' tag requires at least two arguments"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("cycle05"))
+                xtest_cycle07.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "Could not parse the remainder: ',b,c' from 'a,b,c'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("cycle07"))
+                xtest_cycle10.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle10"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("ab"))
+                xtest_cycle11.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle11"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("abc"))
+                xtest_cycle12.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle12"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("abca"))
+                xtest_cycle13.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle13") ((((unsupported)).apply ("test") ((((xlist)).apply ((((xrange)).apply (5))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a0,b1,a2,b3,a4,"))
+                xtest_cycle14.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle14") ((((unsupported)).apply ("one") ("1") ("two") ("2"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("12"))
+                xtest_cycle15.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle15") ((((unsupported)).apply ("test") ((((xlist)).apply ((((xrange)).apply (5))))) ("aye") ("a") ("bee") ("b"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a0,b1,a2,b3,a4,"))
+                xtest_cycle16.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle16") ((((unsupported)).apply ("one") ("A") ("two") ("2"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a2"))
+                xtest_cycle17.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle17"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))
+                xtest_cycle18.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "Only 'silent' flag is allowed after cycle's name, not 'invalid_flag'."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("cycle18"))
+                xtest_cycle19.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle19"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("ab"))
+                xtest_cycle20.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle20") ((((unsupported)).apply ("two") ("C & D") ("one") ("A & B"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("A &amp; B &amp; C &amp; D"))
+                xtest_cycle21.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle21") ((((unsupported)).apply ("two") ("C & D") ("one") ("A & B"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("A &amp;amp; B &amp; C &amp;amp; D"))
+                xtest_cycle22.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle22") ((((unsupported)).apply ("values") ((((unsupported)).apply (1) (2) (3) (4))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1234"))
+                xtest_cycle23.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle23") ((((unsupported)).apply ("values") ((((unsupported)).apply (1) (2) (3) (4))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a1b2c3a4"))
+                xtest_cycle24.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle24") ((((unsupported)).apply ("values") ((((unsupported)).apply (1) (2) (3) (4))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("abca"))
+                xtest_cycle25.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle25") ((((unsupported)).apply ("a") ("<"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&lt;"))
+                xtest_cycle26.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle26") ((((unsupported)).apply ("a") ("<") ("b") (">"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&lt;&gt;"))
+                xtest_cycle27.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle27") ((((unsupported)).apply ("a") ("<") ("b") (">"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<>"))
+                xtest_cycle28.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle28") ((((unsupported)).apply ("a") ("<") ("b") (">"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<&gt;"))
+                xtest_cycle29.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle29") ((((unsupported)).apply ("values") ((((unsupported)).apply (1) (2) (3) (4) (5) (6) (7) (8) (8) (8) (9) (9))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("bcabcabcccaa"))
+                xtest_cycle30.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("cycle30") ((((unsupported)).apply ("irrelevant") (1) ("values") ((((unsupported)).apply (1) (2) (3) (4) (5) (6) (7) (8) (8) (8) (9) (9))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("bcabcabcccaa"))
+                xtest_cycle_undefined.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ("Named cycle 'undefined' does not exist"))))
+                          bogusForceDataize.write (((((xself).xengine).xrender_to_string)).apply ("undefined_cycle"))

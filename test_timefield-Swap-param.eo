@@ -1,0 +1,40 @@
+memory > xTestCase
+memory > xAlarm
+[] > test_timefield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_hour_lookups
+        memory > xtest_second_lookups
+        memory > xtest_minute_lookups
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xal1)) ((((unsupported)).apply ((((xAlarm).xobjects).xcreate)) ("Early") ("05:30"))))
+                        (((unsupported)).apply (((xself).xal2)) ((((unsupported)).apply ((((xAlarm).xobjects).xcreate)) ("10:00") ("Late"))))
+                        (((unsupported)).apply (((xself).xal3)) ((((unsupported)).apply ((((xAlarm).xobjects).xcreate)) ("Precise") ("12:34:56"))))
+                xtest_hour_lookups.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xAlarm).xobjects).xfilter)) (5))) ((((unsupported)).apply (((xself).xal1)))))
+                xtest_minute_lookups.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xAlarm).xobjects).xfilter)) (30))) ((((unsupported)).apply (((xself).xal1)))))
+                xtest_second_lookups.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xAlarm).xobjects).xfilter)) (56))) ((((unsupported)).apply (((xself).xal3)))))

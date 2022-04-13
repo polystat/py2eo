@@ -1,0 +1,101 @@
+memory > xFileUploadHandler
+memory > xTemporaryFileUploadHandler
+memory > xopen
+memory > xException
+memory > xsuper
+memory > xos
+memory > xNamedTemporaryFile
+memory > xfp
+memory > xStopUpload
+memory > xCustomUploadError
+memory > xUPLOAD_TO
+memory > xlen
+[] > uploadhandler
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xreceive_data_chunk
+        memory > x__init__
+        memory > xnew_file
+        memory > xQUOTA
+        memory > xfile_complete
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xFileUploadHandler)))
+              seq
+                (((unsupported)).apply)
+                xQUOTA.write (5.mul (((unsupported)).apply (2) (20)))
+                x__init__.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xrequest)))
+                        (((unsupported)).apply (((xself).xtotal_upload)) (0))
+                xreceive_data_chunk.write
+                  [xself xraw_data xstart]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xtotal_upload)) ((((xlen)).apply ((xraw_data)))))
+                        (((xself).xtotal_upload).geq ((xself).xQUOTA)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xStopUpload)) (TRUE))))
+                        (((unsupported)).apply ((xraw_data)))
+                xfile_complete.write
+                  [xself xfile_size]
+                    seq > @
+                      (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+            (((unsupported)).apply ((xTemporaryFileUploadHandler)))
+              seq
+                unsupported
+                xreceive_data_chunk.write
+                  [xself xraw_data xstart]
+                    seq > @
+                      (((unsupported)).apply ((((xStopUpload)).apply)))
+            (((unsupported)).apply ((xException)))
+            (((unsupported)).apply ((xFileUploadHandler)))
+              seq
+                unsupported
+                xreceive_data_chunk.write
+                  [xself xraw_data xstart]
+                    seq > @
+                      (((unsupported)).apply ((((xCustomUploadError)).apply ("Oops!"))))
+            (((unsupported)).apply ((xFileUploadHandler)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xrequest)))
+                        (((unsupported)).apply (((xself).xupload_dir)) ((xUPLOAD_TO)))
+                xfile_complete.write
+                  [xself xfile_size]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xfile).xseek)).apply (0))
+                        (((unsupported)).apply ((((xself).xfile).xsize)) ((xfile_size)))
+                        (((unsupported)).apply ((((xopen)).apply ((((((xos).xpath).xjoin)).apply (((xself).xupload_dir)) (((xself).xfile_name)))) ("wb"))) ((xfp)))
+                          bogusForceDataize.write ((((xfp).xwrite)).apply ((((((xself).xfile).xread)).apply)))
+                        (((unsupported)).apply (((xself).xfile)))
+                xnew_file.write
+                  [xself xfield_name xfile_name xcontent_type xcontent_length xcharset xcontent_type_extra]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).xnew_file)).apply ((xfile_name)) ((xfile_name)) ((xcontent_length)) ((xcontent_length)) ((xcharset)) ((xcontent_type_extra)))
+                        (((unsupported)).apply (((xself).xfile)) ((((unsupported)).apply ((xNamedTemporaryFile)) (".upload") (((xself).xupload_dir)))))
+                xreceive_data_chunk.write
+                  [xself xraw_data xstart]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xfile).xwrite)).apply ((xraw_data)))

@@ -1,0 +1,82 @@
+memory > xget_max_test_processes
+memory > xtest_labels
+memory > xget_runner
+memory > xget_command_line_option
+memory > xBaseCommand
+memory > xsettings
+memory > xhasattr
+memory > xNullTimeKeeper
+memory > xTimeKeeper
+memory > xoptions
+memory > xsuper
+memory > xsys
+[] > test
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xtest_runner
+        memory > xrun_from_argv
+        memory > xhandle
+        memory > xadd_arguments
+        memory > xhelp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Discover and run tests in the specified modules or the current directory."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xtest_runner.write "None: is there a None literal in the EO language?"
+                xrun_from_argv.write
+                  [xself xargv]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xtest_runner)) ((((xget_command_line_option)).apply ((xargv)) ("--testrunner"))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xrun_from_argv)).apply ((xargv)))
+                xadd_arguments.write
+                  [xself xparser]
+                    memory > xtest_runner_class
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("args") ("test_label") ("*") ("Module paths to test; can be modulename, modulename.TestCase or modulename.TestCase.test_method"))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--noinput") ("--no-input") ("store_false") ("interactive") ("Tells Django to NOT prompt the user for input of any kind."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--failfast") ("store_false") ("Tells Django to stop running the test suite after first failed test."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--testrunner") ("Tells Django to use specified test runner class instead of the one specified by the TEST_RUNNER setting."))
+                        xtest_runner_class.write (((xget_runner)).apply ((xsettings)) (((xself).xtest_runner)))
+                        (((xhasattr)).apply ((xtest_runner_class)) ("add_arguments")).if
+                          bogusForceDataize.write ((((xtest_runner_class).xadd_arguments)).apply ((xparser)))
+                xhandle.write
+                  [xself]
+                    memory > xtest_runner
+                    memory > xparallel
+                    memory > xTestRunner
+                    memory > xtime_keeper
+                    memory > xfailures
+                    seq > @
+                      (((unsupported)).apply)
+                        xTestRunner.write (((xget_runner)).apply ((xsettings)) ((((unsupported)).apply ((xoptions)) ("testrunner"))))
+                        xtime_keeper.write (((((xoptions).xget)).apply ("timing") (FALSE)).if (((xTimeKeeper)).apply) (((xNullTimeKeeper)).apply))
+                        xparallel.write ((((xoptions).xget)).apply ("parallel"))
+                        ((xparallel).eq "auto").if
+                          (((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("parallel"))) ((((xget_max_test_processes)).apply)))
+                        xtest_runner.write (((xTestRunner)).apply ((((unsupported)).apply ((xoptions)))))
+                        (((unsupported)).apply (((((xtime_keeper).xtimed)).apply ("Total run"))))
+                          xfailures.write ((((xtest_runner).xrun_tests)).apply ((xtest_labels)))
+                        bogusForceDataize.write ((((xtime_keeper).xprint_results)).apply)
+                        (xfailures).if
+                          bogusForceDataize.write ((((xsys).xexit)).apply (1))

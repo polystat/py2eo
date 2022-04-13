@@ -1,0 +1,51 @@
+memory > xadmin
+memory > xHasPermissionAdmin
+memory > xValidationError
+memory > xget_permission_codename
+memory > xmodels
+memory > xPermissionAdminAuthenticationForm
+memory > xAuthenticationForm2
+[] > custom_has_permission_admin
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xPERMISSION_NAME
+        memory > xsite
+        memory > xlogin_form
+        memory > xconfirm_login_allowed
+        memory > xhas_permission
+        memory > xbase_admin
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            xPERMISSION_NAME.write ("admin_views.%s".mod (((xget_permission_codename)).apply ("change") ((((xmodels).xArticle).x_meta))))
+            (((unsupported)).apply ((xAuthenticationForm2)))
+              xconfirm_login_allowed.write
+                [xself xuser]
+                  seq > @
+                    ((((xuser).xis_active).not).or ((((xuser).xis_staff).or ((((xuser).xhas_perm)).apply ((xPERMISSION_NAME)))).not)).if
+                      (((unsupported)).apply ((((xValidationError)).apply ("permission denied"))))
+            (((unsupported)).apply (((xadmin).xAdminSite)))
+              seq
+                xlogin_form.write (xPermissionAdminAuthenticationForm)
+                xhas_permission.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply (((((xrequest).xuser).xis_active).and ((((xrequest).xuser).xis_staff).or (((((xrequest).xuser).xhas_perm)).apply ((xPERMISSION_NAME)))))))
+            xsite.write (((unsupported)).apply ((xHasPermissionAdmin)) ("has_permission_admin"))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xArticle)) (((xbase_admin).xArticleAdmin)))

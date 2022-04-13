@@ -1,0 +1,155 @@
+memory > xfalse
+memory > xsetting
+memory > xPerson
+memory > xTestCase
+memory > xconnection
+memory > xnamedtuple
+memory > xunittest
+memory > xkwargs
+memory > xlen
+memory > xcursor
+memory > xoperator
+memory > xmodels
+memory > xnext
+[] > test_server_side_cursors
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_server_side_cursors_setting
+        memory > xasserNotUsesCursor
+        memory > xcursor_fields
+        memory > xtest_values_list
+        memory > xtest_closed_server_side_cursor
+        memory > xsetUpTestData
+        memory > xtest_values_list_fields_not_equal_to_names
+        memory > xPostgresCursor
+        memory > xtest_values_list_flat
+        memory > xtest_server_side_cursor
+        memory > xinspect_cursors
+        memory > xassertUsesCursor
+        memory > xoverride_db_setting
+        memory > xtest_server_side_cursor_many_cursors
+        memory > xtest_values
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) (((((xunittest).xskipUnless)).apply ((((xconnection).xvendor).eq "postgresql")) ("PostgreSQL tests"))))
+              seq
+                xcursor_fields.write "name, statement, is_holdable, is_binary, is_scrollable, creation_time"
+                xPostgresCursor.write (((xnamedtuple)).apply ("PostgresCursor") ((xcursor_fields)))
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xPerson).xobjects).xcreate)) ("a") ("a"))
+                        (((unsupported)).apply ((((xPerson).xobjects).xcreate)) ("b") ("b"))
+                xinspect_cursors.write
+                  [xself]
+                    memory > xcursors
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((unsupported)).apply (("SELECT {fields} FROM pg_cursors;".xformat)) (((xself).xcursor_fields)))))
+                            xcursors.write ((((xcursor).xfetchall)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((((xself).xPostgresCursor).x_make)).apply ((xcursor)))) ((xcursor)) ((xcursors)))))
+                xoverride_db_setting.write
+                  [xself]
+                    memory > xoriginal_value
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xsetting)) ((xkwargs)))
+                          seq
+                            xoriginal_value.write (((((xconnection).xsettings_dict).xget)).apply ((xsetting)))
+                            (((unsupported)).apply ((xsetting)) (((xconnection).xsettings_dict))).if
+                              bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xoperator).xsetitem)) (((xconnection).xsettings_dict)) ((xsetting)) ((xoriginal_value)))
+                              bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xoperator).xdelitem)) (((xconnection).xsettings_dict)) ((xsetting)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xconnection).xsettings_dict)) ((xsetting)))) ((((unsupported)).apply ((xkwargs)) ((xsetting)))))
+                            (((unsupported)).apply)
+                xassertUsesCursor.write
+                  [xself xqueryset xnum_expected]
+                    memory > xcursors
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((xnext)).apply ((xqueryset)))
+                        xcursors.write ((((xself).xinspect_cursors)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xcursors)))) ((xnum_expected)))
+                        (((unsupported)).apply ((xcursor)) ((xcursors)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("_django_curs_") (((xcursor).xname)))
+                            bogusForceDataize.write ((((xself).xassertfalse)).apply (((xcursor).xis_scrollable)))
+                            bogusForceDataize.write ((((xself).xassertfalse)).apply (((xcursor).xis_holdable)))
+                            bogusForceDataize.write ((((xself).xassertfalse)).apply (((xcursor).xis_binary)))
+                xasserNotUsesCursor.write
+                  [xself xqueryset]
+                    seq > @
+                      (((unsupported)).apply (((xself).xassertUsesCursor)) ((xqueryset)) (0))
+                xtest_server_side_cursor.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertUsesCursor)).apply ((((((xPerson).xobjects).xiterator)).apply)))
+                xtest_values.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertUsesCursor)).apply (((((((((xPerson).xobjects).xvalues)).apply ("first_name")).xiterator)).apply)))
+                xtest_values_list.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertUsesCursor)).apply (((((((((xPerson).xobjects).xvalues_list)).apply ("first_name")).xiterator)).apply)))
+                xtest_values_list_flat.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertUsesCursor)).apply (((((((unsupported)).apply ((((xPerson).xobjects).xvalues_list)) ("first_name") (TRUE)).xiterator)).apply)))
+                xtest_values_list_fields_not_equal_to_names.write
+                  [xself]
+                    memory > xexpr
+                    seq > @
+                      seq
+                        xexpr.write ((((xmodels).xCount)).apply ("id"))
+                        bogusForceDataize.write ((((xself).xassertUsesCursor)).apply ((((((((((unsupported)).apply ((((xPerson).xobjects).xannotate)) ((xexpr))).xvalues_list)).apply ((xexpr)) ("id__count")).xiterator)).apply)))
+                xtest_server_side_cursor_many_cursors.write
+                  [xself]
+                    memory > xpersons
+                    memory > xpersons2
+                    seq > @
+                      seq
+                        xpersons.write (((((xPerson).xobjects).xiterator)).apply)
+                        xpersons2.write (((((xPerson).xobjects).xiterator)).apply)
+                        bogusForceDataize.write (((xnext)).apply ((xpersons)))
+                        (((unsupported)).apply (((xself).xassertUsesCursor)) ((xpersons2)) (2))
+                xtest_closed_server_side_cursor.write
+                  [xself]
+                    memory > xcursors
+                    memory > xpersons
+                    seq > @
+                      seq
+                        xpersons.write (((((xPerson).xobjects).xiterator)).apply)
+                        bogusForceDataize.write (((xnext)).apply ((xpersons)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xpersons)))))
+                        xcursors.write ((((xself).xinspect_cursors)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xcursors)))) (0))
+                xtest_server_side_cursors_setting.write
+                  [xself]
+                    memory > xpersons
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xoverride_db_setting)) ((xfalse)))))
+                          seq
+                            xpersons.write (((((xPerson).xobjects).xiterator)).apply)
+                            bogusForceDataize.write ((((xself).xassertUsesCursor)).apply ((xpersons)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xpersons)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xoverride_db_setting)) (TRUE))))
+                          bogusForceDataize.write ((((xself).xasserNotUsesCursor)).apply ((((((xPerson).xobjects).xiterator)).apply)))

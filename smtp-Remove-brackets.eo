@@ -1,0 +1,148 @@
+memory > xthreading
+memory > xBaseEmailBackend
+memory > xValueError
+memory > xsmtplib
+memory > xDNS_NAME
+memory > xsuper
+memory > xOSError
+memory > xaddr
+memory > xmessage
+memory > xsanitize_address
+memory > xssl
+memory > xsettings
+[] > smtp
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsend_messages
+        memory > xclose
+        memory > xopen
+        memory > xconnection_class
+        memory > x_send
+        memory > x__init__
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseEmailBackend)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xhost xport xusername xpassword xuse_tls xfail_silently xuse_ssl xtimeout xssl_keyfile xssl_certfile]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xsuper).x__init__)) ((xfail_silently)))
+                        (((unsupported)).apply (((xself).xhost)) (((xhost).or ((xsettings).xEMAIL_HOST))))
+                        (((unsupported)).apply (((xself).xport)) (((xport).or ((xsettings).xEMAIL_PORT))))
+                        (((unsupported)).apply (((xself).xusername)) (((((unsupported)).apply ((xusername)) ("None: is there a None literal in the EO language?")).if ((xsettings).xEMAIL_HOST_USER) (xusername))))
+                        (((unsupported)).apply (((xself).xpassword)) (((((unsupported)).apply ((xpassword)) ("None: is there a None literal in the EO language?")).if ((xsettings).xEMAIL_HOST_PASSWORD) (xpassword))))
+                        (((unsupported)).apply (((xself).xuse_tls)) (((((unsupported)).apply ((xuse_tls)) ("None: is there a None literal in the EO language?")).if ((xsettings).xEMAIL_USE_TLS) (xuse_tls))))
+                        (((unsupported)).apply (((xself).xuse_ssl)) (((((unsupported)).apply ((xuse_ssl)) ("None: is there a None literal in the EO language?")).if ((xsettings).xEMAIL_USE_SSL) (xuse_ssl))))
+                        (((unsupported)).apply (((xself).xtimeout)) (((((unsupported)).apply ((xtimeout)) ("None: is there a None literal in the EO language?")).if ((xsettings).xEMAIL_TIMEOUT) (xtimeout))))
+                        (((unsupported)).apply (((xself).xssl_keyfile)) (((((unsupported)).apply ((xssl_keyfile)) ("None: is there a None literal in the EO language?")).if ((xsettings).xEMAIL_SSL_KEYFILE) (xssl_keyfile))))
+                        (((unsupported)).apply (((xself).xssl_certfile)) (((((unsupported)).apply ((xssl_certfile)) ("None: is there a None literal in the EO language?")).if ((xsettings).xEMAIL_SSL_CERTFILE) (xssl_certfile))))
+                        (((xself).xuse_ssl).and ((xself).xuse_tls)).if
+                          (((unsupported)).apply ((((xValueError)).apply ("EMAIL_USE_TLS/EMAIL_USE_SSL are mutually exclusive, so only set one of those settings to True."))))
+                        (((unsupported)).apply (((xself).xconnection)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xself).x_lock)) (((xthreading).xRLock)))
+                xconnection_class.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xuse_ssl).if ((xsmtplib).xSMTP_SSL) ((xsmtplib).xSMTP))))
+                xopen.write
+                  [xself]
+                    memory > xconnection_params
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xself).xconnection).if
+                          (((unsupported)).apply (FALSE))
+                        xconnection_params.write (((unsupported)).apply ("local_hostname") (((xDNS_NAME).xget_fqdn)))
+                        (((unsupported)).apply (((xself).xtimeout)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xconnection_params)) ("timeout"))) (((xself).xtimeout)))
+                        ((xself).xuse_ssl).if
+                          bogusForceDataize.write ((((xconnection_params).xupdate)).apply ((((unsupported)).apply ("keyfile") (((xself).xssl_keyfile)) ("certfile") (((xself).xssl_certfile)))))
+                        (((unsupported)).apply ((xOSError)))
+                          seq
+                            (((unsupported)).apply (((xself).xconnection)) (((((xself).xconnection_class)).apply (((xself).xhost)) (((xself).xport)) ((((unsupported)).apply ((xconnection_params)))))))
+                            ((((xself).xuse_ssl).not).and ((xself).xuse_tls)).if
+                              (((unsupported)).apply ((((xself).xconnection).xstarttls)) (((xself).xssl_keyfile)) (((xself).xssl_certfile)))
+                            (((xself).xusername).and ((xself).xpassword)).if
+                              bogusForceDataize.write (((((xself).xconnection).xlogin)).apply (((xself).xusername)) (((xself).xpassword)))
+                            (((unsupported)).apply (TRUE))
+                          (((xself).xfail_silently).not).if
+                            (((unsupported)).apply)
+                xclose.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xconnection)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply)
+                        (((unsupported)).apply)
+                          (((unsupported)).apply ((((unsupported)).apply (((xssl).xSSLError)) (((xsmtplib).xSMTPServerDisconnected)))) (((xsmtplib).xSMTPException)))
+                            unsupported
+                            unsupported
+                            seq
+                              ((xself).xfail_silently).if
+                                (((unsupported)).apply)
+                              (((unsupported)).apply)
+                          (((unsupported)).apply (((xself).xconnection)) ("None: is there a None literal in the EO language?"))
+                xsend_messages.write
+                  [xself xemail_messages]
+                    memory > xnew_conn_created
+                    memory > xsent
+                    memory > xnum_sent
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xemail_messages).not).if
+                          (((unsupported)).apply (0))
+                        (((unsupported)).apply (((xself).x_lock)))
+                          seq
+                            xnew_conn_created.write ((xself).xopen)
+                            ((((xself).xconnection).not).or (((unsupported)).apply ((xnew_conn_created)) ("None: is there a None literal in the EO language?"))).if
+                              (((unsupported)).apply (0))
+                            xnum_sent.write 0
+                            (((unsupported)).apply ((xmessage)) ((xemail_messages)))
+                              seq
+                                xsent.write ((((xself).x_send)).apply ((xmessage)))
+                                (xsent).if
+                                  (((unsupported)).apply ((xnum_sent)) (1))
+                            (xnew_conn_created).if
+                              unsupported
+                        (((unsupported)).apply ((xnum_sent)))
+                x_send.write
+                  [xself xemail_message]
+                    memory > xrecipients
+                    memory > xmessage
+                    memory > xencoding
+                    memory > xfrom_email
+                    seq > @
+                      seq
+                        unsupported
+                        (((xemail_message).xrecipients).not).if
+                          (((unsupported)).apply (FALSE))
+                        xencoding.write (((xemail_message).xencoding).or ((xsettings).xDEFAULT_CHARSET))
+                        xfrom_email.write (((xsanitize_address)).apply (((xemail_message).xfrom_email)) ((xencoding)))
+                        xrecipients.write (((unsupported)).apply ((((xsanitize_address)).apply ((xaddr)) ((xencoding)))) ((xaddr)) (((xemail_message).xrecipients)))
+                        xmessage.write ((xemail_message).xmessage)
+                        (((unsupported)).apply (((xsmtplib).xSMTPException)))
+                          bogusForceDataize.write (((((xself).xconnection).xsendmail)).apply ((xfrom_email)) ((xrecipients)) ((((unsupported)).apply (((xmessage).xas_bytes)) ("rn"))))
+                          seq
+                            (((xself).xfail_silently).not).if
+                              (((unsupported)).apply)
+                            (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply (TRUE))

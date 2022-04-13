@@ -1,0 +1,200 @@
+memory > xHttpRequest
+memory > xTestCase
+memory > xCustomUser
+memory > xi
+memory > xIntegrityError
+memory > xUser
+memory > xget_user_model
+memory > xAnonymousUser
+memory > xAttributeError
+memory > xget_user
+memory > xtranslation
+memory > xenumerate
+memory > xImproperlyConfigured
+memory > xkwargs
+[] > test_basic
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_swappable_user_nonexistent_model
+        memory > xtest_unicode_username
+        memory > xtest_user_no_email
+        memory > xtest_swappable_user
+        memory > xtest_superuser_no_email_or_password
+        memory > xtest_superuser
+        memory > xtest_swappable_user_bad_setting
+        memory > xtest_user_verbose_names_translatable
+        memory > xtest_get_user_anonymous
+        memory > xtest_get_user_model
+        memory > xtest_user
+        memory > xtest_get_user
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_user.write
+                  [xself]
+                    memory > xu2
+                    memory > xu
+                    seq > @
+                      seq
+                        unsupported
+                        xu.write (((((xUser).xobjects).xcreate_user)).apply ("testuser") ("test@example.com") ("testpw"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xu).xhas_usable_password)).apply)))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xu).xcheck_password)).apply ("bad"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xu).xcheck_password)).apply ("testpw"))))
+                        bogusForceDataize.write ((((xu).xset_unusable_password)).apply)
+                        bogusForceDataize.write ((((xu).xsave)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xu).xcheck_password)).apply ("testpw"))))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xu).xhas_usable_password)).apply)))
+                        bogusForceDataize.write ((((xu).xset_password)).apply ("testpw"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xu).xcheck_password)).apply ("testpw"))))
+                        bogusForceDataize.write ((((xu).xset_password)).apply ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xu).xhas_usable_password)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xu).xget_username)).apply)) ("testuser"))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xu).xis_anonymous)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xu).xis_authenticated)))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xu).xis_staff)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xu).xis_active)))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xu).xis_superuser)))
+                        xu2.write (((((xUser).xobjects).xcreate_user)).apply ("testuser2") ("test2@example.com"))
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xu2).xhas_usable_password)).apply)))
+                xtest_unicode_username.write
+                  [xself]
+                    memory > xohm_username
+                    memory > xomega_username
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xUser).xobjects).xcreate_user)).apply ("jörg"))
+                        bogusForceDataize.write (((((xUser).xobjects).xcreate_user)).apply ("Григорий"))
+                        xomega_username.write "iamtheΩ"
+                        xohm_username.write "iamtheΩ"
+                        bogusForceDataize.write (((((xUser).xobjects).xcreate_user)).apply ((xohm_username)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xIntegrityError)))))
+                          bogusForceDataize.write (((((xUser).xobjects).xcreate_user)).apply ((xomega_username)))
+                xtest_user_no_email.write
+                  [xself]
+                    memory > xcases
+                    memory > xu
+                    seq > @
+                      seq
+                        unsupported
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply ("email") (""))) ((((unsupported)).apply ("email") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xi)) ((xkwargs)))) ((((xenumerate)).apply ((xcases)))))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((((unsupported)).apply ((xkwargs)))))))
+                            seq
+                              xu.write (((((xUser).xobjects).xcreate_user)).apply (((("testuser{}".xformat)).apply ((xi)))) ((((unsupported)).apply ((xkwargs)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((xu).xemail)) (""))
+                xtest_superuser.write
+                  [xself]
+                    memory > xsuper
+                    seq > @
+                      seq
+                        unsupported
+                        xsuper.write (((((xUser).xobjects).xcreate_superuser)).apply ("super") ("super@example.com") ("super"))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xsuper).xis_superuser)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xsuper).xis_active)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xsuper).xis_staff)))
+                xtest_superuser_no_email_or_password.write
+                  [xself]
+                    memory > xsuperuser
+                    memory > xcases
+                    seq > @
+                      seq
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply ("email") (""))) ((((unsupported)).apply ("email") ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ("password") ("None: is there a None literal in the EO language?"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xi)) ((xkwargs)))) ((((xenumerate)).apply ((xcases)))))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((((unsupported)).apply ((xkwargs)))))))
+                            seq
+                              xsuperuser.write (((((xUser).xobjects).xcreate_superuser)).apply (((("super{}".xformat)).apply ((xi)))) ((((unsupported)).apply ((xkwargs)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((xsuperuser).xemail)) (""))
+                              bogusForceDataize.write ((((xself).xassertfalse)).apply (((((xsuperuser).xhas_usable_password)).apply)))
+                xtest_get_user_model.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xget_user_model)).apply)) ((xUser)))
+                xtest_swappable_user.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xget_user_model)).apply)) ((xCustomUser)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xAttributeError)))))
+                          bogusForceDataize.write (((((xUser).xobjects).xall)).apply)
+                xtest_swappable_user_bad_setting.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xmsg.write "AUTH_USER_MODEL must be of the form 'app_label.model_name'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          bogusForceDataize.write (((xget_user_model)).apply)
+                xtest_swappable_user_nonexistent_model.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xmsg.write "AUTH_USER_MODEL refers to model 'thismodel.doesntexist' that has not been installed"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          bogusForceDataize.write (((xget_user_model)).apply)
+                xtest_user_verbose_names_translatable.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("en"))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xUser).x_meta).xverbose_name)) ("user"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xUser).x_meta).xverbose_name_plural)) ("users"))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("es"))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xUser).x_meta).xverbose_name)) ("usuario"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xUser).x_meta).xverbose_name_plural)) ("usuarios"))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_get_user_anonymous.write
+                  [xself]
+                    memory > xuser
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xrequest.write (((xHttpRequest)).apply)
+                        (((unsupported)).apply (((xrequest).xsession)) ((((xself).xclient).xsession)))
+                        xuser.write (((xget_user)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xuser)) ((xAnonymousUser)))
+                xtest_get_user.write
+                  [xself]
+                    memory > xuser
+                    memory > xrequest
+                    memory > xcreated_user
+                    seq > @
+                      seq
+                        xcreated_user.write (((((xUser).xobjects).xcreate_user)).apply ("testuser") ("test@example.com") ("testpw"))
+                        (((unsupported)).apply ((((xself).xclient).xlogin)) ("testuser") ("testpw"))
+                        xrequest.write (((xHttpRequest)).apply)
+                        (((unsupported)).apply (((xrequest).xsession)) ((((xself).xclient).xsession)))
+                        xuser.write (((xget_user)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xuser)) ((xUser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xuser).xusername)) (((xcreated_user).xusername)))

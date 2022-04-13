@@ -1,0 +1,29 @@
+memory > xValueError
+memory > xFakePayload
+memory > xSimpleTestCase
+[] > test_fakepayload
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_write_after_read
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_write_after_read.write
+                [xself]
+                  memory > xpayload
+                  memory > xmsg
+                  seq > @
+                    seq
+                      xpayload.write (xFakePayload)
+                      unsupported
+                      xmsg.write "Unable to write a payload after it's been read"
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                        bogusForceDataize.write ((((xpayload).xwrite)).apply ("abc"))

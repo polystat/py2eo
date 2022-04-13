@@ -1,0 +1,289 @@
+memory > xBaseDatabaseFeatures
+memory > xproperty
+memory > xoperator
+memory > xsuper
+[] > features
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xis_sql_auto_is_null_enabled
+        memory > xcan_return_columns_from_insert
+        memory > xorder_by_nulls_first
+        memory > xcreate_test_procedure_with_int_param_sql
+        memory > xsupports_frame_range_fixed_distance
+        memory > xcan_introspect_json_field
+        memory > xallows_auto_pk_0
+        memory > xsupports_slicing_ordering_in_compound
+        memory > xsupports_date_lookup_using_string
+        memory > xhas_zoneinfo_database
+        memory > x_mysql_storage_engine
+        memory > xsupports_index_on_text_field
+        memory > xignores_table_name_case
+        memory > xsupports_select_difference
+        memory > xdjango_test_skips
+        memory > xbare_select_suffix
+        memory > xempty_fetchmany_value
+        memory > xsupports_select_intersection
+        memory > xtest_now_utc_template
+        memory > xsupports_logical_xor
+        memory > xsupported_explain_formats
+        memory > xhas_select_for_update_nowait
+        memory > xhas_select_for_update_skip_locked
+        memory > xsupports_json_field
+        memory > xsupports_update_conflicts
+        memory > xsupports_transactions
+        memory > xcan_return_rows_from_bulk_insert
+        memory > xsupports_over_clause
+        memory > xcan_introspect_foreign_keys
+        memory > xsupports_regex_backreferencing
+        memory > xrelated_fields_match_type
+        memory > xsupports_partial_indexes
+        memory > xsupports_timezones
+        memory > xatomic_transactions
+        memory > xsupports_default_in_lead_lag
+        memory > xsupports_explain_analyze
+        memory > xhas_select_for_update
+        memory > xcollate_as_index_expression
+        memory > xallows_group_by_pk
+        memory > xsupports_order_by_nulls_modifier
+        memory > xcan_clone_databases
+        memory > xrequires_explicit_null_ordering_when_grouping
+        memory > xsupports_expression_indexes
+        memory > xhas_select_for_update_of
+        memory > xminimum_database_version
+        memory > xsupports_temporal_subtraction
+        memory > xallow_sliced_subqueries_with_in
+        memory > xsupports_index_column_ordering
+        memory > xtest_collations
+        memory > xsupports_forward_references
+        memory > xintrospected_field_types
+        memory > xcreate_test_procedure_without_params_sql
+        memory > xcan_introspect_check_constraints
+        memory > xcan_release_savepoints
+        memory > xsupports_table_check_constraints
+        memory > xsupports_column_check_constraints
+        memory > xupdate_can_self_select
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseFeatures)))
+              seq
+                xempty_fetchmany_value.write (((unsupported)).apply)
+                xallows_group_by_pk.write TRUE
+                xrelated_fields_match_type.write TRUE
+                xallow_sliced_subqueries_with_in.write FALSE
+                xhas_select_for_update.write TRUE
+                xsupports_forward_references.write FALSE
+                xsupports_regex_backreferencing.write FALSE
+                xsupports_date_lookup_using_string.write FALSE
+                xsupports_timezones.write FALSE
+                xrequires_explicit_null_ordering_when_grouping.write TRUE
+                xcan_release_savepoints.write TRUE
+                xatomic_transactions.write FALSE
+                xcan_clone_databases.write TRUE
+                xsupports_temporal_subtraction.write TRUE
+                xsupports_select_intersection.write FALSE
+                xsupports_select_difference.write FALSE
+                xsupports_slicing_ordering_in_compound.write TRUE
+                xsupports_index_on_text_field.write FALSE
+                xsupports_update_conflicts.write TRUE
+                xcreate_test_procedure_without_params_sql.write (((unsupported)).apply)
+                xcreate_test_procedure_with_int_param_sql.write (((unsupported)).apply)
+                xsupports_partial_indexes.write FALSE
+                xcollate_as_index_expression.write TRUE
+                xsupports_order_by_nulls_modifier.write FALSE
+                xorder_by_nulls_first.write TRUE
+                xsupports_logical_xor.write TRUE
+                xminimum_database_version.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply ((((unsupported)).apply (10) (2))))
+                          (((unsupported)).apply ((((unsupported)).apply (5) (7))))
+                xbare_select_suffix.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((xself).xconnection).xmysql_is_mariadb).and ((((xself).xconnection).xmysql_version).less (((unsupported)).apply (10) (4)))).or (((((xself).xconnection).xmysql_is_mariadb).not).and ((((xself).xconnection).xmysql_version).less (((unsupported)).apply (8))))).if
+                          (((unsupported)).apply (" FROM DUAL"))
+                        (((unsupported)).apply (""))
+                xtest_collations.write
+                  [xself]
+                    memory > xcharset
+                    seq > @
+                      (((unsupported)).apply)
+                        xcharset.write "utf8"
+                        ((((xself).xconnection).xmysql_is_mariadb).and ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (10) (6)))).if
+                          xcharset.write "utf8mb3"
+                        (((unsupported)).apply ((((unsupported)).apply ("ci") ("{charset}_general_ci") ("non_default") ("{charset}_esperanto_ci") ("swedish_ci") ("{charset}_swedish_ci"))))
+                xtest_now_utc_template.write "UTC_TIMESTAMP"
+                xdjango_test_skips.write
+                  [xself]
+                    memory > xskips
+                    seq > @
+                      (((unsupported)).apply)
+                        xskips.write (((unsupported)).apply ("This doesn't work on MySQL.") ((((unsupported)).apply ("db_functions.comparison.test_greatest.GreatestTests.test_coalesce_workaround") ("db_functions.comparison.test_least.LeastTests.test_coalesce_workaround"))) ("Running on MySQL requires utf8mb4 encoding (#18392).") ((((unsupported)).apply ("model_fields.test_textfield.TextFieldTests.test_emoji") ("model_fields.test_charfield.TestCharField.test_emoji"))) ("MySQL doesn't support functional indexes on a function that returns JSON") ((((unsupported)).apply ("schema.tests.SchemaTests.test_func_index_json_key_transform"))) ("MySQL supports multiplying and dividing DurationFields by a scalar value but it's not implemented (#25287).") ((((unsupported)).apply ("expressions.tests.FTimeDeltaTests.test_durationfield_multiply_divide"))))
+                        (((unsupported)).apply ("ONLY_FULL_GROUP_BY") ((((xself).xconnection).xsql_mode))).if
+                          bogusForceDataize.write ((((xskips).xupdate)).apply ((((unsupported)).apply ("GROUP BY optimization does not work properly when ONLY_FULL_GROUP_BY mode is enabled on MySQL, see #31331.") ((((unsupported)).apply ("aggregation.tests.AggregateTestCase.test_aggregation_subquery_annotation_multivalued") ("annotations.tests.NonAggregateAnnotationTestCase.test_annotation_aggregate_with_m2o"))))))
+                        (((((xself).xconnection).xmysql_is_mariadb).not).and ((((xself).xconnection).xmysql_version).less (((unsupported)).apply (8)))).if
+                          bogusForceDataize.write ((((xskips).xupdate)).apply ((((unsupported)).apply ("Casting to datetime/time is not supported by MySQL < 8.0. (#30224)") ((((unsupported)).apply ("aggregation.tests.AggregateTestCase.test_aggregation_default_using_time_from_python") ("aggregation.tests.AggregateTestCase.test_aggregation_default_using_datetime_from_python"))) ("MySQL < 8.0 returns string type instead of datetime/time. (#30224)") ((((unsupported)).apply ("aggregation.tests.AggregateTestCase.test_aggregation_default_using_time_from_database") ("aggregation.tests.AggregateTestCase.test_aggregation_default_using_datetime_from_database"))))))
+                        ((((xself).xconnection).xmysql_is_mariadb).and (((unsupported)).apply ((((unsupported)).apply (10) (4) (3))) ((((xself).xconnection).xmysql_version)) ((((unsupported)).apply (10) (5) (2))))).if
+                          bogusForceDataize.write ((((xskips).xupdate)).apply ((((unsupported)).apply ("https://jira.mariadb.org/browse/MDEV-19598") ((((unsupported)).apply ("schema.tests.SchemaTests.test_alter_not_unique_field_to_primary_key"))))))
+                        ((((xself).xconnection).xmysql_is_mariadb).and (((unsupported)).apply ((((unsupported)).apply (10) (4) (12))) ((((xself).xconnection).xmysql_version)) ((((unsupported)).apply (10) (5))))).if
+                          bogusForceDataize.write ((((xskips).xupdate)).apply ((((unsupported)).apply ("https://jira.mariadb.org/browse/MDEV-22775") ((((unsupported)).apply ("schema.tests.SchemaTests.test_alter_pk_with_self_referential_field"))))))
+                        (((xself).xsupports_explain_analyze).not).if
+                          bogusForceDataize.write ((((xskips).xupdate)).apply ((((unsupported)).apply ("MariaDB and MySQL >= 8.0.18 specific.") ((((unsupported)).apply ("queries.test_explain.ExplainTests.test_mysql_analyze"))))))
+                        (((unsupported)).apply ((xskips)))
+                x_mysql_storage_engine.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xmysql_server_data)) ("default_storage_engine"))))
+                xallows_auto_pk_0.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ("NO_AUTO_VALUE_ON_ZERO") ((((xself).xconnection).xsql_mode)))))
+                xupdate_can_self_select.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_is_mariadb).and ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (10) (3) (2))))))
+                xcan_introspect_foreign_keys.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xself).x_mysql_storage_engine).neq "MyISAM")))
+                xintrospected_field_types.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xintrospected_field_types)) ("BinaryField") ("TextField") ("BooleanField") ("IntegerField") ("DurationField") ("BigIntegerField") ("GenericIPAddressField") ("CharField"))))
+                xcan_return_columns_from_insert.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_is_mariadb).and ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (10) (5) (0))))))
+                xcan_return_rows_from_bulk_insert.write (((xproperty)).apply (((((xoperator).xattrgetter)).apply ("can_return_columns_from_insert"))))
+                xhas_zoneinfo_database.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xmysql_server_data)) ("has_zoneinfo_database"))))
+                xis_sql_auto_is_null_enabled.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xmysql_server_data)) ("sql_auto_is_null"))))
+                xsupports_over_clause.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (2)))))
+                xsupports_frame_range_fixed_distance.write (((xproperty)).apply (((((xoperator).xattrgetter)).apply ("supports_over_clause"))))
+                xsupports_column_check_constraints.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (16)))))
+                xsupports_table_check_constraints.write (((xproperty)).apply (((((xoperator).xattrgetter)).apply ("supports_column_check_constraints"))))
+                xcan_introspect_check_constraints.write
+                  [xself]
+                    memory > xversion
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          seq
+                            xversion.write (((xself).xconnection).xmysql_version)
+                            (((unsupported)).apply (((xversion).geq (((unsupported)).apply (10) (3) (10)))))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (16)))))
+                xhas_select_for_update_skip_locked.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (10) (6)))))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (1)))))
+                xhas_select_for_update_nowait.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (1)))))
+                xhas_select_for_update_of.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xconnection).xmysql_is_mariadb).not).and ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (1))))))
+                xsupports_explain_analyze.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_is_mariadb).or ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (18))))))
+                xsupported_explain_formats.write
+                  [xself]
+                    memory > xformats
+                    seq > @
+                      (((unsupported)).apply)
+                        xformats.write (((unsupported)).apply ("JSON") ("TEXT") ("TRADITIONAL"))
+                        (((((xself).xconnection).xmysql_is_mariadb).not).and ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (16)))).if
+                          bogusForceDataize.write ((((xformats).xadd)).apply ("TREE"))
+                        (((unsupported)).apply ((xformats)))
+                xsupports_transactions.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).x_mysql_storage_engine).neq "MyISAM")))
+                xignores_table_name_case.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xconnection).xmysql_server_data)) ("lower_case_table_names"))))
+                xsupports_default_in_lead_lag.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_is_mariadb).not)))
+                xsupports_json_field.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (5) (7) (8)))))
+                xcan_introspect_json_field.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply ((((xself).xsupports_json_field).and ((xself).xcan_introspect_check_constraints))))
+                        (((unsupported)).apply (((xself).xsupports_json_field)))
+                xsupports_index_column_ordering.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xself).xconnection).xmysql_is_mariadb).if
+                          (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (10) (8)))))
+                        (((unsupported)).apply (((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (1)))))
+                xsupports_expression_indexes.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xconnection).xmysql_is_mariadb).not).and ((((xself).xconnection).xmysql_version).geq (((unsupported)).apply (8) (0) (13))))))

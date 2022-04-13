@@ -1,0 +1,72 @@
+memory > xTestCase
+memory > xpath
+memory > xUserAdmin
+memory > xoverride_settings
+memory > xUser
+memory > x__name__
+memory > xreverse
+memory > xdb
+memory > xadmin
+memory > xRouter
+[] > test_admin_multidb
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdb_for_read
+        memory > xsite
+        memory > xdb_for_write
+        memory > xsetUpTestData
+        memory > xtest_add_view
+        memory > xtarget_db
+        memory > xurlpatterns
+        memory > xdatabases
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                xtarget_db.write "None: is there a None literal in the EO language?"
+                xdb_for_read.write
+                  [xself xmodel]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xtarget_db)))
+                xdb_for_write.write (xdb_for_read)
+            xsite.write (((unsupported)).apply (((xadmin).xAdminSite)) ("test_adminsite"))
+            (((unsupported)).apply (((xsite).xregister)) ((xUser)) ((xUserAdmin)))
+            xurlpatterns.write (((unsupported)).apply ((((xpath)).apply ("admin/") (((xsite).xurls)))))
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((x__name__)) ((((unsupported)).apply (("%s.Router".mod (x__name__))))))))
+              seq
+                xdatabases.write (((unsupported)).apply ("default") ("other"))
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsuperusers)) ((((unsupported)).apply)))
+                        (((unsupported)).apply ((xdb)) (((xcls).xdatabases)))
+                          seq
+                            (((unsupported)).apply (((xRouter).xtarget_db)) ((xdb)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xcls).xsuperusers)) ((xdb)))) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("admin") ("something") ("test@test.org"))))
+                xtest_add_view.write
+                  [xself xmock]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xdb)) (((xself).xdatabases)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xdb)))))
+                            seq
+                              (((unsupported)).apply (((xRouter).xtarget_db)) ((xdb)))
+                              bogusForceDataize.write (((((xself).xclient).xforce_login)).apply ((((unsupported)).apply (((xself).xsuperusers)) ((xdb)))))
+                              bogusForceDataize.write (((((xself).xclient).xpost)).apply ((((xreverse)).apply ("test_adminsite:auth_user_add"))) ((((unsupported)).apply ("username") ("some_user") ("password1") ("helloworld") ("password2") ("helloworld"))))
+                              (((unsupported)).apply ((((xmock).xatomic).xassert_called_with)) ((xdb)))

@@ -1,0 +1,72 @@
+memory > xdecorator_from_middleware
+memory > xCsrfViewMiddleware
+memory > xsuper
+memory > xargs
+memory > xwraps
+memory > xkwargs
+memory > x_EnsureCsrfCookie
+memory > x_EnsureCsrfToken
+memory > xget_token
+[] > csrf
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcsrf_exempt
+        memory > x_reject
+        memory > xcsrf_protect
+        memory > xrequires_csrf_token
+        memory > xprocess_view
+        memory > xensure_csrf_cookie
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcsrf_protect.write (((xdecorator_from_middleware)).apply ((xCsrfViewMiddleware)))
+            (((unsupported)).apply (((xcsrf_protect).x__name__)) ("csrf_protect"))
+            (((unsupported)).apply (((xcsrf_protect).x__doc__)) ((((unsupported)).apply)))
+            (((unsupported)).apply ((xCsrfViewMiddleware)))
+              x_reject.write
+                [xself xrequest xreason]
+                  seq > @
+                    (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+            xrequires_csrf_token.write (((xdecorator_from_middleware)).apply ((x_EnsureCsrfToken)))
+            (((unsupported)).apply (((xrequires_csrf_token).x__name__)) ("requires_csrf_token"))
+            (((unsupported)).apply (((xrequires_csrf_token).x__doc__)) ((((unsupported)).apply)))
+            (((unsupported)).apply ((xCsrfViewMiddleware)))
+              seq
+                x_reject.write
+                  [xself xrequest xreason]
+                    seq > @
+                      (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xprocess_view.write
+                  [xself xrequest xcallback xcallback_args xcallback_kwargs]
+                    memory > xretval
+                    seq > @
+                      seq
+                        xretval.write ((((((xsuper)).apply).xprocess_view)).apply ((xrequest)) ((xcallback)) ((xcallback_args)) ((xcallback_kwargs)))
+                        bogusForceDataize.write (((xget_token)).apply ((xrequest)))
+                        (((unsupported)).apply ((xretval)))
+            xensure_csrf_cookie.write (((xdecorator_from_middleware)).apply ((x_EnsureCsrfCookie)))
+            (((unsupported)).apply (((xensure_csrf_cookie).x__name__)) ("ensure_csrf_cookie"))
+            (((unsupported)).apply (((xensure_csrf_cookie).x__doc__)) ((((unsupported)).apply)))
+            xcsrf_exempt.write
+              [xview_func]
+                memory > xwrapped_view
+                seq > @
+                  seq
+                    unsupported
+                    xwrapped_view.write
+                      []
+                        seq > @
+                          (((unsupported)).apply)
+                            (((unsupported)).apply ((((xview_func)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                    (((unsupported)).apply (((xwrapped_view).xcsrf_exempt)) (TRUE))
+                    (((unsupported)).apply ((((((xwraps)).apply ((xview_func)))).apply ((xwrapped_view)))))

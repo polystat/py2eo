@@ -1,0 +1,255 @@
+memory > xTranslatorCommentWarning
+memory > xc
+memory > x_lazy_re_compile
+memory > xenumerate
+memory > xpart
+memory > xp
+memory > xTokenType
+memory > xtrim_whitespace
+memory > xStringIO
+memory > xline
+memory > xwarnings
+memory > xLexer
+memory > xt
+memory > xlineno
+memory > xfmatch
+memory > xSyntaxError
+[] > template
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xTRANSLATOR_COMMENT_MARK
+        memory > xconstant_re
+        memory > xendblock_re
+        memory > xplural_re
+        memory > xinline_re
+        memory > xdot_re
+        memory > xtemplatize
+        memory > xblankout
+        memory > xcontext_re
+        memory > xblock_re
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xTRANSLATOR_COMMENT_MARK.write "Translators"
+            xdot_re.write (((x_lazy_re_compile)).apply ("S"))
+            xblankout.write
+              [xsrc xchar]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((((xdot_re).xsub)).apply ((xchar)) ((xsrc)))))
+            xcontext_re.write (((x_lazy_re_compile)).apply ("^s+.*contexts+((?:\"[^\"]*?\")|(?:'[^']*?'))s*"))
+            xinline_re.write (((x_lazy_re_compile)).apply ("^s*trans(?:late)?s+((?:\"[^\"]*?\")|(?:'[^']*?'))(?:s*|s*[^s:]+(?::(?:[^s'\":]+|(?:\"[^\"]*?\")|(?:'[^']*?')))?)*(s+.*contexts+((?:\"[^\"]*?\")|(?:'[^']*?')))?s*"))
+            xblock_re.write (((x_lazy_re_compile)).apply ("^s*blocktrans(?:late)?(s+.*contexts+((?:\"[^\"]*?\")|(?:'[^']*?')))?(?:s+|$)"))
+            xendblock_re.write (((x_lazy_re_compile)).apply ("^s*endblocktrans(?:late)?$"))
+            xplural_re.write (((x_lazy_re_compile)).apply ("^s*plural$"))
+            xconstant_re.write (((x_lazy_re_compile)).apply ("_(((?:\".*?\")|(?:'.*?')))"))
+            xtemplatize.write
+              [xsrc xorigin]
+                memory > xwarn_msg
+                memory > xcomment
+                memory > xparts
+                memory > xout
+                memory > xg
+                memory > xcmatches
+                memory > xpluralmatch
+                memory > xjoin_tokens
+                memory > xcontents
+                memory > xintrans
+                memory > xcmatch
+                memory > xfilemsg
+                memory > xmessage_context
+                memory > xcur_lineno
+                memory > xinplural
+                memory > xsingular
+                memory > xtranslators_comment_start
+                memory > xcontent
+                memory > xplural
+                memory > ximatch
+                memory > xraw_prefix
+                memory > xincomment
+                memory > xbmatch
+                memory > xlineno_comment_map
+                memory > xcontext_match
+                memory > xtrimmed
+                memory > xcomment_lineno_cache
+                memory > xendbmatch
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xout.write (((xStringIO)).apply (""))
+                    xmessage_context.write "None: is there a None literal in the EO language?"
+                    xintrans.write FALSE
+                    xinplural.write FALSE
+                    xtrimmed.write FALSE
+                    xsingular.write (((unsupported)).apply)
+                    xplural.write (((unsupported)).apply)
+                    xincomment.write FALSE
+                    xcomment.write (((unsupported)).apply)
+                    xlineno_comment_map.write (((unsupported)).apply)
+                    xcomment_lineno_cache.write "None: is there a None literal in the EO language?"
+                    xraw_prefix.write "u"
+                    xjoin_tokens.write
+                      [xtokens xtrim]
+                        memory > xmessage
+                        seq > @
+                          (((unsupported)).apply)
+                            xmessage.write ((("".xjoin)).apply ((xtokens)))
+                            (xtrim).if
+                              xmessage.write (((xtrim_whitespace)).apply ((xmessage)))
+                            (((unsupported)).apply ((xmessage)))
+                    (((unsupported)).apply ((xt)) (((((xLexer)).apply ((xsrc))).xtokenize)))
+                      (xincomment).if
+                        ((((xt).xtoken_type).eq ((xTokenType).xBLOCK)).and (((xt).xcontents).eq "endcomment")).if
+                          seq
+                            xcontent.write ((("".xjoin)).apply ((xcomment)))
+                            xtranslators_comment_start.write "None: is there a None literal in the EO language?"
+                            (((unsupported)).apply ((((unsupported)).apply ((xlineno)) ((xline)))) ((((xenumerate)).apply (((((xcontent).xsplitlines)).apply (TRUE))))))
+                              (((((xline).xlstrip).xstartswith)).apply ((xTRANSLATOR_COMMENT_MARK))).if
+                                xtranslators_comment_start.write (xlineno)
+                            (((unsupported)).apply ((((unsupported)).apply ((xlineno)) ((xline)))) ((((xenumerate)).apply (((((xcontent).xsplitlines)).apply (TRUE))))))
+                              ((((unsupported)).apply ((xtranslators_comment_start)) ("None: is there a None literal in the EO language?")).and ((xlineno).geq (xtranslators_comment_start))).if
+                                bogusForceDataize.write ((((xout).xwrite)).apply ((" # %s".mod (xline))))
+                                bogusForceDataize.write ((((xout).xwrite)).apply (" #n"))
+                            xincomment.write FALSE
+                            xcomment.write (((unsupported)).apply)
+                          bogusForceDataize.write ((((xcomment).xappend)).apply (((xt).xcontents)))
+                        (xintrans).if
+                          (((xt).xtoken_type).eq ((xTokenType).xBLOCK)).if
+                            seq
+                              xendbmatch.write ((((xendblock_re).xmatch)).apply (((xt).xcontents)))
+                              xpluralmatch.write ((((xplural_re).xmatch)).apply (((xt).xcontents)))
+                              (xendbmatch).if
+                                seq
+                                  (xinplural).if
+                                    seq
+                                      (xmessage_context).if
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((unsupported)).apply ((" npgettext({p}{!r}, {p}{!r}, {p}{!r},count) ".xformat)) ((xmessage_context)) ((((xjoin_tokens)).apply ((xsingular)) ((xtrimmed)))) ((((xjoin_tokens)).apply ((xplural)) ((xtrimmed)))) ((xraw_prefix)))))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((unsupported)).apply ((" ngettext({p}{!r}, {p}{!r}, count) ".xformat)) ((((xjoin_tokens)).apply ((xsingular)) ((xtrimmed)))) ((((xjoin_tokens)).apply ((xplural)) ((xtrimmed)))) ((xraw_prefix)))))
+                                      (((unsupported)).apply ((xpart)) ((xsingular)))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((xblankout)).apply ((xpart)) ("S"))))
+                                      (((unsupported)).apply ((xpart)) ((xplural)))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((xblankout)).apply ((xpart)) ("P"))))
+                                    seq
+                                      (xmessage_context).if
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((unsupported)).apply ((" pgettext({p}{!r}, {p}{!r}) ".xformat)) ((xmessage_context)) ((((xjoin_tokens)).apply ((xsingular)) ((xtrimmed)))) ((xraw_prefix)))))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((unsupported)).apply ((" gettext({p}{!r}) ".xformat)) ((((xjoin_tokens)).apply ((xsingular)) ((xtrimmed)))) ((xraw_prefix)))))
+                                      (((unsupported)).apply ((xpart)) ((xsingular)))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((xblankout)).apply ((xpart)) ("S"))))
+                                  xmessage_context.write "None: is there a None literal in the EO language?"
+                                  xintrans.write FALSE
+                                  xinplural.write FALSE
+                                  xsingular.write (((unsupported)).apply)
+                                  xplural.write (((unsupported)).apply)
+                                (xpluralmatch).if
+                                  xinplural.write TRUE
+                                  seq
+                                    xfilemsg.write ""
+                                    (xorigin).if
+                                      xfilemsg.write ("file %s, ".mod (xorigin))
+                                    (((unsupported)).apply ((((xSyntaxError)).apply (("Translation blocks must not include other block tags: %s (%sline %d)".mod (((unsupported)).apply (((xt).xcontents)) ((xfilemsg)) (((xt).xlineno))))))))
+                            (((xt).xtoken_type).eq ((xTokenType).xVAR)).if
+                              (xinplural).if
+                                bogusForceDataize.write ((((xplural).xappend)).apply (("%%(%s)s".mod ((xt).xcontents))))
+                                bogusForceDataize.write ((((xsingular).xappend)).apply (("%%(%s)s".mod ((xt).xcontents))))
+                              (((xt).xtoken_type).eq ((xTokenType).xTEXT)).if
+                                seq
+                                  xcontents.write (((((xt).xcontents).xreplace)).apply ("%") ("%%"))
+                                  (xinplural).if
+                                    bogusForceDataize.write ((((xplural).xappend)).apply ((xcontents)))
+                                    bogusForceDataize.write ((((xsingular).xappend)).apply ((xcontents)))
+                          seq
+                            (((unsupported)).apply ((xcomment_lineno_cache)) ("None: is there a None literal in the EO language?")).if
+                              seq
+                                xcur_lineno.write (((xt).xlineno).add (((((xt).xcontents).xcount)).apply ("n")))
+                                ((xcomment_lineno_cache).eq (xcur_lineno)).if
+                                  (((xt).xtoken_type).neq ((xTokenType).xCOMMENT)).if
+                                    seq
+                                      (((unsupported)).apply ((xc)) ((((unsupported)).apply ((xlineno_comment_map)) ((xcomment_lineno_cache)))))
+                                        seq
+                                          xfilemsg.write ""
+                                          (xorigin).if
+                                            xfilemsg.write ("file %s, ".mod (xorigin))
+                                          xwarn_msg.write ("The translator-targeted comment '%s' (%sline %d) was ignored, because it wasn't the last item on the line.".mod (((unsupported)).apply ((xc)) ((xfilemsg)) ((xcomment_lineno_cache))))
+                                          bogusForceDataize.write ((((xwarnings).xwarn)).apply ((xwarn_msg)) ((xTranslatorCommentWarning)))
+                                      (((unsupported)).apply ((((unsupported)).apply ((xlineno_comment_map)) ((xcomment_lineno_cache)))) ((((unsupported)).apply)))
+                                  bogusForceDataize.write ((((xout).xwrite)).apply (("# %s".mod (((" | ".xjoin)).apply ((((unsupported)).apply ((xlineno_comment_map)) ((xcomment_lineno_cache))))))))
+                                xcomment_lineno_cache.write "None: is there a None literal in the EO language?"
+                            (((xt).xtoken_type).eq ((xTokenType).xBLOCK)).if
+                              seq
+                                ximatch.write ((((xinline_re).xmatch)).apply (((xt).xcontents)))
+                                xbmatch.write ((((xblock_re).xmatch)).apply (((xt).xcontents)))
+                                xcmatches.write ((((xconstant_re).xfindall)).apply (((xt).xcontents)))
+                                (ximatch).if
+                                  seq
+                                    xg.write (((unsupported)).apply ((ximatch)) (1))
+                                    ((((unsupported)).apply ((xg)) (0)).eq "\"").if
+                                      xg.write ((((xg).xstrip)).apply ("\""))
+                                      ((((unsupported)).apply ((xg)) (0)).eq "'").if
+                                        xg.write ((((xg).xstrip)).apply ("'"))
+                                    xg.write ((((xg).xreplace)).apply ("%") ("%%"))
+                                    (((unsupported)).apply ((ximatch)) (2)).if
+                                      seq
+                                        xcontext_match.write ((((xcontext_re).xmatch)).apply ((((unsupported)).apply ((ximatch)) (2))))
+                                        xmessage_context.write (((unsupported)).apply ((xcontext_match)) (1))
+                                        ((((unsupported)).apply ((xmessage_context)) (0)).eq "\"").if
+                                          xmessage_context.write ((((xmessage_context).xstrip)).apply ("\""))
+                                          ((((unsupported)).apply ((xmessage_context)) (0)).eq "'").if
+                                            xmessage_context.write ((((xmessage_context).xstrip)).apply ("'"))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((unsupported)).apply ((" pgettext({p}{!r}, {p}{!r}) ".xformat)) ((xmessage_context)) ((xg)) ((xraw_prefix)))))
+                                        xmessage_context.write "None: is there a None literal in the EO language?"
+                                      bogusForceDataize.write ((((xout).xwrite)).apply ((((unsupported)).apply ((" gettext({p}{!r}) ".xformat)) ((xg)) ((xraw_prefix)))))
+                                  (xbmatch).if
+                                    seq
+                                      (((unsupported)).apply ((xfmatch)) (((((xconstant_re).xfindall)).apply (((xt).xcontents)))))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((" _(%s) ".mod (xfmatch))))
+                                      (((unsupported)).apply ((xbmatch)) (1)).if
+                                        seq
+                                          xcontext_match.write ((((xcontext_re).xmatch)).apply ((((unsupported)).apply ((xbmatch)) (1))))
+                                          xmessage_context.write (((unsupported)).apply ((xcontext_match)) (1))
+                                          ((((unsupported)).apply ((xmessage_context)) (0)).eq "\"").if
+                                            xmessage_context.write ((((xmessage_context).xstrip)).apply ("\""))
+                                            ((((unsupported)).apply ((xmessage_context)) (0)).eq "'").if
+                                              xmessage_context.write ((((xmessage_context).xstrip)).apply ("'"))
+                                      xintrans.write TRUE
+                                      xinplural.write FALSE
+                                      xtrimmed.write (((unsupported)).apply ("trimmed") (((xt).xsplit_contents)))
+                                      xsingular.write (((unsupported)).apply)
+                                      xplural.write (((unsupported)).apply)
+                                    (xcmatches).if
+                                      (((unsupported)).apply ((xcmatch)) ((xcmatches)))
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((" _(%s) ".mod (xcmatch))))
+                                      (((xt).xcontents).eq "comment").if
+                                        xincomment.write TRUE
+                                        bogusForceDataize.write ((((xout).xwrite)).apply ((((xblankout)).apply (((xt).xcontents)) ("B"))))
+                              (((xt).xtoken_type).eq ((xTokenType).xVAR)).if
+                                seq
+                                  xparts.write (((((xt).xcontents).xsplit)).apply ("|"))
+                                  xcmatch.write ((((xconstant_re).xmatch)).apply ((((unsupported)).apply ((xparts)) (0))))
+                                  (xcmatch).if
+                                    bogusForceDataize.write ((((xout).xwrite)).apply ((" _(%s) ".mod (((unsupported)).apply ((xcmatch)) (1)))))
+                                  (((unsupported)).apply ((xp)) ((((unsupported)).apply ((xparts)) ((((unsupported)).apply (1))))))
+                                    (((((xp).xfind)).apply (":_(")).geq 0).if
+                                      bogusForceDataize.write ((((xout).xwrite)).apply ((" %s ".mod (((unsupported)).apply (((((xp).xsplit)).apply (":") (1))) (1)))))
+                                      bogusForceDataize.write ((((xout).xwrite)).apply ((((xblankout)).apply ((xp)) ("F"))))
+                                (((xt).xtoken_type).eq ((xTokenType).xCOMMENT)).if
+                                  ((((((xt).xcontents).xlstrip).xstartswith)).apply ((xTRANSLATOR_COMMENT_MARK))).if
+                                    seq
+                                      bogusForceDataize.write (((((((xlineno_comment_map).xsetdefault)).apply (((xt).xlineno)) ((((unsupported)).apply))).xappend)).apply (((xt).xcontents)))
+                                      xcomment_lineno_cache.write ((xt).xlineno)
+                                  bogusForceDataize.write ((((xout).xwrite)).apply ((((xblankout)).apply (((xt).xcontents)) ("X"))))
+                    (((unsupported)).apply (((xout).xgetvalue)))

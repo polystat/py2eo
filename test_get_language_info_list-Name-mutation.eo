@@ -1,0 +1,56 @@
+memory > xTemplateSyntaxError
+memory > xtranslation
+memory > xSimpleTestCase
+[] > test_get_language_info_list
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_i18n30
+        memory > xlibraries2
+        memory > xtest_i18n38_2
+        memory > xtest_no_for_as
+        memory > xtest_i18n31
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xlibraries2.write (((unsupported)).apply ("custom") ("template_tests.templatetags.custom") ("i18n") ("django.templatetags.i18n"))
+                xtest_i18n30.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n30") ((((unsupported)).apply ("langcodes") ((((unsupported)).apply ("it") ("no"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("it: Italian/italiano bidi=False; no: Norwegian/norsk bidi=False; "))
+                xtest_i18n31.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n31") ((((unsupported)).apply ("langcodes") ((((unsupported)).apply ((((unsupported)).apply ("sl") ("Slovenian"))) ((((unsupported)).apply ("fa") ("Persian"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("sl: Slovenian/Slovenu0161u010dina bidi=False; fa: Persian/u0641u0627u0631u0633u06cc bidi=True; "))
+                xtest_i18n38_2.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("cs"))))
+                          xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n38_2") ((((unsupported)).apply ("langcodes") ((((unsupported)).apply ("it") ("fr"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("it: Italian/italiano/italsky bidi=False; fr: French/français/francouzsky bidi=False; "))
+                xtest_no_for_as.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "'get_language_info_list' requires 'for sequence as variable' (got ['error'])"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xrender_to_string)).apply ("i18n_syntax"))

@@ -1,0 +1,112 @@
+memory > xGeometryField
+memory > xMultiFields
+memory > xTestCase
+memory > xconnection
+memory > xValue
+memory > xF
+memory > xPoint
+memory > xCount
+memory > xCity
+memory > xfunctions
+memory > xManyPointModel
+memory > xMin
+memory > xPolygon
+[] > test_expressions
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_multiple_annotation
+        memory > xtest_geometry_value_annotation_different_srid
+        memory > xfixtures
+        memory > xtest_geography_value
+        memory > xtest_update_from_other_field
+        memory > xtest_update_with_expression
+        memory > xtest_geometry_value_annotation
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xfixtures.write (((unsupported)).apply ("initial"))
+                xtest_geometry_value_annotation.write
+                  [xself]
+                    memory > xp
+                    memory > xpoint
+                    seq > @
+                      seq
+                        xp.write (((unsupported)).apply ((xPoint)) (1) (1) (4326))
+                        xpoint.write (((((((unsupported)).apply ((((xCity).xobjects).xannotate)) ((((xValue)).apply ((xp)) ((((unsupported)).apply ((xGeometryField)) (4326)))))).xfirst)).apply).xp)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpoint)) ((xp)))
+                xtest_geometry_value_annotation_different_srid.write
+                  [xself]
+                    memory > xp
+                    memory > xpoint
+                    seq > @
+                      (((unsupported)).apply)
+                        xp.write (((unsupported)).apply ((xPoint)) (1) (1) (32140))
+                        xpoint.write (((((((unsupported)).apply ((((xCity).xobjects).xannotate)) ((((xValue)).apply ((xp)) ((((unsupported)).apply ((xGeometryField)) (4326)))))).xfirst)).apply).xp)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xpoint).xequals_exact)).apply ((((unsupported)).apply (((xp).xtransform)) (4326) (TRUE))) ((((unsupported)).apply (10) ((5.neg)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xpoint).xsrid)) (4326))
+                xtest_geography_value.write
+                  [xself]
+                    memory > xarea
+                    memory > xp
+                    seq > @
+                      (((unsupported)).apply)
+                        xp.write (((xPolygon)).apply ((((unsupported)).apply ((((unsupported)).apply (1) (1))) ((((unsupported)).apply (1) (2))) ((((unsupported)).apply (2) (2))) ((((unsupported)).apply (2) (1))) ((((unsupported)).apply (1) (1))))))
+                        xarea.write (((((((unsupported)).apply ((((xCity).xobjects).xannotate)) (((((xfunctions).xArea)).apply ((((xValue)).apply ((xp)) ((((unsupported)).apply ((xGeometryField)) (4326) (TRUE)))))))).xfirst)).apply).xa)
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xarea).xsq_km)) (12305.1) (0))
+                xtest_update_from_other_field.write
+                  [xself]
+                    memory > xp1
+                    memory > xobj
+                    memory > xp2
+                    seq > @
+                      seq
+                        xp1.write (((unsupported)).apply ((xPoint)) (1) (1) (4326))
+                        xp2.write (((unsupported)).apply ((xPoint)) (2) (2) (4326))
+                        xobj.write (((unsupported)).apply ((((xManyPointModel).xobjects).xcreate)) ((xp1)) ((xp2)) ((((unsupported)).apply (((xp2).xtransform)) (3857) (TRUE))))
+                        (((unsupported)).apply (((((unsupported)).apply ((((xManyPointModel).xobjects).xfilter)) (((xobj).xpk))).xupdate)) ((((xF)).apply ("point1"))))
+                        bogusForceDataize.write ((((xobj).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xpoint2)) ((xp1)))
+                        (((xconnection).xfeatures).xsupports_transform).if
+                          seq
+                            (((unsupported)).apply (((((unsupported)).apply ((((xManyPointModel).xobjects).xfilter)) (((xobj).xpk))).xupdate)) ((((xF)).apply ("point1"))))
+                            bogusForceDataize.write ((((xobj).xrefresh_from_db)).apply)
+                            bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xobj).xpoint3).xequals_exact)).apply ((((unsupported)).apply (((xp1).xtransform)) (3857) (TRUE))) (0.1))))
+                xtest_multiple_annotation.write
+                  [xself]
+                    memory > xqs
+                    memory > xmulti_field
+                    seq > @
+                      seq
+                        xmulti_field.write (((unsupported)).apply ((((xMultiFields).xobjects).xcreate)) ((((xPoint)).apply (1) (1))) ((((unsupported)).apply ((((xCity).xobjects).xget)) ("Houston"))) ((((xPolygon)).apply ((((unsupported)).apply ((((unsupported)).apply (1) (1))) ((((unsupported)).apply (1) (2))) ((((unsupported)).apply (2) (2))) ((((unsupported)).apply (2) (1))) ((((unsupported)).apply (1) (1))))))))
+                        xqs.write (((unsupported)).apply (((((unsupported)).apply (((((((xCity).xobjects).xvalues)).apply ("name")).xannotate)) ((((xMin)).apply (((((xfunctions).xDistance)).apply ("multifields__point") ((((xmulti_field).xcity).xpoint))))))).xannotate)) ((((xCount)).apply ("multifields"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xqs).xfirst)).apply)))
+                xtest_update_with_expression.write
+                  [xself]
+                    memory > xcity
+                    seq > @
+                      (((unsupported)).apply)
+                        xcity.write (((unsupported)).apply ((((xCity).xobjects).xcreate)) ((((unsupported)).apply ((xPoint)) (1) (1) (4326))))
+                        (((unsupported)).apply (((((unsupported)).apply ((((xCity).xobjects).xfilter)) (((xcity).xpk))).xupdate)) (((((xfunctions).xTranslate)).apply ("point") (1) (1))))
+                        bogusForceDataize.write ((((xcity).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xcity).xpoint)) ((((unsupported)).apply ((xPoint)) (2) (2) (4326))))

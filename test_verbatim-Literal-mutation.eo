@@ -1,0 +1,65 @@
+memory > xTemplateSyntaxError
+memory > xSimpleTestCase
+[] > test_verbatim
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_verbatim_tag01
+        memory > xtest_verbatim_tag02
+        memory > xtest_verbatim_tag04
+        memory > xtest_verbatim_tag05
+        memory > xtest_verbatim_tag03
+        memory > xtest_verbatim_tag06
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_verbatim_tag01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("verbatim-tag01"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("{{bare   }}"))
+                xtest_verbatim_tag02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("verbatim-tag02"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("{% endif %}"))
+                xtest_verbatim_tag03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("verbatim-tag03"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("It's the {% verbatim %} tag"))
+                xtest_verbatim_tag04.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("verbatim-tag04"))
+                xtest_verbatim_tag05.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("verbatim-tag05"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (""))
+                xtest_verbatim_tag06.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("verbatim-tag06"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Don't {% endverbatim %} just yet"))

@@ -1,0 +1,84 @@
+memory > xNode
+memory > xTemplateSyntaxError
+memory > xLocalizeNode
+memory > xlist
+memory > xformats
+memory > xstr
+memory > xLibrary
+memory > xlen
+[] > l10n
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__repr__
+        memory > xunlocalize
+        memory > xregister
+        memory > xlocalize
+        memory > xrender
+        memory > x__init__
+        memory > xlocalize_tag
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xregister.write (((xLibrary)).apply)
+            xlocalize.write
+              [xvalue]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((xstr)).apply ((((unsupported)).apply (((xformats).xlocalize)) ((xvalue)) (TRUE))))))
+            xunlocalize.write
+              [xvalue]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((xstr)).apply ((((unsupported)).apply (((xformats).xlocalize)) ((xvalue)) (FALSE))))))
+            (((unsupported)).apply ((xNode)))
+              seq
+                x__init__.write
+                  [xself xnodelist xuse_l10n]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xnodelist)) ((xnodelist)))
+                        (((unsupported)).apply (((xself).xuse_l10n)) ((xuse_l10n)))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("<%s>".mod (((xself).x__class__).x__name__))))
+                xrender.write
+                  [xself xcontext]
+                    memory > xold_setting
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xold_setting.write ((xcontext).xuse_l10n)
+                        (((unsupported)).apply (((xcontext).xuse_l10n)) (((xself).xuse_l10n)))
+                        xoutput.write (((((xself).xnodelist).xrender)).apply ((xcontext)))
+                        (((unsupported)).apply (((xcontext).xuse_l10n)) ((xold_setting)))
+                        (((unsupported)).apply ((xoutput)))
+            xlocalize_tag.write
+              [xparser xtoken]
+                memory > xbits
+                memory > xuse_l10n
+                memory > xnodelist
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xuse_l10n.write "None: is there a None literal in the EO language?"
+                    xbits.write (((xlist)).apply (((((xtoken).xsplit_contents)).apply)))
+                    ((((xlen)).apply ((xbits))).eq 1).if
+                      xuse_l10n.write TRUE
+                      (((((xlen)).apply ((xbits))).greater 2).or (((unsupported)).apply ((((unsupported)).apply ((xbits)) (1))) ((((unsupported)).apply ("on") ("off"))))).if
+                        (((unsupported)).apply ((((xTemplateSyntaxError)).apply (("%r argument should be 'on' or 'off'".mod (((unsupported)).apply ((xbits)) (0)))))))
+                        xuse_l10n.write ((((unsupported)).apply ((xbits)) (1)).eq "on")
+                    xnodelist.write ((((xparser).xparse)).apply ((((unsupported)).apply ("endlocalize"))))
+                    bogusForceDataize.write ((((xparser).xdelete_first_token)).apply)
+                    (((unsupported)).apply ((((xLocalizeNode)).apply ((xnodelist)) ((xuse_l10n)))))

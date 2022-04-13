@@ -1,0 +1,338 @@
+memory > xcm
+memory > xconditional_escape
+memory > xCommonPasswordValidator
+memory > xTestUser
+memory > xUserAttributeSimilarityValidator
+memory > xValidationError
+memory > xpassword
+memory > xMinimumLengthValidator
+memory > xNumericPasswordValidator
+memory > xpassword_validators_help_text_html
+memory > xValidator
+memory > xvalid
+memory > xoverride_settings
+memory > xAmpersandValidator
+memory > x__file__
+memory > xmodels
+memory > xobject
+memory > xvalidate_password
+memory > xValueError
+memory > xTestCase
+memory > xvalidators
+memory > xget_password_validators
+memory > xinvalid
+memory > xpassword_validators_help_texts
+memory > xos
+memory > xget_default_password_validators
+memory > xpassword_changed
+memory > xSimpleTestCase
+memory > xUser
+memory > xlen
+[] > test_validators
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_validate
+        memory > xtest_unicode_validator
+        memory > xtest_help_text
+        memory > xtest_password_changed_with_custom_validator
+        memory > xtest_password_validators_help_text_html_escaping
+        memory > xtest_get_password_validators_custom
+        memory > xtest_password_validators_help_text_html
+        memory > xtest_get_default_password_validators
+        memory > xtest_password_changed
+        memory > xtest_validate_custom_list
+        memory > xtest_validate_password
+        memory > xtest_validate_django_supplied_file
+        memory > xtest_empty_password_validator_help_text_html
+        memory > xtest_validate_property
+        memory > xtest_ascii_validator
+        memory > xtest_password_validators_help_texts
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((unsupported)).apply ("NAME") ("django.contrib.auth.password_validation.CommonPasswordValidator"))) ((((unsupported)).apply ("NAME") ("django.contrib.auth.password_validation.MinimumLengthValidator") ("OPTIONS") ((((unsupported)).apply ("min_length") (12))))))))))
+              seq
+                xtest_get_default_password_validators.write
+                  [xself]
+                    memory > xvalidators
+                    seq > @
+                      seq
+                        xvalidators.write (((xget_default_password_validators)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xvalidators)))) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((unsupported)).apply ((xvalidators)) (0)).x__class__).x__name__)) ("CommonPasswordValidator"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((unsupported)).apply ((xvalidators)) (1)).x__class__).x__name__)) ("MinimumLengthValidator"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((xvalidators)) (1)).xmin_length)) (12))
+                xtest_get_password_validators_custom.write
+                  [xself]
+                    memory > xvalidator_config
+                    memory > xvalidators
+                    seq > @
+                      seq
+                        xvalidator_config.write (((unsupported)).apply ((((unsupported)).apply ("NAME") ("django.contrib.auth.password_validation.CommonPasswordValidator"))))
+                        xvalidators.write (((xget_password_validators)).apply ((xvalidator_config)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xvalidators)))) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((unsupported)).apply ((xvalidators)) (0)).x__class__).x__name__)) ("CommonPasswordValidator"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xget_password_validators)).apply ((((unsupported)).apply)))) ((((unsupported)).apply)))
+                xtest_validate_password.write
+                  [xself]
+                    memory > xmsg_too_short
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xvalidate_password)).apply ("sufficiently-long"))))
+                        xmsg_too_short.write "This password is too short. It must contain at least 12 characters."
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write (((xvalidate_password)).apply ("django4242"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply ((xmsg_too_short)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((xcm).xexception).xerror_list)) (0)).xcode)) ("password_too_short"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write (((xvalidate_password)).apply ("password"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply ("This password is too common.") ((xmsg_too_short)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((xcm).xexception).xerror_list)) (0)).xcode)) ("password_too_common"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply ((xvalidate_password)) ("password") ((((unsupported)).apply)))))
+                xtest_password_changed.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((xpassword_changed)).apply ("password"))))
+                xtest_password_changed_with_custom_validator.write
+                  [xself]
+                    memory > xpassword_changed
+                    memory > xuser
+                    memory > xvalidator
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          xpassword_changed.write
+                            [xself xpassword xuser]
+                              seq > @
+                                seq
+                                  (((unsupported)).apply (((xself).xpassword)) ((xpassword)))
+                                  (((unsupported)).apply (((xself).xuser)) ((xuser)))
+                        xuser.write (((xobject)).apply)
+                        xvalidator.write (((xValidator)).apply)
+                        (((unsupported)).apply ((xpassword_changed)) ("password") ((xuser)) ((((unsupported)).apply ((xvalidator)))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((xvalidator).xuser)) ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xvalidator).xpassword)) ("password"))
+                xtest_password_validators_help_texts.write
+                  [xself]
+                    memory > xhelp_texts
+                    seq > @
+                      seq
+                        xhelp_texts.write (((xpassword_validators_help_texts)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xhelp_texts)))) (2))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("12 characters") ((((unsupported)).apply ((xhelp_texts)) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xpassword_validators_help_texts)) ((((unsupported)).apply)))) ((((unsupported)).apply)))
+                xtest_password_validators_help_text_html.write
+                  [xself]
+                    memory > xhelp_text
+                    seq > @
+                      seq
+                        xhelp_text.write (((xpassword_validators_help_text_html)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xhelp_text).xcount)).apply ("<li>"))) (2))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("12 characters") ((xhelp_text)))
+                xtest_password_validators_help_text_html_escaping.write
+                  [xself]
+                    memory > xget_help_text
+                    memory > xhelp_text
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                          xget_help_text.write
+                            [xself]
+                              seq > @
+                                (((unsupported)).apply ("Must contain &"))
+                        xhelp_text.write (((xpassword_validators_help_text_html)).apply ((((unsupported)).apply ((((xAmpersandValidator)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xhelp_text)) ("<ul><li>Must contain &amp;</li></ul>"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xhelp_text)) ((((xconditional_escape)).apply ((xhelp_text)))))
+                xtest_empty_password_validator_help_text_html.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xpassword_validators_help_text_html)).apply)) (""))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_validate.write
+                  [xself]
+                    memory > xexpected_error
+                    seq > @
+                      seq
+                        xexpected_error.write "This password is too short. It must contain at least %d characters."
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((((xMinimumLengthValidator)).apply).xvalidate)).apply ("12345678"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((((unsupported)).apply ((xMinimumLengthValidator)) (3)).xvalidate)).apply ("123"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write ((((((xMinimumLengthValidator)).apply).xvalidate)).apply ("1234567"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply (((xexpected_error).mod 8)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((xcm).xexception).xerror_list)) (0)).xcode)) ("password_too_short"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write ((((((unsupported)).apply ((xMinimumLengthValidator)) (3)).xvalidate)).apply ("12"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply (((xexpected_error).mod 3)))))
+                xtest_help_text.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xMinimumLengthValidator)).apply).xget_help_text)).apply)) ("Your password must contain at least 8 characters."))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_validate.write
+                  [xself]
+                    memory > xuser
+                    memory > xexpected_error
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xuser.write (((unsupported)).apply ((((xUser).xobjects).xcreate_user)) ("testclient") ("password") ("testclient@example.com") ("Test") ("Client"))
+                        xexpected_error.write "The password is too similar to the %s."
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((((xUserAttributeSimilarityValidator)).apply).xvalidate)).apply ("testclient"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          (((unsupported)).apply (((((xUserAttributeSimilarityValidator)).apply).xvalidate)) ("testclient") ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply (((xexpected_error).mod "username")))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((xcm).xexception).xerror_list)) (0)).xcode)) ("password_too_similar"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          (((unsupported)).apply (((((xUserAttributeSimilarityValidator)).apply).xvalidate)) ("example.com") ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply (((xexpected_error).mod "email address")))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          (((unsupported)).apply (((((unsupported)).apply ((xUserAttributeSimilarityValidator)) ((((unsupported)).apply ("first_name"))) (0.3)).xvalidate)) ("testclient") ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply (((xexpected_error).mod "first name")))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          (((unsupported)).apply (((((unsupported)).apply ((xUserAttributeSimilarityValidator)) ((((unsupported)).apply ("first_name"))) (1)).xvalidate)) (((xuser).xfirst_name)) ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply (((xexpected_error).mod "first name")))))
+                        xmsg.write "max_similarity must be at least 0.1"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply ((xUserAttributeSimilarityValidator)) (0.09))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((((unsupported)).apply ((xUserAttributeSimilarityValidator)) ((((unsupported)).apply ("first_name")))).xvalidate)) ("testclient") ((xuser)))))
+                xtest_validate_property.write
+                  [xself]
+                    memory > xusername
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xusername.write
+                              [xself]
+                                seq > @
+                                  (((unsupported)).apply)
+                                    (((unsupported)).apply ("foobar"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          (((unsupported)).apply (((((xUserAttributeSimilarityValidator)).apply).xvalidate)) ("foobar") ((((xTestUser)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply ("The password is too similar to the username."))))
+                xtest_help_text.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xUserAttributeSimilarityValidator)).apply).xget_help_text)).apply)) ("Your password can’t be too similar to your other personal information."))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_validate.write
+                  [xself]
+                    memory > xexpected_error
+                    seq > @
+                      seq
+                        xexpected_error.write "This password is too common."
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((((xCommonPasswordValidator)).apply).xvalidate)).apply ("a-safe-password"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write ((((((xCommonPasswordValidator)).apply).xvalidate)).apply ("godzilla"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply ((xexpected_error)))))
+                xtest_validate_custom_list.write
+                  [xself]
+                    memory > xexpected_error
+                    memory > xvalidator
+                    memory > xpath
+                    seq > @
+                      seq
+                        xpath.write (((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply ((((((xos).xpath).xrealpath)).apply ((x__file__)))))) ("common-passwords-custom.txt"))
+                        xvalidator.write (((unsupported)).apply ((xCommonPasswordValidator)) ((xpath)))
+                        xexpected_error.write "This password is too common."
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xvalidator).xvalidate)).apply ("a-safe-password"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write ((((xvalidator).xvalidate)).apply ("from-my-custom-list"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply ((xexpected_error)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((xcm).xexception).xerror_list)) (0)).xcode)) ("password_too_common"))
+                xtest_validate_django_supplied_file.write
+                  [xself]
+                    memory > xvalidator
+                    seq > @
+                      seq
+                        xvalidator.write (((xCommonPasswordValidator)).apply)
+                        (((unsupported)).apply ((xpassword)) (((xvalidator).xpasswords)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpassword)) (((((xpassword).xlower)).apply)))
+                xtest_help_text.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xCommonPasswordValidator)).apply).xget_help_text)).apply)) ("Your password can’t be a commonly used password."))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_validate.write
+                  [xself]
+                    memory > xexpected_error
+                    seq > @
+                      seq
+                        xexpected_error.write "This password is entirely numeric."
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((((xNumericPasswordValidator)).apply).xvalidate)).apply ("a-safe-password"))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))) ((xcm)))
+                          bogusForceDataize.write ((((((xNumericPasswordValidator)).apply).xvalidate)).apply ("42424242"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcm).xexception).xmessages)) ((((unsupported)).apply ((xexpected_error)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((xcm).xexception).xerror_list)) (0)).xcode)) ("password_entirely_numeric"))
+                xtest_help_text.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xNumericPasswordValidator)).apply).xget_help_text)).apply)) ("Your password can’t be entirely numeric."))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_unicode_validator.write
+                  [xself]
+                    memory > xinvalid_usernames
+                    memory > xv
+                    memory > xvalid_usernames
+                    seq > @
+                      seq
+                        xvalid_usernames.write (((unsupported)).apply ("joe") ("René") ("ᴮᴵᴳᴮᴵᴿᴰ") ("أحمد"))
+                        xinvalid_usernames.write (((unsupported)).apply ("o'connell") ("عبد ال") ("zerowidthu200Bspace") ("noncontinueingu00A0space") ("enu2013dash") ("trailingnewlineu000A"))
+                        xv.write ((((xvalidators).xUnicodeUsernameValidator)).apply)
+                        (((unsupported)).apply ((xvalid)) ((xvalid_usernames)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalid)))))
+                            bogusForceDataize.write (((xv)).apply ((xvalid)))
+                        (((unsupported)).apply ((xinvalid)) ((xinvalid_usernames)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xinvalid)))))
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))))
+                              bogusForceDataize.write (((xv)).apply ((xinvalid)))
+                xtest_ascii_validator.write
+                  [xself]
+                    memory > xinvalid_usernames
+                    memory > xv
+                    memory > xvalid_usernames
+                    seq > @
+                      seq
+                        xvalid_usernames.write (((unsupported)).apply ("glenn") ("GLEnN") ("jean-marc"))
+                        xinvalid_usernames.write (((unsupported)).apply ("o'connell") ("Éric") ("jean marc") ("أحمد") ("trailingnewlinen"))
+                        xv.write ((((xvalidators).xASCIIUsernameValidator)).apply)
+                        (((unsupported)).apply ((xvalid)) ((xvalid_usernames)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalid)))))
+                            bogusForceDataize.write (((xv)).apply ((xvalid)))
+                        (((unsupported)).apply ((xinvalid)) ((xinvalid_usernames)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xinvalid)))))
+                            (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))))
+                              bogusForceDataize.write (((xv)).apply ((xinvalid)))

@@ -1,0 +1,75 @@
+memory > xstr
+memory > xDatabaseIntrospection
+memory > xGeoFlexibleFieldLookupDict
+memory > xint
+memory > xException
+memory > xcursor
+memory > xOGRGeomType
+memory > xisinstance
+memory > xFlexibleFieldLookupDict
+memory > xsuper
+memory > xrow
+[] > introspection
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_constraints
+        memory > xget_geometry_type
+        memory > xbase_data_types_reverse
+        memory > xdata_types_reverse
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xFlexibleFieldLookupDict)))
+              seq
+                (((unsupported)).apply)
+                xbase_data_types_reverse.write (((unsupported)).apply (((xFlexibleFieldLookupDict).xbase_data_types_reverse)) ("point") ("GeometryField") ("linestring") ("GeometryField") ("polygon") ("GeometryField") ("multipoint") ("GeometryField") ("multilinestring") ("GeometryField") ("multipolygon") ("GeometryField") ("geometrycollection") ("GeometryField"))
+            (((unsupported)).apply ((xDatabaseIntrospection)))
+              seq
+                xdata_types_reverse.write (xGeoFlexibleFieldLookupDict)
+                xget_geometry_type.write
+                  [xself xtable_name xdescription]
+                    memory > xfield_params
+                    memory > xsrid
+                    memory > xogr_type
+                    memory > xdim
+                    memory > xfield_type
+                    memory > xrow
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xself).xconnection).xcursor)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ("SELECT coord_dimension, srid, geometry_type FROM geometry_columns WHERE f_table_name=%s AND f_geometry_column=%s") ((((unsupported)).apply ((xtable_name)) (((xdescription).xname)))))
+                            xrow.write ((xcursor).xfetchone)
+                            ((xrow).not).if
+                              (((unsupported)).apply ((((xException)).apply (("Could not find a geometry column for \"%s\".\"%s\"".mod (((unsupported)).apply ((xtable_name)) (((xdescription).xname))))))))
+                            xogr_type.write (((unsupported)).apply ((xrow)) (2))
+                            ((((xisinstance)).apply ((xogr_type)) ((xint))).and ((xogr_type).greater 1000)).if
+                              xogr_type.write (((xogr_type).mod 1000).add ((xOGRGeomType).xwkb25bit))
+                            xfield_type.write ((((xOGRGeomType)).apply ((xogr_type))).xdjango)
+                            xdim.write (((unsupported)).apply ((xrow)) (0))
+                            xsrid.write (((unsupported)).apply ((xrow)) (1))
+                            xfield_params.write (((unsupported)).apply)
+                            ((xsrid).neq 4326).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("srid"))) ((xsrid)))
+                            (((((xisinstance)).apply ((xdim)) ((xstr))).and (((unsupported)).apply ("Z") ((xdim)))).or ((xdim).eq 3)).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xfield_params)) ("dim"))) (3))
+                        (((unsupported)).apply ((((unsupported)).apply ((xfield_type)) ((xfield_params)))))
+                xget_constraints.write
+                  [xself xcursor xtable_name]
+                    memory > xconstraints
+                    seq > @
+                      seq
+                        xconstraints.write ((((xsuper).xget_constraints)).apply ((xcursor)) ((xtable_name)))
+                        bogusForceDataize.write ((((xcursor).xexecute)).apply ("SELECT f_geometry_column FROM geometry_columns WHERE f_table_name=%s AND spatial_index_enabled=1") ((((unsupported)).apply ((xtable_name)))))
+                        (((unsupported)).apply ((xrow)) (((xcursor).xfetchall)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xconstraints)) (("%s__spatial__index".mod (((unsupported)).apply ((xrow)) (0)))))) ((((unsupported)).apply ("columns") ((((unsupported)).apply ((((unsupported)).apply ((xrow)) (0))))) ("primary_key") (FALSE) ("unique") (FALSE) ("foreign_key") ("None: is there a None literal in the EO language?") ("check") (FALSE) ("index") (TRUE))))
+                        (((unsupported)).apply ((xconstraints)))

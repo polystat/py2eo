@@ -1,0 +1,183 @@
+memory > xAttributeError
+memory > xlist
+memory > xstr
+memory > xBook
+memory > xb
+memory > xbook
+memory > xPrefetch
+memory > xr
+memory > xprefetch_related_objects
+memory > xReader
+memory > xauthor
+memory > xa
+memory > xTestCase
+memory > xAuthor
+[] > test_prefetch_related_objects
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_prefetch_object_twice
+        memory > xtest_m2m_forward
+        memory > xtest_m2m_reverse
+        memory > xtest_unknown
+        memory > xtest_foreignkey_reverse
+        memory > xtest_prefetch_object_to_attr_twice
+        memory > xtest_prefetch_object
+        memory > xtest_prefetch_queryset
+        memory > xtest_m2m_then_m2m
+        memory > xtest_foreignkey_forward
+        memory > xtest_prefetch_object_to_attr
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                (((unsupported)).apply)
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xbook1)) ((((unsupported)).apply ((((xBook).xobjects).xcreate)) ("Poems"))))
+                        (((unsupported)).apply (((xcls).xbook2)) ((((unsupported)).apply ((((xBook).xobjects).xcreate)) ("Jane Eyre"))))
+                        (((unsupported)).apply (((xcls).xbook3)) ((((unsupported)).apply ((((xBook).xobjects).xcreate)) ("Wuthering Heights"))))
+                        (((unsupported)).apply (((xcls).xbook4)) ((((unsupported)).apply ((((xBook).xobjects).xcreate)) ("Sense and Sensibility"))))
+                        (((unsupported)).apply (((xcls).xauthor1)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Charlotte") (((xcls).xbook1)))))
+                        (((unsupported)).apply (((xcls).xauthor2)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Anne") (((xcls).xbook1)))))
+                        (((unsupported)).apply (((xcls).xauthor3)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Emily") (((xcls).xbook1)))))
+                        (((unsupported)).apply (((xcls).xauthor4)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Jane") (((xcls).xbook4)))))
+                        bogusForceDataize.write ((((((xcls).xbook1).xauthors).xadd)).apply (((xcls).xauthor1)) (((xcls).xauthor2)) (((xcls).xauthor3)))
+                        bogusForceDataize.write ((((((xcls).xbook2).xauthors).xadd)).apply (((xcls).xauthor1)))
+                        bogusForceDataize.write ((((((xcls).xbook3).xauthors).xadd)).apply (((xcls).xauthor3)))
+                        bogusForceDataize.write ((((((xcls).xbook4).xauthors).xadd)).apply (((xcls).xauthor4)))
+                        (((unsupported)).apply (((xcls).xreader1)) ((((unsupported)).apply ((((xReader).xobjects).xcreate)) ("Amy"))))
+                        (((unsupported)).apply (((xcls).xreader2)) ((((unsupported)).apply ((((xReader).xobjects).xcreate)) ("Belinda"))))
+                        bogusForceDataize.write ((((((xcls).xreader1).xbooks_read).xadd)).apply (((xcls).xbook1)) (((xcls).xbook4)))
+                        bogusForceDataize.write ((((((xcls).xreader2).xbooks_read).xadd)).apply (((xcls).xbook2)) (((xcls).xbook4)))
+                xtest_unknown.write
+                  [xself]
+                    memory > xbook1
+                    seq > @
+                      seq
+                        xbook1.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook1).xid)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xAttributeError)))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)))) ("unknown_attribute"))
+                xtest_m2m_forward.write
+                  [xself]
+                    memory > xbook1
+                    seq > @
+                      seq
+                        xbook1.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook1).xid)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)))) ("authors"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((((xbook1).xauthors).xall)).apply)) ((((unsupported)).apply (((xself).xauthor1)) (((xself).xauthor2)) (((xself).xauthor3)))))
+                xtest_m2m_reverse.write
+                  [xself]
+                    memory > xauthor1
+                    seq > @
+                      seq
+                        xauthor1.write (((unsupported)).apply ((((xAuthor).xobjects).xget)) ((((xself).xauthor1).xid)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xauthor1)))) ("books"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((((xauthor1).xbooks).xall)).apply)) ((((unsupported)).apply (((xself).xbook1)) (((xself).xbook2)))))
+                xtest_foreignkey_forward.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        xauthors.write (((xlist)).apply ((((((xAuthor).xobjects).xall)).apply)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((xauthors)) ("first_book"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          (((unsupported)).apply (((xauthor).xfirst_book)) ((xauthor)) ((xauthors)))
+                xtest_foreignkey_reverse.write
+                  [xself]
+                    memory > xbooks
+                    seq > @
+                      seq
+                        xbooks.write (((xlist)).apply ((((((xBook).xobjects).xall)).apply)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((xbooks)) ("first_time_authors"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          (((unsupported)).apply ((((xlist)).apply ((((((xbook).xfirst_time_authors).xall)).apply)))) ((xbook)) ((xbooks)))
+                xtest_m2m_then_m2m.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        unsupported
+                        xauthors.write (((xlist)).apply ((((((xAuthor).xobjects).xall)).apply)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (2))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((xauthors)) ("books__read_by"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xstr)).apply ((xr)))) ((xr)) ((((((xb).xread_by).xall)).apply)))) ((xb)) ((((((xa).xbooks).xall)).apply)))) ((xa)) ((xauthors)))) ((((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ("Amy"))) ((((unsupported)).apply ("Belinda"))))) ((((unsupported)).apply ((((unsupported)).apply ("Amy"))))) ((((unsupported)).apply ((((unsupported)).apply ("Amy"))) ((((unsupported)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ("Amy") ("Belinda"))))))))
+                xtest_prefetch_object.write
+                  [xself]
+                    memory > xbook1
+                    seq > @
+                      seq
+                        xbook1.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook1).xid)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)))) ((((xPrefetch)).apply ("authors"))))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((((xbook1).xauthors).xall)).apply)) ((((unsupported)).apply (((xself).xauthor1)) (((xself).xauthor2)) (((xself).xauthor3)))))
+                xtest_prefetch_object_twice.write
+                  [xself]
+                    memory > xbook2
+                    memory > xbook1
+                    seq > @
+                      seq
+                        xbook1.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook1).xid)))
+                        xbook2.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook2).xid)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)))) ((((xPrefetch)).apply ("authors"))))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)) ((xbook2)))) ((((xPrefetch)).apply ("authors"))))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((((xbook2).xauthors).xall)).apply)) ((((unsupported)).apply (((xself).xauthor1)))))
+                xtest_prefetch_object_to_attr.write
+                  [xself]
+                    memory > xbook1
+                    seq > @
+                      seq
+                        xbook1.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook1).xid)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)))) ((((unsupported)).apply ((xPrefetch)) ("authors") ("the_authors"))))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((xbook1).xthe_authors)) ((((unsupported)).apply (((xself).xauthor1)) (((xself).xauthor2)) (((xself).xauthor3)))))
+                xtest_prefetch_object_to_attr_twice.write
+                  [xself]
+                    memory > xbook2
+                    memory > xbook1
+                    seq > @
+                      seq
+                        xbook1.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook1).xid)))
+                        xbook2.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook2).xid)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)))) ((((unsupported)).apply ((xPrefetch)) ("authors") ("the_authors"))))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)) ((xbook2)))) ((((unsupported)).apply ((xPrefetch)) ("authors") ("the_authors"))))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((xbook2).xthe_authors)) ((((unsupported)).apply (((xself).xauthor1)))))
+                xtest_prefetch_queryset.write
+                  [xself]
+                    memory > xbook1
+                    seq > @
+                      seq
+                        xbook1.write (((unsupported)).apply ((((xBook).xobjects).xget)) ((((xself).xbook1).xid)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write (((xprefetch_related_objects)).apply ((((unsupported)).apply ((xbook1)))) ((((unsupported)).apply ((xPrefetch)) ("authors") ((((unsupported)).apply ((((xAuthor).xobjects).xfilter)) ((((unsupported)).apply ((((xself).xauthor1).xid)) ((((xself).xauthor2).xid)))))))))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((((xbook1).xauthors).xall)).apply)) ((((unsupported)).apply (((xself).xauthor1)) (((xself).xauthor2)))))

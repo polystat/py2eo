@@ -1,0 +1,202 @@
+memory > xc_int64
+memory > xgdal_char_p
+memory > xcheck_srs
+memory > xcheck_errcode
+memory > xcheck_const_string
+memory > xargtypes2
+memory > xcheck_pointer
+memory > xPOINTER
+memory > xcheck_arg_errcode
+memory > xc_int
+memory > xcheck_geom_offset
+memory > xc_char_p
+memory > xc_bool
+memory > xcheck_geom
+memory > xcheck_str_arg
+memory > xc_void_p
+memory > xcheck_string
+memory > xc_double
+memory > xpartial
+[] > generation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xvoid_output
+        memory > xdouble_output
+        memory > xsrs_output
+        memory > xchararray_output
+        memory > xgeom_output
+        memory > xconst_string_output
+        memory > xint_output
+        memory > xvoidptr_output
+        memory > xbool_output
+        memory > xint64_output
+        memory > xstring_output
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xc_char_p)))
+            xbool_output.write
+              [xfunc xargtypes xerrcheck]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes2)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((xc_bool)))
+                    (xerrcheck).if
+                      (((unsupported)).apply (((xfunc).xerrcheck)) ((xerrcheck)))
+                    (((unsupported)).apply ((xfunc)))
+            xdouble_output.write
+              [xfunc xargtypes xerrcheck xstrarg xcpl]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((xc_double)))
+                    (xerrcheck).if
+                      (((unsupported)).apply (((xfunc).xerrcheck)) ((((unsupported)).apply ((xpartial)) ((xcheck_arg_errcode)) ((xcpl)))))
+                    (xstrarg).if
+                      (((unsupported)).apply (((xfunc).xerrcheck)) ((xcheck_str_arg)))
+                    (((unsupported)).apply ((xfunc)))
+            xgeom_output.write
+              [xfunc xargtypes xoffset]
+                memory > xgeomerrcheck
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    ((xoffset).not).if
+                      seq
+                        (((unsupported)).apply (((xfunc).xrestype)) ((xc_void_p)))
+                        (((unsupported)).apply (((xfunc).xerrcheck)) ((xcheck_geom)))
+                      seq
+                        (((unsupported)).apply (((xfunc).xrestype)) ((xc_int)))
+                        xgeomerrcheck.write
+                          [xresult xfunc xcargs]
+                            seq > @
+                              (((unsupported)).apply ((((xcheck_geom_offset)).apply ((xresult)) ((xfunc)) ((xcargs)) ((xoffset)))))
+                        (((unsupported)).apply (((xfunc).xerrcheck)) ((xgeomerrcheck)))
+                    (((unsupported)).apply ((xfunc)))
+            xint_output.write
+              [xfunc xargtypes xerrcheck]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((xc_int)))
+                    (xerrcheck).if
+                      (((unsupported)).apply (((xfunc).xerrcheck)) ((xerrcheck)))
+                    (((unsupported)).apply ((xfunc)))
+            xint64_output.write
+              [xfunc xargtypes]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((xc_int64)))
+                    (((unsupported)).apply ((xfunc)))
+            xsrs_output.write
+              [xfunc xargtypes]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((xc_void_p)))
+                    (((unsupported)).apply (((xfunc).xerrcheck)) ((xcheck_srs)))
+                    (((unsupported)).apply ((xfunc)))
+            xconst_string_output.write
+              [xfunc xargtypes xoffset xdecoding xcpl]
+                memory > x_check_const
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (xoffset).if
+                      (((unsupported)).apply (((xfunc).xrestype)) ((xc_int)))
+                      (((unsupported)).apply (((xfunc).xrestype)) ((xc_char_p)))
+                    x_check_const.write
+                      [xresult xfunc xcargs]
+                        memory > xres
+                        seq > @
+                          seq
+                            xres.write (((unsupported)).apply ((xcheck_const_string)) ((xresult)) ((xfunc)) ((xcargs)) ((xoffset)) ((xcpl)))
+                            ((xres).and (xdecoding)).if
+                              xres.write ((((xres).xdecode)).apply ((xdecoding)))
+                            (((unsupported)).apply ((xres)))
+                    (((unsupported)).apply (((xfunc).xerrcheck)) ((x_check_const)))
+                    (((unsupported)).apply ((xfunc)))
+            xstring_output.write
+              [xfunc xargtypes xoffset xstr_result xdecoding]
+                memory > x_check_str
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (xstr_result).if
+                      (((unsupported)).apply (((xfunc).xrestype)) ((xgdal_char_p)))
+                      (((unsupported)).apply (((xfunc).xrestype)) ((xc_int)))
+                    x_check_str.write
+                      [xresult xfunc xcargs]
+                        memory > xres
+                        seq > @
+                          seq
+                            xres.write (((unsupported)).apply ((xcheck_string)) ((xresult)) ((xfunc)) ((xcargs)) ((xoffset)) ((xstr_result)))
+                            ((xres).and (xdecoding)).if
+                              xres.write ((((xres).xdecode)).apply ((xdecoding)))
+                            (((unsupported)).apply ((xres)))
+                    (((unsupported)).apply (((xfunc).xerrcheck)) ((x_check_str)))
+                    (((unsupported)).apply ((xfunc)))
+            xvoid_output.write
+              [xfunc xargtypes xerrcheck xcpl]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (xargtypes).if
+                      (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (xerrcheck).if
+                      seq
+                        (((unsupported)).apply (((xfunc).xrestype)) ((xc_int)))
+                        (((unsupported)).apply (((xfunc).xerrcheck)) ((((unsupported)).apply ((xpartial)) ((xcheck_errcode)) ((xcpl)))))
+                      (((unsupported)).apply (((xfunc).xrestype)) ("None: is there a None literal in the EO language?"))
+                    (((unsupported)).apply ((xfunc)))
+            xvoidptr_output.write
+              [xfunc xargtypes xerrcheck]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((xc_void_p)))
+                    (xerrcheck).if
+                      (((unsupported)).apply (((xfunc).xerrcheck)) ((xcheck_pointer)))
+                    (((unsupported)).apply ((xfunc)))
+            xchararray_output.write
+              [xfunc xargtypes xerrcheck]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((xfunc).xargtypes)) ((xargtypes)))
+                    (((unsupported)).apply (((xfunc).xrestype)) ((((xPOINTER)).apply ((xc_char_p)))))
+                    (xerrcheck).if
+                      (((unsupported)).apply (((xfunc).xerrcheck)) ((xcheck_pointer)))
+                    (((unsupported)).apply ((xfunc)))

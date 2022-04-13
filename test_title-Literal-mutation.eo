@@ -1,0 +1,51 @@
+memory > xtitle
+memory > xSimpleTestCase
+[] > test_title
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_title1
+        memory > xtest_title
+        memory > xtest_non_string_input
+        memory > xtest_title2
+        memory > xtest_unicode
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_title1.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("title1") ((((unsupported)).apply ("a") ("JOE'S CRAB SHACK"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Joe&#x27;s Crab Shack"))
+                xtest_title2.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("title2") ((((unsupported)).apply ("a") ("555 WEST 53RD STREET"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("555 West 53rd Street"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_title.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtitle)).apply ("a nice title, isn't it?"))) ("A Nice Title, Isn't It?"))
+                xtest_unicode.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtitle)).apply ("discothxe8que"))) ("Discothxe8que"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtitle)).apply (123))) ("123"))

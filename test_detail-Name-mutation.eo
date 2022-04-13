@@ -1,0 +1,300 @@
+memory > xPage
+memory > xAttributeError
+memory > xdatetime
+memory > xBook
+memory > xArtist
+memory > xView
+memory > xRequestFactory
+memory > xFormContext
+memory > xModelFormMixin
+memory > xImproperlyConfigured
+memory > xSingleObjectTemplateResponseMixin
+memory > xTestCase
+memory > xAuthor
+memory > xoverride_settings
+memory > xObjectDoesNotExist
+[] > test_detail
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_template_name
+        memory > xtest_detail_by_pk_and_slug
+        memory > xtest_template_name_field
+        memory > xtest_verbose_name
+        memory > xtest_detail_by_pk_ignore_slug_mismatch
+        memory > xtest_detail_by_slug
+        memory > xtest_custom_detail
+        memory > xtest_non_model_object_with_meta
+        memory > xtest_detail_by_custom_pk
+        memory > xtest_context_object_name
+        memory > xtest_detail_missing_object
+        memory > xtest_simple_object
+        memory > xtest_detail_by_custom_slug
+        memory > xsetUpTestData
+        memory > xtest_duplicated_context_object_name
+        memory > xtest_invalid_queryset
+        memory > xtest_deferred_queryset_context_object_name
+        memory > xtest_deferred_queryset_template_name
+        memory > xtest_invalid_url
+        memory > xtest_template_name_suffix
+        memory > xtest_detail_by_pk
+        memory > xtest_detail_object_does_not_exist
+        memory > xtest_detail_by_pk_and_slug_mismatch_404
+        memory > xtest_detail_by_pk_ignore_slug
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("generic_views.urls"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xartist1)) ((((unsupported)).apply ((((xArtist).xobjects).xcreate)) ("Rene Magritte"))))
+                        (((unsupported)).apply (((xcls).xauthor1)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Roberto Bolaño") ("roberto-bolano"))))
+                        (((unsupported)).apply (((xcls).xauthor2)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Scott Rosenberg") ("scott-rosenberg"))))
+                        (((unsupported)).apply (((xcls).xbook1)) ((((unsupported)).apply ((((xBook).xobjects).xcreate)) ("2066") ("2066") (800) (((((xdatetime).xdate)).apply (2008) (10) (1))))))
+                        bogusForceDataize.write ((((((xcls).xbook1).xauthors).xadd)).apply (((xcls).xauthor1)))
+                        (((unsupported)).apply (((xcls).xbook2)) ((((unsupported)).apply ((((xBook).xobjects).xcreate)) ("Dreaming in Code") ("dreaming-in-code") (300) (((((xdatetime).xdate)).apply (2006) (5) (1))))))
+                        (((unsupported)).apply (((xcls).xpage1)) ((((unsupported)).apply ((((xPage).xobjects).xcreate)) ("I was once bitten by a moose.") ("generic_views/page_template.html"))))
+                xtest_simple_object.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply ("/detail/obj/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) ((((unsupported)).apply ("foo") ("bar"))))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((unsupported)).apply (((xres).xcontext)) ("view"))) ((xView)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/detail.html"))
+                xtest_detail_by_pk.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/%s/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_detail_missing_object.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply ("/detail/author/500/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (404))
+                xtest_detail_object_does_not_exist.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xObjectDoesNotExist)))))
+                        bogusForceDataize.write (((((xself).xclient).xget)).apply ("/detail/doesnotexist/1/"))
+                xtest_detail_by_custom_pk.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/bycustompk/%s/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_detail_by_slug.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply ("/detail/author/byslug/scott-rosenberg/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) ((((unsupported)).apply ((((xAuthor).xobjects).xget)) ("scott-rosenberg"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) ((((unsupported)).apply ((((xAuthor).xobjects).xget)) ("scott-rosenberg"))))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_detail_by_custom_slug.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply ("/detail/author/bycustomslug/scott-rosenberg/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) ((((unsupported)).apply ((((xAuthor).xobjects).xget)) ("scott-rosenberg"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) ((((unsupported)).apply ((((xAuthor).xobjects).xget)) ("scott-rosenberg"))))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_detail_by_pk_ignore_slug.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/bypkignoreslug/%s-roberto-bolano/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_detail_by_pk_ignore_slug_mismatch.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/bypkignoreslug/%s-scott-rosenberg/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_detail_by_pk_and_slug.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/bypkandslug/%s-roberto-bolano/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_detail_by_pk_and_slug_mismatch_404.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/bypkandslug/%s-scott-rosenberg/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (404))
+                xtest_verbose_name.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/artist/%s/".mod (((xself).xartist1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xartist1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("artist"))) (((xself).xartist1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/artist_detail.html"))
+                xtest_template_name.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/%s/template_name/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/about.html"))
+                xtest_template_name_suffix.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/%s/template_name_suffix/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_view.html"))
+                xtest_template_name_field.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/page/%s/field/".mod (((xself).xpage1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xpage1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("page"))) (((xself).xpage1)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/page_template.html"))
+                xtest_context_object_name.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/%s/context_object_name/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("thingy"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("author") (((xres).xcontext)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_duplicated_context_object_name.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/%s/dupe_context_object_name/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("author") (((xres).xcontext)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_custom_detail.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xres.write (((((xself).xclient).xget)).apply (("/detail/author/%s/custom_detail/".mod (((xself).xauthor1).xpk))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xres).xcontext)) ("custom_author"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("author") (((xres).xcontext)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("object") (((xres).xcontext)))
+                        bogusForceDataize.write ((((xself).xassertTemplateUsed)).apply ((xres)) ("generic_views/author_detail.html"))
+                xtest_deferred_queryset_template_name.write
+                  [xself]
+                    memory > xmodel
+                    memory > xrequest
+                    memory > xobject
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xSingleObjectTemplateResponseMixin)))
+                          seq
+                            xrequest.write ((((((xRequestFactory)).apply).xget)).apply ("/"))
+                            xmodel.write (xAuthor)
+                            xobject.write (((unsupported)).apply (((((((xAuthor).xobjects).xdefer)).apply ("name")).xget)) ((((xself).xauthor1).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((((xFormContext)).apply).xget_template_names)).apply)) (0))) ("generic_views/author_detail.html"))
+                xtest_deferred_queryset_context_object_name.write
+                  [xself]
+                    memory > xrequest
+                    memory > xfields
+                    memory > xobject
+                    memory > xmodel
+                    memory > xform_context_data
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xModelFormMixin)))
+                          seq
+                            xrequest.write ((((((xRequestFactory)).apply).xget)).apply ("/"))
+                            xmodel.write (xAuthor)
+                            xobject.write (((unsupported)).apply (((((((xAuthor).xobjects).xdefer)).apply ("name")).xget)) ((((xself).xauthor1).xpk)))
+                            xfields.write (((unsupported)).apply ("name"))
+                        xform_context_data.write ((((((xFormContext)).apply).xget_context_data)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xform_context_data)) ("object"))) (((xself).xauthor1)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xform_context_data)) ("author"))) (((xself).xauthor1)))
+                xtest_invalid_url.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xAttributeError)))))
+                        bogusForceDataize.write (((((xself).xclient).xget)).apply ("/detail/author/invalid/url/"))
+                xtest_invalid_queryset.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "AuthorDetail is missing a QuerySet. Define AuthorDetail.model, AuthorDetail.queryset, or override AuthorDetail.get_queryset()."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xclient).xget)).apply ("/detail/author/invalid/qs/"))
+                xtest_non_model_object_with_meta.write
+                  [xself]
+                    memory > xres
+                    seq > @
+                      seq
+                        xres.write (((((xself).xclient).xget)).apply ("/detail/nonmodel/1/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xres).xstatus_code)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xres).xcontext)) ("object")).xid)) ("non_model_1"))

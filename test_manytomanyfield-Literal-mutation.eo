@@ -1,0 +1,139 @@
+memory > xlist
+memory > xValueError
+memory > xapps
+memory > xTestCase
+memory > xThrough
+memory > xConcreteReferent
+memory > xAbstractManyToManyModel
+memory > xmodels
+memory > xSimpleTestCase
+memory > xTypeError
+memory > xManyToMany
+memory > xAbstractReferent
+memory > xReferred
+memory > xChild
+[] > test_manytomanyfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_abstract_model_app_relative_foreign_key
+        memory > xtest_invalid_to_parameter
+        memory > xtest_abstract_model_pending_operations
+        memory > xtest_value_from_object_instance_with_pk
+        memory > xtest_value_from_object_instance_without_pk
+        memory > xtest_through_db_table_mutually_exclusive
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_abstract_model_pending_operations.write
+                  [xself]
+                    memory > xpending_ops_before
+                    memory > xabstract
+                    memory > xfk
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xpending_ops_before.write (((xlist)).apply ((((((xapps).x_pending_operations).xitems)).apply)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xfk.write ((((xmodels).xForeignKey)).apply ("missing.FK") (((xmodels).xCASCADE)))
+                            (((unsupported)).apply)
+                              xabstract.write TRUE
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xAbstractManyToManyModel).x_meta).xapps)) ((xapps)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xpending_ops_before)) ((((xlist)).apply ((((((xapps).x_pending_operations).xitems)).apply)))) ("Pending lookup added for a many-to-many field on an abstract model"))
+                xtest_abstract_model_app_relative_foreign_key.write
+                  [xself]
+                    memory > xassert_app_model_resolved
+                    memory > xreference
+                    memory > xabstract
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xreference.write (((unsupported)).apply (((xmodels).xManyToManyField)) ("Referred") ("Through"))
+                            (((unsupported)).apply)
+                              seq
+                                xapp_label.write "model_fields"
+                                xabstract.write TRUE
+                        xassert_app_model_resolved.write
+                          [xlabel]
+                            memory > xreferent
+                            memory > xreferred
+                            memory > xapp_label
+                            seq > @
+                              seq
+                                (((unsupported)).apply (((xmodels).xModel)))
+                                  (((unsupported)).apply)
+                                    xapp_label.write (xlabel)
+                                (((unsupported)).apply (((xmodels).xModel)))
+                                  seq
+                                    xreferred.write (((unsupported)).apply (((xmodels).xForeignKey)) ("Referred") (((xmodels).xCASCADE)))
+                                    xreferent.write (((unsupported)).apply (((xmodels).xForeignKey)) ("ConcreteReferent") (((xmodels).xCASCADE)))
+                                    (((unsupported)).apply)
+                                      xapp_label.write (xlabel)
+                                (((unsupported)).apply ((xAbstractReferent)))
+                                  (((unsupported)).apply)
+                                    xapp_label.write (xlabel)
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((xConcreteReferent).x_meta).xget_field)).apply ("reference")).xrelated_model)) ((xReferred)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xConcreteReferent).xreference).xthrough)) ((xThrough)))
+                        bogusForceDataize.write (((xassert_app_model_resolved)).apply ("model_fields"))
+                        bogusForceDataize.write (((xassert_app_model_resolved)).apply ("tests"))
+                xtest_invalid_to_parameter.write
+                  [xself]
+                    memory > xmsg
+                    memory > xm2m
+                    seq > @
+                      seq
+                        xmsg.write "ManyToManyField(1) is invalid. First parameter to ManyToManyField must be either a model, a model name, or the string 'self'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          (((unsupported)).apply (((xmodels).xModel)))
+                            xm2m.write ((((xmodels).xManyToManyField)).apply (1))
+                xtest_through_db_table_mutually_exclusive.write
+                  [xself]
+                    memory > xreferent
+                    memory > xm2m
+                    memory > xmsg
+                    memory > xreferred
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xreferred.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xChild)) (((xmodels).xCASCADE)))
+                            xreferent.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xChild)) (((xmodels).xCASCADE)))
+                        xmsg.write "Cannot specify a db_table if an intermediary model is used."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          (((unsupported)).apply (((xmodels).xModel)))
+                            xm2m.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xChild)) ("Through") ("custom_name"))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_value_from_object_instance_without_pk.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write (((xManyToMany)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((((xobj).x_meta).xget_field)).apply ("m2m")).xvalue_from_object)).apply ((xobj)))) ((((unsupported)).apply)))
+                xtest_value_from_object_instance_with_pk.write
+                  [xself]
+                    memory > xobj
+                    memory > xrelated_obj
+                    seq > @
+                      seq
+                        xobj.write (((((xManyToMany).xobjects).xcreate)).apply)
+                        xrelated_obj.write (((((xManyToMany).xobjects).xcreate)).apply)
+                        bogusForceDataize.write (((((xobj).xm2m).xadd)).apply ((xrelated_obj)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((((xobj).x_meta).xget_field)).apply ("m2m")).xvalue_from_object)).apply ((xobj)))) ((((unsupported)).apply ((xrelated_obj)))))

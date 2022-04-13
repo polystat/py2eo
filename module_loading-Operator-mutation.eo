@@ -1,0 +1,115 @@
+memory > xcopy
+memory > xlist
+memory > xModuleNotFoundError
+memory > xclass_name
+memory > xapps
+memory > xmodule_path
+memory > xerr
+memory > xException
+memory > xsys
+memory > xspec
+memory > xgetattr
+memory > xapp_config
+memory > xmodule_to_search
+memory > xkwargs
+memory > xlen
+memory > xImportError
+memory > xAttributeError
+memory > xValueError
+memory > ximport_module
+memory > xargs
+memory > xos
+[] > module_loading
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xmodule_dir
+        memory > ximport_string
+        memory > ximportlib_find
+        memory > xcached_import
+        memory > xmodule_has_submodule
+        memory > xautodiscover_modules
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcached_import.write
+              [xmodule_path xclass_name]
+                memory > xmodule
+                seq > @
+                  seq
+                    ((((((unsupported)).apply ((((((xsys).xmodules).xget)).apply ((xmodule_path))))).and (((unsupported)).apply ((((xgetattr)).apply ((xmodule)) ("__spec__") ("None: is there a None literal in the EO language?"))))).and (((unsupported)).apply ((((xgetattr)).apply ((xspec)) ("_initializing") (FALSE))) (FALSE))).not).if
+                      xmodule.write (((ximport_module)).apply ((xmodule_path)))
+                    (((unsupported)).apply ((((xgetattr)).apply ((xmodule)) ((xclass_name)))))
+            ximport_string.write
+              [xdotted_path]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xValueError)))
+                      (((unsupported)).apply ((((unsupported)).apply ((xmodule_path)) ((xclass_name)))) (((((xdotted_path).xrsplit)).apply (".") (1))))
+                      (((unsupported)).apply ((((xImportError)).apply (("%s doesn't look like a module path".mod (xdotted_path))))) ((xerr)))
+                    (((unsupported)).apply ((xAttributeError)))
+                      (((unsupported)).apply ((((xcached_import)).apply ((xmodule_path)) ((xclass_name)))))
+                      (((unsupported)).apply ((((xImportError)).apply (("Module \"%s\" does not define a \"%s\" attribute/class".mod (((unsupported)).apply ((xmodule_path)) ((xclass_name))))))) ((xerr)))
+            xautodiscover_modules.write
+              []
+                memory > xbefore_import_registry
+                memory > xregister_to
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xregister_to.write ((((xkwargs).xget)).apply ("register_to"))
+                    (((unsupported)).apply ((xapp_config)) (((((xapps).xget_app_configs)).apply)))
+                      (((unsupported)).apply ((xmodule_to_search)) ((xargs)))
+                        (((unsupported)).apply ((xException)))
+                          seq
+                            (xregister_to).if
+                              xbefore_import_registry.write ((((xcopy).xcopy)).apply (((xregister_to).x_registry)))
+                            bogusForceDataize.write (((ximport_module)).apply (("%s.%s".mod (((unsupported)).apply (((xapp_config).xname)) ((xmodule_to_search))))))
+                          seq
+                            (xregister_to).if
+                              (((unsupported)).apply (((xregister_to).x_registry)) ((xbefore_import_registry)))
+                            (((xmodule_has_submodule)).apply (((xapp_config).xmodule)) ((xmodule_to_search))).if
+                              (((unsupported)).apply)
+            xmodule_has_submodule.write
+              [xpackage xmodule_name]
+                memory > xpackage_path
+                memory > xfull_module_name
+                memory > xpackage_name
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((xAttributeError)))
+                      seq
+                        xpackage_name.write ((xpackage).x__name__)
+                        xpackage_path.write ((xpackage).x__path__)
+                      (((unsupported)).apply (FALSE))
+                    xfull_module_name.write (((xpackage_name).sub ".").sub (xmodule_name))
+                    (((unsupported)).apply ((xModuleNotFoundError)))
+                      (((unsupported)).apply ((((unsupported)).apply ((((ximportlib_find)).apply ((xfull_module_name)) ((xpackage_path)))) ("None: is there a None literal in the EO language?"))))
+                      (((unsupported)).apply (FALSE))
+            xmodule_dir.write
+              [xmodule]
+                memory > xpaths
+                memory > xfilename
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xpaths.write (((xlist)).apply ((((xgetattr)).apply ((xmodule)) ("__path__") ((((unsupported)).apply)))))
+                    ((((xlen)).apply ((xpaths))).eq 1).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xpaths)) (0))))
+                      seq
+                        xfilename.write (((xgetattr)).apply ((xmodule)) ("__file__") ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((xfilename)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((((xos).xpath).xdirname)).apply ((xfilename)))))
+                    (((unsupported)).apply ((((xValueError)).apply (("Cannot determine directory containing %s".mod (xmodule))))))

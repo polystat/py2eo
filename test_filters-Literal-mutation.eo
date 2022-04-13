@@ -1,0 +1,53 @@
+memory > xtranslation
+memory > xSimpleTestCase
+[] > test_filters
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_i18n33
+        memory > xlibraries
+        memory > xtest_i18n38_2
+        memory > xtest_i18n32
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xlibraries.write (((unsupported)).apply ("custom") ("template_tests.templatetags.custom") ("i18n") ("django.templatetags.i18n"))
+                xtest_i18n32.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n32"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Hungarian Magyar False Hungarian"))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("cs"))))
+                          seq
+                            xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n32"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Hungarian Magyar False maďarsky"))
+                xtest_i18n33.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n33") ((((unsupported)).apply ("langcode") ("nl"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Dutch Nederlands False Dutch"))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("cs"))))
+                          seq
+                            xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n33") ((((unsupported)).apply ("langcode") ("nl"))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Dutch Nederlands False nizozemsky"))
+                xtest_i18n38_2.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("cs"))))
+                          xoutput.write (((((xself).xengine).xrender_to_string)).apply ("i18n38_2") ((((unsupported)).apply ("langcodes") ((((unsupported)).apply ("it") ("fr"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("it: Italian/italiano/italsky bidi=False; fr: French/français/francouzsky bidi=False; "))

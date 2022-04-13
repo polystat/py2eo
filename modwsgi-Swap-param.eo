@@ -1,0 +1,52 @@
+memory > xdb
+memory > xgroup
+memory > xauth
+[] > modwsgi
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck_password
+        memory > xUserModel
+        memory > xgroups_for_user
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xUserModel.write ((((xauth).xget_user_model)).apply)
+            xcheck_password.write
+              [xenviron xusername xpassword]
+                memory > xuser
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    bogusForceDataize.write ((((xdb).xreset_queries)).apply)
+                    (((unsupported)).apply)
+                      seq
+                        (((unsupported)).apply (((xUserModel).xDoesNotExist)))
+                          xuser.write (((((xUserModel).x_default_manager).xget_by_natural_key)).apply ((xusername)))
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((xuser).xis_active).not).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((((xuser).xcheck_password)).apply ((xpassword)))))
+                      bogusForceDataize.write ((((xdb).xclose_old_connections)).apply)
+            xgroups_for_user.write
+              [xenviron xusername]
+                memory > xuser
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    bogusForceDataize.write ((((xdb).xreset_queries)).apply)
+                    (((unsupported)).apply)
+                      seq
+                        (((unsupported)).apply (((xUserModel).xDoesNotExist)))
+                          xuser.write (((((xUserModel).x_default_manager).xget_by_natural_key)).apply ((xusername)))
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        (((xuser).xis_active).not).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((((xgroup).xname).xencode)).apply)) ((xgroup)) ((((((xuser).xgroups).xall)).apply)))))
+                      bogusForceDataize.write ((((xdb).xclose_old_connections)).apply)

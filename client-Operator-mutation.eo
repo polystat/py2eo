@@ -1,0 +1,70 @@
+memory > xBaseDatabaseClient
+[] > client
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xexecutable_name
+        memory > xsettings_to_cmd_args_env
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseClient)))
+              seq
+                xexecutable_name.write "mysql"
+                xsettings_to_cmd_args_env.write
+                  [xcls xsettings_dict xparameters]
+                    memory > xdatabase
+                    memory > xpassword
+                    memory > xserver_ca
+                    memory > xhost
+                    memory > xargs
+                    memory > xuser
+                    memory > xdefaults_file
+                    memory > xcharset
+                    memory > xport
+                    memory > xclient_key
+                    memory > xenv
+                    memory > xclient_cert
+                    seq > @
+                      (((unsupported)).apply)
+                        xargs.write (((unsupported)).apply (((xcls).xexecutable_name)))
+                        xenv.write "None: is there a None literal in the EO language?"
+                        xdatabase.write ((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("database") (((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("db") ((((unsupported)).apply ((xsettings_dict)) ("NAME"))))))
+                        xuser.write ((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("user") ((((unsupported)).apply ((xsettings_dict)) ("USER"))))
+                        xpassword.write ((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("password") (((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("passwd") ((((unsupported)).apply ((xsettings_dict)) ("PASSWORD"))))))
+                        xhost.write ((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("host") ((((unsupported)).apply ((xsettings_dict)) ("HOST"))))
+                        xport.write ((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("port") ((((unsupported)).apply ((xsettings_dict)) ("PORT"))))
+                        xserver_ca.write (((((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("ssl") ((((unsupported)).apply))).xget)).apply ("ca"))
+                        xclient_cert.write (((((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("ssl") ((((unsupported)).apply))).xget)).apply ("cert"))
+                        xclient_key.write (((((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("ssl") ((((unsupported)).apply))).xget)).apply ("key"))
+                        xdefaults_file.write ((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("read_default_file"))
+                        xcharset.write ((((((unsupported)).apply ((xsettings_dict)) ("OPTIONS")).xget)).apply ("charset"))
+                        (xdefaults_file).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--defaults-file=%s".mod (xdefaults_file))))))
+                        (xuser).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--user=%s".mod (xuser))))))
+                        (xpassword).if
+                          xenv.write (((unsupported)).apply ("MYSQL_PWD") ((xpassword)))
+                        (xhost).if
+                          (((unsupported)).apply ("/") ((xhost))).if
+                            (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--socket=%s".mod (xhost))))))
+                            (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--host=%s".mod (xhost))))))
+                        (xport).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--port=%s".mod (xport))))))
+                        (xserver_ca).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--ssl-ca=%s".mod (xserver_ca))))))
+                        (xclient_cert).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--ssl-cert=%s".mod (xclient_cert))))))
+                        (xclient_key).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--ssl-key=%s".mod (xclient_key))))))
+                        (xcharset).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply (("--default-character-set=%s".mod (xcharset))))))
+                        (xdatabase).if
+                          (((unsupported)).apply ((xargs)) ((((unsupported)).apply ((xdatabase)))))
+                        bogusForceDataize.write ((((xargs).xextend)).apply ((xparameters)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xargs)) ((xenv)))))

@@ -1,0 +1,53 @@
+memory > xmark_safe
+memory > xaddslashes
+memory > xSimpleTestCase
+[] > test_addslashes
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_addslashes01
+        memory > xtest_backslashes
+        memory > xtest_non_string_input
+        memory > xtest_addslashes02
+        memory > xtest_quotes
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_addslashes01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("addslashes01") ((((unsupported)).apply ("a") ("<a>'") ("b") ((((xmark_safe)).apply ("<a>'"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("<a>' <a>'") ((xoutput)))
+                xtest_addslashes02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("addslashes02") ((((unsupported)).apply ("a") ("<a>'") ("b") ((((xmark_safe)).apply ("<a>'"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&lt;a&gt;&#x27; <a>'"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_quotes.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xaddslashes)).apply ("\"double quotes\" and 'single quotes'"))) ("\\\"double quotes\\\" and \\'single quotes\\'"))
+                xtest_backslashes.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xaddslashes)).apply (" : backslashes, too"))) ((((unsupported)).apply)))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xaddslashes)).apply (123))) ("123"))

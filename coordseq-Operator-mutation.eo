@@ -1,0 +1,328 @@
+memory > xGEOSCoordSeq
+memory > xlist
+memory > xz
+memory > xstr
+memory > xrange
+memory > xIndexError
+memory > xCS_PTR
+memory > xGEOSBase
+memory > xnumpy
+memory > xc_double
+memory > xGEOSException
+memory > xTypeError
+memory > xgeos_version_tuple
+memory > xbyref
+memory > xx
+memory > xi
+memory > xc_uint
+memory > xy
+memory > xisinstance
+memory > xc_byte
+memory > xlen
+[] > coordseq
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xptr_type
+        memory > x__str__
+        memory > x_get_z
+        memory > xgetX
+        memory > xdims
+        memory > xsize
+        memory > x__getitem__
+        memory > x_set_z
+        memory > x__len__
+        memory > x_set_x
+        memory > xcapi
+        memory > x_set_point_2d
+        memory > x_set_y
+        memory > xgetY
+        memory > xsetY
+        memory > x_checkdim
+        memory > xclone
+        memory > x__iter__
+        memory > x_get_point_2d
+        memory > xis_counterclockwise
+        memory > xkml
+        memory > xhasz
+        memory > x_set_point_3d
+        memory > x_get_point_3d
+        memory > x_get_x
+        memory > xtuple
+        memory > x__setitem__
+        memory > xgetOrdinate
+        memory > x_checkindex
+        memory > xsetX
+        memory > x_get_y
+        memory > x__init__
+        memory > xgetZ
+        memory > xsetZ
+        memory > x_point_getter
+        memory > xsetOrdinate
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xGEOSBase)))
+              seq
+                unsupported
+                xptr_type.write (xCS_PTR)
+                x__init__.write
+                  [xself xptr xz]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        ((((xisinstance)).apply ((xptr)) ((xCS_PTR))).not).if
+                          (((unsupported)).apply ((((xTypeError)).apply ("Coordinate sequence should initialize with a CS_PTR."))))
+                        (((unsupported)).apply (((xself).x_ptr)) ((xptr)))
+                        (((unsupported)).apply (((xself).x_z)) ((xz)))
+                x__iter__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (((xself).xsize)))))
+                          (((unsupported)).apply ((((unsupported)).apply ((xself)) ((xi)))))
+                x__len__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xsize)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((xstr)).apply (((xself).xtuple)))))
+                x__getitem__.write
+                  [xself xindex]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).x_checkindex)).apply ((xindex)))
+                        (((unsupported)).apply (((((xself).x_point_getter)).apply ((xindex)))))
+                x__setitem__.write
+                  [xself xindex xvalue]
+                    memory > xpoint_setter
+                    memory > xn_args
+                    seq > @
+                      seq
+                        unsupported
+                        (((xisinstance)).apply ((xvalue)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                          ((xnumpy).and (((xisinstance)).apply ((xvalue)) (((xnumpy).xndarray)))).if
+                            (((unsupported)).apply ((((xTypeError)).apply ("Must set coordinate with a sequence (list, tuple, or numpy array)."))))
+                        ((((xself).xdims).eq 3).and ((xself).x_z)).if
+                          seq
+                            xn_args.write 3
+                            xpoint_setter.write ((xself).x_set_point_3d)
+                          seq
+                            xn_args.write 2
+                            xpoint_setter.write ((xself).x_set_point_2d)
+                        ((((xlen)).apply ((xvalue))).neq (xn_args)).if
+                          (((unsupported)).apply ((((xTypeError)).apply ("Dimension of value does not match."))))
+                        bogusForceDataize.write ((((xself).x_checkindex)).apply ((xindex)))
+                        bogusForceDataize.write (((xpoint_setter)).apply ((xindex)) ((xvalue)))
+                x_checkindex.write
+                  [xself xindex]
+                    seq > @
+                      seq
+                        unsupported
+                        ((((unsupported)).apply (0) ((xindex)) (((xself).xsize))).not).if
+                          (((unsupported)).apply ((((xIndexError)).apply (("invalid GEOS Geometry index: %s".mod (xindex))))))
+                x_checkdim.write
+                  [xself xdim]
+                    seq > @
+                      seq
+                        unsupported
+                        (((xdim).less 0).or ((xdim).greater 2)).if
+                          (((unsupported)).apply ((((xGEOSException)).apply (("invalid ordinate dimension \"%d\"".mod (xdim))))))
+                x_get_x.write
+                  [xself xindex]
+                    seq > @
+                      (((unsupported)).apply (((((xcapi).xcs_getx)).apply (((xself).xptr)) ((xindex)) ((((xbyref)).apply ((((xc_double)).apply)))))))
+                x_get_y.write
+                  [xself xindex]
+                    seq > @
+                      (((unsupported)).apply (((((xcapi).xcs_gety)).apply (((xself).xptr)) ((xindex)) ((((xbyref)).apply ((((xc_double)).apply)))))))
+                x_get_z.write
+                  [xself xindex]
+                    seq > @
+                      (((unsupported)).apply (((((xcapi).xcs_getz)).apply (((xself).xptr)) ((xindex)) ((((xbyref)).apply ((((xc_double)).apply)))))))
+                x_set_x.write
+                  [xself xindex xvalue]
+                    seq > @
+                      bogusForceDataize.write ((((xcapi).xcs_setx)).apply (((xself).xptr)) ((xindex)) ((xvalue)))
+                x_set_y.write
+                  [xself xindex xvalue]
+                    seq > @
+                      bogusForceDataize.write ((((xcapi).xcs_sety)).apply (((xself).xptr)) ((xindex)) ((xvalue)))
+                x_set_z.write
+                  [xself xindex xvalue]
+                    seq > @
+                      bogusForceDataize.write ((((xcapi).xcs_setz)).apply (((xself).xptr)) ((xindex)) ((xvalue)))
+                x_point_getter.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xdims).eq 3).and ((xself).x_z)).if ((xself).x_get_point_3d) ((xself).x_get_point_2d))))
+                x_get_point_2d.write
+                  [xself xindex]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((((xself).x_get_x)).apply ((xindex)))) (((((xself).x_get_y)).apply ((xindex)))))))
+                x_get_point_3d.write
+                  [xself xindex]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((((xself).x_get_x)).apply ((xindex)))) (((((xself).x_get_y)).apply ((xindex)))) (((((xself).x_get_z)).apply ((xindex)))))))
+                x_set_point_2d.write
+                  [xself xindex xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xx)) ((xy)))) ((xvalue)))
+                        bogusForceDataize.write ((((xself).x_set_x)).apply ((xindex)) ((xx)))
+                        bogusForceDataize.write ((((xself).x_set_y)).apply ((xindex)) ((xy)))
+                x_set_point_3d.write
+                  [xself xindex xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xx)) ((xy)) ((xz)))) ((xvalue)))
+                        bogusForceDataize.write ((((xself).x_set_x)).apply ((xindex)) ((xx)))
+                        bogusForceDataize.write ((((xself).x_set_y)).apply ((xindex)) ((xy)))
+                        bogusForceDataize.write ((((xself).x_set_z)).apply ((xindex)) ((xz)))
+                xgetOrdinate.write
+                  [xself xdimension xindex]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).x_checkindex)).apply ((xindex)))
+                        bogusForceDataize.write ((((xself).x_checkdim)).apply ((xdimension)))
+                        (((unsupported)).apply (((((xcapi).xcs_getordinate)).apply (((xself).xptr)) ((xindex)) ((xdimension)) ((((xbyref)).apply ((((xc_double)).apply)))))))
+                xsetOrdinate.write
+                  [xself xdimension xindex xvalue]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).x_checkindex)).apply ((xindex)))
+                        bogusForceDataize.write ((((xself).x_checkdim)).apply ((xdimension)))
+                        bogusForceDataize.write ((((xcapi).xcs_setordinate)).apply (((xself).xptr)) ((xindex)) ((xdimension)) ((xvalue)))
+                xgetX.write
+                  [xself xindex]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xself).xgetOrdinate)).apply (0) ((xindex)))))
+                xsetX.write
+                  [xself xindex xvalue]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xsetOrdinate)).apply (0) ((xindex)) ((xvalue)))
+                xgetY.write
+                  [xself xindex]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xself).xgetOrdinate)).apply (1) ((xindex)))))
+                xsetY.write
+                  [xself xindex xvalue]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xsetOrdinate)).apply (1) ((xindex)) ((xvalue)))
+                xgetZ.write
+                  [xself xindex]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xself).xgetOrdinate)).apply (2) ((xindex)))))
+                xsetZ.write
+                  [xself xindex xvalue]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xsetOrdinate)).apply (2) ((xindex)) ((xvalue)))
+                xsize.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xcs_getsize)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_uint)).apply)))))))
+                xdims.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xcs_getdims)).apply (((xself).xptr)) ((((xbyref)).apply ((((xc_uint)).apply)))))))
+                xhasz.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).x_z)))
+                xclone.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((xGEOSCoordSeq)).apply (((((xcapi).xcs_clone)).apply (((xself).xptr)))) (((xself).xhasz)))))
+                xkml.write
+                  [xself]
+                    memory > xsubstr
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        ((xself).xhasz).if
+                          xsubstr.write "%s,%s,%s "
+                          xsubstr.write "%s,%s,0 "
+                        (((unsupported)).apply (("<coordinates>%s</coordinates>".mod (((((("".xjoin)).apply ((((unsupported)).apply (((xsubstr).mod (((unsupported)).apply ((xself)) ((xi))))) ((xi)) ((((xrange)).apply ((((xlen)).apply ((xself))))))))).xstrip)).apply))))
+                xtuple.write
+                  [xself]
+                    memory > xn
+                    memory > xget_point
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xn.write ((xself).xsize)
+                        xget_point.write ((xself).x_point_getter)
+                        ((xn).eq 1).if
+                          (((unsupported)).apply ((((xget_point)).apply (0))))
+                        (((unsupported)).apply ((((xtuple)).apply ((((unsupported)).apply ((((xget_point)).apply ((xi)))) ((xi)) ((((xrange)).apply ((xn)))))))))
+                xis_counterclockwise.write
+                  [xself]
+                    memory > xn
+                    memory > xj
+                    memory > xret
+                    memory > xarea
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        ((((xgeos_version_tuple)).apply).less (((unsupported)).apply (3) (7))).if
+                          seq
+                            xarea.write 0.0
+                            xn.write (((xlen)).apply ((xself)))
+                            (((unsupported)).apply ((xi)) ((((xrange)).apply ((xn)))))
+                              seq
+                                xj.write (((xi).sub 1).mod (xn))
+                                (((unsupported)).apply ((xarea)) (((((unsupported)).apply ((((unsupported)).apply ((xself)) ((xi)))) (0)).mul (((unsupported)).apply ((((unsupported)).apply ((xself)) ((xj)))) (1)))))
+                                (((unsupported)).apply ((xarea)) (((((unsupported)).apply ((((unsupported)).apply ((xself)) ((xj)))) (0)).mul (((unsupported)).apply ((((unsupported)).apply ((xself)) ((xi)))) (1)))))
+                            (((unsupported)).apply (((xarea).greater 0.0)))
+                        xret.write (((xc_byte)).apply)
+                        (((((xcapi).xcs_is_ccw)).apply (((xself).xptr)) ((((xbyref)).apply ((xret))))).not).if
+                          (((unsupported)).apply ((((xGEOSException)).apply (("Error encountered in GEOS C function \"%s\".".mod (((xcapi).xcs_is_ccw).xfunc_name))))))
+                        (((unsupported)).apply ((((xret).xvalue).eq 1)))

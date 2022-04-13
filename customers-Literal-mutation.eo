@@ -1,0 +1,40 @@
+memory > xCustomer
+memory > xmodels
+memory > xAddress
+[] > customers
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcompany_code
+        memory > xcustomer
+        memory > xcompany
+        memory > xcustomer_code
+        memory > xunique_together
+        memory > xcustomer_id
+        memory > xaddress
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xcompany.write (((unsupported)).apply (((xmodels).xCharField)) (1))
+                xcustomer_id.write ((((xmodels).xIntegerField)).apply)
+                (((unsupported)).apply)
+                  xunique_together.write (((unsupported)).apply ((((unsupported)).apply ("company") ("customer_id"))))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xcompany.write (((unsupported)).apply (((xmodels).xCharField)) (1))
+                xcustomer_id.write ((((xmodels).xIntegerField)).apply)
+                xaddress.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xAddress)) (((xmodels).xCASCADE)) (TRUE) ((((unsupported)).apply ("company") ("customer_id"))) ((((unsupported)).apply ("company") ("customer_id"))))
+                (((unsupported)).apply)
+                  xunique_together.write (((unsupported)).apply ((((unsupported)).apply ("company") ("customer_id"))))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xcompany_code.write (((unsupported)).apply (((xmodels).xCharField)) (1))
+                xcustomer_code.write ((((xmodels).xIntegerField)).apply)
+                xcustomer.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xCustomer)) (((xmodels).xCASCADE)) ("contacts") ((((unsupported)).apply ("customer_id") ("company"))) ((((unsupported)).apply ("customer_code") ("company_code"))))

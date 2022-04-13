@@ -1,0 +1,67 @@
+memory > xtemplate
+memory > xAdminLogNode
+memory > xint
+memory > xLogEntry
+memory > xlen
+[] > log
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__repr__
+        memory > xregister
+        memory > xrender
+        memory > xget_admin_log
+        memory > x__init__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xregister.write ((((xtemplate).xLibrary)).apply)
+            (((unsupported)).apply (((xtemplate).xNode)))
+              seq
+                x__init__.write
+                  [xself xlimit xvarname xuser]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xlimit)) (((xself).xvarname)) (((xself).xuser)))) ((((unsupported)).apply ((xlimit)) ((xvarname)) ((xuser)))))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("<GetAdminLog Node>"))
+                xrender.write
+                  [xself xcontext]
+                    memory > xentries2
+                    memory > xentries
+                    memory > xuser_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xuser)) ("None: is there a None literal in the EO language?")).if
+                          xentries2.write (((((xLogEntry).xobjects).xall)).apply)
+                          seq
+                            xuser_id.write ((xself).xuser)
+                            (((((xuser_id).xisdigit)).apply).not).if
+                              xuser_id.write ((((unsupported)).apply ((xcontext)) (((xself).xuser))).xpk)
+                            xentries.write (((unsupported)).apply ((((xLogEntry).xobjects).xfilter)) ((xuser_id)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xcontext)) (((xself).xvarname)))) ((((unsupported)).apply (((((xentries).xselect_related)).apply ("content_type") ("user"))) ((((unsupported)).apply ((((xint)).apply (((xself).xlimit)))))))))
+                        (((unsupported)).apply (""))
+            xget_admin_log.write
+              [xparser xtoken]
+                memory > xtokens
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xtokens.write (((((xtoken).xcontents).xsplit)).apply)
+                    ((((xlen)).apply ((xtokens))).less 4).if
+                      (((unsupported)).apply (((((xtemplate).xTemplateSyntaxError)).apply ("'get_admin_log' statements require two arguments"))))
+                    (((((((unsupported)).apply ((xtokens)) (1)).xisdigit)).apply).not).if
+                      (((unsupported)).apply (((((xtemplate).xTemplateSyntaxError)).apply ("First argument to 'get_admin_log' must be an integer"))))
+                    ((((unsupported)).apply ((xtokens)) (2)).neq "as").if
+                      (((unsupported)).apply (((((xtemplate).xTemplateSyntaxError)).apply ("Second argument to 'get_admin_log' must be 'as'"))))
+                    ((((xlen)).apply ((xtokens))).greater 4).if
+                      ((((unsupported)).apply ((xtokens)) (4)).neq "for_user").if
+                        (((unsupported)).apply (((((xtemplate).xTemplateSyntaxError)).apply ("Fourth argument to 'get_admin_log' must be 'for_user'"))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xAdminLogNode)) ((((unsupported)).apply ((xtokens)) (1))) ((((unsupported)).apply ((xtokens)) (3))) ((((((xlen)).apply ((xtokens))).greater 5).if (((unsupported)).apply ((xtokens)) (5)) "None: is there a None literal in the EO language?")))))

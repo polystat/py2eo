@@ -1,0 +1,60 @@
+memory > x_lazy_re_compile
+memory > xstr
+memory > xcompress_sequence
+memory > xcompress_string
+memory > xMiddlewareMixin
+memory > xlen
+memory > xpatch_vary_headers
+[] > gzip
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xprocess_response
+        memory > xre_accepts_gzip
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xre_accepts_gzip.write (((x_lazy_re_compile)).apply ("bgzipb"))
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                (((unsupported)).apply)
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    memory > xcompressed_content
+                    memory > xae
+                    memory > xetag
+                    seq > @
+                      seq
+                        ((((xresponse).xstreaming).not).and ((((xlen)).apply (((xresponse).xcontent))).less 200)).if
+                          (((unsupported)).apply ((xresponse)))
+                        ((((xresponse).xhas_header)).apply ("Content-Encoding")).if
+                          (((unsupported)).apply ((xresponse)))
+                        bogusForceDataize.write (((xpatch_vary_headers)).apply ((xresponse)) ((((unsupported)).apply ("Accept-Encoding"))))
+                        xae.write (((((xrequest).xMETA).xget)).apply ("HTTP_ACCEPT_ENCODING") (""))
+                        (((((xre_accepts_gzip).xsearch)).apply ((xae))).not).if
+                          (((unsupported)).apply ((xresponse)))
+                        ((xresponse).xstreaming).if
+                          seq
+                            (((unsupported)).apply (((xresponse).xstreaming_content)) ((((xcompress_sequence)).apply (((xresponse).xstreaming_content)))))
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Length"))))))
+                          seq
+                            xcompressed_content.write (((xcompress_string)).apply (((xresponse).xcontent)))
+                            ((((xlen)).apply ((xcompressed_content))).geq (((xlen)).apply (((xresponse).xcontent)))).if
+                              (((unsupported)).apply ((xresponse)))
+                            (((unsupported)).apply (((xresponse).xcontent)) ((xcompressed_content)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Length"))) ((((xstr)).apply ((((xlen)).apply (((xresponse).xcontent)))))))
+                        xetag.write ((((xresponse).xget)).apply ("ETag"))
+                        ((xetag).and ((((xetag).xstartswith)).apply ("\""))).if
+                          (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("ETag"))) (("W/".sub (xetag))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Encoding"))) ("gzip"))
+                        (((unsupported)).apply ((xresponse)))

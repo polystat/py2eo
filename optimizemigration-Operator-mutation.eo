@@ -1,0 +1,123 @@
+memory > xstr
+memory > xKeyError
+memory > xerr
+memory > xsys
+memory > xshutil
+memory > xapps
+memory > xMigrationWriter
+memory > xfh
+memory > xAmbiguityError
+memory > xmigrations
+memory > xopen
+memory > xtype
+memory > xBaseCommand
+memory > xMigrationOptimizer
+memory > xLookupError
+memory > xoptions
+memory > xget_docs_version
+memory > xMigrationLoader
+memory > xrun_formatters
+memory > xCommandError
+memory > xlen
+[] > optimizemigration
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Optimizes the operations for the named migration."
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("app_label") ("App label of the application to optimize the migration for."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("migration_name") ("Migration name to optimize the operations for."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--check") ("store_true") ("Exit with a non-zero status if the migration can be optimized."))
+                xhandle.write
+                  [xself]
+                    memory > xcheck
+                    memory > xapp_label
+                    memory > xmigration
+                    memory > xsubclass
+                    memory > xoptimizer
+                    memory > xmigration_name
+                    memory > xwriter
+                    memory > xloader
+                    memory > xverbosity
+                    memory > xmigration_file_string
+                    memory > xoptimized_migration
+                    memory > xnew_operations
+                    memory > xoptimized_migration_name
+                    seq > @
+                      (((unsupported)).apply)
+                        xverbosity.write (((unsupported)).apply ((xoptions)) ("verbosity"))
+                        xapp_label.write (((unsupported)).apply ((xoptions)) ("app_label"))
+                        xmigration_name.write (((unsupported)).apply ((xoptions)) ("migration_name"))
+                        xcheck.write (((unsupported)).apply ((xoptions)) ("check"))
+                        (((unsupported)).apply ((xLookupError)))
+                          bogusForceDataize.write ((((xapps).xget_app_config)).apply ((xapp_label)))
+                          (((unsupported)).apply ((((xCommandError)).apply ((((xstr)).apply ((xerr)))))))
+                        xloader.write (((xMigrationLoader)).apply ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((xapp_label)) (((xloader).xmigrated_apps))).if
+                          (((unsupported)).apply ((((xCommandError)).apply ("App '{app_label}' does not have migrations."))))
+                        (((unsupported)).apply ((xAmbiguityError)) ((xKeyError)))
+                          xmigration.write ((((xloader).xget_migration_by_prefix)).apply ((xapp_label)) ((xmigration_name)))
+                          (((unsupported)).apply ((((xCommandError)).apply ("More than one migration matches '{migration_name}' in app '{app_label}'. Please be more specific."))))
+                          (((unsupported)).apply ((((xCommandError)).apply ("Cannot find a migration matching '{migration_name}' from app '{app_label}'."))))
+                        xoptimizer.write (((xMigrationOptimizer)).apply)
+                        xnew_operations.write ((((xoptimizer).xoptimize)).apply (((xmigration).xoperations)) (((xmigration).xapp_label)))
+                        ((((xlen)).apply (((xmigration).xoperations))).eq (((xlen)).apply ((xnew_operations)))).if
+                          seq
+                            ((xverbosity).greater 0).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("No optimizations possible."))
+                            (((unsupported)).apply)
+                          seq
+                            ((xverbosity).greater 0).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("Optimizing from %d operations to %d operations.".mod (((unsupported)).apply ((((xlen)).apply (((xmigration).xoperations)))) ((((xlen)).apply ((xnew_operations))))))))
+                            (xcheck).if
+                              bogusForceDataize.write ((((xsys).xexit)).apply (1))
+                        (((unsupported)).apply (((xmigration).xoperations)) ((xnew_operations)))
+                        xwriter.write (((xMigrationWriter)).apply ((xmigration)))
+                        xmigration_file_string.write ((((xwriter).xas_string)).apply)
+                        ((xwriter).xneeds_manual_porting).if
+                          seq
+                            ((xmigration).xreplaces).if
+                              (((unsupported)).apply ((((xCommandError)).apply (("Migration will require manual porting but is already a squashed migration.nTransition to a normal migration first: https://docs.djangoproject.com/en/%s/topics/migrations/#squashing-migrations".mod (((xget_docs_version)).apply))))))
+                            xsubclass.write (((xtype)).apply ("Migration") ((((unsupported)).apply (((xmigrations).xMigration)))) ((((unsupported)).apply ("dependencies") (((xmigration).xdependencies)) ("operations") ((xnew_operations)) ("replaces") ((((unsupported)).apply ((((unsupported)).apply (((xmigration).xapp_label)) (((xmigration).xname)))))))))
+                            xoptimized_migration_name.write ("%s_optimized".mod ((xmigration).xname))
+                            xoptimized_migration.write (((xsubclass)).apply ((xoptimized_migration_name)) ((xapp_label)))
+                            xwriter.write (((xMigrationWriter)).apply ((xoptimized_migration)))
+                            xmigration_file_string.write ((((xwriter).xas_string)).apply)
+                            ((xverbosity).greater 0).if
+                              seq
+                                bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (((((((xself).xstyle).xMIGRATE_HEADING)).apply ("Manual porting required")).sub "n  Your migrations contained functions that must be manually copied over,n  as we could not safely copy their implementation.n  See the comment at the top of the optimized migration for details.")))
+                                ((((xshutil).xwhich)).apply ("black")).if
+                                  bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((((xself).xstyle).xWARNING)).apply ("Optimized migration couldn't be formatted using the \"black\" command. You can call it manually."))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xopen)) (((xwriter).xpath)) ("w") ("utf-8"))) ((xfh)))
+                          bogusForceDataize.write ((((xfh).xwrite)).apply ((xmigration_file_string)))
+                        bogusForceDataize.write (((xrun_formatters)).apply ((((unsupported)).apply (((xwriter).xpath)))))
+                        ((xverbosity).greater 0).if
+                          bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((((xself).xstyle).xMIGRATE_HEADING)).apply ("Optimized migration {writer.path}"))))

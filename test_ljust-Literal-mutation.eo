@@ -1,0 +1,55 @@
+memory > xljust
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_ljust
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_non_string_input
+        memory > xtest_ljust
+        memory > xtest_ljust02
+        memory > xtest_ljust01
+        memory > xtest_less_than_string_length
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_ljust01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("ljust01") ((((unsupported)).apply ("a") ("a&b") ("b") ((((xmark_safe)).apply ("a&b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (".a&b  . .a&b  ."))
+                xtest_ljust02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("ljust02") ((((unsupported)).apply ("a") ("a&b") ("b") ((((xmark_safe)).apply ("a&b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (".a&amp;b  . .a&b  ."))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_ljust.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xljust)).apply ("test") (10))) ("test      "))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xljust)).apply ("test") (3))) ("test"))
+                xtest_less_than_string_length.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xljust)).apply ("test") (3))) ("test"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xljust)).apply (123) (4))) ("123 "))

@@ -1,0 +1,131 @@
+memory > xfalse
+memory > xValidationError
+memory > xre
+memory > xRegexField
+memory > xSimpleTestCase
+[] > test_regexfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_regexfield_2
+        memory > xtest_regexfield_1
+        memory > xtest_get_regex
+        memory > xtest_regexfield_4
+        memory > xtest_regexfield_3
+        memory > xtest_change_regex_after_init
+        memory > xtest_regexfield_unicode_characters
+        memory > xtest_regexfield_strip
+        memory > xtest_empty_value
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_regexfield_1.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xRegexField)).apply ("^[0-9][A-F][0-9]$"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("2A2") (((((xf).xclean)).apply ("2A2"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("3F3") (((((xf).xclean)).apply ("3F3"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("3G3"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (" 2A2"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("2A2 "))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                xtest_regexfield_2.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xRegexField)) ("^[0-9][A-F][0-9]$") ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("2A2") (((((xf).xclean)).apply ("2A2"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("3F3") (((((xf).xclean)).apply ("3F3"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("3G3"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("") (((((xf).xclean)).apply (""))))
+                xtest_regexfield_3.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xRegexField)).apply (((((xre).xcompile)).apply ("^[0-9][A-F][0-9]$"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("2A2") (((((xf).xclean)).apply ("2A2"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("3F3") (((((xf).xclean)).apply ("3F3"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("3G3"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (" 2A2"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("2A2 "))
+                xtest_regexfield_4.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xRegexField)) ("^[0-9]+$") (5) (10))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value has at least 5 characters (it has 3).'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("123"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value has at least 5 characters (it has 3).', 'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("abc"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("12345") (((((xf).xclean)).apply ("12345"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("1234567890") (((((xf).xclean)).apply ("1234567890"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value has at most 10 characters (it has 11).'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("12345678901"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("12345a"))
+                xtest_regexfield_unicode_characters.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xRegexField)).apply ("^w+$"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("éèøçÎÎ你好") (((((xf).xclean)).apply ("éèøçÎÎ你好"))))
+                xtest_change_regex_after_init.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xRegexField)).apply ("^[a-z]+$"))
+                        (((unsupported)).apply (((xf).xregex)) ("^[0-9]+$"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("1234") (((((xf).xclean)).apply ("1234"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid value.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("abcd"))
+                xtest_get_regex.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xRegexField)).apply ("^[a-z]+$"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xf).xregex)) (((((xre).xcompile)).apply ("^[a-z]+$"))))
+                xtest_regexfield_strip.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xRegexField)) ("^[a-z]+$") (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" a"))) ("a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("a "))) ("a"))
+                xtest_empty_value.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xRegexField)) ("") ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (""))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))) (""))
+                        xf.write (((unsupported)).apply ((xRegexField)) ("") ("None: is there a None literal in the EO language?") ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))

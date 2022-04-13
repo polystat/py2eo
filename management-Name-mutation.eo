@@ -1,0 +1,53 @@
+memory > xno_style
+memory > xrouter
+memory > xprint
+memory > xsettings
+memory > xconnections
+memory > xcursor
+memory > xcommand
+memory > xLookupError
+memory > xgetattr
+[] > management
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xglobal_apps
+        memory > xcreate_default_site
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xcreate_default_site.write
+              [xapp_config xverbosity xinteractive xusing xapps]
+                memory > xsequence_sql
+                memory > xSite
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((xLookupError)))
+                      xSite.write ((((xapps).xget_model)).apply ("sites") ("Site"))
+                      (((unsupported)).apply)
+                    (((((xrouter).xallow_migrate_model)).apply ((xusing)) ((xSite))).not).if
+                      (((unsupported)).apply)
+                    (((((((((xSite).xobjects).xusing)).apply ((xusing))).xexists)).apply).not).if
+                      seq
+                        ((xverbosity).geq 2).if
+                          bogusForceDataize.write (((xprint)).apply ("Creating example.com Site object"))
+                        (((unsupported)).apply (((((unsupported)).apply ((xSite)) ((((xgetattr)).apply ((xsettings)) ("SITE_ID") (1))) ("example.com") ("example.com")).xsave)) ((xusing)))
+                        xsequence_sql.write (((((((unsupported)).apply ((xconnections)) ((xusing))).xops).xsequence_reset_sql)).apply ((((xno_style)).apply)) ((((unsupported)).apply ((xSite)))))
+                        (xsequence_sql).if
+                          seq
+                            ((xverbosity).geq 2).if
+                              bogusForceDataize.write (((xprint)).apply ("Resetting sequence"))
+                            (((unsupported)).apply (((((((unsupported)).apply ((xconnections)) ((xusing))).xcursor)).apply)) ((xcursor)))
+                              (((unsupported)).apply ((xcommand)) ((xsequence_sql)))
+                                bogusForceDataize.write ((((xcursor).xexecute)).apply ((xcommand)))

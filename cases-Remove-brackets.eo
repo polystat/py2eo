@@ -1,0 +1,183 @@
+memory > xContext
+memory > xstr
+memory > xcall_command
+memory > xBaseStaticFilesMixin
+memory > xTEST_SETTINGS
+memory > xtempfile
+memory > xopen
+memory > xsuper
+memory > xoverride_settings
+memory > xTemplate
+memory > xshutil
+memory > xkwargs
+memory > xf
+memory > xsettings
+memory > xOSError
+memory > xos
+memory > xisinstance
+memory > xSimpleTestCase
+[] > cases
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xassertFileContains
+        memory > xtest_app_files
+        memory > xrender_template
+        memory > xtest_nonascii_filenames
+        memory > xtest_staticfiles_dirs_priority
+        memory > xsetUp
+        memory > xtest_filename_with_percent_sign
+        memory > xrun_collectstatic_in_setUp
+        memory > xtest_staticfiles_dirs_subdir
+        memory > xtest_camelcase_filenames
+        memory > xmkdtemp
+        memory > xtearDown
+        memory > xassertStaticRaises
+        memory > xrun_collectstatic
+        memory > xtest_staticfiles_dirs
+        memory > xassertFileNotFound
+        memory > x_get_file
+        memory > xstatic_template_snippet
+        memory > xassertStaticRenders
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xassertFileContains.write
+                  [xself xfilepath xtext]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertIn)).apply ((xtext)) (((((xself).x_get_file)).apply ((xfilepath)))) (("'%s' not in '%s'".mod (((unsupported)).apply ((xtext)) ((xfilepath))))))
+                xassertFileNotFound.write
+                  [xself xfilepath]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xOSError)))))
+                        bogusForceDataize.write ((((xself).x_get_file)).apply ((xfilepath)))
+                xrender_template.write
+                  [xself xtemplate]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xisinstance)).apply ((xtemplate)) ((xstr))).if
+                          xtemplate.write (((xTemplate)).apply ((xtemplate)))
+                        (((unsupported)).apply ((((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply ((xkwargs))))))).xstrip)))
+                xstatic_template_snippet.write
+                  [xself xpath xasvar]
+                    seq > @
+                      (((unsupported)).apply)
+                        (xasvar).if
+                          (((unsupported)).apply (("{%% load static from static %%}{%% static '%s' as var %%}{{ var }}".mod (xpath))))
+                        (((unsupported)).apply (("{%% load static from static %%}{%% static '%s' %%}".mod (xpath))))
+                xassertStaticRenders.write
+                  [xself xpath xresult xasvar]
+                    memory > xtemplate
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate.write ((((xself).xstatic_template_snippet)).apply ((xpath)) ((xasvar)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xself).xrender_template)).apply ((xtemplate)) ((((unsupported)).apply ((xkwargs)))))) ((xresult)))
+                xassertStaticRaises.write
+                  [xself xexc xpath xresult xasvar]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xexc)))))
+                          bogusForceDataize.write ((((xself).xassertStaticRenders)).apply ((xpath)) ((xresult)) ((((unsupported)).apply ((xkwargs)))))
+            (((unsupported)).apply ((xBaseStaticFilesMixin)) ((xSimpleTestCase)) ((((xoverride_settings)).apply ((((unsupported)).apply ((xTEST_SETTINGS)))))))
+            (((unsupported)).apply ((xBaseStaticFilesMixin)) ((xSimpleTestCase)) ((((xoverride_settings)).apply ((((unsupported)).apply ((xTEST_SETTINGS)))))))
+              seq
+                (((unsupported)).apply)
+                xrun_collectstatic_in_setUp.write TRUE
+                xsetUp.write
+                  [xself]
+                    memory > xtemp_dir
+                    seq > @
+                      seq
+                        unsupported
+                        xtemp_dir.write ((xself).xmkdtemp)
+                        (((unsupported)).apply (((xself).xpatched_settings)) ((((unsupported)).apply (((xself).xsettings)) ((xtemp_dir)))))
+                        unsupported
+                        ((xself).xrun_collectstatic_in_setUp).if
+                          unsupported
+                        bogusForceDataize.write ((((xself).xaddCleanup)).apply (((xshutil).xrmtree)) ((xtemp_dir)))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        unsupported
+                xmkdtemp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xtempfile).xmkdtemp)))
+                xrun_collectstatic.write
+                  [xself xverbosity]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xcall_command)) ("collectstatic") (FALSE) ((xverbosity)) ((((unsupported)).apply ("*.ignoreme"))) ((((unsupported)).apply ((xkwargs)))))
+                x_get_file.write
+                  [xself xfilepath]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xfilepath)) ("filepath is empty."))
+                        xfilepath.write (((((xos).xpath).xjoin)).apply (((xsettings).xSTATIC_ROOT)) ((xfilepath)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xopen)) ((xfilepath)) ("utf-8"))) ((xf)))
+                          (((unsupported)).apply (((xf).xread)))
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xtest_staticfiles_dirs.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertFileContains)).apply ("test.txt") ("Can we find"))
+                        bogusForceDataize.write ((((xself).xassertFileContains)).apply ((((((xos).xpath).xjoin)).apply ("prefix") ("test.txt"))) ("Prefix"))
+                xtest_staticfiles_dirs_subdir.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertFileContains)).apply ("subdir/test.txt") ("Can we find"))
+                xtest_staticfiles_dirs_priority.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertFileContains)).apply ("test/file.txt") ("STATICFILES_DIRS"))
+                xtest_app_files.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertFileContains)).apply ("test/file1.txt") ("file1 in the app dir"))
+                xtest_nonascii_filenames.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertFileContains)).apply ("test/⊗.txt") ("⊗ in the app dir"))
+                xtest_camelcase_filenames.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertFileContains)).apply ("test/camelCase.txt") ("camelCase"))
+                xtest_filename_with_percent_sign.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertFileContains)).apply ("test/%2F.txt") ("%2F content"))

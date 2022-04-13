@@ -1,0 +1,72 @@
+memory > xIntegerModel
+memory > xFloatModel
+memory > xTestCase
+memory > xfloat
+memory > xDecimal
+memory > xDecimalModel
+memory > xmath
+memory > xATan2
+memory > xobj
+[] > test_atan2
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_decimal
+        memory > xtest_float
+        memory > xtest_null
+        memory > xtest_integer
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_null.write
+                  [xself]
+                    memory > xobj2
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) (100))
+                        xobj2.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xATan2)).apply ("small") ("normal"))) ((((xATan2)).apply ("normal") ("big"))) ((((xATan2)).apply ("big") ("normal")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_atan2_sn)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_atan2_nb)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_atan2_bn)))
+                xtest_decimal.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("-9.9"))) ((((xDecimal)).apply ("4.6"))))
+                        xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xannotate)) ((((xATan2)).apply ("n1") ("n2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn_atan2)) ((xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xobj).xn_atan2)) ((((xDecimal)).apply (((((xmath).xatan2)).apply (((xobj).xn1)) (((xobj).xn2)))))))
+                xtest_float.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) ((25.neg)) (0.33))
+                        xobj.write ((((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xATan2)).apply ("f1") ("f2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf_atan2)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xobj).xf_atan2)) (((((xmath).xatan2)).apply (((xobj).xf1)) (((xobj).xf2)))))
+                xtest_integer.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) (0) (1) (10))
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xATan2)).apply ("small") ("normal"))) ((((xATan2)).apply ("normal") ("big")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xatan2_sn)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xatan2_nb)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xobj).xatan2_sn)) (((((xmath).xatan2)).apply (((xobj).xsmall)) (((xobj).xnormal)))))
+                        bogusForceDataize.write ((((xself).xassertAlmostEqual)).apply (((xobj).xatan2_nb)) (((((xmath).xatan2)).apply (((xobj).xnormal)) (((xobj).xbig)))))

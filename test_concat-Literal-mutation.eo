@@ -1,0 +1,103 @@
+memory > xlist
+memory > xTextField
+memory > xValueError
+memory > xstr
+memory > xConcat
+memory > xCharField
+memory > xUpper
+memory > xArticle
+memory > xlen
+memory > xa
+memory > xConcatPair
+memory > xtimezone
+memory > xTestCase
+memory > xAuthor
+[] > test_concat
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_gt_two_expressions
+        memory > xtest_mixed_char_text
+        memory > xtest_basic
+        memory > xtest_coalesce_idempotent
+        memory > xV
+        memory > xtest_many
+        memory > xtest_sql_generation_idempotency
+        memory > xlorem_ipsum
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xlorem_ipsum.write (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Jayden"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj") ("John"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Margaret") ("Maggie"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda") ("adnohR"))
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xConcat)).apply ("alias") ("goes_by"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("") ("smithjJohn") ("Maggie") ("adnohR"))) ((((unsupported)).apply (((xa).xjoined)))))
+                xtest_gt_two_expressions.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ("Concat must take at least two expressions"))))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xConcat)).apply ("alias"))))
+                xtest_many.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Jayden"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj") ("John"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Margaret") ("Maggie"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Rhonda") ("adnohR"))
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((unsupported)).apply ((xConcat)) ("name") ((((xV)).apply (" ("))) ("goes_by") ((((xV)).apply (")"))) ((((xCharField)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply ("Jayden ()") ("John Smith (John)") ("Margaret (Maggie)") ("Rhonda ()"))) ((((unsupported)).apply (((xa).xjoined)))))
+                xtest_mixed_char_text.write
+                  [xself]
+                    memory > xarticle
+                    memory > xexpected
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("The Title") ((xlorem_ipsum)) (((((xtimezone).xnow)).apply)))
+                        xarticle.write (((unsupported)).apply (((((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((unsupported)).apply ((xConcat)) ("title") ((((xV)).apply (" - "))) ("text") ((((xTextField)).apply))))).xget)) ("The Title"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xarticle).xtitle).add " - ").add ((xarticle).xtext))) (((xarticle).xtitle_text)))
+                        xarticle.write (((unsupported)).apply (((((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xUpper)).apply ((((unsupported)).apply ((xConcat)) ("title") ((((xV)).apply (" - "))) ("text") ((((xTextField)).apply))))))).xget)) ("The Title"))
+                        xexpected.write ((((xarticle).xtitle).add " - ").add ((xarticle).xtext))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xexpected).xupper)).apply)) (((xarticle).xtitle_text)))
+                xtest_coalesce_idempotent.write
+                  [xself]
+                    memory > xpair
+                    seq > @
+                      (((unsupported)).apply)
+                        xpair.write (((xConcatPair)).apply ((((xV)).apply ("a"))) ((((xV)).apply ("b"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xlist)).apply (((((xpair).xflatten)).apply)))))) (3))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xlist)).apply ((((((((xpair).xcoalesce)).apply).xflatten)).apply)))))) (7))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((((xlist)).apply (((((xpair).xflatten)).apply)))))) (3))
+                xtest_sql_generation_idempotency.write
+                  [xself]
+                    memory > xqs
+                    seq > @
+                      seq
+                        xqs.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xConcat)).apply ("title") ((((xV)).apply (": "))) ("summary"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply (((xqs).xquery)))) ((((xstr)).apply ((((((xqs).xall)).apply).xquery)))))

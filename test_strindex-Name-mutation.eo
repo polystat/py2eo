@@ -1,0 +1,77 @@
+memory > xtimezone
+memory > xStrIndex
+memory > xValue
+memory > xArticle
+memory > xTestCase
+memory > xAuthor
+memory > xauthors
+memory > xa
+[] > test_strindex
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_filtering
+        memory > xtest_annotate_textfield
+        memory > xtest_annotate_charfield
+        memory > xtest_unicode_values
+        memory > xtest_order_by
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_annotate_charfield.write
+                  [xself]
+                    memory > xauthors2
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("George. R. R. Martin"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("J. R. R. Tolkien"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Terry Pratchett"))
+                        xauthors2.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xStrIndex)).apply ("name") ((((xValue)).apply ("R."))))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply (9) (4) (0))) ((((unsupported)).apply (((xa).xfullstop)))))
+                xtest_annotate_textfield.write
+                  [xself]
+                    memory > xarticles
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("How to Django") ("This is about How to Django.") (((((xtimezone).xnow)).apply)))
+                        (((unsupported)).apply ((((xArticle).xobjects).xcreate)) ("How to Tango") ("Won't find anything here.") (((((xtimezone).xnow)).apply)))
+                        xarticles.write (((unsupported)).apply ((((xArticle).xobjects).xannotate)) ((((xStrIndex)).apply ("text") ("title"))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xarticles).xorder_by)).apply ("title"))) ((((unsupported)).apply (15) (0))) ((((unsupported)).apply (((xa).xtitle_pos)))))
+                xtest_order_by.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Terry Pratchett"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("J. R. R. Tolkien"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("George. R. R. Martin"))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((((((xAuthor).xobjects).xorder_by)).apply (((((((xStrIndex)).apply ("name") ((((xValue)).apply ("R.")))).xasc)).apply)))) ((((unsupported)).apply ("Terry Pratchett") ("J. R. R. Tolkien") ("George. R. R. Martin"))) ((((unsupported)).apply (((xa).xname)))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((((((xAuthor).xobjects).xorder_by)).apply (((((((xStrIndex)).apply ("name") ((((xValue)).apply ("R.")))).xdesc)).apply)))) ((((unsupported)).apply ("George. R. R. Martin") ("J. R. R. Tolkien") ("Terry Pratchett"))) ((((unsupported)).apply (((xa).xname)))))
+                xtest_unicode_values.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("ツリー"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("皇帝"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("皇帝 ツリー"))
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xStrIndex)).apply ("name") ((((xValue)).apply ("リ"))))))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply (((((xauthors).xorder_by)).apply ("name"))) ((((unsupported)).apply (2) (0) (5))) ((((unsupported)).apply (((xa).xsb)))))
+                xtest_filtering.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("George. R. R. Martin"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("Terry Pratchett"))
+                        bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((((unsupported)).apply (((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xStrIndex)).apply ("name") ((((xValue)).apply ("R.")))))).xfilter)) (0))) ((((unsupported)).apply ("George. R. R. Martin"))) ((((unsupported)).apply (((xa).xname)))))

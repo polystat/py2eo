@@ -1,0 +1,103 @@
+memory > xk
+memory > xstr
+memory > xint
+memory > xGDALException
+memory > xv
+memory > xOGRGeomType
+memory > xisinstance
+memory > xTypeError
+[] > geomtype
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__str__
+        memory > x__eq__
+        memory > xdjango
+        memory > xto_multi
+        memory > x_types
+        memory > x__init__
+        memory > xwkb25bit
+        memory > x_str_types
+        memory > xname
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                unsupported
+                xwkb25bit.write ((((unsupported)).apply).neg)
+                x_types.write (((unsupported)).apply (0) ("Unknown") (1) ("Point") (2) ("LineString") (3) ("Polygon") (4) ("MultiPoint") (5) ("MultiLineString") (6) ("MultiPolygon") (7) ("GeometryCollection") (100) ("None") (101) ("LinearRing") (102) ("PointZ") ((1.add (xwkb25bit))) ("Point25D") ((2.add (xwkb25bit))) ("LineString25D") ((3.add (xwkb25bit))) ("Polygon25D") ((4.add (xwkb25bit))) ("MultiPoint25D") ((5.add (xwkb25bit))) ("MultiLineString25D") ((6.add (xwkb25bit))) ("MultiPolygon25D") ((7.add (xwkb25bit))) ("GeometryCollection25D"))
+                x_str_types.write (((unsupported)).apply (((((xv).xlower)).apply)) ((xk)) ((((unsupported)).apply ((xk)) ((xv)))) (((((x_types).xitems)).apply)))
+                x__init__.write
+                  [xself xtype_input]
+                    memory > xnum
+                    seq > @
+                      seq
+                        unsupported
+                        (((xisinstance)).apply ((xtype_input)) ((xOGRGeomType))).if
+                          xnum.write ((xtype_input).xnum)
+                          (((xisinstance)).apply ((xstr)) ((xtype_input))).if
+                            seq
+                              xtype_input.write ((((xtype_input).xlower)).apply)
+                              ((xtype_input).eq "geometry").if
+                                xtype_input.write "unknown"
+                              xnum.write (((((xself).x_str_types).xget)).apply ((xtype_input)))
+                              (((unsupported)).apply ((xnum)) ("None: is there a None literal in the EO language?")).if
+                                (((unsupported)).apply ((((xGDALException)).apply (("Invalid OGR String Type \"%s\"".mod (xtype_input))))))
+                            (((xisinstance)).apply ((xtype_input)) ((xint))).if
+                              seq
+                                (((unsupported)).apply ((xtype_input)) (((xself).x_types))).if
+                                  (((unsupported)).apply ((((xGDALException)).apply (("Invalid OGR Integer Type: %d".mod (xtype_input))))))
+                                xnum.write (xtype_input)
+                              (((unsupported)).apply ((((xTypeError)).apply ("Invalid OGR input type given."))))
+                        (((unsupported)).apply (((xself).xnum)) ((xnum)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xname)))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xisinstance)).apply ((xother)) ((xOGRGeomType))).if
+                          (((unsupported)).apply ((((xself).xnum).eq ((xother).xnum))))
+                          (((xisinstance)).apply ((xother)) ((xstr))).if
+                            (((unsupported)).apply (((((((xself).xname).xlower)).apply).eq ((((xother).xlower)).apply))))
+                            (((xisinstance)).apply ((xother)) ((xint))).if
+                              (((unsupported)).apply ((((xself).xnum).eq (xother))))
+                              (((unsupported)).apply (FALSE))
+                xname.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).x_types)) (((xself).xnum)))))
+                xdjango.write
+                  [xself]
+                    memory > xs
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xs.write (((((xself).xname).xreplace)).apply ("25D") (""))
+                        (((unsupported)).apply ((xs)) ((((unsupported)).apply ("LinearRing") ("None")))).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                          ((xs).eq "Unknown").if
+                            xs.write "Geometry"
+                            ((xs).eq "PointZ").if
+                              xs.write "Point"
+                        (((unsupported)).apply (((xs).add "Field")))
+                xto_multi.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((((xself).xname).xstartswith)).apply ((((unsupported)).apply ("Point") ("LineString") ("Polygon")))).if
+                          (((unsupported)).apply (((xself).xnum)) (3))

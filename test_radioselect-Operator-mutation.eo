@@ -1,0 +1,114 @@
+memory > xdatetime
+memory > xMultiWidget
+memory > xChoiceField
+memory > xTestForm
+memory > xForm
+memory > xWidgetTest
+memory > xRadioSelect
+[] > test_radioselect
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_doesnt_localize_input_value
+        memory > xtest_render_as_subwidget
+        memory > xtest_nested_choices
+        memory > xtest_render
+        memory > xtest_class_attrs
+        memory > xtest_fieldset
+        memory > xwidget
+        memory > xtest_constructor_attrs
+        memory > xtest_render_attrs
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (xRadioSelect)
+                xtest_render.write
+                  [xself]
+                    memory > xchoices
+                    seq > @
+                      seq
+                        xchoices.write ((((unsupported)).apply ((((unsupported)).apply ("") ("------")))).sub ((xself).xbeatles))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) ((xchoices)))) ("beatle") ("J") ((((unsupported)).apply)))
+                xtest_nested_choices.write
+                  [xself]
+                    memory > xnested_choices
+                    memory > xhtml
+                    seq > @
+                      seq
+                        xnested_choices.write (((unsupported)).apply ((((unsupported)).apply ("unknown") ("Unknown"))) ((((unsupported)).apply ("Audio") ((((unsupported)).apply ((((unsupported)).apply ("vinyl") ("Vinyl"))) ((((unsupported)).apply ("cd") ("CD"))))))) ((((unsupported)).apply ("Video") ((((unsupported)).apply ((((unsupported)).apply ("vhs") ("VHS"))) ((((unsupported)).apply ("dvd") ("DVD"))))))))
+                        xhtml.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) ((xnested_choices)))) ("nestchoice") ("dvd") ((((unsupported)).apply ("id") ("media"))) ((xhtml)))
+                xtest_constructor_attrs.write
+                  [xself]
+                    memory > xwidget
+                    memory > xhtml
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((unsupported)).apply ((xRadioSelect)) ((((unsupported)).apply ("id") ("foo"))) (((xself).xbeatles)))
+                        xhtml.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("beatle") ("J") ((xhtml)))
+                xtest_render_attrs.write
+                  [xself]
+                    memory > xhtml
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xhtml.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((xself).xbeatles)))) ("beatle") ("J") ((((unsupported)).apply ("id") ("bar"))) ((xhtml)))
+                xtest_class_attrs.write
+                  [xself]
+                    memory > xhtml
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xhtml.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((xself).xbeatles)))) ("beatle") ("J") ((((unsupported)).apply ("class") ("bar"))) ((xhtml)))
+                xtest_doesnt_localize_input_value.write
+                  [xself]
+                    memory > xhtml
+                    memory > xchoices
+                    seq > @
+                      (((unsupported)).apply)
+                        xchoices.write (((unsupported)).apply ((((unsupported)).apply (1) ("One"))) ((((unsupported)).apply (1000) ("One thousand"))) ((((unsupported)).apply (1000000) ("One million"))))
+                        xhtml.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) ((xchoices)))) ("number") ("None: is there a None literal in the EO language?") ((xhtml)))
+                        xchoices.write (((unsupported)).apply ((((unsupported)).apply (((((xdatetime).xtime)).apply (0) (0))) ("midnight"))) ((((unsupported)).apply (((((xdatetime).xtime)).apply (12) (0))) ("noon"))))
+                        xhtml.write (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) ((xchoices)))) ("time") ("None: is there a None literal in the EO language?") ((xhtml)))
+                xtest_render_as_subwidget.write
+                  [xself]
+                    memory > xchoices
+                    seq > @
+                      seq
+                        unsupported
+                        xchoices.write ((((unsupported)).apply ((((unsupported)).apply ("") ("------")))).sub ((xself).xbeatles))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((xMultiWidget)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).xwidget)) ((xchoices)))))))) ("beatle") ((((unsupported)).apply ("J"))) ((((unsupported)).apply)))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xChoiceField)) (((xself).xwidget)) (((xself).xbeatles)) (FALSE))
+                        xform.write (((xTestForm)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><fieldset><legend>Field:</legend><div id=\"id_field\"><div><label for=\"id_field_0\"><input type=\"radio\" name=\"field\" value=\"J\" id=\"id_field_0\"> John</label></div><div><label for=\"id_field_1\"><input type=\"radio\" name=\"field\" value=\"P\" id=\"id_field_1\">Paul</label></div><div><label for=\"id_field_2\"><input type=\"radio\" name=\"field\" value=\"G\" id=\"id_field_2\"> George</label></div><div><label for=\"id_field_3\"><input type=\"radio\" name=\"field\" value=\"R\" id=\"id_field_3\">Ringo</label></div></div></fieldset></div>") (((((xform).xrender)).apply)))

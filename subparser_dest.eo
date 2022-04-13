@@ -1,0 +1,32 @@
+memory > xBaseCommand
+memory > xoptions
+[] > subparser_dest
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    memory > xparser_foo
+                    memory > xsubparsers
+                    seq > @
+                      seq
+                        xsubparsers.write (((unsupported)).apply (((xparser).xadd_subparsers)) ("subcommand") (TRUE))
+                        xparser_foo.write ((((xsubparsers).xadd_parser)).apply ("foo"))
+                        bogusForceDataize.write ((((xparser_foo).xadd_argument)).apply ("--bar"))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((",".xjoin)).apply ((xoptions)))))

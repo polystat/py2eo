@@ -1,0 +1,105 @@
+memory > xImportError
+memory > xcolorama
+memory > xFileNotFoundError
+memory > x_
+memory > xhasattr
+memory > xsys
+memory > xStyle
+memory > xreg_key_value
+memory > xsetattr
+memory > xtermcolors
+memory > xwinreg
+memory > xrole
+memory > xOSError
+memory > xos
+[] > color
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcolor_style
+        memory > xHAS_COLORAMA2
+        memory > xmake_style
+        memory > xsupports_color
+        memory > xHAS_COLORAMA
+        memory > xno_style
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((((unsupported)).apply ((xImportError)) ((xOSError)))))
+              seq
+                (((unsupported)).apply)
+                bogusForceDataize.write ((((xcolorama).xinit)).apply)
+              xHAS_COLORAMA.write FALSE
+              xHAS_COLORAMA2.write TRUE
+            xsupports_color.write
+              []
+                memory > xvt_codes_enabled_in_windows_registry
+                memory > xis_a_tty
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xvt_codes_enabled_in_windows_registry.write
+                      []
+                        memory > xreg_key
+                        seq > @
+                          seq
+                            (((unsupported)).apply)
+                            (((unsupported)).apply ((xImportError)))
+                              (((unsupported)).apply)
+                              (((unsupported)).apply (FALSE))
+                              (((unsupported)).apply ((xFileNotFoundError)))
+                                seq
+                                  xreg_key.write ((((xwinreg).xOpenKey)).apply (((xwinreg).xHKEY_CURRENT_USER)) ("Console"))
+                                  (((unsupported)).apply ((((unsupported)).apply ((xreg_key_value)) ((x_)))) (((((xwinreg).xQueryValueEx)).apply ((xreg_key)) ("VirtualTerminalLevel"))))
+                                (((unsupported)).apply (FALSE))
+                                (((unsupported)).apply (((xreg_key_value).eq 1)))
+                    xis_a_tty.write ((((xhasattr)).apply (((xsys).xstdout)) ("isatty")).and (((((xsys).xstdout).xisatty)).apply))
+                    (((unsupported)).apply (((xis_a_tty).and ((((((((xsys).xplatform).neq "win32").or (xHAS_COLORAMA)).or (((unsupported)).apply ("ANSICON") (((xos).xenviron)))).or (((unsupported)).apply ("WT_SESSION") (((xos).xenviron)))).or ((((((xos).xenviron).xget)).apply ("TERM_PROGRAM")).eq "vscode")).or (((xvt_codes_enabled_in_windows_registry)).apply)))))
+            (((unsupported)).apply)
+            xmake_style.write
+              [xconfig_string]
+                memory > xstyle
+                memory > xstyle_func
+                memory > xformat
+                memory > xcolor_settings
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xstyle.write (((xStyle)).apply)
+                    xcolor_settings.write ((((xtermcolors).xparse_color_setting)).apply ((xconfig_string)))
+                    (((unsupported)).apply ((xrole)) ((((unsupported)).apply (((xtermcolors).xPALETTES)) (((xtermcolors).xNOCOLOR_PALETTE)))))
+                      seq
+                        (xcolor_settings).if
+                          seq
+                            xformat.write ((((xcolor_settings).xget)).apply ((xrole)) ((((unsupported)).apply)))
+                            xstyle_func.write ((((xtermcolors).xmake_style)).apply ((((unsupported)).apply ((xformat)))))
+                          xstyle_func.write
+                            [xx]
+                              seq > @
+                                (((unsupported)).apply ((xx)))
+                        bogusForceDataize.write (((xsetattr)).apply ((xstyle)) ((xrole)) ((xstyle_func)))
+                    (((unsupported)).apply (((xstyle).xERROR_OUTPUT)) (((xstyle).xERROR)))
+                    (((unsupported)).apply ((xstyle)))
+            xno_style.write
+              []
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((xmake_style)).apply ("nocolor"))))
+            xcolor_style.write
+              [xforce_color]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((xforce_color).not).and ((((xsupports_color)).apply).not)).if
+                      (((unsupported)).apply ((((xno_style)).apply)))
+                    (((unsupported)).apply ((((xmake_style)).apply ((((((xos).xenviron).xget)).apply ("DJANGO_COLORS") (""))))))

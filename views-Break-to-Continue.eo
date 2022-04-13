@@ -1,0 +1,92 @@
+memory > xAttributeError
+memory > xValueError
+memory > xapps
+memory > xHttpResponseRedirect
+memory > xgetattr
+memory > xContentType
+memory > xfield
+memory > xget_current_site
+memory > xHttp404
+memory > xObjectDoesNotExist
+[] > views
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_
+        memory > xshortcut
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xshortcut.write
+              [xrequest xcontent_type_id xobject_id]
+                memory > xabsurl
+                memory > xsite
+                memory > xopts
+                memory > xcontent_type
+                memory > xobject_domain
+                memory > xsite_qs
+                memory > xSite
+                memory > xobj
+                memory > xprotocol
+                memory > xget_absolute_url
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xObjectDoesNotExist)) ((xValueError)))))
+                      seq
+                        xcontent_type.write (((unsupported)).apply ((((xContentType).xobjects).xget)) ((xcontent_type_id)))
+                        (((((xcontent_type).xmodel_class)).apply).not).if
+                          (((unsupported)).apply ((((xHttp404)).apply (((((x_)).apply ("Content type %(ct_id)s object has no associated model")).mod (((unsupported)).apply ("ct_id") ((xcontent_type_id))))))))
+                        xobj.write (((unsupported)).apply (((xcontent_type).xget_object_for_this_type)) ((xobject_id)))
+                      (((unsupported)).apply ((((xHttp404)).apply (((((x_)).apply ("Content type %(ct_id)s object %(obj_id)s doesn’t exist")).mod (((unsupported)).apply ("ct_id") ((xcontent_type_id)) ("obj_id") ((xobject_id))))))))
+                    (((unsupported)).apply ((xAttributeError)))
+                      xget_absolute_url.write ((xobj).xget_absolute_url)
+                      (((unsupported)).apply ((((xHttp404)).apply (((((x_)).apply ("%(ct_name)s objects don’t have a get_absolute_url() method")).mod (((unsupported)).apply ("ct_name") (((xcontent_type).xname))))))))
+                    xabsurl.write (((xget_absolute_url)).apply)
+                    ((((xabsurl).xstartswith)).apply ((((unsupported)).apply ("http://") ("https://") ("//")))).if
+                      (((unsupported)).apply ((((xHttpResponseRedirect)).apply ((xabsurl)))))
+                    (((unsupported)).apply ((xObjectDoesNotExist)))
+                      xobject_domain.write ((((xget_current_site)).apply ((xrequest))).xdomain)
+                      xobject_domain.write "None: is there a None literal in the EO language?"
+                    ((((xapps).xis_installed)).apply ("django.contrib.sites")).if
+                      seq
+                        xSite.write ((((xapps).xget_model)).apply ("sites.Site"))
+                        xopts.write ((xobj).x_meta)
+                        (((unsupported)).apply ((xfield)) (((xopts).xmany_to_many)))
+                          (((unsupported)).apply ((((xfield).xremote_field).xmodel)) ((xSite))).if
+                            seq
+                              xsite_qs.write ((((((xgetattr)).apply ((xobj)) (((xfield).xname))).xall)).apply)
+                              ((xobject_domain).and ((((((unsupported)).apply (((xsite_qs).xfilter)) ((xobject_domain))).xexists)).apply)).if
+                                (((unsupported)).apply)
+                              xsite.write ((((xsite_qs).xfirst)).apply)
+                              (xsite).if
+                                seq
+                                  xobject_domain.write ((xsite).xdomain)
+                                  (((unsupported)).apply)
+                          (((unsupported)).apply ((xfield)) ((((xobj).x_meta).xfields)))
+                            (((xfield).xremote_field).and (((unsupported)).apply ((((xfield).xremote_field).xmodel)) ((xSite)))).if
+                              seq
+                                (((unsupported)).apply (((xSite).xDoesNotExist)))
+                                  xsite.write (((xgetattr)).apply ((xobj)) (((xfield).xname)))
+                                  (((unsupported)).apply)
+                                (((unsupported)).apply ((xsite)) ("None: is there a None literal in the EO language?")).if
+                                  seq
+                                    xobject_domain.write ((xsite).xdomain)
+                                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xobject_domain)) ("None: is there a None literal in the EO language?")).if
+                      seq
+                        xprotocol.write ((xrequest).xscheme)
+                        (((unsupported)).apply ((((xHttpResponseRedirect)).apply (("%s://%s%s".mod (((unsupported)).apply ((xprotocol)) ((xobject_domain)) ((xabsurl))))))))
+                      (((unsupported)).apply ((((xHttpResponseRedirect)).apply ((xabsurl)))))

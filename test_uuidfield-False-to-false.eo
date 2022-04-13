@@ -1,0 +1,70 @@
+memory > xfalse
+memory > xuuid
+memory > xUUIDField
+memory > xValidationError
+memory > xSimpleTestCase
+[] > test_uuidfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_clean_value_with_dashes
+        memory > xtest_uuidfield_2
+        memory > xtest_uuidfield_1
+        memory > xtest_uuidfield_4
+        memory > xtest_uuidfield_3
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_uuidfield_1.write
+                  [xself]
+                    memory > xfield
+                    memory > xvalue
+                    seq > @
+                      seq
+                        xfield.write (((xUUIDField)).apply)
+                        xvalue.write ((((xfield).xclean)).apply ("550e8400e29b41d4a716446655440000"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) (((((xuuid).xUUID)).apply ("550e8400e29b41d4a716446655440000"))))
+                xtest_clean_value_with_dashes.write
+                  [xself]
+                    memory > xfield
+                    memory > xvalue
+                    seq > @
+                      seq
+                        xfield.write (((xUUIDField)).apply)
+                        xvalue.write ((((xfield).xclean)).apply ("550e8400-e29b-41d4-a716-446655440000"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) (((((xuuid).xUUID)).apply ("550e8400e29b41d4a716446655440000"))))
+                xtest_uuidfield_2.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((unsupported)).apply ((xUUIDField)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xfield).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xfield).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                xtest_uuidfield_3.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write (((xUUIDField)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("Enter a valid UUID."))))
+                          bogusForceDataize.write ((((xfield).xclean)).apply ("550e8400"))
+                xtest_uuidfield_4.write
+                  [xself]
+                    memory > xfield
+                    memory > xvalue
+                    seq > @
+                      seq
+                        xfield.write (((xUUIDField)).apply)
+                        xvalue.write ((((xfield).xprepare_value)).apply (((((xuuid).xUUID)).apply ("550e8400e29b41d4a716446655440000"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) ("550e8400-e29b-41d4-a716-446655440000"))

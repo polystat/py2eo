@@ -1,0 +1,87 @@
+memory > xlist
+memory > xapps
+memory > xurl
+memory > xtuple
+memory > xKMLSitemap
+memory > xSitemap
+memory > xsource
+memory > xmodels
+memory > xTypeError
+memory > xreverse
+memory > xfield
+memory > xGeometryField
+memory > xValueError
+memory > xisinstance
+memory > xlen
+[] > kml
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xgeo_format
+        memory > xitems
+        memory > x__init__
+        memory > x_build_kml_sources
+        memory > xlocation
+        memory > xget_urls
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSitemap)))
+              seq
+                (((unsupported)).apply)
+                xgeo_format.write "kml"
+                x__init__.write
+                  [xself xlocations]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xlocations)) (((((xself).x_build_kml_sources)).apply ((xlocations)))))
+                x_build_kml_sources.write
+                  [xself xsources]
+                    memory > xkml_sources
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xkml_sources.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xsources)) ("None: is there a None literal in the EO language?")).if
+                          xsources.write ((xapps).xget_models)
+                        (((unsupported)).apply ((xsource)) ((xsources)))
+                          (((xisinstance)).apply ((xsource)) ((((xmodels).xbase).xModelBase))).if
+                            (((unsupported)).apply ((xfield)) ((((xsource).x_meta).xfields)))
+                              (((xisinstance)).apply ((xfield)) ((xGeometryField))).if
+                                bogusForceDataize.write ((((xkml_sources).xappend)).apply ((((unsupported)).apply ((((xsource).x_meta).xapp_label)) ((((xsource).x_meta).xmodel_name)) (((xfield).xname)))))
+                            (((xisinstance)).apply ((xsource)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                              seq
+                                ((((xlen)).apply ((xsource))).neq 3).if
+                                  (((unsupported)).apply ((((xValueError)).apply ("Must specify a 3-tuple of (app_label, module_name, field_name)."))))
+                                bogusForceDataize.write ((((xkml_sources).xappend)).apply ((xsource)))
+                              (((unsupported)).apply ((((xTypeError)).apply ("KML Sources must be a model or a 3-tuple."))))
+                        (((unsupported)).apply ((xkml_sources)))
+                xget_urls.write
+                  [xself xpage xsite xprotocol]
+                    memory > xurls
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xurls.write (((unsupported)).apply (((xSitemap).xget_urls)) ((xself)) ((xpage)) ((xsite)) ((xprotocol)))
+                        (((unsupported)).apply ((xurl)) ((xurls)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xurl)) ("geo_format"))) (((xself).xgeo_format)))
+                        (((unsupported)).apply ((xurls)))
+                xitems.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xlocations)))
+                xlocation.write
+                  [xself xobj]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xreverse)) (("django.contrib.gis.sitemaps.views.%s".mod ((xself).xgeo_format))) ((((unsupported)).apply ("label") ((((unsupported)).apply ((xobj)) (0))) ("model") ((((unsupported)).apply ((xobj)) (1))) ("field_name") ((((unsupported)).apply ((xobj)) (2))))))))
+            (((unsupported)).apply ((xKMLSitemap)))
+              xgeo_format.write "kmz"

@@ -1,0 +1,97 @@
+memory > xdatetime
+memory > xSplitDateTimeWidget
+memory > xdate
+memory > xForm
+memory > xTestForm
+memory > xtime
+memory > xWidgetTest
+memory > xSplitDateTimeField
+[] > test_splitdatetimewidget
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_fieldset
+        memory > xtest_constructor_attrs
+        memory > xtest_render_date_and_time
+        memory > xtest_constructor_different_attrs
+        memory > xwidget2
+        memory > xtest_render_empty
+        memory > xtest_render_none
+        memory > xtest_render_datetime
+        memory > xtest_formatting
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget2.write (((xSplitDateTimeWidget)).apply)
+                xtest_render_empty.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ("") ("<input type=\"text\" name=\"date_0\"><input type=\"text\" name=\"date_1\">"))
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ("None: is there a None literal in the EO language?") ("<input type=\"text\" name=\"date_0\"><input type=\"text\" name=\"date_1\">"))
+                xtest_render_datetime.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ("<input type=\"text\" name=\"date_0\" value=\"2006-01-10\"><input type=\"text\" name=\"date_1\" value=\"07:30:00\">"))
+                xtest_render_date_and_time.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((unsupported)).apply ((((xdate)).apply (2006) (1) (10))) ((((xtime)).apply (7) (30))))) ("<input type=\"text\" name=\"date_0\" value=\"2006-01-10\"><input type=\"text\" name=\"date_1\" value=\"07:30:00\">"))
+                xtest_constructor_attrs.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((unsupported)).apply ((xSplitDateTimeWidget)) ((((unsupported)).apply ("class") ("pretty"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ("<input type=\"text\" class=\"pretty\" value=\"2006-01-10\" name=\"date_0\"><input type=\"text\" class=\"pretty\" value=\"07:30:00\" name=\"date_1\">"))
+                xtest_constructor_different_attrs.write
+                  [xself]
+                    memory > xwidget
+                    memory > xhtml
+                    seq > @
+                      seq
+                        xhtml.write "<input type=\"text\" class=\"foo\" value=\"2006-01-10\" name=\"date_0\"><input type=\"text\" class=\"bar\" value=\"07:30:00\" name=\"date_1\">"
+                        xwidget.write (((unsupported)).apply ((xSplitDateTimeWidget)) ((((unsupported)).apply ("class") ("foo"))) ((((unsupported)).apply ("class") ("bar"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ((xhtml)))
+                        xwidget.write (((unsupported)).apply ((xSplitDateTimeWidget)) ((((unsupported)).apply ("class") ("foo"))) ((((unsupported)).apply ("class") ("bar"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ((xhtml)))
+                        xwidget.write (((unsupported)).apply ((xSplitDateTimeWidget)) ((((unsupported)).apply ("class") ("bar"))) ((((unsupported)).apply ("class") ("foo"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ((xhtml)))
+                xtest_formatting.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((unsupported)).apply ((xSplitDateTimeWidget)) ("%d/%m/%Y") ("%H:%M"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ("<input type=\"text\" name=\"date_0\" value=\"10/01/2006\"><input type=\"text\" name=\"date_1\" value=\"07:30\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ("<input type=\"text\" name=\"date_0\" value=\"10/01/2006\"><input type=\"text\" name=\"date_1\" value=\"07:30\">"))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xSplitDateTimeField)) (((xself).xwidget)))
+                        xform.write (((xTestForm)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><fieldset><legend>Field:</legend><input type=\"text\" name=\"field_0\" required id=\"id_field_0\"><input type=\"text\" name=\"field_1\" required id=\"id_field_1\"></fieldset></div>") (((((xform).xrender)).apply)))

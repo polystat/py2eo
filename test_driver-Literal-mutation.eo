@@ -1,0 +1,88 @@
+memory > xd
+memory > xfull_name
+memory > xalias
+memory > xi
+memory > xGDALException
+memory > xunittest
+memory > xstr
+memory > xDriver
+[] > test_driver
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xvalid_drivers
+        memory > xinvalid_drivers
+        memory > xaliases
+        memory > xtest_registered
+        memory > xtest03_aliases
+        memory > xtest01_valid_driver
+        memory > xtest02_invalid_driver
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xvalid_drivers.write (((unsupported)).apply ("ESRI Shapefile") ("MapInfo File") ("TIGER") ("S57") ("DGN") ("Memory") ("CSV") ("GML") ("KML") ("GTiff") ("JPEG") ("MEM") ("PNG"))
+            xinvalid_drivers.write (((unsupported)).apply ("Foo baz") ("clucka") ("ESRI Shp") ("ESRI rast"))
+            xaliases.write (((unsupported)).apply ("eSrI") ("ESRI Shapefile") ("TigER/linE") ("TIGER") ("SHAPE") ("ESRI Shapefile") ("sHp") ("ESRI Shapefile") ("tiFf") ("GTiff") ("tIf") ("GTiff") ("jPEg") ("JPEG") ("jpG") ("JPEG"))
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest01_valid_driver.write
+                  [xself]
+                    memory > xdr
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xd)) ((xvalid_drivers)))
+                          seq
+                            xdr.write (((xDriver)).apply ((xd)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xd)) ((((xstr)).apply ((xdr)))))
+                xtest02_invalid_driver.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((xi)) ((xinvalid_drivers)))
+                          (((unsupported)).apply (((((xself).xassertRaises)).apply ((xGDALException)))))
+                            bogusForceDataize.write (((xDriver)).apply ((xi)))
+                xtest03_aliases.write
+                  [xself]
+                    memory > xdr
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((xalias)) ((xfull_name)))) (((((xaliases).xitems)).apply)))
+                          seq
+                            xdr.write (((xDriver)).apply ((xalias)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((xfull_name)) ((((xstr)).apply ((xdr)))))
+                xtest_registered.write
+                  [xself xrreg xvreg xrcount xvcount]
+                    memory > xcheck
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xcheck.write
+                          [xrcount_val xvcount_val]
+                            seq > @
+                              seq
+                                bogusForceDataize.write ((((xvreg).xreset_mock)).apply)
+                                bogusForceDataize.write ((((xrreg).xreset_mock)).apply)
+                                (((unsupported)).apply (((xrcount).xreturn_value)) ((xrcount_val)))
+                                (((unsupported)).apply (((xvcount).xreturn_value)) ((xvcount_val)))
+                                bogusForceDataize.write ((((xDriver).xensure_registered)).apply)
+                                (xrcount_val).if
+                                  bogusForceDataize.write ((((xself).xassertFalse)).apply (((xrreg).xcalled)))
+                                  bogusForceDataize.write ((((xrreg).xassert_called_once_with)).apply)
+                                (xvcount_val).if
+                                  bogusForceDataize.write ((((xself).xassertFalse)).apply (((xvreg).xcalled)))
+                                  bogusForceDataize.write ((((xvreg).xassert_called_once_with)).apply)
+                        bogusForceDataize.write (((xcheck)).apply (0) (0))
+                        bogusForceDataize.write (((xcheck)).apply (120) (0))
+                        bogusForceDataize.write (((xcheck)).apply (0) (120))
+                        bogusForceDataize.write (((xcheck)).apply (120) (120))

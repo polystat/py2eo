@@ -1,0 +1,35 @@
+memory > xoption
+memory > xvalue
+memory > xBaseCommand
+memory > xoptions
+[] > mutually_exclusive_required_with_same_dest
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xadd_arguments.write
+                  [xself xparser]
+                    memory > xgroup
+                    seq > @
+                      seq
+                        xgroup.write (((unsupported)).apply (((xparser).xadd_mutually_exclusive_group)) (TRUE))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--for") ("until") ("store"))
+                        (((unsupported)).apply (((xgroup).xadd_argument)) ("--until") ("store"))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xoption)) ((xvalue)))) (((xoptions).xitems)))
+                          (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("%s=%s".mod (((unsupported)).apply ((xoption)) ((xvalue))))))

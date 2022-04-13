@@ -1,0 +1,131 @@
+memory > xparagraph
+memory > xwords
+memory > xunittest
+memory > xlen
+memory > xparagraphs
+memory > xsentence
+[] > test_lorem_ipsum
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_more_words_than_common
+        memory > xtest_paragraph
+        memory > xtest_not_common_words
+        memory > xtest_sentence_ending
+        memory > xtest_paragraphs
+        memory > xtest_common_large_number_of_words
+        memory > xtest_paragraphs_not_common
+        memory > xtest_same_or_less_common_words
+        memory > xtest_common_words_in_string
+        memory > xtest_negative_words
+        memory > xtest_sentence_starts_with_capital
+        memory > xtest_sentence
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_negative_words.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwords)).apply ((5.neg)))) ("lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut"))
+                xtest_same_or_less_common_words.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("lorem ipsum dolor sit amet consectetur adipisicing") ((((xwords)).apply (7))))
+                xtest_common_words_in_string.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((xwords)).apply (25)).xstartswith)).apply ("lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"))))
+                xtest_more_words_than_common.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((((((xwords)).apply (25)).xsplit)).apply)))) (25))
+                xtest_common_large_number_of_words.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((((((xwords)).apply (500)).xsplit)).apply)))) (500))
+                xtest_not_common_words.write
+                  [xself xmock_sample]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((xmock_sample).xreturn_value)) ((((unsupported)).apply ("exercitationem") ("perferendis"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xwords)) (2) (FALSE))) ("exercitationem perferendis"))
+                xtest_sentence_starts_with_capital.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((unsupported)).apply ((((xsentence)).apply)) (0)).xisupper)).apply)))
+                xtest_sentence.write
+                  [xself xmock_randint xmock_choice xmock_sample]
+                    memory > xvalue
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xmock_randint).xreturn_value)) (2))
+                        (((unsupported)).apply (((xmock_sample).xreturn_value)) ((((unsupported)).apply ("exercitationem") ("perferendis"))))
+                        (((unsupported)).apply (((xmock_choice).xreturn_value)) ("?"))
+                        xvalue.write (((xsentence)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xmock_randint).xcall_count)) (3))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xmock_sample).xcall_count)) (2))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xmock_choice).xcall_count)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) ("Exercitationem perferendis, exercitationem perferendis?"))
+                xtest_sentence_ending.write
+                  [xself xmock_choice]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((xmock_choice).xreturn_value)) ("?"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply ((((xsentence)).apply)) ((1.neg)))) ("?"))
+                        (((unsupported)).apply (((xmock_choice).xreturn_value)) ("."))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((unsupported)).apply ((((xsentence)).apply)) ((1.neg)))) ("."))
+                xtest_paragraph.write
+                  [xself xmock_paragraph_randint xmock_choice xmock_sample]
+                    memory > xvalue
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((xmock_paragraph_randint).xreturn_value)) (2))
+                        (((unsupported)).apply (((xmock_sample).xreturn_value)) ((((unsupported)).apply ("exercitationem") ("perferendis"))))
+                        (((unsupported)).apply (((xmock_choice).xreturn_value)) ("."))
+                        xvalue.write (((xparagraph)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xmock_paragraph_randint).xcall_count)) (7))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) ("Exercitationem perferendis, exercitationem perferendis. Exercitationem perferendis, exercitationem perferendis."))
+                xtest_paragraphs_not_common.write
+                  [xself xmock_randint xmock_choice xmock_sample]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xmock_randint).xreturn_value)) (2))
+                        (((unsupported)).apply (((xmock_sample).xreturn_value)) ((((unsupported)).apply ("exercitationem") ("perferendis"))))
+                        (((unsupported)).apply (((xmock_choice).xreturn_value)) ("."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xparagraphs)) (1) (FALSE))) ((((unsupported)).apply ("Exercitationem perferendis, exercitationem perferendis. Exercitationem perferendis, exercitationem perferendis."))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xmock_randint).xcall_count)) (7))
+                xtest_paragraphs.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xparagraphs)).apply (1))) ((((unsupported)).apply ("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."))))

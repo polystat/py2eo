@@ -1,0 +1,30 @@
+memory > xError
+memory > xsettings
+memory > xorigin
+[] > django_4_0
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck_csrf_trusted_origins
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xcheck_csrf_trusted_origins.write
+              [xapp_configs]
+                memory > xerrors
+                seq > @
+                  (((unsupported)).apply)
+                    xerrors.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xorigin)) (((xsettings).xCSRF_TRUSTED_ORIGINS)))
+                      (((unsupported)).apply ("://") ((xorigin))).if
+                        bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply ((xError)) (("As of Django 4.0, the values in the CSRF_TRUSTED_ORIGINS setting must start with a scheme (usually http:// or https://) but found %s. See the release notes for details.".mod (xorigin))) ("4_0.E001"))))
+                    (((unsupported)).apply ((xerrors)))

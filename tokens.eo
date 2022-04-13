@@ -1,0 +1,139 @@
+memory > xts_b36
+memory > xValueError
+memory > xint_to_base36
+memory > x_
+memory > xproperty
+memory > xsalted_hmac
+memory > xgetattr
+memory > xPasswordResetTokenGenerator
+memory > xbase36_to_int
+memory > xdatetime
+memory > xconstant_time_compare
+memory > xsettings
+memory > xint
+[] > tokens
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xkey_salt
+        memory > xmake_token
+        memory > x_get_fallbacks
+        memory > x_secret_fallbacks
+        memory > x_num_seconds
+        memory > x_get_secret
+        memory > xcheck_token
+        memory > xalgorithm
+        memory > x_set_fallbacks
+        memory > xsecret
+        memory > x__init__
+        memory > x_secret
+        memory > xdefault_token_generator
+        memory > x_make_hash_value
+        memory > x_now
+        memory > x_set_secret
+        memory > x_make_token_with_timestamp
+        memory > xsecret_fallbacks
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xkey_salt.write "django.contrib.auth.tokens.PasswordResetTokenGenerator"
+                xalgorithm.write "None: is there a None literal in the EO language?"
+                x_secret.write "None: is there a None literal in the EO language?"
+                x_secret_fallbacks.write "None: is there a None literal in the EO language?"
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xalgorithm)) ((((xself).xalgorithm).or "sha256")))
+                x_get_secret.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xself).x_secret).or ((xsettings).xSECRET_KEY))))
+                x_set_secret.write
+                  [xself xsecret]
+                    seq > @
+                      (((unsupported)).apply (((xself).x_secret)) ((xsecret)))
+                xsecret.write (((xproperty)).apply ((x_get_secret)) ((x_set_secret)))
+                x_get_fallbacks.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).x_secret_fallbacks)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (((xsettings).xSECRET_KEY_FALLBACKS)))
+                        (((unsupported)).apply (((xself).x_secret_fallbacks)))
+                x_set_fallbacks.write
+                  [xself xfallbacks]
+                    seq > @
+                      (((unsupported)).apply (((xself).x_secret_fallbacks)) ((xfallbacks)))
+                xsecret_fallbacks.write (((xproperty)).apply ((x_get_fallbacks)) ((x_set_fallbacks)))
+                xmake_token.write
+                  [xself xuser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).x_make_token_with_timestamp)).apply ((xuser)) (((((xself).x_num_seconds)).apply (((((xself).x_now)).apply)))) (((xself).xsecret)))))
+                xcheck_token.write
+                  [xself xuser xtoken]
+                    memory > xts
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xuser).and (xtoken)).not).if
+                          (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply ((xValueError)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xts_b36)) ((x_)))) (((((xtoken).xsplit)).apply ("-"))))
+                          (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply ((xValueError)))
+                          xts.write (((xbase36_to_int)).apply ((xts_b36)))
+                          (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply ((xsecret)) ((((unsupported)).apply (((xself).xsecret)) ((((unsupported)).apply (((xself).xsecret_fallbacks)))))))
+                          (((xconstant_time_compare)).apply (((((xself).x_make_token_with_timestamp)).apply ((xuser)) ((xts)) ((xsecret)))) ((xtoken))).if
+                            (((unsupported)).apply)
+                          (((unsupported)).apply (FALSE))
+                        ((((((xself).x_num_seconds)).apply (((((xself).x_now)).apply))).sub (xts)).greater ((xsettings).xPASSWORD_RESET_TIMEOUT)).if
+                          (((unsupported)).apply (FALSE))
+                        (((unsupported)).apply (TRUE))
+                x_make_token_with_timestamp.write
+                  [xself xuser xtimestamp xsecret]
+                    memory > xhash_string
+                    memory > xts_b36
+                    seq > @
+                      seq
+                        xts_b36.write (((xint_to_base36)).apply ((xtimestamp)))
+                        xhash_string.write (((unsupported)).apply (((((((unsupported)).apply ((xsalted_hmac)) (((xself).xkey_salt)) (((((xself).x_make_hash_value)).apply ((xuser)) ((xtimestamp)))) ((xsecret)) (((xself).xalgorithm))).xhexdigest)).apply)) ((((unsupported)).apply (2))))
+                        (((unsupported)).apply (("%s-%s".mod (((unsupported)).apply ((xts_b36)) ((xhash_string))))))
+                x_make_hash_value.write
+                  [xself xuser xtimestamp]
+                    memory > xemail_field
+                    memory > xemail
+                    memory > xlogin_timestamp
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xlogin_timestamp.write ((((unsupported)).apply (((xuser).xlast_login)) ("None: is there a None literal in the EO language?")).if "" (((unsupported)).apply ((((xuser).xlast_login).xreplace)) (0) ("None: is there a None literal in the EO language?")))
+                        xemail_field.write ((((xuser).xget_email_field_name)).apply)
+                        xemail.write ((((xgetattr)).apply ((xuser)) ((xemail_field)) ("")).or "")
+                        (((unsupported)).apply ("{user.pk}{user.password}{login_timestamp}{timestamp}{email}"))
+                x_num_seconds.write
+                  [xself xdt]
+                    seq > @
+                      (((unsupported)).apply ((((xint)).apply ((((((xdt).sub (((xdatetime)).apply (2001) (1) (1))).xtotal_seconds)).apply)))))
+                x_now.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xdatetime).xnow)).apply)))
+            xdefault_token_generator.write (((xPasswordResetTokenGenerator)).apply)

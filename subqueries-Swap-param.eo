@@ -1,0 +1,204 @@
+memory > xfield
+memory > xvalues
+memory > xFieldError
+memory > xQuery
+memory > xhasattr
+memory > xsuper
+memory > xargs
+memory > xval
+memory > xGET_ITERATOR_CHUNK_SIZE
+memory > xlen
+memory > xrange
+memory > xCURSOR
+memory > xname
+memory > xUpdateQuery
+memory > xoffset
+memory > xNO_RESULTS
+memory > xkwargs
+memory > xmodel
+[] > subqueries
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcompiler
+        memory > xadd_related_update
+        memory > xinsert_values
+        memory > xclone
+        memory > xget_related_updates
+        memory > xadd_update_fields
+        memory > x_setup_query
+        memory > x__all__
+        memory > xupdate_batch
+        memory > xdo_query
+        memory > xadd_update_values
+        memory > xdelete_batch
+        memory > x__init__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("DeleteQuery") ("UpdateQuery") ("InsertQuery") ("AggregateQuery"))
+            (((unsupported)).apply ((xQuery)))
+              seq
+                unsupported
+                xcompiler.write "SQLDeleteCompiler"
+                xdo_query.write
+                  [xself xtable xwhere xusing]
+                    memory > xcursor
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xalias_map)) ((((unsupported)).apply ((xtable)) ((((unsupported)).apply (((xself).xalias_map)) ((xtable)))))))
+                        (((unsupported)).apply (((xself).xwhere)) ((xwhere)))
+                        xcursor.write (((((((xself).xget_compiler)).apply ((xusing))).xexecute_sql)).apply ((xCURSOR)))
+                        (xcursor).if
+                          (((unsupported)).apply ((xcursor)))
+                            (((unsupported)).apply (((xcursor).xrowcount)))
+                        (((unsupported)).apply (0))
+                xdelete_batch.write
+                  [xself xpk_list xusing]
+                    memory > xfield
+                    memory > xnum_deleted
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xnum_deleted.write 0
+                        xfield.write (((((xself).xget_meta)).apply).xpk)
+                        (((unsupported)).apply ((xoffset)) ((((xrange)).apply ((xGET_ITERATOR_CHUNK_SIZE)) ((((xlen)).apply ((xpk_list)))) (0))))
+                          seq
+                            bogusForceDataize.write ((((xself).xclear_where)).apply)
+                            bogusForceDataize.write ((((xself).xadd_filter)).apply ("{field.attname}__in") ((((unsupported)).apply ((xpk_list)) ((((unsupported)).apply ((xoffset)) (((xoffset).add (xGET_ITERATOR_CHUNK_SIZE))))))))
+                            (((unsupported)).apply ((xnum_deleted)) ((((unsupported)).apply (((xself).xdo_query)) ((((((xself).xget_meta)).apply).xdb_table)) (((xself).xwhere)) ((xusing)))))
+                        (((unsupported)).apply ((xnum_deleted)))
+            (((unsupported)).apply ((xQuery)))
+              seq
+                unsupported
+                xcompiler.write "SQLUpdateCompiler"
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        bogusForceDataize.write ((((xself).x_setup_query)).apply)
+                x_setup_query.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xvalues)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xrelated_ids)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xself).xrelated_updates)) ((((unsupported)).apply)))
+                xclone.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write ((((((xsuper)).apply).xclone)).apply)
+                        (((unsupported)).apply (((xobj).xrelated_updates)) ((((((xself).xrelated_updates).xcopy)).apply)))
+                        (((unsupported)).apply ((xobj)))
+                xupdate_batch.write
+                  [xself xpk_list xvalues xusing]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xadd_update_values)).apply ((xvalues)))
+                        (((unsupported)).apply ((xoffset)) ((((xrange)).apply (0) ((((xlen)).apply ((xpk_list)))) ((xGET_ITERATOR_CHUNK_SIZE)))))
+                          seq
+                            bogusForceDataize.write ((((xself).xclear_where)).apply)
+                            bogusForceDataize.write ((((xself).xadd_filter)).apply ("pk__in") ((((unsupported)).apply ((xpk_list)) ((((unsupported)).apply ((xoffset)) (((xoffset).add (xGET_ITERATOR_CHUNK_SIZE))))))))
+                            bogusForceDataize.write (((((((xself).xget_compiler)).apply ((xusing))).xexecute_sql)).apply ((xNO_RESULTS)))
+                xadd_update_values.write
+                  [xself xvalues]
+                    memory > xvalues_seq
+                    memory > xmodel
+                    memory > xfield
+                    memory > xdirect
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xvalues_seq.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xname)) ((xval)))) (((((xvalues).xitems)).apply)))
+                          seq
+                            xfield.write (((((((xself).xget_meta)).apply).xget_field)).apply ((xname)))
+                            xdirect.write (((((xfield).xauto_created).and (((xfield).xconcrete).not)).not).or (((xfield).xconcrete).not))
+                            xmodel.write ((((xfield).xmodel).x_meta).xconcrete_model)
+                            (((xdirect).not).or (((xfield).xis_relation).and ((xfield).xmany_to_many))).if
+                              (((unsupported)).apply ((((xFieldError)).apply (("Cannot update model field %r (only non-relations and foreign keys permitted).".mod (xfield))))))
+                            (((unsupported)).apply ((xmodel)) ((((((xself).xget_meta)).apply).xconcrete_model))).if
+                              seq
+                                bogusForceDataize.write ((((xself).xadd_related_update)).apply ((xmodel)) ((xfield)) ((xval)))
+                                (((unsupported)).apply)
+                            bogusForceDataize.write ((((xvalues_seq).xappend)).apply ((((unsupported)).apply ((xfield)) ((xmodel)) ((xval)))))
+                        (((unsupported)).apply (((((xself).xadd_update_fields)).apply ((xvalues_seq)))))
+                xadd_update_fields.write
+                  [xself xvalues_seq]
+                    memory > xval
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xfield)) ((xmodel)) ((xval)))) ((xvalues_seq)))
+                          seq
+                            (((xhasattr)).apply ((xval)) ("resolve_expression")).if
+                              xval.write (((unsupported)).apply (((xval).xresolve_expression)) ((xself)) (FALSE) (TRUE))
+                            bogusForceDataize.write (((((xself).xvalues).xappend)).apply ((((unsupported)).apply ((xfield)) ((xmodel)) ((xval)))))
+                xadd_related_update.write
+                  [xself xmodel xfield xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((((((xself).xrelated_updates).xsetdefault)).apply ((xmodel)) ((((unsupported)).apply))).xappend)).apply ((((unsupported)).apply ((xfield)) ("None: is there a None literal in the EO language?") ((xvalue)))))
+                xget_related_updates.write
+                  [xself]
+                    memory > xresult
+                    memory > xquery
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xself).xrelated_updates).not).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        xresult.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xmodel)) ((xvalues)))) ((((((xself).xrelated_updates).xitems)).apply)))
+                          seq
+                            xquery.write (((xUpdateQuery)).apply ((xmodel)))
+                            (((unsupported)).apply (((xquery).xvalues)) ((xvalues)))
+                            (((unsupported)).apply (((xself).xrelated_ids)) ("None: is there a None literal in the EO language?")).if
+                              bogusForceDataize.write ((((xquery).xadd_filter)).apply ("pk__in") ((((unsupported)).apply (((xself).xrelated_ids)) ((xmodel)))))
+                            bogusForceDataize.write ((((xresult).xappend)).apply ((xquery)))
+                        (((unsupported)).apply ((xresult)))
+            (((unsupported)).apply ((xQuery)))
+              seq
+                xcompiler.write "SQLInsertCompiler"
+                x__init__.write
+                  [xself xon_conflict xupdate_fields xunique_fields]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply (((xself).xfields)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xobjs)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xon_conflict)) ((xon_conflict)))
+                        (((unsupported)).apply (((xself).xupdate_fields)) (((xupdate_fields).or (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).xunique_fields)) (((xunique_fields).or (((unsupported)).apply))))
+                xinsert_values.write
+                  [xself xfields xobjs xraw]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xfields)) ((xfields)))
+                        (((unsupported)).apply (((xself).xobjs)) ((xobjs)))
+                        (((unsupported)).apply (((xself).xraw)) ((xraw)))
+            (((unsupported)).apply ((xQuery)))
+              seq
+                (((unsupported)).apply)
+                xcompiler.write "SQLAggregateCompiler"
+                x__init__.write
+                  [xself xmodel xinner_query]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xinner_query)) ((xinner_query)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xmodel)))

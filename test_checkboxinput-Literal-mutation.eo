@@ -1,0 +1,129 @@
+memory > xAttributeError
+memory > xBooleanField
+memory > xvalue
+memory > xTestForm
+memory > xForm
+memory > xCheckboxInput
+memory > xWidgetTest
+[] > test_checkboxinput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_render_int
+        memory > xtest_value_from_datadict
+        memory > xtest_render_none
+        memory > xtest_render_check_test
+        memory > xtest_value_omitted_from_data
+        memory > xtest_get_context_does_not_mutate_attrs
+        memory > xtest_render_value
+        memory > xtest_render_check_exception
+        memory > xtest_fieldset
+        memory > xwidget
+        memory > xtest_render_empty
+        memory > xtest_value_from_datadict_string_int
+        memory > xtest_render_false
+        memory > xtest_render_true
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (((xCheckboxInput)).apply)
+                xtest_render_empty.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("") ("<input type=\"checkbox\" name=\"is_cool\">"))
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("None: is there a None literal in the EO language?") ("<input type=\"checkbox\" name=\"is_cool\">"))
+                xtest_render_false.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") (FALSE) ("<input type=\"checkbox\" name=\"is_cool\">"))
+                xtest_render_true.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") (TRUE) ("<input checked type=\"checkbox\" name=\"is_cool\">"))
+                xtest_render_value.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("foo") ("<input checked type=\"checkbox\" name=\"is_cool\" value=\"foo\">"))
+                xtest_render_int.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") (0) ("<input checked type=\"checkbox\" name=\"is_cool\" value=\"0\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") (1) ("<input checked type=\"checkbox\" name=\"is_cool\" value=\"1\">"))
+                xtest_render_check_test.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((unsupported)).apply ((xCheckboxInput)) ((((unsupported)).apply (((((xvalue).xstartswith)).apply ("hello"))))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("greeting") ("") ("<input type=\"checkbox\" name=\"greeting\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("greeting") ("hello") ("<input checked type=\"checkbox\" name=\"greeting\" value=\"hello\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("greeting") ("hello there") ("<input checked type=\"checkbox\" name=\"greeting\" value=\"hello there\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("greeting") ("hello & goodbye") ("<input checked type=\"checkbox\" name=\"greeting\" value=\"hello &amp; goodbye\">"))
+                xtest_render_check_exception.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((unsupported)).apply ((xCheckboxInput)) ((((unsupported)).apply (((((xvalue).xstartswith)).apply ("hello"))))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xAttributeError)))))
+                          bogusForceDataize.write ((((xwidget).xrender)).apply ("greeting") (TRUE))
+                xtest_value_from_datadict.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xself).xwidget).xvalue_from_datadict)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ("testing"))))
+                xtest_value_from_datadict_string_int.write
+                  [xself]
+                    memory > xvalue
+                    seq > @
+                      seq
+                        xvalue.write (((((xself).xwidget).xvalue_from_datadict)).apply ((((unsupported)).apply ("testing") ("0"))) ((((unsupported)).apply)) ("testing"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((xvalue)) (TRUE))
+                xtest_value_omitted_from_data.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xself).xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply ("field") ("value"))) ((((unsupported)).apply)) ("field"))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xself).xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ("field"))) (FALSE))
+                xtest_get_context_does_not_mutate_attrs.write
+                  [xself]
+                    memory > xattrs
+                    seq > @
+                      seq
+                        xattrs.write (((unsupported)).apply ("checked") (FALSE))
+                        bogusForceDataize.write (((((xself).xwidget).xget_context)).apply ("name") (TRUE) ((xattrs)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((unsupported)).apply ((xattrs)) ("checked"))) (FALSE))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xBooleanField)) (((xself).xwidget)))
+                        xform.write (((xTestForm)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply (((((xform).xrender)).apply)) ("<div><label for=\"id_field\">Field:</label><input id=\"id_field\" name=\"field\" required type=\"checkbox\"></div>"))

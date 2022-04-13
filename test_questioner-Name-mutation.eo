@@ -1,0 +1,127 @@
+memory > xMigrationQuestioner
+memory > xdatetime
+memory > xOutputWrapper
+memory > xInteractiveMigrationQuestioner
+memory > xSimpleTestCase
+memory > xNOT_PROVIDED
+memory > xquestioner
+memory > xStringIO
+memory > xSystemExit
+[] > test_questioner
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_questioner_no_default_no_user_entry
+        memory > xtest_questioner_default_no_user_entry
+        memory > xtest_questioner_bad_user_choice
+        memory > xtest_questioner_no_default_bad_user_entry_code
+        memory > xsetUp
+        memory > xtest_questioner_no_default_no_user_entry_boolean
+        memory > xtest_ask_initial_with_disabled_migrations
+        memory > xtest_questioner_default_timedelta
+        memory > xtest_ask_not_null_alteration
+        memory > xtest_ask_not_null_alteration_not_provided
+        memory > xtest_questioner_default_no_user_entry_boolean
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_ask_initial_with_disabled_migrations.write
+                  [xself]
+                    memory > xquestioner2
+                    seq > @
+                      (((unsupported)).apply)
+                        xquestioner2.write (((xMigrationQuestioner)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (FALSE) (((((xquestioner).xask_initial)).apply ("migrations"))))
+                xtest_ask_not_null_alteration.write
+                  [xself]
+                    memory > xquestioner
+                    seq > @
+                      seq
+                        xquestioner.write (((xMigrationQuestioner)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xquestioner).xask_not_null_alteration)).apply ("field_name") ("model_name"))))
+                xtest_ask_not_null_alteration_not_provided.write
+                  [xself xmock]
+                    memory > xquestioner
+                    memory > xquestion
+                    seq > @
+                      (((unsupported)).apply)
+                        xquestioner.write (((unsupported)).apply ((xInteractiveMigrationQuestioner)) ((((xOutputWrapper)).apply ((((xStringIO)).apply)))))
+                        xquestion.write ((((xquestioner).xask_not_null_alteration)).apply ("field_name") ("model_name"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xquestion)) ((xNOT_PROVIDED)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xprompt)) ((((xOutputWrapper)).apply ((((xStringIO)).apply)))))
+                        (((unsupported)).apply (((xself).xquestioner)) ((((unsupported)).apply ((xInteractiveMigrationQuestioner)) (((xself).xprompt)))))
+                xtest_questioner_default_timedelta.write
+                  [xself xmock_input]
+                    memory > xvalue
+                    seq > @
+                      (((unsupported)).apply)
+                        xvalue.write (((((xself).xquestioner).x_ask_default)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1))))
+                xtest_questioner_default_no_user_entry.write
+                  [xself xmock_input]
+                    memory > xvalue
+                    seq > @
+                      (((unsupported)).apply)
+                        xvalue.write (((unsupported)).apply ((((xself).xquestioner).x_ask_default)) ("datetime.timedelta(days=1)"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1))))
+                xtest_questioner_no_default_no_user_entry.write
+                  [xself xmock_input]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))))
+                          bogusForceDataize.write (((((xself).xquestioner).x_ask_default)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Please enter some code, or 'exit' (without quotes) to exit.") ((((((xself).xprompt).xgetvalue)).apply)))
+                xtest_questioner_no_default_bad_user_entry_code.write
+                  [xself xmock_input]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xSystemExit)))))
+                          bogusForceDataize.write (((((xself).xquestioner).x_ask_default)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("Invalid input: ") ((((((xself).xprompt).xgetvalue)).apply)))
+                xtest_questioner_no_default_no_user_entry_boolean.write
+                  [xself xmock_input]
+                    memory > xvalue
+                    seq > @
+                      (((unsupported)).apply)
+                        xvalue.write (((((xself).xquestioner).x_boolean_input)).apply ("Proceed?"))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((xvalue)) (FALSE))
+                xtest_questioner_default_no_user_entry_boolean.write
+                  [xself xmock_input]
+                    memory > xvalue
+                    seq > @
+                      (((unsupported)).apply)
+                        xvalue.write (((unsupported)).apply ((((xself).xquestioner).x_boolean_input)) ("Proceed?") (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((xvalue)) (TRUE))
+                xtest_questioner_bad_user_choice.write
+                  [xself xmock_input]
+                    memory > xvalue
+                    memory > xquestion
+                    memory > xexpected_msg
+                    seq > @
+                      (((unsupported)).apply)
+                        xquestion.write "Make a choice:"
+                        xvalue.write (((unsupported)).apply ((((xself).xquestioner).x_choice_input)) ((xquestion)) ("abc"))
+                        xexpected_msg.write "{question}n 1) an 2) bn 3) cn"
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xexpected_msg)) ((((((xself).xprompt).xgetvalue)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xvalue)) (1))

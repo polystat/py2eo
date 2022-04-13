@@ -1,0 +1,53 @@
+memory > xc_void_p
+memory > xtype
+memory > xisinstance
+memory > xTypeError
+memory > xImportError
+memory > xAttributeError
+[] > ptr
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_ptr
+        memory > xdestructor
+        memory > xnull_ptr_exception_class
+        memory > xptr
+        memory > x__del__
+        memory > xptr_type2
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x_ptr.write "None: is there a None literal in the EO language?"
+                xptr_type2.write (xc_void_p)
+                xdestructor.write "None: is there a None literal in the EO language?"
+                xnull_ptr_exception_class.write (xAttributeError)
+                xptr.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xself).x_ptr).if
+                          (((unsupported)).apply (((xself).x_ptr)))
+                        (((unsupported)).apply (((((xself).xnull_ptr_exception_class)).apply (("NULL %s pointer encountered.".mod (((xself).x__class__).x__name__))))))
+                xptr.write
+                  [xself xptr]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((unsupported)).apply ((xptr)) ("None: is there a None literal in the EO language?")).or (((xisinstance)).apply ((xptr)) (((xself).xptr_type)))).not).if
+                          (((unsupported)).apply ((((xTypeError)).apply (("Incompatible pointer type: %s.".mod (((xtype)).apply ((xptr))))))))
+                        (((unsupported)).apply (((xself).x_ptr)) ((xptr)))
+                x__del__.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xself).xdestructor).and ((xself).x_ptr)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xAttributeError)) ((xImportError)) ((xTypeError)))))
+                            bogusForceDataize.write ((((xself).xdestructor)).apply (((xself).xptr)))

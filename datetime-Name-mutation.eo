@@ -1,0 +1,348 @@
+memory > xYearGte
+memory > xValueError
+memory > xDurationField
+memory > xExtractMinute
+memory > xinner_params
+memory > xinner_sql
+memory > xlhs
+memory > xField
+memory > xExtractQuarter
+memory > xtype
+memory > xsettings
+memory > xsuper
+memory > xExtractIsoYear
+memory > xTruncDate
+memory > xExtractSecond
+memory > xTimezoneMixin
+memory > xTimeField
+memory > xlhs_params
+memory > xExtract
+memory > xtimezone
+memory > xdatetime
+memory > xTruncBase
+memory > xExtractDay
+memory > xYearLt
+memory > xFunc
+memory > xExtractIsoWeekDay
+memory > xExtractYear
+memory > xextra
+memory > xIntegerField
+memory > xYearGt
+memory > xTransform
+memory > xExtractWeekDay
+memory > xparams
+memory > xDateTimeField
+memory > xTruncTime
+memory > xYearExact
+memory > xgetattr
+memory > xextra_context
+memory > xDateField
+memory > xYearLte
+memory > xisinstance
+memory > xExtractMonth
+memory > xExtractWeek
+memory > xTypeError
+memory > xExtractHour
+[] > datetime
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xconvert_value
+        memory > xtemplate
+        memory > xas_postgresql
+        memory > xlookup_name
+        memory > xget_tzname
+        memory > x__init__
+        memory > xoutput_field
+        memory > xresolve_expression
+        memory > xtzinfo
+        memory > xas_sql
+        memory > xkind
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                xtzinfo.write "None: is there a None literal in the EO language?"
+                xget_tzname.write
+                  [xself]
+                    memory > xtzname
+                    memory > xtzname2
+                    seq > @
+                      seq
+                        xtzname2.write "None: is there a None literal in the EO language?"
+                        ((xsettings).xUSE_TZ).if
+                          (((unsupported)).apply (((xself).xtzinfo)) ("None: is there a None literal in the EO language?")).if
+                            xtzname.write ((((xtimezone).xget_current_timezone_name)).apply)
+                            xtzname.write ((((xtimezone).x_get_timezone_name)).apply (((xself).xtzinfo)))
+                        (((unsupported)).apply ((xtzname)))
+            (((unsupported)).apply ((xTimezoneMixin)) ((xTransform)))
+              seq
+                xlookup_name.write "None: is there a None literal in the EO language?"
+                xoutput_field.write (((xIntegerField)).apply)
+                x__init__.write
+                  [xself xexpression xlookup_name xtzinfo]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xlookup_name)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (((xself).xlookup_name)) ((xlookup_name)))
+                        (((unsupported)).apply (((xself).xlookup_name)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((xValueError)).apply ("lookup_name must be provided"))))
+                        (((unsupported)).apply (((xself).xtzinfo)) ((xtzinfo)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)) ((((unsupported)).apply ((xextra)))))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xsql
+                    memory > xlhs_output_field
+                    memory > xtzname
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) (((((xcompiler).xcompile)).apply (((xself).xlhs)))))
+                        xlhs_output_field.write (((xself).xlhs).xoutput_field)
+                        (((xisinstance)).apply ((xlhs_output_field)) ((xDateTimeField))).if
+                          seq
+                            xtzname.write ((((xself).xget_tzname)).apply)
+                            xsql.write (((((xconnection).xops).xdatetime_extract_sql)).apply (((xself).xlookup_name)) ((xsql)) ((xtzname)))
+                          (((unsupported)).apply (((xself).xtzinfo)) ("None: is there a None literal in the EO language?")).if
+                            (((unsupported)).apply ((((xValueError)).apply ("tzinfo can only be used with DateTimeField."))))
+                            (((xisinstance)).apply ((xlhs_output_field)) ((xDateField))).if
+                              xsql.write (((((xconnection).xops).xdate_extract_sql)).apply (((xself).xlookup_name)) ((xsql)))
+                              (((xisinstance)).apply ((xlhs_output_field)) ((xTimeField))).if
+                                xsql.write (((((xconnection).xops).xtime_extract_sql)).apply (((xself).xlookup_name)) ((xsql)))
+                                (((xisinstance)).apply ((xlhs_output_field)) ((xDurationField))).if
+                                  seq
+                                    ((((xconnection).xfeatures).xhas_native_duration_field).not).if
+                                      (((unsupported)).apply ((((xValueError)).apply ("Extract requires native DurationField database support."))))
+                                    xsql.write (((((xconnection).xops).xtime_extract_sql)).apply (((xself).xlookup_name)) ((xsql)))
+                                  (((unsupported)).apply (FALSE) ("Tried to Extract from an invalid type."))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))))
+                xresolve_expression.write
+                  [xself xquery xallow_joins xreuse xsummarize xfor_save]
+                    memory > xfield
+                    memory > xcopy
+                    seq > @
+                      (((unsupported)).apply)
+                        xcopy.write ((((((xsuper)).apply).xresolve_expression)).apply ((xquery)) ((xallow_joins)) ((xreuse)) ((xsummarize)) ((xfor_save)))
+                        xfield.write (((xgetattr)).apply (((xcopy).xlhs)) ("output_field") ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((xfield)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xcopy)))
+                        ((((xisinstance)).apply ((xfield)) ((((unsupported)).apply ((xDateField)) ((xDateTimeField)) ((xTimeField)) ((xDurationField))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Extract input expression must be DateField, DateTimeField, TimeField, or DurationField."))))
+                        (((((xtype)).apply ((xfield))).eq (xDateField)).and (((unsupported)).apply (((xcopy).xlookup_name)) ((((unsupported)).apply ("hour") ("minute") ("second"))))).if
+                          (((unsupported)).apply ((((xValueError)).apply (("Cannot extract time component '%s' from DateField '%s'.".mod (((unsupported)).apply (((xcopy).xlookup_name)) (((xfield).xname))))))))
+                        ((((xisinstance)).apply ((xfield)) ((xDurationField))).and (((unsupported)).apply (((xcopy).xlookup_name)) ((((unsupported)).apply ("year") ("iso_year") ("month") ("week") ("week_day") ("iso_week_day") ("quarter"))))).if
+                          (((unsupported)).apply ((((xValueError)).apply (("Cannot extract component '%s' from DurationField '%s'.".mod (((unsupported)).apply (((xcopy).xlookup_name)) (((xfield).xname))))))))
+                        (((unsupported)).apply ((xcopy)))
+            (((unsupported)).apply ((xExtract)))
+              xlookup_name.write "year"
+            (((unsupported)).apply ((xExtract)))
+              seq
+                unsupported
+                xlookup_name.write "iso_year"
+            (((unsupported)).apply ((xExtract)))
+              xlookup_name.write "month"
+            (((unsupported)).apply ((xExtract)))
+              xlookup_name.write "day"
+            (((unsupported)).apply ((xExtract)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "week"
+            (((unsupported)).apply ((xExtract)))
+              seq
+                (((unsupported)).apply)
+                xlookup_name.write "week_day"
+            (((unsupported)).apply ((xExtract)))
+              seq
+                unsupported
+                xlookup_name.write "iso_week_day"
+            (((unsupported)).apply ((xExtract)))
+              xlookup_name.write "quarter"
+            (((unsupported)).apply ((xExtract)))
+              xlookup_name.write "hour"
+            (((unsupported)).apply ((xExtract)))
+              xlookup_name.write "minute"
+            (((unsupported)).apply ((xExtract)))
+              xlookup_name.write "second"
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractYear)))
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractMonth)))
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractDay)))
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractWeekDay)))
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractIsoWeekDay)))
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractWeek)))
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractIsoYear)))
+            bogusForceDataize.write ((((xDateField).xregister_lookup)).apply ((xExtractQuarter)))
+            bogusForceDataize.write ((((xTimeField).xregister_lookup)).apply ((xExtractHour)))
+            bogusForceDataize.write ((((xTimeField).xregister_lookup)).apply ((xExtractMinute)))
+            bogusForceDataize.write ((((xTimeField).xregister_lookup)).apply ((xExtractSecond)))
+            bogusForceDataize.write ((((xDateTimeField).xregister_lookup)).apply ((xExtractHour)))
+            bogusForceDataize.write ((((xDateTimeField).xregister_lookup)).apply ((xExtractMinute)))
+            bogusForceDataize.write ((((xDateTimeField).xregister_lookup)).apply ((xExtractSecond)))
+            bogusForceDataize.write ((((xExtractYear).xregister_lookup)).apply ((xYearExact)))
+            bogusForceDataize.write ((((xExtractYear).xregister_lookup)).apply ((xYearGt)))
+            bogusForceDataize.write ((((xExtractYear).xregister_lookup)).apply ((xYearGte)))
+            bogusForceDataize.write ((((xExtractYear).xregister_lookup)).apply ((xYearLt)))
+            bogusForceDataize.write ((((xExtractYear).xregister_lookup)).apply ((xYearLte)))
+            bogusForceDataize.write ((((xExtractIsoYear).xregister_lookup)).apply ((xYearExact)))
+            bogusForceDataize.write ((((xExtractIsoYear).xregister_lookup)).apply ((xYearGt)))
+            bogusForceDataize.write ((((xExtractIsoYear).xregister_lookup)).apply ((xYearGte)))
+            bogusForceDataize.write ((((xExtractIsoYear).xregister_lookup)).apply ((xYearLt)))
+            bogusForceDataize.write ((((xExtractIsoYear).xregister_lookup)).apply ((xYearLte)))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xtemplate.write "CURRENT_TIMESTAMP"
+                xoutput_field.write (((xDateTimeField)).apply)
+                xas_postgresql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xas_sql)) ((xcompiler)) ((xconnection)) ("STATEMENT_TIMESTAMP()") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xTimezoneMixin)) ((xTransform)))
+              seq
+                xkind.write "None: is there a None literal in the EO language?"
+                xtzinfo.write "None: is there a None literal in the EO language?"
+                x__init__.write
+                  [xself xexpression xoutput_field xtzinfo xis_dst]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xtzinfo)) ((xtzinfo)))
+                        (((unsupported)).apply (((xself).xis_dst)) ((xis_dst)))
+                        (((unsupported)).apply (((((xsuper)).apply).x__init__)) ((xexpression)) ((xoutput_field)) ((((unsupported)).apply ((xextra)))))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xsql
+                    memory > xtzname
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xinner_sql)) ((xinner_params)))) (((((xcompiler).xcompile)).apply (((xself).xlhs)))))
+                        xtzname.write "None: is there a None literal in the EO language?"
+                        (((xisinstance)).apply ((((xself).xlhs).xoutput_field)) ((xDateTimeField))).if
+                          xtzname.write ((((xself).xget_tzname)).apply)
+                          (((unsupported)).apply (((xself).xtzinfo)) ("None: is there a None literal in the EO language?")).if
+                            (((unsupported)).apply ((((xValueError)).apply ("tzinfo can only be used with DateTimeField."))))
+                        (((xisinstance)).apply (((xself).xoutput_field)) ((xDateTimeField))).if
+                          xsql.write (((((xconnection).xops).xdatetime_trunc_sql)).apply (((xself).xkind)) ((xinner_sql)) ((xtzname)))
+                          (((xisinstance)).apply (((xself).xoutput_field)) ((xDateField))).if
+                            xsql.write (((((xconnection).xops).xdate_trunc_sql)).apply (((xself).xkind)) ((xinner_sql)) ((xtzname)))
+                            (((xisinstance)).apply (((xself).xoutput_field)) ((xTimeField))).if
+                              xsql.write (((((xconnection).xops).xtime_trunc_sql)).apply (((xself).xkind)) ((xinner_sql)) ((xtzname)))
+                              (((unsupported)).apply ((((xValueError)).apply ("Trunc only valid on DateField, TimeField, or DateTimeField."))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xinner_params)))))
+                xresolve_expression.write
+                  [xself xquery xallow_joins xreuse xsummarize xfor_save]
+                    memory > xclass_output_field
+                    memory > xoutput_field
+                    memory > xhas_explicit_output_field
+                    memory > xcopy
+                    memory > xfield
+                    seq > @
+                      (((unsupported)).apply)
+                        xcopy.write ((((((xsuper)).apply).xresolve_expression)).apply ((xquery)) ((xallow_joins)) ((xreuse)) ((xsummarize)) ((xfor_save)))
+                        xfield.write (((xcopy).xlhs).xoutput_field)
+                        ((((xisinstance)).apply ((xfield)) ((((unsupported)).apply ((xDateField)) ((xTimeField))))).not).if
+                          (((unsupported)).apply ((((xTypeError)).apply (("%r isn't a DateField, TimeField, or DateTimeField.".mod ((xfield).xname))))))
+                        ((((xisinstance)).apply (((xcopy).xoutput_field)) ((((unsupported)).apply ((xDateField)) ((xDateTimeField)) ((xTimeField))))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("output_field must be either DateField, TimeField, or DateTimeField"))))
+                        xclass_output_field.write ((((xisinstance)).apply ((((xself).x__class__).xoutput_field)) ((xField))).if (((xself).x__class__).xoutput_field) "None: is there a None literal in the EO language?")
+                        xoutput_field.write ((xclass_output_field).or ((xcopy).xoutput_field))
+                        xhas_explicit_output_field.write ((xclass_output_field).or (((unsupported)).apply (((xfield).x__class__)) ((((xcopy).xoutput_field).x__class__))))
+                        (((((xtype)).apply ((xfield))).eq (xDateField)).and ((((xisinstance)).apply ((xoutput_field)) ((xDateTimeField))).or (((unsupported)).apply (((xcopy).xkind)) ((((unsupported)).apply ("hour") ("minute") ("second") ("time")))))).if
+                          (((unsupported)).apply ((((xValueError)).apply (("Cannot truncate DateField '%s' to %s.".mod (((unsupported)).apply (((xfield).xname)) (((xhas_explicit_output_field).if (((xoutput_field).x__class__).x__name__) "DateTimeField"))))))))
+                          ((((xisinstance)).apply ((xfield)) ((xTimeField))).and ((((xisinstance)).apply ((xoutput_field)) ((xDateTimeField))).or (((unsupported)).apply (((xcopy).xkind)) ((((unsupported)).apply ("year") ("quarter") ("month") ("week") ("day") ("date")))))).if
+                            (((unsupported)).apply ((((xValueError)).apply (("Cannot truncate TimeField '%s' to %s.".mod (((unsupported)).apply (((xfield).xname)) (((xhas_explicit_output_field).if (((xoutput_field).x__class__).x__name__) "DateTimeField"))))))))
+                        (((unsupported)).apply ((xcopy)))
+                xconvert_value.write
+                  [xself xvalue xexpression xconnection]
+                    seq > @
+                      seq
+                        (((xisinstance)).apply (((xself).xoutput_field)) ((xDateTimeField))).if
+                          (((xsettings).xUSE_TZ).not).if
+                            (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                              seq
+                                xvalue.write (((unsupported)).apply (((xvalue).xreplace)) ("None: is there a None literal in the EO language?"))
+                                xvalue.write (((unsupported)).apply (((xtimezone).xmake_aware)) ((xvalue)) (((xself).xtzinfo)) (((xself).xis_dst)))
+                              ((((xconnection).xfeatures).xhas_zoneinfo_database).not).if
+                                (((unsupported)).apply ((((xValueError)).apply ("Database returned an invalid datetime value. Are time zone definitions for your database installed?"))))
+                          (((xisinstance)).apply ((xvalue)) ((xdatetime))).if
+                            (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                              (((xisinstance)).apply (((xself).xoutput_field)) ((xDateField))).if
+                                xvalue.write ((((xvalue).xdate)).apply)
+                                (((xisinstance)).apply (((xself).xoutput_field)) ((xTimeField))).if
+                                  xvalue.write ((((xvalue).xtime)).apply)
+                        (((unsupported)).apply ((xvalue)))
+            (((unsupported)).apply ((xTruncBase)))
+              x__init__.write
+                [xself xexpression xkind xoutput_field xtzinfo xis_dst]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply (((xself).xkind)) ((xkind)))
+                      (((unsupported)).apply (((((xsuper)).apply).x__init__)) ((xexpression)) ((xoutput_field)) ((xtzinfo)) ((xis_dst)) ((((unsupported)).apply ((xextra)))))
+            (((unsupported)).apply ((xTruncBase)))
+              xkind.write "year"
+            (((unsupported)).apply ((xTruncBase)))
+              xkind.write "quarter"
+            (((unsupported)).apply ((xTruncBase)))
+              xkind.write "month"
+            (((unsupported)).apply ((xTruncBase)))
+              seq
+                unsupported
+                xkind.write "week"
+            (((unsupported)).apply ((xTruncBase)))
+              xkind.write "day"
+            (((unsupported)).apply ((xTruncBase)))
+              seq
+                xkind.write "date"
+                xlookup_name.write "date"
+                xoutput_field.write (((xDateField)).apply)
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xsql
+                    memory > xtzname
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xlhs)) ((xlhs_params)))) (((((xcompiler).xcompile)).apply (((xself).xlhs)))))
+                        xtzname.write ((((xself).xget_tzname)).apply)
+                        xsql.write (((((xconnection).xops).xdatetime_cast_date_sql)).apply ((xlhs)) ((xtzname)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xlhs_params)))))
+            (((unsupported)).apply ((xTruncBase)))
+              seq
+                xkind.write "time"
+                xlookup_name.write "time"
+                xoutput_field.write (((xTimeField)).apply)
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xsql
+                    memory > xtzname
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xlhs)) ((xlhs_params)))) (((((xcompiler).xcompile)).apply (((xself).xlhs)))))
+                        xtzname.write ((((xself).xget_tzname)).apply)
+                        xsql.write (((((xconnection).xops).xdatetime_cast_time_sql)).apply ((xlhs)) ((xtzname)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xlhs_params)))))
+            (((unsupported)).apply ((xTruncBase)))
+              xkind.write "hour"
+            (((unsupported)).apply ((xTruncBase)))
+              xkind.write "minute"
+            (((unsupported)).apply ((xTruncBase)))
+              xkind.write "second"
+            bogusForceDataize.write ((((xDateTimeField).xregister_lookup)).apply ((xTruncDate)))
+            bogusForceDataize.write ((((xDateTimeField).xregister_lookup)).apply ((xTruncTime)))

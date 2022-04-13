@@ -1,0 +1,74 @@
+memory > xstr
+memory > xhasattr
+memory > xsuper
+memory > xMessageEncoder
+memory > xargs
+memory > xjson
+memory > xisinstance
+memory > xBaseStorage
+memory > xMessageDecoder
+memory > xImproperlyConfigured
+memory > xkwargs
+[] > session
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_get
+        memory > xserialize_messages
+        memory > x_store
+        memory > x__init__
+        memory > xsession_key
+        memory > xdeserialize_messages
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseStorage)))
+              seq
+                (((unsupported)).apply)
+                xsession_key.write "_messages"
+                x__init__.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xhasattr)).apply ((xrequest)) ("session")).not).if
+                          (((unsupported)).apply ((((xImproperlyConfigured)).apply ("The session-based temporary message storage requires session middleware to be installed, and come before the message middleware in the MIDDLEWARE list."))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                x_get.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xself).xdeserialize_messages)).apply (((((((xself).xrequest).xsession).xget)).apply (((xself).xsession_key)))))) (TRUE))))
+                x_store.write
+                  [xself xmessages xresponse]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (xmessages).if
+                          (((unsupported)).apply ((((unsupported)).apply ((((xself).xrequest).xsession)) (((xself).xsession_key)))) (((((xself).xserialize_messages)).apply ((xmessages)))))
+                          bogusForceDataize.write ((((((xself).xrequest).xsession).xpop)).apply (((xself).xsession_key)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((((unsupported)).apply)))
+                xserialize_messages.write
+                  [xself xmessages]
+                    memory > xencoder
+                    seq > @
+                      seq
+                        xencoder.write (((xMessageEncoder)).apply)
+                        (((unsupported)).apply (((((xencoder).xencode)).apply ((xmessages)))))
+                xdeserialize_messages.write
+                  [xself xdata]
+                    seq > @
+                      seq
+                        ((xdata).and (((xisinstance)).apply ((xdata)) ((xstr)))).if
+                          (((unsupported)).apply ((((unsupported)).apply (((xjson).xloads)) ((xdata)) ((xMessageDecoder)))))
+                        (((unsupported)).apply ((xdata)))

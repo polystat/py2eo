@@ -1,0 +1,259 @@
+memory > xDEFAULT_DB_ALIAS
+memory > xAttributeError
+memory > xRuntimeError
+memory > xAtomic
+memory > xError
+memory > xcallable
+memory > xDatabaseError
+memory > xContextDecorator
+memory > xProgrammingError
+memory > xException
+memory > xconnections
+memory > xview
+[] > transaction
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xclean_savepoints
+        memory > xmark_for_rollback_on_error
+        memory > xsavepoint
+        memory > xatomic
+        memory > xsavepoint_rollback
+        memory > xsavepoint_commit
+        memory > x__exit__
+        memory > xon_commit
+        memory > xset_autocommit
+        memory > xcommit
+        memory > xnon_atomic_requests
+        memory > xset_rollback
+        memory > x__enter__
+        memory > xget_autocommit
+        memory > xget_rollback
+        memory > x_non_atomic_requests
+        memory > x__init__
+        memory > xget_connection
+        memory > xrollback
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xProgrammingError)))
+              seq
+                unsupported
+            xget_connection.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xusing)) ("None: is there a None literal in the EO language?")).if
+                      xusing.write (xDEFAULT_DB_ALIAS)
+                    (((unsupported)).apply ((((unsupported)).apply ((xconnections)) ((xusing)))))
+            xget_autocommit.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((((xget_connection)).apply ((xusing))).xget_autocommit)))
+            xset_autocommit.write
+              [xautocommit xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((((((xget_connection)).apply ((xusing))).xset_autocommit)).apply ((xautocommit)))))
+            xcommit.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    unsupported
+            xrollback.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    unsupported
+            xsavepoint.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((((xget_connection)).apply ((xusing))).xsavepoint)))
+            xsavepoint_rollback.write
+              [xsid xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    bogusForceDataize.write ((((((xget_connection)).apply ((xusing))).xsavepoint_rollback)).apply ((xsid)))
+            xsavepoint_commit.write
+              [xsid xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    bogusForceDataize.write ((((((xget_connection)).apply ((xusing))).xsavepoint_commit)).apply ((xsid)))
+            xclean_savepoints.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    unsupported
+            xget_rollback.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply (((((xget_connection)).apply ((xusing))).xget_rollback)))
+            xset_rollback.write
+              [xrollback xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((((((xget_connection)).apply ((xusing))).xset_rollback)).apply ((xrollback)))))
+            xmark_for_rollback_on_error.write
+              [xusing]
+                memory > xconnection
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xException)))
+                      (((unsupported)).apply)
+                      seq
+                        xconnection.write (((xget_connection)).apply ((xusing)))
+                        ((xconnection).xin_atomic_block).if
+                          (((unsupported)).apply (((xconnection).xneeds_rollback)) (TRUE))
+                        (((unsupported)).apply)
+            xon_commit.write
+              [xfunc xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    bogusForceDataize.write ((((((xget_connection)).apply ((xusing))).xon_commit)).apply ((xfunc)))
+            (((unsupported)).apply ((xContextDecorator)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xusing xsavepoint xdurable]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xusing)) ((xusing)))
+                        (((unsupported)).apply (((xself).xsavepoint)) ((xsavepoint)))
+                        (((unsupported)).apply (((xself).xdurable)) ((xdurable)))
+                        (((unsupported)).apply (((xself).x_from_testcase)) (FALSE))
+                x__enter__.write
+                  [xself]
+                    memory > xsid
+                    memory > xconnection
+                    seq > @
+                      seq
+                        xconnection.write (((xget_connection)).apply (((xself).xusing)))
+                        ((((xself).xdurable).and ((xconnection).xatomic_blocks)).and (((((unsupported)).apply (((xconnection).xatomic_blocks)) ((1.neg))).x_from_testcase).not)).if
+                          (((unsupported)).apply ((((xRuntimeError)).apply ("A durable atomic block cannot be nested within another atomic block."))))
+                        (((xconnection).xin_atomic_block).not).if
+                          seq
+                            (((unsupported)).apply (((xconnection).xcommit_on_exit)) (TRUE))
+                            (((unsupported)).apply (((xconnection).xneeds_rollback)) (FALSE))
+                            (((xconnection).xget_autocommit).not).if
+                              seq
+                                (((unsupported)).apply (((xconnection).xin_atomic_block)) (TRUE))
+                                (((unsupported)).apply (((xconnection).xcommit_on_exit)) (FALSE))
+                        ((xconnection).xin_atomic_block).if
+                          (((xself).xsavepoint).and (((xconnection).xneeds_rollback).not)).if
+                            seq
+                              xsid.write ((xconnection).xsavepoint)
+                              bogusForceDataize.write (((((xconnection).xsavepoint_ids).xappend)).apply ((xsid)))
+                            bogusForceDataize.write (((((xconnection).xsavepoint_ids).xappend)).apply ("None: is there a None literal in the EO language?"))
+                          seq
+                            (((unsupported)).apply (((xconnection).xset_autocommit)) (FALSE) (TRUE))
+                            (((unsupported)).apply (((xconnection).xin_atomic_block)) (TRUE))
+                        ((xconnection).xin_atomic_block).if
+                          bogusForceDataize.write (((((xconnection).xatomic_blocks).xappend)).apply ((xself)))
+                x__exit__.write
+                  [xself xexc_type xexc_value xtraceback]
+                    memory > xsid
+                    memory > xconnection
+                    seq > @
+                      seq
+                        xconnection.write (((xget_connection)).apply (((xself).xusing)))
+                        ((xconnection).xin_atomic_block).if
+                          unsupported
+                        ((xconnection).xsavepoint_ids).if
+                          xsid.write (((xconnection).xsavepoint_ids).xpop)
+                          (((unsupported)).apply (((xconnection).xin_atomic_block)) (FALSE))
+                        (((unsupported)).apply)
+                          ((xconnection).xclosed_in_transaction).if
+                            ((((unsupported)).apply ((xexc_type)) ("None: is there a None literal in the EO language?")).and (((xconnection).xneeds_rollback).not)).if
+                              ((xconnection).xin_atomic_block).if
+                                (((unsupported)).apply ((xsid)) ("None: is there a None literal in the EO language?")).if
+                                  (((unsupported)).apply ((xDatabaseError)))
+                                    bogusForceDataize.write ((((xconnection).xsavepoint_commit)).apply ((xsid)))
+                                    seq
+                                      (((unsupported)).apply ((xError)))
+                                        seq
+                                          bogusForceDataize.write ((((xconnection).xsavepoint_rollback)).apply ((xsid)))
+                                          bogusForceDataize.write ((((xconnection).xsavepoint_commit)).apply ((xsid)))
+                                        (((unsupported)).apply (((xconnection).xneeds_rollback)) (TRUE))
+                                      (((unsupported)).apply)
+                                (((unsupported)).apply ((xDatabaseError)))
+                                  unsupported
+                                  seq
+                                    (((unsupported)).apply ((xError)))
+                                      unsupported
+                                      unsupported
+                                    (((unsupported)).apply)
+                              seq
+                                (((unsupported)).apply (((xconnection).xneeds_rollback)) (FALSE))
+                                ((xconnection).xin_atomic_block).if
+                                  (((unsupported)).apply ((xsid)) ("None: is there a None literal in the EO language?")).if
+                                    (((unsupported)).apply (((xconnection).xneeds_rollback)) (TRUE))
+                                    (((unsupported)).apply ((xError)))
+                                      seq
+                                        bogusForceDataize.write ((((xconnection).xsavepoint_rollback)).apply ((xsid)))
+                                        bogusForceDataize.write ((((xconnection).xsavepoint_commit)).apply ((xsid)))
+                                      (((unsupported)).apply (((xconnection).xneeds_rollback)) (TRUE))
+                                  (((unsupported)).apply ((xError)))
+                                    unsupported
+                                    unsupported
+                          (((xconnection).xin_atomic_block).not).if
+                            ((xconnection).xclosed_in_transaction).if
+                              (((unsupported)).apply (((xconnection).xconnection)) ("None: is there a None literal in the EO language?"))
+                              bogusForceDataize.write ((((xconnection).xset_autocommit)).apply (TRUE))
+                            ((((xconnection).xsavepoint_ids).not).and (((xconnection).xcommit_on_exit).not)).if
+                              ((xconnection).xclosed_in_transaction).if
+                                (((unsupported)).apply (((xconnection).xconnection)) ("None: is there a None literal in the EO language?"))
+                                (((unsupported)).apply (((xconnection).xin_atomic_block)) (FALSE))
+            xatomic.write
+              [xusing xsavepoint xdurable]
+                seq > @
+                  (((unsupported)).apply)
+                    (((xcallable)).apply ((xusing))).if
+                      (((unsupported)).apply ((((((xAtomic)).apply ((xDEFAULT_DB_ALIAS)) ((xsavepoint)) ((xdurable)))).apply ((xusing)))))
+                      (((unsupported)).apply ((((xAtomic)).apply ((xusing)) ((xsavepoint)) ((xdurable)))))
+            x_non_atomic_requests.write
+              [xview xusing]
+                seq > @
+                  seq
+                    (((unsupported)).apply ((xAttributeError)))
+                      bogusForceDataize.write (((((xview).x_non_atomic_requests).xadd)).apply ((xusing)))
+                      (((unsupported)).apply (((xview).x_non_atomic_requests)) ((((unsupported)).apply ((xusing)))))
+                    (((unsupported)).apply ((xview)))
+            xnon_atomic_requests.write
+              [xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((xcallable)).apply ((xusing))).if
+                      (((unsupported)).apply ((((x_non_atomic_requests)).apply ((xusing)) ((xDEFAULT_DB_ALIAS)))))
+                      seq
+                        (((unsupported)).apply ((xusing)) ("None: is there a None literal in the EO language?")).if
+                          xusing.write (xDEFAULT_DB_ALIAS)
+                        (((unsupported)).apply ((((unsupported)).apply ((((x_non_atomic_requests)).apply ((xview)) ((xusing)))))))

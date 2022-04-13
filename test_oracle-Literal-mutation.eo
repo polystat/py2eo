@@ -1,0 +1,56 @@
+memory > xskipUnless
+memory > xDatabaseClient
+memory > xconnection
+memory > xmock
+memory > xSimpleTestCase
+[] > test_oracle
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_parameters
+        memory > xtest_without_rlwrap
+        memory > xtest_with_rlwrap
+        memory > xsettings_to_cmd_args_env
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((xskipUnless)).apply ((((xconnection).xvendor).eq "oracle")) ("Requires cx_Oracle to be installed"))))
+              seq
+                xsettings_to_cmd_args_env.write
+                  [xself xsettings_dict xparameters xrlwrap]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xparameters)) ("None: is there a None literal in the EO language?")).if
+                          xparameters.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("shutil.which") (((xrlwrap).if "/usr/bin/rlwrap" "None: is there a None literal in the EO language?")))))
+                          (((unsupported)).apply (((((xDatabaseClient).xsettings_to_cmd_args_env)).apply ((xsettings_dict)) ((xparameters)))))
+                xtest_without_rlwrap.write
+                  [xself]
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("sqlplus") ("-L") ((((((xconnection).xclient).xconnect_string)).apply (((xconnection).xsettings_dict)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xself).xsettings_to_cmd_args_env)) (((xconnection).xsettings_dict)) (FALSE))) ((((unsupported)).apply ((xexpected_args)) ("None: is there a None literal in the EO language?"))))
+                xtest_with_rlwrap.write
+                  [xself]
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("/usr/bin/rlwrap") ("sqlplus") ("-L") ((((((xconnection).xclient).xconnect_string)).apply (((xconnection).xsettings_dict)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xself).xsettings_to_cmd_args_env)) (((xconnection).xsettings_dict)) (TRUE))) ((((unsupported)).apply ((xexpected_args)) ("None: is there a None literal in the EO language?"))))
+                xtest_parameters.write
+                  [xself]
+                    memory > xexpected_args
+                    seq > @
+                      seq
+                        xexpected_args.write (((unsupported)).apply ("sqlplus") ("-L") ((((((xconnection).xclient).xconnect_string)).apply (((xconnection).xsettings_dict)))) ("-HELP"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xself).xsettings_to_cmd_args_env)) (((xconnection).xsettings_dict)) ((((unsupported)).apply ("-HELP"))))) ((((unsupported)).apply ((xexpected_args)) ("None: is there a None literal in the EO language?"))))

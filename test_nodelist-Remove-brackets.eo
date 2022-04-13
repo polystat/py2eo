@@ -1,0 +1,112 @@
+memory > xContext
+memory > xRuntimeError
+memory > xVariableNode
+memory > xrepr
+memory > xe
+memory > xsource
+memory > xTextNode
+memory > xTypeError
+memory > xrange
+memory > xEngine
+memory > xexpected_error_source_index
+memory > xsuper
+memory > xtemptext
+memory > xlen
+memory > xSimpleTestCase
+memory > xreprtext
+[] > test_nodelist
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_for
+        memory > xtest_if
+        memory > xsetUpClass
+        memory > xtest_textnode_repr
+        memory > xtest_correct_exception_index
+        memory > xtest_ifchanged
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUpClass.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xengine)) ((xEngine)))
+                        unsupported
+                xtest_for.write
+                  [xself]
+                    memory > xvars
+                    memory > xtemplate
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xfrom_string)).apply ("{% for i in 1 %}{{ a }}{% endfor %}"))
+                        xvars.write (((((xtemplate).xnodelist).xget_nodes_by_type)).apply ((xVariableNode)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xvars)))) (1))
+                xtest_if.write
+                  [xself]
+                    memory > xvars
+                    memory > xtemplate
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xfrom_string)).apply ("{% if x %}{{ a }}{% endif %}"))
+                        xvars.write (((((xtemplate).xnodelist).xget_nodes_by_type)).apply ((xVariableNode)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xvars)))) (1))
+                xtest_ifchanged.write
+                  [xself]
+                    memory > xvars
+                    memory > xtemplate
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xfrom_string)).apply ("{% ifchanged x %}{{ a }}{% endifchanged %}"))
+                        xvars.write (((((xtemplate).xnodelist).xget_nodes_by_type)).apply ((xVariableNode)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xvars)))) (1))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_textnode_repr.write
+                [xself]
+                  memory > xtemplate
+                  memory > xengine
+                  memory > xtexts
+                  seq > @
+                    seq
+                      xengine.write (xEngine)
+                      (((unsupported)).apply ((((unsupported)).apply ((xtemptext)) ((xreprtext)))) ((((unsupported)).apply ((((unsupported)).apply ("Hello, world!") ("<TextNode: 'Hello, world!'>"))) ((((unsupported)).apply ("Onentwo.") ((((unsupported)).apply)))))))
+                        seq
+                          xtemplate.write ((((xengine).xfrom_string)).apply ((xtemptext)))
+                          xtexts.write (((((xtemplate).xnodelist).xget_nodes_by_type)).apply ((xTextNode)))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((((unsupported)).apply ((xtexts)) (0))))) ((xreprtext)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_correct_exception_index.write
+                  [xself]
+                    memory > xengine
+                    memory > xdebug
+                    memory > xcontext
+                    memory > xtemplate
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("{% load bad_tag %}{% for i in range %}{% badsimpletag %}{% endfor %}") ((((unsupported)).apply (38) (56))))) ((((unsupported)).apply ("{% load bad_tag %}{% for i in range %}{% for j in range %}{% badsimpletag %}{% endfor %}{% endfor %}") ((((unsupported)).apply (58) (76))))) ((((unsupported)).apply ("{% load bad_tag %}{% for i in range %}{% badsimpletag %}{% for j in range %}Hello{% endfor %}{% endfor %}") ((((unsupported)).apply (38) (56))))) ((((unsupported)).apply ("{% load bad_tag %}{% for i in range %}{% for j in five %}{% badsimpletag %}{% endfor %}{% endfor %}") ((((unsupported)).apply (38) (57))))) ((((unsupported)).apply ("{% load bad_tag %}{% for j in five %}{% badsimpletag %}{% endfor %}") ((((unsupported)).apply (18) (37))))))
+                        xcontext.write (((xContext)).apply ((((unsupported)).apply ("range") ((((xrange)).apply (5))) ("five") (5))))
+                        xengine.write (((unsupported)).apply ((xEngine)) (TRUE) ((((unsupported)).apply ("bad_tag") ("template_tests.templatetags.bad_tag"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsource)) ((xexpected_error_source_index)))) ((xtests)))
+                          seq
+                            xtemplate.write ((((xengine).xfrom_string)).apply ((xsource)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xRuntimeError)) ((xTypeError)))))
+                              bogusForceDataize.write ((((xtemplate).xrender)).apply ((xcontext)))
+                              seq
+                                xdebug.write ((xe).xtemplate_debug)
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xdebug)) ("start"))) ((((unsupported)).apply ((xdebug)) ("end"))))) ((xexpected_error_source_index)))

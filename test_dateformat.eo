@@ -1,0 +1,344 @@
+memory > xtimezone
+memory > xtranslation
+memory > xspecifier
+memory > xg_expected
+memory > xt
+memory > xrange
+memory > xget_default_timezone
+memory > xdays
+memory > xint
+memory > xh_expected
+memory > xexpected_date
+memory > xSimpleTestCase
+memory > xTZ_SUPPORT
+memory > xget_fixed_timezone
+memory > xdatetime
+memory > xexpected
+memory > xdate
+memory > xmake_aware
+memory > xNoNameTZ
+memory > xtime
+memory > xoverride_settings
+memory > xhour
+memory > xdateformat
+memory > xday
+memory > xformat
+memory > xn
+memory > xtzinfo
+memory > xTypeError
+memory > xyear
+[] > test_dateformat
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_naive_datetime
+        memory > xtest_e_format_with_named_time_zone
+        memory > xtest_date_formats
+        memory > xtest_dateformat
+        memory > xtest_Y_format_year_before_1000
+        memory > xtest_datetime_with_local_tzinfo
+        memory > xsetUp
+        memory > xtest_epoch
+        memory > xtest_invalid_time_format_specifiers
+        memory > xtest_day_of_year_leap
+        memory > xtest_r_format_with_non_en_locale
+        memory > xtest_futuredates
+        memory > xtest_naive_ambiguous_datetime
+        memory > xtest_S_format
+        memory > xtest_e_format_with_time_zone_with_unimplemented_tzname
+        memory > xtest_microsecond
+        memory > xtest_date
+        memory > xtest_empty_format
+        memory > xtest_time_formats
+        memory > xtest_twelve_hour_format
+        memory > xtest_am_pm
+        memory > xtest_datetime_with_tzinfo
+        memory > xtest_timezones
+        memory > xtest_P_format
+        memory > xtest_date_formats_c_format
+        memory > xtearDown
+        memory > xtest_y_format_year_before_1000
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("Europe/Copenhagen"))))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).x_orig_lang)) (((((xtranslation).xget_language)).apply)))
+                        bogusForceDataize.write ((((xtranslation).xactivate)).apply ("en-us"))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xtranslation).xactivate)).apply (((xself).x_orig_lang)))
+                xtest_date.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((xdate)).apply (2009) (5) (16))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdate).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xd)) ("U"))))))) ((xd)))
+                xtest_naive_datetime.write
+                  [xself]
+                    memory > xdt
+                    seq > @
+                      seq
+                        xdt.write (((xdatetime)).apply (2009) (5) (16) (5) (30) (30))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))))) ((xdt)))
+                xtest_naive_ambiguous_datetime.write
+                  [xself]
+                    memory > xdt
+                    seq > @
+                      seq
+                        xdt.write (((xdatetime)).apply (2015) (10) (25) (2) (30) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xformat)).apply ((xdt)) ("I"))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xformat)).apply ((xdt)) ("O"))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xformat)).apply ((xdt)) ("T"))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xformat)).apply ((xdt)) ("Z"))) (""))
+                xtest_datetime_with_local_tzinfo.write
+                  [xself]
+                    memory > xdt
+                    memory > xltz
+                    seq > @
+                      (((unsupported)).apply)
+                        xltz.write (((xget_default_timezone)).apply)
+                        xdt.write (((xmake_aware)).apply ((((xdatetime)).apply (2009) (5) (16) (5) (30) (30))) ((xltz)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))) ((xltz)))) ((xdt)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))))) ((((unsupported)).apply (((xdt).xreplace)) ("None: is there a None literal in the EO language?"))))
+                xtest_datetime_with_tzinfo.write
+                  [xself]
+                    memory > xdt
+                    memory > xltz
+                    memory > xtz
+                    seq > @
+                      (((unsupported)).apply)
+                        xtz.write (((xget_fixed_timezone)).apply ((510.neg)))
+                        xltz.write (((xget_default_timezone)).apply)
+                        xdt.write (((xmake_aware)).apply ((((xdatetime)).apply (2009) (5) (16) (5) (30) (30))) ((xltz)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))) ((xtz)))) ((xdt)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))) ((xltz)))) ((xdt)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))))) ((((unsupported)).apply ((((((xdt).xastimezone)).apply ((xltz))).xreplace)) ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))) ((xtz))).xtimetuple)).apply)) ((((((((xdt).xastimezone)).apply ((xtz))).xtimetuple)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((((xdatetime).xfromtimestamp)).apply ((((xint)).apply ((((xformat)).apply ((xdt)) ("U"))))) ((xltz))).xtimetuple)).apply)) ((((((((xdt).xastimezone)).apply ((xltz))).xtimetuple)).apply)))
+                xtest_epoch.write
+                  [xself]
+                    memory > xudt
+                    seq > @
+                      seq
+                        xudt.write (((unsupported)).apply ((xdatetime)) (1970) (1) (1) (((xtimezone).xutc)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xformat)).apply ((xudt)) ("U"))) ("0"))
+                xtest_empty_format.write
+                  [xself]
+                    memory > xmy_birthday
+                    seq > @
+                      seq
+                        xmy_birthday.write (((xdatetime)).apply (1979) (7) (8) (22) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmy_birthday)) (""))) (""))
+                xtest_am_pm.write
+                  [xself]
+                    memory > xmorning
+                    memory > xevening
+                    seq > @
+                      seq
+                        xmorning.write (((xtime)).apply (7) (0))
+                        xevening.write (((xtime)).apply (19) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmorning)) ("a"))) ("a.m."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xevening)) ("a"))) ("p.m."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmorning)) ("A"))) ("AM"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xevening)) ("A"))) ("PM"))
+                xtest_microsecond.write
+                  [xself]
+                    memory > xdt
+                    seq > @
+                      seq
+                        xdt.write (((unsupported)).apply ((xdatetime)) (2009) (5) (16) (123))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xdt)) ("u"))) ("000123"))
+                xtest_date_formats.write
+                  [xself]
+                    memory > xmy_birthday
+                    seq > @
+                      seq
+                        xmy_birthday.write (((xdatetime)).apply (1979) (7) (8) (22) (0))
+                        (((unsupported)).apply ((((unsupported)).apply ((xspecifier)) ((xexpected)))) ((((unsupported)).apply ((((unsupported)).apply ("b") ("jul"))) ((((unsupported)).apply ("d") ("08"))) ((((unsupported)).apply ("D") ("Sun"))) ((((unsupported)).apply ("E") ("July"))) ((((unsupported)).apply ("F") ("July"))) ((((unsupported)).apply ("j") ("8"))) ((((unsupported)).apply ("l") ("Sunday"))) ((((unsupported)).apply ("L") ("False"))) ((((unsupported)).apply ("m") ("07"))) ((((unsupported)).apply ("M") ("Jul"))) ((((unsupported)).apply ("n") ("7"))) ((((unsupported)).apply ("N") ("July"))) ((((unsupported)).apply ("o") ("1979"))) ((((unsupported)).apply ("S") ("th"))) ((((unsupported)).apply ("t") ("31"))) ((((unsupported)).apply ("w") ("0"))) ((((unsupported)).apply ("W") ("27"))) ((((unsupported)).apply ("y") ("79"))) ((((unsupported)).apply ("Y") ("1979"))) ((((unsupported)).apply ("z") ("189"))))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xspecifier)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmy_birthday)) ((xspecifier)))) ((xexpected)))
+                xtest_date_formats_c_format.write
+                  [xself]
+                    memory > xtimestamp
+                    seq > @
+                      seq
+                        xtimestamp.write (((xdatetime)).apply (2008) (5) (19) (11) (45) (23) (123456))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xtimestamp)) ("c"))) ("2008-05-19T11:45:23.123456"))
+                xtest_time_formats.write
+                  [xself]
+                    memory > xmy_birthday
+                    seq > @
+                      seq
+                        xmy_birthday.write (((xdatetime)).apply (1979) (7) (8) (22) (0))
+                        (((unsupported)).apply ((((unsupported)).apply ((xspecifier)) ((xexpected)))) ((((unsupported)).apply ((((unsupported)).apply ("a") ("p.m."))) ((((unsupported)).apply ("A") ("PM"))) ((((unsupported)).apply ("f") ("10"))) ((((unsupported)).apply ("g") ("10"))) ((((unsupported)).apply ("G") ("22"))) ((((unsupported)).apply ("h") ("10"))) ((((unsupported)).apply ("H") ("22"))) ((((unsupported)).apply ("i") ("00"))) ((((unsupported)).apply ("P") ("10 p.m."))) ((((unsupported)).apply ("s") ("00"))) ((((unsupported)).apply ("u") ("000000"))))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xspecifier)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmy_birthday)) ((xspecifier)))) ((xexpected)))
+                xtest_dateformat.write
+                  [xself]
+                    memory > xmy_birthday
+                    seq > @
+                      seq
+                        xmy_birthday.write (((xdatetime)).apply (1979) (7) (8) (22) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmy_birthday)) ("Y z CET"))) ("1979 189 CET"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmy_birthday)) ("jS of F"))) ("8th of July"))
+                xtest_futuredates.write
+                  [xself]
+                    memory > xthe_future
+                    seq > @
+                      seq
+                        xthe_future.write (((xdatetime)).apply (2100) (10) (25) (0) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xthe_future)) ("Y"))) ("2100"))
+                xtest_day_of_year_leap.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((((xdatetime)).apply (2000) (12) (31))) ("z"))) ("366"))
+                xtest_timezones.write
+                  [xself]
+                    memory > xtz
+                    memory > xsummertime
+                    memory > xwintertime
+                    memory > xaware_dt
+                    memory > xnoon
+                    memory > xmy_birthday
+                    seq > @
+                      seq
+                        xmy_birthday.write (((xdatetime)).apply (1979) (7) (8) (22) (0))
+                        xsummertime.write (((xdatetime)).apply (2005) (10) (30) (1) (0))
+                        xwintertime.write (((xdatetime)).apply (2005) (10) (30) (4) (0))
+                        xnoon.write (((xtime)).apply (12) (0) (0))
+                        xtz.write (((xget_fixed_timezone)).apply ((210.neg)))
+                        xaware_dt.write (((unsupported)).apply ((xdatetime)) (2009) (5) (16) (5) (30) (30) ((xtz)))
+                        (xTZ_SUPPORT).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xspecifier)) ((xexpected)))) ((((unsupported)).apply ((((unsupported)).apply ("e") (""))) ((((unsupported)).apply ("O") ("+0100"))) ((((unsupported)).apply ("r") ("Sun, 08 Jul 1979 22:00:00 +0100"))) ((((unsupported)).apply ("T") ("CET"))) ((((unsupported)).apply ("U") ("300315600"))) ((((unsupported)).apply ("Z") ("3600"))))))
+                              (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xspecifier)))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xmy_birthday)) ((xspecifier)))) ((xexpected)))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xaware_dt)) ("e"))) ("-0330"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xaware_dt)) ("r"))) ("Sat, 16 May 2009 05:30:30 -0330"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xsummertime)) ("I"))) ("1"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xsummertime)) ("O"))) ("+0200"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xwintertime)) ("I"))) ("0"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xwintertime)) ("O"))) ("+0100"))
+                            (((unsupported)).apply ((xspecifier)) ((((unsupported)).apply ("e") ("O") ("T") ("Z"))))
+                              (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xspecifier)))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xtime_format)).apply ((xnoon)) ((xspecifier)))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xaware_dt)) ("O"))) ("-0330"))
+                xtest_invalid_time_format_specifiers.write
+                  [xself]
+                    memory > xmy_birthday
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmy_birthday.write (((xdate)).apply (1984) (8) (7))
+                        (((unsupported)).apply ((xspecifier)) ((((unsupported)).apply ("a") ("A") ("f") ("g") ("G") ("h") ("H") ("i") ("P") ("r") ("s") ("u"))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xspecifier)))))
+                            seq
+                              xmsg.write "The format for date objects may not contain time-related format specifiers (found {specifier!r})."
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                                bogusForceDataize.write ((((xdateformat).xformat)).apply ((xmy_birthday)) ((xspecifier)))
+                xtest_e_format_with_named_time_zone.write
+                  [xself]
+                    memory > xdt
+                    seq > @
+                      (((unsupported)).apply)
+                        xdt.write (((unsupported)).apply ((xdatetime)) (1970) (1) (1) (((xtimezone).xutc)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xdt)) ("e"))) ("UTC"))
+                xtest_e_format_with_time_zone_with_unimplemented_tzname.write
+                  [xself]
+                    memory > xutcoffset
+                    memory > xdt
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xtzinfo)))
+                          seq
+                            unsupported
+                            xutcoffset.write
+                              [xself xdt]
+                                seq > @
+                                  (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        xdt.write (((unsupported)).apply ((xdatetime)) (1970) (1) (1) ((((xNoNameTZ)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xdt)) ("e"))) (""))
+                xtest_P_format.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xexpected)) ((xt)))) ((((unsupported)).apply ((((unsupported)).apply ("midnight") ((((xtime)).apply (0))))) ((((unsupported)).apply ("noon") ((((xtime)).apply (12))))) ((((unsupported)).apply ("4 a.m.") ((((xtime)).apply (4))))) ((((unsupported)).apply ("8:30 a.m.") ((((xtime)).apply (8) (30))))) ((((unsupported)).apply ("4 p.m.") ((((xtime)).apply (16))))) ((((unsupported)).apply ("8:30 p.m.") ((((xtime)).apply (20) (30))))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xt)))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xtime_format)).apply ((xt)) ("P"))) ((xexpected)))
+                xtest_r_format_with_non_en_locale.write
+                  [xself]
+                    memory > xdt
+                    seq > @
+                      seq
+                        xdt.write (((xdatetime)).apply (1979) (7) (8) (22) (0))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xdt)) ("r"))) ("Sun, 08 Jul 1979 22:00:00 +0100"))
+                xtest_S_format.write
+                  [xself]
+                    memory > xdt
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xexpected)) ((xdays)))) ((((unsupported)).apply ((((unsupported)).apply ("st") ((((unsupported)).apply (1) (21) (31))))) ((((unsupported)).apply ("nd") ((((unsupported)).apply (2) (22))))) ((((unsupported)).apply ("rd") ((((unsupported)).apply (3) (23))))) ((((unsupported)).apply ("th") ((((unsupported)).apply ((xn)) ((xn)) ((((xrange)).apply (4) (31))) ((((unsupported)).apply ((xn)) ((((unsupported)).apply (21) (22) (23))))))))))))
+                        (((unsupported)).apply ((xday)) ((xdays)))
+                          seq
+                            xdt.write (((xdate)).apply (1970) (1) ((xday)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xday)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xdt)) ("S"))) ((xexpected)))
+                xtest_y_format_year_before_1000.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply (476) ("76"))) ((((unsupported)).apply (42) ("42"))) ((((unsupported)).apply (4) ("04"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xyear)) ((xexpected_date)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xyear)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((((xdatetime)).apply ((xyear)) (9) (8) (5) (0))) ("y"))) ((xexpected_date)))
+                xtest_Y_format_year_before_1000.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((((xdatetime)).apply (1) (1) (1))) ("Y"))) ("0001"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((((xdatetime)).apply (999) (1) (1))) ("Y"))) ("0999"))
+                xtest_twelve_hour_format.write
+                  [xself]
+                    memory > xtests
+                    memory > xdt
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply (0) ("12") ("12"))) ((((unsupported)).apply (1) ("1") ("01"))) ((((unsupported)).apply (11) ("11") ("11"))) ((((unsupported)).apply (12) ("12") ("12"))) ((((unsupported)).apply (13) ("1") ("01"))) ((((unsupported)).apply (23) ("11") ("11"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xhour)) ((xg_expected)) ((xh_expected)))) ((xtests)))
+                          seq
+                            xdt.write (((xdatetime)).apply (2000) (1) (1) ((xhour)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xhour)))))
+                              seq
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xdt)) ("g"))) ((xg_expected)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdateformat).xformat)).apply ((xdt)) ("h"))) ((xh_expected)))

@@ -1,0 +1,28 @@
+memory > xError
+memory > xos
+[] > async_checks
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xE001
+        memory > xcheck_async_unsafe
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xE001.write (((unsupported)).apply ((xError)) ("You should not set the DJANGO_ALLOW_ASYNC_UNSAFE environment variable in deployment. This disables async safety protection.") ("async.E001"))
+            xcheck_async_unsafe.write
+              [xapp_configs]
+                seq > @
+                  (((unsupported)).apply)
+                    (((((xos).xenviron).xget)).apply ("DJANGO_ALLOW_ASYNC_UNSAFE")).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xE001)))))
+                    (((unsupported)).apply ((((unsupported)).apply)))

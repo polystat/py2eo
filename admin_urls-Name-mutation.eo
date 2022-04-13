@@ -1,0 +1,92 @@
+memory > xresolve
+memory > xurlunparse
+memory > xquote
+memory > xget_script_prefix
+memory > xTO_FIELD_VAR
+memory > xunquote
+memory > xdict
+memory > xparse_qsl
+memory > xlist
+memory > xurlparse
+memory > xopts
+memory > xurlencode
+memory > xtemplate
+memory > xIS_POPUP_VAR
+memory > xResolver404
+[] > admin_urls
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_preserved_filters
+        memory > xadmin_urlname
+        memory > xadmin_urlquote
+        memory > xregister
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xregister.write ((((xtemplate).xLibrary)).apply)
+            xadmin_urlname.write
+              [xvalue xarg]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply (("admin:%s_%s_%s".mod (((unsupported)).apply (((xvalue).xapp_label)) (((xvalue).xmodel_name)) ((xarg))))))
+            xadmin_urlquote.write
+              [xvalue]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((((xquote)).apply ((xvalue)))))
+            xadd_preserved_filters.write
+              [xcontext xurl xpopup xto_field]
+                memory > xparsed_url
+                memory > xmatch_url
+                memory > xpreserved_filters
+                memory > xmatch
+                memory > xparsed_qs
+                memory > xcurrent_url
+                memory > xchangelist_url
+                memory > xmerged_qs
+                memory > xopts2
+                seq > @
+                  (((unsupported)).apply)
+                    xopts2.write ((((xcontext).xget)).apply ("opts"))
+                    xpreserved_filters.write ((((xcontext).xget)).apply ("preserved_filters"))
+                    xparsed_url.write (((xlist)).apply ((((xurlparse)).apply ((xurl)))))
+                    xparsed_qs.write (((xdict)).apply ((((xparse_qsl)).apply ((((unsupported)).apply ((xparsed_url)) (4))))))
+                    xmerged_qs.write (((unsupported)).apply)
+                    ((xopts).and (xpreserved_filters)).if
+                      seq
+                        xpreserved_filters.write (((xdict)).apply ((((xparse_qsl)).apply ((xpreserved_filters)))))
+                        xmatch_url.write ("/%s".mod (((unsupported)).apply (((((((xunquote)).apply ((xurl))).xpartition)).apply ((((xget_script_prefix)).apply)))) (2)))
+                        (((unsupported)).apply ((xResolver404)))
+                          xmatch.write (((xresolve)).apply ((xmatch_url)))
+                          seq
+                            xcurrent_url.write ("%s:%s".mod (((unsupported)).apply (((xmatch).xapp_name)) (((xmatch).xurl_name))))
+                            xchangelist_url.write ("admin:%s_%s_changelist".mod (((unsupported)).apply (((xopts).xapp_label)) (((xopts).xmodel_name))))
+                            (((xchangelist_url).eq (xcurrent_url)).and (((unsupported)).apply ("_changelist_filters") ((xpreserved_filters)))).if
+                              xpreserved_filters.write (((xdict)).apply ((((xparse_qsl)).apply ((((unsupported)).apply ((xpreserved_filters)) ("_changelist_filters"))))))
+                        bogusForceDataize.write ((((xmerged_qs).xupdate)).apply ((xpreserved_filters)))
+                    (xpopup).if
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xmerged_qs)) ((xIS_POPUP_VAR)))) (1))
+                    (xto_field).if
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xmerged_qs)) ((xTO_FIELD_VAR)))) ((xto_field)))
+                    bogusForceDataize.write ((((xmerged_qs).xupdate)).apply ((xparsed_qs)))
+                    (((unsupported)).apply ((((unsupported)).apply ((xparsed_url)) (4))) ((((xurlencode)).apply ((xmerged_qs)))))
+                    (((unsupported)).apply ((((xurlunparse)).apply ((xparsed_url)))))

@@ -1,0 +1,248 @@
+memory > xdatetime
+memory > xCustomPasswordResetTokenGenerator
+memory > xemail
+memory > xtimedelta
+memory > xsettings
+memory > xsuper
+memory > xsetattr
+memory > xPasswordResetTokenGenerator
+memory > xTestCase
+memory > xCustomEmailField
+memory > xImproperlyConfigured
+memory > xmodel
+memory > xUser
+memory > xMockedPasswordResetTokenGenerator
+[] > test_tokens
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_make_token
+        memory > xtest_token_with_different_secret
+        memory > xtest_token_with_different_email
+        memory > xtest_token_with_different_secret_subclass
+        memory > xtest_check_token_secret_fallbacks
+        memory > xtest_secret_lazy_validation
+        memory > x_now
+        memory > xtest_check_token_secret_key_fallbacks
+        memory > xtest_10265
+        memory > x__init__
+        memory > xtest_check_token_secret_key_fallbacks_override
+        memory > xtest_timeout
+        memory > xtest_check_token_with_nonexistent_token_and_user
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xPasswordResetTokenGenerator)))
+              seq
+                x__init__.write
+                  [xself xnow]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).x_now_val)) ((xnow)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply)
+                x_now.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).x_now_val)))
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_make_token.write
+                  [xself]
+                    memory > xtk1
+                    memory > xuser
+                    memory > xp0
+                    seq > @
+                      seq
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xp0.write (((xPasswordResetTokenGenerator)).apply)
+                        xtk1.write ((((xp0).xmake_token)).apply ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp0).xcheck_token)).apply ((xuser)) ((xtk1)))) (TRUE))
+                xtest_10265.write
+                  [xself]
+                    memory > xtk1
+                    memory > xtk2
+                    memory > xp0
+                    memory > xuser_reload
+                    memory > xuser
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("comebackkid") ("test3@example.com") ("testpw"))
+                        xuser_reload.write (((unsupported)).apply ((((xUser).xobjects).xget)) ("comebackkid"))
+                        xp0.write (((xMockedPasswordResetTokenGenerator)).apply (((((xdatetime).xnow)).apply)))
+                        xtk1.write ((((xp0).xmake_token)).apply ((xuser)))
+                        xtk2.write ((((xp0).xmake_token)).apply ((xuser_reload)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xtk1)) ((xtk2)))
+                xtest_token_with_different_email.write
+                  [xself]
+                    memory > xtk1
+                    memory > xuser
+                    memory > xtests
+                    memory > xp0
+                    seq > @
+                      seq
+                        unsupported
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ((xCustomEmailField)) ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((xCustomEmailField)) ("test4@example.com"))) ((((unsupported)).apply ((xUser)) ("test4@example.com"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xmodel)) ((xemail)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) (((xmodel).x__qualname__)) ((xemail)))))
+                            seq
+                              xuser.write (((unsupported)).apply ((((xmodel).xobjects).xcreate_user)) ("changeemailuser") ((xemail)) ("testpw"))
+                              xp0.write (((xPasswordResetTokenGenerator)).apply)
+                              xtk1.write ((((xp0).xmake_token)).apply ((xuser)))
+                              bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp0).xcheck_token)).apply ((xuser)) ((xtk1)))) (TRUE))
+                              bogusForceDataize.write (((xsetattr)).apply ((xuser)) (((((xuser).xget_email_field_name)).apply)) ("test4new@example.com"))
+                              bogusForceDataize.write ((((xuser).xsave)).apply)
+                              bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp0).xcheck_token)).apply ((xuser)) ((xtk1)))) (FALSE))
+                xtest_timeout.write
+                  [xself]
+                    memory > xp2
+                    memory > xtk1
+                    memory > xp0
+                    memory > xp4
+                    memory > xp3
+                    memory > xp1
+                    memory > xnow
+                    memory > xuser
+                    seq > @
+                      seq
+                        unsupported
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xnow.write ((((xdatetime).xnow)).apply)
+                        xp0.write (((xMockedPasswordResetTokenGenerator)).apply ((xnow)))
+                        xtk1.write ((((xp0).xmake_token)).apply ((xuser)))
+                        xp1.write (((xMockedPasswordResetTokenGenerator)).apply (((xnow).add (((unsupported)).apply ((xtimedelta)) (((xsettings).xPASSWORD_RESET_TIMEOUT))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp1).xcheck_token)).apply ((xuser)) ((xtk1)))) (TRUE))
+                        xp2.write (((xMockedPasswordResetTokenGenerator)).apply (((xnow).add (((unsupported)).apply ((xtimedelta)) ((((xsettings).xPASSWORD_RESET_TIMEOUT).add 1))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp2).xcheck_token)).apply ((xuser)) ((xtk1)))) (FALSE))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ((60.mul 60)))))
+                          seq
+                            xp3.write (((xMockedPasswordResetTokenGenerator)).apply (((xnow).add (((unsupported)).apply ((xtimedelta)) (((xsettings).xPASSWORD_RESET_TIMEOUT))))))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp3).xcheck_token)).apply ((xuser)) ((xtk1)))) (TRUE))
+                            xp4.write (((xMockedPasswordResetTokenGenerator)).apply (((xnow).add (((unsupported)).apply ((xtimedelta)) ((((xsettings).xPASSWORD_RESET_TIMEOUT).add 1))))))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp4).xcheck_token)).apply ((xuser)) ((xtk1)))) (FALSE))
+                xtest_check_token_with_nonexistent_token_and_user.write
+                  [xself]
+                    memory > xtk1
+                    memory > xuser
+                    memory > xp0
+                    seq > @
+                      seq
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xp0.write (((xPasswordResetTokenGenerator)).apply)
+                        xtk1.write ((((xp0).xmake_token)).apply ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp0).xcheck_token)).apply ("None: is there a None literal in the EO language?") ((xtk1)))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp0).xcheck_token)).apply ((xuser)) ("None: is there a None literal in the EO language?"))) (FALSE))
+                xtest_token_with_different_secret.write
+                  [xself]
+                    memory > xtk0
+                    memory > xtk1
+                    memory > xnew_secret
+                    memory > xp0
+                    memory > xuser
+                    memory > xp1
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xnew_secret.write "abcdefghijkl"
+                        xp0.write (((xPasswordResetTokenGenerator)).apply)
+                        (((unsupported)).apply (((xp0).xsecret)) ((xnew_secret)))
+                        xtk0.write ((((xp0).xmake_token)).apply ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp0).xcheck_token)).apply ((xuser)) ((xtk0)))) (TRUE))
+                        xp1.write (((xPasswordResetTokenGenerator)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp1).xsecret)) (((xsettings).xSECRET_KEY)))
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((xp1).xsecret)) ((xnew_secret)))
+                        xtk1.write ((((xp1).xmake_token)).apply ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp0).xcheck_token)).apply ((xuser)) ((xtk1)))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp1).xcheck_token)).apply ((xuser)) ((xtk0)))) (FALSE))
+                xtest_token_with_different_secret_subclass.write
+                  [xself]
+                    memory > xsecret
+                    memory > xtk_custom
+                    memory > xcustom_password_generator
+                    memory > xtk_default
+                    memory > xdefault_password_generator
+                    memory > xuser
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xPasswordResetTokenGenerator)))
+                          xsecret.write "test-secret"
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xcustom_password_generator.write (((xCustomPasswordResetTokenGenerator)).apply)
+                        xtk_custom.write ((((xcustom_password_generator).xmake_token)).apply ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xcustom_password_generator).xcheck_token)).apply ((xuser)) ((xtk_custom)))) (TRUE))
+                        xdefault_password_generator.write (((xPasswordResetTokenGenerator)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((xcustom_password_generator).xsecret)) (((xdefault_password_generator).xsecret)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdefault_password_generator).xsecret)) (((xsettings).xSECRET_KEY)))
+                        xtk_default.write ((((xdefault_password_generator).xmake_token)).apply ((xuser)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xcustom_password_generator).xcheck_token)).apply ((xuser)) ((xtk_default)))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xdefault_password_generator).xcheck_token)).apply ((xuser)) ((xtk_custom)))) (FALSE))
+                xtest_secret_lazy_validation.write
+                  [xself]
+                    memory > xdefault_token_generator
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xdefault_token_generator.write (((xPasswordResetTokenGenerator)).apply)
+                        xmsg.write "The SECRET_KEY setting must not be empty."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          unsupported
+                xtest_check_token_secret_fallbacks.write
+                  [xself]
+                    memory > xp1
+                    memory > xuser
+                    memory > xtk
+                    memory > xp2
+                    seq > @
+                      seq
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xp1.write (((xPasswordResetTokenGenerator)).apply)
+                        (((unsupported)).apply (((xp1).xsecret)) ("secret"))
+                        xtk.write ((((xp1).xmake_token)).apply ((xuser)))
+                        xp2.write (((xPasswordResetTokenGenerator)).apply)
+                        (((unsupported)).apply (((xp2).xsecret)) ("newsecret"))
+                        (((unsupported)).apply (((xp2).xsecret_fallbacks)) ((((unsupported)).apply ("secret"))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp1).xcheck_token)).apply ((xuser)) ((xtk)))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp2).xcheck_token)).apply ((xuser)) ((xtk)))) (TRUE))
+                xtest_check_token_secret_key_fallbacks.write
+                  [xself]
+                    memory > xp1
+                    memory > xuser
+                    memory > xtk
+                    memory > xp2
+                    seq > @
+                      (((unsupported)).apply)
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xp1.write (((xPasswordResetTokenGenerator)).apply)
+                        (((unsupported)).apply (((xp1).xsecret)) ("oldsecret"))
+                        xtk.write ((((xp1).xmake_token)).apply ((xuser)))
+                        xp2.write (((xPasswordResetTokenGenerator)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp2).xcheck_token)).apply ((xuser)) ((xtk)))) (TRUE))
+                xtest_check_token_secret_key_fallbacks_override.write
+                  [xself]
+                    memory > xp1
+                    memory > xuser
+                    memory > xtk
+                    memory > xp2
+                    seq > @
+                      (((unsupported)).apply)
+                        xuser.write (((((xUser).xobjects).xcreate_user)).apply ("tokentestuser") ("test2@example.com") ("testpw"))
+                        xp1.write (((xPasswordResetTokenGenerator)).apply)
+                        (((unsupported)).apply (((xp1).xsecret)) ("oldsecret"))
+                        xtk.write ((((xp1).xmake_token)).apply ((xuser)))
+                        xp2.write (((xPasswordResetTokenGenerator)).apply)
+                        (((unsupported)).apply (((xp2).xsecret_fallbacks)) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xp2).xcheck_token)).apply ((xuser)) ((xtk)))) (FALSE))

@@ -1,0 +1,37 @@
+[] > formats
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xMONTH_DAY_FORMAT
+        memory > xTHOUSAND_SEPARATOR
+        memory > xSHORT_DATE_FORMAT
+        memory > xNUMBER_GROUPING
+        memory > xDATETIME_INPUT_FORMATS
+        memory > xDATETIME_FORMAT
+        memory > xTIME_FORMAT
+        memory > xSHORT_DATETIME_FORMAT
+        memory > xFIRST_DAY_OF_WEEK
+        memory > xDECIMAL_SEPARATOR
+        memory > xYEAR_MONTH_FORMAT
+        memory > xDATE_INPUT_FORMATS
+        memory > xDATE_FORMAT
+        seq > @
+          seq
+            xDATE_FORMAT.write "j E Y г."
+            xTIME_FORMAT.write "G:i"
+            xDATETIME_FORMAT.write "j E Y г. G:i"
+            xYEAR_MONTH_FORMAT.write "F Y г."
+            xMONTH_DAY_FORMAT.write "j F"
+            xSHORT_DATE_FORMAT.write "d.m.Y"
+            xSHORT_DATETIME_FORMAT.write "d.m.Y H:i"
+            xFIRST_DAY_OF_WEEK.write 1
+            xDATE_INPUT_FORMATS.write (((unsupported)).apply ("%d.%m.%Y") ("%d.%m.%y"))
+            xDATETIME_INPUT_FORMATS.write (((unsupported)).apply ("%d.%m.%Y %H:%M:%S") ("%d.%m.%Y %H:%M:%S.%f") ("%d.%m.%Y %H:%M") ("%d.%m.%Y") ("%d.%m.%y %H:%M:%S") ("%d.%m.%y %H:%M:%S.%f") ("%d.%m.%y %H:%M") ("%d.%m.%y"))
+            xDECIMAL_SEPARATOR.write ","
+            xTHOUSAND_SEPARATOR.write "xa0"
+            xNUMBER_GROUPING.write 3

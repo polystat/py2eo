@@ -1,0 +1,76 @@
+memory > xTestCase
+memory > xalias
+memory > xconnection
+memory > xmock
+memory > xcheck_database_backends
+memory > xsql_mode
+memory > xlen
+memory > xhasattr
+memory > xr
+memory > xconnections
+[] > test_database
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_database_checks_called
+        memory > xtest_mysql_strict_mode
+        memory > xdatabases
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xdatabases.write (((unsupported)).apply ("default") ("other"))
+                xtest_database_checks_called.write
+                  [xself xmocked_check]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((xcheck_database_backends)).apply)
+                        bogusForceDataize.write ((((xself).xassertfalse)).apply (((xmocked_check).xcalled)))
+                        (((unsupported)).apply ((xcheck_database_backends)) (((xself).xdatabases)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xmocked_check).xcalled)))
+                xtest_mysql_strict_mode.write
+                  [xself]
+                    memory > x_clean_sql_mode
+                    memory > xbad_sql_modes
+                    memory > xmocker_other
+                    memory > xgood_sql_modes
+                    memory > xresult
+                    memory > xmocker_default
+                    seq > @
+                      (((unsupported)).apply)
+                        x_clean_sql_mode.write
+                          []
+                            seq > @
+                              (((unsupported)).apply ((xalias)) (((xself).xdatabases)))
+                                (((xhasattr)).apply ((((unsupported)).apply ((xconnections)) ((xalias)))) ("sql_mode")).if
+                                  (((unsupported)).apply ((((unsupported)).apply (((((unsupported)).apply ((xconnections)) ((xalias))).xsql_mode)))))
+                        bogusForceDataize.write (((x_clean_sql_mode)).apply)
+                        xgood_sql_modes.write (((unsupported)).apply ("STRICT_TRANS_TABLES,STRICT_ALL_TABLES") ("STRICT_TRANS_TABLES") ("STRICT_ALL_TABLES"))
+                        (((unsupported)).apply ((xsql_mode)) ((xgood_sql_modes)))
+                          seq
+                            (((unsupported)).apply ((((((xmock).xpatch).xobject)).apply ((xconnection)) ("mysql_server_data") ((((unsupported)).apply ("sql_mode") ((xsql_mode)))))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcheck_database_backends)) (((xself).xdatabases)))) ((((unsupported)).apply)))
+                            bogusForceDataize.write (((x_clean_sql_mode)).apply)
+                        xbad_sql_modes.write (((unsupported)).apply ("") ("WHATEVER"))
+                        (((unsupported)).apply ((xsql_mode)) ((xbad_sql_modes)))
+                          seq
+                            xmocker_default.write (((((xmock).xpatch).xobject)).apply ((xconnection)) ("mysql_server_data") ((((unsupported)).apply ("sql_mode") ((xsql_mode)))))
+                            xmocker_other.write (((((xmock).xpatch).xobject)).apply ((((unsupported)).apply ((xconnections)) ("other"))) ("mysql_server_data") ((((unsupported)).apply ("sql_mode") ((xsql_mode)))))
+                            (((unsupported)).apply ((xmocker_default)) ((xmocker_other)))
+                              seq
+                                xresult.write (((unsupported)).apply ((xcheck_database_backends)) (((xself).xdatabases)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xresult)))) (2))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xr).xid)) ((xr)) ((xresult)))) ((((unsupported)).apply ("mysql.W002") ("mysql.W002"))))
+                            bogusForceDataize.write (((x_clean_sql_mode)).apply)

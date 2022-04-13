@@ -1,0 +1,247 @@
+memory > xCoalesce
+memory > xFieldError
+memory > xCase
+memory > xexpr
+memory > xextra
+memory > xStar
+memory > xIntegerField
+memory > xrepr
+memory > xhasattr
+memory > xparams
+memory > xextra_context
+memory > xfilter_params
+memory > xTypeError
+memory > xFixDurationInputMixin
+memory > xWhen
+memory > xindex
+memory > xenumerate
+memory > xFunc
+memory > xfilter_sql
+memory > xValueError
+memory > xsuper
+memory > xNumericOutputFieldMixin
+memory > xexpressions
+memory > xAggregate
+memory > xsql
+memory > xe
+memory > xisinstance
+memory > xlen
+[] > aggregates
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xwindow_compatible
+        memory > xempty_result_set_value
+        memory > xcontains_aggregate
+        memory > x_get_repr_options
+        memory > xdefault_alias
+        memory > xtemplate
+        memory > xget_source_expressions
+        memory > xget_source_fields
+        memory > xas_sql
+        memory > xset_source_expressions
+        memory > x__all__
+        memory > xget_group_by_cols
+        memory > xallow_distinct
+        memory > x__init__
+        memory > xfilter_template
+        memory > xoutput_field
+        memory > xfunction
+        memory > xresolve_expression
+        memory > xname
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("Aggregate") ("Avg") ("Count") ("Max") ("Min") ("StdDev") ("Sum") ("Variance"))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xtemplate.write "%(function)s(%(distinct)s%(expressions)s)"
+                xcontains_aggregate.write TRUE
+                xname.write "None: is there a None literal in the EO language?"
+                xfilter_template.write "%s FILTER (WHERE %%(filter)s)"
+                xwindow_compatible.write TRUE
+                xallow_distinct.write FALSE
+                xempty_result_set_value.write "None: is there a None literal in the EO language?"
+                x__init__.write
+                  [xself xdistinct xfilter xdefault]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xdistinct).and (((xself).xallow_distinct).not)).if
+                          (((unsupported)).apply ((((xTypeError)).apply (("%s does not allow distinct.".mod (((xself).x__class__).x__name__))))))
+                        ((((unsupported)).apply ((xdefault)) ("None: is there a None literal in the EO language?")).and (((unsupported)).apply (((xself).xempty_result_set_value)) ("None: is there a None literal in the EO language?"))).if
+                          (((unsupported)).apply ((((xTypeError)).apply ("{self.__class__.__name__} does not allow default."))))
+                        (((unsupported)).apply (((xself).xdistinct)) ((xdistinct)))
+                        (((unsupported)).apply (((xself).xfilter)) ((xfilter)))
+                        (((unsupported)).apply (((xself).xdefault)) ((xdefault)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xexpressions)))) ((((unsupported)).apply ((xextra)))))
+                xget_source_fields.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xe).x_output_field_or_none)) ((xe)) (((((((xsuper)).apply).xget_source_expressions)).apply)))))
+                xget_source_expressions.write
+                  [xself]
+                    memory > xsource_expressions
+                    seq > @
+                      seq
+                        xsource_expressions.write ((((((xsuper)).apply).xget_source_expressions)).apply)
+                        ((xself).xfilter).if
+                          (((unsupported)).apply (((xsource_expressions).add (((unsupported)).apply (((xself).xfilter))))))
+                        (((unsupported)).apply ((xsource_expressions)))
+                xset_source_expressions.write
+                  [xself xexprs]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xfilter)) ((((xself).xfilter).and ((((xexprs).xpop)).apply))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xset_source_expressions)).apply ((xexprs)))))
+                xresolve_expression.write
+                  [xself xquery xallow_joins xreuse xsummarize xfor_save]
+                    memory > xdefault
+                    memory > xexpressions
+                    memory > xname
+                    memory > xbefore_resolved
+                    memory > xcoalesce
+                    memory > xc
+                    seq > @
+                      (((unsupported)).apply)
+                        xc.write ((((((xsuper)).apply).xresolve_expression)).apply ((xquery)) ((xallow_joins)) ((xreuse)) ((xsummarize)))
+                        (((unsupported)).apply (((xc).xfilter)) ((((xc).xfilter).and (((((xc).xfilter).xresolve_expression)).apply ((xquery)) ((xallow_joins)) ((xreuse)) ((xsummarize))))))
+                        ((xsummarize).not).if
+                          seq
+                            xexpressions.write ((((((xsuper)).apply ((xAggregate)) ((xc))).xget_source_expressions)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xexpr)))) ((((xenumerate)).apply ((xexpressions)))))
+                              ((xexpr).xcontains_aggregate).if
+                                seq
+                                  xbefore_resolved.write (((unsupported)).apply (((((xself).xget_source_expressions)).apply)) ((xindex)))
+                                  xname.write ((((xhasattr)).apply ((xbefore_resolved)) ("name")).if ((xbefore_resolved).xname) (((xrepr)).apply ((xbefore_resolved))))
+                                  (((unsupported)).apply ((((xFieldError)).apply (("Cannot compute %s('%s'): '%s' is an aggregate".mod (((unsupported)).apply (((xc).xname)) ((xname)) ((xname))))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xc).xdefault)))) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xc)))
+                        (((xhasattr)).apply ((xdefault)) ("resolve_expression")).if
+                          xdefault.write ((((xdefault).xresolve_expression)).apply ((xquery)) ((xallow_joins)) ((xreuse)) ((xsummarize)))
+                        (((unsupported)).apply (((xc).xdefault)) ("None: is there a None literal in the EO language?"))
+                        xcoalesce.write (((unsupported)).apply ((xCoalesce)) ((xc)) ((xdefault)) (((xc).x_output_field_or_none)))
+                        (((unsupported)).apply (((xcoalesce).xis_summary)) (((xc).xis_summary)))
+                        (((unsupported)).apply ((xcoalesce)))
+                xdefault_alias.write
+                  [xself]
+                    memory > xexpressions
+                    seq > @
+                      (((unsupported)).apply)
+                        xexpressions.write ((((xself).xget_source_expressions)).apply)
+                        (((((xlen)).apply ((xexpressions))).eq 1).and (((xhasattr)).apply ((((unsupported)).apply ((xexpressions)) (0))) ("name"))).if
+                          (((unsupported)).apply (("%s__%s".mod (((unsupported)).apply (((((unsupported)).apply ((xexpressions)) (0)).xname)) ((((((xself).xname).xlower)).apply))))))
+                        (((unsupported)).apply ((((xTypeError)).apply ("Complex expressions require an alias"))))
+                xget_group_by_cols.write
+                  [xself xalias]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xcondition
+                    memory > xtemplate
+                    memory > xcopy
+                    memory > xsource_expressions
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xextra_context)) ("distinct"))) ((((xself).xdistinct).if "DISTINCT " "")))
+                        ((xself).xfilter).if
+                          (((xconnection).xfeatures).xsupports_aggregate_filter_clause).if
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xfilter_sql)) ((xfilter_params)))) ((((((xself).xfilter).xas_sql)).apply ((xcompiler)) ((xconnection)))))
+                              xtemplate.write (((xself).xfilter_template).mod ((((xextra_context).xget)).apply ("template") (((xself).xtemplate))))
+                              (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ((xtemplate)) ((xfilter_sql)) ((((unsupported)).apply ((xextra_context)))))))
+                              (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((((unsupported)).apply ((((unsupported)).apply ((xparams)))) ((((unsupported)).apply ((xfilter_params)))))))))
+                            seq
+                              xcopy.write ((((xself).xcopy)).apply)
+                              (((unsupported)).apply (((xcopy).xfilter)) ("None: is there a None literal in the EO language?"))
+                              xsource_expressions.write ((((xcopy).xget_source_expressions)).apply)
+                              xcondition.write (((unsupported)).apply ((xWhen)) (((xself).xfilter)) ((((unsupported)).apply ((xsource_expressions)) (0))))
+                              bogusForceDataize.write ((((xcopy).xset_source_expressions)).apply (((((unsupported)).apply ((((xCase)).apply ((xcondition))))).add (((unsupported)).apply ((xsource_expressions)) ((((unsupported)).apply (1)))))))
+                              (((unsupported)).apply (((((((xsuper)).apply ((xAggregate)) ((xcopy))).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+                        (((unsupported)).apply (((((((xsuper)).apply).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+                x_get_repr_options.write
+                  [xself]
+                    memory > xoptions
+                    seq > @
+                      seq
+                        xoptions.write ((((((xsuper)).apply).x_get_repr_options)).apply)
+                        ((xself).xdistinct).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("distinct"))) (((xself).xdistinct)))
+                        ((xself).xfilter).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("filter"))) (((xself).xfilter)))
+                        (((unsupported)).apply ((xoptions)))
+            (((unsupported)).apply ((xFixDurationInputMixin)) ((xNumericOutputFieldMixin)) ((xAggregate)))
+              seq
+                xfunction.write "AVG"
+                xname.write "Avg"
+                xallow_distinct.write TRUE
+            (((unsupported)).apply ((xAggregate)))
+              seq
+                xfunction.write "COUNT"
+                xname.write "Count"
+                xoutput_field.write (((xIntegerField)).apply)
+                xallow_distinct.write TRUE
+                xempty_result_set_value.write 0
+                x__init__.write
+                  [xself xexpression xfilter]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xexpression).eq "*").if
+                          xexpression.write (((xStar)).apply)
+                        ((((xisinstance)).apply ((xexpression)) ((xStar))).and (((unsupported)).apply ((xfilter)) ("None: is there a None literal in the EO language?"))).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Star cannot be used with filter. Please specify a field."))))
+                        (((unsupported)).apply (((((xsuper)).apply).x__init__)) ((xexpression)) ((xfilter)) ((((unsupported)).apply ((xextra)))))
+            (((unsupported)).apply ((xAggregate)))
+              seq
+                xfunction.write "MAX"
+                xname.write "Max"
+            (((unsupported)).apply ((xAggregate)))
+              seq
+                xfunction.write "MIN"
+                xname.write "Min"
+            (((unsupported)).apply ((xNumericOutputFieldMixin)) ((xAggregate)))
+              seq
+                xname.write "StdDev"
+                x__init__.write
+                  [xself xexpression xsample]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xfunction)) (((xsample).if "STDDEV_SAMP" "STDDEV_POP")))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)) ((((unsupported)).apply ((xextra)))))
+                x_get_repr_options.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((((((xsuper)).apply).x_get_repr_options)).apply)) ("sample") ((((xself).xfunction).eq "STDDEV_SAMP")))))
+            (((unsupported)).apply ((xFixDurationInputMixin)) ((xAggregate)))
+              seq
+                xfunction.write "SUM"
+                xname.write "Sum"
+                xallow_distinct.write TRUE
+            (((unsupported)).apply ((xNumericOutputFieldMixin)) ((xAggregate)))
+              seq
+                xname.write "Variance"
+                x__init__.write
+                  [xself xexpression xsample]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xfunction)) (((xsample).if "VAR_SAMP" "VAR_POP")))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)) ((((unsupported)).apply ((xextra)))))
+                x_get_repr_options.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((((((xsuper)).apply).x_get_repr_options)).apply)) ("sample") ((((xself).xfunction).eq "VAR_SAMP")))))

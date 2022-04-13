@@ -1,0 +1,87 @@
+memory > xValueError
+memory > xAdminSite
+memory > xissubclass
+memory > xModelAdmin
+memory > xmodels
+memory > xisinstance
+[] > decorators
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdisplay
+        memory > xaction
+        memory > xregister
+        seq > @
+          seq
+            xaction.write
+              [xfunction xpermissions xdescription]
+                memory > xdecorator
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xdecorator.write
+                      [xfunc]
+                        seq > @
+                          seq
+                            (((unsupported)).apply ((xpermissions)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply (((xfunc).xallowed_permissions)) ((xpermissions)))
+                            (((unsupported)).apply ((xdescription)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply (((xfunc).xshort_description)) ((xdescription)))
+                            (((unsupported)).apply ((xfunc)))
+                    (((unsupported)).apply ((xfunction)) ("None: is there a None literal in the EO language?")).if
+                      (((unsupported)).apply ((xdecorator)))
+                      (((unsupported)).apply ((((xdecorator)).apply ((xfunction)))))
+            xdisplay.write
+              [xfunction xboolean xordering xdescription xempty_value]
+                memory > xdecorator
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xdecorator.write
+                      [xfunc]
+                        seq > @
+                          seq
+                            ((((unsupported)).apply ((xboolean)) ("None: is there a None literal in the EO language?")).and (((unsupported)).apply ((xempty_value)) ("None: is there a None literal in the EO language?"))).if
+                              (((unsupported)).apply ((((xValueError)).apply ("The boolean and empty_value arguments to the @display decorator are mutually exclusive."))))
+                            (((unsupported)).apply ((xboolean)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply (((xfunc).xboolean)) ((xboolean)))
+                            (((unsupported)).apply ((xordering)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply (((xfunc).xadmin_order_field)) ((xordering)))
+                            (((unsupported)).apply ((xdescription)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply (((xfunc).xshort_description)) ((xdescription)))
+                            (((unsupported)).apply ((xempty_value)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply (((xfunc).xempty_value_display)) ((xempty_value)))
+                            (((unsupported)).apply ((xfunc)))
+                    (((unsupported)).apply ((xfunction)) ("None: is there a None literal in the EO language?")).if
+                      (((unsupported)).apply ((xdecorator)))
+                      (((unsupported)).apply ((((xdecorator)).apply ((xfunction)))))
+            xregister.write
+              [xsite]
+                memory > x_model_admin_wrapper
+                memory > xdefault_site
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    x_model_admin_wrapper.write
+                      [xadmin_class]
+                        memory > xadmin_site
+                        seq > @
+                          seq
+                            ((xmodels).not).if
+                              (((unsupported)).apply ((((xValueError)).apply ("At least one model must be passed to register."))))
+                            xadmin_site.write ((xsite).or (xdefault_site))
+                            ((((xisinstance)).apply ((xadmin_site)) ((xAdminSite))).not).if
+                              (((unsupported)).apply ((((xValueError)).apply ("site must subclass AdminSite"))))
+                            ((((xissubclass)).apply ((xadmin_class)) ((xModelAdmin))).not).if
+                              (((unsupported)).apply ((((xValueError)).apply ("Wrapped class must subclass ModelAdmin."))))
+                            (((unsupported)).apply (((xadmin_site).xregister)) ((xmodels)) ((xadmin_class)))
+                            (((unsupported)).apply ((xadmin_class)))
+                    (((unsupported)).apply ((x_model_admin_wrapper)))

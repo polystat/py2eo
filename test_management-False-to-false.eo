@@ -1,0 +1,34 @@
+memory > xfalse
+memory > xcall_command
+memory > xSitemapTestsBase
+memory > xmock
+[] > test_management
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_args
+        memory > xtest_default
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSitemapTestsBase)) (((((xmock).xpatch)).apply ("django.contrib.sitemaps.management.commands.ping_google.ping_google"))))
+              seq
+                xtest_default.write
+                  [xself xping_google_func]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xcall_command)).apply ("ping_google"))
+                        (((unsupported)).apply (((xping_google_func).xassert_called_with)) ("None: is there a None literal in the EO language?") (TRUE))
+                xtest_args.write
+                  [xself xping_google_func]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xcall_command)).apply ("ping_google") ("foo.xml") ("--sitemap-uses-http"))
+                        (((unsupported)).apply (((xping_google_func).xassert_called_with)) ("foo.xml") ((xfalse)))

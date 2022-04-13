@@ -1,0 +1,74 @@
+memory > xNonIntegerPKReturningModel
+memory > xdatetime
+memory > xTestCase
+memory > xcaptured_queries
+memory > xconnection
+memory > xDumbCategory
+memory > xReturningModel
+memory > xCaptureQueriesContext
+memory > xobj
+memory > xskipUnlessDBFeature
+[] > test_db_returning
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_insert_returning_non_integer
+        memory > xtest_insert_returning_multiple
+        memory > xtest_bulk_insert
+        memory > xtest_insert_returning
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)) ((((xskipUnlessDBFeature)).apply ("can_return_columns_from_insert"))))
+              seq
+                xtest_insert_returning.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                          bogusForceDataize.write (((((xDumbCategory).xobjects).xcreate)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("RETURNING %s.%s".mod (((unsupported)).apply ((((((xconnection).xops).xquote_name)).apply ((((xDumbCategory).x_meta).xdb_table)))) ((((((xconnection).xops).xquote_name)).apply (((((((xDumbCategory).x_meta).xget_field)).apply ("id")).xcolumn))))))) ((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) ((1.neg)))) ("sql"))))
+                xtest_insert_returning_non_integer.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write (((((xNonIntegerPKReturningModel).xobjects).xcreate)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xobj).xcreated)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xcreated)) (((xdatetime).xdatetime)))
+                xtest_insert_returning_multiple.write
+                  [xself]
+                    memory > xtable_name
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xCaptureQueriesContext)).apply ((xconnection)))) ((xcaptured_queries)))
+                          xobj.write (((((xReturningModel).xobjects).xcreate)).apply)
+                        xtable_name.write (((((xconnection).xops).xquote_name)).apply ((((xReturningModel).x_meta).xdb_table)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("RETURNING %s.%s, %s.%s".mod (((unsupported)).apply ((xtable_name)) ((((((xconnection).xops).xquote_name)).apply (((((((xReturningModel).x_meta).xget_field)).apply ("id")).xcolumn)))) ((xtable_name)) ((((((xconnection).xops).xquote_name)).apply (((((((xReturningModel).x_meta).xget_field)).apply ("created")).xcolumn))))))) ((((unsupported)).apply ((((unsupported)).apply ((xcaptured_queries)) ((1.neg)))) ("sql"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xobj).xpk)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xcreated)) (((xdatetime).xdatetime)))
+                xtest_bulk_insert.write
+                  [xself]
+                    memory > xobjs
+                    seq > @
+                      (((unsupported)).apply)
+                        xobjs.write (((unsupported)).apply ((((xReturningModel)).apply)) ((((unsupported)).apply ((xReturningModel)) ((((unsupported)).apply (2) (11))))) ((((xReturningModel)).apply)))
+                        bogusForceDataize.write (((((xReturningModel).xobjects).xbulk_create)).apply ((xobjs)))
+                        (((unsupported)).apply ((xobj)) ((xobjs)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xobj)))))
+                            seq
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply (((xobj).xpk)))
+                              bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xcreated)) (((xdatetime).xdatetime)))

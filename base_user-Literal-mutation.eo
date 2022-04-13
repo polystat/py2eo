@@ -1,0 +1,183 @@
+memory > xAttributeError
+memory > xstr
+memory > xdomain_part
+memory > xunicodedata
+memory > xget_random_string
+memory > xmake_password
+memory > xgetattr
+memory > xsetattr
+memory > xmodels
+memory > xkwargs
+memory > xisinstance
+memory > xValueError
+memory > xemail_name
+memory > xsalted_hmac
+memory > xsuper
+memory > xpassword_validation
+memory > xargs
+memory > xis_password_usable
+[] > base_user
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xclean
+        memory > xget_by_natural_key
+        memory > xset_unusable_password
+        memory > xset_password
+        memory > xREQUIRED_FIELDS
+        memory > xnatural_key
+        memory > xmake_random_password
+        memory > xget_username
+        memory > xlast_login
+        memory > xabstract
+        memory > x__str__
+        memory > xis_active
+        memory > x_password
+        memory > xsave
+        memory > xget_session_auth_hash
+        memory > xis_authenticated
+        memory > xget_email_field_name
+        memory > xpassword
+        memory > xcheck_password
+        memory > xis_anonymous
+        memory > x_
+        memory > xhas_usable_password
+        memory > xnormalize_username
+        memory > xnormalize_email
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xManager)))
+              seq
+                xnormalize_email.write
+                  [xcls xemail]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xemail.write ((xemail).or "")
+                        (((unsupported)).apply ((xValueError)))
+                          (((unsupported)).apply ((((unsupported)).apply ((xemail_name)) ((xdomain_part)))) ((((((((xemail).xstrip)).apply).xrsplit)).apply ("@") (1))))
+                          xemail.write (((xemail_name).add "@").add ((((xdomain_part).xlower)).apply))
+                        (((unsupported)).apply ((xemail)))
+                xmake_random_password.write
+                  [xself xlength xallowed_chars]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xget_random_string)).apply ((xlength)) ((xallowed_chars)))))
+                xget_by_natural_key.write
+                  [xself xusername]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xget)).apply ((((unsupported)).apply ((((unsupported)).apply ((((xself).xmodel).xUSERNAME_FIELD)) ((xusername)))))))))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xpassword.write (((unsupported)).apply (((xmodels).xCharField)) ((((x_)).apply ("password"))) (128))
+                xlast_login.write (((unsupported)).apply (((xmodels).xDateTimeField)) ((((x_)).apply ("last login"))) (TRUE) (TRUE))
+                xis_active.write TRUE
+                xREQUIRED_FIELDS.write (((unsupported)).apply)
+                x_password.write "None: is there a None literal in the EO language?"
+                (((unsupported)).apply)
+                  xabstract.write TRUE
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xget_username)).apply)))
+                xsave.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).xsave)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply (((xself).x_password)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            bogusForceDataize.write ((((xpassword_validation).xpassword_changed)).apply (((xself).x_password)) ((xself)))
+                            (((unsupported)).apply (((xself).x_password)) ("None: is there a None literal in the EO language?"))
+                xget_username.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((xgetattr)).apply ((xself)) (((xself).xUSERNAME_FIELD)))))
+                xclean.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((xsetattr)).apply ((xself)) (((xself).xUSERNAME_FIELD)) (((((xself).xnormalize_username)).apply (((((xself).xget_username)).apply)))))
+                xnatural_key.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((((xself).xget_username)).apply)))))
+                xis_anonymous.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (FALSE))
+                xis_authenticated.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (TRUE))
+                xset_password.write
+                  [xself xraw_password]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xpassword)) ((((xmake_password)).apply ((xraw_password)))))
+                        (((unsupported)).apply (((xself).x_password)) ((xraw_password)))
+                xcheck_password.write
+                  [xself xraw_password]
+                    memory > xsetter
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xsetter.write
+                          [xraw_password]
+                            seq > @
+                              seq
+                                bogusForceDataize.write ((((xself).xset_password)).apply ((xraw_password)))
+                                (((unsupported)).apply (((xself).x_password)) ("None: is there a None literal in the EO language?"))
+                                (((unsupported)).apply (((xself).xsave)) ((((unsupported)).apply ("password"))))
+                        (((unsupported)).apply ((((xcheck_password)).apply ((xraw_password)) (((xself).xpassword)) ((xsetter)))))
+                xset_unusable_password.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xpassword)) ((((xmake_password)).apply ("None: is there a None literal in the EO language?"))))
+                xhas_usable_password.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xis_password_usable)).apply (((xself).xpassword)))))
+                xget_session_auth_hash.write
+                  [xself]
+                    memory > xkey_salt
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xkey_salt.write "django.contrib.auth.models.AbstractBaseUser.get_session_auth_hash"
+                        (((unsupported)).apply (((((((unsupported)).apply ((xsalted_hmac)) ((xkey_salt)) (((xself).xpassword)) ("sha256")).xhexdigest)).apply)))
+                xget_email_field_name.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xAttributeError)))
+                          (((unsupported)).apply (((xcls).xEMAIL_FIELD)))
+                          (((unsupported)).apply ("email"))
+                xnormalize_username.write
+                  [xcls xusername]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xisinstance)).apply ((xusername)) ((xstr))).if ((((xunicodedata).xnormalize)).apply ("NFKC") ((xusername))) (xusername))))

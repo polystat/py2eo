@@ -1,0 +1,70 @@
+memory > xmodel_ngettext
+memory > xstr
+memory > xmessages
+memory > xhelpers
+memory > xmodel_count
+memory > xprotected
+memory > xTemplateResponse
+memory > xPermissionDenied
+memory > xobj
+memory > xdeletable_objects
+memory > xperms_needed
+memory > xdict
+[] > actions
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_
+        memory > xdelete_selected
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xdelete_selected.write
+              [xmodeladmin xrequest xqueryset]
+                memory > xapp_label
+                memory > xobj_display
+                memory > xn
+                memory > xopts
+                memory > xcontext
+                memory > xobjects_name
+                memory > xtitle
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xopts.write (((xmodeladmin).xmodel).x_meta)
+                    xapp_label.write ((xopts).xapp_label)
+                    (((unsupported)).apply ((((unsupported)).apply ((xdeletable_objects)) ((xmodel_count)) ((xperms_needed)) ((xprotected)))) (((((xmodeladmin).xget_deleted_objects)).apply ((xqueryset)) ((xrequest)))))
+                    ((((((xrequest).xPOST).xget)).apply ("post")).and ((xprotected).not)).if
+                      seq
+                        (xperms_needed).if
+                          (((unsupported)).apply ((xPermissionDenied)))
+                        xn.write ((((xqueryset).xcount)).apply)
+                        (xn).if
+                          seq
+                            (((unsupported)).apply ((xobj)) ((xqueryset)))
+                              seq
+                                xobj_display.write (((xstr)).apply ((xobj)))
+                                bogusForceDataize.write ((((xmodeladmin).xlog_deletion)).apply ((xrequest)) ((xobj)) ((xobj_display)))
+                            bogusForceDataize.write ((((xmodeladmin).xdelete_queryset)).apply ((xrequest)) ((xqueryset)))
+                            bogusForceDataize.write ((((xmodeladmin).xmessage_user)).apply ((xrequest)) (((((x_)).apply ("Successfully deleted %(count)d %(items)s.")).mod (((unsupported)).apply ("count") ((xn)) ("items") ((((xmodel_ngettext)).apply (((xmodeladmin).xopts)) ((xn))))))) (((xmessages).xSUCCESS)))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                    xobjects_name.write (((xmodel_ngettext)).apply ((xqueryset)))
+                    ((xperms_needed).or (xprotected)).if
+                      xtitle.write ((((x_)).apply ("Cannot delete %(name)s")).mod (((unsupported)).apply ("name") ((xobjects_name))))
+                      xtitle.write (((x_)).apply ("Are you sure?"))
+                    xcontext.write (((unsupported)).apply ((((((xmodeladmin).xadmin_site).xeach_context)).apply ((xrequest)))) ("title") ((xtitle)) ("subtitle") ("None: is there a None literal in the EO language?") ("objects_name") ((((xstr)).apply ((xobjects_name)))) ("deletable_objects") ((((unsupported)).apply ((xdeletable_objects)))) ("model_count") (((((((xdict)).apply ((xmodel_count))).xitems)).apply)) ("queryset") ((xqueryset)) ("perms_lacking") ((xperms_needed)) ("protected") ((xprotected)) ("opts") ((xopts)) ("action_checkbox_name") (((xhelpers).xACTION_CHECKBOX_NAME)) ("media") (((xmodeladmin).xmedia)))
+                    (((unsupported)).apply (((xrequest).xcurrent_app)) ((((xmodeladmin).xadmin_site).xname)))
+                    (((unsupported)).apply ((((xTemplateResponse)).apply ((xrequest)) ((((xmodeladmin).xdelete_selected_confirmation_template).or (((unsupported)).apply (("admin/%s/%s/delete_selected_confirmation.html".mod (((unsupported)).apply ((xapp_label)) (((xopts).xmodel_name))))) (("admin/%s/delete_selected_confirmation.html".mod (xapp_label))) ("admin/delete_selected_confirmation.html")))) ((xcontext)))))

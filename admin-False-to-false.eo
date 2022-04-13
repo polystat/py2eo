@@ -1,0 +1,106 @@
+memory > xfalse
+memory > xmodelform_defines_fields
+memory > xchecks
+memory > xhasattr
+memory > xGenericInlineModelAdmin
+memory > xGenericForeignKey
+memory > xisinstance
+memory > xInlineModelAdminChecks
+memory > xALL_FIELDS
+memory > xFieldDoesNotExist
+memory > xBaseGenericInlineFormSet
+memory > xf
+memory > xgeneric_inlineformset_factory
+memory > xGenericInlineModelAdminChecks
+memory > xgfk
+memory > xpartial
+memory > xflatten_fieldsets
+memory > xkwargs
+memory > xInlineModelAdmin
+[] > admin
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_check_exclude_of_parent_model
+        memory > xget_formset
+        memory > xct_field
+        memory > xformset
+        memory > xct_fk_field
+        memory > xchecks_class
+        memory > xtemplate
+        memory > x_check_relation
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xInlineModelAdminChecks)))
+              seq
+                x_check_exclude_of_parent_model.write
+                  [xself xobj xparent_model]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply)))
+                x_check_relation.write
+                  [xself xobj xparent_model]
+                    memory > xgfks
+                    seq > @
+                      seq
+                        xgfks.write (((unsupported)).apply ((xf)) ((xf)) (((((xobj).xmodel).x_meta).xprivate_fields)) ((((xisinstance)).apply ((xf)) ((xGenericForeignKey)))))
+                        ((xgfks).not).if
+                          (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) (("'%s' has no GenericForeignKey.".mod ((((xobj).xmodel).x_meta).xlabel))) (((xobj).x__class__)) ("admin.E301"))))))
+                          seq
+                            (((unsupported)).apply ((xFieldDoesNotExist)))
+                              bogusForceDataize.write ((((((xobj).xmodel).x_meta).xget_field)).apply (((xobj).xct_field)))
+                              (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) (("'ct_field' references '%s', which is not a field on '%s'.".mod (((unsupported)).apply (((xobj).xct_field)) (((((xobj).xmodel).x_meta).xlabel))))) (((xobj).x__class__)) ("admin.E302"))))))
+                            (((unsupported)).apply ((xFieldDoesNotExist)))
+                              bogusForceDataize.write ((((((xobj).xmodel).x_meta).xget_field)).apply (((xobj).xct_fk_field)))
+                              (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) (("'ct_fk_field' references '%s', which is not a field on '%s'.".mod (((unsupported)).apply (((xobj).xct_fk_field)) (((((xobj).xmodel).x_meta).xlabel))))) (((xobj).x__class__)) ("admin.E303"))))))
+                            (((unsupported)).apply ((xgfk)) ((xgfks)))
+                              ((((xgfk).xct_field).eq ((xobj).xct_field)).and (((xgfk).xfk_field).eq ((xobj).xct_fk_field))).if
+                                (((unsupported)).apply ((((unsupported)).apply)))
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) (("'%s' has no GenericForeignKey using content type field '%s' and object ID field '%s'.".mod (((unsupported)).apply (((((xobj).xmodel).x_meta).xlabel)) (((xobj).xct_field)) (((xobj).xct_fk_field))))) (((xobj).x__class__)) ("admin.E304"))))))
+            (((unsupported)).apply ((xInlineModelAdmin)))
+              seq
+                xct_field.write "content_type"
+                xct_fk_field.write "object_id"
+                xformset.write (xBaseGenericInlineFormSet)
+                xchecks_class.write (xGenericInlineModelAdminChecks)
+                xget_formset.write
+                  [xself xrequest xobj]
+                    memory > xdefaults
+                    memory > xcan_delete
+                    memory > xfields
+                    memory > xexclude
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ("fields") ((xkwargs))).if
+                          xfields.write ((((xkwargs).xpop)).apply ("fields"))
+                          xfields.write (((xflatten_fieldsets)).apply (((((xself).xget_fieldsets)).apply ((xrequest)) ((xobj)))))
+                        xexclude.write (((unsupported)).apply ((((unsupported)).apply ((((xself).xexclude).or (((unsupported)).apply))))) ((((unsupported)).apply (((((xself).xget_readonly_fields)).apply ((xrequest)) ((xobj)))))))
+                        (((((unsupported)).apply (((xself).xexclude)) ("None: is there a None literal in the EO language?")).and (((xhasattr)).apply (((xself).xform)) ("_meta"))).and ((((xself).xform).x_meta).xexclude)).if
+                          bogusForceDataize.write ((((xexclude).xextend)).apply (((((xself).xform).x_meta).xexclude)))
+                        xexclude.write ((xexclude).or "None: is there a None literal in the EO language?")
+                        xcan_delete.write (((xself).xcan_delete).and ((((xself).xhas_delete_permission)).apply ((xrequest)) ((xobj))))
+                        xdefaults.write (((unsupported)).apply ("ct_field") (((xself).xct_field)) ("fk_field") (((xself).xct_fk_field)) ("form") (((xself).xform)) ("formfield_callback") ((((unsupported)).apply ((xpartial)) (((xself).xformfield_for_dbfield)) ((xrequest)))) ("formset") (((xself).xformset)) ("extra") (((((xself).xget_extra)).apply ((xrequest)) ((xobj)))) ("can_delete") ((xcan_delete)) ("can_order") ((xfalse)) ("fields") ((xfields)) ("min_num") (((((xself).xget_min_num)).apply ((xrequest)) ((xobj)))) ("max_num") (((((xself).xget_max_num)).apply ((xrequest)) ((xobj)))) ("exclude") ((xexclude)) ((xkwargs)))
+                        ((((unsupported)).apply ((((unsupported)).apply ((xdefaults)) ("fields"))) ("None: is there a None literal in the EO language?")).and ((((xmodelform_defines_fields)).apply ((((unsupported)).apply ((xdefaults)) ("form")))).not)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xdefaults)) ("fields"))) ((xALL_FIELDS)))
+                        (((unsupported)).apply ((((xgeneric_inlineformset_factory)).apply (((xself).xmodel)) ((((unsupported)).apply ((xdefaults)))))))
+            (((unsupported)).apply ((xGenericInlineModelAdmin)))
+              xtemplate.write "admin/edit_inline/stacked.html"
+            (((unsupported)).apply ((xGenericInlineModelAdmin)))
+              xtemplate.write "admin/edit_inline/tabular.html"

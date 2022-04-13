@@ -1,0 +1,38 @@
+memory > xsuper
+memory > xsorted
+memory > xoptions
+memory > xprint
+memory > xBaseCommand
+[] > suppress_base_options_command
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xsuppressed_base_arguments
+        memory > xhandle
+        memory > xadd_arguments
+        memory > xhelp
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Test suppress base options command."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xsuppressed_base_arguments.write (((unsupported)).apply ("-v") ("--traceback") ("--settings") ("--pythonpath") ("--no-color") ("--force-color") ("--version") ("file"))
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_arguments)).apply ((xparser)))
+                        (((unsupported)).apply (((xself).xadd_base_argument)) ((xparser)) ("file") ("?") ("input file"))
+                xhandle.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write (((xprint)).apply (("EXECUTE:SuppressBaseOptionsCommand options=%s".mod (((xsorted)).apply (((((xoptions).xitems)).apply))))))

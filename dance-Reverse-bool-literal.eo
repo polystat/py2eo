@@ -1,0 +1,50 @@
+memory > xBaseCommand
+memory > xint
+memory > xoptions
+memory > xCommandError
+[] > dance
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xhandle
+        memory > xargs
+        memory > xadd_arguments
+        memory > xhelp
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Dance around like a madman."
+                xargs.write ""
+                xrequires_system_checks.write "__all__"
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("integer") ("?") ((xint)) (0))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("-s") ("--style") ("Rock'n'Roll"))
+                        bogusForceDataize.write ((((xparser).xadd_argument)).apply ("-x") ("--example"))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--opt-3") ("store_false") ("option3"))
+                xhandle.write
+                  [xself]
+                    memory > xexample
+                    seq > @
+                      (((unsupported)).apply)
+                        xexample.write (((unsupported)).apply ((xoptions)) ("example"))
+                        ((xexample).eq "raise").if
+                          (((unsupported)).apply ((((unsupported)).apply ((xCommandError)) (3))))
+                        ((((unsupported)).apply ((xoptions)) ("verbosity")).greater 0).if
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("I don't feel like dancing %s.".mod (((unsupported)).apply ((xoptions)) ("style")))))
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((((",".xjoin)).apply ((xoptions)))))
+                        ((((unsupported)).apply ((xoptions)) ("integer")).greater 0).if
+                          bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("You passed %d as a positional argument.".mod (((unsupported)).apply ((xoptions)) ("integer")))))

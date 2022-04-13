@@ -1,0 +1,97 @@
+memory > xdatetime
+memory > xTestForm
+memory > xSplitHiddenDateTimeWidget
+memory > xForm
+memory > xWidgetTest
+memory > xSplitDateTimeField
+[] > test_splithiddendatetimewidget
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_render_value
+        memory > xtest_fieldset_with_unhidden_field
+        memory > xtest_render_empty
+        memory > xtest_fieldset
+        memory > xwidget
+        memory > xtest_constructor_different_attrs
+        memory > xtest_l10n
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (xSplitHiddenDateTimeWidget)
+                xtest_render_empty.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ("") ("<input type=\"hidden\" name=\"date_0\"><input type=\"hidden\" name=\"date_1\">"))
+                xtest_render_value.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((xdatetime)).apply (2007) (9) (17) (12) (51) (34) (482548))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((xd)) ("<input type=\"hidden\" name=\"date_0\" value=\"2007-09-17\"><input type=\"hidden\" name=\"date_1\" value=\"12:51:34\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((xdatetime)).apply (2007) (9) (17) (12) (51) (34))) ("<input type=\"hidden\" name=\"date_0\" value=\"2007-09-17\"><input type=\"hidden\" name=\"date_1\" value=\"12:51:34\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((xdatetime)).apply (2007) (9) (17) (12) (51))) ("<input type=\"hidden\" name=\"date_0\" value=\"2007-09-17\"><input type=\"hidden\" name=\"date_1\" value=\"12:51:00\">"))
+                xtest_l10n.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      (((unsupported)).apply)
+                        xd.write (((xdatetime)).apply (2007) (9) (17) (12) (51))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((xd)) ((((unsupported)).apply)))
+                xtest_constructor_different_attrs.write
+                  [xself]
+                    memory > xwidget
+                    memory > xhtml
+                    seq > @
+                      seq
+                        xhtml.write "<input type=\"hidden\" class=\"foo\" value=\"2006-01-10\" name=\"date_0\"><input type=\"hidden\" class=\"bar\" value=\"07:30:00\" name=\"date_1\">"
+                        xwidget.write (((unsupported)).apply ((xSplitHiddenDateTimeWidget)) ((((unsupported)).apply ("class") ("foo"))) ((((unsupported)).apply ("class") ("bar"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ((xhtml)))
+                        xwidget.write (((unsupported)).apply ((xSplitHiddenDateTimeWidget)) ((((unsupported)).apply ("class") ("foo"))) ((((unsupported)).apply ("class") ("bar"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ((xhtml)))
+                        xwidget.write (((unsupported)).apply ((xSplitHiddenDateTimeWidget)) ((((unsupported)).apply ("class") ("bar"))) ((((unsupported)).apply ("class") ("foo"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((((xdatetime)).apply (2006) (1) (10) (7) (30))) ((xhtml)))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xSplitDateTimeField)) (((xself).xwidget)))
+                        xform.write (xTestForm)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<input type=\"hidden\" name=\"field_0\" id=\"id_field_0\"><input type=\"hidden\" name=\"field_1\" id=\"id_field_1\">") (((xform).xrender)))
+                xtest_fieldset_with_unhidden_field.write
+                  [xself]
+                    memory > xhidden_field
+                    memory > xtemplate_name
+                    memory > xform
+                    memory > xunhidden_field
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xhidden_field.write (((unsupported)).apply ((xSplitDateTimeField)) (((xself).xwidget)))
+                            xunhidden_field.write (xSplitDateTimeField)
+                        xform.write (xTestForm)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><fieldset><legend>Unhidden field:</legend><input type=\"text\" name=\"unhidden_field_0\" required id=\"id_unhidden_field_0\"><input type=\"text\" name=\"unhidden_field_1\" required id=\"id_unhidden_field_1\"></fieldset><input type=\"hidden\" name=\"hidden_field_0\" id=\"id_hidden_field_0\"><input type=\"hidden\" name=\"hidden_field_1\" id=\"id_hidden_field_1\"></div>") (((xform).xrender)))

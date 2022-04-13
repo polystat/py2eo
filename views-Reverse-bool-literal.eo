@@ -1,0 +1,466 @@
+memory > xContext
+memory > xpermission_required
+memory > xHttpResponseNotAllowed
+memory > xClient
+memory > xurlencode
+memory > xKeyError
+memory > xHttpResponse
+memory > xrender
+memory > xauthor
+memory > xTemplate
+memory > xfields
+memory > xValidationError
+memory > x_ViewManager
+memory > xHttpResponseNotFound
+memory > xTwoArgException
+memory > xparseString
+memory > xException
+memory > xTestForm
+memory > xHttpResponseBadRequest
+memory > xtitle
+memory > xHttpResponseRedirect
+memory > xForm
+memory > xmail
+memory > xn
+memory > xjson
+[] > views
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xclean
+        memory > x_post_view_redirect
+        memory > x_view_manager
+        memory > xbad_view
+        memory > xpermission_protected_view
+        memory > xnesting_exception_view
+        memory > xmail_sending_view
+        memory > xbroken_view
+        memory > xdjango_project_redirect
+        memory > xredirect_view
+        memory > xget_view
+        memory > xmass_mail_sending_view
+        memory > xform_view
+        memory > xsession_view
+        memory > xsingle
+        memory > xasync_get_view
+        memory > xindex_view
+        memory > xemail
+        memory > xtwo_arg_exception
+        memory > xmethod_saving_308_redirect_view
+        memory > xvalue
+        memory > xpermission_protected_view_exception
+        memory > xmethod_saving_308_redirect_query_string_view
+        memory > xform_view_with_template
+        memory > xput_view
+        memory > xmulti
+        memory > xlogin_protected_view
+        memory > xlogin_protected_view_changed_redirect
+        memory > xmethod_saving_307_redirect_view
+        memory > xtrace_view
+        memory > xtext
+        memory > xview_with_header
+        memory > x_permission_protected_view
+        memory > xmethod_saving_307_redirect_query_string_view
+        memory > xpermission_protected_method_view
+        memory > x__init__
+        memory > xjson_view
+        memory > xraw_post_view
+        memory > xview_with_secure
+        memory > xTestChoices
+        memory > xlogin_protected_method_view
+        memory > xupload_view
+        memory > xno_trailing_slash_external_redirect
+        memory > xdouble_redirect_view
+        memory > xpost_then_get_view
+        memory > xpost_view
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xget_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  seq
+                    unsupported
+                    xt.write (((unsupported)).apply ((xTemplate)) ("This is a test. {{ var }} is the value.") ("GET Template"))
+                    xc.write (((xContext)).apply ((((unsupported)).apply ("var") ((((((xrequest).xGET).xget)).apply ("var") (42))))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xasync_get_view.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((((xHttpResponse)).apply ("GET content."))))
+            xtrace_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                memory > xprotocol
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((((((xrequest).xmethod).xupper)).apply).neq "TRACE").if
+                      (((unsupported)).apply ((((xHttpResponseNotAllowed)).apply ("TRACE"))))
+                      ((xrequest).xbody).if
+                        (((unsupported)).apply ((((xHttpResponseBadRequest)).apply ("TRACE requests MUST NOT include an entity"))))
+                        seq
+                          xprotocol.write (((unsupported)).apply (((xrequest).xMETA)) ("SERVER_PROTOCOL"))
+                          xt.write (((unsupported)).apply ((xTemplate)) ("{{ method }} {{ uri }} {{ version }}") ("TRACE Template"))
+                          xc.write (((xContext)).apply ((((unsupported)).apply ("method") (((xrequest).xmethod)) ("uri") (((xrequest).xpath)) ("version") ((xprotocol)))))
+                          (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xput_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  seq
+                    (((xrequest).xmethod).eq "PUT").if
+                      seq
+                        xt.write (((unsupported)).apply ((xTemplate)) ("Data received: {{ data }} is the body.") ("PUT Template"))
+                        xc.write (((xContext)).apply ((((unsupported)).apply ("Content-Length") ((((unsupported)).apply (((xrequest).xMETA)) ("CONTENT_LENGTH"))) ("data") ((((((xrequest).xbody).xdecode)).apply)))))
+                      seq
+                        xt.write (((unsupported)).apply ((xTemplate)) ("Viewing GET page.") ("Empty GET Template"))
+                        xc.write (((xContext)).apply)
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xpost_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xrequest).xmethod).eq "POST").if
+                      ((xrequest).xPOST).if
+                        seq
+                          xt.write (((unsupported)).apply ((xTemplate)) ("Data received: {{ data }} is the value.") ("POST Template"))
+                          xc.write (((xContext)).apply ((((unsupported)).apply ("data") ((((unsupported)).apply (((xrequest).xPOST)) ("value"))))))
+                        seq
+                          xt.write (((unsupported)).apply ((xTemplate)) ("Viewing POST page.") ("Empty POST Template"))
+                          xc.write (((xContext)).apply)
+                      seq
+                        xt.write (((unsupported)).apply ((xTemplate)) ("Viewing GET page.") ("Empty GET Template"))
+                        xc.write (((xContext)).apply)
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xpost_then_get_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xrequest).xmethod).eq "POST").if
+                      (((unsupported)).apply ((((xHttpResponseRedirect)).apply ("?success=false"))))
+                    xt.write (((unsupported)).apply ((xTemplate)) ("The value of success is {{ value }}.") ("GET Template"))
+                    xc.write (((xContext)).apply ((((unsupported)).apply ("value") ((((((xrequest).xGET).xget)).apply ("success") ("false"))))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xjson_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                memory > xdata
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((((((xrequest).xMETA).xget)).apply ("CONTENT_TYPE")).neq "application/json").if
+                      (((unsupported)).apply ((((xHttpResponse)).apply)))
+                    xt.write (((xTemplate)).apply (((("Viewing {} page. With data {{ data }}.".xformat)).apply (((xrequest).xmethod)))))
+                    xdata.write ((((xjson).xloads)).apply ((((((xrequest).xbody).xdecode)).apply ("utf-8"))))
+                    xc.write (((xContext)).apply ((((unsupported)).apply ("data") ((xdata)))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xview_with_header.write
+              [xrequest]
+                memory > xresponse
+                seq > @
+                  seq
+                    unsupported
+                    xresponse.write (((xHttpResponse)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-DJANGO-TEST"))) ("Slartibartfast"))
+                    (((unsupported)).apply ((xresponse)))
+            xraw_post_view.write
+              [xrequest]
+                memory > xt
+                memory > xroot
+                memory > xc
+                memory > xfirst_book
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((xrequest).xmethod).eq "POST").if
+                      seq
+                        xroot.write (((xparseString)).apply (((xrequest).xbody)))
+                        xfirst_book.write (((xroot).xfirstChild).xfirstChild)
+                        (((unsupported)).apply ((((unsupported)).apply ((xtitle)) ((xauthor)))) ((((unsupported)).apply ((((xn).xfirstChild).xnodeValue)) ((xn)) (((xfirst_book).xchildNodes)))))
+                        xt.write (((unsupported)).apply ((xTemplate)) ("{{ title }} - {{ author }}") ("Book template"))
+                        xc.write (((xContext)).apply ((((unsupported)).apply ("title") ((xtitle)) ("author") ((xauthor)))))
+                      seq
+                        xt.write (((unsupported)).apply ((xTemplate)) ("GET request.") ("Book GET template"))
+                        xc.write (((xContext)).apply)
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xredirect_view.write
+              [xrequest]
+                memory > xquery
+                seq > @
+                  seq
+                    unsupported
+                    ((xrequest).xGET).if
+                      xquery.write ("?".add (((xurlencode)).apply (((xrequest).xGET)) (TRUE)))
+                      xquery.write ""
+                    (((unsupported)).apply ((((xHttpResponseRedirect)).apply (("/get_view/".add (xquery))))))
+            xmethod_saving_307_redirect_query_string_view.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ((xHttpResponseRedirect)) ("/post_view/?hello=world") (307))))
+            xmethod_saving_308_redirect_query_string_view.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((((unsupported)).apply ((xHttpResponseRedirect)) ("/post_view/?hello=world") (308))))
+            x_post_view_redirect.write
+              [xrequest xstatus_code]
+                memory > xredirect_to
+                seq > @
+                  seq
+                    unsupported
+                    xredirect_to.write (((((xrequest).xGET).xget)).apply ("to") ("/post_view/"))
+                    (((unsupported)).apply ((((unsupported)).apply ((xHttpResponseRedirect)) ((xredirect_to)) ((xstatus_code)))))
+            xmethod_saving_307_redirect_view.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((((x_post_view_redirect)).apply ((xrequest)) (307))))
+            xmethod_saving_308_redirect_view.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((((x_post_view_redirect)).apply ((xrequest)) (308))))
+            xview_with_secure.write
+              [xrequest]
+                memory > xresponse
+                seq > @
+                  seq
+                    unsupported
+                    xresponse.write (((xHttpResponse)).apply)
+                    (((unsupported)).apply (((xresponse).xtest_was_secure_request)) (((((xrequest).xis_secure)).apply)))
+                    (((unsupported)).apply (((xresponse).xtest_server_port)) ((((((xrequest).xMETA).xget)).apply ("SERVER_PORT") (80))))
+                    (((unsupported)).apply ((xresponse)))
+            xdouble_redirect_view.write
+              [xrequest]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xHttpResponseRedirect)).apply ("/permanent_redirect_view/"))))
+            xbad_view.write
+              [xrequest]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xHttpResponseNotFound)).apply ("Not found!. This page contains some MAGIC content"))))
+            xTestChoices.write (((unsupported)).apply ((((unsupported)).apply ("a") ("First Choice"))) ((((unsupported)).apply ("b") ("Second Choice"))) ((((unsupported)).apply ("c") ("Third Choice"))) ((((unsupported)).apply ("d") ("Fourth Choice"))) ((((unsupported)).apply ("e") ("Fifth Choice"))))
+            (((unsupported)).apply ((xForm)))
+              seq
+                xtext.write ((((xfields).xCharField)).apply)
+                xemail.write ((((xfields).xEmailField)).apply)
+                xvalue.write ((((xfields).xIntegerField)).apply)
+                xsingle.write (((unsupported)).apply (((xfields).xChoiceField)) ((xTestChoices)))
+                xmulti.write (((unsupported)).apply (((xfields).xMultipleChoiceField)) ((xTestChoices)))
+                xclean.write
+                  [xself]
+                    memory > xcleaned_data
+                    seq > @
+                      seq
+                        xcleaned_data.write ((xself).xcleaned_data)
+                        (((((xcleaned_data).xget)).apply ("text")).eq "Raise non-field error").if
+                          (((unsupported)).apply ((((xValidationError)).apply ("Non-field error."))))
+                        (((unsupported)).apply ((xcleaned_data)))
+            xform_view.write
+              [xrequest]
+                memory > xt
+                memory > xform
+                memory > xc
+                seq > @
+                  seq
+                    unsupported
+                    (((xrequest).xmethod).eq "POST").if
+                      seq
+                        xform.write (((xTestForm)).apply (((xrequest).xPOST)))
+                        ((((xform).xis_valid)).apply).if
+                          seq
+                            xt.write (((unsupported)).apply ((xTemplate)) ("Valid POST data.") ("Valid POST Template"))
+                            xc.write (((xContext)).apply)
+                          seq
+                            xt.write (((unsupported)).apply ((xTemplate)) ("Invalid POST data. {{ form.errors }}") ("Invalid POST Template"))
+                            xc.write (((xContext)).apply ((((unsupported)).apply ("form") ((xform)))))
+                      seq
+                        xform.write (((xTestForm)).apply (((xrequest).xGET)))
+                        xt.write (((unsupported)).apply ((xTemplate)) ("Viewing base form. {{ form }}.") ("Form GET Template"))
+                        xc.write (((xContext)).apply ((((unsupported)).apply ("form") ((xform)))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xform_view_with_template.write
+              [xrequest]
+                memory > xmessage
+                memory > xform
+                seq > @
+                  seq
+                    unsupported
+                    (((xrequest).xmethod).eq "POST").if
+                      seq
+                        xform.write (((xTestForm)).apply (((xrequest).xPOST)))
+                        ((((xform).xis_valid)).apply).if
+                          xmessage.write "POST data OK"
+                          xmessage.write "POST data has errors"
+                      seq
+                        xform.write (((xTestForm)).apply)
+                        xmessage.write "GET form page"
+                    (((unsupported)).apply ((((xrender)).apply ((xrequest)) ("form_view.html") ((((unsupported)).apply ("form") ((xform)) ("message") ((xmessage)))))))
+            xlogin_protected_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    xt.write (((unsupported)).apply ((xTemplate)) ("This is a login protected test. Username is {{ user.username }}.") ("Login Template"))
+                    xc.write (((xContext)).apply ((((unsupported)).apply ("user") (((xrequest).xuser)))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xlogin_protected_view_changed_redirect.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    xt.write (((unsupported)).apply ((xTemplate)) ("This is a login protected test. Username is {{ user.username }}.") ("Login Template"))
+                    xc.write (((xContext)).apply ((((unsupported)).apply ("user") (((xrequest).xuser)))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            x_permission_protected_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  seq
+                    unsupported
+                    xt.write (((unsupported)).apply ((xTemplate)) ("This is a permission protected test. Username is {{ user.username }}. Permissions are {{ user.get_all_permissions }}.") ("Permissions Template"))
+                    xc.write (((xContext)).apply ((((unsupported)).apply ("user") (((xrequest).xuser)))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xpermission_protected_view.write (((((xpermission_required)).apply ("permission_not_granted"))).apply ((x_permission_protected_view)))
+            xpermission_protected_view_exception.write (((((unsupported)).apply ((xpermission_required)) ("permission_not_granted") (TRUE))).apply ((x_permission_protected_view)))
+            (((unsupported)).apply)
+              seq
+                xlogin_protected_view.write
+                  [xself xrequest]
+                    memory > xt
+                    memory > xc
+                    seq > @
+                      (((unsupported)).apply)
+                        xt.write (((unsupported)).apply ((xTemplate)) ("This is a login protected test using a method. Username is {{ user.username }}.") ("Login Method Template"))
+                        xc.write (((xContext)).apply ((((unsupported)).apply ("user") (((xrequest).xuser)))))
+                        (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+                xpermission_protected_view.write
+                  [xself xrequest]
+                    memory > xt
+                    memory > xc
+                    seq > @
+                      (((unsupported)).apply)
+                        xt.write (((unsupported)).apply ((xTemplate)) ("This is a permission protected test using a method. Username is {{ user.username }}. Permissions are {{ user.get_all_permissions }}.") ("Permissions Template"))
+                        xc.write (((xContext)).apply ((((unsupported)).apply ("user") (((xrequest).xuser)))))
+                        (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            x_view_manager.write (((x_ViewManager)).apply)
+            xlogin_protected_method_view.write ((x_view_manager).xlogin_protected_view)
+            xpermission_protected_method_view.write ((x_view_manager).xpermission_protected_view)
+            xsession_view.write
+              [xrequest]
+                memory > xt
+                memory > xc
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((unsupported)).apply (((xrequest).xsession)) ("tobacconist"))) ("hovercraft"))
+                    xt.write (((unsupported)).apply ((xTemplate)) ("This is a view that modifies the session.") ("Session Modifying View Template"))
+                    xc.write (((xContext)).apply)
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xbroken_view.write
+              [xrequest]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xKeyError)).apply ("Oops! Looks like you wrote some bad code."))))
+            xmail_sending_view.write
+              [xrequest]
+                seq > @
+                  seq
+                    bogusForceDataize.write (((((((xmail).xEmailMessage)).apply ("Test message") ("This is a test email") ("from@example.com") ((((unsupported)).apply ("first@example.com") ("second@example.com")))).xsend)).apply)
+                    (((unsupported)).apply ((((xHttpResponse)).apply ("Mail sent"))))
+            xmass_mail_sending_view.write
+              [xrequest]
+                memory > xc
+                memory > xm1
+                memory > xm2
+                seq > @
+                  seq
+                    xm1.write ((((xmail).xEmailMessage)).apply ("First Test message") ("This is the first test email") ("from@example.com") ((((unsupported)).apply ("first@example.com") ("second@example.com"))))
+                    xm2.write ((((xmail).xEmailMessage)).apply ("Second Test message") ("This is the second test email") ("from@example.com") ((((unsupported)).apply ("second@example.com") ("third@example.com"))))
+                    xc.write ((((xmail).xget_connection)).apply)
+                    bogusForceDataize.write ((((xc).xsend_messages)).apply ((((unsupported)).apply ((xm1)) ((xm2)))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply ("Mail sent"))))
+            xnesting_exception_view.write
+              [xrequest]
+                memory > xclient
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xclient.write (((xClient)).apply)
+                    bogusForceDataize.write ((((xclient).xget)).apply ("/get_view/"))
+                    (((unsupported)).apply ((((xException)).apply ("exception message"))))
+            xdjango_project_redirect.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((((xHttpResponseRedirect)).apply ("https://www.djangoproject.com/"))))
+            xno_trailing_slash_external_redirect.write
+              [xrequest]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((xHttpResponseRedirect)).apply ("https://testserver"))))
+            xindex_view.write
+              [xrequest]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xHttpResponse)).apply ("Hello world"))))
+            xupload_view.write
+              [xrequest]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xHttpResponse)).apply ((((", ".xjoin)).apply (((xrequest).xFILES)))))))
+            (((unsupported)).apply ((xException)))
+              x__init__.write
+                [xself xone xtwo]
+                  seq > @
+            xtwo_arg_exception.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply ((((xTwoArgException)).apply ("one") ("two"))))

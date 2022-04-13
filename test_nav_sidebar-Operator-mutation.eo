@@ -1,0 +1,208 @@
+memory > xreverse
+memory > xHéllo
+memory > xTestCase
+memory > xAdminSiteWithoutSidebar
+memory > xBy
+memory > xpath
+memory > xAdminSiteWithSidebar
+memory > xoverride_settings
+memory > xUser
+memory > xlink
+memory > xadmin
+memory > xAdminSeleniumTestCase
+[] > test_nav_sidebar
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xurlpatterns
+        memory > xenable_nav_sidebar
+        memory > xtest_sidebar_starts_open
+        memory > xtest_sidebar_aria_current_page
+        memory > xtest_sidebar_not_on_index
+        memory > xsetUpTestData
+        memory > xsetUp
+        memory > xsite_with_sidebar
+        memory > xtest_sidebar_aria_current_page_missing_without_request_context_processor
+        memory > xtest_sidebar_disabled
+        memory > xtest_included_app_list_template_context_fully_set
+        memory > xsite_without_sidebar
+        memory > xtest_sidebar_filter_persists
+        memory > xtest_sidebar_state_persists
+        memory > xtest_sidebar_unauthenticated
+        memory > xtest_sidebar_model_name_non_ascii
+        memory > xtest_sidebar_can_be_closed
+        memory > xavailable_apps
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xadmin).xAdminSite)))
+            (((unsupported)).apply (((xadmin).xAdminSite)))
+              xenable_nav_sidebar.write FALSE
+            xsite_with_sidebar.write (((unsupported)).apply ((xAdminSiteWithSidebar)) ("test_with_sidebar"))
+            xsite_without_sidebar.write (((unsupported)).apply ((xAdminSiteWithoutSidebar)) ("test_without_sidebar"))
+            bogusForceDataize.write ((((xsite_with_sidebar).xregister)).apply ((xUser)))
+            bogusForceDataize.write ((((xsite_with_sidebar).xregister)).apply ((xHéllo)))
+            xurlpatterns.write (((unsupported)).apply ((((xpath)).apply ("test_sidebar/admin/") (((xsite_with_sidebar).xurls)))) ((((xpath)).apply ("test_wihout_sidebar/admin/") (((xsite_without_sidebar).xurls)))))
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.test_nav_sidebar"))))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write (((((xself).xclient).xforce_login)).apply (((xself).xsuperuser)))
+                xtest_sidebar_not_on_index.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("test_with_sidebar:index"))))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<div class=\"main\" id=\"main\">"))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("<nav class=\"sticky\" id=\"nav-sidebar\">"))
+                xtest_sidebar_disabled.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("test_without_sidebar:index"))))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("<nav class=\"sticky\" id=\"nav-sidebar\">"))
+                xtest_sidebar_unauthenticated.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xclient).xlogout)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ((((xreverse)).apply ("test_with_sidebar:login"))))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("<nav class=\"sticky\" id=\"nav-sidebar\">"))
+                xtest_sidebar_aria_current_page.write
+                  [xself]
+                    memory > xresponse
+                    memory > xurl
+                    seq > @
+                      seq
+                        xurl.write (((xreverse)).apply ("test_with_sidebar:auth_user_changelist"))
+                        xresponse.write (((((xself).xclient).xget)).apply ((xurl)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<nav class=\"sticky\" id=\"nav-sidebar\">"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) (("<a href=\"%s\" aria-current=\"page\">Users</a>".mod (xurl))))
+                xtest_sidebar_aria_current_page_missing_without_request_context_processor.write
+                  [xself]
+                    memory > xresponse
+                    memory > xurl
+                    seq > @
+                      (((unsupported)).apply)
+                        xurl.write (((xreverse)).apply ("test_with_sidebar:auth_user_changelist"))
+                        xresponse.write (((((xself).xclient).xget)).apply ((xurl)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<nav class=\"sticky\" id=\"nav-sidebar\">"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) (("<a href=\"%s\">Users</a>".mod (xurl))))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("aria-current"))
+                xtest_included_app_list_template_context_fully_set.write
+                  [xself]
+                    memory > xurl
+                    seq > @
+                      (((unsupported)).apply)
+                        xurl.write (((xreverse)).apply ("test_with_sidebar:auth_user_changelist"))
+                        (((unsupported)).apply (((((xself).xassertNoLogs)).apply ("django.template") ("DEBUG"))))
+                          bogusForceDataize.write (((((xself).xclient).xget)).apply ((xurl)))
+                xtest_sidebar_model_name_non_ascii.write
+                  [xself]
+                    memory > xresponse
+                    memory > xurl
+                    seq > @
+                      seq
+                        xurl.write (((xreverse)).apply ("test_with_sidebar:admin_views_héllo_changelist"))
+                        xresponse.write (((((xself).xclient).xget)).apply ((xurl)))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<div class=\"app-admin_views module current-app\">"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<tr class=\"model-héllo current-model\">"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<th scope=\"row\"><a href=\"/test_sidebar/admin/admin_views/h%C3%A9llo/\" aria-current=\"page\">Héllos</a></th>"))
+            (((unsupported)).apply ((xAdminSeleniumTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.test_nav_sidebar"))))
+              seq
+                xavailable_apps.write ((((unsupported)).apply ("admin_views")).sub ((xAdminSeleniumTestCase).xavailable_apps))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                        (((unsupported)).apply (((xself).xadmin_login)) ("super") ("secret") ((((xreverse)).apply ("test_with_sidebar:index"))))
+                        bogusForceDataize.write (((((xself).xselenium).xexecute_script)).apply ("localStorage.removeItem('django.admin.navSidebarIsOpen')"))
+                xtest_sidebar_starts_open.write
+                  [xself]
+                    memory > xmain_element
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).sub (((xreverse)).apply ("test_with_sidebar:auth_user_changelist")))))
+                        xmain_element.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#main"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("shifted") ((((((((xmain_element).xget_attribute)).apply ("class")).xsplit)).apply)))
+                xtest_sidebar_can_be_closed.write
+                  [xself]
+                    memory > xmain_element
+                    memory > xtoggle_button
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).sub (((xreverse)).apply ("test_with_sidebar:auth_user_changelist")))))
+                        xtoggle_button.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#toggle-nav-sidebar"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xtoggle_button).xtag_name)) ("button"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtoggle_button).xget_attribute)).apply ("aria-label"))) ("Toggle navigation"))
+                        (((unsupported)).apply ((xlink)) ((((((xself).xselenium).xfind_elements)).apply (((xBy).xCSS_SELECTOR)) ("#nav-sidebar a"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlink).xget_attribute)).apply ("tabIndex"))) ("0"))
+                        bogusForceDataize.write ((((xtoggle_button).xclick)).apply)
+                        (((unsupported)).apply ((xlink)) ((((((xself).xselenium).xfind_elements)).apply (((xBy).xCSS_SELECTOR)) ("#nav-sidebar a"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlink).xget_attribute)).apply ("tabIndex"))) ("-1"))
+                        xmain_element.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#main"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("shifted") ((((((((xmain_element).xget_attribute)).apply ("class")).xsplit)).apply)))
+                xtest_sidebar_state_persists.write
+                  [xself]
+                    memory > xmain_element
+                    memory > xtoggle_button
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).sub (((xreverse)).apply ("test_with_sidebar:auth_user_changelist")))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((((xself).xselenium).xexecute_script)).apply ("return localStorage.getItem('django.admin.navSidebarIsOpen')"))))
+                        xtoggle_button.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#toggle-nav-sidebar"))
+                        bogusForceDataize.write ((((xtoggle_button).xclick)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xselenium).xexecute_script)).apply ("return localStorage.getItem('django.admin.navSidebarIsOpen')"))) ("false"))
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).sub (((xreverse)).apply ("test_with_sidebar:auth_user_changelist")))))
+                        xmain_element.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#main"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("shifted") ((((((((xmain_element).xget_attribute)).apply ("class")).xsplit)).apply)))
+                        xtoggle_button.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#toggle-nav-sidebar"))
+                        (((unsupported)).apply ((xlink)) ((((((xself).xselenium).xfind_elements)).apply (((xBy).xCSS_SELECTOR)) ("#nav-sidebar a"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlink).xget_attribute)).apply ("tabIndex"))) ("-1"))
+                        bogusForceDataize.write ((((xtoggle_button).xclick)).apply)
+                        (((unsupported)).apply ((xlink)) ((((((xself).xselenium).xfind_elements)).apply (((xBy).xCSS_SELECTOR)) ("#nav-sidebar a"))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xlink).xget_attribute)).apply ("tabIndex"))) ("0"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xselenium).xexecute_script)).apply ("return localStorage.getItem('django.admin.navSidebarIsOpen')"))) ("true"))
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).sub (((xreverse)).apply ("test_with_sidebar:auth_user_changelist")))))
+                        xmain_element.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#main"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("shifted") ((((((((xmain_element).xget_attribute)).apply ("class")).xsplit)).apply)))
+                xtest_sidebar_filter_persists.write
+                  [xself]
+                    memory > xfilter_value_script
+                    memory > xfilter_input
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).sub (((xreverse)).apply ("test_with_sidebar:auth_user_changelist")))))
+                        xfilter_value_script.write "return sessionStorage.getItem('django.admin.navSidebarFilterValue')"
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((((xself).xselenium).xexecute_script)).apply ((xfilter_value_script)))))
+                        xfilter_input.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("#nav-filter"))
+                        bogusForceDataize.write ((((xfilter_input).xsend_keys)).apply ("users"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xselenium).xexecute_script)).apply ((xfilter_value_script)))) ("users"))

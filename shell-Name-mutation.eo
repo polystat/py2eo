@@ -1,0 +1,125 @@
+memory > xexec
+memory > xselect
+memory > xopen
+memory > xpythonrc
+memory > xglobals
+memory > xstart_ipython
+memory > xCommandError
+memory > xImportError
+memory > xAttributeError
+memory > xprint
+memory > xBaseCommand
+memory > xException
+memory > xcode
+memory > xshell
+memory > xcompile
+memory > xOrderedSet
+memory > xsys
+memory > xos
+memory > xtraceback
+memory > xgetattr
+memory > xrlcompleter
+memory > xoptions
+memory > xreadline
+[] > shell
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xhelp2
+        memory > xbpython
+        memory > xhandle
+        memory > xipython
+        memory > xadd_arguments
+        memory > xshells
+        memory > xpython
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp2.write "Runs a Python interactive interpreter. Tries to use IPython or bpython, if one of them is available. Any standard input is executed as code."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xshells.write (((unsupported)).apply ("ipython") ("bpython") ("python"))
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--no-startup") ("store_true") ("When using plain Python, ignore the PYTHONSTARTUP environment variable and ~/.pythonrc.py script."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("-i") ("--interface") (((xself).xshells)) ("Specify an interactive interpreter interface. Available options: \"ipython\", \"bpython\", and \"python\""))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("-c") ("--command") ("Instead of opening an interactive shell, run a command as Django and exit."))
+                xipython.write
+                  [xself xoptions]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xstart_ipython)) ((((unsupported)).apply)))
+                xbpython.write
+                  [xself xoptions]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xbpython).xembed)).apply)
+                xpython.write
+                  [xself xoptions]
+                    memory > xpythonrc_code
+                    memory > xhook
+                    memory > ximported_objects
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ximported_objects.write (((unsupported)).apply)
+                        ((((unsupported)).apply ((xoptions)) ("no_startup")).not).if
+                          (((unsupported)).apply ((xpythonrc)) ((((xOrderedSet)).apply ((((unsupported)).apply ((((((xos).xenviron).xget)).apply ("PYTHONSTARTUP"))) ((((((xos).xpath).xexpanduser)).apply ("~/.pythonrc.py"))))))))
+                            seq
+                              ((xpythonrc).not).if
+                                (((unsupported)).apply)
+                              ((((((xos).xpath).xisfile)).apply ((xpythonrc))).not).if
+                                (((unsupported)).apply)
+                              (((unsupported)).apply ((((xopen)).apply ((xpythonrc)))) ((xhandle)))
+                                xpythonrc_code.write ((((xhandle).xread)).apply)
+                              (((unsupported)).apply ((xException)))
+                                bogusForceDataize.write (((xexec)).apply ((((xcompile)).apply ((xpythonrc_code)) ((xpythonrc)) ("exec"))) ((ximported_objects)))
+                                bogusForceDataize.write ((((xtraceback).xprint_exc)).apply)
+                        (((unsupported)).apply ((xAttributeError)))
+                          xhook.write ((xsys).x__interactivehook__)
+                          (((unsupported)).apply ((xException)))
+                            bogusForceDataize.write (((xhook)).apply)
+                            seq
+                              bogusForceDataize.write (((xprint)).apply ("Failed calling sys.__interactivehook__"))
+                              bogusForceDataize.write ((((xtraceback).xprint_exc)).apply)
+                        (((unsupported)).apply ((xImportError)))
+                          seq
+                            (((unsupported)).apply)
+                            (((unsupported)).apply)
+                            bogusForceDataize.write ((((xreadline).xset_completer)).apply ((((((xrlcompleter).xCompleter)).apply ((ximported_objects))).xcomplete)))
+                        (((unsupported)).apply (((xcode).xinteract)) ((ximported_objects)))
+                xhandle.write
+                  [xself]
+                    memory > xavailable_shells
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xoptions)) ("command")).if
+                          seq
+                            bogusForceDataize.write (((xexec)).apply ((((unsupported)).apply ((xoptions)) ("command"))) ((((xglobals)).apply)))
+                            (((unsupported)).apply)
+                        (((((xsys).xplatform).neq "win32").and ((((((xsys).xstdin).xisatty)).apply).not)).and (((unsupported)).apply (((((xselect).xselect)).apply ((((unsupported)).apply (((xsys).xstdin)))) ((((unsupported)).apply)) ((((unsupported)).apply)) (0))) (0))).if
+                          seq
+                            bogusForceDataize.write (((xexec)).apply ((((((xsys).xstdin).xread)).apply)) ((((xglobals)).apply)))
+                            (((unsupported)).apply)
+                        xavailable_shells.write ((((unsupported)).apply ((xoptions)) ("interface")).if (((unsupported)).apply ((((unsupported)).apply ((xoptions)) ("interface")))) ((xself).xshells))
+                        (((unsupported)).apply ((xshell)) ((xavailable_shells)))
+                          (((unsupported)).apply ((xImportError)))
+                            (((unsupported)).apply ((((((xgetattr)).apply ((xself)) ((xshell)))).apply ((xoptions)))))
+                        (((unsupported)).apply ((((xCommandError)).apply (((("Couldn't import {} interface.".xformat)).apply ((xshell)))))))

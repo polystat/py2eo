@@ -1,0 +1,113 @@
+memory > xforce_str
+memory > xIndexError
+memory > xint
+memory > xLayer
+memory > xGDALException
+memory > xGDALBase
+memory > xforce_bytes
+memory > xisinstance
+memory > xTypeError
+memory > xstr
+memory > xDriver
+memory > xPath
+memory > xtype
+memory > xbyref
+[] > datasource
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__getitem__
+        memory > x__init__
+        memory > xdestructor2
+        memory > xcapi
+        memory > x__str__
+        memory > xlayer_count
+        memory > xname
+        memory > x__len__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xGDALBase)))
+              seq
+                unsupported
+                xdestructor2.write ((xcapi).xdestroy_ds)
+                x__init__.write
+                  [xself xds_input xds_driver xwrite xencoding]
+                    memory > xds
+                    seq > @
+                      (((unsupported)).apply)
+                        (xwrite).if
+                          (((unsupported)).apply (((xself).x_write)) (1))
+                          (((unsupported)).apply (((xself).x_write)) (0))
+                        (((unsupported)).apply (((xself).xencoding)) ((xencoding)))
+                        bogusForceDataize.write ((((xDriver).xensure_registered)).apply)
+                        (((xisinstance)).apply ((xds_input)) ((((unsupported)).apply ((xstr)) ((xPath))))).if
+                          seq
+                            xds_driver.write ((((xDriver).xptr_type)).apply)
+                            (((unsupported)).apply ((xGDALException)))
+                              xds.write ((((xcapi).xopen_ds)).apply ((((xforce_bytes)).apply ((xds_input)))) (((xself).x_write)) ((((xbyref)).apply ((xds_driver)))))
+                              (((unsupported)).apply ((((xGDALException)).apply (("Could not open the datasource at \"%s\"".mod (xds_input))))))
+                          ((((xisinstance)).apply ((xds_input)) (((xself).xptr_type))).and (((xisinstance)).apply ((xds_driver)) (((xDriver).xptr_type)))).if
+                            xds.write (xds_input)
+                            (((unsupported)).apply ((((xGDALException)).apply (("Invalid data source input type: %s".mod (((xtype)).apply ((xds_input))))))))
+                        (xds).if
+                          seq
+                            (((unsupported)).apply (((xself).xptr)) ((xds)))
+                            (((unsupported)).apply (((xself).xdriver)) ((((xDriver)).apply ((xds_driver)))))
+                          (((unsupported)).apply ((((xGDALException)).apply (("Invalid data source file \"%s\"".mod (xds_input))))))
+                x__getitem__.write
+                  [xself xindex]
+                    memory > xlayer
+                    seq > @
+                      seq
+                        unsupported
+                        (((xisinstance)).apply ((xindex)) ((xstr))).if
+                          (((unsupported)).apply ((xGDALException)))
+                            xlayer.write ((((xcapi).xget_layer_by_name)).apply (((xself).xptr)) ((((xforce_bytes)).apply ((xindex)))))
+                            (((unsupported)).apply ((((xIndexError)).apply (("Invalid OGR layer name given: %s.".mod (xindex))))))
+                          (((xisinstance)).apply ((xindex)) ((xint))).if
+                            (((unsupported)).apply (0) ((xindex)) (((xself).xlayer_count))).if
+                              xlayer.write ((((xcapi).xget_layer)).apply (((xself).x_ptr)) ((xindex)))
+                              (((unsupported)).apply ((((xIndexError)).apply (("Index out of range when accessing layers in a datasource: %s.".mod (xindex))))))
+                            (((unsupported)).apply ((((xTypeError)).apply (("Invalid index type: %s".mod (((xtype)).apply ((xindex))))))))
+                        (((unsupported)).apply ((((xLayer)).apply ((xlayer)) ((xself)))))
+                x__len__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xlayer_count)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (("%s (%s)".mod (((unsupported)).apply (((xself).xname)) (((xself).xdriver))))))
+                xlayer_count.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xget_layer_count)).apply (((xself).x_ptr)))))
+                xname.write
+                  [xself]
+                    memory > xname
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xname.write ((((xcapi).xget_ds_name)).apply (((xself).x_ptr)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xforce_str)) ((xname)) (((xself).xencoding)) (TRUE))))

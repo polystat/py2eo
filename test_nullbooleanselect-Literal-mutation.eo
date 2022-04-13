@@ -1,0 +1,96 @@
+memory > xtranslation
+memory > xNullBooleanField
+memory > xTestForm
+memory > xForm
+memory > xWidgetTest
+memory > xNullBooleanSelect
+[] > test_nullbooleanselect
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_l10n
+        memory > xtest_render_value_true
+        memory > xtest_render_value_2
+        memory > xtest_render_value_3
+        memory > xtest_render_value_false
+        memory > xtest_render_value_1
+        memory > xtest_fieldset
+        memory > xwidget
+        memory > xtest_render_none
+        memory > xtest_render_value_unknown
+        memory > xtest_render_false
+        memory > xtest_render_true
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (((xNullBooleanSelect)).apply)
+                xtest_render_true.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") (TRUE) ((((unsupported)).apply)))
+                xtest_render_false.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") (FALSE) ((((unsupported)).apply)))
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("None: is there a None literal in the EO language?") ((((unsupported)).apply)))
+                xtest_render_value_unknown.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("unknown") ((((unsupported)).apply)))
+                xtest_render_value_true.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("true") ((((unsupported)).apply)))
+                xtest_render_value_false.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("false") ((((unsupported)).apply)))
+                xtest_render_value_1.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("1") ((((unsupported)).apply)))
+                xtest_render_value_2.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("2") ((((unsupported)).apply)))
+                xtest_render_value_3.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("is_cool") ("3") ((((unsupported)).apply)))
+                xtest_l10n.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((xNullBooleanSelect)).apply)
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("de-at"))))
+                          (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("id_bool") (TRUE) ((((unsupported)).apply)))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xNullBooleanField)) (((xself).xwidget)))
+                        xform.write (((xTestForm)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><label for=\"id_field\">Field:</label><select name=\"field\" id=\"id_field\"><option value=\"unknown\" selected>Unknown</option><option value=\"true\">Yes</option><option value=\"false\">No</option></select></div>") (((((xform).xrender)).apply)))

@@ -1,0 +1,97 @@
+memory > xValueError
+memory > xfunc_supports_parameter
+memory > xrange
+memory > xsettings
+memory > xi
+memory > xInvalidAlgorithm
+memory > xhmac
+memory > xhashlib
+memory > xgetattr
+memory > xe
+memory > xforce_bytes
+memory > xsecrets
+memory > xAttributeError
+[] > crypto
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xconstant_time_compare
+        memory > xmd5
+        memory > xRANDOM_STRING_CHARS
+        memory > xget_random_string
+        memory > xsalted_hmac
+        memory > xpbkdf2
+        memory > xnew_hash
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xValueError)))
+              seq
+                unsupported
+            xsalted_hmac.write
+              [xkey_salt xvalue xsecret xalgorithm]
+                memory > xhasher
+                memory > xkey
+                memory > xsecret2
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xsecret)) ("None: is there a None literal in the EO language?")).if
+                      xsecret2.write ((xsettings).xSECRET_KEY)
+                    xkey_salt.write (((xforce_bytes)).apply ((xkey_salt)))
+                    xsecret.write (((xforce_bytes)).apply ((xsecret)))
+                    (((unsupported)).apply ((xAttributeError)))
+                      xhasher.write (((xgetattr)).apply ((xhashlib)) ((xalgorithm)))
+                      (((unsupported)).apply ((((xInvalidAlgorithm)).apply (("%r is not an algorithm accepted by the hashlib module.".mod (xalgorithm))))) ((xe)))
+                    xkey.write ((((((xhasher)).apply (((xkey_salt).add (xsecret)))).xdigest)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply (((xhmac).xnew)) ((xkey)) ((((xforce_bytes)).apply ((xvalue)))) ((xhasher)))))
+            xRANDOM_STRING_CHARS.write "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            xget_random_string.write
+              [xlength xallowed_chars]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((("".xjoin)).apply ((((unsupported)).apply (((((xsecrets).xchoice)).apply ((xallowed_chars)))) ((xi)) ((((xrange)).apply ((xlength)))))))))
+            xconstant_time_compare.write
+              [xval1 xval2]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply (((((xsecrets).xcompare_digest)).apply ((((xforce_bytes)).apply ((xval1)))) ((((xforce_bytes)).apply ((xval2)))))))
+            xpbkdf2.write
+              [xpassword xsalt xiterations xdklen xdigest]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xdigest)) ("None: is there a None literal in the EO language?")).if
+                      xdigest.write ((xhashlib).xsha256)
+                    xdklen.write ((xdklen).or "None: is there a None literal in the EO language?")
+                    xpassword.write (((xforce_bytes)).apply ((xpassword)))
+                    xsalt.write (((xforce_bytes)).apply ((xsalt)))
+                    (((unsupported)).apply (((((xhashlib).xpbkdf2_hmac)).apply (((((xdigest)).apply).xname)) ((xpassword)) ((xsalt)) ((xiterations)) ((xdklen)))))
+            (((xfunc_supports_parameter)).apply (((xhashlib).xmd5)) ("usedforsecurity")).if
+              seq
+                xmd5.write ((xhashlib).xmd5)
+                xnew_hash.write ((xhashlib).xnew)
+              seq
+                xmd5.write
+                  [xdata xusedforsecurity]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xhashlib).xmd5)).apply ((xdata)))))
+                xnew_hash.write
+                  [xhash_algorithm xusedforsecurity]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xhashlib).xnew)).apply ((xhash_algorithm)))))

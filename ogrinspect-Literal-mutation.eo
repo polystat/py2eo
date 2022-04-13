@@ -1,0 +1,172 @@
+memory > xfield
+memory > xstr
+memory > xOFTInteger
+memory > xOFTReal
+memory > xOFTString
+memory > xtuple
+memory > xargs
+memory > xzip
+memory > xOFTInteger64
+memory > xkwargs
+memory > xTypeError
+memory > xDataSource
+memory > xlist
+memory > xprecision
+memory > xOFTTime
+memory > xwidth
+memory > xOFTDate
+memory > xfield_type
+memory > xOFTDateTime
+memory > xs
+memory > xisinstance
+memory > xfield_name
+[] > ogrinspect
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x_ogrinspect
+        memory > xogrinspect
+        memory > xmapping
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xmapping.write
+              [xdata_source xgeom_name xlayer_key xmulti_geom]
+                memory > x_mapping
+                memory > xmfield
+                memory > xgtype
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((xisinstance)).apply ((xdata_source)) ((xstr))).if
+                      xdata_source.write (((xDataSource)).apply ((xdata_source)))
+                      (((xisinstance)).apply ((xdata_source)) ((xDataSource))).if
+                        (((unsupported)).apply ((((xTypeError)).apply ("Data source parameter must be a string or a DataSource object."))))
+                    x_mapping.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xfield)) (((((unsupported)).apply ((xdata_source)) ((xlayer_key))).xfields)))
+                      seq
+                        xmfield.write ((((xfield).xlower)).apply)
+                        ((((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((1.neg))))).eq "_").if
+                          (((unsupported)).apply ((xmfield)) ("field"))
+                        (((unsupported)).apply ((((unsupported)).apply ((x_mapping)) ((xmfield)))) ((xfield)))
+                    xgtype.write ((((unsupported)).apply ((xdata_source)) ((xlayer_key))).xgeom_type)
+                    (xmulti_geom).if
+                      bogusForceDataize.write ((((xgtype).xto_multi)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((x_mapping)) ((xgeom_name)))) (((((((xstr)).apply ((xgtype))).xupper)).apply)))
+                    (((unsupported)).apply ((x_mapping)))
+            xogrinspect.write
+              []
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply (((("n".xjoin)).apply ((((x_ogrinspect)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))))
+            x_ogrinspect.write
+              [xdata_source xmodel_name xgeom_name xlayer_key xsrid xmulti_geom xname_field ximports xdecimal xblank xnull]
+                memory > xblank_fields
+                memory > xlayer
+                memory > xsrid_str
+                memory > xnull_fields
+                memory > xdecimal_fields
+                memory > xgeom_field
+                memory > xkwargs_str
+                memory > xprocess_kwarg
+                memory > xmfield
+                memory > xgtype
+                memory > xogr_fields
+                memory > xget_kwargs_str
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((xisinstance)).apply ((xdata_source)) ((xstr))).if
+                      xdata_source.write (((xDataSource)).apply ((xdata_source)))
+                      (((xisinstance)).apply ((xdata_source)) ((xDataSource))).if
+                        (((unsupported)).apply ((((xTypeError)).apply ("Data source parameter must be a string or a DataSource object."))))
+                    xlayer.write (((unsupported)).apply ((xdata_source)) ((xlayer_key)))
+                    xogr_fields.write ((xlayer).xfields)
+                    xprocess_kwarg.write
+                      [xkwarg]
+                        seq > @
+                          (((xisinstance)).apply ((xkwarg)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                            (((unsupported)).apply ((((unsupported)).apply (((((xs).xlower)).apply)) ((xs)) ((xkwarg)))))
+                            (xkwarg).if
+                              (((unsupported)).apply ((((unsupported)).apply (((((xs).xlower)).apply)) ((xs)) ((xogr_fields)))))
+                              (((unsupported)).apply ((((unsupported)).apply)))
+                    xnull_fields.write (((xprocess_kwarg)).apply ((xnull)))
+                    xblank_fields.write (((xprocess_kwarg)).apply ((xblank)))
+                    xdecimal_fields.write (((xprocess_kwarg)).apply ((xdecimal)))
+                    xget_kwargs_str.write
+                      [xfield_name]
+                        memory > xkwlist
+                        seq > @
+                          seq
+                            xkwlist.write (((unsupported)).apply)
+                            (((unsupported)).apply (((((xfield_name).xlower)).apply)) ((xnull_fields))).if
+                              bogusForceDataize.write ((((xkwlist).xappend)).apply ("null=True"))
+                            (((unsupported)).apply (((((xfield_name).xlower)).apply)) ((xblank_fields))).if
+                              bogusForceDataize.write ((((xkwlist).xappend)).apply ("blank=True"))
+                            (xkwlist).if
+                              (((unsupported)).apply ((", ".add (((", ".xjoin)).apply ((xkwlist))))))
+                              (((unsupported)).apply (""))
+                    (ximports).if
+                      seq
+                        (((unsupported)).apply ("# This is an auto-generated Django model module created by ogrinspect."))
+                        (((unsupported)).apply ("from django.contrib.gis.db import models"))
+                        (((unsupported)).apply (""))
+                        (((unsupported)).apply (""))
+                    (((unsupported)).apply (("class %s(models.Model):".mod (xmodel_name))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xfield_name)) ((xwidth)) ((xprecision)) ((xfield_type)))) ((((xzip)).apply ((xogr_fields)) (((xlayer).xfield_widths)) (((xlayer).xfield_precisions)) (((xlayer).xfield_types)))))
+                      seq
+                        xmfield.write ((((xfield_name).xlower)).apply)
+                        ((((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((1.neg))))).eq "_").if
+                          (((unsupported)).apply ((xmfield)) ("field"))
+                        xkwargs_str.write (((xget_kwargs_str)).apply ((xfield_name)))
+                        (((unsupported)).apply ((xfield_type)) ((xOFTReal))).if
+                          (((unsupported)).apply (((((xfield_name).xlower)).apply)) ((xdecimal_fields))).if
+                            (((unsupported)).apply (("    %s = models.DecimalField(max_digits=%d, decimal_places=%d%s)".mod (((unsupported)).apply ((xmfield)) ((xwidth)) ((xprecision)) ((xkwargs_str))))))
+                            (((unsupported)).apply (("    %s = models.FloatField(%s)".mod (((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((xkwargs_str)) ((((unsupported)).apply (2)))))))))
+                          (((unsupported)).apply ((xfield_type)) ((xOFTInteger))).if
+                            (((unsupported)).apply (("    %s = models.IntegerField(%s)".mod (((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((xkwargs_str)) ((((unsupported)).apply (2)))))))))
+                            (((unsupported)).apply ((xfield_type)) ((xOFTInteger64))).if
+                              (((unsupported)).apply (("    %s = models.BigIntegerField(%s)".mod (((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((xkwargs_str)) ((((unsupported)).apply (2)))))))))
+                              (((unsupported)).apply ((xfield_type)) ((xOFTString))).if
+                                (((unsupported)).apply (("    %s = models.CharField(max_length=%s%s)".mod (((unsupported)).apply ((xmfield)) ((xwidth)) ((xkwargs_str))))))
+                                (((unsupported)).apply ((xfield_type)) ((xOFTDate))).if
+                                  (((unsupported)).apply (("    %s = models.DateField(%s)".mod (((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((xkwargs_str)) ((((unsupported)).apply (2)))))))))
+                                  (((unsupported)).apply ((xfield_type)) ((xOFTDateTime))).if
+                                    (((unsupported)).apply (("    %s = models.DateTimeField(%s)".mod (((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((xkwargs_str)) ((((unsupported)).apply (2)))))))))
+                                    (((unsupported)).apply ((xfield_type)) ((xOFTTime))).if
+                                      (((unsupported)).apply (("    %s = models.TimeField(%s)".mod (((unsupported)).apply ((xmfield)) ((((unsupported)).apply ((xkwargs_str)) ((((unsupported)).apply (2)))))))))
+                                      (((unsupported)).apply ((((xTypeError)).apply (("Unknown field type %s in %s".mod (((unsupported)).apply ((xfield_type)) ((xmfield))))))))
+                    xgtype.write ((xlayer).xgeom_type)
+                    (xmulti_geom).if
+                      bogusForceDataize.write ((((xgtype).xto_multi)).apply)
+                    xgeom_field.write ((xgtype).xdjango)
+                    (((unsupported)).apply ((xsrid)) ("None: is there a None literal in the EO language?")).if
+                      (((unsupported)).apply (((xlayer).xsrs)) ("None: is there a None literal in the EO language?")).if
+                        xsrid_str.write "srid=-1"
+                        seq
+                          xsrid.write (((xlayer).xsrs).xsrid)
+                          (((unsupported)).apply ((xsrid)) ("None: is there a None literal in the EO language?")).if
+                            xsrid_str.write "srid=-1"
+                            ((xsrid).eq 4326).if
+                              xsrid_str.write ""
+                              xsrid_str.write ("srid=%s".mod (xsrid))
+                      xsrid_str.write ("srid=%s".mod (xsrid))
+                    (((unsupported)).apply (("    %s = models.%s(%s)".mod (((unsupported)).apply ((xgeom_name)) ((xgeom_field)) ((xsrid_str))))))
+                    (xname_field).if
+                      seq
+                        (((unsupported)).apply (""))
+                        (((unsupported)).apply (("    def __str__(self): return self.%s".mod (xname_field))))

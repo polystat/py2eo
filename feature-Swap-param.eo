@@ -1,0 +1,157 @@
+memory > xstr
+memory > xforce_str
+memory > xrange
+memory > xIndexError
+memory > xField
+memory > xi
+memory > xgetattr
+memory > xGDALBase
+memory > xforce_bytes
+memory > xOGRGeomType
+memory > xisinstance
+memory > xOGRGeometry
+memory > xbool
+memory > xGDALException
+[] > feature
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__str__
+        memory > xgeom_type
+        memory > xgeom_api
+        memory > x__getitem__
+        memory > xgeom
+        memory > xcapi
+        memory > xfid
+        memory > x__eq__
+        memory > xget
+        memory > xindex
+        memory > xfields
+        memory > xdestructor
+        memory > xencoding
+        memory > x__init__
+        memory > xnum_fields
+        memory > x__len__
+        memory > xlayer_name
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xGDALBase)))
+              seq
+                (((unsupported)).apply)
+                xdestructor.write ((xcapi).xdestroy_feature)
+                x__init__.write
+                  [xself xfeat xlayer]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xfeat).not).if
+                          (((unsupported)).apply ((((xGDALException)).apply ("Cannot create OGR Feature, invalid pointer given."))))
+                        (((unsupported)).apply (((xself).xptr)) ((xfeat)))
+                        (((unsupported)).apply (((xself).x_layer)) ((xlayer)))
+                x__getitem__.write
+                  [xself xindex]
+                    memory > xi
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xisinstance)).apply ((xstr)) ((xindex))).if
+                          xi.write ((((xself).xindex)).apply ((xindex)))
+                          (((unsupported)).apply (0) ((xindex)) (((xself).xnum_fields))).if
+                            xi.write (xindex)
+                            (((unsupported)).apply ((((xIndexError)).apply (("Index out of range when accessing field in a feature: %s.".mod (xindex))))))
+                        (((unsupported)).apply ((((xField)).apply ((xself)) ((xi)))))
+                x__len__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xnum_fields)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (("Feature FID %d in Layer<%s>".mod (((unsupported)).apply (((xself).xfid)) (((xself).xlayer_name))))))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply ((((xbool)).apply (((((xcapi).xfeature_equal)).apply (((xself).xptr)) (((xother).x_ptr)))))))
+                xencoding.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).x_layer).x_ds).xencoding)))
+                xfid.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xget_fid)).apply (((xself).xptr)))))
+                xlayer_name.write
+                  [xself]
+                    memory > xname
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xname.write ((((xcapi).xget_feat_name)).apply ((((xself).x_layer).x_ldefn)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xforce_str)) ((xname)) (((xself).xencoding)) (TRUE))))
+                xnum_fields.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xget_feat_field_count)).apply (((xself).xptr)))))
+                xfields.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xforce_str)) (((((xcapi).xget_field_name)).apply (((((xcapi).xget_field_defn)).apply ((((xself).x_layer).x_ldefn)) ((xi)))))) (((xself).xencoding)) (TRUE))) ((xi)) ((((xrange)).apply (((xself).xnum_fields)))))))
+                xgeom.write
+                  [xself]
+                    memory > xgeom_ptr
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xgeom_ptr.write ((((xcapi).xget_feat_geom_ref)).apply (((xself).xptr)))
+                        (((unsupported)).apply ((((xOGRGeometry)).apply (((((xgeom_api).xclone_geom)).apply ((xgeom_ptr)))))))
+                xgeom_type.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xOGRGeomType)).apply (((((xcapi).xget_fd_geom_type)).apply ((((xself).x_layer).x_ldefn)))))))
+                xget.write
+                  [xself xfield]
+                    memory > xfield_name
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xfield_name.write (((xgetattr)).apply ((xfield)) ("name") ((xfield)))
+                        (((unsupported)).apply (((((unsupported)).apply ((xself)) ((xfield_name))).xvalue)))
+                xindex.write
+                  [xself xfield_name]
+                    memory > xi
+                    seq > @
+                      seq
+                        unsupported
+                        xi.write ((((xcapi).xget_field_index)).apply (((xself).xptr)) ((((xforce_bytes)).apply ((xfield_name)))))
+                        ((xi).less 0).if
+                          (((unsupported)).apply ((((xIndexError)).apply (("Invalid OFT field name given: %s.".mod (xfield_name))))))
+                        (((unsupported)).apply ((xi)))

@@ -1,0 +1,119 @@
+memory > xfalse
+memory > xjoin
+memory > xmark_safe
+memory > xobject
+memory > xSimpleTestCase
+[] > test_join
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_join05
+        memory > xtest_noniterable_arg_autoescape_off
+        memory > xtest_join02
+        memory > xtest_join07
+        memory > xtest_join03
+        memory > xtest_join04
+        memory > xtest_join01
+        memory > xtest_noniterable_arg
+        memory > xtest_join06
+        memory > xtest_autoescape_off
+        memory > xtest_autoescape
+        memory > xtest_list
+        memory > xtest_join08
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_join01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join01") ((((unsupported)).apply ("a") ((((unsupported)).apply ("alpha") ("beta & me"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha, beta &amp; me"))
+                xtest_join02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join02") ((((unsupported)).apply ("a") ((((unsupported)).apply ("alpha") ("beta & me"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha, beta & me"))
+                xtest_join03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join03") ((((unsupported)).apply ("a") ((((unsupported)).apply ("alpha") ("beta & me"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha &amp; beta &amp; me"))
+                xtest_join04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join04") ((((unsupported)).apply ("a") ((((unsupported)).apply ("alpha") ("beta & me"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha &amp; beta & me"))
+                xtest_join05.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join05") ((((unsupported)).apply ("a") ((((unsupported)).apply ("alpha") ("beta & me"))) ("var") (" & "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha &amp; beta &amp; me"))
+                xtest_join06.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join06") ((((unsupported)).apply ("a") ((((unsupported)).apply ("alpha") ("beta & me"))) ("var") ((((xmark_safe)).apply (" & "))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha & beta &amp; me"))
+                xtest_join07.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join07") ((((unsupported)).apply ("a") ((((unsupported)).apply ("Alpha") ("Beta & me"))) ("var") (" & "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha &amp; beta &amp; me"))
+                xtest_join08.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("join08") ((((unsupported)).apply ("a") ((((unsupported)).apply ("Alpha") ("Beta & me"))) ("var") ((((xmark_safe)).apply (" & "))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("alpha & beta &amp; me"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_list.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xjoin)).apply ((((unsupported)).apply (0) (1) (2))) ("glue"))) ("0glue1glue2"))
+                xtest_autoescape.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xjoin)).apply ((((unsupported)).apply ("<a>") ("<img>") ("</a>"))) ("<br>"))) ("&lt;a&gt;&lt;br&gt;&lt;img&gt;&lt;br&gt;&lt;/a&gt;"))
+                xtest_autoescape_off.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xjoin)) ((((unsupported)).apply ("<a>") ("<img>") ("</a>"))) ("<br>") ((xfalse)))) ("<a>&lt;br&gt;<img>&lt;br&gt;</a>"))
+                xtest_noniterable_arg.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write (((xobject)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xjoin)).apply ((xobj)) ("<br>"))) ((xobj)))
+                xtest_noniterable_arg_autoescape_off.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write (((xobject)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xjoin)) ((xobj)) ("<br>") ((xfalse)))) ((xobj)))

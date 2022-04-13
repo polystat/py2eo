@@ -1,0 +1,101 @@
+memory > xfalse
+memory > xAttributeError
+memory > xconstants
+memory > xMessageFailure
+memory > xgetattr
+memory > xdefault_storage
+memory > xTypeError
+memory > xException
+memory > xhasattr
+[] > api
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdebug
+        memory > xerror
+        memory > xinfo
+        memory > xget_messages
+        memory > xadd_message
+        memory > xset_level
+        memory > x__all__
+        memory > xget_level
+        memory > xwarning
+        memory > xsuccess
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("add_message") ("get_messages") ("get_level") ("set_level") ("debug") ("info") ("success") ("warning") ("error") ("MessageFailure"))
+            (((unsupported)).apply ((xException)))
+            xadd_message.write
+              [xrequest xlevel xmessage xextra_tags xfail_silently]
+                memory > xmessages
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xAttributeError)))
+                      xmessages.write ((xrequest).x_messages)
+                      seq
+                        ((((xhasattr)).apply ((xrequest)) ("META")).not).if
+                          (((unsupported)).apply ((((xTypeError)).apply (("add_message() argument must be an HttpRequest object, not '%s'.".mod (((xrequest).x__class__).x__name__))))))
+                        ((xfail_silently).not).if
+                          (((unsupported)).apply ((((xMessageFailure)).apply ("You cannot add messages without installing django.contrib.messages.middleware.MessageMiddleware"))))
+                      (((unsupported)).apply (((((xmessages).xadd)).apply ((xlevel)) ((xmessage)) ((xextra_tags)))))
+            xget_messages.write
+              [xrequest]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((xgetattr)).apply ((xrequest)) ("_messages") ((((unsupported)).apply)))))
+            xget_level.write
+              [xrequest]
+                memory > xstorage
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xstorage.write (((xgetattr)).apply ((xrequest)) ("_messages") ((((xdefault_storage)).apply ((xrequest)))))
+                    (((unsupported)).apply (((xstorage).xlevel)))
+            xset_level.write
+              [xrequest xlevel]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((((xhasattr)).apply ((xrequest)) ("_messages")).not).if
+                      (((unsupported)).apply ((xfalse)))
+                    (((unsupported)).apply ((((xrequest).x_messages).xlevel)) ((xlevel)))
+                    (((unsupported)).apply (TRUE))
+            xdebug.write
+              [xrequest xmessage xextra_tags xfail_silently]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xadd_message)) ((xrequest)) (((xconstants).xDEBUG)) ((xmessage)) ((xextra_tags)) ((xfail_silently)))
+            xinfo.write
+              [xrequest xmessage xextra_tags xfail_silently]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xadd_message)) ((xrequest)) (((xconstants).xINFO)) ((xmessage)) ((xextra_tags)) ((xfail_silently)))
+            xsuccess.write
+              [xrequest xmessage xextra_tags xfail_silently]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xadd_message)) ((xrequest)) (((xconstants).xSUCCESS)) ((xmessage)) ((xextra_tags)) ((xfail_silently)))
+            xwarning.write
+              [xrequest xmessage xextra_tags xfail_silently]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xadd_message)) ((xrequest)) (((xconstants).xWARNING)) ((xmessage)) ((xextra_tags)) ((xfail_silently)))
+            xerror.write
+              [xrequest xmessage xextra_tags xfail_silently]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply ((xadd_message)) ((xrequest)) (((xconstants).xERROR)) ((xmessage)) ((xextra_tags)) ((xfail_silently)))

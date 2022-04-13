@@ -1,0 +1,69 @@
+memory > xmark_safe
+memory > xlinecontinuesbr
+memory > xSimpleTestCase
+[] > test_linebreaksbr
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_carriage_newline
+        memory > xtest_linecontinuesbr02
+        memory > xtest_non_string_input
+        memory > xtest_linecontinuesbr01
+        memory > xtest_newline
+        memory > xtest_carriage
+        memory > xtest_autoescape_off
+        memory > xtest_autoescape
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_linecontinuesbr01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("linecontinuesbr01") ((((unsupported)).apply ("a") ("x&ny") ("b") ((((xmark_safe)).apply ("x&ny"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&amp;<br>y x&<br>y"))
+                xtest_linecontinuesbr02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("linecontinuesbr02") ((((unsupported)).apply ("a") ("x&ny") ("b") ((((xmark_safe)).apply ("x&ny"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("x&<br>y x&<br>y"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_newline.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinecontinuesbr)).apply ("line 1nline 2"))) ("line 1<br>line 2"))
+                xtest_carriage.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinecontinuesbr)).apply ("line 1rline 2"))) ("line 1<br>line 2"))
+                xtest_carriage_newline.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinecontinuesbr)).apply ("line 1rnline 2"))) ("line 1<br>line 2"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinecontinuesbr)).apply (123))) ("123"))
+                xtest_autoescape.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinecontinuesbr)).apply ("foon<a>bar</a>nbuz"))) ("foo<br>&lt;a&gt;bar&lt;/a&gt;<br>buz"))
+                xtest_autoescape_off.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xlinecontinuesbr)) ("foon<a>bar</a>nbuz") (FALSE))) ("foo<br><a>bar</a><br>buz"))

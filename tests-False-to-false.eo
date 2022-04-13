@@ -1,0 +1,540 @@
+memory > xstatement
+memory > xtimezone
+memory > xskipUnless
+memory > xTestCase
+memory > xskipIfDBFeature
+memory > xconnection
+memory > xLower
+memory > xIndex
+memory > xIndexedArticle2
+memory > xArticle
+memory > xskipUnlessDBFeature
+memory > xlen
+memory > xCASCADE
+memory > xfalse
+memory > xdatetime
+memory > xForeignKey
+memory > xstr
+memory > xQ
+memory > xcursor
+memory > xIndexTogetherSingleList
+memory > xTransactionTestCase
+memory > xoverride_settings
+memory > xArticleTranslation
+memory > xIndexedArticle
+memory > xeditor
+[] > tests
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_ops_class_partial
+        memory > xtest_covering_index
+        memory > xtest_ops_class
+        memory > xget_opclass_query
+        memory > xtest_integer_restriction_partial
+        memory > xtest_index_together
+        memory > xtest_descending_columns_list_sql
+        memory > xtest_covering_func_index
+        memory > xtest_ops_class_partial_tablespace
+        memory > xtest_create_index_ignores_opclasses
+        memory > xtest_partial_func_index
+        memory > xtest_condition_ignored
+        memory > xtest_ops_class_columns_lists_sql
+        memory > xtest_index_together_single_list
+        memory > xtest_multiple_conditions
+        memory > xtest_ops_class_multiple_columns
+        memory > xtest_index_name
+        memory > xtest_columns_list_sql
+        memory > xtest_covering_partial_index
+        memory > xtest_ops_class_descending_partial
+        memory > xtest_boolean_restriction_partial
+        memory > xtest_covering_ignored
+        memory > xtest_ops_class_include
+        memory > xtest_virtual_relation_indexes
+        memory > xtest_is_null_condition
+        memory > xtest_index_name_hash
+        memory > xtest_text_indexes
+        memory > xtest_partial_index
+        memory > xtest_ops_class_descending_columns_list_sql
+        memory > xtest_ops_class_descending
+        memory > xtest_ops_class_include_tablespace
+        memory > xavailable_apps
+        memory > xtest_no_index_for_foreignkey
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_index_name_hash.write
+                  [xself]
+                    memory > xindex_name
+                    memory > xeditor
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xeditor.write ((((xconnection).xschema_editor)).apply)
+                        xindex_name.write (((unsupported)).apply (((xeditor).x_create_index_name)) ((((xArticle).x_meta).xdb_table)) ((((unsupported)).apply ("c1"))) ("123"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xindex_name)) ("indexes_article_c1_a52bd80b123"))
+                xtest_index_name.write
+                  [xself]
+                    memory > xindex_name
+                    memory > xexpected
+                    memory > xeditor
+                    memory > xlong_name
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xlong_name.write ("l%sng".mod ("o".mul 100))
+                        xeditor.write ((((xconnection).xschema_editor)).apply)
+                        xindex_name.write (((unsupported)).apply (((xeditor).x_create_index_name)) ((((xArticle).x_meta).xdb_table)) ((((unsupported)).apply ("c1") ("c2") ((xlong_name)))) ("ix"))
+                        xexpected.write (((unsupported)).apply ("mysql") ("indexes_article_c1_c2_looooooooooooooooooo_255179b2ix") ("oracle") ("indexes_a_c1_c2_loo_255179b2ix") ("postgresql") ("indexes_article_c1_c2_loooooooooooooooooo_255179b2ix") ("sqlite") (("indexes_article_c1_c2_l%sng_255179b2ix".mod ("o".mul 100))))
+                        (((unsupported)).apply (((xconnection).xvendor)) ((xexpected))).if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("This test is only supported on the built-in database backends."))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xindex_name)) ((((unsupported)).apply ((xexpected)) (((xconnection).xvendor)))))
+                xtest_index_together.write
+                  [xself]
+                    memory > xeditor
+                    memory > xindex_sql
+                    seq > @
+                      seq
+                        xeditor.write ((((xconnection).xschema_editor)).apply)
+                        xindex_sql.write (((unsupported)).apply ((((xstr)).apply ((xstatement)))) ((xstatement)) (((((xeditor).x_model_indexes_sql)).apply ((xArticle)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xindex_sql)))) (1))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((((((xconnection).xops).xquote_name)).apply ((((unsupported)).apply (((xeditor).x_create_index_name)) ((((xArticle).x_meta).xdb_table)) ((((unsupported)).apply ("headline") ("pub_date"))) ("_idx"))))) ((((unsupported)).apply ((xindex_sql)) (0))))
+                xtest_index_together_single_list.write
+                  [xself]
+                    memory > xindex_sql
+                    seq > @
+                      seq
+                        xindex_sql.write (((((((xconnection).xschema_editor)).apply).x_model_indexes_sql)).apply ((xIndexTogetherSingleList)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xindex_sql)))) (1))
+                xtest_columns_list_sql.write
+                  [xself]
+                    memory > xindex
+                    memory > xeditor
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((unsupported)).apply ("headline"))) ("whitespace_idx"))
+                        xeditor.write ((((xconnection).xschema_editor)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("(%s)".mod ((((xeditor).xquote_name)).apply ("headline")))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))
+                xtest_descending_columns_list_sql.write
+                  [xself]
+                    memory > xindex
+                    memory > xeditor
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((unsupported)).apply ("-headline"))) ("whitespace_idx"))
+                        xeditor.write ((((xconnection).xschema_editor)).apply)
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("(%s DESC)".mod ((((xeditor).xquote_name)).apply ("headline")))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))
+            (((unsupported)).apply ((xTransactionTestCase)))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("indexes"))
+                xtest_create_index_ignores_opclasses.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("test_ops_class") ((((unsupported)).apply ("headline"))) ((((unsupported)).apply ("varchar_pattern_ops"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+            (((unsupported)).apply ((xTransactionTestCase)) ((((xskipIfDBFeature)).apply ("supports_partial_indexes"))))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("indexes"))
+                xtest_condition_ignored.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("test_condition_ignored") ((((unsupported)).apply ("published"))) ((((unsupported)).apply ((xQ)) (TRUE))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xArticle)) ((xindex)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (("WHERE %s".mod ((((xeditor).xquote_name)).apply ("published")))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))
+            (((unsupported)).apply ((xTransactionTestCase)) ((((xskipUnless)).apply ((((xconnection).xvendor).eq "postgresql")) ("PostgreSQL tests"))))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("indexes"))
+                xget_opclass_query.write (((unsupported)).apply)
+                xtest_text_indexes.write
+                  [xself]
+                    memory > xindex_sql
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply)
+                        xindex_sql.write (((unsupported)).apply ((((xstr)).apply ((xstatement)))) ((xstatement)) ((((((((xconnection).xschema_editor)).apply).x_model_indexes_sql)).apply ((xIndexedArticle)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xindex_sql)))) (5))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("(\"headline\" varchar_pattern_ops)") ((((unsupported)).apply ((xindex_sql)) (1))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("(\"body\" text_pattern_ops)") ((((unsupported)).apply ((xindex_sql)) (3))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("(\"slug\" varchar_pattern_ops)") ((((unsupported)).apply ((xindex_sql)) (4))))
+                xtest_virtual_relation_indexes.write
+                  [xself]
+                    memory > xindex_sql
+                    seq > @
+                      seq
+                        unsupported
+                        xindex_sql.write (((((((xconnection).xschema_editor)).apply).x_model_indexes_sql)).apply ((xArticle)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xindex_sql)))) (1))
+                xtest_ops_class.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("test_ops_class") ((((unsupported)).apply ("headline"))) ((((unsupported)).apply ("varchar_pattern_ops"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod "test_ops_class")))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("varchar_pattern_ops") ("test_ops_class"))))))
+                xtest_ops_class_multiple_columns.write
+                  [xself]
+                    memory > xexpected_ops_classes
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("test_ops_class_multiple") ((((unsupported)).apply ("headline") ("body"))) ((((unsupported)).apply ("varchar_pattern_ops") ("text_pattern_ops"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod "test_ops_class_multiple")))
+                            xexpected_ops_classes.write (((unsupported)).apply ((((unsupported)).apply ("varchar_pattern_ops") ("test_ops_class_multiple"))) ((((unsupported)).apply ("text_pattern_ops") ("test_ops_class_multiple"))))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((((xcursor).xfetchall)).apply)) ((xexpected_ops_classes)))
+                xtest_ops_class_partial.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("test_ops_class_partial") ((((unsupported)).apply ("body"))) ((((unsupported)).apply ("text_pattern_ops"))) ((((unsupported)).apply ((xQ)) ("China"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod "test_ops_class_partial")))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("text_pattern_ops") ("test_ops_class_partial"))))))
+                xtest_ops_class_partial_tablespace.write
+                  [xself]
+                    memory > xindex
+                    memory > xindexname
+                    seq > @
+                      seq
+                        xindexname.write "test_ops_class_tblspace"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((xindexname)) ((((unsupported)).apply ("body"))) ((((unsupported)).apply ("text_pattern_ops"))) ((((unsupported)).apply ((xQ)) ("China"))) ("pg_default"))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("TABLESPACE \"pg_default\" ") ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xIndexedArticle2)) ((xeditor)))))))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod (xindexname))))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("text_pattern_ops") ((xindexname)))))))
+                xtest_ops_class_descending.write
+                  [xself]
+                    memory > xindex
+                    memory > xindexname
+                    seq > @
+                      seq
+                        xindexname.write "test_ops_class_ordered"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((xindexname)) ((((unsupported)).apply ("-body"))) ((((unsupported)).apply ("text_pattern_ops"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod (xindexname))))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("text_pattern_ops") ((xindexname)))))))
+                xtest_ops_class_descending_partial.write
+                  [xself]
+                    memory > xindex
+                    memory > xindexname
+                    seq > @
+                      seq
+                        xindexname.write "test_ops_class_ordered_partial"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((xindexname)) ((((unsupported)).apply ("-body"))) ((((unsupported)).apply ("text_pattern_ops"))) ((((unsupported)).apply ((xQ)) ("China"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod (xindexname))))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("text_pattern_ops") ((xindexname)))))))
+                xtest_ops_class_include.write
+                  [xself]
+                    memory > xindex_name
+                    memory > xindex
+                    seq > @
+                      (((unsupported)).apply)
+                        xindex_name.write "test_ops_class_include"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((xindex_name)) ((((unsupported)).apply ("body"))) ((((unsupported)).apply ("text_pattern_ops"))) ((((unsupported)).apply ("headline"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod (xindex_name))))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("text_pattern_ops") ((xindex_name)))))))
+                xtest_ops_class_include_tablespace.write
+                  [xself]
+                    memory > xindex_name
+                    memory > xindex
+                    seq > @
+                      (((unsupported)).apply)
+                        xindex_name.write "test_ops_class_include_tblspace"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((xindex_name)) ((((unsupported)).apply ("body"))) ((((unsupported)).apply ("text_pattern_ops"))) ((((unsupported)).apply ("headline"))) ("pg_default"))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xIndexedArticle2)) ((xindex)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("TABLESPACE \"pg_default\"") ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xIndexedArticle2)) ((xeditor)))))))
+                        (((unsupported)).apply ((((((xeditor).xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply ((((xself).xget_opclass_query).mod (xindex_name))))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply (((((xcursor).xfetchall)).apply)) ((((unsupported)).apply ((((unsupported)).apply ("text_pattern_ops") ((xindex_name)))))))
+                xtest_ops_class_columns_lists_sql.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((unsupported)).apply ("headline"))) ("whitespace_idx") ((((unsupported)).apply ("text_pattern_ops"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply (("(%s text_pattern_ops)".mod ((((xeditor).xquote_name)).apply ("headline")))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))
+                xtest_ops_class_descending_columns_list_sql.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((unsupported)).apply ("-headline"))) ("whitespace_idx") ((((unsupported)).apply ("text_pattern_ops"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply (("(%s text_pattern_ops DESC)".mod ((((xeditor).xquote_name)).apply ("headline")))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))
+            (((unsupported)).apply ((xTransactionTestCase)) ((((xskipUnless)).apply ((((xconnection).xvendor).eq "mysql")) ("MySQL tests"))))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("indexes"))
+                xtest_no_index_for_foreignkey.write
+                  [xself]
+                    memory > xnew_field
+                    memory > xfield_created
+                    memory > xstorage
+                    memory > xindex_sql
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          xstorage.write (((((xconnection).xintrospection).xget_storage_engine)).apply ((xcursor)) ((((xArticleTranslation).x_meta).xdb_table)))
+                        ((xstorage).neq "InnoDB").if
+                          bogusForceDataize.write ((((xself).xskip)).apply ("This test only applies to the InnoDB storage engine"))
+                        xindex_sql.write (((unsupported)).apply ((((xstr)).apply ((xstatement)))) ((xstatement)) ((((((((xconnection).xschema_editor)).apply).x_model_indexes_sql)).apply ((xArticleTranslation)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xindex_sql)) ((((unsupported)).apply ("CREATE INDEX `indexes_articletranslation_article_no_constraint_id_d6c0806b` ON `indexes_articletranslation` (`article_no_constraint_id`)"))))
+                        xfield_created.write (xfalse)
+                        (((unsupported)).apply)
+                          (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                            seq
+                              xnew_field.write (((xForeignKey)).apply ((xArticle)) ((xCASCADE)))
+                              bogusForceDataize.write ((((xnew_field).xset_attributes_from_name)).apply ("new_foreign_key"))
+                              bogusForceDataize.write ((((xeditor).xadd_field)).apply ((xArticleTranslation)) ((xnew_field)))
+                              xfield_created.write TRUE
+                              bogusForceDataize.write ((((xself).xassertfalse)).apply (((xeditor).xdeferred_sql)))
+                          (xfield_created).if
+                            (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                              bogusForceDataize.write ((((xeditor).xremove_field)).apply ((xArticleTranslation)) ((xnew_field)))
+            (((unsupported)).apply ((xTransactionTestCase)) ((((xskipUnlessDBFeature)).apply ("supports_partial_indexes"))) ((((unsupported)).apply ((xoverride_settings)) (TRUE))))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("indexes"))
+                xtest_partial_index.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                        seq
+                          xindex.write (((unsupported)).apply ((xIndex)) ("recent_article_idx") ((((unsupported)).apply ("pub_date"))) ((((unsupported)).apply ((xQ)) ((((unsupported)).apply (((xdatetime).xdatetime)) (2015) (1) (1) (((((xtimezone).xget_current_timezone)).apply)))))))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply (("WHERE %s".mod ((((xeditor).xquote_name)).apply ("pub_date")))) ((((xstr)).apply ((((unsupported)).apply (((xindex).xcreate_sql)) ((xArticle)) ((xeditor)))))))
+                          (((unsupported)).apply (((xeditor).xadd_index)) ((xindex)) ((xArticle)))
+                          (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply (((xindex).xname)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))))
+                          (((unsupported)).apply (((xeditor).xremove_index)) ((xindex)) ((xArticle)))
+                xtest_integer_restriction_partial.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                        seq
+                          xindex.write (((unsupported)).apply ((xIndex)) ("recent_article_idx") ((((unsupported)).apply ("id"))) ((((unsupported)).apply ((xQ)) (1))))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply (("WHERE %s".mod ((((xeditor).xquote_name)).apply ("id")))) ((((xstr)).apply ((((unsupported)).apply (((xindex).xcreate_sql)) ((xArticle)) ((xeditor)))))))
+                          (((unsupported)).apply (((xeditor).xadd_index)) ((xindex)) ((xArticle)))
+                          (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply (((xindex).xname)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))))
+                          (((unsupported)).apply (((xeditor).xremove_index)) ((xindex)) ((xArticle)))
+                xtest_boolean_restriction_partial.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                        seq
+                          xindex.write (((unsupported)).apply ((xIndex)) ("published_index") ((((unsupported)).apply ("published"))) ((((unsupported)).apply ((xQ)) (TRUE))))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply (("WHERE %s".mod ((((xeditor).xquote_name)).apply ("published")))) ((((xstr)).apply ((((unsupported)).apply (((xindex).xcreate_sql)) ((xArticle)) ((xeditor)))))))
+                          (((unsupported)).apply (((xeditor).xadd_index)) ((xindex)) ((xArticle)))
+                          (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply (((xindex).xname)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))))
+                          (((unsupported)).apply (((xeditor).xremove_index)) ((xindex)) ((xArticle)))
+                xtest_multiple_conditions.write
+                  [xself]
+                    memory > xsql
+                    memory > xindex
+                    memory > xwhere
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            xindex.write (((unsupported)).apply ((xIndex)) ("recent_article_idx") ((((unsupported)).apply ("pub_date") ("headline"))) (((((unsupported)).apply ((xQ)) ((((unsupported)).apply (((xdatetime).xdatetime)) (2015) (1) (1) (((((xtimezone).xget_current_timezone)).apply))))).and (((unsupported)).apply ((xQ)) ("China")))))
+                            xsql.write (((xstr)).apply ((((unsupported)).apply (((xindex).xcreate_sql)) ((xArticle)) ((xeditor)))))
+                            xwhere.write ((((xsql).xfind)).apply ("WHERE"))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply (("WHERE (%s".mod ((((xeditor).xquote_name)).apply ("pub_date")))) ((xsql)))
+                            bogusForceDataize.write ((((xself).xassertGreater)).apply (((((xsql).xrfind)).apply ("headline"))) ((xwhere)))
+                            (((unsupported)).apply (((xeditor).xadd_index)) ((xindex)) ((xArticle)))
+                            (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                              bogusForceDataize.write ((((xself).xassertIn)).apply (((xindex).xname)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))))
+                            (((unsupported)).apply (((xeditor).xremove_index)) ((xindex)) ((xArticle)))
+                xtest_is_null_condition.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                        seq
+                          xindex.write (((unsupported)).apply ((xIndex)) ("recent_article_idx") ((((unsupported)).apply ("pub_date"))) ((((unsupported)).apply ((xQ)) ((xfalse)))))
+                          bogusForceDataize.write ((((xself).xassertIn)).apply (("WHERE %s IS NOT NULL".mod ((((xeditor).xquote_name)).apply ("pub_date")))) ((((xstr)).apply ((((unsupported)).apply (((xindex).xcreate_sql)) ((xArticle)) ((xeditor)))))))
+                          (((unsupported)).apply (((xeditor).xadd_index)) ((xindex)) ((xArticle)))
+                          (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                            bogusForceDataize.write ((((xself).xassertIn)).apply (((xindex).xname)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))))
+                          (((unsupported)).apply (((xeditor).xremove_index)) ((xindex)) ((xArticle)))
+                xtest_partial_func_index.write
+                  [xself]
+                    memory > xindex
+                    memory > xindex_name
+                    memory > xsql
+                    memory > xtable
+                    memory > xconstraints
+                    seq > @
+                      (((unsupported)).apply)
+                        xindex_name.write "partial_func_idx"
+                        xindex.write (((unsupported)).apply ((xIndex)) (((((((xLower)).apply ("headline")).xdesc)).apply)) ((xindex_name)) ((((unsupported)).apply ((xQ)) ((xfalse)))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            (((unsupported)).apply (((xeditor).xadd_index)) ((xindex)) ((xArticle)))
+                            xsql.write (((unsupported)).apply (((xindex).xcreate_sql)) ((xArticle)) ((xeditor)))
+                        xtable.write (((xArticle).x_meta).xdb_table)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xsql).xreferences_column)).apply ((xtable)) ("headline"))) (TRUE))
+                        xsql.write (((xstr)).apply ((xsql)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("LOWER(%s)".mod ((((xeditor).xquote_name)).apply ("headline")))) ((xsql)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("WHERE %s IS NOT NULL".mod ((((xeditor).xquote_name)).apply ("pub_date")))) ((xsql)))
+                        bogusForceDataize.write ((((xself).xassertGreater)).apply (((((xsql).xfind)).apply ("WHERE"))) (((((xsql).xfind)).apply ("LOWER"))))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          xconstraints.write (((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((xtable)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xindex_name)) ((xconstraints)))
+                        (((xconnection).xfeatures).xsupports_index_column_ordering).if
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xindex_name)))) ("orders"))) ((((unsupported)).apply ("DESC"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xremove_index)).apply ((xArticle)) ((xindex)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          bogusForceDataize.write ((((xself).xassertNotIn)).apply ((xindex_name)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((xtable)))))
+            (((unsupported)).apply ((xTransactionTestCase)) ((((xskipUnlessDBFeature)).apply ("supports_covering_indexes"))))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("indexes"))
+                xtest_covering_index.write
+                  [xself]
+                    memory > xindex
+                    memory > xconstraints
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("covering_headline_idx") ((((unsupported)).apply ("headline"))) ((((unsupported)).apply ("pub_date") ("published"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIn)).apply (("(%s) INCLUDE (%s, %s)".mod (((unsupported)).apply (((((xeditor).xquote_name)).apply ("headline"))) (((((xeditor).xquote_name)).apply ("pub_date"))) (((((xeditor).xquote_name)).apply ("published")))))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))
+                            bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xArticle)) ((xindex)))
+                            (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                              seq
+                                xconstraints.write (((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))
+                                bogusForceDataize.write ((((xself).xassertIn)).apply (((xindex).xname)) ((xconstraints)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xconstraints)) (((xindex).xname)))) ("columns"))) ((((unsupported)).apply ("headline") ("pub_date") ("published"))))
+                            bogusForceDataize.write ((((xeditor).xremove_index)).apply ((xArticle)) ((xindex)))
+                            (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                              bogusForceDataize.write ((((xself).xassertNotIn)).apply (((xindex).xname)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))))
+                xtest_covering_partial_index.write
+                  [xself]
+                    memory > xindex
+                    memory > xconstraints
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("covering_partial_headline_idx") ((((unsupported)).apply ("headline"))) ((((unsupported)).apply ("pub_date"))) ((((unsupported)).apply ((xQ)) ((xfalse)))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertIn)).apply (("(%s) INCLUDE (%s) WHERE %s ".mod (((unsupported)).apply (((((xeditor).xquote_name)).apply ("headline"))) (((((xeditor).xquote_name)).apply ("pub_date"))) (((((xeditor).xquote_name)).apply ("pub_date")))))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))
+                            bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xArticle)) ((xindex)))
+                            (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                              seq
+                                xconstraints.write (((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))
+                                bogusForceDataize.write ((((xself).xassertIn)).apply (((xindex).xname)) ((xconstraints)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xconstraints)) (((xindex).xname)))) ("columns"))) ((((unsupported)).apply ("headline") ("pub_date"))))
+                            bogusForceDataize.write ((((xeditor).xremove_index)).apply ((xArticle)) ((xindex)))
+                            (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                              bogusForceDataize.write ((((xself).xassertNotIn)).apply (((xindex).xname)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((((xArticle).x_meta).xdb_table)))))
+                xtest_covering_func_index.write
+                  [xself]
+                    memory > xindex
+                    memory > xindex_name
+                    memory > xsql
+                    memory > xtable
+                    memory > xconstraints
+                    seq > @
+                      (((unsupported)).apply)
+                        xindex_name.write "covering_func_headline_idx"
+                        xindex.write (((unsupported)).apply ((xIndex)) ((((xLower)).apply ("headline"))) ((xindex_name)) ((((unsupported)).apply ("pub_date"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          seq
+                            (((unsupported)).apply (((xeditor).xadd_index)) ((xindex)) ((xArticle)))
+                            xsql.write (((unsupported)).apply (((xindex).xcreate_sql)) ((xArticle)) ((xeditor)))
+                        xtable.write (((xArticle).x_meta).xdb_table)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xsql).xreferences_column)).apply ((xtable)) ("headline"))) (TRUE))
+                        xsql.write (((xstr)).apply ((xsql)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("LOWER(%s)".mod ((((xeditor).xquote_name)).apply ("headline")))) ((xsql)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply (("INCLUDE (%s)".mod ((((xeditor).xquote_name)).apply ("pub_date")))) ((xsql)))
+                        bogusForceDataize.write ((((xself).xassertGreater)).apply (((((xsql).xfind)).apply ("INCLUDE"))) (((((xsql).xfind)).apply ("LOWER"))))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          xconstraints.write (((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((xtable)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ((xindex_name)) ((xconstraints)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("pub_date") ((((unsupported)).apply ((((unsupported)).apply ((xconstraints)) ((xindex_name)))) ("columns"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xremove_index)).apply ((xArticle)) ((xindex)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          bogusForceDataize.write ((((xself).xassertNotIn)).apply ((xindex_name)) ((((unsupported)).apply ((((xconnection).xintrospection).xget_constraints)) ((xcursor)) ((xtable)))))
+            (((unsupported)).apply ((xTransactionTestCase)) ((((xskipIfDBFeature)).apply ("supports_covering_indexes"))))
+              seq
+                xavailable_apps.write (((unsupported)).apply ("indexes"))
+                xtest_covering_ignored.write
+                  [xself]
+                    memory > xindex
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply ((xIndex)) ("test_covering_ignored") ((((unsupported)).apply ("headline"))) ((((unsupported)).apply ("pub_date"))))
+                        (((unsupported)).apply (((((xconnection).xschema_editor)).apply)) ((xeditor)))
+                          bogusForceDataize.write ((((xeditor).xadd_index)).apply ((xArticle)) ((xindex)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (("INCLUDE (%s)".mod ((((xeditor).xquote_name)).apply ("headline")))) ((((xstr)).apply (((((xindex).xcreate_sql)).apply ((xArticle)) ((xeditor)))))))

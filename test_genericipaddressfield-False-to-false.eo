@@ -1,0 +1,162 @@
+memory > xfalse
+memory > xValueError
+memory > xValidationError
+memory > xGenericIPAddressField
+memory > xSimpleTestCase
+[] > test_genericipaddressfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_generic_ipaddress_as_generic
+        memory > xtest_generic_ipaddress_invalid_arguments
+        memory > xtest_generic_ipaddress_normalization
+        memory > xtest_generic_ipaddress_as_ipv4_only
+        memory > xtest_generic_ipaddress_as_generic_not_required
+        memory > xtest_generic_ipaddress_as_ipv6_only
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_generic_ipaddress_invalid_arguments.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply ((xGenericIPAddressField)) ("hamster"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValueError)))))
+                          (((unsupported)).apply ((xGenericIPAddressField)) ("ipv4") (TRUE))
+                xtest_generic_ipaddress_as_generic.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xGenericIPAddressField)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 127.0.0.1 "))) ("127.0.0.1"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("127.0.0."))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1.2.3.4.5"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("256.125.1.5"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" fe80::223:6cff:fe8a:2e8a "))) ("fe80::223:6cff:fe8a:2e8a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 2a02::223:6cff:fe8a:2e8a "))) ("2a02::223:6cff:fe8a:2e8a"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("12345:2:3:4"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1::2:3::4"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo::223:6cff:fe8a:2e8a"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1::2:3:4:5:6:7:8"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1:2"))
+                xtest_generic_ipaddress_as_ipv4_only.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xGenericIPAddressField)) ("IPv4"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 127.0.0.1 "))) ("127.0.0.1"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("127.0.0."))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1.2.3.4.5"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("256.125.1.5"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("fe80::223:6cff:fe8a:2e8a"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("2a02::223:6cff:fe8a:2e8a"))
+                xtest_generic_ipaddress_as_ipv6_only.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xGenericIPAddressField)) ("IPv6"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("127.0.0.1"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("127.0.0."))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1.2.3.4.5"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("256.125.1.5"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" fe80::223:6cff:fe8a:2e8a "))) ("fe80::223:6cff:fe8a:2e8a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 2a02::223:6cff:fe8a:2e8a "))) ("2a02::223:6cff:fe8a:2e8a"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("12345:2:3:4"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1::2:3::4"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo::223:6cff:fe8a:2e8a"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1::2:3:4:5:6:7:8"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1:2"))
+                xtest_generic_ipaddress_as_generic_not_required.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xGenericIPAddressField)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (""))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))) (""))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("127.0.0.1"))) ("127.0.0.1"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("127.0.0."))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1.2.3.4.5"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid IPv4 or IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("256.125.1.5"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" fe80::223:6cff:fe8a:2e8a "))) ("fe80::223:6cff:fe8a:2e8a"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 2a02::223:6cff:fe8a:2e8a "))) ("2a02::223:6cff:fe8a:2e8a"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("12345:2:3:4"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1::2:3::4"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("foo::223:6cff:fe8a:2e8a"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1::2:3:4:5:6:7:8"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This is not a valid IPv6 address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1:2"))
+                xtest_generic_ipaddress_normalization.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xGenericIPAddressField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" ::ffff:0a0a:0a0a  "))) ("::ffff:10.10.10.10"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" ::ffff:10.10.10.10  "))) ("::ffff:10.10.10.10"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 2001:000:a:0000:0:fe:fe:beef  "))) ("2001:0:a::fe:fe:beef"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" 2001::a:0000:0:fe:fe:beef  "))) ("2001:0:a::fe:fe:beef"))
+                        xf.write (((unsupported)).apply ((xGenericIPAddressField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply (" ::ffff:0a0a:0a0a"))) ("10.10.10.10"))

@@ -1,0 +1,53 @@
+memory > xComboField
+memory > xValidationError
+memory > xCharField
+memory > xEmailField
+memory > xSimpleTestCase
+[] > test_combofield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_combofield_2
+        memory > xtest_combofield_1
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_combofield_1.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xComboField)) ((((unsupported)).apply ((((unsupported)).apply ((xCharField)) (20))) ((((xEmailField)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("test@example.com"))) ("test@example.com"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value has at most 20 characters (it has 28).'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("longemailaddress@example.com"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid email address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("not an email"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                xtest_combofield_2.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xComboField)) ((((unsupported)).apply ((((unsupported)).apply ((xCharField)) (20))) ((((xEmailField)).apply)))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("test@example.com") (((((xf).xclean)).apply ("test@example.com"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Ensure this value has at most 20 characters (it has 28).'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("longemailaddress@example.com"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid email address.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("not an email"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("") (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("") (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))

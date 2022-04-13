@@ -1,0 +1,113 @@
+memory > xtimezone
+memory > xdatetime
+memory > xTestCase
+memory > xDateTimeModel
+memory > xmodels
+memory > xSimpleTestCase
+[] > test_datetimefield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_lookup_date_with_use_tz
+        memory > xtest_lookup_date_without_use_tz
+        memory > xtest_timefield_to_python_microseconds
+        memory > xtest_datetimefield_to_python_microseconds
+        memory > xtest_datefield_cleans_date
+        memory > xtest_datetimes_save_completely
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_datetimefield_to_python_microseconds.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        unsupported
+                        xf.write ((((xmodels).xDateTimeField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply ("2001-01-02 03:04:05.000006"))) (((((xdatetime).xdatetime)).apply (2001) (1) (2) (3) (4) (5) (6))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply ("2001-01-02 03:04:05.999999"))) (((((xdatetime).xdatetime)).apply (2001) (1) (2) (3) (4) (5) (999999))))
+                xtest_timefield_to_python_microseconds.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        unsupported
+                        xf.write ((((xmodels).xTimeField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply ("01:02:03.000004"))) (((((xdatetime).xtime)).apply (1) (2) (3) (4))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xto_python)).apply ("01:02:03.999999"))) (((((xdatetime).xtime)).apply (1) (2) (3) (999999))))
+                xtest_datetimes_save_completely.write
+                  [xself]
+                    memory > xdatetim
+                    memory > xtim
+                    memory > xobj
+                    memory > xdat
+                    seq > @
+                      seq
+                        xdat.write ((((xdatetime).xdate)).apply (2014) (3) (12))
+                        xdatetim.write ((((xdatetime).xdatetime)).apply (2014) (3) (12) (21) (22) (23) (240000))
+                        xtim.write ((((xdatetime).xtime)).apply (21) (22) (23) (240000))
+                        (((unsupported)).apply ((((xDateTimeModel).xobjects).xcreate)) ((xdat)) ((xdatetim)) ((xtim)))
+                        xobj.write (((((xDateTimeModel).xobjects).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((xobj)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xd)) ((xdat)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xdt)) ((xdatetim)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xt)) ((xtim)))
+                xtest_lookup_date_without_use_tz.write
+                  [xself]
+                    memory > xd
+                    memory > xt
+                    memory > xdt2
+                    memory > xm
+                    memory > xdt1
+                    seq > @
+                      (((unsupported)).apply)
+                        xd.write ((((xdatetime).xdate)).apply (2014) (3) (12))
+                        xdt1.write ((((xdatetime).xdatetime)).apply (2014) (3) (12) (21) (22) (23) (240000))
+                        xdt2.write ((((xdatetime).xdatetime)).apply (2014) (3) (11) (21) (22) (23) (240000))
+                        xt.write ((((xdatetime).xtime)).apply (21) (22) (23) (240000))
+                        xm.write (((unsupported)).apply ((((xDateTimeModel).xobjects).xcreate)) ((xd)) ((xdt1)) ((xt)))
+                        (((unsupported)).apply ((((xDateTimeModel).xobjects).xcreate)) ((xd)) ((xdt2)) ((xt)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xm)) ((((unsupported)).apply ((((xDateTimeModel).xobjects).xget)) ((xd)))))
+                xtest_lookup_date_with_use_tz.write
+                  [xself]
+                    memory > xd
+                    memory > xt
+                    memory > xdt2
+                    memory > xm1
+                    memory > xdt1
+                    memory > xm2
+                    seq > @
+                      (((unsupported)).apply)
+                        xd.write ((((xdatetime).xdate)).apply (2014) (3) (12))
+                        xdt1.write (((unsupported)).apply (((xdatetime).xdatetime)) (2014) (3) (12) (10) (22) (23) (240000) (((((xtimezone).xget_current_timezone)).apply)))
+                        xdt2.write (((unsupported)).apply (((xdatetime).xdatetime)) (2014) (3) (12) (21) (22) (23) (240000) (((((xtimezone).xget_current_timezone)).apply)))
+                        xt.write ((((xdatetime).xtime)).apply (21) (22) (23) (240000))
+                        xm1.write (((unsupported)).apply ((((xDateTimeModel).xobjects).xcreate)) ((xd)) ((xdt1)) ((xt)))
+                        xm2.write (((unsupported)).apply ((((xDateTimeModel).xobjects).xcreate)) ((xd)) ((xdt2)) ((xt)))
+                        bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply ((((xDateTimeModel).xobjects).xfilter)) ((xd)))) ((((unsupported)).apply ((xm1)) ((xm2)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ("UTC"))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply ((((xDateTimeModel).xobjects).xfilter)) ((xd)))) ((((unsupported)).apply ((xm1)))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_datefield_cleans_date.write
+                [xself]
+                  memory > xf
+                  seq > @
+                    seq
+                      xf.write ((((xmodels).xDateField)).apply)
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xdate)).apply (2008) (10) (10))) (((((xf).xclean)).apply ("2008-10-10") ("None: is there a None literal in the EO language?"))))

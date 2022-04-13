@@ -1,0 +1,90 @@
+memory > xMultiValueDict
+memory > xMultipleChoiceField
+memory > xTestForm
+memory > xWidgetTest
+memory > xForm
+memory > xMultipleHiddenInput
+[] > test_multiplehiddeninput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_render_multiple
+        memory > xtest_render_attrs_multiple
+        memory > xtest_render_attrs
+        memory > xtest_render_empty
+        memory > xtest_render_none
+        memory > xtest_render_increment_id
+        memory > xtest_render_attrs_constructor
+        memory > xtest_render_single
+        memory > xtest_fieldset
+        memory > xwidget
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (((xMultipleHiddenInput)).apply)
+                xtest_render_single.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ((((unsupported)).apply ("test@example.com"))) ("<input type=\"hidden\" name=\"email\" value=\"test@example.com\">"))
+                xtest_render_multiple.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ((((unsupported)).apply ("test@example.com") ("foo@example.com"))) ("<input type=\"hidden\" name=\"email\" value=\"test@example.com\">n<input type=\"hidden\" name=\"email\" value=\"foo@example.com\">"))
+                xtest_render_attrs.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ((((unsupported)).apply ("test@example.com"))) ((((unsupported)).apply ("class") ("fun"))) ("<input type=\"hidden\" name=\"email\" value=\"test@example.com\" class=\"fun\">"))
+                xtest_render_attrs_multiple.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("email") ((((unsupported)).apply ("test@example.com") ("foo@example.com"))) ((((unsupported)).apply ("class") ("fun"))) ("<input type=\"hidden\" name=\"email\" value=\"test@example.com\" class=\"fun\">n<input type=\"hidden\" name=\"email\" value=\"foo@example.com\" class=\"fun\">"))
+                xtest_render_attrs_constructor.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((unsupported)).apply ((xMultipleHiddenInput)) ((((unsupported)).apply ("class") ("fun"))))
+                        bogusForceDataize.write ((((xself).xcheck_html)).apply ((xwidget)) ("email") ((((unsupported)).apply)) (""))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("email") ((((unsupported)).apply ("foo@example.com"))) ("<input type=\"hidden\" class=\"fun\" value=\"foo@example.com\" name=\"email\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("email") ((((unsupported)).apply ("foo@example.com") ("test@example.com"))) ("<input type=\"hidden\" class=\"fun\" value=\"foo@example.com\" name=\"email\">n<input type=\"hidden\" class=\"fun\" value=\"test@example.com\" name=\"email\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("email") ((((unsupported)).apply ("foo@example.com"))) ((((unsupported)).apply ("class") ("special"))) ("<input type=\"hidden\" class=\"special\" value=\"foo@example.com\" name=\"email\">"))
+                xtest_render_empty.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xcheck_html)).apply (((xself).xwidget)) ("email") ((((unsupported)).apply)) (""))
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xcheck_html)).apply (((xself).xwidget)) ("email") ("None: is there a None literal in the EO language?") (""))
+                xtest_render_increment_id.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("letters") ((((unsupported)).apply ("a") ("b") ("c"))) ((((unsupported)).apply ("id") ("hideme"))) ("<input type=\"hidden\" name=\"letters\" value=\"a\" id=\"hideme_0\">n<input type=\"hidden\" name=\"letters\" value=\"b\" id=\"hideme_1\">n<input type=\"hidden\" name=\"letters\" value=\"c\" id=\"hideme_2\">"))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xtemplate_name
+                    memory > xform
+                    memory > xcomposers
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xcomposers.write (((unsupported)).apply ((xMultipleChoiceField)) ((((unsupported)).apply ((((unsupported)).apply ("J") ("John Lennon"))) ((((unsupported)).apply ("P") ("Paul McCartney"))))) ((xMultipleHiddenInput)))
+                        xform.write (((xTestForm)).apply ((((xMultiValueDict)).apply ((((unsupported)).apply ("composers") ((((unsupported)).apply ("J") ("P"))))))))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<input type=\"hidden\" name=\"composers\" value=\"J\" id=\"id_composers_0\"><input type=\"hidden\" name=\"composers\" value=\"P\" id=\"id_composers_1\">") (((((xform).xrender)).apply)))

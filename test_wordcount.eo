@@ -1,0 +1,58 @@
+memory > xmark_safe
+memory > xSimpleTestCase
+memory > xwordcount
+[] > test_wordcount
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_count_multiple
+        memory > xtest_wordcount01
+        memory > xtest_non_string_input
+        memory > xtest_empty_string
+        memory > xtest_count_one
+        memory > xtest_wordcount02
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_wordcount01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("wordcount01") ((((unsupported)).apply ("a") ("a & b") ("b") ((((xmark_safe)).apply ("a &amp; b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("3 3"))
+                xtest_wordcount02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("wordcount02") ((((unsupported)).apply ("a") ("a & b") ("b") ((((xmark_safe)).apply ("a &amp; b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("3 3"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_empty_string.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordcount)).apply (""))) (0))
+                xtest_count_one.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordcount)).apply ("oneword"))) (1))
+                xtest_count_multiple.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordcount)).apply ("lots of words"))) (3))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xwordcount)).apply (123))) (1))

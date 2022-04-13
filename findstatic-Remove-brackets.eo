@@ -1,0 +1,68 @@
+memory > xLabelCommand
+memory > xlist
+memory > xstr
+memory > xfinders
+memory > xloc
+memory > xsuper
+memory > xtuple
+memory > xos
+memory > xoptions
+memory > xisinstance
+[] > findstatic
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xlabel
+        memory > xhandle_label
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xLabelCommand)))
+              seq
+                xhelp.write "Finds the absolute paths for the given static file(s)."
+                xlabel.write "staticfile"
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsuper).xadd_arguments)).apply ((xparser)))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--first") ("store_false") ("all") ("Only return the first match for each static file."))
+                xhandle_label.write
+                  [xself xpath]
+                    memory > xverbosity
+                    memory > xmessage
+                    memory > xsearched_locations
+                    memory > xfile_list
+                    memory > xresult
+                    seq > @
+                      (((unsupported)).apply)
+                        xverbosity.write (((unsupported)).apply ((xoptions)) ("verbosity"))
+                        xresult.write (((unsupported)).apply (((xfinders).xfind)) ((xpath)) ((((unsupported)).apply ((xoptions)) ("all"))))
+                        ((xverbosity).geq 2).if
+                          xsearched_locations.write ("nLooking in the following locations:n  %s".mod ((("n  ".xjoin)).apply ((((unsupported)).apply ((((xstr)).apply ((xloc)))) ((xloc)) (((xfinders).xsearched_locations))))))
+                          xsearched_locations.write ""
+                        (xresult).if
+                          seq
+                            ((((xisinstance)).apply ((xresult)) ((((unsupported)).apply ((xlist)) ((xtuple))))).not).if
+                              xresult.write (((unsupported)).apply ((xresult)))
+                            xresult.write (((unsupported)).apply ((((((xos).xpath).xrealpath)).apply ((xpath)))) ((xpath)) ((xresult)))
+                            ((xverbosity).geq 1).if
+                              seq
+                                xfile_list.write ((("n  ".xjoin)).apply ((xresult)))
+                                (((unsupported)).apply (("Found '%s' here:n  %s%s".mod (((unsupported)).apply ((xpath)) ((xfile_list)) ((xsearched_locations))))))
+                              (((unsupported)).apply (((("n".xjoin)).apply ((xresult)))))
+                          seq
+                            xmessage.write (((unsupported)).apply (("No matching file found for '%s'.".mod (xpath))))
+                            ((xverbosity).geq 2).if
+                              bogusForceDataize.write ((((xmessage).xappend)).apply ((xsearched_locations)))
+                            ((xverbosity).geq 1).if
+                              bogusForceDataize.write (((((xself).xstderr).xwrite)).apply (((("n".xjoin)).apply ((xmessage)))))

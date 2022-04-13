@@ -1,0 +1,48 @@
+memory > xIntegerUsernameUserManager
+memory > xBaseUserManager
+memory > xAbstractBaseUser
+memory > xmodels
+memory > xuser
+[] > with_integer_username
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_by_natural_key
+        memory > xobjects
+        memory > xpassword
+        memory > xUSERNAME_FIELD
+        memory > xREQUIRED_FIELDS
+        memory > xcreate_user
+        memory > xusername
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseUserManager)))
+              seq
+                xcreate_user.write
+                  [xself xusername xpassword]
+                    memory > xuser2
+                    seq > @
+                      seq
+                        xuser2.write (((unsupported)).apply (((xself).xmodel)) ((xusername)))
+                        bogusForceDataize.write ((((xuser).xset_password)).apply ((xpassword)))
+                        (((unsupported)).apply (((xuser).xsave)) (((xself).x_db)))
+                        (((unsupported)).apply ((xuser)))
+                xget_by_natural_key.write
+                  [xself xusername]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xget)) ((xusername)))))
+            (((unsupported)).apply ((xAbstractBaseUser)))
+              seq
+                xusername.write ((((xmodels).xIntegerField)).apply)
+                xpassword.write (((unsupported)).apply (((xmodels).xCharField)) (255))
+                xUSERNAME_FIELD.write "username"
+                xREQUIRED_FIELDS.write (((unsupported)).apply ("username") ("password"))
+                xobjects.write (((xIntegerUsernameUserManager)).apply)

@@ -1,0 +1,158 @@
+memory > xuser_agent_regex
+memory > xurlparse
+memory > xmail_managers
+memory > xany
+memory > xpattern
+memory > xbool
+memory > xgetattr
+memory > xlen
+memory > xRuntimeError
+memory > xescape_leading_slashes
+memory > xstr
+memory > xis_valid_path
+memory > xPermissionDenied
+memory > xsettings
+memory > xre
+memory > xMiddlewareMixin
+memory > xHttpResponsePermanentRedirect
+[] > common
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_full_path_with_slash
+        memory > xprocess_response
+        memory > xshould_redirect_with_slash
+        memory > xis_internal_request
+        memory > xresponse_redirect_class
+        memory > xprocess_request
+        memory > xis_ignorable_request
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                (((unsupported)).apply)
+                xresponse_redirect_class.write (xHttpResponsePermanentRedirect)
+                xprocess_request.write
+                  [xself xrequest]
+                    memory > xmust_prepend
+                    memory > xredirect_url
+                    memory > xuser_agent
+                    memory > xpath
+                    memory > xhost
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xuser_agent.write (((((xrequest).xMETA).xget)).apply ("HTTP_USER_AGENT"))
+                        (((unsupported)).apply ((xuser_agent)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xuser_agent_regex)) (((xsettings).xDISALLOWED_USER_AGENTS)))
+                            ((((xuser_agent_regex).xsearch)).apply ((xuser_agent))).if
+                              (((unsupported)).apply ((((xPermissionDenied)).apply ("Forbidden user agent"))))
+                        xhost.write ((((xrequest).xget_host)).apply)
+                        xmust_prepend.write ((((xsettings).xPREPEND_WWW).and (xhost)).and (((((xhost).xstartswith)).apply ("www.")).not))
+                        xredirect_url.write ((xmust_prepend).if ("%s://www.%s".mod (((unsupported)).apply (((xrequest).xscheme)) ((xhost)))) "")
+                        ((((xself).xshould_redirect_with_slash)).apply ((xrequest))).if
+                          xpath.write ((((xself).xget_full_path_with_slash)).apply ((xrequest)))
+                          xpath.write ((((xrequest).xget_full_path)).apply)
+                        ((xredirect_url).or ((xpath).neq ((((xrequest).xget_full_path)).apply))).if
+                          seq
+                            (((unsupported)).apply ((xredirect_url)) ((xpath)))
+                            (((unsupported)).apply (((((xself).xresponse_redirect_class)).apply ((xredirect_url)))))
+                xshould_redirect_with_slash.write
+                  [xself xrequest]
+                    memory > xurlconf
+                    memory > xview
+                    memory > xmatch
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((xsettings).xAPPEND_SLASH).and ((((((xrequest).xpath_info).xendswith)).apply ("/")).not)).if
+                          seq
+                            xurlconf.write (((xgetattr)).apply ((xrequest)) ("urlconf") ("None: is there a None literal in the EO language?"))
+                            ((((xis_valid_path)).apply (((xrequest).xpath_info)) ((xurlconf))).not).if
+                              seq
+                                xmatch.write (((xis_valid_path)).apply (("%s/".mod ((xrequest).xpath_info))) ((xurlconf)))
+                                (xmatch).if
+                                  seq
+                                    xview.write ((xmatch).xfunc)
+                                    (((unsupported)).apply ((((xgetattr)).apply ((xview)) ("should_append_slash") (TRUE))))
+                        (((unsupported)).apply (FALSE))
+                xget_full_path_with_slash.write
+                  [xself xrequest]
+                    memory > xnew_path
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xnew_path.write (((unsupported)).apply (((xrequest).xget_full_path)) (TRUE))
+                        xnew_path.write (((xescape_leading_slashes)).apply ((xnew_path)))
+                        (((xsettings).xDEBUG).and (((unsupported)).apply (((xrequest).xmethod)) ((((unsupported)).apply ("POST") ("PUT") ("PATCH"))))).if
+                          (((unsupported)).apply ((((xRuntimeError)).apply (("You called this URL via %(method)s, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining %(method)s data. Change your form to point to %(url)s (note the trailing slash), or set APPEND_SLASH=False in your Django settings.".mod (((unsupported)).apply ("method") (((xrequest).xmethod)) ("url") ((((((xrequest).xget_host)).apply).sub (xnew_path)))))))))
+                        (((unsupported)).apply ((xnew_path)))
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((((xresponse).xstatus_code).eq 404).and ((((xself).xshould_redirect_with_slash)).apply ((xrequest)))).if
+                          (((unsupported)).apply (((((xself).xresponse_redirect_class)).apply (((((xself).xget_full_path_with_slash)).apply ((xrequest)))))))
+                        ((((xresponse).xstreaming).not).and (((((xresponse).xhas_header)).apply ("Content-Length")).not)).if
+                          (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Length"))) ((((xstr)).apply ((((xlen)).apply (((xresponse).xcontent)))))))
+                        (((unsupported)).apply ((xresponse)))
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    memory > xip
+                    memory > xpath
+                    memory > xreferer
+                    memory > xua
+                    memory > xdomain
+                    seq > @
+                      seq
+                        unsupported
+                        ((((xresponse).xstatus_code).eq 404).and (((xsettings).xDEBUG).not)).if
+                          seq
+                            xdomain.write ((((xrequest).xget_host)).apply)
+                            xpath.write ((((xrequest).xget_full_path)).apply)
+                            xreferer.write (((((xrequest).xMETA).xget)).apply ("HTTP_REFERER") (""))
+                            (((((xself).xis_ignorable_request)).apply ((xrequest)) ((xpath)) ((xdomain)) ((xreferer))).not).if
+                              seq
+                                xua.write (((((xrequest).xMETA).xget)).apply ("HTTP_USER_AGENT") ("<none>"))
+                                xip.write (((((xrequest).xMETA).xget)).apply ("REMOTE_ADDR") ("<none>"))
+                                (((unsupported)).apply ((xmail_managers)) (("Broken %slink on %s".mod (((unsupported)).apply ((((((xself).xis_internal_request)).apply ((xdomain)) ((xreferer))).if "INTERNAL " "")) ((xdomain))))) (("Referrer: %snRequested URL: %snUser agent: %snIP address: %sn".mod (((unsupported)).apply ((xreferer)) ((xpath)) ((xua)) ((xip))))) (TRUE))
+                        (((unsupported)).apply ((xresponse)))
+                xis_internal_request.write
+                  [xself xdomain xreferer]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xbool)).apply (((((xre).xmatch)).apply (("^https?://%s/".mod ((((xre).xescape)).apply ((xdomain))))) ((xreferer)))))))
+                xis_ignorable_request.write
+                  [xself xrequest xuri xdomain xreferer]
+                    memory > xparsed_referer
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xreferer).not).if
+                          (((unsupported)).apply (TRUE))
+                        ((((xsettings).xAPPEND_SLASH).and ((((xuri).xendswith)).apply ("/"))).and ((xreferer).eq (((unsupported)).apply ((xuri)) ((((unsupported)).apply ((1.neg))))))).if
+                          (((unsupported)).apply (TRUE))
+                        ((((((xself).xis_internal_request)).apply ((xdomain)) ((xreferer))).not).and (((unsupported)).apply ("?") ((xreferer)))).if
+                          (((unsupported)).apply (TRUE))
+                        xparsed_referer.write (((xurlparse)).apply ((xreferer)))
+                        ((((unsupported)).apply (((xparsed_referer).xnetloc)) ((((unsupported)).apply ("") ((xdomain))))).and (((xparsed_referer).xpath).eq (xuri))).if
+                          (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply (((((xpattern).xsearch)).apply ((xuri)))) ((xpattern)) (((xsettings).xIGNORABLE_404_URLS)))))))

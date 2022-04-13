@@ -1,0 +1,72 @@
+memory > xEmployee
+memory > xCompany
+memory > xTestCase
+memory > xF
+memory > xSum
+[] > test_queryset_values
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_chained_values_with_expression
+        memory > xsetUpTestData
+        memory > xtest_values_expression_group_by
+        memory > xtest_values_list_expression_flat
+        memory > xtest_values_expression
+        memory > xtest_values_list_expression
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xCompany).xobjects).xcreate)) ("Example Inc.") (2300) (5) ((((unsupported)).apply ((((xEmployee).xobjects).xcreate)) ("Joe") ("Smith") (10))))
+                        (((unsupported)).apply ((((xCompany).xobjects).xcreate)) ((((unsupported)).apply ((((xEmployee).xobjects).xcreate)) ("Frank") ("Meyer") (20))) (4) (3) ("Foobar Ltd."))
+                        (((unsupported)).apply ((((xCompany).xobjects).xcreate)) ("Test GmbH") (32) (1) ((((unsupported)).apply ((((xEmployee).xobjects).xcreate)) ("Max") ("Mustermann") (30))))
+                xtest_values_expression.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xCompany).xobjects).xvalues)) ((((xF)).apply ("ceo__salary"))))) ((((unsupported)).apply ((((unsupported)).apply ("salary") (10))) ((((unsupported)).apply ("salary") (20))) ((((unsupported)).apply ("salary") (30))))))
+                xtest_values_expression_group_by.write
+                  [xself]
+                    memory > xjoes
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xEmployee).xobjects).xcreate)) ("Joe") ("Jones") (2))
+                        xjoes.write (((unsupported)).apply ((((xEmployee).xobjects).xfilter)) ("Joe"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply (((((((unsupported)).apply (((xjoes).xvalues)) ("firstname") ((((xSum)).apply ("salary")))).xorder_by)).apply ("sum_salary"))) ((((unsupported)).apply ((((unsupported)).apply ("firstname") ("Joe") ("sum_salary") (2))) ((((unsupported)).apply ("firstname") ("Joe") ("sum_salary") (10))))))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((((xjoes).xvalues)).apply ("firstname")).xannotate)) ((((xSum)).apply ("salary"))))) ((((unsupported)).apply ((((unsupported)).apply ("firstname") ("Joe") ("sum_salary") (12))))))
+                xtest_chained_values_with_expression.write
+                  [xself]
+                    memory > xjoes
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xEmployee).xobjects).xcreate)) ("Joe") ("Jones") (2))
+                        xjoes.write ((((((unsupported)).apply ((((xEmployee).xobjects).xfilter)) ("Joe")).xvalues)).apply ("firstname"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply (((xjoes).xvalues)) ("firstname") ((((xSum)).apply ("salary"))))) ((((unsupported)).apply ((((unsupported)).apply ("firstname") ("Joe") ("sum_salary") (12))))))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply (((xjoes).xvalues)) ((((xSum)).apply ("salary"))))) ((((unsupported)).apply ((((unsupported)).apply ("sum_salary") (12))))))
+                xtest_values_list_expression.write
+                  [xself]
+                    memory > xcompanies
+                    seq > @
+                      seq
+                        xcompanies.write (((((xCompany).xobjects).xvalues_list)).apply ("name") ((((xF)).apply ("ceo__salary"))))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((xcompanies)) ((((unsupported)).apply ((((unsupported)).apply ("Example Inc.") (10))) ((((unsupported)).apply ("Foobar Ltd.") (20))) ((((unsupported)).apply ("Test GmbH") (30))))))
+                xtest_values_list_expression_flat.write
+                  [xself]
+                    memory > xcompanies
+                    seq > @
+                      seq
+                        xcompanies.write (((unsupported)).apply ((((xCompany).xobjects).xvalues_list)) ((((xF)).apply ("ceo__salary"))) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((xcompanies)) ((((unsupported)).apply (10) (20) (30))))

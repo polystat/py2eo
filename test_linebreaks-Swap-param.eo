@@ -1,0 +1,86 @@
+memory > xstr
+memory > xstring
+memory > xlazy
+memory > xSimpleTestCase
+memory > xlinebreaks_filter
+memory > xmark_safe
+[] > test_linebreaks
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_carriage_newline
+        memory > xtest_linebreaks01
+        memory > xtest_non_string_input
+        memory > xtest_linebreaks02
+        memory > xtest_lazy_string_input
+        memory > xtest_newline
+        memory > xtest_autoescape_off
+        memory > xtest_autoescape
+        memory > xtest_carriage
+        memory > xtest_line
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_linebreaks01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("linebreaks01") ((((unsupported)).apply ("a") ("x&ny") ("b") ((((xmark_safe)).apply ("x&ny"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("<p>x&amp;<br>y</p> <p>x&<br>y</p>") ((xoutput)))
+                xtest_linebreaks02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("linebreaks02") ((((unsupported)).apply ("a") ("x&ny") ("b") ((((xmark_safe)).apply ("x&ny"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<p>x&<br>y</p> <p>x&<br>y</p>"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_line.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinebreaks_filter)).apply ("line 1"))) ("<p>line 1</p>"))
+                xtest_newline.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinebreaks_filter)).apply ("line 1nline 2"))) ("<p>line 1<br>line 2</p>"))
+                xtest_carriage.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinebreaks_filter)).apply ("line 1rline 2"))) ("<p>line 1<br>line 2</p>"))
+                xtest_carriage_newline.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinebreaks_filter)).apply ("line 1rnline 2"))) ("<p>line 1<br>line 2</p>"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinebreaks_filter)).apply (123))) ("<p>123</p>"))
+                xtest_autoescape.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinebreaks_filter)).apply ("foon<a>bar</a>nbuz"))) ("<p>foo<br>&lt;a&gt;bar&lt;/a&gt;<br>buz</p>"))
+                xtest_autoescape_off.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xlinebreaks_filter)) ("foon<a>bar</a>nbuz") (FALSE))) ("<p>foo<br><a>bar</a><br>buz</p>"))
+                xtest_lazy_string_input.write
+                  [xself]
+                    memory > xadd_header
+                    seq > @
+                      seq
+                        xadd_header.write (((xlazy)).apply ((((unsupported)).apply (("Headernn".add (xstring))))) ((xstr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlinebreaks_filter)).apply ((((xadd_header)).apply ("line 1rnline2"))))) ("<p>Header</p>nn<p>line 1<br>line2</p>"))

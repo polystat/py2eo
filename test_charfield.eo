@@ -1,0 +1,161 @@
+memory > xEvent
+memory > xValidationError
+memory > xTestCase
+memory > x_
+memory > xPost
+memory > xmodels
+memory > xkwargs
+memory > xSimpleTestCase
+[] > test_charfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xC
+        memory > xtest_charfield_with_choices_cleans_valid_choice
+        memory > xtest_enum_choices_invalid_input
+        memory > xtest_max_length_passed_to_formfield
+        memory > xtest_charfield_raises_error_on_empty_string
+        memory > xtest_enum_choices_cleans_valid_string
+        memory > xtest_assignment_from_choice_enum
+        memory > xtest_charfield_raises_error_on_empty_input
+        memory > xtest_charfield_with_choices_raises_error_on_invalid_choice
+        memory > xtest_emoji
+        memory > xtest_charfield_cleans_empty_string_when_blank_true
+        memory > xtest_lookup_integer_in_charfield
+        memory > xtest_deconstruct
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_max_length_passed_to_formfield.write
+                  [xself]
+                    memory > xcf1
+                    memory > xcf2
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xcf1.write ((((xmodels).xCharField)).apply)
+                        xcf2.write (((unsupported)).apply (((xmodels).xCharField)) (1234))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((((xcf1).xformfield)).apply).xmax_length)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (1234) ((((((xcf2).xformfield)).apply).xmax_length)))
+                xtest_lookup_integer_in_charfield.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xPost).xobjects).xfilter)) (9)).xcount)).apply)) (0))
+                xtest_emoji.write
+                  [xself]
+                    memory > xp
+                    seq > @
+                      seq
+                        xp.write (((unsupported)).apply ((((xPost).xobjects).xcreate)) ("Smile 😀") ("Whatever."))
+                        bogusForceDataize.write ((((xp).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp).xtitle)) ("Smile 😀"))
+                xtest_assignment_from_choice_enum.write
+                  [xself]
+                    memory > xp1
+                    memory > xC
+                    memory > xF
+                    memory > xp2
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xTextChoices)))
+                          seq
+                            xC.write "Carnival!"
+                            xF.write "Festival!"
+                        xp1.write (((unsupported)).apply ((((xPost).xobjects).xcreate)) (((xEvent).xC)) (((xEvent).xF)))
+                        bogusForceDataize.write ((((xp1).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp1).xtitle)) ("Carnival!"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp1).xbody)) ("Festival!"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp1).xtitle)) (((xEvent).xC)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp1).xbody)) (((xEvent).xF)))
+                        xp2.write (((unsupported)).apply ((((xPost).xobjects).xget)) ("Carnival!"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xp1)) ((xp2)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xp2).xtitle)) (((xEvent).xC)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_deconstruct.write
+                [xself]
+                  memory > xfield
+                  seq > @
+                    seq
+                      xfield.write ((((xmodels).xCharField)).apply)
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xkwargs)))) (((((xfield).xdeconstruct)).apply)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xkwargs)) ((((unsupported)).apply)))
+                      xfield.write (((unsupported)).apply (((xmodels).xCharField)) ("utf8_esperanto_ci"))
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((x_)))) ((xkwargs)))) (((((xfield).xdeconstruct)).apply)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((xkwargs)) ((((unsupported)).apply ("db_collation") ("utf8_esperanto_ci"))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply (((xmodels).xTextChoices)))
+                  xC.write (((unsupported)).apply ("c") ("C"))
+                xtest_charfield_raises_error_on_empty_string.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write ((((xmodels).xCharField)).apply)
+                        xmsg.write "This field cannot be blank."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("") ("None: is there a None literal in the EO language?"))
+                xtest_charfield_cleans_empty_string_when_blank_true.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xCharField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("") (((((xf).xclean)).apply ("") ("None: is there a None literal in the EO language?"))))
+                xtest_charfield_with_choices_cleans_valid_choice.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xCharField)) (1) ((((unsupported)).apply ((((unsupported)).apply ("a") ("A"))) ((((unsupported)).apply ("b") ("B"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("a") (((((xf).xclean)).apply ("a") ("None: is there a None literal in the EO language?"))))
+                xtest_charfield_with_choices_raises_error_on_invalid_choice.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xCharField)) ((((unsupported)).apply ((((unsupported)).apply ("a") ("A"))) ((((unsupported)).apply ("b") ("B"))))))
+                        xmsg.write "Value 'not a' is not a valid choice."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("not a") ("None: is there a None literal in the EO language?"))
+                xtest_enum_choices_cleans_valid_string.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xCharField)) ((((xself).xChoices).xchoices)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xf).xclean)).apply ("c") ("None: is there a None literal in the EO language?"))) ("c"))
+                xtest_enum_choices_invalid_input.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xCharField)) ((((xself).xChoices).xchoices)) (1))
+                        xmsg.write "Value 'a' is not a valid choice."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("a") ("None: is there a None literal in the EO language?"))
+                xtest_charfield_raises_error_on_empty_input.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply (((xmodels).xCharField)) (FALSE))
+                        xmsg.write "This field cannot be null."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))

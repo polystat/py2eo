@@ -1,0 +1,118 @@
+memory > xFormFieldAssertionsMixin
+memory > xstr
+memory > xNullBooleanField
+memory > xMySQLNullBooleanForm
+memory > xHiddenInput
+memory > xHiddenNullBooleanForm
+memory > xForm
+memory > xRadioSelect
+memory > xSimpleTestCase
+[] > test_nullbooleanfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_nullbooleanfield_4
+        memory > xtest_nullbooleanfield_clean
+        memory > xtest_nullbooleanfield_2
+        memory > xtest_nullbooleanfield_3
+        memory > xtest_nullbooleanfield_changed
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFormFieldAssertionsMixin)) ((xSimpleTestCase)))
+              seq
+                xtest_nullbooleanfield_clean.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xNullBooleanField)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xclean)).apply (TRUE))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xclean)).apply (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xclean)).apply ("0"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xclean)).apply ("1"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("2"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("3"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("hello"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xclean)).apply ("true"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xclean)).apply ("false"))))
+                xtest_nullbooleanfield_2.write
+                  [xself]
+                    memory > xhidden_nullbool1
+                    memory > xf
+                    memory > xhidden_nullbool2
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xhidden_nullbool1.write (((unsupported)).apply ((xNullBooleanField)) ((xHiddenInput)) (TRUE))
+                            xhidden_nullbool2.write (((unsupported)).apply ((xNullBooleanField)) ((xHiddenInput)) (FALSE))
+                        xf.write (xHiddenNullBooleanForm)
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ((((xstr)).apply ((xf)))) ("<input type=\"hidden\" name=\"hidden_nullbool1\" value=\"True\" id=\"id_hidden_nullbool1\"><input type=\"hidden\" name=\"hidden_nullbool2\" value=\"False\" id=\"id_hidden_nullbool2\">"))
+                xtest_nullbooleanfield_3.write
+                  [xself]
+                    memory > xhidden_nullbool1
+                    memory > xf
+                    memory > xhidden_nullbool2
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xhidden_nullbool1.write (((unsupported)).apply ((xNullBooleanField)) ((xHiddenInput)) (TRUE))
+                            xhidden_nullbool2.write (((unsupported)).apply ((xNullBooleanField)) ((xHiddenInput)) (FALSE))
+                        xf.write (((xHiddenNullBooleanForm)).apply ((((unsupported)).apply ("hidden_nullbool1") ("True") ("hidden_nullbool2") ("False"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xf).xfull_clean)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((unsupported)).apply (((xf).xcleaned_data)) ("hidden_nullbool1"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((unsupported)).apply (((xf).xcleaned_data)) ("hidden_nullbool2"))))
+                xtest_nullbooleanfield_4.write
+                  [xself]
+                    memory > xNULLBOOL_CHOICES
+                    memory > xnullbool0
+                    memory > xnullbool2
+                    memory > xnullbool1
+                    memory > xf
+                    seq > @
+                      seq
+                        xNULLBOOL_CHOICES.write (((unsupported)).apply ((((unsupported)).apply ("1") ("Yes"))) ((((unsupported)).apply ("0") ("No"))) ((((unsupported)).apply ("") ("Unknown"))))
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xnullbool0.write (((unsupported)).apply ((xNullBooleanField)) ((((unsupported)).apply ((xRadioSelect)) ((xNULLBOOL_CHOICES)))))
+                            xnullbool1.write (((unsupported)).apply ((xNullBooleanField)) ((((unsupported)).apply ((xRadioSelect)) ((xNULLBOOL_CHOICES)))))
+                            xnullbool2.write (((unsupported)).apply ((xNullBooleanField)) ((((unsupported)).apply ((xRadioSelect)) ((xNULLBOOL_CHOICES)))))
+                        xf.write (((xMySQLNullBooleanForm)).apply ((((unsupported)).apply ("nullbool0") ("1") ("nullbool1") ("0") ("nullbool2") (""))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xf).xfull_clean)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((unsupported)).apply (((xf).xcleaned_data)) ("nullbool0"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((unsupported)).apply (((xf).xcleaned_data)) ("nullbool1"))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((xf).xcleaned_data)) ("nullbool2"))))
+                xtest_nullbooleanfield_changed.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xNullBooleanField)
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply (FALSE) ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply ("None: is there a None literal in the EO language?") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply (FALSE) (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply (TRUE) (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply (TRUE) ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply (TRUE) (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply (FALSE) ("False"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply (TRUE) ("True"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ("None: is there a None literal in the EO language?") (""))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply (FALSE) ("True"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply (TRUE) ("False"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply ("None: is there a None literal in the EO language?") ("False"))))

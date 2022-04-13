@@ -1,0 +1,120 @@
+memory > xUserLimitedAdmin
+memory > xapp
+memory > xforms
+memory > xlist
+memory > xadmin
+memory > xCustomPwdTemplateUserAdmin
+memory > xsuper
+memory > xAdmin2
+memory > xmodels
+memory > xUser
+memory > xBookAdmin
+memory > xpath
+memory > xreversed
+memory > xHttpResponse
+memory > xset
+memory > xx
+memory > xUserAdmin
+[] > customadmin
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xlogout_template
+        memory > xget_app_list
+        memory > xmy_view
+        memory > xchange_user_password_template
+        memory > xapp_index_template
+        memory > xpassword_change
+        memory > xget_deleted_objects
+        memory > xpassword_change_template
+        memory > xget_urls
+        memory > xsite
+        memory > xindex
+        memory > xlogin_template
+        memory > xlogin_form
+        memory > xindex_template
+        memory > xget_queryset
+        memory > xpassword_change_done_template
+        memory > xsimple_site
+        memory > xbase_admin
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply (((xadmin).xAdminSite)))
+              seq
+                xapp_index_template.write "custom_admin/app_index.html"
+                xlogin_form.write ((xforms).xCustomAdminAuthenticationForm)
+                xlogin_template.write "custom_admin/login.html"
+                xlogout_template.write "custom_admin/logout.html"
+                xindex_template.write (((unsupported)).apply ("custom_admin/index.html"))
+                xpassword_change_template.write "custom_admin/password_change_form.html"
+                xpassword_change_done_template.write "custom_admin/password_change_done.html"
+                xindex.write
+                  [xself xrequest xextra_context]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xsuper).xindex)).apply ((xrequest)) ((((unsupported)).apply ("foo") ("*bar*"))))))
+                xget_urls.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((unsupported)).apply ((((unsupported)).apply ((xpath)) ("my_view/") (((((xself).xadmin_view)).apply (((xself).xmy_view)))) ("my_view")))).add ((xsuper).xget_urls))))
+                xmy_view.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply ((((xHttpResponse)).apply ("Django is a magical pony!"))))
+                xpassword_change.write
+                  [xself xrequest xextra_context]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xsuper).xpassword_change)).apply ((xrequest)) ((((unsupported)).apply ("spam") ("eggs"))))))
+                xget_app_list.write
+                  [xself xrequest xapp_label]
+                    memory > xapp_list
+                    seq > @
+                      (((unsupported)).apply)
+                        xapp_list.write (((unsupported)).apply (((xsuper).xget_app_list)) ((xrequest)) ((xapp_label)))
+                        xapp_list.write (((xlist)).apply ((((xreversed)).apply ((xapp_list)))))
+                        (((unsupported)).apply ((xapp)) ((xapp_list)))
+                          (((unsupported)).apply (((((unsupported)).apply ((xapp)) ("models")).xsort)) ((((unsupported)).apply ((((unsupported)).apply ((xx)) ("name"))))) (TRUE))
+                        (((unsupported)).apply ((xapp_list)))
+            (((unsupported)).apply ((xUserAdmin)))
+              xget_queryset.write
+                [xself xrequest]
+                  memory > xqs
+                  seq > @
+                    seq
+                      xqs.write ((((xsuper).xget_queryset)).apply ((xrequest)))
+                      (((unsupported)).apply ((((unsupported)).apply (((xqs).xfilter)) (FALSE))))
+            (((unsupported)).apply ((xUserAdmin)))
+              xchange_user_password_template.write (((unsupported)).apply ("admin/auth/user/change_password.html"))
+            (((unsupported)).apply (((xadmin).xModelAdmin)))
+              xget_deleted_objects.write
+                [xself xobjs xrequest]
+                  seq > @
+                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ("a deletable object"))) ((((unsupported)).apply ("books") (1))) ((xset)) ((((unsupported)).apply)))))
+            xsite.write (((unsupported)).apply ((xAdmin2)) ("admin2"))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xArticle)) (((xbase_admin).xArticleAdmin)))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xBook)) ((xBookAdmin)))
+            (((unsupported)).apply (((xsite).xregister)) (((xmodels).xSection)) ((((unsupported)).apply (((xbase_admin).xArticleInline)))) ((((unsupported)).apply ("name"))))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xThing)) (((xbase_admin).xThingAdmin)))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xFabric)) (((xbase_admin).xFabricAdmin)))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xChapterXtra1)) (((xbase_admin).xChapterXtra1Admin)))
+            bogusForceDataize.write ((((xsite).xregister)).apply ((xUser)) ((xUserLimitedAdmin)))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xUndeletableObject)) (((xbase_admin).xUndeletableObjectAdmin)))
+            bogusForceDataize.write ((((xsite).xregister)).apply (((xmodels).xSimple)) (((xbase_admin).xAttributeErrorRaisingAdmin)))
+            xsimple_site.write (((unsupported)).apply ((xAdmin2)) ("admin4"))
+            bogusForceDataize.write ((((xsimple_site).xregister)).apply ((xUser)) ((xCustomPwdTemplateUserAdmin)))

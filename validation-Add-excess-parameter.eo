@@ -1,0 +1,27 @@
+memory > xchecks
+memory > xBaseDatabaseValidation
+[] > validation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xcheck_field_type
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseValidation)))
+              xcheck_field_type.write
+                [xself xfield xfield_type]
+                  memory > xerrors
+                  seq > @
+                    seq
+                      unsupported
+                      xerrors.write (((unsupported)).apply)
+                      (((xfield).xdb_index).and (((unsupported)).apply (((((xfield_type).xlower)).apply)) ((((xself).xconnection).x_limited_data_types)))).if
+                        bogusForceDataize.write ((((xerrors).xappend)).apply ((((unsupported)).apply (((xchecks).xWarning)) (("Oracle does not support a database index on %s columns.".mod (xfield_type))) ("An index won't be created. Silence this warning if you don't care about it.") ((xfield)) ("fields.W162"))))
+                      (((unsupported)).apply ((xerrors)))

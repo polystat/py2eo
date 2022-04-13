@@ -1,0 +1,175 @@
+memory > xCsrfViewMiddleware
+memory > xHttpRequest
+memory > xTemplateStrings
+memory > xCharField
+memory > xTestForm
+memory > xsuper
+memory > xTemplateDoesNotExist
+memory > xe
+memory > xmap
+memory > xget_token
+memory > xTemplateSyntaxError
+memory > xMedia
+memory > xHttpResponse
+memory > xre
+memory > x_unmask_cipher_token
+memory > xCSRF_TOKEN_LENGTH
+memory > xForm
+memory > xlen
+memory > xSimpleTestCase
+[] > test_dummy
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_non_ascii_characters
+        memory > xtest_get_template
+        memory > xsetUpClass
+        memory > xengine_class2
+        memory > xtest_html_escaping
+        memory > xtest_get_template_syntax_error
+        memory > xtest_no_directory_traversal
+        memory > xtest_from_string
+        memory > xbackend_name
+        memory > xtest_csrf_token
+        memory > xoptions
+        memory > xtest_django_html_escaping
+        memory > xcheck_tokens_equivalent
+        memory > xtest_get_template_nonexistent
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xengine_class2.write (xTemplateStrings)
+                xbackend_name.write "dummy"
+                xoptions.write (((unsupported)).apply)
+                xsetUpClass.write
+                  [xcls]
+                    memory > xparams
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUpClass)).apply)
+                        xparams.write (((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") (TRUE) ("NAME") (((xcls).xbackend_name)) ("OPTIONS") (((xcls).xoptions)))
+                        (((unsupported)).apply (((xcls).xengine)) (((((xcls).xengine_class)).apply ((xparams)))))
+                xtest_from_string.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xcontent
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xfrom_string)).apply ("Hello!n"))
+                        xcontent.write ((((xtemplate).xrender)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcontent)) ("Hello!n"))
+                xtest_get_template.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xcontent
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("template_backends/hello.html"))
+                        xcontent.write ((((xtemplate).xrender)).apply ((((unsupported)).apply ("name") ("world"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcontent)) ("Hello world!n"))
+                xtest_get_template_nonexistent.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))) ((xe)))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("template_backends/nonexistent.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xe).xexception).xbackend)) (((xself).xengine)))
+                xtest_get_template_syntax_error.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((xself).xbackend_name).eq "dummy").if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("test doesn't apply to dummy backend"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("template_backends/syntax_error.html"))
+                xtest_html_escaping.write
+                  [xself]
+                    memory > xcontent
+                    memory > xtemplate
+                    memory > xcontext
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("template_backends/hello.html"))
+                        xcontext.write (((unsupported)).apply ("name") ("<script>alert(\"XSS!\");</script>"))
+                        xcontent.write ((((xtemplate).xrender)).apply ((xcontext)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("&lt;script&gt;") ((xcontent)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("<script>") ((xcontent)))
+                xtest_django_html_escaping.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtest_field
+                    memory > xtemplate
+                    memory > xform
+                    memory > xcontent
+                    memory > xmedia
+                    seq > @
+                      seq
+                        (((xself).xbackend_name).eq "dummy").if
+                          bogusForceDataize.write ((((xself).xskipTest)).apply ("test doesn't apply to dummy backend"))
+                        (((unsupported)).apply ((xForm)))
+                          xtest_field.write (((xCharField)).apply)
+                        xmedia.write (((unsupported)).apply ((xMedia)) ((((unsupported)).apply ("my-script.js"))))
+                        xform.write (((xTestForm)).apply)
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("template_backends/django_escaping.html"))
+                        xcontent.write ((((xtemplate).xrender)).apply ((((unsupported)).apply ("media") ((xmedia)) ("test_form") ((xform)))))
+                        xexpected.write ((("{}nn{}nn{}".xformat)).apply ((xmedia)) ((xform)) ((((unsupported)).apply ((xform)) ("test_field"))))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ((xcontent)) ((xexpected)))
+                xcheck_tokens_equivalent.write
+                  [xself xtoken1 xtoken2]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xtoken1)))) ((xCSRF_TOKEN_LENGTH)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xtoken2)))) ((xCSRF_TOKEN_LENGTH)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xtoken1)) ((xtoken2)))) ((((xmap)).apply ((x_unmask_cipher_token)) ((((unsupported)).apply ((xtoken1)) ((xtoken2)))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xtoken1)) ((xtoken2)))
+                xtest_csrf_token.write
+                  [xself]
+                    memory > xexpected
+                    memory > xrequest
+                    memory > xtemplate
+                    memory > xcontent
+                    memory > xmatch
+                    seq > @
+                      seq
+                        xrequest.write (((xHttpRequest)).apply)
+                        bogusForceDataize.write ((((((xCsrfViewMiddleware)).apply ((((unsupported)).apply ((((xHttpResponse)).apply))))).xprocess_view)).apply ((xrequest)) ((((unsupported)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)) ((((unsupported)).apply)))
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("template_backends/csrf.html"))
+                        xcontent.write (((unsupported)).apply (((xtemplate).xrender)) ((xrequest)))
+                        xexpected.write "<input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"([^\"]+)\">"
+                        xmatch.write (((((xre).xmatch)).apply ((xexpected)) ((xcontent))).or ((((xre).xmatch)).apply (((((xexpected).xreplace)).apply ("\"") ("'"))) ((xcontent))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((xmatch)) ("hidden csrftoken field not found in output"))
+                        bogusForceDataize.write ((((xself).xcheck_tokens_equivalent)).apply ((((unsupported)).apply ((xmatch)) (1))) ((((xget_token)).apply ((xrequest)))))
+                xtest_no_directory_traversal.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                        bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("../forbidden/template_backends/hello.html"))
+                xtest_non_ascii_characters.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xcontent
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("template_backends/hello.html"))
+                        xcontent.write ((((xtemplate).xrender)).apply ((((unsupported)).apply ("name") ("Jérôme"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcontent)) ("Hello Jérôme!n"))

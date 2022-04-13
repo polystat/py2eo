@@ -1,0 +1,87 @@
+memory > xstr
+memory > xCharField
+memory > xForm
+memory > xWidgetTest
+memory > xTimeInput
+memory > xTestForm
+memory > xtime
+[] > test_timeinput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_render_value
+        memory > xtest_l10n
+        memory > xtest_render_none
+        memory > xtest_string
+        memory > xtest_format
+        memory > xtest_fieldset
+        memory > xwidget
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (xTimeInput)
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("time") ("None: is there a None literal in the EO language?") ("<input type=\"text\" name=\"time\">"))
+                xtest_render_value.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xt.write (((xtime)).apply (12) (51) (34) (482548))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xt)))) ("12:51:34.482548"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("time") ((xt)) ("<input type=\"text\" name=\"time\" value=\"12:51:34\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("time") ((((xtime)).apply (12) (51) (34))) ("<input type=\"text\" name=\"time\" value=\"12:51:34\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("time") ((((xtime)).apply (12) (51))) ("<input type=\"text\" name=\"time\" value=\"12:51:00\">"))
+                xtest_string.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("time") ("13:12:11") ("<input type=\"text\" name=\"time\" value=\"13:12:11\">"))
+                xtest_format.write
+                  [xself]
+                    memory > xt
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xt.write (((xtime)).apply (12) (51) (34) (482548))
+                        xwidget.write (((unsupported)).apply ((xTimeInput)) ("%H:%M") ((((unsupported)).apply ("type") ("time"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("time") ((xt)) ("<input type=\"time\" name=\"time\" value=\"12:51\">"))
+                xtest_l10n.write
+                  [xself]
+                    memory > xt
+                    seq > @
+                      (((unsupported)).apply)
+                        xt.write (((xtime)).apply (12) (51) (34) (482548))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("time") ((xt)) ("<input type=\"text\" name=\"time\" value=\"12:51:34\">"))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xCharField)) (((xself).xwidget)))
+                        xform.write (xTestForm)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><label for=\"id_field\">Field:</label><input id=\"id_field\" name=\"field\" required type=\"text\"></div>") (((xform).xrender)))

@@ -1,0 +1,62 @@
+memory > xdatetime
+memory > xuuid
+memory > xRandomUUID
+memory > xsleep
+memory > xTransactionNow
+memory > xUUIDTestModel
+memory > xPostgreSQLTestCase
+memory > xNowTestModel
+[] > test_functions
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_transaction_now
+        memory > xtest_random_uuid
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xPostgreSQLTestCase)))
+              xtest_transaction_now.write
+                [xself]
+                  memory > xm1
+                  memory > xm2
+                  seq > @
+                    seq
+                      (((unsupported)).apply)
+                      xm1.write (((xNowTestModel).xobjects).xcreate)
+                      xm2.write (((xNowTestModel).xobjects).xcreate)
+                      (((unsupported)).apply (((((unsupported)).apply ((((xNowTestModel).xobjects).xfilter)) (((xm1).xid))).xupdate)) ((xTransactionNow)))
+                      bogusForceDataize.write (((xsleep)).apply (0.1))
+                      (((unsupported)).apply (((((unsupported)).apply ((((xNowTestModel).xobjects).xfilter)) (((xm2).xid))).xupdate)) ((xTransactionNow)))
+                      unsupported
+                      unsupported
+                      bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xm1).xwhen)) ((xdatetime)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xm1).xwhen)) (((xm2).xwhen)))
+            (((unsupported)).apply ((xPostgreSQLTestCase)))
+              xtest_random_uuid.write
+                [xself]
+                  memory > xm1
+                  memory > xm2
+                  seq > @
+                    seq
+                      xm1.write (((xUUIDTestModel).xobjects).xcreate)
+                      xm2.write (((xUUIDTestModel).xobjects).xcreate)
+                      (((unsupported)).apply ((((xUUIDTestModel).xobjects).xupdate)) ((xRandomUUID)))
+                      unsupported
+                      unsupported
+                      bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xm1).xuuid)) (((xuuid).xUUID)))
+                      bogusForceDataize.write ((((xself).xassertNotEqual)).apply (((xm1).xuuid)) (((xm2).xuuid)))

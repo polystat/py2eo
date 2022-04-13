@@ -1,0 +1,117 @@
+memory > xSelectMultiple
+memory > xChoiceField
+memory > xTestForm
+memory > xForm
+memory > xWidgetTest
+[] > test_selectmultiple
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_multiple_options_same_value
+        memory > xtest_multiple_values_invalid
+        memory > xtest_render_multiple_selected
+        memory > xtest_format_value
+        memory > xtest_render_none
+        memory > xtest_value_omitted_from_data
+        memory > xnumeric_choices
+        memory > xtest_render_value_label
+        memory > xtest_optgroup_select_multiple
+        memory > xtest_fieldset
+        memory > xwidget
+        memory > xtest_compare_string
+        memory > xtest_render_selected
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (xSelectMultiple)
+                xnumeric_choices.write (((unsupported)).apply ((((unsupported)).apply ("0") ("0"))) ((((unsupported)).apply ("1") ("1"))) ((((unsupported)).apply ("2") ("2"))) ((((unsupported)).apply ("3") ("3"))) ((((unsupported)).apply ("0") ("extra"))))
+                xtest_format_value.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((unsupported)).apply (((xself).xwidget)) (((xself).xnumeric_choices)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwidget).xformat_value)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwidget).xformat_value)).apply (""))) ((((unsupported)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xwidget).xformat_value)).apply ((((unsupported)).apply (3) (0) (1))))) ((((unsupported)).apply ("3") ("0") ("1"))))
+                xtest_render_selected.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((xself).xbeatles)))) ("beatles") ((((unsupported)).apply ("J"))) ((((unsupported)).apply)))
+                xtest_render_multiple_selected.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((xself).xbeatles)))) ("beatles") ((((unsupported)).apply ("J") ("P"))) ((((unsupported)).apply)))
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((((unsupported)).apply ((((unsupported)).apply ("") ("Unknown")))).add ((xself).xbeatles))))) ("beatles") ("None: is there a None literal in the EO language?") ((((unsupported)).apply)))
+                xtest_render_value_label.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((xself).xbeatles)))) ("beatles") ((((unsupported)).apply ("John"))) ((((unsupported)).apply)))
+                xtest_multiple_options_same_value.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((xself).xnumeric_choices)))) ("choices") ((((unsupported)).apply ("0"))) ((((unsupported)).apply)))
+                xtest_multiple_values_invalid.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) (((xself).xbeatles)))) ("beatles") ((((unsupported)).apply ("J") ("G") ("foo"))) ((((unsupported)).apply)))
+                xtest_compare_string.write
+                  [xself]
+                    memory > xchoices
+                    seq > @
+                      seq
+                        xchoices.write (((unsupported)).apply ((((unsupported)).apply ("1") ("1"))) ((((unsupported)).apply ("2") ("2"))) ((((unsupported)).apply ("3") ("3"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) ((xchoices)))) ("nums") ((((unsupported)).apply (2))) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) ((xchoices)))) ("nums") ((((unsupported)).apply ("2"))) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((((unsupported)).apply (((xself).xwidget)) ((xchoices)))) ("nums") ((((unsupported)).apply (2))) ((((unsupported)).apply)))
+                xtest_optgroup_select_multiple.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((unsupported)).apply ((xSelectMultiple)) ((((unsupported)).apply ((((unsupported)).apply ("outer1") ("Outer 1"))) ((((unsupported)).apply ("Group \"1\"") ((((unsupported)).apply ((((unsupported)).apply ("inner1") ("Inner 1"))) ((((unsupported)).apply ("inner2") ("Inner 2"))))))))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("nestchoice") ((((unsupported)).apply ("outer1") ("inner2"))) ((((unsupported)).apply)))
+                xtest_value_omitted_from_data.write
+                  [xself]
+                    memory > xwidget
+                    seq > @
+                      seq
+                        xwidget.write (((unsupported)).apply (((xself).xwidget)) (((xself).xbeatles)))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply)) ((((unsupported)).apply)) ("field"))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((((xwidget).xvalue_omitted_from_data)).apply ((((unsupported)).apply ("field") ("value"))) ((((unsupported)).apply)) ("field"))) (FALSE))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xChoiceField)) (((xself).xwidget)) (((xself).xbeatles)) (FALSE))
+                        xform.write (xTestForm)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><label for=\"id_field\">Field:</label><select multiple name=\"field\" id=\"id_field\"><option value=\"J\">John</option>  <option value=\"P\">Paul</option><option value=\"G\">George</option><option value=\"R\">Ringo</option></select></div>") (((xform).xrender)))

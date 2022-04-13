@@ -1,26 +1,11 @@
-memory > xconstructor
-memory > xseq
-memory > xDeviant1
-memory > xfrozenset
-memory > xMyNonReflexive
-memory > xi
-memory > xtuple
-memory > xobject
-memory > xByContains
 memory > xlist
-memory > xmyset
-memory > xdeque
-memory > xrange
-memory > xbase_set2
-memory > xset
-memory > xfloat
-memory > xBlockContains
-memory > xunittest
-memory > xelem
-memory > xdict
-memory > xbase_set
+memory > xValueError
+memory > xTestCase
+memory > xDumbCategory
+memory > xNamedCategory
+memory > xProxyCategory
+memory > xobject
 memory > xTypeError
-memory > x__name__
 [] > test_contains
   [args...] > unsupported
   [args...] > xunsupported
@@ -30,144 +15,96 @@ memory > x__name__
   seq > @
     xhack.write
       []
-        memory > x__contains__
-        memory > x__getitem__
-        memory > xtest_block_fallback
-        memory > x__init__
-        memory > xtest_builtin_sequence_types
-        memory > xtest_nonreflexive
-        memory > xtest_common_tests
+        memory > xtest_evaluated_queryset
+        memory > xtest_proxy_model
+        memory > xtest_obj_type
+        memory > xsetUpTestData
+        memory > xtest_basic
+        memory > xtest_unsaved_obj
+        memory > xtest_values
+        memory > xtest_wrong_model
         seq > @
           seq
             (((unsupported)).apply)
             (((unsupported)).apply)
             (((unsupported)).apply)
-              x__init__.write
-                [xself xel]
-                  seq > @
-                    (((unsupported)).apply (((xself).xel)) ((xel)))
-            (((unsupported)).apply ((xbase_set2)))
-              x__contains__.write
-                [xself xel]
-                  seq > @
-                    (((unsupported)).apply ((((xself).xel).eq (xel))))
-            (((unsupported)).apply ((xbase_set)))
-              x__getitem__.write
-                [xself xn]
-                  seq > @
-                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xself).xel)))) ((xn)))))
-            (((unsupported)).apply (((xunittest).xTestCase)))
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
               seq
-                xtest_common_tests.write
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xcategory)) ((((((xDumbCategory).xobjects).xcreate)).apply)))
+                        (((unsupported)).apply (((xcls).xproxy_category)) ((((((xProxyCategory).xobjects).xcreate)).apply)))
+                xtest_unsaved_obj.write
                   [xself]
-                    memory > xc
-                    memory > xb
-                    memory > xa
+                    memory > xmsg
                     seq > @
                       seq
-                        xa.write (((xbase_set)).apply (1))
-                        xb.write (((xmyset)).apply (1))
-                        xc.write (((xseq)).apply (1))
-                        bogusForceDataize.write ((((xself).xassertIn)).apply (1) ((xb)))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (0) ((xb)))
-                        bogusForceDataize.write ((((xself).xassertIn)).apply (1) ((xc)))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (0) ((xc)))
-                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((((unsupported)).apply ((((unsupported)).apply (1) ((xa)))))))
-                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((((unsupported)).apply ((((unsupported)).apply (1) ((xa)))))))
-                        bogusForceDataize.write ((((xself).xassertIn)).apply ("c") ("abc"))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("d") ("abc"))
-                        bogusForceDataize.write ((((xself).xassertIn)).apply ("") (""))
-                        bogusForceDataize.write ((((xself).xassertIn)).apply ("") ("abc"))
-                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ("abc"))))))
-                xtest_builtin_sequence_types.write
+                        xmsg.write "QuerySet.contains() cannot be used on unsaved objects."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xDumbCategory).xobjects).xcontains)).apply ((((xDumbCategory)).apply)))
+                xtest_obj_type.write
                   [xself]
-                    memory > x__eq__
-                    memory > xaList
-                    memory > xa
+                    memory > xmsg
                     seq > @
                       seq
-                        xa.write (((xrange)).apply (10))
-                        (((unsupported)).apply ((xi)) ((xa)))
-                          bogusForceDataize.write ((((xself).xassertIn)).apply ((xi)) ((xa)))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (16) ((xa)))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ((xa)) ((xa)))
-                        xa.write (((xtuple)).apply ((xa)))
-                        (((unsupported)).apply ((xi)) ((xa)))
-                          bogusForceDataize.write ((((xself).xassertIn)).apply ((xi)) ((xa)))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply (16) ((xa)))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ((xa)) ((xa)))
-                        (((unsupported)).apply)
-                          seq
-                            (((unsupported)).apply)
-                            xaList.write (((xlist)).apply ((((xrange)).apply (15))))
-                            x__eq__.write
-                              [xself xother]
-                                seq > @
-                                  seq
-                                    ((xother).eq 12).if
-                                      seq
-                                        bogusForceDataize.write (((((xself).xaList).xremove)).apply (12))
-                                        bogusForceDataize.write (((((xself).xaList).xremove)).apply (13))
-                                        bogusForceDataize.write (((((xself).xaList).xremove)).apply (14))
-                                    (((unsupported)).apply (0))
-                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ((((xDeviant1)).apply)) (((xDeviant1).xaList)))
-                xtest_nonreflexive.write
+                        xmsg.write "'obj' must be a model instance."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xDumbCategory).xobjects).xcontains)).apply ((((xobject)).apply)))
+                xtest_values.write
                   [xself]
-                    memory > xcontainer
-                    memory > xconstructors
-                    memory > x__hash__
-                    memory > xvalues
-                    memory > x__eq__
+                    memory > xmsg
                     seq > @
                       seq
-                        (((unsupported)).apply ((xobject)))
-                          seq
-                            x__eq__.write
-                              [xself xother]
-                                seq > @
-                                  (((unsupported)).apply (FALSE))
-                            x__hash__.write
-                              [xself]
-                                seq > @
-                                  (((unsupported)).apply (28))
-                        xvalues.write (((unsupported)).apply ((((xfloat)).apply ("nan"))) (1) ("None: is there a None literal in the EO language?") ("abc") ((((xMyNonReflexive)).apply)))
-                        xconstructors.write (((unsupported)).apply ((xlist)) ((xtuple)) (((xdict).xfromkeys)) ((xset)) ((xfrozenset)) ((xdeque)))
-                        (((unsupported)).apply ((xconstructor)) ((xconstructors)))
-                          seq
-                            xcontainer.write (((xconstructor)).apply ((xvalues)))
-                            (((unsupported)).apply ((xelem)) ((xcontainer)))
-                              bogusForceDataize.write ((((xself).xassertIn)).apply ((xelem)) ((xcontainer)))
-                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((xcontainer).eq (((xconstructor)).apply ((xvalues))))))
-                            bogusForceDataize.write ((((xself).xassertTrue)).apply (((xcontainer).eq (xcontainer))))
-                xtest_block_fallback.write
+                        xmsg.write "Cannot call QuerySet.contains() after .values() or .values_list()."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          bogusForceDataize.write ((((((((xDumbCategory).xobjects).xvalues_list)).apply ("pk")).xcontains)).apply (((xself).xcategory)))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          bogusForceDataize.write ((((((((xDumbCategory).xobjects).xvalues)).apply ("pk")).xcontains)).apply (((xself).xcategory)))
+                xtest_basic.write
                   [xself]
-                    memory > xbc
-                    memory > xc
-                    memory > x__contains__
-                    memory > x__iter__
                     seq > @
                       seq
-                        (((unsupported)).apply ((xobject)))
-                          x__contains__.write
-                            [xself xother]
-                              seq > @
-                                (((unsupported)).apply (FALSE))
-                        xc.write (((xByContains)).apply)
-                        (((unsupported)).apply ((xByContains)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xDumbCategory).xobjects).xcontains)).apply (((xself).xcategory)))) (TRUE))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xDumbCategory).xobjects).xcontains)).apply (((xself).xcategory)))) (TRUE))
+                xtest_evaluated_queryset.write
+                  [xself]
+                    memory > xqs
+                    memory > xproxy_qs
+                    seq > @
+                      seq
+                        xqs.write (((((xDumbCategory).xobjects).xall)).apply)
+                        xproxy_qs.write (((((xProxyCategory).xobjects).xall)).apply)
+                        bogusForceDataize.write (((xlist)).apply ((xqs)))
+                        bogusForceDataize.write (((xlist)).apply ((xproxy_qs)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
                           seq
-                            (((unsupported)).apply)
-                            x__iter__.write
-                              [xself]
-                                seq > @
-                                  while.
-                                    FALSE
-                                    [unused]
-                                      seq > @
-                                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
-                            x__contains__.write "None: is there a None literal in the EO language?"
-                        xbc.write (((xBlockContains)).apply)
-                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((unsupported)).apply (0) ((xc)))))
-                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((unsupported)).apply (0) ((((xlist)).apply ((xbc)))))))
-                        bogusForceDataize.write ((((xself).xassertRaises)).apply ((xTypeError)) ((((unsupported)).apply ((((unsupported)).apply (0) ((xbc)))))))
-            ((x__name__).eq "__main__").if
-              bogusForceDataize.write ((((xunittest).xmain)).apply)
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((xqs).xcontains)).apply (((xself).xcategory)))) (TRUE))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((xqs).xcontains)).apply (((xself).xproxy_category)))) (TRUE))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((xproxy_qs).xcontains)).apply (((xself).xcategory)))) (TRUE))
+                            bogusForceDataize.write ((((xself).xassertIs)).apply (((((xproxy_qs).xcontains)).apply (((xself).xproxy_category)))) (TRUE))
+                xtest_proxy_model.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xDumbCategory).xobjects).xcontains)).apply (((xself).xproxy_category)))) (TRUE))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (1))))
+                          bogusForceDataize.write ((((xself).xassertIs)).apply ((((((xProxyCategory).xobjects).xcontains)).apply (((xself).xcategory)))) (TRUE))
+                xtest_wrong_model.write
+                  [xself]
+                    memory > xqs
+                    memory > xnamed_category
+                    seq > @
+                      seq
+                        xqs.write (((((xDumbCategory).xobjects).xall)).apply)
+                        xnamed_category.write (((unsupported)).apply ((xNamedCategory)) ("category"))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertIs)).apply (((((xqs).xcontains)).apply ((xnamed_category)))) (FALSE))
+                        bogusForceDataize.write (((xlist)).apply ((xqs)))
+                        (((unsupported)).apply (((((xself).xassertNumQueries)).apply (0))))
+                          bogusForceDataize.write ((((xself).xassertIs)).apply (((((xqs).xcontains)).apply ((xnamed_category)))) (FALSE))

@@ -1,0 +1,78 @@
+memory > xReverse
+memory > xLength
+memory > xTrim
+memory > xCharField
+memory > xconnection
+memory > xregister_lookup
+memory > xa
+memory > xTestCase
+memory > xAuthor
+[] > test_reverse
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsetUpTestData
+        memory > xtest_null
+        memory > xtest_transform
+        memory > xtest_basic
+        memory > xtest_expressions
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xjohn)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("John Smith") ("smithj"))))
+                        (((unsupported)).apply (((xcls).xelena)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("elena") ("Élena Jordan"))))
+                        (((unsupported)).apply (((xcls).xpython)) ((((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("パイソン"))))
+                xtest_null.write
+                  [xself]
+                    memory > xauthor
+                    seq > @
+                      seq
+                        xauthor.write (((unsupported)).apply (((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xReverse)).apply ("alias")))).xget)) ((((xself).xpython).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xauthor).xbackward)) (((((xconnection).xfeatures).xinterprets_empty_strings_as_nulls).if "" "None: is there a None literal in the EO language?")))
+                xtest_basic.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      seq
+                        xauthors.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xReverse)).apply ("name"))))
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((xauthors)) ((((unsupported)).apply ((((unsupported)).apply ("John Smith") ("htimS nhoJ"))) ((((unsupported)).apply ("Élena Jordan") ("nadroJ anelÉ"))) ((((unsupported)).apply ("パイソン") ("ンソイパ"))))) ((((unsupported)).apply ((((unsupported)).apply (((xa).xname)) (((xa).xbackward)))))) (FALSE))
+                xtest_transform.write
+                  [xself]
+                    memory > xauthors
+                    seq > @
+                      (((unsupported)).apply ((((xregister_lookup)).apply ((xCharField)) ((xReverse)))))
+                        seq
+                          xauthors.write (((((xAuthor).xobjects).xall)).apply)
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xfilter)) ((((unsupported)).apply ((((xself).xjohn).xname)) ((((unsupported)).apply ((1.neg)))))))) ((((unsupported)).apply (((xself).xjohn)))))
+                          bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xexclude)) ((((unsupported)).apply ((((xself).xjohn).xname)) ((((unsupported)).apply ((1.neg)))))))) ((((unsupported)).apply (((xself).xelena)) (((xself).xpython)))))
+                xtest_expressions.write
+                  [xself]
+                    memory > xauthors
+                    memory > xauthor
+                    seq > @
+                      seq
+                        xauthor.write (((unsupported)).apply (((((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xReverse)).apply ((((xTrim)).apply ("name")))))).xget)) ((((xself).xjohn).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xauthor).xbackward)) ((((unsupported)).apply ((((xself).xjohn).xname)) ((((unsupported)).apply ((1.neg)))))))
+                        (((unsupported)).apply ((((xregister_lookup)).apply ((xCharField)) ((xReverse)))) ((((xregister_lookup)).apply ((xCharField)) ((xLength)))))
+                          seq
+                            xauthors.write (((((xAuthor).xobjects).xall)).apply)
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xfilter)) (7))) ((((unsupported)).apply (((xself).xjohn)) (((xself).xelena)))))
+                            bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((unsupported)).apply (((xauthors).xexclude)) (7))) ((((unsupported)).apply (((xself).xpython)))))

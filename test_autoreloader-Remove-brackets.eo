@@ -1,0 +1,102 @@
+memory > xrequire_jinja2
+memory > xPath
+memory > xoverride_settings
+memory > xsorted
+memory > x__file__
+memory > xSimpleTestCase
+memory > xmock
+memory > xautoreload
+[] > test_autoreloader
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_non_template_changed
+        memory > xtest_get_template_directories
+        memory > xtest_template_dirs_normalized_to_paths
+        memory > xtest_non_template_changed_in_template_directory
+        memory > xEXTRA_TEMPLATES_DIR
+        memory > xtest_watch_for_template_changes
+        memory > xROOT
+        memory > xtest_template_changed
+        memory > xtest_reset_all_loaders
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xROOT.write (((((xPath)).apply ((x__file__))).xparent).xabsolute)
+            xEXTRA_TEMPLATES_DIR.write ((xROOT).div "templates_extra")
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ("template_tests"))) ((((unsupported)).apply ((((unsupported)).apply ("BACKEND") ("django.template.backends.dummy.TemplateStrings") ("APP_DIRS") (TRUE))) ((((unsupported)).apply ("BACKEND") ("django.template.backends.django.DjangoTemplates") ("DIRS") ((((unsupported)).apply ((xEXTRA_TEMPLATES_DIR)))) ("OPTIONS") ((((unsupported)).apply ("context_processors") ((((unsupported)).apply ("django.template.context_processors.request"))) ("loaders") ((((unsupported)).apply ("django.template.loaders.filesystem.Loader") ("django.template.loaders.app_directories.Loader"))))))))))))
+              seq
+                xtest_template_changed.write
+                  [xself xmock_reset]
+                    memory > xtemplate_path
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate_path.write ((((((xPath)).apply ((x__file__))).xparent).div "templates").div "index.html")
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xautoreload).xtemplate_changed)).apply ("None: is there a None literal in the EO language?") ((xtemplate_path)))))
+                        unsupported
+                xtest_non_template_changed.write
+                  [xself xmock_reset]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xautoreload).xtemplate_changed)).apply ("None: is there a None literal in the EO language?") ((((xPath)).apply ((x__file__)))))))
+                        unsupported
+                xtest_non_template_changed_in_template_directory.write
+                  [xself xmock_reset]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xautoreload).xtemplate_changed)).apply ("None: is there a None literal in the EO language?") ((((xPath)).apply ((x__file__)))))))
+                        unsupported
+                xtest_watch_for_template_changes.write
+                  [xself]
+                    memory > xmock_reloader
+                    seq > @
+                      seq
+                        xmock_reloader.write ((xmock).xMagicMock)
+                        bogusForceDataize.write ((((xautoreload).xwatch_for_template_changes)).apply ((xmock_reloader)))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((xsorted)).apply ((((xmock_reloader).xwatch_dir).xcall_args_list)))) ((((unsupported)).apply (((((xmock).xcall)).apply (((xROOT).div "templates")) ("**/*"))) (((((xmock).xcall)).apply (((xROOT).div "templates_extra")) ("**/*"))))))
+                xtest_get_template_directories.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSetEqual)).apply (((xautoreload).xget_template_directories)) ((((unsupported)).apply (((xROOT).div "templates_extra")) (((xROOT).div "templates")))))
+                xtest_reset_all_loaders.write
+                  [xself xmock_reset]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xmock_reset).xcall_count)) (2))
+                xtest_template_dirs_normalized_to_paths.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertSetEqual)).apply (((xautoreload).xget_template_directories)) ((((unsupported)).apply (((xROOT).div "absolute_str")) ((((xPath).xcwd).div "template_tests/relative_str")) ((((xPath).xcwd).div "template_tests/relative_path")))))
+            (((unsupported)).apply ((xSimpleTestCase)) ((xrequire_jinja2)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ("template_tests"))))))
+              seq
+                xtest_watch_for_template_changes.write
+                  [xself]
+                    memory > xmock_reloader
+                    seq > @
+                      seq
+                        xmock_reloader.write ((xmock).xMagicMock)
+                        bogusForceDataize.write ((((xautoreload).xwatch_for_template_changes)).apply ((xmock_reloader)))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((xsorted)).apply ((((xmock_reloader).xwatch_dir).xcall_args_list)))) ((((unsupported)).apply (((((xmock).xcall)).apply (((xROOT).div "templates")) ("**/*"))))))
+                xtest_get_template_directories.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSetEqual)).apply (((xautoreload).xget_template_directories)) ((((unsupported)).apply (((xROOT).div "templates")))))
+                xtest_reset_all_loaders.write
+                  [xself xmock_reset]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xmock_reset).xcall_count)) (0))

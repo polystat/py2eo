@@ -1,0 +1,195 @@
+memory > xlist
+memory > xMessageSerializer
+memory > xSafeData
+memory > xbinascii
+memory > xsettings
+memory > xsuper
+memory > xMessageEncoder
+memory > xargs
+memory > xitem
+memory > xjson
+memory > xkey
+memory > xBaseStorage
+memory > xMessageDecoder
+memory > xSimpleCookie
+memory > xvalue
+memory > xsigning
+memory > xmark_safe
+memory > xMessage
+memory > xkwargs
+memory > xisinstance
+memory > xlen
+memory > xdict
+[] > cookie
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xkey_salt
+        memory > x_encode
+        memory > x_decode
+        memory > xnot_finished
+        memory > xprocess_messages
+        memory > xdefault
+        memory > xdumps
+        memory > x_store
+        memory > xcookie_name
+        memory > xdecode
+        memory > xmessage_key
+        memory > x__init__
+        memory > x_get
+        memory > x_update_cookie
+        memory > xmax_cookie_size
+        memory > xloads
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply (((xjson).xJSONEncoder)))
+              seq
+                (((unsupported)).apply)
+                xmessage_key.write "__json_message"
+                xdefault.write
+                  [xself xobj]
+                    memory > xis_safedata
+                    memory > xmessage
+                    seq > @
+                      seq
+                        (((xisinstance)).apply ((xobj)) ((xMessage))).if
+                          seq
+                            xis_safedata.write ((((xisinstance)).apply (((xobj).xmessage)) ((xSafeData))).if 1 0)
+                            xmessage.write (((unsupported)).apply (((xself).xmessage_key)) ((xis_safedata)) (((xobj).xlevel)) (((xobj).xmessage)))
+                            (((unsupported)).apply (((xobj).xextra_tags)) ("None: is there a None literal in the EO language?")).if
+                              bogusForceDataize.write ((((xmessage).xappend)).apply (((xobj).xextra_tags)))
+                            (((unsupported)).apply ((xmessage)))
+                        (((unsupported)).apply (((((((xsuper)).apply).xdefault)).apply ((xobj)))))
+            (((unsupported)).apply (((xjson).xJSONDecoder)))
+              seq
+                (((unsupported)).apply)
+                xprocess_messages.write
+                  [xself xobj]
+                    seq > @
+                      seq
+                        ((((xisinstance)).apply ((xobj)) ((xlist))).and (xobj)).if
+                          seq
+                            ((((unsupported)).apply ((xobj)) (0)).eq ((xMessageEncoder).xmessage_key)).if
+                              seq
+                                (((unsupported)).apply ((xobj)) (1)).if
+                                  (((unsupported)).apply ((((unsupported)).apply ((xobj)) (3))) ((((xmark_safe)).apply ((((unsupported)).apply ((xobj)) (3))))))
+                                (((unsupported)).apply ((((xMessage)).apply ((((unsupported)).apply ((((unsupported)).apply ((xobj)) ((((unsupported)).apply (2))))))))))
+                            (((unsupported)).apply ((((unsupported)).apply (((((xself).xprocess_messages)).apply ((xitem)))) ((xitem)) ((xobj)))))
+                        (((xisinstance)).apply ((xobj)) ((xdict))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkey)) (((((xself).xprocess_messages)).apply ((xvalue)))) ((((unsupported)).apply ((xkey)) ((xvalue)))) (((((xobj).xitems)).apply)))))
+                        (((unsupported)).apply ((xobj)))
+                xdecode.write
+                  [xself xs]
+                    memory > xdecoded
+                    seq > @
+                      (((unsupported)).apply)
+                        xdecoded.write ((((((xsuper)).apply).xdecode)).apply ((xs)) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply (((((xself).xprocess_messages)).apply ((xdecoded)))))
+            (((unsupported)).apply)
+              seq
+                xdumps.write
+                  [xself xobj]
+                    seq > @
+                      (((unsupported)).apply (((((((unsupported)).apply (((xjson).xdumps)) ((xobj)) ((((unsupported)).apply (",") (":"))) ((xMessageEncoder))).xencode)).apply ("latin-1"))))
+                xloads.write
+                  [xself xdata]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xjson).xloads)) (((((xdata).xdecode)).apply ("latin-1"))) ((xMessageDecoder)))))
+            (((unsupported)).apply ((xBaseStorage)))
+              seq
+                (((unsupported)).apply)
+                xcookie_name.write "messages"
+                xmax_cookie_size.write 2048
+                xnot_finished.write "__messagesnotfinished__"
+                xkey_salt.write "django.contrib.messages"
+                x__init__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply (((xself).xsigner)) ((((unsupported)).apply (((xsigning).xget_cookie_signer)) (((xself).xkey_salt)))))
+                x_get.write
+                  [xself]
+                    memory > xall_retrieved
+                    memory > xmessages
+                    memory > xdata
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xdata.write ((((((xself).xrequest).xCOOKIES).xget)).apply (((xself).xcookie_name)))
+                        xmessages.write ((((xself).x_decode)).apply ((xdata)))
+                        xall_retrieved.write (((xmessages).and ((((unsupported)).apply ((xmessages)) ((1.neg))).eq ((xself).xnot_finished))).not)
+                        ((xmessages).and ((xall_retrieved).not)).if
+                          bogusForceDataize.write ((((xmessages).xpop)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xmessages)) ((xall_retrieved)))))
+                x_update_cookie.write
+                  [xself xencoded_data xresponse]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (xencoded_data).if
+                          (((unsupported)).apply (((xresponse).xset_cookie)) (((xself).xcookie_name)) ((xencoded_data)) (((xsettings).xSESSION_COOKIE_DOMAIN)) ((((xsettings).xSESSION_COOKIE_SECURE).or "None: is there a None literal in the EO language?")) ((((xsettings).xSESSION_COOKIE_HTTPONLY).or "None: is there a None literal in the EO language?")) (((xsettings).xSESSION_COOKIE_SAMESITE)))
+                          (((unsupported)).apply (((xresponse).xdelete_cookie)) (((xself).xcookie_name)) (((xsettings).xSESSION_COOKIE_DOMAIN)) (((xsettings).xSESSION_COOKIE_SAMESITE)))
+                x_store.write
+                  [xself xmessages xresponse xremove_oldest]
+                    memory > xcookie
+                    memory > xunstored_messages
+                    memory > xstored_length
+                    memory > xencoded_data
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xunstored_messages.write (((unsupported)).apply)
+                        xencoded_data.write ((((xself).x_encode)).apply ((xmessages)))
+                        ((xself).xmax_cookie_size).if
+                          seq
+                            xcookie.write (((xSimpleCookie)).apply)
+                            xstored_length.write
+                              [xval]
+                                seq > @
+                                  (((unsupported)).apply ((((xlen)).apply ((((unsupported)).apply (((((xcookie).xvalue_encode)).apply ((xval)))) (1))))))
+                            while.
+                              ((xencoded_data).and ((((xstored_length)).apply ((xencoded_data))).greater ((xself).xmax_cookie_size)))
+                              [unused]
+                                seq > @
+                                  seq
+                                    (xremove_oldest).if
+                                      bogusForceDataize.write ((((xunstored_messages).xappend)).apply (((((xmessages).xpop)).apply (0))))
+                                      bogusForceDataize.write ((((xunstored_messages).xinsert)).apply (0) (((((xmessages).xpop)).apply)))
+                                    xencoded_data.write (((unsupported)).apply (((xself).x_encode)) (((xmessages).sub (((unsupported)).apply (((xself).xnot_finished))))) ((xunstored_messages)))
+                        bogusForceDataize.write ((((xself).x_update_cookie)).apply ((xencoded_data)) ((xresponse)))
+                        (((unsupported)).apply ((xunstored_messages)))
+                x_encode.write
+                  [xself xmessages xencode_empty]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((xmessages).or (xencode_empty)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((((xself).xsigner).xsign_object)) ((xmessages)) ((xMessageSerializer)) (TRUE))))
+                x_decode.write
+                  [xself xdata]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xdata).not).if
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xsigning).xBadSignature)) (((xbinascii).xError)) (((xjson).xJSONDecodeError)))))
+                          (((unsupported)).apply ((((unsupported)).apply ((((xself).xsigner).xunsign_object)) ((xdata)) ((xMessageSerializer)))))
+                        (((unsupported)).apply (((xself).xused)) (TRUE))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))

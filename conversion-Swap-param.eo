@@ -1,0 +1,110 @@
+memory > xArea
+memory > xValueError
+memory > xDistance
+memory > xsuper
+memory > xfloat
+memory > xgetattr
+memory > xDecimal
+memory > xmodels
+memory > xisinstance
+[] > conversion
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_internal_type
+        memory > xget_db_prep_value
+        memory > xfrom_db_value
+        memory > x__init__
+        memory > xget_prep_value
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xFloatField)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xgeo_field]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply)
+                        (((unsupported)).apply (((xself).xgeo_field)) ((xgeo_field)))
+                xget_prep_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        ((((xisinstance)).apply ((xvalue)) ((xArea))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("AreaField only accepts Area measurement objects."))))
+                        (((unsupported)).apply ((xvalue)))
+                xget_db_prep_value.write
+                  [xself xvalue xconnection xprepared]
+                    memory > xarea_att
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply)
+                        xarea_att.write (((((xconnection).xops).xget_area_att_for_field)).apply (((xself).xgeo_field)))
+                        (((unsupported)).apply (((xarea_att).if (((xgetattr)).apply ((xvalue)) ((xarea_att))) (xvalue))))
+                xfrom_db_value.write
+                  [xself xvalue xexpression xconnection]
+                    memory > xarea_att
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply)
+                        (((xisinstance)).apply ((xvalue)) ((xDecimal))).if
+                          xvalue.write (((xfloat)).apply ((xvalue)))
+                        xarea_att.write (((((xconnection).xops).xget_area_att_for_field)).apply (((xself).xgeo_field)))
+                        (((unsupported)).apply (((xarea_att).if (((xArea)).apply ((((unsupported)).apply ((((unsupported)).apply ((xarea_att)) ((xvalue))))))) (xvalue))))
+                xget_internal_type.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("AreaField"))
+            (((unsupported)).apply (((xmodels).xFloatField)))
+              seq
+                unsupported
+                x__init__.write
+                  [xself xgeo_field]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply)
+                        (((unsupported)).apply (((xself).xgeo_field)) ((xgeo_field)))
+                xget_prep_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((xisinstance)).apply ((xvalue)) ((xDistance))).if
+                          (((unsupported)).apply ((xvalue)))
+                        (((unsupported)).apply (((((((xsuper)).apply).xget_prep_value)).apply ((xvalue)))))
+                xget_db_prep_value.write
+                  [xself xvalue xconnection xprepared]
+                    memory > xdistance_att
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xisinstance)).apply ((xvalue)) ((xDistance))).not).if
+                          (((unsupported)).apply ((xvalue)))
+                        xdistance_att.write (((((xconnection).xops).xget_distance_att_for_field)).apply (((xself).xgeo_field)))
+                        ((xdistance_att).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Distance measure is supplied, but units are unknown for result."))))
+                        (((unsupported)).apply ((((xgetattr)).apply ((xvalue)) ((xdistance_att)))))
+                xfrom_db_value.write
+                  [xself xvalue xexpression xconnection]
+                    memory > xdistance_att
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply)
+                        xdistance_att.write (((((xconnection).xops).xget_distance_att_for_field)).apply (((xself).xgeo_field)))
+                        (((unsupported)).apply (((xdistance_att).if (((xDistance)).apply ((((unsupported)).apply ((((unsupported)).apply ((xdistance_att)) ((xvalue))))))) (xvalue))))
+                xget_internal_type.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("DistanceField"))

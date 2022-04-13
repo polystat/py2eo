@@ -1,0 +1,463 @@
+memory > xall
+memory > xtranslation
+memory > xstr
+memory > xurl
+memory > xdate
+memory > xpk
+memory > xSitemap
+memory > xmap
+memory > xisinstance
+memory > xSitemapTestsBase
+memory > xSite
+memory > xRemovedInDjango50Warning
+memory > xlocalize
+memory > xImproperlyConfigured
+memory > xTestModel
+[] > test_http
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_callable_sitemod_full
+        memory > xtest_simple_sitemap_custom_index_warning
+        memory > xtest_simple_sitemap
+        memory > xtest_sitemap_last_modified_mixed
+        memory > xtest_alternate_i18n_sitemap_xdefault
+        memory > xtest_sitemap_last_modified_missing
+        memory > xtest_sitemap_get_urls_no_site_1
+        memory > xtest_sitemap_last_modified_date
+        memory > xtest_simple_sitemap_custom_index
+        memory > xtest_callable_sitemod_partial
+        memory > xtest_sitemaps_lastmod_descending
+        memory > xtest_simple_i18n_sitemap_index
+        memory > xtest_simple_sitemap_section
+        memory > xtest_sitemap_without_entries
+        memory > xtest_page_not_int
+        memory > xtest_paged_sitemap
+        memory > xtest_localized_priority
+        memory > xtest_sitemaps_lastmod_mixed_ascending_last_modified_missing
+        memory > xtest_empty_sitemap
+        memory > xtest_sitemap_get_urls_no_site_2
+        memory > xtest_alternate_i18n_sitemap_index
+        memory > xuse_sitemap_err_msg
+        memory > xtest_cached_sitemap_index
+        memory > xtest_sitemap_not_callable
+        memory > xtest_requestsite_sitemap
+        memory > xtest_sitemap_item
+        memory > xtest_sitemap_last_modified
+        memory > xtest_simple_custom_sitemap
+        memory > xtest_sitemap_get_latest_lastmod
+        memory > xtest_x_robots_sitemap
+        memory > xtest_no_section
+        memory > xtest_sitemap_last_modified_tz
+        memory > xtest_sitemap_get_latest_lastmod_none
+        memory > xtest_sitemaps_lastmod_mixed_descending_last_modified_missing
+        memory > xtest_simple_sitemap_custom_lastmod_index
+        memory > xtest_simple_sitemap_index
+        memory > xtest_sitemaps_lastmod_ascending
+        memory > xtest_sitemap_latest_lastmod_timezone
+        memory > xtest_empty_page
+        memory > xtest_alternate_i18n_sitemap_limited
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSitemapTestsBase)))
+              seq
+                xuse_sitemap_err_msg.write "To use sitemaps, either enable the sites framework or pass a Site/RequestSite object in your view."
+                xtest_simple_sitemap_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/index.xml"))
+                        xexpected_content.write ((((unsupported)).apply).mod (((unsupported)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_sitemap_not_callable.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple-not-callable/index.xml"))
+                        xexpected_content.write ((((unsupported)).apply).mod (((unsupported)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_paged_sitemap.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple-paged/index.xml"))
+                        xexpected_content.write ((((((unsupported)).apply).xformat)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply)))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_simple_sitemap_custom_lastmod_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/custom-lastmod-index.xml"))
+                        xexpected_content.write ((((unsupported)).apply).mod (((unsupported)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_simple_sitemap_section.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap-simple.xml"))
+                        xexpected_content.write ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>%s/location/</loc><lastmod>%s</lastmod><changefreq>never</changefreq><priority>0.5</priority></url>n</urlset>".mod (((unsupported)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_no_section.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap-simple2.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("exception"))))) ("No sitemap available for section: 'simple2'"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))
+                xtest_empty_page.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap-simple.xml?p=0"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("exception"))))) ("Page 0 empty"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))
+                xtest_page_not_int.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap-simple.xml?p=test"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((((unsupported)).apply (((xresponse).xcontext)) ("exception"))))) ("No page 'test'"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (404))
+                xtest_simple_sitemap.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap.xml"))
+                        xexpected_content.write ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>%s/location/</loc><lastmod>%s</lastmod><changefreq>never</changefreq><priority>0.5</priority></url>n</urlset>".mod (((unsupported)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_simple_custom_sitemap.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/custom-sitemap.xml"))
+                        xexpected_content.write ((((unsupported)).apply).mod (((unsupported)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_sitemap_last_modified.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod/sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ("Wed, 13 Mar 2013 10:00:00 GMT"))
+                xtest_sitemap_last_modified_date.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod/date-sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ("Wed, 13 Mar 2013 00:00:00 GMT"))
+                xtest_sitemap_last_modified_tz.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod/tz-sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ("Wed, 13 Mar 2013 15:00:00 GMT"))
+                xtest_sitemap_last_modified_missing.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/generic/sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xresponse).xhas_header)).apply ("Last-Modified"))))
+                xtest_sitemap_last_modified_mixed.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod-mixed/sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xresponse).xhas_header)).apply ("Last-Modified"))))
+                xtest_sitemaps_lastmod_mixed_ascending_last_modified_missing.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod-sitemaps/mixed-ascending.xml"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xresponse).xhas_header)).apply ("Last-Modified"))))
+                xtest_sitemaps_lastmod_mixed_descending_last_modified_missing.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod-sitemaps/mixed-descending.xml"))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xresponse).xhas_header)).apply ("Last-Modified"))))
+                xtest_sitemaps_lastmod_ascending.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod-sitemaps/ascending.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ("Sat, 20 Apr 2013 05:00:00 GMT"))
+                xtest_sitemaps_lastmod_descending.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod-sitemaps/descending.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ("Sat, 20 Apr 2013 05:00:00 GMT"))
+                xtest_sitemap_get_latest_lastmod_none.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod/get-latest-lastmod-none-sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertNotContains)).apply ((xresponse)) ("<lastmod>"))
+                xtest_sitemap_get_latest_lastmod.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod/get-latest-lastmod-sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<lastmod>2013-03-13T10:00:00</lastmod>"))
+                xtest_sitemap_latest_lastmod_timezone.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/lastmod/latest-lastmod-timezone-sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<lastmod>2013-03-13T10:00:00-05:00</lastmod>"))
+                xtest_localized_priority.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          seq
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ("0,3") ((((xlocalize)).apply (0.3))))
+                            xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap.xml"))
+                            bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) ("<priority>0.5</priority>"))
+                            bogusForceDataize.write ((((xself).xassertContains)).apply ((xresponse)) (("<lastmod>%s</lastmod>".mod ((((xdate).xtoday)).apply))))
+                xtest_requestsite_sitemap.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap.xml"))
+                        xexpected_content.write ("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>http://testserver/location/</loc><lastmod>%s</lastmod><changefreq>never</changefreq><priority>0.5</priority></url>n</urlset>".mod ((((xdate).xtoday)).apply))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_sitemap_get_urls_no_site_1.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((((((xSite).xobjects).xall)).apply).xdelete)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) (((xself).xuse_sitemap_err_msg)))))
+                          bogusForceDataize.write ((((((xSitemap)).apply).xget_urls)).apply)
+                xtest_sitemap_get_urls_no_site_2.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) (((xself).xuse_sitemap_err_msg)))))
+                          bogusForceDataize.write ((((((xSitemap)).apply).xget_urls)).apply)
+                xtest_sitemap_item.write
+                  [xself]
+                    memory > xtest_sitemap
+                    memory > xitem_in_url_info
+                    memory > xis_testmodel
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xtest_sitemap.write (((xSitemap)).apply)
+                        (((unsupported)).apply (((xtest_sitemap).xitems)) (((((((xTestModel).xobjects).xorder_by)).apply ("pk")).xall)))
+                        xis_testmodel.write
+                          [xurl]
+                            seq > @
+                              (((unsupported)).apply ((((xisinstance)).apply ((((unsupported)).apply ((xurl)) ("item"))) ((xTestModel)))))
+                        xitem_in_url_info.write (((xall)).apply ((((xmap)).apply ((xis_testmodel)) (((((xtest_sitemap).xget_urls)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((xitem_in_url_info)))
+                xtest_cached_sitemap_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/cached/index.xml"))
+                        xexpected_content.write ((((unsupported)).apply).mod (((unsupported)).apply (((xself).xbase_url)) (((((xdate).xtoday)).apply))))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_x_robots_sitemap.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/index.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-Robots-Tag"))) ("noindex, noodp, noarchive"))
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-Robots-Tag"))) ("noindex, noodp, noarchive"))
+                xtest_empty_sitemap.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ("/empty/sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xresponse).xstatus_code)) (200))
+                xtest_simple_i18n_sitemap_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertNoLogs)).apply ("django.template") ("DEBUG"))))
+                          xresponse.write (((((xself).xclient).xget)).apply ("/simple/i18n.xml"))
+                        xexpected_content.write ((("<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>{0}/en/i18n/testmodel/{1}/</loc><changefreq>never</changefreq><priority>0.5</priority></url><url><loc>{0}/pt/i18n/testmodel/{1}/</loc><changefreq>never</changefreq><priority>0.5</priority></url>n</urlset>".xformat)).apply (((xself).xbase_url)) ((((xself).xi18n_model).xpk)))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_alternate_i18n_sitemap_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_urls
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/alternates/i18n.xml"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xurl)) ((xpk)))) ((((unsupported)).apply (((xself).xbase_url)) ((((xself).xi18n_model).xpk)))))
+                        xexpected_urls.write ((((((unsupported)).apply).xreplace)).apply ("n") (""))
+                        xexpected_content.write "<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n{expected_urls}n</urlset>"
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_alternate_i18n_sitemap_limited.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_urls
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/limited/i18n.xml"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xurl)) ((xpk)))) ((((unsupported)).apply (((xself).xbase_url)) ((((xself).xi18n_model).xpk)))))
+                        xexpected_urls.write ((((((unsupported)).apply).xreplace)).apply ("n") (""))
+                        xexpected_content.write "<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n{expected_urls}n</urlset>"
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_alternate_i18n_sitemap_xdefault.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_urls
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((((xself).xclient).xget)).apply ("/x-default/i18n.xml"))
+                        (((unsupported)).apply ((((unsupported)).apply ((xurl)) ((xpk)))) ((((unsupported)).apply (((xself).xbase_url)) ((((xself).xi18n_model).xpk)))))
+                        xexpected_urls.write ((((((unsupported)).apply).xreplace)).apply ("n") (""))
+                        xexpected_content.write "<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n{expected_urls}n</urlset>"
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_sitemap_without_entries.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      seq
+                        xresponse.write (((((xself).xclient).xget)).apply ("/sitemap-without-entries/sitemap.xml"))
+                        xexpected_content.write "<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">nn</urlset>"
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))
+                xtest_callable_sitemod_partial.write
+                  [xself]
+                    memory > xsitemap_response
+                    memory > xexpected_content_index
+                    memory > xindex_response
+                    memory > xexpected_content_sitemap
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xindex_response.write (((((xself).xclient).xget)).apply ("/callable-lastmod-partial/index.xml"))
+                        xsitemap_response.write (((((xself).xclient).xget)).apply ("/callable-lastmod-partial/sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("Last-Modified") ((xindex_response)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("Last-Modified") ((xsitemap_response)))
+                        xexpected_content_index.write (((unsupported)).apply)
+                        xexpected_content_sitemap.write "<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>http://example.com/location/</loc><lastmod>2013-03-13</lastmod></url><url><loc>http://example.com/location/</loc></url>n</urlset>"
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xindex_response).xcontent).xdecode)).apply)) ((xexpected_content_index)))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xsitemap_response).xcontent).xdecode)).apply)) ((xexpected_content_sitemap)))
+                xtest_callable_sitemod_full.write
+                  [xself]
+                    memory > xsitemap_response
+                    memory > xexpected_content_index
+                    memory > xindex_response
+                    memory > xexpected_content_sitemap
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xindex_response.write (((((xself).xclient).xget)).apply ("/callable-lastmod-full/index.xml"))
+                        xsitemap_response.write (((((xself).xclient).xget)).apply ("/callable-lastmod-full/sitemap.xml"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xindex_response).xheaders)) ("Last-Modified"))) ("Thu, 13 Mar 2014 10:00:00 GMT"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xsitemap_response).xheaders)) ("Last-Modified"))) ("Thu, 13 Mar 2014 10:00:00 GMT"))
+                        xexpected_content_index.write (((unsupported)).apply)
+                        xexpected_content_sitemap.write "<?xml version=\"1.0\" encoding=\"UTF-8\"?>n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">n<url><loc>http://example.com/location/</loc><lastmod>2013-03-13</lastmod></url><url><loc>http://example.com/location/</loc><lastmod>2014-03-13</lastmod></url>n</urlset>"
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xindex_response).xcontent).xdecode)).apply)) ((xexpected_content_index)))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xsitemap_response).xcontent).xdecode)).apply)) ((xexpected_content_sitemap)))
+            (((unsupported)).apply ((xSitemapTestsBase)))
+              seq
+                xtest_simple_sitemap_custom_index_warning.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "Calling `__str__` on SitemapIndexItem is deprecated, use the `location` attribute instead."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xRemovedInDjango50Warning)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xclient).xget)).apply ("/simple/custom-index.xml"))
+                xtest_simple_sitemap_custom_index.write
+                  [xself]
+                    memory > xresponse
+                    memory > xexpected_content
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xresponse.write (((((xself).xclient).xget)).apply ("/simple/custom-index.xml"))
+                        xexpected_content.write ((((unsupported)).apply).mod ((xself).xbase_url))
+                        bogusForceDataize.write ((((xself).xassertXMLEqual)).apply ((((((xresponse).xcontent).xdecode)).apply)) ((xexpected_content)))

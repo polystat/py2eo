@@ -1,0 +1,38 @@
+memory > xpath
+memory > xURLObject
+memory > xinclude
+memory > xre_path
+memory > xviews
+[] > namespace_urls
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xurlpatterns
+        memory > xtestobj2
+        memory > xotherobj1
+        memory > xdefault_testobj
+        memory > xnewappobj1
+        memory > xotherobj2
+        memory > xapp_name
+        memory > xtestobj1
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xtestobj1.write (((xURLObject)).apply ("testapp") ("test-ns1"))
+            xtestobj2.write (((xURLObject)).apply ("testapp") ("test-ns2"))
+            xdefault_testobj.write (((xURLObject)).apply ("testapp") ("testapp"))
+            xotherobj1.write (((xURLObject)).apply ("nodefault") ("other-ns1"))
+            xotherobj2.write (((xURLObject)).apply ("nodefault") ("other-ns2"))
+            xnewappobj1.write (((xURLObject)).apply ("newapp"))
+            xapp_name.write "namespace_urls"
+            xurlpatterns.write (((unsupported)).apply ((((unsupported)).apply ((xpath)) ("normal/") (((xviews).xempty_view)) ("normal-view"))) ((((unsupported)).apply ((xre_path)) ("^normal/(?P<arg1>[0-9]-)/(?P<arg2>[0-9]-)/$") (((xviews).xempty_view)) ("normal-view"))) ((((unsupported)).apply ((xpath)) ("resolver_match/") (((xviews).xpass_resolver_match_view)) ("test-resolver-match"))) ((((unsupported)).apply ((xre_path)) ((((unsupported)).apply)) (((xviews).xempty_view)) ("special-view"))) ((((unsupported)).apply ((xre_path)) ("^mixed_args/([0-9]-)/(?P<arg2>[0-9]-)/$") (((xviews).xempty_view)) ((((unsupported)).apply ("extra") (TRUE))) ("mixed-args"))) ((((unsupported)).apply ((xre_path)) ("^no_kwargs/([0-9]-)/([0-9]-)/$") (((xviews).xempty_view)) ("no-kwargs"))) ((((unsupported)).apply ((xre_path)) ("^view_class/(?P<arg1>[0-9]-)/(?P<arg2>[0-9]-)/$") (((xviews).xview_class_instance)) ("view-class"))) ((((xre_path)).apply ("^unnamed/normal/(?P<arg1>[0-9]-)/(?P<arg2>[0-9]-)/$") (((xviews).xempty_view)))) ((((xre_path)).apply ("^unnamed/view_class/(?P<arg1>[0-9]-)/(?P<arg2>[0-9]-)/$") (((xviews).xview_class_instance)))) ((((xpath)).apply ("test1/") ((((xinclude)).apply ((((unsupported)).apply (((xtestobj1).xurls)))))))) ((((xpath)).apply ("test2/") ((((xinclude)).apply ((((unsupported)).apply (((xtestobj2).xurls)))))))) ((((xpath)).apply ("default/") ((((xinclude)).apply ((((unsupported)).apply (((xdefault_testobj).xurls)))))))) ((((xpath)).apply ("other1/") ((((xinclude)).apply ((((unsupported)).apply (((xotherobj1).xurls)))))))) ((((xre_path)).apply ("^other[246]/") ((((xinclude)).apply ((((unsupported)).apply (((xotherobj2).xurls)))))))) ((((xpath)).apply ("newapp1/") ((((xinclude)).apply (((xnewappobj1).xapp_urls)) ("new-ns1"))))) ((((xpath)).apply ("new-default/") ((((xinclude)).apply (((xnewappobj1).xapp_urls)))))) ((((xre_path)).apply ("^app-included[135]/") ((((unsupported)).apply ((xinclude)) ("urlpatterns_reverse.included_app_urls") ("app-ns1"))))) ((((xpath)).apply ("app-included2/") ((((unsupported)).apply ((xinclude)) ("urlpatterns_reverse.included_app_urls") ("app-ns2"))))) ((((xre_path)).apply ("^ns-included[135]/") ((((unsupported)).apply ((xinclude)) ("urlpatterns_reverse.included_namespace_urls") ("inc-ns1"))))) ((((xpath)).apply ("ns-included2/") ((((unsupported)).apply ((xinclude)) ("urlpatterns_reverse.included_namespace_urls") ("inc-ns2"))))) ((((xpath)).apply ("app-included/") ((((xinclude)).apply ("urlpatterns_reverse.included_namespace_urls") ("inc-app"))))) ((((xpath)).apply ("included/") ((((xinclude)).apply ("urlpatterns_reverse.included_namespace_urls"))))) ((((xre_path)).apply ("^inc(?P<outer>[0-9]-)/") ((((unsupported)).apply ((xinclude)) ((((unsupported)).apply ("urlpatterns_reverse.included_urls") ("included_urls"))) ("inc-ns5"))))) ((((xre_path)).apply ("^included/([0-9]-)/") ((((xinclude)).apply ("urlpatterns_reverse.included_namespace_urls"))))) ((((xre_path)).apply ("^ns-outer/(?P<outer>[0-9]-)/") ((((unsupported)).apply ((xinclude)) ("urlpatterns_reverse.included_namespace_urls") ("inc-outer"))))) ((((xre_path)).apply ((((unsupported)).apply)) ((((unsupported)).apply ((xinclude)) ("urlpatterns_reverse.namespace_urls") ("special"))))))

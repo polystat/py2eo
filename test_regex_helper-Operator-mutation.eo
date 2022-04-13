@@ -1,0 +1,108 @@
+memory > xAssertionError
+memory > xre
+memory > xregex_helper
+memory > xunittest
+memory > xSimpleTestCase
+[] > test_regex_helper
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_group_positional
+        memory > xtest_group_backreference
+        memory > xtest_group_noncapturing
+        memory > xtest_flags_with_pre_compiled_regex
+        memory > xtest_escape
+        memory > xtest_group_named
+        memory > xtest_empty
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xunittest).xTestCase)))
+              seq
+                xtest_empty.write
+                  [xself]
+                    memory > xexpected
+                    memory > xresult
+                    memory > xpattern
+                    seq > @
+                      seq
+                        xpattern.write ""
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("") ((((unsupported)).apply)))))
+                        xresult.write ((((xregex_helper).xnormalize)).apply ((xpattern)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult)) ((xexpected)))
+                xtest_escape.write
+                  [xself]
+                    memory > xexpected
+                    memory > xresult
+                    memory > xpattern
+                    seq > @
+                      seq
+                        xpattern.write (((unsupported)).apply)
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply)) ((((unsupported)).apply)))))
+                        xresult.write ((((xregex_helper).xnormalize)).apply ((xpattern)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult)) ((xexpected)))
+                xtest_group_positional.write
+                  [xself]
+                    memory > xexpected
+                    memory > xresult
+                    memory > xpattern
+                    seq > @
+                      seq
+                        xpattern.write "(.*)-(.-)"
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("%(_0)s-%(_1)s") ((((unsupported)).apply ("_0") ("_1"))))))
+                        xresult.write ((((xregex_helper).xnormalize)).apply ((xpattern)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult)) ((xexpected)))
+                xtest_group_noncapturing.write
+                  [xself]
+                    memory > xexpected
+                    memory > xresult
+                    memory > xpattern
+                    seq > @
+                      seq
+                        xpattern.write "(?:non-capturing)"
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("non-capturing") ((((unsupported)).apply)))))
+                        xresult.write ((((xregex_helper).xnormalize)).apply ((xpattern)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult)) ((xexpected)))
+                xtest_group_named.write
+                  [xself]
+                    memory > xexpected
+                    memory > xresult
+                    memory > xpattern
+                    seq > @
+                      seq
+                        xpattern.write "(?P<first_group_name>.*)-(?P<second_group_name>.*)"
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("%(first_group_name)s-%(second_group_name)s") ((((unsupported)).apply ("first_group_name") ("second_group_name"))))))
+                        xresult.write ((((xregex_helper).xnormalize)).apply ((xpattern)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult)) ((xexpected)))
+                xtest_group_backreference.write
+                  [xself]
+                    memory > xexpected
+                    memory > xresult
+                    memory > xpattern
+                    seq > @
+                      seq
+                        xpattern.write "(?P<first_group_name>.*)-(?P=first_group_name)"
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply ("%(first_group_name)s-%(first_group_name)s") ((((unsupported)).apply ("first_group_name"))))))
+                        xresult.write ((((xregex_helper).xnormalize)).apply ((xpattern)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xresult)) ((xexpected)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_flags_with_pre_compiled_regex.write
+                [xself]
+                  memory > xlazy_test_pattern
+                  memory > xtest_pattern
+                  memory > xmsg
+                  seq > @
+                    seq
+                      xtest_pattern.write ((((xre).xcompile)).apply ("test"))
+                      xlazy_test_pattern.write ((((xregex_helper).x_lazy_re_compile)).apply ((xtest_pattern)) (((xre).xI)))
+                      xmsg.write "flags must be empty if regex is passed pre-compiled"
+                      (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xAssertionError)) ((xmsg)))))
+                        bogusForceDataize.write ((((xlazy_test_pattern).xmatch)).apply ("TEST"))

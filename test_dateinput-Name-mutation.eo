@@ -1,0 +1,82 @@
+memory > xstr
+memory > xCharField
+memory > xdate
+memory > xDateInput
+memory > xTestForm
+memory > xForm
+memory > xWidgetTest
+[] > test_dateinput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_render_value
+        memory > xtest_l10n
+        memory > xwidget2
+        memory > xtest_render_none
+        memory > xtest_string
+        memory > xtest_format
+        memory > xtest_fieldset
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget2.write (((xDateInput)).apply)
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ("None: is there a None literal in the EO language?") ("<input type=\"text\" name=\"date\">"))
+                xtest_render_value.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((xdate)).apply (2007) (9) (17))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xd)))) ("2007-09-17"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((xd)) ("<input type=\"text\" name=\"date\" value=\"2007-09-17\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((xdate)).apply (2007) (9) (17))) ("<input type=\"text\" name=\"date\" value=\"2007-09-17\">"))
+                xtest_string.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ("2007-09-17") ("<input type=\"text\" name=\"date\" value=\"2007-09-17\">"))
+                xtest_format.write
+                  [xself]
+                    memory > xd
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xd.write (((xdate)).apply (2007) (9) (17))
+                        xwidget.write (((unsupported)).apply ((xDateInput)) ("%d/%m/%Y") ((((unsupported)).apply ("type") ("date"))))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((xd)) ("<input type=\"date\" name=\"date\" value=\"17/09/2007\">"))
+                xtest_l10n.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((xdate)).apply (2007) (9) (17))) ("<input type=\"text\" name=\"date\" value=\"17.09.2007\">"))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xCharField)) (((xself).xwidget)))
+                        xform.write (((xTestForm)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply (((((xform).xrender)).apply)) ("<div><label for=\"id_field\">Field:</label><input id=\"id_field\" name=\"field\" required type=\"text\"></div>"))

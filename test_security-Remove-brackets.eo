@@ -1,0 +1,294 @@
+memory > xk
+memory > xexpected
+memory > xvalue
+memory > xRequestFactory
+memory > xoverride_settings
+memory > xargs
+memory > xkwargs
+memory > xSimpleTestCase
+memory > xHttpResponse
+memory > xSecurityMiddleware
+memory > xgetattr
+memory > xv
+[] > test_security
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_content_type_off
+        memory > xtest_sts_subdomains_and_preload
+        memory > xtest_redirect_exempt
+        memory > xtest_sts_off
+        memory > xtest_referrer_policy_already_present
+        memory > xtest_sts_no_preload
+        memory > xtest_ssl_redirect_on
+        memory > xtest_coop_already_present
+        memory > xprocess_request
+        memory > xtest_sts_include_subdomains
+        memory > xtest_no_redirect_ssl
+        memory > xsecure_request_kwargs
+        memory > xmiddleware
+        memory > xtest_redirect_ssl_host
+        memory > xprocess_response
+        memory > xrequest
+        memory > xtest_sts_no_include_subdomains
+        memory > xtest_referrer_policy_on
+        memory > xtest_ssl_redirect_off
+        memory > xtest_content_type_already_present
+        memory > xtest_coop_off
+        memory > xtest_sts_on
+        memory > xtest_sts_only_if_secure
+        memory > xtest_coop_on
+        memory > xtest_sts_preload
+        memory > xtest_content_type_on
+        memory > xtest_referrer_policy_off
+        memory > xtest_sts_already_present
+        memory > xtest_coop_default
+        memory > xresponse
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xmiddleware.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xSecurityMiddleware)).apply (((((xself).xresponse)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))))
+                xsecure_request_kwargs.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ("wsgi.url_scheme") ("https"))))
+                xresponse.write
+                  [xself xheaders]
+                    memory > xget_response
+                    seq > @
+                      (((unsupported)).apply)
+                        xget_response.write
+                          [xreq]
+                            memory > xresponse
+                            seq > @
+                              seq
+                                xresponse.write (((xHttpResponse)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                                (xheaders).if
+                                  (((unsupported)).apply ((((unsupported)).apply ((xk)) ((xv)))) (((xheaders).xitems)))
+                                    (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ((xk)))) ((xv)))
+                                (((unsupported)).apply ((xresponse)))
+                        (((unsupported)).apply ((xget_response)))
+                xprocess_response.write
+                  [xself xsecure xrequest]
+                    memory > xret
+                    memory > xrequest_kwargs
+                    seq > @
+                      (((unsupported)).apply)
+                        xrequest_kwargs.write (((unsupported)).apply)
+                        (xsecure).if
+                          bogusForceDataize.write ((((xrequest_kwargs).xupdate)).apply (((xself).xsecure_request_kwargs)))
+                        (((unsupported)).apply ((xrequest)) ("None: is there a None literal in the EO language?")).if
+                          xrequest.write (((((xself).xrequest).xget)).apply ("/some/url") ((((unsupported)).apply ((xrequest_kwargs)))))
+                        xret.write (((((((xself).xmiddleware)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs))))).xprocess_request)).apply ((xrequest)))
+                        (xret).if
+                          (((unsupported)).apply ((xret)))
+                        (((unsupported)).apply (((((((xself).xmiddleware)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))).apply ((xrequest)))))
+                xrequest.write (xRequestFactory)
+                xprocess_request.write
+                  [xself xmethod xsecure]
+                    memory > xreq
+                    seq > @
+                      (((unsupported)).apply)
+                        (xsecure).if
+                          bogusForceDataize.write ((((xkwargs).xupdate)).apply (((xself).xsecure_request_kwargs)))
+                        xreq.write (((((xgetattr)).apply (((xself).xrequest)) (((xmethod).xlower)))).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply ((((((xself).xmiddleware).xprocess_request)).apply ((xreq)))))
+                xtest_sts_on.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((((unsupported)).apply (((xself).xprocess_response)) (TRUE)).xheaders)) ("Strict-Transport-Security"))) ("max-age=3600"))
+                xtest_sts_already_present.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) (TRUE) ((((unsupported)).apply ("Strict-Transport-Security") ("max-age=7200"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Strict-Transport-Security"))) ("max-age=7200"))
+                xtest_sts_only_if_secure.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("Strict-Transport-Security") (((((unsupported)).apply (((xself).xprocess_response)) (FALSE)).xheaders)))
+                xtest_sts_off.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("Strict-Transport-Security") (((((unsupported)).apply (((xself).xprocess_response)) (TRUE)).xheaders)))
+                xtest_sts_include_subdomains.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Strict-Transport-Security"))) ("max-age=600; includeSubDomains"))
+                xtest_sts_no_include_subdomains.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Strict-Transport-Security"))) ("max-age=600"))
+                xtest_sts_preload.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Strict-Transport-Security"))) ("max-age=10886400; preload"))
+                xtest_sts_subdomains_and_preload.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Strict-Transport-Security"))) ("max-age=10886400; includeSubDomains; preload"))
+                xtest_sts_no_preload.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Strict-Transport-Security"))) ("max-age=10886400"))
+                xtest_content_type_on.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xprocess_response).xheaders)) ("X-Content-Type-Options"))) ("nosniff"))
+                xtest_content_type_already_present.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) (TRUE) ((((unsupported)).apply ("X-Content-Type-Options") ("foo"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("X-Content-Type-Options"))) ("foo"))
+                xtest_content_type_off.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("X-Content-Type-Options") ((((xself).xprocess_response).xheaders)))
+                xtest_ssl_redirect_on.write
+                  [xself]
+                    memory > xret
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xret.write ((((xself).xprocess_request)).apply ("get") ("/some/url?query=string"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xret).xstatus_code)) (301))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xret)) ("Location"))) ("https://testserver/some/url?query=string"))
+                xtest_no_redirect_ssl.write
+                  [xself]
+                    memory > xret
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xret.write (((unsupported)).apply (((xself).xprocess_request)) ("get") ("/some/url") (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xret)))
+                xtest_redirect_exempt.write
+                  [xself]
+                    memory > xret
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xret.write ((((xself).xprocess_request)).apply ("get") ("/insecure/page"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xret)))
+                xtest_redirect_ssl_host.write
+                  [xself]
+                    memory > xret
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xret.write ((((xself).xprocess_request)).apply ("get") ("/some/url"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xret).xstatus_code)) (301))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xret)) ("Location"))) ("https://secure.example.com/some/url"))
+                xtest_ssl_redirect_off.write
+                  [xself]
+                    memory > xret
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xret.write ((((xself).xprocess_request)).apply ("get") ("/some/url"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((xret)))
+                xtest_referrer_policy_off.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("Referrer-Policy") ((((xself).xprocess_response).xheaders)))
+                xtest_referrer_policy_on.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("strict-origin") ("strict-origin"))) ((((unsupported)).apply ("strict-origin,origin") ("strict-origin,origin"))) ((((unsupported)).apply ("strict-origin, origin") ("strict-origin,origin"))) ((((unsupported)).apply ((((unsupported)).apply ("strict-origin") ("origin"))) ("strict-origin,origin"))) ((((unsupported)).apply ((((unsupported)).apply ("strict-origin") ("origin"))) ("strict-origin,origin"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xvalue)) ((xexpected)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))) ((((unsupported)).apply ((xoverride_settings)) ((xvalue)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xprocess_response).xheaders)) ("Referrer-Policy"))) ((xexpected)))
+                xtest_referrer_policy_already_present.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) ((((unsupported)).apply ("Referrer-Policy") ("unsafe-url"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Referrer-Policy"))) ("unsafe-url"))
+                xtest_coop_off.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("Cross-Origin-Opener-Policy") (((xself).xprocess_response)))
+                xtest_coop_default.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xprocess_response).xheaders)) ("Cross-Origin-Opener-Policy"))) ("same-origin"))
+                xtest_coop_on.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtests.write (((unsupported)).apply ("same-origin") ("same-origin-allow-popups") ("unsafe-none"))
+                        (((unsupported)).apply ((xvalue)) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xvalue)))) ((((unsupported)).apply ((xoverride_settings)) ((xvalue)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xself).xprocess_response).xheaders)) ("Cross-Origin-Opener-Policy"))) ((xvalue)))
+                xtest_coop_already_present.write
+                  [xself]
+                    memory > xresponse
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xresponse.write (((unsupported)).apply (((xself).xprocess_response)) ((((unsupported)).apply ("Cross-Origin-Opener-Policy") ("same-origin"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Cross-Origin-Opener-Policy"))) ("same-origin"))

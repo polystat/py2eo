@@ -1,0 +1,76 @@
+memory > xdatetime
+memory > xValidationError
+memory > xSimpleTestCase
+memory > xFormFieldAssertionsMixin
+memory > xTimeField
+[] > test_timefield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_timefield_2
+        memory > xtest_timefield_1
+        memory > xtest_timefield_changed
+        memory > xtest_timefield_3
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFormFieldAssertionsMixin)) ((xSimpleTestCase)))
+              seq
+                xtest_timefield_1.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xTimeField)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25))) (((((xf).xclean)).apply (((((xdatetime).xtime)).apply (14) (25))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25) (59))) (((((xf).xclean)).apply (((((xdatetime).xtime)).apply (14) (25) (59))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25))) (((((xf).xclean)).apply ("14:25"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25) (59))) (((((xf).xclean)).apply ("14:25:59"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid time.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("hello"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid time.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1:24 p.m."))
+                xtest_timefield_2.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xTimeField)) ((((unsupported)).apply ("%I:%M %p"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25))) (((((xf).xclean)).apply (((((xdatetime).xtime)).apply (14) (25))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25) (59))) (((((xf).xclean)).apply (((((xdatetime).xtime)).apply (14) (25) (59))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (4) (25))) (((((xf).xclean)).apply ("4:25 AM"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (16) (25))) (((((xf).xclean)).apply ("4:25 PM"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid time.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("14:30:45"))
+                xtest_timefield_3.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xTimeField)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25))) (((((xf).xclean)).apply (" 14:25 "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtime)).apply (14) (25) (59))) (((((xf).xclean)).apply (" 14:25:59 "))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid time.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("   "))
+                xtest_timefield_changed.write
+                  [xself]
+                    memory > xt1
+                    memory > xt2
+                    memory > xf
+                    seq > @
+                      seq
+                        xt1.write ((((xdatetime).xtime)).apply (12) (51) (34) (482548))
+                        xt2.write ((((xdatetime).xtime)).apply (12) (51))
+                        xf.write (((unsupported)).apply ((xTimeField)) ((((unsupported)).apply ("%H:%M") ("%H:%M %p"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((xf).xhas_changed)).apply ((xt1)) ("12:51"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ((xt2)) ("12:51"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ((xt2)) ("12:51 PM"))))

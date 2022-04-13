@@ -1,0 +1,98 @@
+memory > xdatetime
+memory > xtranslation
+memory > xstr
+memory > xCharField
+memory > xignore_warnings
+memory > xTestForm
+memory > xRemovedInDjango50Warning
+memory > xForm
+memory > xWidgetTest
+memory > xDateTimeInput
+[] > test_datetimeinput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_l10n
+        memory > xtest_render_none
+        memory > xtest_render_value
+        memory > xtest_render_formatted
+        memory > xtest_locale_aware
+        memory > xtest_fieldset
+        memory > xwidget
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (xDateTimeInput)
+                xtest_render_none.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xcheck_html)).apply (((xself).xwidget)) ("date") ("None: is there a None literal in the EO language?") ("<input type=\"text\" name=\"date\">"))
+                xtest_render_value.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xd.write (((xdatetime)).apply (2007) (9) (17) (12) (51) (34) (482548))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstr)).apply ((xd)))) ("2007-09-17 12:51:34.482548"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((xd)) ("<input type=\"text\" name=\"date\" value=\"2007-09-17 12:51:34\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((xdatetime)).apply (2007) (9) (17) (12) (51) (34))) ("<input type=\"text\" name=\"date\" value=\"2007-09-17 12:51:34\">"))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((((xdatetime)).apply (2007) (9) (17) (12) (51))) ("<input type=\"text\" name=\"date\" value=\"2007-09-17 12:51:00\">"))
+                xtest_render_formatted.write
+                  [xself]
+                    memory > xd
+                    memory > xwidget
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xwidget.write (((unsupported)).apply ((xDateTimeInput)) ("%d/%m/%Y %H:%M") ((((unsupported)).apply ("type") ("datetime"))))
+                        xd.write (((xdatetime)).apply (2007) (9) (17) (12) (51) (34) (482548))
+                        (((unsupported)).apply (((xself).xcheck_html)) ((xwidget)) ("date") ((xd)) ("<input type=\"datetime\" name=\"date\" value=\"17/09/2007 12:51\">"))
+                xtest_l10n.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      (((unsupported)).apply)
+                        xd.write (((xdatetime)).apply (2007) (9) (17) (12) (51) (34) (482548))
+                        (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((xd)) ("<input type=\"text\" name=\"date\" value=\"17.09.2007 12:51:34\">"))
+                xtest_locale_aware.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      (((unsupported)).apply)
+                        xd.write (((xdatetime)).apply (2007) (9) (17) (12) (51) (34) (482548))
+                        (((unsupported)).apply ((((unsupported)).apply ((xignore_warnings)) ((xRemovedInDjango50Warning)))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (FALSE))))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ("%Y-%m-%d %H:%M:%S") ("%Y-%m-%d %H:%M:%S.%f") ("%Y-%m-%d %H:%M"))))))
+                              (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((xd)) ("<input type=\"text\" name=\"date\" value=\"2007-09-17 12:51:34\">"))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("es"))))
+                          (((unsupported)).apply (((xself).xcheck_html)) (((xself).xwidget)) ("date") ((xd)) ("<input type=\"text\" name=\"date\" value=\"17/09/2007 12:51:34\">"))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xCharField)) (((xself).xwidget)))
+                        xform.write (xTestForm)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><label for=\"id_field\">Field:</label><input id=\"id_field\" name=\"field\" required type=\"text\"></div>") (((xform).xrender)))

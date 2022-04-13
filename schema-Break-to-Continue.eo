@@ -1,0 +1,381 @@
+memory > xlist
+memory > xValueError
+memory > xmany_to_many
+memory > xtype
+memory > xunique
+memory > xsuper
+memory > xsql
+memory > xrelated_model
+memory > xold_field
+memory > xisinstance
+memory > xcopy
+memory > xfield
+memory > xImportError
+memory > xUniqueConstraint
+memory > xconstraint_column
+memory > xindex
+memory > xconstraint_table
+memory > xstr
+memory > xold_column_name
+memory > xApps
+memory > xatomic
+memory > xremote_field
+memory > xnew_field
+memory > xbytearray
+memory > x_
+memory > xf
+memory > xstrip_quotes
+memory > xset
+memory > xint
+memory > xStatement
+memory > xcursor
+memory > xx
+memory > xNotSupportedError
+memory > xbool
+memory > xbytes
+memory > xBaseDatabaseSchemaEditor
+memory > xsqlite3
+memory > xfloat
+memory > xother_table
+memory > xgetattr
+memory > xname
+memory > xDecimal
+memory > xn
+memory > xmemoryview
+[] > schema
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xsql_create_column_inline_fk
+        memory > xsql_create_fk
+        memory > xsql_delete_table
+        memory > xsql_create_inline_fk
+        memory > x__exit__
+        memory > x__enter__
+        memory > xadd_constraint
+        memory > xsql_delete_unique
+        memory > x_alter_field
+        memory > x_alter_many_to_many
+        memory > x_remake_table
+        memory > xadd_field
+        memory > xsql_create_unique
+        memory > xprepare_default
+        memory > xsql_delete_column
+        memory > xremove_field
+        memory > xquote_value
+        memory > xalter_field
+        memory > xalter_db_table
+        memory > x_is_referenced_by_fk_constraint
+        memory > xremove_constraint
+        memory > xdelete_model
+        memory > x_collate_sql
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseDatabaseSchemaEditor)))
+              seq
+                xsql_delete_table.write "DROP TABLE %(table)s"
+                xsql_create_fk.write "None: is there a None literal in the EO language?"
+                xsql_create_inline_fk.write "REFERENCES %(to_table)s (%(to_column)s) DEFERRABLE INITIALLY DEFERRED"
+                xsql_create_column_inline_fk.write (xsql_create_inline_fk)
+                xsql_delete_column.write "ALTER TABLE %(table)s DROP COLUMN %(column)s"
+                xsql_create_unique.write "CREATE UNIQUE INDEX %(name)s ON %(table)s (%(columns)s)"
+                xsql_delete_unique.write "DROP INDEX %(name)s"
+                x__enter__.write
+                  [xself]
+                    seq > @
+                      seq
+                        ((((((xself).xconnection).xdisable_constraint_checking)).apply).not).if
+                          (((unsupported)).apply ((((xNotSupportedError)).apply ("SQLite schema editor cannot be used while foreign key constraint checks are enabled. Make sure to disable them before entering a transaction.atomic() context because SQLite does not support disabling them in the middle of a multi-statement transaction."))))
+                        (((unsupported)).apply (((((((xsuper)).apply).x__enter__)).apply)))
+                x__exit__.write
+                  [xself xexc_type xexc_value xtraceback]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xself).xconnection).xcheck_constraints)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__exit__)).apply ((xexc_type)) ((xexc_value)) ((xtraceback)))
+                        bogusForceDataize.write (((((xself).xconnection).xenable_constraint_checking)).apply)
+                xquote_value.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xImportError)) (((xsqlite3).xProgrammingError)))
+                          seq
+                            (((unsupported)).apply)
+                            xvalue.write ((((xsqlite3).xadapt)).apply ((xvalue)))
+                        (((xisinstance)).apply ((xvalue)) ((xbool))).if
+                          (((unsupported)).apply ((((xstr)).apply ((((xint)).apply ((xvalue)))))))
+                          (((xisinstance)).apply ((xvalue)) ((((unsupported)).apply ((xDecimal)) ((xfloat)) ((xint))))).if
+                            (((unsupported)).apply ((((xstr)).apply ((xvalue)))))
+                            (((xisinstance)).apply ((xvalue)) ((xstr))).if
+                              (((unsupported)).apply (("'%s'".mod ((((xvalue).xreplace)).apply ("'") ("''")))))
+                              (((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).if
+                                (((unsupported)).apply ("NULL"))
+                                (((xisinstance)).apply ((xvalue)) ((((unsupported)).apply ((xbytes)) ((xbytearray)) ((xmemoryview))))).if
+                                  (((unsupported)).apply (("X'%s'".mod ((((xvalue).xhex)).apply))))
+                                  (((unsupported)).apply ((((xValueError)).apply (("Cannot quote parameter value %r of type %s".mod (((unsupported)).apply ((xvalue)) ((((xtype)).apply ((xvalue))))))))))
+                xprepare_default.write
+                  [xself xvalue]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xquote_value)).apply ((xvalue)))))
+                x_is_referenced_by_fk_constraint.write
+                  [xself xtable_name xcolumn_name xignore_self]
+                    memory > xrelations
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xself).xconnection).xcursor)).apply)) ((xcursor)))
+                          (((unsupported)).apply ((xother_table)) (((((((xself).xconnection).xintrospection).xget_table_list)).apply ((xcursor)))))
+                            seq
+                              ((xignore_self).and (((xother_table).xname).eq (xtable_name))).if
+                                (((unsupported)).apply)
+                              xrelations.write ((((((xself).xconnection).xintrospection).xget_relations)).apply ((xcursor)) (((xother_table).xname)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xconstraint_column)) ((xconstraint_table)))) (((((xrelations).xvalues)).apply)))
+                                (((xconstraint_table).eq (xtable_name)).and ((((unsupported)).apply ((xcolumn_name)) ("None: is there a None literal in the EO language?")).or ((xconstraint_column).eq (xcolumn_name)))).if
+                                  (((unsupported)).apply (TRUE))
+                        (((unsupported)).apply (FALSE))
+                xalter_db_table.write
+                  [xself xmodel xold_db_table xnew_db_table xdisable_constraints]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((((xself).xconnection).xfeatures).xsupports_atomic_references_rename).not).and (xdisable_constraints)).and ((((xself).x_is_referenced_by_fk_constraint)).apply ((xold_db_table)))).if
+                          seq
+                            (((xself).xconnection).xin_atomic_block).if
+                              (((unsupported)).apply ((((xNotSupportedError)).apply (("Renaming the %r table while in a transaction is not supported on SQLite < 3.26 because it would continue referential integrity. Try adding `atomic = False` to the Migration class.".mod (xold_db_table))))))
+                            bogusForceDataize.write (((((xself).xconnection).xenable_constraint_checking)).apply)
+                            bogusForceDataize.write ((((((xsuper)).apply).xalter_db_table)).apply ((xmodel)) ((xold_db_table)) ((xnew_db_table)))
+                            bogusForceDataize.write (((((xself).xconnection).xdisable_constraint_checking)).apply)
+                          bogusForceDataize.write ((((((xsuper)).apply).xalter_db_table)).apply ((xmodel)) ((xold_db_table)) ((xnew_db_table)))
+                xalter_field.write
+                  [xself xmodel xold_field xnew_field xstrict]
+                    memory > xtable_name
+                    memory > xnew_column_name
+                    memory > xold_field_name
+                    memory > xreplacement
+                    memory > xschema_version
+                    memory > xsearch
+                    memory > xreferences_template
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((xself).x_field_should_be_altered)).apply ((xold_field)) ((xnew_field))).not).if
+                          (((unsupported)).apply)
+                        xold_field_name.write ((xold_field).xname)
+                        xtable_name.write (((xmodel).x_meta).xdb_table)
+                        (((unsupported)).apply ((((unsupported)).apply ((x_)) ((xold_column_name)))) (((((xold_field).xget_attname_column)).apply)))
+                        (((((xnew_field).xname).neq (xold_field_name)).and (((((xself).xconnection).xfeatures).xsupports_atomic_references_rename).not)).and (((unsupported)).apply (((xself).x_is_referenced_by_fk_constraint)) ((xtable_name)) ((xold_column_name)) (TRUE))).if
+                          seq
+                            (((xself).xconnection).xin_atomic_block).if
+                              (((unsupported)).apply ((((xNotSupportedError)).apply (("Renaming the %r.%r column while in a transaction is not supported on SQLite < 3.26 because it would continue referential integrity. Try adding `atomic = False` to the Migration class.".mod (((unsupported)).apply ((((xmodel).x_meta).xdb_table)) ((xold_field_name))))))))
+                            (((unsupported)).apply ((((xatomic)).apply ((((xself).xconnection).xalias)))))
+                              seq
+                                (((unsupported)).apply (((((xsuper)).apply).xalter_field)) ((xmodel)) ((xold_field)) ((xnew_field)) ((xstrict)))
+                                (((unsupported)).apply ((((((xself).xconnection).xcursor)).apply)) ((xcursor)))
+                                  seq
+                                    xschema_version.write (((unsupported)).apply ((((((((xcursor).xexecute)).apply ("PRAGMA schema_version")).xfetchone)).apply)) (0))
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply ("PRAGMA writable_schema = 1"))
+                                    xreferences_template.write (" REFERENCES \"%s\" (\"%%s\") ".mod (xtable_name))
+                                    xnew_column_name.write (((unsupported)).apply (((((xnew_field).xget_attname_column)).apply)) (1))
+                                    xsearch.write ((xreferences_template).mod (xold_column_name))
+                                    xreplacement.write ((xreferences_template).mod (xnew_column_name))
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply ("UPDATE sqlite_master SET sql = replace(sql, %s, %s)") ((((unsupported)).apply ((xsearch)) ((xreplacement)))))
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply (("PRAGMA schema_version = %d".mod ((xschema_version).add 1))))
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply ("PRAGMA writable_schema = 0"))
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply ("PRAGMA integrity_check"))
+                            (((unsupported)).apply ((((((xself).xconnection).xcursor)).apply)) ((xcursor)))
+                              bogusForceDataize.write ((((xcursor).xexecute)).apply ("VACUUM"))
+                          (((unsupported)).apply (((((xsuper)).apply).xalter_field)) ((xmodel)) ((xold_field)) ((xnew_field)) ((xstrict)))
+                x_remake_table.write
+                  [xself xmodel xcreate_field xdelete_field xalter_field]
+                    memory > xconstraints
+                    memory > xapps
+                    memory > xrestore_pk_field
+                    memory > xindex_together
+                    memory > xbody
+                    memory > xbody_copy
+                    memory > xis_self_referential
+                    memory > xnew_model
+                    memory > xmapping
+                    memory > xmeta
+                    memory > xmeta_contents
+                    memory > xindexes
+                    memory > xcase_sql
+                    memory > xunique_together
+                    memory > xrename_mapping
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xis_self_referential.write
+                          [xf]
+                            seq > @
+                              (((unsupported)).apply ((((xf).xis_relation).and (((unsupported)).apply ((((xf).xremote_field).xmodel)) ((xmodel))))))
+                        xbody.write (((unsupported)).apply (((xf).xname)) (((((xis_self_referential)).apply ((xf))).if ((((xf).xclone)).apply) (xf))) ((xf)) ((((xmodel).x_meta).xlocal_concrete_fields)))
+                        xmapping.write (((unsupported)).apply (((xf).xcolumn)) (((((xself).xquote_name)).apply (((xf).xcolumn)))) ((xf)) ((((xmodel).x_meta).xlocal_concrete_fields)))
+                        xrename_mapping.write (((unsupported)).apply)
+                        xrestore_pk_field.write "None: is there a None literal in the EO language?"
+                        ((((xgetattr)).apply ((xcreate_field)) ("primary_key") (FALSE)).or ((xalter_field).and (((xgetattr)).apply ((((unsupported)).apply ((xalter_field)) (1))) ("primary_key") (FALSE)))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xname)) ((xfield)))) ((((xlist)).apply (((((xbody).xitems)).apply)))))
+                            ((xfield).xprimary_key).if
+                              seq
+                                (((unsupported)).apply (((xfield).xprimary_key)) (FALSE))
+                                xrestore_pk_field.write (xfield)
+                                ((xfield).xauto_created).if
+                                  seq
+                                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xbody)) ((xname)))))))
+                                    (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xmapping)) (((xfield).xcolumn)))))))
+                        (xcreate_field).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xbody)) (((xcreate_field).xname)))) ((xcreate_field)))
+                            ((((xcreate_field).xmany_to_many).not).and ((xcreate_field).xconcrete)).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xmapping)) (((xcreate_field).xcolumn)))) (((((xself).xprepare_default)).apply (((((xself).xeffective_default)).apply ((xcreate_field)))))))
+                        (xalter_field).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xold_field)) ((xnew_field)))) ((xalter_field)))
+                            bogusForceDataize.write ((((xbody).xpop)).apply (((xold_field).xname)) ("None: is there a None literal in the EO language?"))
+                            bogusForceDataize.write ((((xmapping).xpop)).apply (((xold_field).xcolumn)) ("None: is there a None literal in the EO language?"))
+                            (((unsupported)).apply ((((unsupported)).apply ((xbody)) (((xnew_field).xname)))) ((xnew_field)))
+                            (((xold_field).xnull).and (((xnew_field).xnull).not)).if
+                              seq
+                                xcase_sql.write ("coalesce(%(col)s, %(default)s)".mod (((unsupported)).apply ("col") (((((xself).xquote_name)).apply (((xold_field).xcolumn)))) ("default") (((((xself).xprepare_default)).apply (((((xself).xeffective_default)).apply ((xnew_field))))))))
+                                (((unsupported)).apply ((((unsupported)).apply ((xmapping)) (((xnew_field).xcolumn)))) ((xcase_sql)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xmapping)) (((xnew_field).xcolumn)))) (((((xself).xquote_name)).apply (((xold_field).xcolumn)))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xrename_mapping)) (((xold_field).xname)))) (((xnew_field).xname)))
+                        (xdelete_field).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xbody)) (((xdelete_field).xname)))))))
+                            (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xmapping)) (((xdelete_field).xcolumn)))))))
+                            (((xdelete_field).xmany_to_many).and (((((xdelete_field).xremote_field).xthrough).x_meta).xauto_created)).if
+                              (((unsupported)).apply (((((xself).xdelete_model)).apply ((((xdelete_field).xremote_field).xthrough)))))
+                        xapps.write (((xApps)).apply)
+                        xunique_together.write (((unsupported)).apply ((((unsupported)).apply (((((xrename_mapping).xget)).apply ((xn)) ((xn)))) ((xn)) ((xunique)))) ((xunique)) ((((xmodel).x_meta).xunique_together)))
+                        xindex_together.write (((unsupported)).apply ((((unsupported)).apply (((((xrename_mapping).xget)).apply ((xn)) ((xn)))) ((xn)) ((xindex)))) ((xindex)) ((((xmodel).x_meta).xindex_together)))
+                        xindexes.write (((xmodel).x_meta).xindexes)
+                        (xdelete_field).if
+                          xindexes.write (((unsupported)).apply ((xindex)) ((xindex)) ((xindexes)) ((((unsupported)).apply (((xdelete_field).xname)) (((xindex).xfields)))))
+                        xconstraints.write (((xlist)).apply ((((xmodel).x_meta).xconstraints)))
+                        xbody_copy.write ((((xcopy).xdeepcopy)).apply ((xbody)))
+                        xmeta_contents.write (((unsupported)).apply ("app_label") ((((xmodel).x_meta).xapp_label)) ("db_table") ((((xmodel).x_meta).xdb_table)) ("unique_together") ((xunique_together)) ("index_together") ((xindex_together)) ("indexes") ((xindexes)) ("constraints") ((xconstraints)) ("apps") ((xapps)))
+                        xmeta.write (((xtype)).apply ("Meta") ((((unsupported)).apply)) ((xmeta_contents)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xbody_copy)) ("Meta"))) ((xmeta)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xbody_copy)) ("__module__"))) (((xmodel).x__module__)))
+                        bogusForceDataize.write (((xtype)).apply ((((xmodel).x_meta).xobject_name)) (((xmodel).x__bases__)) ((xbody_copy)))
+                        xbody_copy.write ((((xcopy).xdeepcopy)).apply ((xbody)))
+                        xmeta_contents.write (((unsupported)).apply ("app_label") ((((xmodel).x_meta).xapp_label)) ("db_table") (("new__%s".mod (((xstrip_quotes)).apply ((((xmodel).x_meta).xdb_table))))) ("unique_together") ((xunique_together)) ("index_together") ((xindex_together)) ("indexes") ((xindexes)) ("constraints") ((xconstraints)) ("apps") ((xapps)))
+                        xmeta.write (((xtype)).apply ("Meta") ((((unsupported)).apply)) ((xmeta_contents)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xbody_copy)) ("Meta"))) ((xmeta)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xbody_copy)) ("__module__"))) (((xmodel).x__module__)))
+                        xnew_model.write (((xtype)).apply (("New%s".mod (((xmodel).x_meta).xobject_name))) (((xmodel).x__bases__)) ((xbody_copy)))
+                        bogusForceDataize.write ((((xself).xcreate_model)).apply ((xnew_model)))
+                        bogusForceDataize.write ((((xself).xexecute)).apply (("INSERT INTO %s (%s) SELECT %s FROM %s".mod (((unsupported)).apply (((((xself).xquote_name)).apply ((((xnew_model).x_meta).xdb_table)))) ((((", ".xjoin)).apply ((((unsupported)).apply (((((xself).xquote_name)).apply ((xx)))) ((xx)) ((xmapping)))))) ((((", ".xjoin)).apply (((((xmapping).xvalues)).apply)))) (((((xself).xquote_name)).apply ((((xmodel).x_meta).xdb_table))))))))
+                        (((unsupported)).apply (((xself).xdelete_model)) ((xmodel)) (FALSE))
+                        (((unsupported)).apply (((xself).xalter_db_table)) ((xnew_model)) ((((xnew_model).x_meta).xdb_table)) ((((xmodel).x_meta).xdb_table)) (FALSE))
+                        (((unsupported)).apply ((xsql)) (((xself).xdeferred_sql)))
+                          bogusForceDataize.write ((((xself).xexecute)).apply ((xsql)))
+                        (((unsupported)).apply (((xself).xdeferred_sql)) ((((unsupported)).apply)))
+                        (xrestore_pk_field).if
+                          (((unsupported)).apply (((xrestore_pk_field).xprimary_key)) (TRUE))
+                xdelete_model.write
+                  [xself xmodel xhandle_autom2m]
+                    seq > @
+                      (((unsupported)).apply)
+                        (xhandle_autom2m).if
+                          bogusForceDataize.write ((((((xsuper)).apply).xdelete_model)).apply ((xmodel)))
+                          seq
+                            bogusForceDataize.write ((((xself).xexecute)).apply ((((xself).xsql_delete_table).mod (((unsupported)).apply ("table") (((((xself).xquote_name)).apply ((((xmodel).x_meta).xdb_table))))))))
+                            (((unsupported)).apply ((xsql)) ((((xlist)).apply (((xself).xdeferred_sql)))))
+                              ((((xisinstance)).apply ((xsql)) ((xStatement))).and ((((xsql).xreferences_table)).apply ((((xmodel).x_meta).xdb_table)))).if
+                                bogusForceDataize.write (((((xself).xdeferred_sql).xremove)).apply ((xsql)))
+                xadd_field.write
+                  [xself xmodel xfield]
+                    seq > @
+                      seq
+                        unsupported
+                        (((((xfield).xprimary_key).or ((xfield).xunique)).or (((xfield).xnull).not)).or (((unsupported)).apply (((((xself).xeffective_default)).apply ((xfield)))) ("None: is there a None literal in the EO language?"))).if
+                          (((unsupported)).apply (((xself).x_remake_table)) ((xmodel)) ((xfield)))
+                          bogusForceDataize.write ((((((xsuper)).apply).xadd_field)).apply ((xmodel)) ((xfield)))
+                xremove_field.write
+                  [xself xmodel xfield]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xfield).xmany_to_many).if
+                          (((((xfield).xremote_field).xthrough).x_meta).xauto_created).if
+                            bogusForceDataize.write ((((xself).xdelete_model)).apply ((((xfield).xremote_field).xthrough)))
+                          (((((((xself).xconnection).xfeatures).xcan_alter_table_drop_column).and (((xfield).xprimary_key).not)).and (((xfield).xunique).not)).and ((((xfield).xremote_field).and ((xfield).xdb_constraint)).not)).if
+                            bogusForceDataize.write ((((((xsuper)).apply).xremove_field)).apply ((xmodel)) ((xfield)))
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xfield).xdb_parameters)) (((xself).xconnection)))) ("type"))) ("None: is there a None literal in the EO language?")).if
+                                (((unsupported)).apply)
+                              (((unsupported)).apply (((xself).x_remake_table)) ((xmodel)) ((xfield)))
+                x_alter_field.write
+                  [xself xmodel xold_field xnew_field xold_type xnew_type xold_db_params xnew_db_params xstrict]
+                    memory > xopts
+                    memory > xrelated_models
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((((((xself).xconnection).xfeatures).xcan_alter_table_rename_column).and (((xold_field).xcolumn).neq ((xnew_field).xcolumn))).and (((((xself).xcolumn_sql)).apply ((xmodel)) ((xold_field))).eq ((((xself).xcolumn_sql)).apply ((xmodel)) ((xnew_field))))).and (((((xold_field).xremote_field).and ((xold_field).xdb_constraint)).or (((xnew_field).xremote_field).and ((xnew_field).xdb_constraint))).not)).if
+                          (((unsupported)).apply (((((xself).xexecute)).apply (((((xself).x_rename_field_sql)).apply ((((xmodel).x_meta).xdb_table)) ((xold_field)) ((xnew_field)) ((xnew_type)))))))
+                        (((unsupported)).apply (((xself).x_remake_table)) ((xmodel)) ((((unsupported)).apply ((xold_field)) ((xnew_field)))))
+                        (((xnew_field).xunique).and ((xold_type).neq (xnew_type))).if
+                          seq
+                            xrelated_models.write (((xset)).apply)
+                            xopts.write (((xnew_field).xmodel).x_meta)
+                            (((unsupported)).apply ((xremote_field)) (((xopts).xrelated_objects)))
+                              seq
+                                (((xremote_field).xrelated_model).eq (xmodel)).if
+                                  (((unsupported)).apply)
+                                (((xremote_field).xmany_to_many).not).if
+                                  (((xremote_field).xfield_name).eq ((xnew_field).xname)).if
+                                    bogusForceDataize.write ((((xrelated_models).xadd)).apply (((xremote_field).xrelated_model)))
+                                  (((xnew_field).xprimary_key).and ((((xremote_field).xthrough).x_meta).xauto_created)).if
+                                    bogusForceDataize.write ((((xrelated_models).xadd)).apply (((xremote_field).xthrough)))
+                            ((xnew_field).xprimary_key).if
+                              (((unsupported)).apply ((xmany_to_many)) (((xopts).xmany_to_many)))
+                                seq
+                                  (((xmany_to_many).xrelated_model).eq (xmodel)).if
+                                    (((unsupported)).apply)
+                                  (((((xmany_to_many).xremote_field).xthrough).x_meta).xauto_created).if
+                                    bogusForceDataize.write ((((xrelated_models).xadd)).apply ((((xmany_to_many).xremote_field).xthrough)))
+                            (((unsupported)).apply ((xrelated_model)) ((xrelated_models)))
+                              bogusForceDataize.write ((((xself).x_remake_table)).apply ((xrelated_model)))
+                x_alter_many_to_many.write
+                  [xself xmodel xold_field xnew_field xstrict]
+                    seq > @
+                      seq
+                        unsupported
+                        ((((((xold_field).xremote_field).xthrough).x_meta).xdb_table).eq (((((xnew_field).xremote_field).xthrough).x_meta).xdb_table)).if
+                          seq
+                            (((unsupported)).apply (((xself).x_remake_table)) ((((xold_field).xremote_field).xthrough)) ((((unsupported)).apply ((((((((xold_field).xremote_field).xthrough).x_meta).xget_field)).apply (((((xold_field).xm2m_reverse_field_name)).apply)))) ((((((((xnew_field).xremote_field).xthrough).x_meta).xget_field)).apply (((((xnew_field).xm2m_reverse_field_name)).apply)))))))
+                            (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xcreate_model)).apply ((((xnew_field).xremote_field).xthrough)))
+                        bogusForceDataize.write ((((xself).xexecute)).apply (("INSERT INTO %s (%s) SELECT %s FROM %s".mod (((unsupported)).apply (((((xself).xquote_name)).apply ((((((xnew_field).xremote_field).xthrough).x_meta).xdb_table)))) ((((", ".xjoin)).apply ((((unsupported)).apply ("id") (((((xnew_field).xm2m_column_name)).apply)) (((((xnew_field).xm2m_reverse_name)).apply)))))) ((((", ".xjoin)).apply ((((unsupported)).apply ("id") (((((xold_field).xm2m_column_name)).apply)) (((((xold_field).xm2m_reverse_name)).apply)))))) (((((xself).xquote_name)).apply ((((((xold_field).xremote_field).xthrough).x_meta).xdb_table))))))))
+                        bogusForceDataize.write ((((xself).xdelete_model)).apply ((((xold_field).xremote_field).xthrough)))
+                xadd_constraint.write
+                  [xself xmodel xconstraint]
+                    seq > @
+                      ((((xisinstance)).apply ((xconstraint)) ((xUniqueConstraint))).and (((((xconstraint).xcondition).or ((xconstraint).xcontains_expressions)).or ((xconstraint).xinclude)).or ((xconstraint).xdeferrable))).if
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_constraint)).apply ((xmodel)) ((xconstraint)))
+                        bogusForceDataize.write ((((xself).x_remake_table)).apply ((xmodel)))
+                xremove_constraint.write
+                  [xself xmodel xconstraint]
+                    seq > @
+                      ((((xisinstance)).apply ((xconstraint)) ((xUniqueConstraint))).and (((((xconstraint).xcondition).or ((xconstraint).xcontains_expressions)).or ((xconstraint).xinclude)).or ((xconstraint).xdeferrable))).if
+                        bogusForceDataize.write ((((((xsuper)).apply).xremove_constraint)).apply ((xmodel)) ((xconstraint)))
+                        bogusForceDataize.write ((((xself).x_remake_table)).apply ((xmodel)))
+                x_collate_sql.write
+                  [xself xcollation]
+                    seq > @
+                      (((unsupported)).apply (("COLLATE ".add (xcollation))))

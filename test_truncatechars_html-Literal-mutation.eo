@@ -1,0 +1,55 @@
+memory > xtruncatechars_html
+memory > xSimpleTestCase
+[] > test_truncatechars_html
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_truncate_something
+        memory > xtest_truncate3
+        memory > xtest_truncate_unicode
+        memory > xtest_invalid_arg
+        memory > xtest_truncate2
+        memory > xtest_truncate_zero
+        memory > xtest_truncate
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_truncate_zero.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatechars_html)).apply ("<p>one <a href=\"#\">two - three <br>four</a> five</p>") (0))) ("…"))
+                xtest_truncate.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatechars_html)).apply ("<p>one <a href=\"#\">two - three <br>four</a> five</p>") (4))) ("<p>one…</p>"))
+                xtest_truncate2.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatechars_html)).apply ("<p>one <a href=\"#\">two - three <br>four</a> five</p>") (9))) ("<p>one <a href=\"#\">two …</a></p>"))
+                xtest_truncate3.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatechars_html)).apply ("<p>one <a href=\"#\">two - three <br>four</a> five</p>") (100))) ("<p>one <a href=\"#\">two - three <br>four</a> five</p>"))
+                xtest_truncate_unicode.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatechars_html)).apply ("<b>xc5ngstrxf6m</b> was here") (3))) ("<b>xc5n…</b>"))
+                xtest_truncate_something.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatechars_html)).apply ("a<b>b</b>c") (3))) ("a<b>b</b>c"))
+                xtest_invalid_arg.write
+                  [xself]
+                    memory > xhtml
+                    seq > @
+                      seq
+                        xhtml.write "<p>one <a href=\"#\">two - three <br>four</a> five</p>"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtruncatechars_html)).apply ((xhtml)) ("a"))) ((xhtml)))

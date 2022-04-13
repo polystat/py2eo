@@ -1,0 +1,159 @@
+memory > xfalse
+memory > xImportError
+memory > xRequestContext
+memory > xInvalidTemplateLibrary
+memory > xEngineHandler
+memory > xPath
+memory > xRequestFactory
+memory > x__file__
+memory > xDjangoTemplates
+memory > xTypeError
+memory > xcm
+memory > xContext
+memory > xtest_processor_name
+memory > xTemplateStringsTests
+[] > test_django
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_debug_default_template_loaders
+        memory > xengine_class
+        memory > xtest_templatetag_discovery_import_error
+        memory > xtest_builtins_discovery
+        memory > xtest_non_debug_default_template_loaders
+        memory > xdefault_loaders
+        memory > xrequest_factory
+        memory > xtest_autoescape_default
+        memory > xtest_context_has_priority_over_template_context_processors
+        memory > xtest_dirs_pathlib
+        memory > xtest_autoescape_off
+        memory > xbackend_name
+        memory > xtest_templatetag_discovery
+        memory > xtest_render_requires_dict
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTemplateStringsTests)))
+              seq
+                xengine_class.write (xDjangoTemplates)
+                xbackend_name.write "django"
+                xrequest_factory.write (((xRequestFactory)).apply)
+                xtest_context_has_priority_over_template_context_processors.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xrequest
+                    memory > xengine
+                    memory > xcontent
+                    seq > @
+                      seq
+                        xengine.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") ((xfalse)) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply ("context_processors") ((((unsupported)).apply ((xtest_processor_name)))))))))
+                        xtemplate.write ((((xengine).xfrom_string)).apply ("{{ processors }}"))
+                        xrequest.write (((((xself).xrequest_factory).xget)).apply ("/"))
+                        xcontent.write ((((xtemplate).xrender)).apply ((((unsupported)).apply)) ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcontent)) ("yes"))
+                        xcontent.write ((((xtemplate).xrender)).apply ((((unsupported)).apply ("processors") ("no"))) ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xcontent)) ("no"))
+                xtest_render_requires_dict.write
+                  [xself]
+                    memory > xengine
+                    memory > xcontext
+                    memory > xtemplate
+                    memory > xrequest_context
+                    memory > xmsg
+                    seq > @
+                      seq
+                        unsupported
+                        xengine.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") ((xfalse)) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply)))))
+                        xtemplate.write ((((xengine).xfrom_string)).apply (""))
+                        xcontext.write (((xContext)).apply)
+                        xrequest_context.write (((xRequestContext)).apply ((((((xself).xrequest_factory).xget)).apply ("/"))) ((((unsupported)).apply)))
+                        xmsg.write "context must be a dict rather than Context."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((xcontext)))
+                        xmsg.write "context must be a dict rather than RequestContext."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((xrequest_context)))
+                xtest_templatetag_discovery.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      (((unsupported)).apply)
+                        xengine.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") ((xfalse)) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply ("libraries") ((((unsupported)).apply ("alternate") ("template_backends.apps.good.templatetags.good_tags") ("override") ("template_backends.apps.good.templatetags.good_tags"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xengine).xengine).xlibraries)) ("good_tags"))) ("template_backends.apps.good.templatetags.good_tags"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xengine).xengine).xlibraries)) ("subpackage.tags"))) ("template_backends.apps.good.templatetags.subpackage.tags"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xengine).xengine).xlibraries)) ("static"))) ("django.templatetags.static"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xengine).xengine).xlibraries)) ("alternate"))) ("template_backends.apps.good.templatetags.good_tags"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((xengine).xengine).xlibraries)) ("override"))) ("template_backends.apps.good.templatetags.good_tags"))
+                xtest_templatetag_discovery_import_error.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xInvalidTemplateLibrary)) ("ImportError raised when trying to load 'template_backends.apps.importerror.templatetags.broken_tags'"))) ((xcm)))
+                          bogusForceDataize.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") ((xfalse)) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((((xcm).xexception).x__cause__)) ((xImportError)))
+                xtest_builtins_discovery.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") ((xfalse)) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply ("builtins") ((((unsupported)).apply ("template_backends.apps.good.templatetags.good_tags"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xengine).xengine).xbuiltins)) ((((unsupported)).apply ("django.template.defaulttags") ("django.template.defaultfilters") ("django.template.loader_tags") ("template_backends.apps.good.templatetags.good_tags"))))
+                xtest_autoescape_off.write
+                  [xself]
+                    memory > xengines
+                    memory > xtemplates
+                    seq > @
+                      seq
+                        xtemplates.write (((unsupported)).apply ((((unsupported)).apply ("BACKEND") ("django.template.backends.django.DjangoTemplates") ("OPTIONS") ((((unsupported)).apply ("autoescape") ((xfalse)))))))
+                        xengines.write (((unsupported)).apply ((xEngineHandler)) ((xtemplates)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((((((unsupported)).apply ((xengines)) ("django")).xfrom_string)).apply ("Hello, {{ name }}")).xrender)).apply ((((unsupported)).apply ("name") ("Bob & Jim"))))) ("Hello, Bob & Jim"))
+                xtest_autoescape_default.write
+                  [xself]
+                    memory > xengines
+                    memory > xtemplates
+                    seq > @
+                      seq
+                        xtemplates.write (((unsupported)).apply ((((unsupported)).apply ("BACKEND") ("django.template.backends.django.DjangoTemplates"))))
+                        xengines.write (((unsupported)).apply ((xEngineHandler)) ((xtemplates)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((((((unsupported)).apply ((xengines)) ("django")).xfrom_string)).apply ("Hello, {{ name }}")).xrender)).apply ((((unsupported)).apply ("name") ("Bob & Jim"))))) ("Hello, Bob &amp; Jim"))
+                xdefault_loaders.write (((unsupported)).apply ("django.template.loaders.filesystem.Loader") ("django.template.loaders.app_directories.Loader"))
+                xtest_non_debug_default_template_loaders.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      (((unsupported)).apply)
+                        xengine.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") (TRUE) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xengine).xengine).xloaders)) ((((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.cached.Loader") (((xself).xdefault_loaders)))))))
+                xtest_debug_default_template_loaders.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      (((unsupported)).apply)
+                        xengine.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply)) ("APP_DIRS") (TRUE) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xengine).xengine).xloaders)) (((xself).xdefault_loaders)))
+                xtest_dirs_pathlib.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((xDjangoTemplates)).apply ((((unsupported)).apply ("DIRS") ((((unsupported)).apply (((((((xPath)).apply ((x__file__))).xparent).div "templates").div "template_backends")))) ("APP_DIRS") ((xfalse)) ("NAME") ("django") ("OPTIONS") ((((unsupported)).apply)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("hello.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtemplate).xrender)).apply ((((unsupported)).apply ("name") ("Joe"))))) ("Hello Joe!n"))

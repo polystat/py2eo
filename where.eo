@@ -1,0 +1,336 @@
+memory > xc
+memory > xenumerate
+memory > xBooleanField
+memory > xwhere_part
+memory > xtree
+memory > xhaving_part
+memory > xchild
+memory > xsql
+memory > xkwargs
+memory > xEmptyResultSet
+memory > xWhen
+memory > xlist
+memory > xCase
+memory > xpos
+memory > xExact
+memory > xany
+memory > xhasattr
+memory > xfull_needed
+memory > xoperator
+memory > xparams
+memory > xargs
+memory > xempty_needed
+memory > xisinstance
+memory > xlen
+memory > xreduce
+[] > where
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xAND
+        memory > xcontains_aggregate
+        memory > xcontains_over_clause
+        memory > xXOR
+        memory > xget_source_expressions
+        memory > xselect_format
+        memory > xget_group_by_cols
+        memory > xresolve_expression
+        memory > x_resolve_leaf
+        memory > xcopy
+        memory > xget_lookup
+        memory > xrelabeled_clone
+        memory > xrelabel_aliases
+        memory > xsplit_having
+        memory > xclone
+        memory > x_resolve_node
+        memory > xdefault
+        memory > xOR
+        memory > xget_db_converters
+        memory > xas_sql
+        memory > xset_source_expressions
+        memory > x__init__
+        memory > xconditional
+        memory > xoutput_field
+        memory > x_contains_aggregate
+        memory > xresolved
+        memory > x_contains_over_clause
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xAND.write "AND"
+            xOR.write "OR"
+            xXOR.write "XOR"
+            (((unsupported)).apply (((xtree).xNode)))
+              seq
+                (((unsupported)).apply)
+                xdefault.write (xAND)
+                xresolved.write FALSE
+                xconditional.write TRUE
+                xsplit_having.write
+                  [xself xnegated]
+                    memory > xwhere_parts
+                    memory > xhaving_parts
+                    memory > xhaving_node
+                    memory > xin_negated
+                    memory > xmay_need_split
+                    memory > xwhere_node
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((xself).xcontains_aggregate).not).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xself)) ("None: is there a None literal in the EO language?"))))
+                        xin_negated.write (((unsupported)).apply ((xnegated)) (((xself).xnegated)))
+                        xmay_need_split.write ((((xin_negated).and (((xself).xconnector).eq (xAND))).or (((xin_negated).not).and (((xself).xconnector).eq (xOR)))).or (((xself).xconnector).eq (xXOR)))
+                        ((xmay_need_split).and ((xself).xcontains_aggregate)).if
+                          (((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ((xself)))))
+                        xwhere_parts.write (((unsupported)).apply)
+                        xhaving_parts.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xc)) (((xself).xchildren)))
+                          (((xhasattr)).apply ((xc)) ("split_having")).if
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xwhere_part)) ((xhaving_part)))) (((((xc).xsplit_having)).apply ((xin_negated)))))
+                              (((unsupported)).apply ((xwhere_part)) ("None: is there a None literal in the EO language?")).if
+                                bogusForceDataize.write ((((xwhere_parts).xappend)).apply ((xwhere_part)))
+                              (((unsupported)).apply ((xhaving_part)) ("None: is there a None literal in the EO language?")).if
+                                bogusForceDataize.write ((((xhaving_parts).xappend)).apply ((xhaving_part)))
+                            ((xc).xcontains_aggregate).if
+                              bogusForceDataize.write ((((xhaving_parts).xappend)).apply ((xc)))
+                              bogusForceDataize.write ((((xwhere_parts).xappend)).apply ((xc)))
+                        xhaving_node.write ((xhaving_parts).if ((((xself).x__class__)).apply ((xhaving_parts)) (((xself).xconnector)) (((xself).xnegated))) "None: is there a None literal in the EO language?")
+                        xwhere_node.write ((xwhere_parts).if ((((xself).x__class__)).apply ((xwhere_parts)) (((xself).xconnector)) (((xself).xnegated))) "None: is there a None literal in the EO language?")
+                        (((unsupported)).apply ((((unsupported)).apply ((xwhere_node)) ((xhaving_node)))))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xsql_string
+                    memory > xconn
+                    memory > xlhs
+                    memory > xrhs
+                    memory > xresult_params
+                    memory > xrhs_sum
+                    memory > xresult
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xresult.write (((unsupported)).apply)
+                        xresult_params.write (((unsupported)).apply)
+                        (((xself).xconnector).eq (xAND)).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xfull_needed)) ((xempty_needed)))) ((((unsupported)).apply ((((xlen)).apply (((xself).xchildren)))) (1))))
+                          (((unsupported)).apply ((((unsupported)).apply ((xfull_needed)) ((xempty_needed)))) ((((unsupported)).apply (1) ((((xlen)).apply (((xself).xchildren)))))))
+                        ((((xself).xconnector).eq (xXOR)).and ((((xconnection).xfeatures).xsupports_logical_xor).not)).if
+                          seq
+                            xlhs.write ((((xself).x__class__)).apply (((xself).xchildren)) ((xOR)))
+                            xrhs_sum.write (((xreduce)).apply (((xoperator).xadd)) ((((unsupported)).apply ((((unsupported)).apply ((xCase)) ((((unsupported)).apply ((xWhen)) ((xc)) (1))) (0))) ((xc)) (((xself).xchildren)))))
+                            xrhs.write (((xExact)).apply (1) ((xrhs_sum)))
+                            (((unsupported)).apply ((((((((xself).x__class__)).apply ((((unsupported)).apply ((xlhs)) ((xrhs)))) ((xAND)) (((xself).xnegated))).xas_sql)).apply ((xcompiler)) ((xconnection)))))
+                        (((unsupported)).apply ((xchild)) (((xself).xchildren)))
+                          seq
+                            (((unsupported)).apply ((xEmptyResultSet)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) (((((xcompiler).xcompile)).apply ((xchild)))))
+                              (((unsupported)).apply ((xempty_needed)) (1))
+                              (xsql).if
+                                seq
+                                  bogusForceDataize.write ((((xresult).xappend)).apply ((xsql)))
+                                  bogusForceDataize.write ((((xresult_params).xextend)).apply ((xparams)))
+                                (((unsupported)).apply ((xfull_needed)) (1))
+                            ((xempty_needed).eq 0).if
+                              ((xself).xnegated).if
+                                (((unsupported)).apply ((((unsupported)).apply ("") ((((unsupported)).apply)))))
+                                (((unsupported)).apply ((xEmptyResultSet)))
+                            ((xfull_needed).eq 0).if
+                              ((xself).xnegated).if
+                                (((unsupported)).apply ((xEmptyResultSet)))
+                                (((unsupported)).apply ((((unsupported)).apply ("") ((((unsupported)).apply)))))
+                        xconn.write (" %s ".mod ((xself).xconnector))
+                        xsql_string.write ((((xconn).xjoin)).apply ((xresult)))
+                        (xsql_string).if
+                          ((xself).xnegated).if
+                            xsql_string.write ("NOT (%s)".mod (xsql_string))
+                            (((((xlen)).apply ((xresult))).greater 1).or ((xself).xresolved)).if
+                              xsql_string.write ("(%s)".mod (xsql_string))
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql_string)) ((xresult_params)))))
+                xget_group_by_cols.write
+                  [xself xalias]
+                    memory > xcols
+                    seq > @
+                      (((unsupported)).apply)
+                        xcols.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xchild)) (((xself).xchildren)))
+                          bogusForceDataize.write ((((xcols).xextend)).apply (((((xchild).xget_group_by_cols)).apply)))
+                        (((unsupported)).apply ((xcols)))
+                xget_source_expressions.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xchildren)) ((((unsupported)).apply)))))
+                xset_source_expressions.write
+                  [xself xchildren]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((((xlen)).apply ((xchildren))).eq (((xlen)).apply (((xself).xchildren))))))
+                        (((unsupported)).apply (((xself).xchildren)) ((xchildren)))
+                xrelabel_aliases.write
+                  [xself xchange_map]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xpos)) ((xchild)))) ((((xenumerate)).apply (((xself).xchildren)))))
+                          (((xhasattr)).apply ((xchild)) ("relabel_aliases")).if
+                            bogusForceDataize.write ((((xchild).xrelabel_aliases)).apply ((xchange_map)))
+                            (((xhasattr)).apply ((xchild)) ("relabeled_clone")).if
+                              (((unsupported)).apply ((((unsupported)).apply (((xself).xchildren)) ((xpos)))) (((((xchild).xrelabeled_clone)).apply ((xchange_map)))))
+                xclone.write
+                  [xself]
+                    memory > xclone
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xclone.write (((unsupported)).apply ((((xself).x__class__).x_new_instance)) ("None: is there a None literal in the EO language?") (((xself).xconnector)) (((xself).xnegated)))
+                        (((unsupported)).apply ((xchild)) (((xself).xchildren)))
+                          (((xhasattr)).apply ((xchild)) ("clone")).if
+                            bogusForceDataize.write (((((xclone).xchildren).xappend)).apply (((((xchild).xclone)).apply)))
+                            bogusForceDataize.write (((((xclone).xchildren).xappend)).apply ((xchild)))
+                        (((unsupported)).apply ((xclone)))
+                xrelabeled_clone.write
+                  [xself xchange_map]
+                    memory > xclone
+                    seq > @
+                      seq
+                        xclone.write ((((xself).xclone)).apply)
+                        bogusForceDataize.write ((((xclone).xrelabel_aliases)).apply ((xchange_map)))
+                        (((unsupported)).apply ((xclone)))
+                xcopy.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xclone)).apply)))
+                x_contains_aggregate.write
+                  [xcls xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xisinstance)).apply ((xobj)) (((xtree).xNode))).if
+                          (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply (((((xcls).x_contains_aggregate)).apply ((xc)))) ((xc)) (((xobj).xchildren)))))))
+                        (((unsupported)).apply (((xobj).xcontains_aggregate)))
+                xcontains_aggregate.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).x_contains_aggregate)).apply ((xself)))))
+                x_contains_over_clause.write
+                  [xcls xobj]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xisinstance)).apply ((xobj)) (((xtree).xNode))).if
+                          (((unsupported)).apply ((((xany)).apply ((((unsupported)).apply (((((xcls).x_contains_over_clause)).apply ((xc)))) ((xc)) (((xobj).xchildren)))))))
+                        (((unsupported)).apply (((xobj).xcontains_over_clause)))
+                xcontains_over_clause.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).x_contains_over_clause)).apply ((xself)))))
+                x_resolve_leaf.write
+                  [xexpr xquery]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xhasattr)).apply ((xexpr)) ("resolve_expression")).if
+                          xexpr.write ((((xexpr).xresolve_expression)).apply ((xquery)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply ((xexpr)))
+                x_resolve_node.write
+                  [xcls xnode xquery]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((xhasattr)).apply ((xnode)) ("children")).if
+                          (((unsupported)).apply ((xchild)) (((xnode).xchildren)))
+                            bogusForceDataize.write ((((xcls).x_resolve_node)).apply ((xchild)) ((xquery)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((xhasattr)).apply ((xnode)) ("lhs")).if
+                          (((unsupported)).apply (((xnode).xlhs)) (((((xcls).x_resolve_leaf)).apply (((xnode).xlhs)) ((xquery)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                        (((xhasattr)).apply ((xnode)) ("rhs")).if
+                          (((unsupported)).apply (((xnode).xrhs)) (((((xcls).x_resolve_leaf)).apply (((xnode).xrhs)) ((xquery)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+                xresolve_expression.write
+                  [xself]
+                    memory > xclone
+                    seq > @
+                      (((unsupported)).apply)
+                        xclone.write ((((xself).xclone)).apply)
+                        bogusForceDataize.write ((((xclone).x_resolve_node)).apply ((xclone)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply (((xclone).xresolved)) (TRUE))
+                        (((unsupported)).apply ((xclone)))
+                xoutput_field.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xBooleanField)).apply)))
+                xselect_format.write
+                  [xself xcompiler xsql xparams]
+                    seq > @
+                      seq
+                        (((((xcompiler).xconnection).xfeatures).xsupports_boolean_expr_in_select_clause).not).if
+                          xsql.write "CASE WHEN {sql} THEN 1 ELSE 0 END"
+                        (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))))
+                xget_db_converters.write
+                  [xself xconnection]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xoutput_field).xget_db_converters)).apply ((xconnection)))))
+                xget_lookup.write
+                  [xself xlookup]
+                    seq > @
+                      (((unsupported)).apply ((((((xself).xoutput_field).xget_lookup)).apply ((xlookup)))))
+            (((unsupported)).apply)
+              seq
+                unsupported
+                xcontains_aggregate.write FALSE
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xEmptyResultSet)))
+            (((unsupported)).apply)
+              seq
+                xcontains_aggregate.write FALSE
+                x__init__.write
+                  [xself xsqls xparams]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsqls)) ((xsqls)))
+                        (((unsupported)).apply (((xself).xparams)) ((xparams)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xsqls
+                    seq > @
+                      (((unsupported)).apply)
+                        xsqls.write (((unsupported)).apply (("(%s)".mod (xsql))) ((xsql)) (((xself).xsqls)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((" AND ".xjoin)).apply ((xsqls)))) ((((xlist)).apply ((((xself).xparams).or (((unsupported)).apply))))))))
+            (((unsupported)).apply)
+              seq
+                xcontains_aggregate.write FALSE
+                x__init__.write
+                  [xself xalias xcolumns xtargets xquery_object]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xalias)) ((xalias)))
+                        (((unsupported)).apply (((xself).xcolumns)) ((xcolumns)))
+                        (((unsupported)).apply (((xself).xtargets)) ((xtargets)))
+                        (((unsupported)).apply (((xquery_object).xclear_ordering)) (TRUE))
+                        (((unsupported)).apply (((xself).xquery_object)) ((xquery_object)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xquery_compiler
+                    memory > xquery
+                    seq > @
+                      seq
+                        xquery.write ((xself).xquery_object)
+                        bogusForceDataize.write ((((xquery).xset_values)).apply (((xself).xtargets)))
+                        xquery_compiler.write (((unsupported)).apply (((xquery).xget_compiler)) ((xconnection)))
+                        (((unsupported)).apply (((((xquery_compiler).xas_subquery_condition)).apply (((xself).xalias)) (((xself).xcolumns)) ((xcompiler)))))

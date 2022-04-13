@@ -1,0 +1,97 @@
+memory > xdatetime
+memory > xPerson
+memory > xGroup
+memory > xCountry
+memory > xmodels
+[] > person
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > x__str__
+        memory > xto_friend_id
+        memory > xfrom_friend_country
+        memory > xmembers
+        memory > xgroup
+        memory > xperson_id
+        memory > xfrom_friend_id
+        memory > xfriends
+        memory > xgroup_country
+        memory > xto_friend
+        memory > xfrom_friend
+        memory > xinvite_reason
+        memory > xgroup_id
+        memory > xto_friend_country
+        memory > xmembership_country
+        memory > xordering
+        memory > xperson_country_id
+        memory > xto_friend_country_id
+        memory > xname
+        memory > xperson
+        memory > xdate_joined
+        memory > xperson_country
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (50))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xname)))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+                xperson_country_id.write ((xmodels).xIntegerField)
+                xperson_country.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xCountry)) ((((unsupported)).apply ("person_country_id"))) ((((unsupported)).apply ("id"))) (((xmodels).xCASCADE)))
+                xfriends.write (((unsupported)).apply (((xmodels).xManyToManyField)) ("self") ("Friendship") (FALSE))
+                (((unsupported)).apply)
+                  xordering.write (((unsupported)).apply ("name"))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xname)))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (128))
+                xgroup_country.write ((((xmodels).xForeignKey)).apply ((xCountry)) (((xmodels).xCASCADE)))
+                xmembers.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xPerson)) ("groups") ("Membership"))
+                (((unsupported)).apply)
+                  xordering.write (((unsupported)).apply ("name"))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xname)))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xmembership_country.write ((((xmodels).xForeignKey)).apply ((xCountry)) (((xmodels).xCASCADE)))
+                xdate_joined.write (((unsupported)).apply (((xmodels).xDateTimeField)) ((((xdatetime).xdatetime).xnow)))
+                xinvite_reason.write (((unsupported)).apply (((xmodels).xCharField)) (64) (TRUE))
+                xperson_id.write ((xmodels).xIntegerField)
+                xgroup_id.write (((unsupported)).apply (((xmodels).xIntegerField)) (TRUE) (TRUE))
+                xperson.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xPerson)) ((((unsupported)).apply ("person_id") ("membership_country"))) ((((unsupported)).apply ("id") ("person_country_id"))) (((xmodels).xCASCADE)))
+                xgroup.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xGroup)) ((((unsupported)).apply ("group_id") ("membership_country"))) ((((unsupported)).apply ("id") ("group_country"))) (((xmodels).xCASCADE)))
+                (((unsupported)).apply)
+                  xordering.write (((unsupported)).apply ("date_joined") ("invite_reason"))
+                x__str__.write
+                  [xself]
+                    memory > xgroup_name
+                    seq > @
+                      seq
+                        xgroup_name.write (((xself).xgroup_id).if (((xself).xgroup).xname) "NULL")
+                        (((unsupported)).apply (("%s is a member of %s".mod (((unsupported)).apply ((((xself).xperson).xname)) ((xgroup_name))))))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xfrom_friend_country.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xCountry)) (((xmodels).xCASCADE)) ("from_friend_country"))
+                xfrom_friend_id.write ((xmodels).xIntegerField)
+                xto_friend_country_id.write ((xmodels).xIntegerField)
+                xto_friend_id.write ((xmodels).xIntegerField)
+                xfrom_friend.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xPerson)) (((xmodels).xCASCADE)) ((((unsupported)).apply ("from_friend_country") ("from_friend_id"))) ((((unsupported)).apply ("person_country_id") ("id"))) ("from_friend"))
+                xto_friend_country.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xCountry)) ((((unsupported)).apply ("to_friend_country_id"))) ((((unsupported)).apply ("id"))) ("to_friend_country") (((xmodels).xCASCADE)))
+                xto_friend.write (((unsupported)).apply (((xmodels).xForeignObject)) ((xPerson)) ((((unsupported)).apply ("to_friend_country_id") ("to_friend_id"))) ((((unsupported)).apply ("person_country_id") ("id"))) ("to_friend") (((xmodels).xCASCADE)))

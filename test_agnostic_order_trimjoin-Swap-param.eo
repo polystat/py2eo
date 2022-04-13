@@ -1,0 +1,41 @@
+memory > xattrgetter
+memory > xTestCase
+memory > xCustomer
+memory > xContact
+memory > xAddress
+[] > test_agnostic_order_trimjoin
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_deep_mixed_forward
+        memory > xtest_deep_mixed_backward
+        memory > xsetUpTestData
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xaddress)) ((((unsupported)).apply ((((xAddress).xobjects).xcreate)) (1) (20))))
+                        (((unsupported)).apply (((xcls).xcustomer1)) ((((unsupported)).apply ((((xCustomer).xobjects).xcreate)) (20) (1))))
+                        (((unsupported)).apply (((xcls).xcontact1)) ((((unsupported)).apply ((((xContact).xobjects).xcreate)) (1) (20))))
+                xtest_deep_mixed_forward.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((((unsupported)).apply ((((xAddress).xobjects).xfilter)) (((xself).xcontact1)))) ((((unsupported)).apply ((((xself).xaddress).xid)))) ((((xattrgetter)).apply ("id"))))
+                xtest_deep_mixed_backward.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertQuerysetEqual)).apply ((((unsupported)).apply ((((xContact).xobjects).xfilter)) (((xself).xaddress)))) ((((unsupported)).apply ((((xself).xcontact1).xid)))) ((((xattrgetter)).apply ("id"))))

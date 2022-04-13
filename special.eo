@@ -1,0 +1,235 @@
+memory > xstatement
+memory > xOperation
+memory > xlist
+memory > xrouter
+memory > xNotImplementedError
+memory > xdatabase_operation
+memory > xdbop
+memory > xtuple
+memory > xsql
+memory > xstate_operation
+memory > xValueError
+memory > xRunSQL
+memory > xcallable
+memory > xreversed
+memory > xisinstance
+memory > xlen
+[] > special
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdatabase_backwards
+        memory > x_run_sql
+        memory > xdescribe
+        memory > xserialization_expand_args
+        memory > xreduces_to_sql
+        memory > xdatabase_forwards
+        memory > xreversible
+        memory > xnoop
+        memory > x__init__
+        memory > xdeconstruct
+        memory > xstate_forwards
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xOperation)))
+              seq
+                (((unsupported)).apply)
+                xserialization_expand_args.write (((unsupported)).apply ("database_operations") ("state_operations"))
+                x__init__.write
+                  [xself xdatabase_operations xstate_operations]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xdatabase_operations)) (((xdatabase_operations).or (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).xstate_operations)) (((xstate_operations).or (((unsupported)).apply))))
+                xdeconstruct.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply)
+                        ((xself).xdatabase_operations).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("database_operations"))) (((xself).xdatabase_operations)))
+                        ((xself).xstate_operations).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("state_operations"))) (((xself).xstate_operations)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).x__class__).x__qualname__)) ((((unsupported)).apply)) ((xkwargs)))))
+                xstate_forwards.write
+                  [xself xapp_label xstate]
+                    seq > @
+                      (((unsupported)).apply ((xstate_operation)) (((xself).xstate_operations)))
+                        bogusForceDataize.write ((((xstate_operation).xstate_forwards)).apply ((xapp_label)) ((xstate)))
+                xdatabase_forwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    seq > @
+                      (((unsupported)).apply ((xdatabase_operation)) (((xself).xdatabase_operations)))
+                        seq
+                          xto_state.write ((((xfrom_state).xclone)).apply)
+                          bogusForceDataize.write ((((xdatabase_operation).xstate_forwards)).apply ((xapp_label)) ((xto_state)))
+                          bogusForceDataize.write ((((xdatabase_operation).xdatabase_forwards)).apply ((xapp_label)) ((xschema_editor)) ((xfrom_state)) ((xto_state)))
+                          xfrom_state.write (xto_state)
+                xdatabase_backwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    memory > xto_states
+                    seq > @
+                      seq
+                        xto_states.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xdbop)) (((xself).xdatabase_operations)))
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xto_states)) ((xdbop)))) ((xto_state)))
+                            xto_state.write ((((xto_state).xclone)).apply)
+                            bogusForceDataize.write ((((xdbop).xstate_forwards)).apply ((xapp_label)) ((xto_state)))
+                        (((unsupported)).apply ((xdatabase_operation)) ((((xreversed)).apply (((xself).xdatabase_operations)))))
+                          seq
+                            xfrom_state.write (xto_state)
+                            xto_state.write (((unsupported)).apply ((xto_states)) ((xdatabase_operation)))
+                            bogusForceDataize.write ((((xdatabase_operation).xdatabase_backwards)).apply ((xapp_label)) ((xschema_editor)) ((xfrom_state)) ((xto_state)))
+                xdescribe.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("Custom state/database change combination"))
+            (((unsupported)).apply ((xOperation)))
+              seq
+                (((unsupported)).apply)
+                xnoop.write ""
+                x__init__.write
+                  [xself xsql xreverse_sql xstate_operations xhints xelidable]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xsql)) ((xsql)))
+                        (((unsupported)).apply (((xself).xreverse_sql)) ((xreverse_sql)))
+                        (((unsupported)).apply (((xself).xstate_operations)) (((xstate_operations).or (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).xhints)) (((xhints).or (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).xelidable)) ((xelidable)))
+                xdeconstruct.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply ("sql") (((xself).xsql)))
+                        (((unsupported)).apply (((xself).xreverse_sql)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("reverse_sql"))) (((xself).xreverse_sql)))
+                        ((xself).xstate_operations).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("state_operations"))) (((xself).xstate_operations)))
+                        ((xself).xhints).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("hints"))) (((xself).xhints)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).x__class__).x__qualname__)) ((((unsupported)).apply)) ((xkwargs)))))
+                xreversible.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xreverse_sql)) ("None: is there a None literal in the EO language?"))))
+                xstate_forwards.write
+                  [xself xapp_label xstate]
+                    seq > @
+                      (((unsupported)).apply ((xstate_operation)) (((xself).xstate_operations)))
+                        bogusForceDataize.write ((((xstate_operation).xstate_forwards)).apply ((xapp_label)) ((xstate)))
+                xdatabase_forwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    seq > @
+                      ((((xrouter).xallow_migrate)).apply ((((xschema_editor).xconnection).xalias)) ((xapp_label)) ((((unsupported)).apply (((xself).xhints))))).if
+                        bogusForceDataize.write ((((xself).x_run_sql)).apply ((xschema_editor)) (((xself).xsql)))
+                xdatabase_backwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xreverse_sql)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((xNotImplementedError)).apply ("You cannot reverse this operation"))))
+                        ((((xrouter).xallow_migrate)).apply ((((xschema_editor).xconnection).xalias)) ((xapp_label)) ((((unsupported)).apply (((xself).xhints))))).if
+                          bogusForceDataize.write ((((xself).x_run_sql)).apply ((xschema_editor)) (((xself).xreverse_sql)))
+                xdescribe.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("Raw SQL operation"))
+                x_run_sql.write
+                  [xself xschema_editor xsqls]
+                    memory > xelements
+                    memory > xparams
+                    memory > xstatements
+                    seq > @
+                      (((xisinstance)).apply ((xsqls)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                        (((unsupported)).apply ((xsql)) ((xsqls)))
+                          seq
+                            xparams.write "None: is there a None literal in the EO language?"
+                            (((xisinstance)).apply ((xsql)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                              seq
+                                xelements.write (((xlen)).apply ((xsql)))
+                                ((xelements).eq 2).if
+                                  (((unsupported)).apply ((((unsupported)).apply ((xsql)) ((xparams)))) ((xsql)))
+                                  (((unsupported)).apply ((((xValueError)).apply (("Expected a 2-tuple but got %d".mod (xelements))))))
+                            (((unsupported)).apply (((xschema_editor).xexecute)) ((xsql)) ((xparams)))
+                        ((xsqls).neq ((xRunSQL).xnoop)).if
+                          seq
+                            xstatements.write ((((((xschema_editor).xconnection).xops).xprepare_sql_script)).apply ((xsqls)))
+                            (((unsupported)).apply ((xstatement)) ((xstatements)))
+                              (((unsupported)).apply (((xschema_editor).xexecute)) ((xstatement)) ("None: is there a None literal in the EO language?"))
+            (((unsupported)).apply ((xOperation)))
+              seq
+                (((unsupported)).apply)
+                xreduces_to_sql.write FALSE
+                x__init__.write
+                  [xself xcode xreverse_code xatomic xhints xelidable]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xatomic)) ((xatomic)))
+                        ((((xcallable)).apply ((xcode))).not).if
+                          (((unsupported)).apply ((((xValueError)).apply ("RunPython must be supplied with a callable"))))
+                        (((unsupported)).apply (((xself).xcode)) ((xcode)))
+                        (((unsupported)).apply ((xreverse_code)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply (((xself).xreverse_code)) ("None: is there a None literal in the EO language?"))
+                          seq
+                            ((((xcallable)).apply ((xreverse_code))).not).if
+                              (((unsupported)).apply ((((xValueError)).apply ("RunPython must be supplied with callable arguments"))))
+                            (((unsupported)).apply (((xself).xreverse_code)) ((xreverse_code)))
+                        (((unsupported)).apply (((xself).xhints)) (((xhints).or (((unsupported)).apply))))
+                        (((unsupported)).apply (((xself).xelidable)) ((xelidable)))
+                xdeconstruct.write
+                  [xself]
+                    memory > xkwargs
+                    seq > @
+                      seq
+                        xkwargs.write (((unsupported)).apply ("code") (((xself).xcode)))
+                        (((unsupported)).apply (((xself).xreverse_code)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("reverse_code"))) (((xself).xreverse_code)))
+                        (((unsupported)).apply (((xself).xatomic)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("atomic"))) (((xself).xatomic)))
+                        ((xself).xhints).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkwargs)) ("hints"))) (((xself).xhints)))
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).x__class__).x__qualname__)) ((((unsupported)).apply)) ((xkwargs)))))
+                xreversible.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xreverse_code)) ("None: is there a None literal in the EO language?"))))
+                xstate_forwards.write
+                  [xself xapp_label xstate]
+                    seq > @
+                xdatabase_forwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xfrom_state).xclear_delayed_apps_cache)).apply)
+                        ((((xrouter).xallow_migrate)).apply ((((xschema_editor).xconnection).xalias)) ((xapp_label)) ((((unsupported)).apply (((xself).xhints))))).if
+                          bogusForceDataize.write ((((xself).xcode)).apply (((xfrom_state).xapps)) ((xschema_editor)))
+                xdatabase_backwards.write
+                  [xself xapp_label xschema_editor xfrom_state xto_state]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xreverse_code)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((xNotImplementedError)).apply ("You cannot reverse this operation"))))
+                        ((((xrouter).xallow_migrate)).apply ((((xschema_editor).xconnection).xalias)) ((xapp_label)) ((((unsupported)).apply (((xself).xhints))))).if
+                          bogusForceDataize.write ((((xself).xreverse_code)).apply (((xfrom_state).xapps)) ((xschema_editor)))
+                xdescribe.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ("Raw Python operation"))
+                xnoop.write
+                  [xapps xschema_editor]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))

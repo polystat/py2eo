@@ -1,0 +1,50 @@
+memory > xphone2numeric_filter
+memory > xmark_safe
+memory > xSimpleTestCase
+[] > test_phone2numeric
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_phone2numeric03
+        memory > xtest_phone2numeric02
+        memory > xtest_phone2numeric
+        memory > xtest_phone2numeric01
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_phone2numeric01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("phone2numeric01") ((((unsupported)).apply ("a") ("<1-800-call-me>") ("b") ((((xmark_safe)).apply ("<1-800-call-me>"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("&lt;1-800-2255-63&gt; <1-800-2255-63>"))
+                xtest_phone2numeric02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("phone2numeric02") ((((unsupported)).apply ("a") ("<1-800-call-me>") ("b") ((((xmark_safe)).apply ("<1-800-call-me>"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("<1-800-2255-63> <1-800-2255-63>"))
+                xtest_phone2numeric03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("phone2numeric03") ((((unsupported)).apply ("a") ("How razorback-jumping frogs can level six piqued gymnasts!"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("469 729672225-5867464 37647 226 53835 749 747833 49662787!"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_phone2numeric.write
+                [xself]
+                  seq > @
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xphone2numeric_filter)).apply ("0800 flowers"))) ("0800 3569377"))

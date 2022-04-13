@@ -1,0 +1,251 @@
+memory > xContentType
+memory > xBookmark
+memory > xchecks
+memory > xcheck
+memory > xInvalidBookmark
+memory > xtype
+memory > xTaggedItem
+memory > xGenericRelation
+memory > xModel
+memory > xmock
+memory > xGenericForeignKey
+memory > xcheck_model_name_lengths
+memory > xmodels
+memory > xisolate_apps
+memory > xSimpleTestCase
+[] > test_checks
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdatabases
+        memory > xtest_content_type_field_pointing_to_wrong_model
+        memory > xtest_valid_self_referential_generic_relationship
+        memory > xtest_missing_content_type_field
+        memory > xtest_pointing_to_swapped_model
+        memory > xtest_pointing_to_missing_model
+        memory > xtest_generic_foreign_key_checks_are_performed
+        memory > xtest_missing_object_id_field
+        memory > xtest_valid_generic_relationship_with_explicit_fields
+        memory > xtest_field_name_ending_with_underscore
+        memory > xtest_missing_generic_foreign_key
+        memory > xtest_model_name_max_length
+        memory > xtest_valid_generic_relationship
+        memory > xtest_model_name_too_long
+        memory > xtest_invalid_content_type_field
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xisolate_apps)) ("contenttypes_tests") ("apps"))))
+              seq
+                xdatabases.write "__all__"
+                xtest_missing_content_type_field.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xexpected
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (xGenericForeignKey)
+                        xexpected.write (((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("The GenericForeignKey content type references the nonexistent field 'TaggedItem.content_type'.") (((xTaggedItem).xcontent_object)) ("contenttypes.E002"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xTaggedItem).xcontent_object).xcheck)) ((xexpected)))
+                xtest_invalid_content_type_field.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xcontent_type
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((xmodels).xIntegerField)
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (((xGenericForeignKey)).apply ("content_type") ("object_id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xModel).xcontent_object).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("'Model.content_type' is not a ForeignKey.") ("GenericForeignKeys must use a ForeignKey to 'contenttypes.ContentType' as the 'content_type' field.") (((xModel).xcontent_object)) ("contenttypes.E003"))))))
+                xtest_content_type_field_pointing_to_wrong_model.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xcontent_type
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ("self") (((xmodels).xCASCADE)))
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (((xGenericForeignKey)).apply ("content_type") ("object_id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xModel).xcontent_object).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("'Model.content_type' is not a ForeignKey to 'contenttypes.ContentType'.") ("GenericForeignKeys must use a ForeignKey to 'contenttypes.ContentType' as the 'content_type' field.") (((xModel).xcontent_object)) ("contenttypes.E004"))))))
+                xtest_missing_object_id_field.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xcontent_type
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xcontent_object.write (xGenericForeignKey)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xTaggedItem).xcontent_object).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("The GenericForeignKey object ID references the nonexistent field 'object_id'.") (((xTaggedItem).xcontent_object)) ("contenttypes.E001"))))))
+                xtest_field_name_ending_with_underscore.write
+                  [xself]
+                    memory > xcontent_object_
+                    memory > xcontent_type
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object_.write (((xGenericForeignKey)).apply ("content_type") ("object_id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xModel).xcontent_object_).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("Field names must not end with an underscore.") (((xModel).xcontent_object_)) ("fields.E001"))))))
+                xtest_generic_foreign_key_checks_are_performed.write
+                  [xself]
+                    memory > xcontent_object
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xcontent_object.write (xGenericForeignKey)
+                        (((unsupported)).apply ((((((xmock).xpatch).xobject)).apply ((xGenericForeignKey)) ("check"))) ((xcheck)))
+                          (((unsupported)).apply (((xchecks).xrun_checks)) ((((xself).xapps).xget_app_configs)))
+                        unsupported
+            (((unsupported)).apply ((xSimpleTestCase)) ((((xisolate_apps)).apply ("contenttypes_tests"))))
+              seq
+                xtest_valid_generic_relationship.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xtags
+                    memory > xcontent_type
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (xGenericForeignKey)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xtags.write (((xGenericRelation)).apply ("TaggedItem"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xBookmark).xtags).xfield).xcheck)) ((((unsupported)).apply)))
+                xtest_valid_generic_relationship_with_explicit_fields.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xtags
+                    memory > xcustom_content_type
+                    memory > xcustom_object_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcustom_content_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xcustom_object_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (((xGenericForeignKey)).apply ("custom_content_type") ("custom_object_id"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xtags.write (((unsupported)).apply ((xGenericRelation)) ("TaggedItem") ("custom_content_type") ("custom_object_id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xBookmark).xtags).xfield).xcheck)) ((((unsupported)).apply)))
+                xtest_pointing_to_missing_model.write
+                  [xself]
+                    memory > xrel
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xrel.write (((xGenericRelation)).apply ("MissingModel"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xModel).xrel).xfield).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("Field defines a relation with model 'MissingModel', which is either not installed, or is abstract.") ((((xModel).xrel).xfield)) ("fields.E300"))))))
+                xtest_valid_self_referential_generic_relationship.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xrel
+                    memory > xcontent_type
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xrel.write (((xGenericRelation)).apply ("Model"))
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (((xGenericForeignKey)).apply ("content_type") ("object_id"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xModel).xrel).xfield).xcheck)) ((((unsupported)).apply)))
+                xtest_missing_generic_foreign_key.write
+                  [xself]
+                    memory > xtags
+                    memory > xcontent_type
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xtags.write (((xGenericRelation)).apply ("TaggedItem"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xBookmark).xtags).xfield).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("The GenericRelation defines a relation with the model 'contenttypes_tests.TaggedItem', but that model does not have a GenericForeignKey.") ((((xBookmark).xtags).xfield)) ("contenttypes.E004"))))))
+                xtest_pointing_to_swapped_model.write
+                  [xself]
+                    memory > xrel
+                    memory > xcontent_type
+                    memory > xcontent_object
+                    memory > xobject_id
+                    memory > xswappable
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (xGenericForeignKey)
+                            (((unsupported)).apply)
+                              xswappable.write "TEST_SWAPPED_MODEL"
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xrel.write (((xGenericRelation)).apply ("SwappedModel"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xModel).xrel).xfield).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("Field defines a relation with the model 'contenttypes_tests.SwappedModel', which has been swapped out.") ("Update the relation to point at 'settings.TEST_SWAPPED_MODEL'.") ((((xModel).xrel).xfield)) ("fields.E301"))))))
+                xtest_field_name_ending_with_underscore.write
+                  [xself]
+                    memory > xcontent_object
+                    memory > xtags_
+                    memory > xcontent_type
+                    memory > xobject_id
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xcontent_type.write ((((xmodels).xForeignKey)).apply ((xContentType)) (((xmodels).xCASCADE)))
+                            xobject_id.write ((xmodels).xPositiveIntegerField)
+                            xcontent_object.write (xGenericForeignKey)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xtags_.write (((xGenericRelation)).apply ("TaggedItem"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xInvalidBookmark).xtags_).xfield).xcheck)) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("Field names must not end with an underscore.") ((((xInvalidBookmark).xtags_).xfield)) ("fields.E001"))))))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xisolate_apps)) ("contenttypes_tests") ("apps"))))
+              seq
+                xtest_model_name_too_long.write
+                  [xself]
+                    memory > xmodel
+                    seq > @
+                      seq
+                        xmodel.write (((xtype)).apply (("A".mul 101)) ((((unsupported)).apply (((xmodels).xModel)))) ((((unsupported)).apply ("__module__") (((xself).x__module__)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_model_name_lengths)).apply ((((xself).xapps).xget_app_configs)))) ((((unsupported)).apply ((((unsupported)).apply (((xchecks).xError)) ("Model names must be at most 100 characters (got 101).") ((xmodel)) ("contenttypes.E005"))))))
+                xtest_model_name_max_length.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((xtype)).apply (("A".mul 100)) ((((unsupported)).apply (((xmodels).xModel)))) ((((unsupported)).apply ("__module__") (((xself).x__module__)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_model_name_lengths)).apply ((((xself).xapps).xget_app_configs)))) ((((unsupported)).apply)))

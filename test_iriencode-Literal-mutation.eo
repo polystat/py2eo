@@ -1,0 +1,67 @@
+memory > xurlencode
+memory > xmark_safe
+memory > xSimpleTestCase
+memory > xiriencode
+[] > test_iriencode
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_iriencode01
+        memory > xtest_iriencode04
+        memory > xtest_iriencode02
+        memory > xtest_unicode
+        memory > xtest_iriencode03
+        memory > xtest_urlencoded
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_iriencode01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("iriencode01") ((((unsupported)).apply ("url") ("?test=1&me=2"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("?test=1&amp;me=2"))
+                xtest_iriencode02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("iriencode02") ((((unsupported)).apply ("url") ("?test=1&me=2"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("?test=1&me=2"))
+                xtest_iriencode03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("iriencode03") ((((unsupported)).apply ("url") ((((xmark_safe)).apply ("?test=1&me=2"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("?test=1&me=2"))
+                xtest_iriencode04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("iriencode04") ((((unsupported)).apply ("url") ((((xmark_safe)).apply ("?test=1&me=2"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("?test=1&me=2"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_unicode.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xiriencode)).apply ("Sxf8r-Trxf8ndelag"))) ("S%C3%B8r-Tr%C3%B8ndelag"))
+                xtest_urlencoded.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xiriencode)).apply ((((xurlencode)).apply ("franxe7ois & jill"))))) ("fran%C3%A7ois%20%26%20jill"))

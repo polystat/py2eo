@@ -1,0 +1,54 @@
+memory > xUnsafeClass
+memory > xSafeClass
+memory > xSimpleTestCase
+[] > test_autoescape
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_autoescape_stringfilter01
+        memory > xtest_autoescape_stringfilter04
+        memory > xtest_autoescape_stringfilter03
+        memory > xtest_autoescape_stringfilter02
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_autoescape_stringfilter01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("autoescape-stringfilter01") ((((unsupported)).apply ("unsafe") ((((xUnsafeClass)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("You &amp; me"))
+                xtest_autoescape_stringfilter02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("autoescape-stringfilter02") ((((unsupported)).apply ("unsafe") ((((xUnsafeClass)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("You & me"))
+                xtest_autoescape_stringfilter03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("autoescape-stringfilter03") ((((unsupported)).apply ("safe") ((((xSafeClass)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("You &gt; me"))
+                xtest_autoescape_stringfilter04.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("autoescape-stringfilter04") ((((unsupported)).apply ("safe") ((((xSafeClass)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("You &gt; me"))

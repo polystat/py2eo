@@ -1,0 +1,65 @@
+memory > xargs
+memory > xwraps
+memory > xkwargs
+[] > clickjacking
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xxframe_options_deny
+        memory > xxframe_options_sameorigin
+        memory > xxframe_options_exempt
+        seq > @
+          seq
+            (((unsupported)).apply)
+            xxframe_options_deny.write
+              [xview_func]
+                memory > xwrapped_view
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xwrapped_view.write
+                      []
+                        memory > xresp
+                        seq > @
+                          (((unsupported)).apply)
+                            xresp.write (((xview_func)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                            (((unsupported)).apply (((((xresp).xget)).apply ("X-Frame-Options"))) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xresp)) ("X-Frame-Options"))) ("DENY"))
+                            (((unsupported)).apply ((xresp)))
+                    (((unsupported)).apply ((((((xwraps)).apply ((xview_func)))).apply ((xwrapped_view)))))
+            xxframe_options_sameorigin.write
+              [xview_func]
+                memory > xwrapped_view
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xwrapped_view.write
+                      []
+                        memory > xresp
+                        seq > @
+                          (((unsupported)).apply)
+                            xresp.write (((xview_func)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                            (((unsupported)).apply (((((xresp).xget)).apply ("X-Frame-Options"))) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xresp)) ("X-Frame-Options"))) ("SAMEORIGIN"))
+                            (((unsupported)).apply ((xresp)))
+                    (((unsupported)).apply ((((((xwraps)).apply ((xview_func)))).apply ((xwrapped_view)))))
+            xxframe_options_exempt.write
+              [xview_func]
+                memory > xwrapped_view
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xwrapped_view.write
+                      []
+                        memory > xresp
+                        seq > @
+                          (((unsupported)).apply)
+                            xresp.write (((xview_func)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                            (((unsupported)).apply (((xresp).xxframe_options_exempt)) (TRUE))
+                            (((unsupported)).apply ((xresp)))
+                    (((unsupported)).apply ((((((xwraps)).apply ((xview_func)))).apply ((xwrapped_view)))))

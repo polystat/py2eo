@@ -1,0 +1,89 @@
+memory > xmodify_settings
+memory > xCITestModel
+memory > xPostgreSQLTestCase
+memory > xIntegrityError
+memory > xzip
+memory > xstring
+memory > xlookup
+[] > test_citext
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_lookups_description_text
+        memory > xtest_lookups_email
+        memory > xsetUpTestData
+        memory > xtest_array_field
+        memory > xtest_lookups_name_char
+        memory > xcase_sensitive_lookups
+        memory > xtest_fail_citext_primary_key
+        memory > xtest_equal_lowercase
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xPostgreSQLTestCase)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ("django.contrib.postgres"))))))
+              seq
+                xcase_sensitive_lookups.write (((unsupported)).apply ("contains") ("startswith") ("endswith") ("regex"))
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xjohn)) ((((unsupported)).apply ((((xCITestModel).xobjects).xcreate)) ("JoHn") ("joHn@johN.com") ("Average Joe named JoHn") ((((unsupported)).apply ("JoE") ("jOhn"))))))
+                xtest_equal_lowercase.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xCITestModel).xobjects).xfilter)) (((((((xself).xjohn).xname).xlower)).apply))).xcount)).apply)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xCITestModel).xobjects).xfilter)) (((((((xself).xjohn).xemail).xlower)).apply))).xcount)).apply)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xCITestModel).xobjects).xfilter)) (((((((xself).xjohn).xdescription).xlower)).apply))).xcount)).apply)) (1))
+                xtest_fail_citext_primary_key.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xIntegrityError)))))
+                          (((unsupported)).apply ((((xCITestModel).xobjects).xcreate)) ("John"))
+                xtest_array_field.write
+                  [xself]
+                    memory > xinstance
+                    seq > @
+                      seq
+                        xinstance.write (((((xCITestModel).xobjects).xget)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xinstance).xarray_field)) ((((xself).xjohn).xarray_field)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((((((unsupported)).apply ((((xCITestModel).xobjects).xfilter)) ((((unsupported)).apply ("joe")))).xexists)).apply)))
+                xtest_lookups_name_char.write
+                  [xself]
+                    memory > xquery
+                    seq > @
+                      (((unsupported)).apply ((xlookup)) (((xself).xcase_sensitive_lookups)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xlookup)))))
+                          seq
+                            xquery.write (((unsupported)).apply (((("name__{}".xformat)).apply ((xlookup)))) ("john"))
+                            bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((xCITestModel).xobjects).xfilter)).apply ((((unsupported)).apply ((xquery)))))) ((((unsupported)).apply (((xself).xjohn)))))
+                xtest_lookups_description_text.write
+                  [xself]
+                    memory > xquery
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xlookup)) ((xstring)))) ((((xzip)).apply (((xself).xcase_sensitive_lookups)) ((((unsupported)).apply ("average") ("average joe") ("john") ("Joe.named"))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xlookup)) ((xstring)))))
+                          seq
+                            xquery.write (((unsupported)).apply (((("description__{}".xformat)).apply ((xlookup)))) ((xstring)))
+                            bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((xCITestModel).xobjects).xfilter)).apply ((((unsupported)).apply ((xquery)))))) ((((unsupported)).apply (((xself).xjohn)))))
+                xtest_lookups_email.write
+                  [xself]
+                    memory > xquery
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ((xlookup)) ((xstring)))) ((((xzip)).apply (((xself).xcase_sensitive_lookups)) ((((unsupported)).apply ("john") ("john") ("john.com") ("john.com"))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xlookup)) ((xstring)))))
+                          seq
+                            xquery.write (((unsupported)).apply (((("email__{}".xformat)).apply ((xlookup)))) ((xstring)))
+                            bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((xCITestModel).xobjects).xfilter)).apply ((((unsupported)).apply ((xquery)))))) ((((unsupported)).apply (((xself).xjohn)))))

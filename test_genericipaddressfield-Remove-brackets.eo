@@ -1,0 +1,69 @@
+memory > xValidationError
+memory > xTestCase
+memory > xGenericIPAddress
+memory > xmodels
+[] > test_genericipaddressfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_blank_string_saved_as_null
+        memory > xtest_genericipaddressfield_formfield_protocol
+        memory > xtest_null_value
+        memory > xtest_save_load
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_genericipaddressfield_formfield_protocol.write
+                  [xself]
+                    memory > xform_field
+                    memory > xmodel_field
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xmodel_field.write (((unsupported)).apply (((xmodels).xGenericIPAddressField)) ("IPv4"))
+                        xform_field.write ((xmodel_field).xformfield)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))))
+                          bogusForceDataize.write ((((xform_field).xclean)).apply ("::1"))
+                        xmodel_field.write (((unsupported)).apply (((xmodels).xGenericIPAddressField)) ("IPv6"))
+                        xform_field.write ((xmodel_field).xformfield)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))))
+                          bogusForceDataize.write ((((xform_field).xclean)).apply ("127.0.0.1"))
+                xtest_null_value.write
+                  [xself]
+                    memory > xo
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        unsupported
+                        xo.write (((xGenericIPAddress).xobjects).xget)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xo).xip)))
+                xtest_blank_string_saved_as_null.write
+                  [xself]
+                    memory > xo
+                    seq > @
+                      seq
+                        xo.write (((unsupported)).apply ((((xGenericIPAddress).xobjects).xcreate)) (""))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xo).xip)))
+                        (((unsupported)).apply ((((xGenericIPAddress).xobjects).xupdate)) (""))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xo).xip)))
+                xtest_save_load.write
+                  [xself]
+                    memory > xinstance
+                    memory > xloaded
+                    seq > @
+                      seq
+                        xinstance.write (((unsupported)).apply ((((xGenericIPAddress).xobjects).xcreate)) ("::1"))
+                        xloaded.write (((xGenericIPAddress).xobjects).xget)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xloaded).xip)) (((xinstance).xip)))

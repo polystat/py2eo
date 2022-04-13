@@ -1,0 +1,31 @@
+memory > xsuper
+memory > xoptions
+memory > xTemplateCommand
+[] > startapp
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xhelp2
+        memory > xmissing_args_message
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTemplateCommand)))
+              seq
+                xhelp2.write "Creates a Django app directory structure for the given app name in the current directory or optionally in the given directory."
+                xmissing_args_message.write "You must provide an application name."
+                xhandle.write
+                  [xself]
+                    memory > xtarget
+                    memory > xapp_name
+                    seq > @
+                      (((unsupported)).apply)
+                        xapp_name.write ((((xoptions).xpop)).apply ("name"))
+                        xtarget.write ((((xoptions).xpop)).apply ("directory"))
+                        bogusForceDataize.write ((((((xsuper)).apply).xhandle)).apply ("app") ((xapp_name)) ((xtarget)) ((((unsupported)).apply ((xoptions)))))

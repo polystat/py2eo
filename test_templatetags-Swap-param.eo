@@ -1,0 +1,32 @@
+memory > xStaticFilesTestCase
+[] > test_templatetags
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_template_tag
+        memory > xtest_template_tag_escapes
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xStaticFilesTestCase)))
+              seq
+                xtest_template_tag.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertStaticRenders)).apply ("does/not/exist.png") ("/static/does/not/exist.png"))
+                        bogusForceDataize.write ((((xself).xassertStaticRenders)).apply ("/static/testfile.txt") ("testfile.txt"))
+                        bogusForceDataize.write ((((xself).xassertStaticRenders)).apply ("special?chars&quoted.html") ("/static/special%3Fchars%26quoted.html"))
+                xtest_template_tag_escapes.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertStaticRenders)).apply ("a.html") ("a.html?a=b&amp;c=d"))
+                        (((unsupported)).apply (((xself).xassertStaticRenders)) ("a.html") ("a.html?a=b&c=d") (FALSE))

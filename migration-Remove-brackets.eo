@@ -1,0 +1,196 @@
+memory > xlist
+memory > xget_migration_name_timestamp
+memory > xMigration
+memory > xSwappableTuple
+memory > xfrom_state
+memory > xtuple
+memory > xto_state
+memory > xoperation
+memory > xIrreversibleError
+memory > xhash
+memory > xop
+memory > xfragment
+memory > xisinstance
+memory > xlen
+[] > migration
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrun_before
+        memory > xreplaces
+        memory > xinitial
+        memory > xunapply
+        memory > xswappable_dependency
+        memory > xapply
+        memory > x__init__
+        memory > x__hash__
+        memory > x__new__
+        memory > x__str__
+        memory > xoperations
+        memory > x__eq__
+        memory > x__repr__
+        memory > xmutate_state
+        memory > xatomic
+        memory > xsuggest_name
+        memory > xdependencies
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xoperations.write (((unsupported)).apply)
+                xdependencies.write (((unsupported)).apply)
+                xrun_before.write (((unsupported)).apply)
+                xreplaces.write (((unsupported)).apply)
+                xinitial.write "None: is there a None literal in the EO language?"
+                xatomic.write TRUE
+                x__init__.write
+                  [xself xname xapp_label]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xname)) ((xname)))
+                        (((unsupported)).apply (((xself).xapp_label)) ((xapp_label)))
+                        (((unsupported)).apply (((xself).xoperations)) ((((xlist)).apply ((((xself).x__class__).xoperations)))))
+                        (((unsupported)).apply (((xself).xdependencies)) ((((xlist)).apply ((((xself).x__class__).xdependencies)))))
+                        (((unsupported)).apply (((xself).xrun_before)) ((((xlist)).apply ((((xself).x__class__).xrun_before)))))
+                        (((unsupported)).apply (((xself).xreplaces)) ((((xlist)).apply ((((xself).x__class__).xreplaces)))))
+                x__eq__.write
+                  [xself xother]
+                    seq > @
+                      (((unsupported)).apply ((((((xisinstance)).apply ((xother)) ((xMigration))).and (((xself).xname).eq ((xother).xname))).and (((xself).xapp_label).eq ((xother).xapp_label)))))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("<Migration %s.%s>".mod (((unsupported)).apply (((xself).xapp_label)) (((xself).xname))))))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("%s.%s".mod (((unsupported)).apply (((xself).xapp_label)) (((xself).xname))))))
+                x__hash__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xhash)).apply (("%s.%s".mod (((unsupported)).apply (((xself).xapp_label)) (((xself).xname))))))))
+                xmutate_state.write
+                  [xself xproject_state xpreserve]
+                    memory > xnew_state
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xnew_state.write (xproject_state)
+                        (xpreserve).if
+                          xnew_state.write ((xproject_state).xclone)
+                        (((unsupported)).apply ((xoperation)) (((xself).xoperations)))
+                          bogusForceDataize.write ((((xoperation).xstate_forwards)).apply (((xself).xapp_label)) ((xnew_state)))
+                        (((unsupported)).apply ((xnew_state)))
+                xapply.write
+                  [xself xproject_state xschema_editor xcollect_sql]
+                    memory > xold_state
+                    memory > xatomic_operation
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xoperation)) (((xself).xoperations)))
+                          seq
+                            (xcollect_sql).if
+                              seq
+                                bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply ("--"))
+                                (((xoperation).xreduces_to_sql).not).if
+                                  bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply ("-- MIGRATION NOW PERFORMS OPERATION THAT CANNOT BE WRITTEN AS SQL:"))
+                                bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply (("-- %s".mod ((xoperation).xdescribe))))
+                                bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply ("--"))
+                                (((xoperation).xreduces_to_sql).not).if
+                                  (((unsupported)).apply)
+                            xold_state.write ((xproject_state).xclone)
+                            bogusForceDataize.write ((((xoperation).xstate_forwards)).apply (((xself).xapp_label)) ((xproject_state)))
+                            xatomic_operation.write (((xoperation).xatomic).or (((xself).xatomic).and (((unsupported)).apply (((xoperation).xatomic)) (FALSE))))
+                            ((((xschema_editor).xatomic_migration).not).and (xatomic_operation)).if
+                              (((unsupported)).apply ((((xatomic)).apply ((((xschema_editor).xconnection).xalias)))))
+                                bogusForceDataize.write ((((xoperation).xdatabase_forwards)).apply (((xself).xapp_label)) ((xschema_editor)) ((xold_state)) ((xproject_state)))
+                              bogusForceDataize.write ((((xoperation).xdatabase_forwards)).apply (((xself).xapp_label)) ((xschema_editor)) ((xold_state)) ((xproject_state)))
+                        (((unsupported)).apply ((xproject_state)))
+                xunapply.write
+                  [xself xproject_state xschema_editor xcollect_sql]
+                    memory > xnew_state
+                    memory > xold_state
+                    memory > xatomic_operation
+                    memory > xto_run
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xto_run.write (((unsupported)).apply)
+                        xnew_state.write (xproject_state)
+                        (((unsupported)).apply ((xoperation)) (((xself).xoperations)))
+                          seq
+                            (((xoperation).xreversible).not).if
+                              (((unsupported)).apply ((((xIrreversibleError)).apply (("Operation %s in %s is not reversible".mod (((unsupported)).apply ((xoperation)) ((xself))))))))
+                            xnew_state.write ((xnew_state).xclone)
+                            xold_state.write ((xnew_state).xclone)
+                            bogusForceDataize.write ((((xoperation).xstate_forwards)).apply (((xself).xapp_label)) ((xnew_state)))
+                            bogusForceDataize.write ((((xto_run).xinsert)).apply (0) ((((unsupported)).apply ((xoperation)) ((xold_state)) ((xnew_state)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xoperation)) ((xto_state)) ((xfrom_state)))) ((xto_run)))
+                          seq
+                            (xcollect_sql).if
+                              seq
+                                bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply ("--"))
+                                (((xoperation).xreduces_to_sql).not).if
+                                  bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply ("-- MIGRATION NOW PERFORMS OPERATION THAT CANNOT BE WRITTEN AS SQL:"))
+                                bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply (("-- %s".mod ((xoperation).xdescribe))))
+                                bogusForceDataize.write (((((xschema_editor).xcollected_sql).xappend)).apply ("--"))
+                                (((xoperation).xreduces_to_sql).not).if
+                                  (((unsupported)).apply)
+                            xatomic_operation.write (((xoperation).xatomic).or (((xself).xatomic).and (((unsupported)).apply (((xoperation).xatomic)) (FALSE))))
+                            ((((xschema_editor).xatomic_migration).not).and (xatomic_operation)).if
+                              (((unsupported)).apply ((((xatomic)).apply ((((xschema_editor).xconnection).xalias)))))
+                                bogusForceDataize.write ((((xoperation).xdatabase_backwards)).apply (((xself).xapp_label)) ((xschema_editor)) ((xfrom_state)) ((xto_state)))
+                              bogusForceDataize.write ((((xoperation).xdatabase_backwards)).apply (((xself).xapp_label)) ((xschema_editor)) ((xfrom_state)) ((xto_state)))
+                        (((unsupported)).apply ((xproject_state)))
+                xsuggest_name.write
+                  [xself]
+                    memory > xname
+                    memory > xnew_name
+                    memory > xfragments
+                    memory > xraw_fragments
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xself).xinitial).if
+                          (((unsupported)).apply ("initial"))
+                        xraw_fragments.write (((unsupported)).apply (((xop).xmigration_name_fragment)) ((xop)) (((xself).xoperations)))
+                        xfragments.write (((unsupported)).apply ((xname)) ((xname)) ((xraw_fragments)) ((xname)))
+                        (((xfragments).not).or ((((xlen)).apply ((xfragments))).neq (((xlen)).apply (((xself).xoperations))))).if
+                          (((unsupported)).apply (("auto_%s".mod (xget_migration_name_timestamp))))
+                        xname.write (((unsupported)).apply ((xfragments)) (0))
+                        (((unsupported)).apply ((xfragment)) ((((unsupported)).apply ((xfragments)) ((((unsupported)).apply (1))))))
+                          seq
+                            xnew_name.write "{name}_{fragment}"
+                            ((((xlen)).apply ((xnew_name))).greater 52).if
+                              seq
+                                xname.write "{name}_and_more"
+                                (((unsupported)).apply)
+                            xname.write (xnew_name)
+                        (((unsupported)).apply ((xname)))
+            (((unsupported)).apply ((xtuple)))
+              seq
+                (((unsupported)).apply)
+                x__new__.write
+                  [xcls xvalue xsetting]
+                    memory > xself
+                    seq > @
+                      seq
+                        xself.write ((((xtuple).x__new__)).apply ((xcls)) ((xvalue)))
+                        (((unsupported)).apply (((xself).xsetting)) ((xsetting)))
+                        (((unsupported)).apply ((xself)))
+            xswappable_dependency.write
+              [xvalue]
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply ((((xSwappableTuple)).apply ((((unsupported)).apply ((((unsupported)).apply (((((xvalue).xsplit)).apply (".") (1))) (0))) ("__first__"))) ((xvalue)))))

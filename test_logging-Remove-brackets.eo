@@ -1,0 +1,33 @@
+memory > xcm
+memory > xTestCase
+memory > xconnection
+[] > test_logging
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_extra_args
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              xtest_extra_args.write
+                [xself]
+                  memory > xsql
+                  memory > xparams
+                  memory > xeditor
+                  seq > @
+                    seq
+                      xeditor.write (((unsupported)).apply (((xconnection).xschema_editor)) (TRUE))
+                      xsql.write "SELECT * FROM foo WHERE id in (%s, %s)"
+                      xparams.write (((unsupported)).apply (42) (1337))
+                      (((unsupported)).apply (((((xself).xassertLogs)).apply ("django.db.backends.schema") ("DEBUG"))) ((xcm)))
+                        bogusForceDataize.write ((((xeditor).xexecute)).apply ((xsql)) ((xparams)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xcm).xrecords)) (0)).xsql)) ((xsql)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xcm).xrecords)) (0)).xparams)) ((xparams)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply (((xcm).xrecords)) (0)).xgetMessage)) ("SELECT * FROM foo WHERE id in (%s, %s); (params [42, 1337])"))

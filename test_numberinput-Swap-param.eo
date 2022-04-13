@@ -1,0 +1,46 @@
+memory > xNumberInput
+memory > xCharField
+memory > xTestForm
+memory > xForm
+memory > xWidgetTest
+[] > test_numberinput
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xwidget
+        memory > xtest_attrs_not_localized
+        memory > xtest_fieldset
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xWidgetTest)))
+              seq
+                xwidget.write (((unsupported)).apply ((xNumberInput)) ((((unsupported)).apply ("max") (12345) ("min") (1234) ("step") (9999))))
+                xtest_attrs_not_localized.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xcheck_html)).apply ("<input type=\"number\" name=\"name\" value=\"value\" max=\"12345\" min=\"1234\" step=\"9999\">") ("value") ("name") (((xself).xwidget)))
+                xtest_fieldset.write
+                  [xself]
+                    memory > xfield
+                    memory > xtemplate_name
+                    memory > xform
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xForm)))
+                          seq
+                            xtemplate_name.write "forms_tests/use_fieldset.html"
+                            xfield.write (((unsupported)).apply ((xCharField)) (((xself).xwidget)))
+                        xform.write (((xTestForm)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xself).xwidget).xuse_fieldset)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply ("<div><label for=\"id_field\">Field:</label><input id=\"id_field\" max=\"12345\" min=\"1234\" name=\"field\" required step=\"9999\" type=\"number\"></div>") (((((xform).xrender)).apply)))

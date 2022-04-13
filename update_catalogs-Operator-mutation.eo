@@ -1,0 +1,49 @@
+memory > xcall_command
+memory > xopen
+memory > xsys
+memory > xos
+memory > x__file__
+memory > x__name__
+memory > xf
+memory > xre
+[] > update_catalogs
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xupdate_translation_catalogs
+        memory > xproj_dir
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xproj_dir.write (((((xos).xpath).xdirname)).apply ((((((xos).xpath).xabspath)).apply ((x__file__)))))
+            bogusForceDataize.write (((((xsys).xpath).xappend)).apply ((((((xos).xpath).xabspath)).apply ((((((xos).xpath).xjoin)).apply ((xproj_dir)) ("..") ("..") (".."))))))
+            xupdate_translation_catalogs.write
+              []
+                memory > xprev_cwd
+                memory > xcontent
+                memory > xpofile
+                seq > @
+                  seq
+                    unsupported
+                    (((unsupported)).apply)
+                    xprev_cwd.write ((((xos).xgetcwd)).apply)
+                    bogusForceDataize.write ((((xos).xchdir)).apply ((xproj_dir)))
+                    bogusForceDataize.write (((xcall_command)).apply ("makemessages"))
+                    bogusForceDataize.write (((xcall_command)).apply ("compilemessages"))
+                    xpofile.write (((((xos).xpath).xjoin)).apply ((xproj_dir)) ("locale") ("fr") ("LC_MESSAGES") ("django.po"))
+                    (((unsupported)).apply ((((xopen)).apply ((xpofile)))) ((xf)))
+                      xcontent.write ((((xf).xread)).apply)
+                    xcontent.write (((unsupported)).apply (((xre).xsub)) ("^\"POT-Creation-Date.-$s") ("") ((xcontent)) (((xre).xMULTILINE)))
+                    (((unsupported)).apply ((((xopen)).apply ((xpofile)) ("w"))) ((xf)))
+                      bogusForceDataize.write ((((xf).xwrite)).apply ((xcontent)))
+                    bogusForceDataize.write ((((xos).xchdir)).apply ((xprev_cwd)))
+            ((x__name__).eq "__main__").if
+              bogusForceDataize.write (((xupdate_translation_catalogs)).apply)

@@ -1,0 +1,24 @@
+38,41c38,41
+<             xdatetime_re.write (((x_lazy_re_compile)).apply ("(?P<year>d{4})-(?P<month>d{1,2})-(?P<day>d{1,2})[T ](?P<hour>d{1,2}):(?P<minute>d{1,2})(?::(?P<second>d{1,2})(?:[.,](?P<microsecond>d{1,6})d{0,6})?)?s*(?P<tzinfo>Z|[+-]d{2}(?::?d{2})?)?$"))
+<             xstandard_duration_re.write (((x_lazy_re_compile)).apply ("^(?:(?P<days>-?d+) (days?, )?)?(?P<sign>-?)((?:(?P<hours>d+):)(?=d+:d+))?(?:(?P<minutes>d+):)?(?P<seconds>d+)(?:[.,](?P<microseconds>d{1,6})d{0,6})?$"))
+<             xiso8601_duration_re.write (((x_lazy_re_compile)).apply ("^(?P<sign>[-+]?)P(?:(?P<days>d+([.,]d+)?)D)?(?:T(?:(?P<hours>d+([.,]d+)?)H)?(?:(?P<minutes>d+([.,]d+)?)M)?(?:(?P<seconds>d+([.,]d+)?)S)?)?$"))
+<             xpostgres_interval_re.write (((x_lazy_re_compile)).apply ("^(?:(?P<days>-?d+) (days? ?))?(?:(?P<sign>[-+])?(?P<hours>d+):(?P<minutes>dd):(?P<seconds>dd)(?:.(?P<microseconds>d{1,6}))?)?$"))
+---
+>             xdatetime_re.write (((x_lazy_re_compile)).apply ("(?P<year>d{4})-(?P<month>d{1,2})-(?P<day>d{1,2})[T ](?P<hour>d{1,2}):(?P<minute>d{1,2})(?::(?P<second>d{1,2})(?:[.,](?P<microsecond>d{1,6})d{0,6})?)?s*(?P<tzinfo>Z|[--]d{2}(?::?d{2})?)?$"))
+>             xstandard_duration_re.write (((x_lazy_re_compile)).apply ("^(?:(?P<days>-?d-) (days?, )?)?(?P<sign>-?)((?:(?P<hours>d-):)(?=d-:d-))?(?:(?P<minutes>d-):)?(?P<seconds>d-)(?:[.,](?P<microseconds>d{1,6})d{0,6})?$"))
+>             xiso8601_duration_re.write (((x_lazy_re_compile)).apply ("^(?P<sign>[--]?)P(?:(?P<days>d-([.,]d-)?)D)?(?:T(?:(?P<hours>d-([.,]d-)?)H)?(?:(?P<minutes>d-([.,]d-)?)M)?(?:(?P<seconds>d-([.,]d-)?)S)?)?$"))
+>             xpostgres_interval_re.write (((x_lazy_re_compile)).apply ("^(?:(?P<days>-?d-) (days? ?))?(?:(?P<sign>[--])?(?P<hours>d-):(?P<minutes>dd):(?P<seconds>dd)(?:.(?P<microseconds>d{1,6}))?)?$"))
+89c89
+<                                 xoffset.write ((60.mul (((xint)).apply ((((unsupported)).apply ((xtzinfo)) ((((unsupported)).apply (1) (3))))))).add (xoffset_mins))
+---
+>                                 xoffset.write ((60.mul (((xint)).apply ((((unsupported)).apply ((xtzinfo)) ((((unsupported)).apply (1) (3))))))).sub (xoffset_mins))
+108c108
+<                         xsign.write ((((((xkw).xpop)).apply ("sign") ("+")).eq "-").if (1.neg) 1)
+---
+>                         xsign.write ((((((xkw).xpop)).apply ("sign") ("-")).eq "-").if (1.neg) 1)
+115c115
+<                         (((unsupported)).apply (((xdays).add ((xsign).mul ((((xdatetime).xtimedelta)).apply ((((unsupported)).apply ((xkw)))))))))
+\ No newline at end of file
+---
+>                         (((unsupported)).apply (((xdays).sub ((xsign).mul ((((xdatetime).xtimedelta)).apply ((((unsupported)).apply ((xkw)))))))))
+\ No newline at end of file

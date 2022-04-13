@@ -1,0 +1,67 @@
+memory > xstr
+memory > xoutput
+memory > xstring
+memory > xmark_safe
+memory > xlazy
+memory > xslugify
+memory > xSimpleTestCase
+[] > test_slugify
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_slugify02
+        memory > xtest_non_string_input
+        memory > xtest_slugify
+        memory > xtest_slugify01
+        memory > xtest_unicode
+        memory > xtest_slugify_lazy_string
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_slugify01.write
+                  [xself]
+                    memory > xoutput2
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput2.write (((((xself).xengine).xrender_to_string)).apply ("slugify01") ((((unsupported)).apply ("a") ("a & b") ("b") ((((xmark_safe)).apply ("a &amp; b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a-b a-amp-b"))
+                xtest_slugify02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("slugify02") ((((unsupported)).apply ("a") ("a & b") ("b") ((((xmark_safe)).apply ("a &amp; b"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("a-b a-amp-b"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_slugify.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xslugify)).apply (" Jack & Jill like numbers 1,2,3 and 4 and silly characters ?%.$!/"))) ("jack-jill-like-numbers-123-and-4-and-silly-characters"))
+                xtest_unicode.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xslugify)).apply ("Un xe9lxe9phant xe0 l'orxe9e du bois"))) ("un-elephant-a-loree-du-bois"))
+                xtest_non_string_input.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xslugify)).apply (123))) ("123"))
+                xtest_slugify_lazy_string.write
+                  [xself]
+                    memory > xlazy_str
+                    seq > @
+                      seq
+                        xlazy_str.write (((xlazy)).apply ((((unsupported)).apply ((xstring)))) ((xstr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xslugify)).apply ((((xlazy_str)).apply (" Jack & Jill like numbers 1,2,3 and 4 and silly characters ?%.$!/"))))) ("jack-jill-like-numbers-123-and-4-and-silly-characters"))

@@ -1,0 +1,86 @@
+memory > xconditional_escape
+memory > xOrigin
+memory > xFileNotFoundError
+memory > xtemplate_file
+memory > xopen
+memory > xstring
+memory > xsuper
+memory > xBaseEngine
+memory > xTemplateDoesNotExist
+memory > xv
+memory > xTemplate
+memory > xcsrf_input_lazy
+memory > xImproperlyConfigured
+memory > xfp
+memory > xk
+memory > xcsrf_token_lazy
+[] > dummy
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_template
+        memory > xrender
+        memory > xapp_dirname
+        memory > x__init__
+        memory > xfrom_string
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseEngine)))
+              seq
+                xapp_dirname.write "template_strings"
+                x__init__.write
+                  [xself xparams]
+                    memory > xoptions
+                    seq > @
+                      seq
+                        xparams.write ((xparams).xcopy)
+                        xoptions.write (((((xparams).xpop)).apply ("OPTIONS")).xcopy)
+                        (xoptions).if
+                          (((unsupported)).apply ((((xImproperlyConfigured)).apply (((("Unknown options: {}".xformat)).apply ((((", ".xjoin)).apply ((xoptions)))))))))
+                        bogusForceDataize.write ((((xsuper).x__init__)).apply ((xparams)))
+                xfrom_string.write
+                  [xself xtemplate_code]
+                    seq > @
+                      (((unsupported)).apply ((((xTemplate)).apply ((xtemplate_code)))))
+                xget_template.write
+                  [xself xtemplate_name]
+                    memory > xtried
+                    memory > xtemplate_code
+                    seq > @
+                      seq
+                        xtried.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xtemplate_file)) (((((xself).xiter_template_filenames)).apply ((xtemplate_name)))))
+                          (((unsupported)).apply ((xFileNotFoundError)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xopen)) ((xtemplate_file)) ("utf-8"))) ((xfp)))
+                              xtemplate_code.write ((xfp).xread)
+                            bogusForceDataize.write ((((xtried).xappend)).apply ((((unsupported)).apply ((((xOrigin)).apply ((xtemplate_file)) ((xtemplate_name)) ((xself)))) ("Source does not exist"))))
+                            (((unsupported)).apply ((((xTemplate)).apply ((xtemplate_code)))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xTemplateDoesNotExist)) ((xtemplate_name)) ((xtried)) ((xself)))))
+            (((unsupported)).apply (((xstring).xTemplate)))
+              xrender.write
+                [xself xcontext xrequest]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ((xcontext)) ("None: is there a None literal in the EO language?")).if
+                        xcontext.write (((unsupported)).apply)
+                        xcontext.write (((unsupported)).apply ((xk)) ((((xconditional_escape)).apply ((xv)))) ((((unsupported)).apply ((xk)) ((xv)))) (((xcontext).xitems)))
+                      (((unsupported)).apply ((xrequest)) ("None: is there a None literal in the EO language?")).if
+                        seq
+                          (((unsupported)).apply ((((unsupported)).apply ((xcontext)) ("csrf_input"))) ((((xcsrf_input_lazy)).apply ((xrequest)))))
+                          (((unsupported)).apply ((((unsupported)).apply ((xcontext)) ("csrf_token"))) ((((xcsrf_token_lazy)).apply ((xrequest)))))
+                      (((unsupported)).apply (((((xself).xsafe_substitute)).apply ((xcontext)))))

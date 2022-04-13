@@ -1,0 +1,95 @@
+memory > xValidationError
+memory > xTestCase
+memory > xDataModel
+memory > xbytearray
+memory > xrepr
+memory > xbytes
+memory > xbdata
+memory > xmodels
+memory > xmemoryview
+[] > test_binaryfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_filter
+        memory > xtest_set_and_retrieve
+        memory > xtest_editable
+        memory > xtest_max_length
+        memory > xbinary_data
+        memory > xtest_filter_bytearray
+        memory > xtest_filter_memoryview
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xbinary_data.write "x00x46xFE"
+                xtest_set_and_retrieve.write
+                  [xself]
+                    memory > xdata_set
+                    memory > xdm
+                    seq > @
+                      seq
+                        xdata_set.write (((unsupported)).apply (((xself).xbinary_data)) ((((xbytearray)).apply (((xself).xbinary_data)))) ((((xmemoryview)).apply (((xself).xbinary_data)))))
+                        (((unsupported)).apply ((xbdata)) ((xdata_set)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((((xrepr)).apply ((xbdata)))))))
+                            seq
+                              xdm.write (((unsupported)).apply ((xDataModel)) ((xbdata)))
+                              bogusForceDataize.write ((((xdm).xsave)).apply)
+                              xdm.write (((unsupported)).apply ((((xDataModel).xobjects).xget)) (((xdm).xpk)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xbytes)).apply (((xdm).xdata)))) ((((xbytes)).apply ((xbdata)))))
+                              bogusForceDataize.write ((((xdm).xsave)).apply)
+                              xdm.write (((unsupported)).apply ((((xDataModel).xobjects).xget)) (((xdm).xpk)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xbytes)).apply (((xdm).xdata)))) ((((xbytes)).apply ((xbdata)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xbytes)).apply (((xdm).xshort_data)))) ("x08"))
+                xtest_max_length.write
+                  [xself]
+                    memory > xdm
+                    seq > @
+                      seq
+                        xdm.write (((unsupported)).apply ((xDataModel)) ((((xself).xbinary_data).mul 4)))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xValidationError)))))
+                          bogusForceDataize.write ((((xdm).xfull_clean)).apply)
+                xtest_editable.write
+                  [xself]
+                    memory > xfield
+                    seq > @
+                      seq
+                        xfield.write ((((xmodels).xBinaryField)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((xfield).xeditable)) (FALSE))
+                        xfield.write (((unsupported)).apply (((xmodels).xBinaryField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((xfield).xeditable)) (TRUE))
+                        xfield.write (((unsupported)).apply (((xmodels).xBinaryField)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIs)).apply (((xfield).xeditable)) (FALSE))
+                xtest_filter.write
+                  [xself]
+                    memory > xdm
+                    seq > @
+                      seq
+                        xdm.write (((unsupported)).apply ((((xDataModel).xobjects).xcreate)) (((xself).xbinary_data)))
+                        (((unsupported)).apply ((((xDataModel).xobjects).xcreate)) ("xefxbbxbf"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xDataModel).xobjects).xfilter)) (((xself).xbinary_data)))) ((((unsupported)).apply ((xdm)))))
+                xtest_filter_bytearray.write
+                  [xself]
+                    memory > xdm
+                    seq > @
+                      seq
+                        xdm.write (((unsupported)).apply ((((xDataModel).xobjects).xcreate)) (((xself).xbinary_data)))
+                        (((unsupported)).apply ((((xDataModel).xobjects).xcreate)) ("xefxbbxbf"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xDataModel).xobjects).xfilter)) ((((xbytearray)).apply (((xself).xbinary_data)))))) ((((unsupported)).apply ((xdm)))))
+                xtest_filter_memoryview.write
+                  [xself]
+                    memory > xdm
+                    seq > @
+                      seq
+                        xdm.write (((unsupported)).apply ((((xDataModel).xobjects).xcreate)) (((xself).xbinary_data)))
+                        (((unsupported)).apply ((((xDataModel).xobjects).xcreate)) ("xefxbbxbf"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply ((((xDataModel).xobjects).xfilter)) ((((xmemoryview)).apply (((xself).xbinary_data)))))) ((((unsupported)).apply ((xdm)))))

@@ -1,0 +1,164 @@
+memory > xcache_path
+memory > xsetting
+memory > xcheck_file_based_cache_is_absolute
+memory > xE001
+memory > xWarning
+memory > xcheck_cache_location_not_exposed
+memory > xpathlib
+memory > xsetting_path
+memory > xcheck_default_cache_is_configured
+memory > xSimpleTestCase
+[] > test_caches
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_staticfiles_dirs_prefix
+        memory > xtest_relative_path
+        memory > xtest_absolute_path
+        memory > xget_settings
+        memory > xtest_cache_path_inside_media_static_setting
+        memory > xtest_cache_path_contains_media_static_setting
+        memory > xtest_staticfiles_dirs_prefix_not_conflict
+        memory > xINVALID_CACHES_CONFIGURATION
+        memory > xtest_default_cache_not_included
+        memory > xwarning_message
+        memory > xVALID_CACHES_CONFIGURATION
+        memory > xtest_default_cache_included
+        memory > xtest_cache_path_not_conflict
+        memory > xtest_cache_path_matches_media_static_setting
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xVALID_CACHES_CONFIGURATION.write (((unsupported)).apply ("default") ((((unsupported)).apply ("BACKEND") ("django.core.cache.backends.locmem.LocMemCache"))))
+                xINVALID_CACHES_CONFIGURATION.write (((unsupported)).apply ("other") ((((unsupported)).apply ("BACKEND") ("django.core.cache.backends.locmem.LocMemCache"))))
+                xtest_default_cache_included.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_default_cache_is_configured)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+                xtest_default_cache_not_included.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_default_cache_is_configured)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((xE001)))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xwarning_message.write "Your 'default' cache configuration might expose your cache or lead to corruption of your data because its LOCATION %s %s."
+                xget_settings.write
+                  [xsetting xcache_path xsetting_path]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ("CACHES") ((((unsupported)).apply ("default") ((((unsupported)).apply ("BACKEND") ("django.core.cache.backends.filebased.FileBasedCache") ("LOCATION") ((xcache_path)))))) ((xsetting)) ((((xsetting).eq "STATICFILES_DIRS").if (((unsupported)).apply ((xsetting_path))) (xsetting_path))))))
+                xtest_cache_path_matches_media_static_setting.write
+                  [xself]
+                    memory > xroot
+                    memory > xsettings
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xroot.write (((((xpathlib).xPath).xcwd)).apply)
+                        (((unsupported)).apply ((xsetting)) ((((unsupported)).apply ("MEDIA_ROOT") ("STATIC_ROOT") ("STATICFILES_DIRS"))))
+                          seq
+                            xsettings.write ((((xself).xget_settings)).apply ((xsetting)) ((xroot)) ((xroot)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsetting)))) (((((xself).xsettings)).apply ((((unsupported)).apply ((xsettings)))))))
+                              seq
+                                xmsg.write (((xself).xwarning_message).mod (((unsupported)).apply ("matches") ((xsetting))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_cache_location_not_exposed)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) ((xmsg)) ("caches.W002"))))))
+                xtest_cache_path_inside_media_static_setting.write
+                  [xself]
+                    memory > xroot
+                    memory > xsettings
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xroot.write (((((xpathlib).xPath).xcwd)).apply)
+                        (((unsupported)).apply ((xsetting)) ((((unsupported)).apply ("MEDIA_ROOT") ("STATIC_ROOT") ("STATICFILES_DIRS"))))
+                          seq
+                            xsettings.write ((((xself).xget_settings)).apply ((xsetting)) (((xroot).div "cache")) ((xroot)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsetting)))) (((((xself).xsettings)).apply ((((unsupported)).apply ((xsettings)))))))
+                              seq
+                                xmsg.write (((xself).xwarning_message).mod (((unsupported)).apply ("is inside") ((xsetting))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_cache_location_not_exposed)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) ((xmsg)) ("caches.W002"))))))
+                xtest_cache_path_contains_media_static_setting.write
+                  [xself]
+                    memory > xroot
+                    memory > xsettings
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xroot.write (((((xpathlib).xPath).xcwd)).apply)
+                        (((unsupported)).apply ((xsetting)) ((((unsupported)).apply ("MEDIA_ROOT") ("STATIC_ROOT") ("STATICFILES_DIRS"))))
+                          seq
+                            xsettings.write ((((xself).xget_settings)).apply ((xsetting)) ((xroot)) (((xroot).div "other")))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsetting)))) (((((xself).xsettings)).apply ((((unsupported)).apply ((xsettings)))))))
+                              seq
+                                xmsg.write (((xself).xwarning_message).mod (((unsupported)).apply ("contains") ((xsetting))))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_cache_location_not_exposed)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) ((xmsg)) ("caches.W002"))))))
+                xtest_cache_path_not_conflict.write
+                  [xself]
+                    memory > xroot
+                    memory > xsettings
+                    seq > @
+                      seq
+                        xroot.write (((((xpathlib).xPath).xcwd)).apply)
+                        (((unsupported)).apply ((xsetting)) ((((unsupported)).apply ("MEDIA_ROOT") ("STATIC_ROOT") ("STATICFILES_DIRS"))))
+                          seq
+                            xsettings.write ((((xself).xget_settings)).apply ((xsetting)) (((xroot).div "cache")) (((xroot).div "other")))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsetting)))) (((((xself).xsettings)).apply ((((unsupported)).apply ((xsettings)))))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_cache_location_not_exposed)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+                xtest_staticfiles_dirs_prefix.write
+                  [xself]
+                    memory > xroot
+                    memory > xsettings
+                    memory > xtests
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xroot.write (((((xpathlib).xPath).xcwd)).apply)
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ((xroot)) ((xroot)) ("matches"))) ((((unsupported)).apply (((xroot).div "cache")) ((xroot)) ("is inside"))) ((((unsupported)).apply ((xroot)) (((xroot).div "other")) ("contains"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xcache_path)) ((xsetting_path)) ((xmsg)))) ((xtests)))
+                          seq
+                            xsettings.write ((((xself).xget_settings)).apply ("STATICFILES_DIRS") ((xcache_path)) ((((unsupported)).apply ("prefix") ((xsetting_path)))))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xsetting_path)))) (((((xself).xsettings)).apply ((((unsupported)).apply ((xsettings)))))))
+                              seq
+                                xmsg.write (((xself).xwarning_message).mod (((unsupported)).apply ((xmsg)) ("STATICFILES_DIRS")))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_cache_location_not_exposed)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) ((xmsg)) ("caches.W002"))))))
+                xtest_staticfiles_dirs_prefix_not_conflict.write
+                  [xself]
+                    memory > xroot
+                    memory > xsettings
+                    seq > @
+                      seq
+                        xroot.write (((((xpathlib).xPath).xcwd)).apply)
+                        xsettings.write ((((xself).xget_settings)).apply ("STATICFILES_DIRS") (((xroot).div "cache")) ((((unsupported)).apply ("prefix") (((xroot).div "other")))))
+                        (((unsupported)).apply (((((xself).xsettings)).apply ((((unsupported)).apply ((xsettings)))))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_cache_location_not_exposed)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_absolute_path.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ("default") ((((unsupported)).apply ("BACKEND") ("django.core.cache.backends.filebased.FileBasedCache") ("LOCATION") (((((((xpathlib).xPath).xcwd)).apply).div "cache")))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_file_based_cache_is_absolute)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+                xtest_relative_path.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ("default") ((((unsupported)).apply ("BACKEND") ("django.core.cache.backends.filebased.FileBasedCache") ("LOCATION") ("cache"))))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_file_based_cache_is_absolute)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) ("Your 'default' cache LOCATION path is relative. Use an absolute path instead.") ("caches.W003"))))))

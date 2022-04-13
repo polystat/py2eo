@@ -1,0 +1,197 @@
+memory > xenumerate
+memory > xerrors
+memory > xFileNotFoundError
+memory > xbasedir
+memory > xexecutor
+memory > xconcurrent
+memory > xcodecs
+memory > xi
+memory > xldir
+memory > xfuture
+memory > xfind_command
+memory > xmap
+memory > xglob
+memory > xoutput
+memory > xopen
+memory > xPath
+memory > xdirpath
+memory > xBaseCommand
+memory > xf
+memory > xset
+memory > xsettings
+memory > xfilenames
+memory > xOSError
+memory > xos
+memory > xdirname
+memory > xdirnames
+memory > xstatus
+memory > xpopen_wrapper
+memory > xfilter
+memory > xoptions
+memory > xis_ignored_path
+memory > xCommandError
+[] > compilemessages
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xprogram_options
+        memory > xcompile_messages
+        memory > xhandle
+        memory > xhas_bom
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xis_writable
+        memory > xprogram
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xhas_bom.write
+              [xfn]
+                memory > xsample
+                seq > @
+                  seq
+                    (((unsupported)).apply (((((xfn).xopen)).apply ("rb"))) ((xf)))
+                      xsample.write ((((xf).xread)).apply (4))
+                    (((unsupported)).apply (((((xsample).xstartswith)).apply ((((unsupported)).apply (((xcodecs).xBOM_UTF8)) (((xcodecs).xBOM_UTF16_LE)) (((xcodecs).xBOM_UTF16_BE)))))))
+            xis_writable.write
+              [xpath]
+                seq > @
+                  seq
+                    (((unsupported)).apply ((xOSError)))
+                      (((unsupported)).apply ((((xopen)).apply ((xpath)) ("a"))))
+                        bogusForceDataize.write ((((xos).xutime)).apply ((xpath)) ("None: is there a None literal in the EO language?"))
+                      (((unsupported)).apply (FALSE))
+                    (((unsupported)).apply (TRUE))
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Compiles .po files to .mo files for use with builtin gettext support."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xprogram.write "msgfmt"
+                xprogram_options.write (((unsupported)).apply ("--check-format"))
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--locale") ("-l") ("append") ((((unsupported)).apply)) ("Locale(s) to process (e.g. de_AT). Default is to process all. Can be used multiple times."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--exclude") ("-x") ("append") ((((unsupported)).apply)) ("Locales to exclude. Default is none. Can be used multiple times."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--use-fuzzy") ("-f") ("fuzzy") ("store_false") ("Use fuzzy translations."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--ignore") ("-i") ("append") ("ignore_patterns") ((((unsupported)).apply)) ("PATTERN") ("Ignore directories matching this glob-style pattern. Use multiple times to ignore more."))
+                xhandle.write
+                  [xself]
+                    memory > xexclude
+                    memory > xlocations
+                    memory > xdirs
+                    memory > xlocale_dirs
+                    memory > xlocales
+                    memory > xlocale
+                    memory > xignore_patterns
+                    memory > xbasedirs
+                    memory > xall_locales
+                    seq > @
+                      (((unsupported)).apply)
+                        xlocale.write (((unsupported)).apply ((xoptions)) ("locale"))
+                        xexclude.write (((unsupported)).apply ((xoptions)) ("exclude"))
+                        xignore_patterns.write (((xset)).apply ((((unsupported)).apply ((xoptions)) ("ignore_patterns"))))
+                        (((unsupported)).apply (((xself).xverbosity)) ((((unsupported)).apply ((xoptions)) ("verbosity"))))
+                        (((unsupported)).apply ((xoptions)) ("fuzzy")).if
+                          (((unsupported)).apply (((xself).xprogram_options)) ((((xself).xprogram_options).add (((unsupported)).apply ("-f")))))
+                        (((unsupported)).apply ((((xfind_command)).apply (((xself).xprogram)))) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((xCommandError)).apply (("Can't find %s. Make sure you have GNU gettext tools 0.15 or newer installed.".mod ((xself).xprogram))))))
+                        xbasedirs.write (((unsupported)).apply ((((((xos).xpath).xjoin)).apply ("conf") ("locale"))) ("locale"))
+                        (((((xos).xenviron).xget)).apply ("DJANGO_SETTINGS_MODULE")).if
+                          seq
+                            (((unsupported)).apply)
+                            bogusForceDataize.write ((((xbasedirs).xextend)).apply (((xsettings).xLOCALE_PATHS)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xdirpath)) ((xdirnames)) ((xfilenames)))) ((((unsupported)).apply (((xos).xwalk)) (".") (TRUE))))
+                          (((unsupported)).apply ((xdirname)) ((xdirnames)))
+                            (((xis_ignored_path)).apply ((((((xos).xpath).xnormpath)).apply ((((((xos).xpath).xjoin)).apply ((xdirpath)) ((xdirname)))))) ((xignore_patterns))).if
+                              bogusForceDataize.write ((((xdirnames).xremove)).apply ((xdirname)))
+                              ((xdirname).eq "locale").if
+                                bogusForceDataize.write ((((xbasedirs).xappend)).apply ((((((xos).xpath).xjoin)).apply ((xdirpath)) ((xdirname)))))
+                        xbasedirs.write (((xset)).apply ((((xmap)).apply ((((xos).xpath).xabspath)) ((((xfilter)).apply ((((xos).xpath).xisdir)) ((xbasedirs)))))))
+                        ((xbasedirs).not).if
+                          (((unsupported)).apply ((((xCommandError)).apply ("This script should be run from the Django Git checkout or your project or app tree, or with the settings module specified."))))
+                        xall_locales.write (((unsupported)).apply)
+                        (((unsupported)).apply ((xbasedir)) ((xbasedirs)))
+                          seq
+                            xlocale_dirs.write (((xfilter)).apply ((((xos).xpath).xisdir)) (((((xglob).xglob)).apply (("%s/*".mod (xbasedir))))))
+                            bogusForceDataize.write ((((xall_locales).xextend)).apply ((((xmap)).apply ((((xos).xpath).xbasename)) ((xlocale_dirs)))))
+                        xlocales.write ((xlocale).or (xall_locales))
+                        xlocales.write ((((((xset)).apply ((xlocales))).xdifference)).apply ((xexclude)))
+                        (((unsupported)).apply (((xself).xhas_errors)) (FALSE))
+                        (((unsupported)).apply ((xbasedir)) ((xbasedirs)))
+                          seq
+                            (xlocales).if
+                              xdirs.write (((unsupported)).apply ((((((xos).xpath).xjoin)).apply ((xbasedir)) ((xlocale)) ("LC_MESSAGES"))) ((xlocale)) ((xlocales)))
+                              xdirs.write (((unsupported)).apply ((xbasedir)))
+                            xlocations.write (((unsupported)).apply)
+                            (((unsupported)).apply ((xldir)) ((xdirs)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xdirpath)) ((xdirnames)) ((xfilenames)))) (((((xos).xwalk)).apply ((xldir)))))
+                                bogusForceDataize.write ((((xlocations).xextend)).apply ((((unsupported)).apply ((((unsupported)).apply ((xdirpath)) ((xf)))) ((xf)) ((xfilenames)) (((((xf).xendswith)).apply (".po"))))))
+                            (xlocations).if
+                              bogusForceDataize.write ((((xself).xcompile_messages)).apply ((xlocations)))
+                        ((xself).xhas_errors).if
+                          (((unsupported)).apply ((((xCommandError)).apply ("compilemessages generated one or more errors."))))
+                xcompile_messages.write
+                  [xself xlocations]
+                    memory > xargs
+                    memory > xfutures
+                    memory > xpo_path
+                    memory > xmo_path
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((((xconcurrent).xfutures).xThreadPoolExecutor)).apply)) ((xexecutor)))
+                          seq
+                            xfutures.write (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xi)) ((((unsupported)).apply ((xdirpath)) ((xf)))))) ((((xenumerate)).apply ((xlocations)))))
+                              seq
+                                xpo_path.write ((((xPath)).apply ((xdirpath))).div (xf))
+                                xmo_path.write ((((xpo_path).xwith_suffix)).apply (".mo"))
+                                (((unsupported)).apply ((xFileNotFoundError)))
+                                  ((((((xmo_path).xstat)).apply).xst_mtime).geq (((((xpo_path).xstat)).apply).xst_mtime)).if
+                                    seq
+                                      (((xself).xverbosity).greater 0).if
+                                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("File “%s” is already compiled and up to date.".mod (xpo_path))))
+                                      (((unsupported)).apply)
+                                (((xself).xverbosity).greater 0).if
+                                  bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("processing file %s in %s".mod (((unsupported)).apply ((xf)) ((xdirpath))))))
+                                (((xhas_bom)).apply ((xpo_path))).if
+                                  seq
+                                    bogusForceDataize.write (((((xself).xstderr).xwrite)).apply (("The %s file has a BOM (Byte Order Mark). Django only supports .po files encoded in UTF-8 and without any BOM.".mod (xpo_path))))
+                                    (((unsupported)).apply (((xself).xhas_errors)) (TRUE))
+                                    (((unsupported)).apply)
+                                (((xi).eq 0).and ((((xis_writable)).apply ((xmo_path))).not)).if
+                                  seq
+                                    bogusForceDataize.write (((((xself).xstderr).xwrite)).apply (("The po files under %s are in a seemingly not writable location. mo files will not be updated/created.".mod (xdirpath))))
+                                    (((unsupported)).apply (((xself).xhas_errors)) (TRUE))
+                                    (((unsupported)).apply)
+                                xargs.write (((unsupported)).apply (((xself).xprogram)) ((((unsupported)).apply (((xself).xprogram_options)))) ("-o") ((xmo_path)) ((xpo_path)))
+                                bogusForceDataize.write ((((xfutures).xappend)).apply (((((xexecutor).xsubmit)).apply ((xpopen_wrapper)) ((xargs)))))
+                            (((unsupported)).apply ((xfuture)) ((((((xconcurrent).xfutures).xas_completed)).apply ((xfutures)))))
+                              seq
+                                (((unsupported)).apply ((((unsupported)).apply ((xoutput)) ((xerrors)) ((xstatus)))) (((((xfuture).xresult)).apply)))
+                                (xstatus).if
+                                  seq
+                                    (((xself).xverbosity).greater 0).if
+                                      (xerrors).if
+                                        bogusForceDataize.write (((((xself).xstderr).xwrite)).apply (("Execution of %s failed: %s".mod (((unsupported)).apply (((xself).xprogram)) ((xerrors))))))
+                                        bogusForceDataize.write (((((xself).xstderr).xwrite)).apply (("Execution of %s failed".mod ((xself).xprogram))))
+                                    (((unsupported)).apply (((xself).xhas_errors)) (TRUE))

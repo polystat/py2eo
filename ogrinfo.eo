@@ -1,0 +1,74 @@
+memory > xDataSource
+memory > xenumerate
+memory > xfeature
+memory > xstr
+memory > xmax
+memory > xprint
+memory > xException
+memory > xi
+memory > xmap
+memory > xfld_name
+memory > xGEO_CLASSES
+memory > xlayer
+memory > xlen
+memory > xj
+memory > xisinstance
+[] > ogrinfo
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xogrinfo
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xogrinfo.write
+              [xdata_source xnum_features]
+                memory > xfmt
+                memory > xwidth
+                memory > xval_fmt
+                memory > xval
+                memory > xextent_tup
+                memory > xtype_name
+                memory > xoutput
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((xisinstance)).apply ((xdata_source)) ((xstr))).if
+                      xdata_source.write (((xDataSource)).apply ((xdata_source)))
+                      (((xisinstance)).apply ((xdata_source)) ((xDataSource))).if
+                        (((unsupported)).apply ((((xException)).apply ("Data source parameter must be a string or a DataSource object."))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xi)) ((xlayer)))) ((((xenumerate)).apply ((xdata_source)))))
+                      seq
+                        bogusForceDataize.write (((xprint)).apply (("data source : %s".mod ((xdata_source).xname))))
+                        bogusForceDataize.write (((xprint)).apply (("==== layer %s".mod (xi))))
+                        bogusForceDataize.write (((xprint)).apply (("  shape type: %s".mod ((((unsupported)).apply ((xGEO_CLASSES)) ((((xlayer).xgeom_type).xnum))).x__name__))))
+                        bogusForceDataize.write (((xprint)).apply (("  # features: %s".mod (((xlen)).apply ((xlayer))))))
+                        bogusForceDataize.write (((xprint)).apply (("         srs: %s".mod ((xlayer).xsrs))))
+                        xextent_tup.write (((xlayer).xextent).xtuple)
+                        bogusForceDataize.write (((xprint)).apply (("      extent: %s - %s".mod (((unsupported)).apply ((((unsupported)).apply ((xextent_tup)) ((((unsupported)).apply (0) (2))))) ((((unsupported)).apply ((xextent_tup)) ((((unsupported)).apply (2) (4)))))))))
+                        bogusForceDataize.write (((xprint)).apply (("Displaying the first %s features ====".mod (xnum_features))))
+                        xwidth.write (((xmax)).apply ((((unsupported)).apply ((((xmap)).apply ((xlen)) (((xlayer).xfields)))))))
+                        xfmt.write (" %%%ss: %%s".mod (xwidth))
+                        (((unsupported)).apply ((((unsupported)).apply ((xj)) ((xfeature)))) ((((xenumerate)).apply ((((unsupported)).apply ((xlayer)) ((((unsupported)).apply ((xnum_features)))))))))
+                          seq
+                            bogusForceDataize.write (((xprint)).apply (("=== Feature %s".mod (xj))))
+                            (((unsupported)).apply ((xfld_name)) (((xlayer).xfields)))
+                              seq
+                                xtype_name.write ((((unsupported)).apply ((xfeature)) ((xfld_name))).xtype_name)
+                                xoutput.write ((xfmt).mod (((unsupported)).apply ((xfld_name)) ((xtype_name))))
+                                xval.write ((((xfeature).xget)).apply ((xfld_name)))
+                                (xval).if
+                                  seq
+                                    (((xisinstance)).apply ((xval)) ((xstr))).if
+                                      xval_fmt.write " (\"%s\")"
+                                      xval_fmt.write " (%s)"
+                                    (((unsupported)).apply ((xoutput)) (((xval_fmt).mod (xval))))
+                                  (((unsupported)).apply ((xoutput)) (" (None)"))
+                                bogusForceDataize.write (((xprint)).apply ((xoutput)))

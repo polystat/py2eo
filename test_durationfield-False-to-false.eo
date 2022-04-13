@@ -1,0 +1,105 @@
+memory > xdatetime
+memory > xtranslation
+memory > xDurationField
+memory > xValidationError
+memory > xduration_string
+memory > xSimpleTestCase
+memory > xfalse
+memory > xFormFieldAssertionsMixin
+[] > test_durationfield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_durationfield_clean
+        memory > xtest_durationfield_prepare_value
+        memory > xtest_overflow
+        memory > xtest_durationfield_integer_value
+        memory > xtest_overflow_translation
+        memory > xtest_durationfield_clean_not_required
+        memory > xtest_durationfield_render
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xFormFieldAssertionsMixin)) ((xSimpleTestCase)))
+              seq
+                xtest_durationfield_clean.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xDurationField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xdatetime).xtimedelta)) (30))) (((((xf).xclean)).apply ("30"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xdatetime).xtimedelta)) (15) (30))) (((((xf).xclean)).apply ("15:30"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xdatetime).xtimedelta)) (1) (15) (30))) (((((xf).xclean)).apply ("1:15:30"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xdatetime).xtimedelta)) (1) (1) (15) (30) (300))) (((((xf).xclean)).apply ("1 1:15:30.3"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtimedelta)).apply (0) (10800))) (((((xf).xclean)).apply (((((xdatetime).xtimedelta)).apply (0) (10800))))))
+                        xmsg.write "This field is required."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply (""))
+                        xmsg.write "Enter a valid duration."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("not_a_time"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((((xDurationField)).apply).xclean)).apply ("P3(3D"))
+                xtest_durationfield_clean_not_required.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDurationField)) ((xfalse)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                xtest_overflow.write
+                  [xself]
+                    memory > xmsg
+                    memory > xf
+                    seq > @
+                      seq
+                        xmsg.write (((unsupported)).apply (("The number of days must be between {min_days} and {max_days}.".xformat)) (((((xdatetime).xtimedelta).xmin).xdays)) (((((xdatetime).xtimedelta).xmax).xdays)))
+                        xf.write (((xDurationField)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("1000000000 00:00:00"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("-1000000000 00:00:00"))
+                xtest_overflow_translation.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write (((unsupported)).apply (("Le nombre de jours doit être entre {min_days} et {max_days}.".xformat)) (((((xdatetime).xtimedelta).xmin).xdays)) (((((xdatetime).xtimedelta).xmax).xdays)))
+                        (((unsupported)).apply (((((xtranslation).xoverride)).apply ("fr"))))
+                          (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ((xmsg)))))
+                            bogusForceDataize.write ((((((xDurationField)).apply).xclean)).apply ("1000000000 00:00:00"))
+                xtest_durationfield_render.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertWidgetRendersTo)).apply ((((unsupported)).apply ((xDurationField)) ((((unsupported)).apply (((xdatetime).xtimedelta)) (1))))) ("<input id=\"id_f\" type=\"text\" name=\"f\" value=\"01:00:00\" required>"))
+                xtest_durationfield_integer_value.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((xDurationField)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdatetime).xtimedelta)).apply (0) (10800))) (((((xf).xclean)).apply (10800))))
+                xtest_durationfield_prepare_value.write
+                  [xself]
+                    memory > xfield
+                    memory > xtd
+                    seq > @
+                      seq
+                        xfield.write (((xDurationField)).apply)
+                        xtd.write (((unsupported)).apply (((xdatetime).xtimedelta)) (15) (30))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ((xtd)))) ((((xduration_string)).apply ((xtd)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfield).xprepare_value)).apply ("arbitrary"))) ("arbitrary"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xfield).xprepare_value)).apply ("None: is there a None literal in the EO language?"))))

@@ -1,0 +1,46 @@
+memory > xfalse
+memory > xipaddress
+memory > xValueError
+memory > xstr
+memory > xValidationError
+memory > xint
+[] > ipv6
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xclean_ipv6_address
+        memory > xis_valid_ipv6_address
+        memory > x_
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xclean_ipv6_address.write
+              [xip_str xunpack_ipv4 xerror_message]
+                memory > xaddr
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xValueError)))
+                      xaddr.write ((((xipaddress).xIPv6Address)).apply ((((xint)).apply (((((xipaddress).xIPv6Address)).apply ((xip_str)))))))
+                      (((unsupported)).apply ((((unsupported)).apply ((xValidationError)) ((xerror_message)) ("invalid"))))
+                    ((xunpack_ipv4).and ((xaddr).xipv4_mapped)).if
+                      (((unsupported)).apply ((((xstr)).apply (((xaddr).xipv4_mapped)))))
+                      ((xaddr).xipv4_mapped).if
+                        (((unsupported)).apply (("::ffff:%s".mod (((xstr)).apply (((xaddr).xipv4_mapped))))))
+                    (((unsupported)).apply ((((xstr)).apply ((xaddr)))))
+            xis_valid_ipv6_address.write
+              [xip_str]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xValueError)))
+                      bogusForceDataize.write ((((xipaddress).xIPv6Address)).apply ((xip_str)))
+                      (((unsupported)).apply ((xfalse)))
+                    (((unsupported)).apply (TRUE))

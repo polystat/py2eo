@@ -1,0 +1,159 @@
+memory > xfalse
+memory > xcurrent_scheme
+memory > xREDIRECT_FIELD_NAME
+memory > xstr
+memory > xurlparse
+memory > xNotImplementedError
+memory > xcurrent_netloc
+memory > xAccessMixin
+memory > xredirect_to_login
+memory > xsuper
+memory > xargs
+memory > xresolve_url
+memory > xlogin_netloc
+memory > xisinstance
+memory > xPermissionDenied
+memory > xsettings
+memory > xImproperlyConfigured
+memory > xkwargs
+memory > xlogin_scheme
+[] > mixins
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_test_func
+        memory > xpermission_required
+        memory > xget_login_url
+        memory > xget_permission_required
+        memory > xget_redirect_field_name
+        memory > xtest_func
+        memory > xhas_permission
+        memory > xlogin_url
+        memory > xraise_exception
+        memory > xdispatch
+        memory > xredirect_field_name
+        memory > xpermission_denied_message
+        memory > xget_permission_denied_message
+        memory > xhandle_no_permission
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xlogin_url.write "None: is there a None literal in the EO language?"
+                xpermission_denied_message.write ""
+                xraise_exception.write (xfalse)
+                xredirect_field_name.write (xREDIRECT_FIELD_NAME)
+                xget_login_url.write
+                  [xself]
+                    memory > xlogin_url
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xlogin_url.write (((xself).xlogin_url).or ((xsettings).xLOGIN_URL))
+                        ((xlogin_url).not).if
+                          (((unsupported)).apply ((((xImproperlyConfigured)).apply ("{self.__class__.__name__} is missing the login_url attribute. Define {self.__class__.__name__}.login_url, settings.LOGIN_URL, or override {self.__class__.__name__}.get_login_url()."))))
+                        (((unsupported)).apply ((((xstr)).apply ((xlogin_url)))))
+                xget_permission_denied_message.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xpermission_denied_message)))
+                xget_redirect_field_name.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xredirect_field_name)))
+                xhandle_no_permission.write
+                  [xself]
+                    memory > xresolved_login_url
+                    memory > xpath
+                    seq > @
+                      seq
+                        (((xself).xraise_exception).or ((((xself).xrequest).xuser).xis_authenticated)).if
+                          (((unsupported)).apply ((((xPermissionDenied)).apply (((((xself).xget_permission_denied_message)).apply)))))
+                        xpath.write (((((xself).xrequest).xbuild_absolute_uri)).apply)
+                        xresolved_login_url.write (((xresolve_url)).apply (((((xself).xget_login_url)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xlogin_scheme)) ((xlogin_netloc)))) ((((unsupported)).apply ((((xurlparse)).apply ((xresolved_login_url)))) ((((unsupported)).apply (2))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xcurrent_scheme)) ((xcurrent_netloc)))) ((((unsupported)).apply ((((xurlparse)).apply ((xpath)))) ((((unsupported)).apply (2))))))
+                        ((((xlogin_scheme).not).or ((xlogin_scheme).eq (xcurrent_scheme))).and (((xlogin_netloc).not).or ((xlogin_netloc).eq (xcurrent_netloc)))).if
+                          xpath.write (((((xself).xrequest).xget_full_path)).apply)
+                        (((unsupported)).apply ((((xredirect_to_login)).apply ((xpath)) ((xresolved_login_url)) (((((xself).xget_redirect_field_name)).apply)))))
+            (((unsupported)).apply ((xAccessMixin)))
+              seq
+                unsupported
+                xdispatch.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xrequest).xuser).xis_authenticated).not).if
+                          (((unsupported)).apply (((((xself).xhandle_no_permission)).apply)))
+                        (((unsupported)).apply (((((((xsuper)).apply).xdispatch)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+            (((unsupported)).apply ((xAccessMixin)))
+              seq
+                unsupported
+                xpermission_required.write "None: is there a None literal in the EO language?"
+                xget_permission_required.write
+                  [xself]
+                    memory > xperms
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xpermission_required)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((xImproperlyConfigured)).apply ("{self.__class__.__name__} is missing the permission_required attribute. Define {self.__class__.__name__}.permission_required, or override {self.__class__.__name__}.get_permission_required()."))))
+                        (((xisinstance)).apply (((xself).xpermission_required)) ((xstr))).if
+                          xperms.write (((unsupported)).apply (((xself).xpermission_required)))
+                          xperms.write ((xself).xpermission_required)
+                        (((unsupported)).apply ((xperms)))
+                xhas_permission.write
+                  [xself]
+                    memory > xperms
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xperms.write ((((xself).xget_permission_required)).apply)
+                        (((unsupported)).apply (((((((xself).xrequest).xuser).xhas_perms)).apply ((xperms)))))
+                xdispatch.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((((xself).xhas_permission)).apply).not).if
+                          (((unsupported)).apply (((((xself).xhandle_no_permission)).apply)))
+                        (((unsupported)).apply (((((((xsuper)).apply).xdispatch)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+            (((unsupported)).apply ((xAccessMixin)))
+              seq
+                (((unsupported)).apply)
+                xtest_func.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xNotImplementedError)).apply (((("{} is missing the implementation of the test_func() method.".xformat)).apply ((((xself).x__class__).x__name__)))))))
+                xget_test_func.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xtest_func)))
+                xdispatch.write
+                  [xself xrequest]
+                    memory > xuser_test_result
+                    seq > @
+                      (((unsupported)).apply)
+                        xuser_test_result.write ((((((xself).xget_test_func)).apply)).apply)
+                        ((xuser_test_result).not).if
+                          (((unsupported)).apply (((((xself).xhandle_no_permission)).apply)))
+                        (((unsupported)).apply (((((((xsuper)).apply).xdispatch)).apply ((xrequest)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))

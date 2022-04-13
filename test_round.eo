@@ -1,0 +1,192 @@
+memory > xIntegerModel
+memory > xDecimalField
+memory > xTestCase
+memory > xDecimalModel
+memory > xRound
+memory > xPi
+memory > xint
+memory > xfloat
+memory > xregister_lookup
+memory > xDecimal
+memory > xValueError
+memory > xFloatModel
+[] > test_round
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_float
+        memory > xtest_null_with_precision
+        memory > xtest_integer_with_precision
+        memory > xtest_decimal_with_negative_precision
+        memory > xtest_null
+        memory > xtest_integer_with_negative_precision
+        memory > xtest_float_with_negative_precision
+        memory > xtest_integer
+        memory > xtest_null_with_negative_precision
+        memory > xtest_unsupported_negative_precision
+        memory > xtest_float_with_precision
+        memory > xtest_decimal_with_precision
+        memory > xtest_decimal
+        memory > xtest_transform
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_null.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xIntegerModel).xobjects).xcreate)).apply)
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xRound)).apply ("normal")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_round)))
+                xtest_null_with_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xIntegerModel).xobjects).xcreate)).apply)
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xRound)).apply ("normal") (5)))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_round)))
+                xtest_null_with_negative_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        bogusForceDataize.write (((((xIntegerModel).xobjects).xcreate)).apply)
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xRound)).apply ("normal") ((1.neg))))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xobj).xnull_round)))
+                xtest_decimal.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("-12.9"))) ((((xDecimal)).apply ("0.6"))))
+                        xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xannotate)) ((((xRound)).apply ("n1"))) ((((xRound)).apply ("n2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn1_round)) ((xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn2_round)) ((xDecimal)))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xn1_round)) (((xobj).xn1)) (0))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xn2_round)) (((xobj).xn2)) (0))
+                xtest_decimal_with_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("-5.75"))) ((((xPi)).apply)))
+                        xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xannotate)) ((((xRound)).apply ("n1") (1))) ((((xRound)).apply ("n2") (5)))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn1_round)) ((xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn2_round)) ((xDecimal)))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xn1_round)) (((xobj).xn1)) (1))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xn2_round)) (((xobj).xn2)) (5))
+                xtest_decimal_with_negative_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("365.25"))))
+                        xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xannotate)) ((((xRound)).apply ("n1") ((1.neg))))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xn1_round)) ((xDecimal)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xn1_round)) (370))
+                xtest_float.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) ((27.55.neg)) (0.55))
+                        xobj.write ((((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xRound)).apply ("f1"))) ((((xRound)).apply ("f2")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf1_round)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf2_round)) ((xfloat)))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xf1_round)) (((xobj).xf1)) (0))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xf2_round)) (((xobj).xf2)) (0))
+                xtest_float_with_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) ((5.75.neg)) ((((xPi)).apply)))
+                        xobj.write ((((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xRound)).apply ("f1") (1))) ((((xRound)).apply ("f2") (5)))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf1_round)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf2_round)) ((xfloat)))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xf1_round)) (((xobj).xf1)) (1))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xf2_round)) (((xobj).xf2)) (5))
+                xtest_float_with_negative_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) (365.25))
+                        xobj.write ((((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xRound)).apply ("f1") ((1.neg))))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xf1_round)) ((xfloat)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xf1_round)) (370))
+                xtest_integer.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) ((20.neg)) (15) ((1.neg)))
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xRound)).apply ("small"))) ((((xRound)).apply ("normal"))) ((((xRound)).apply ("big")))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xsmall_round)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xnormal_round)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xbig_round)) ((xint)))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xsmall_round)) (((xobj).xsmall)) (0))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xnormal_round)) (((xobj).xnormal)) (0))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xbig_round)) (((xobj).xbig)) (0))
+                xtest_integer_with_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) ((5.neg)) (3) ((100.neg)))
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xRound)).apply ("small") (1))) ((((xRound)).apply ("normal") (5))) ((((xRound)).apply ("big") (2)))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xsmall_round)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xnormal_round)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xbig_round)) ((xint)))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xsmall_round)) (((xobj).xsmall)) (1))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xnormal_round)) (((xobj).xnormal)) (5))
+                        (((unsupported)).apply (((xself).xassertAlmostEqual)) (((xobj).xbig_round)) (((xobj).xbig)) (2))
+                xtest_integer_with_negative_precision.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xIntegerModel).xobjects).xcreate)) (365))
+                        xobj.write ((((((unsupported)).apply ((((xIntegerModel).xobjects).xannotate)) ((((xRound)).apply ("normal") ((1.neg))))).xfirst)).apply)
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((xobj).xnormal_round)) ((xint)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xnormal_round)) (370))
+                xtest_transform.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      (((unsupported)).apply ((((xregister_lookup)).apply ((xDecimalField)) ((xRound)))))
+                        seq
+                          (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("2.0"))) ((((xDecimal)).apply ("0"))))
+                          (((unsupported)).apply ((((xDecimalModel).xobjects).xcreate)) ((((xDecimal)).apply ("-1.0"))) ((((xDecimal)).apply ("0"))))
+                          xobj.write ((((((unsupported)).apply ((((xDecimalModel).xobjects).xfilter)) (0)).xget)).apply)
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xn1)) ((((xDecimal)).apply ("2.0"))))
+                xtest_unsupported_negative_precision.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xFloatModel).xobjects).xcreate)) (123.45))
+                        xmsg.write "SQLite does not support negative precision."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValueError)) ((xmsg)))))
+                          bogusForceDataize.write ((((((unsupported)).apply ((((xFloatModel).xobjects).xannotate)) ((((xRound)).apply ("f1") ((1.neg))))).xfirst)).apply)

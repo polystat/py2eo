@@ -1,0 +1,393 @@
+memory > xContext
+memory > xRuntimeError
+memory > xtemplate_names
+memory > xrepr
+memory > xTemplateDoesNotExist
+memory > xIncludeNode
+memory > xSimpleTestCase
+memory > xTemplateSyntaxError
+memory > xloader
+memory > xrange
+memory > xEngine
+[] > test_include
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_include_template_argument
+        memory > xtest_include03
+        memory > xtest_include_error05
+        memory > xtest_include_error07
+        memory > xtest_include_template_none
+        memory > xtest_include_error08
+        memory > xtest_include_error10
+        memory > xtest_include_template_iterable
+        memory > xtest_include12
+        memory > xtest_extends_include_missing_cachedloader
+        memory > xtest_include_error06
+        memory > xtest_include_error03
+        memory > xtest_include_empty
+        memory > xtest_include_cache
+        memory > xtest_include09
+        memory > xtest_include06
+        memory > xtest_extends_include_missing_baseloader
+        memory > xlibraries
+        memory > xtest_include13
+        memory > xtest_include_error02
+        memory > xtest_include02
+        memory > xtest_repr
+        memory > xtest_include01
+        memory > xtest_include_fail2
+        memory > xtest_include08
+        memory > xtest_include_fail1
+        memory > xtest_include_missing_template
+        memory > xtest_include_from_loader_get_template
+        memory > xtest_include07
+        memory > xtest_include14
+        memory > xtest_include_error01
+        memory > xtest_include10
+        memory > xtest_include11
+        memory > xtest_include_error09
+        memory > xinclude_fail_templates
+        memory > xtest_include_immediate_missing
+        memory > xtest_include04
+        memory > xtest_include_error04
+        memory > xtest_include_recursive
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xinclude_fail_templates.write (((unsupported)).apply ("include-fail1") ("{% load bad_tag %}{% badtag %}") ("include-fail2") ("{% load broken_tag %}"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xlibraries.write (((unsupported)).apply ("bad_tag") ("template_tests.templatetags.bad_tag"))
+                xtest_include01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include01"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("something cool") ((xoutput)))
+                xtest_include02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include02") ((((unsupported)).apply ("headline") ("Included"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Included"))
+                xtest_include03.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include03") ((((unsupported)).apply ("template_name") ("basic-syntax02") ("headline") ("Included"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Included"))
+                xtest_include04.write
+                  [xself]
+                    memory > xtemplate
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("include04"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                xtest_include06.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include06"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("template with a space"))
+                xtest_include07.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include07") ((((unsupported)).apply ("headline") ("Included"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Inline"))
+                xtest_include08.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include08") ((((unsupported)).apply ("headline") ("basic-syntax02"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Dynamic"))
+                xtest_include09.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include09") ((((unsupported)).apply ("first") ("Ul") ("second") ("lU"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("Ul--LU --- UL--lU"))
+                xtest_include10.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include10") ((((unsupported)).apply ("first") ("1"))))
+                        (((xself).xengine).xstring_if_invalid).if
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("INVALID --- INVALID"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (" --- "))
+                xtest_include11.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include11") ((((unsupported)).apply ("first") ("1"))))
+                        (((xself).xengine).xstring_if_invalid).if
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("INVALID --- 2"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) (" --- 2"))
+                xtest_include12.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include12") ((((unsupported)).apply ("second") ("2"))))
+                        (((xself).xengine).xstring_if_invalid).if
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1 --- INVALID"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("1 --- "))
+                xtest_include13.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include13") ((((unsupported)).apply ("first") ("&"))))
+                        (((xself).xengine).xstring_if_invalid).if
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("& --- INVALID"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("& --- "))
+                xtest_include14.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("include14") ((((unsupported)).apply ("var1") ("&"))))
+                        (((xself).xengine).xstring_if_invalid).if
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("& --- INVALID"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("& --- "))
+                xtest_include_error01.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-error01"))
+                xtest_include_error02.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-error02"))
+                xtest_include_error03.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-error03"))
+                xtest_include_error04.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-error04"))
+                xtest_include_error05.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-error05"))
+                xtest_include_error06.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-error06"))
+                xtest_include_fail1.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xRuntimeError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-fail1"))
+                xtest_include_fail2.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include-fail2"))
+                xtest_include_error07.write
+                  [xself]
+                    memory > xtemplate
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("include-error07"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xRuntimeError)))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((((xContext)).apply)))
+                xtest_include_error08.write
+                  [xself]
+                    memory > xtemplate
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("include-error08"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((((xContext)).apply)))
+                xtest_include_error09.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xcontext
+                    seq > @
+                      (((unsupported)).apply)
+                        xcontext.write (((xContext)).apply ((((unsupported)).apply ("failed_include") ("include-fail1"))))
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("include-error09"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xRuntimeError)))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((xcontext)))
+                xtest_include_error10.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xcontext
+                    seq > @
+                      (((unsupported)).apply)
+                        xcontext.write (((xContext)).apply ((((unsupported)).apply ("failed_include") ("include-fail2"))))
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("include-error10"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateSyntaxError)))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((xcontext)))
+                xtest_include_empty.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "'include' tag takes at least one argument: the name of the template to be included."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("include_empty"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_include_missing_template.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xengine.write (((unsupported)).apply ((xEngine)) (TRUE) (TRUE))
+                        xtemplate.write ((((xengine).xget_template)).apply ("test_include_error.html"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateDoesNotExist)) ("missing.html"))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((((xContext)).apply)))
+                xtest_extends_include_missing_baseloader.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xengine.write (((unsupported)).apply ((xEngine)) (TRUE) (TRUE))
+                        xtemplate.write ((((xengine).xget_template)).apply ("test_extends_error.html"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateDoesNotExist)) ("missing.html"))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((((xContext)).apply)))
+                xtest_extends_include_missing_cachedloader.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) (TRUE) ((((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.cached.Loader") ((((unsupported)).apply ("django.template.loaders.app_directories.Loader"))))))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("test_extends_error.html"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateDoesNotExist)) ("missing.html"))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((((xContext)).apply)))
+                        xtemplate.write ((((xengine).xget_template)).apply ("test_extends_error.html"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateDoesNotExist)) ("missing.html"))))
+                          bogusForceDataize.write ((((xtemplate).xrender)).apply ((((xContext)).apply)))
+                xtest_include_template_argument.write
+                  [xself]
+                    memory > xengine
+                    memory > xctx
+                    memory > xoutput
+                    memory > xouter_tmpl
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xengine.write (((xEngine)).apply)
+                        xctx.write (((xContext)).apply ((((unsupported)).apply ("tmpl") (((((xengine).xfrom_string)).apply ("This worked!"))))))
+                        xouter_tmpl.write ((((xengine).xfrom_string)).apply ("{% include tmpl %}"))
+                        xoutput.write ((((xouter_tmpl).xrender)).apply ((xctx)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("This worked!"))
+                xtest_include_template_iterable.write
+                  [xself]
+                    memory > xtests
+                    memory > xengine
+                    memory > xouter_temp
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write ((((xEngine).xget_default)).apply)
+                        xouter_temp.write ((((xengine).xfrom_string)).apply ("{% include var %}"))
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("admin/fail.html") ("index.html"))) ((((unsupported)).apply ("admin/fail.html") ("index.html"))))
+                        (((unsupported)).apply ((xtemplate_names)) ((xtests)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xtemplate_names)))))
+                            seq
+                              xoutput.write ((((xouter_temp).xrender)).apply ((((xContext)).apply ((((unsupported)).apply ("var") ((xtemplate_names)))))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("indexn"))
+                xtest_include_template_none.write
+                  [xself]
+                    memory > xmsg
+                    memory > xengine
+                    memory > xctx
+                    memory > xouter_temp
+                    seq > @
+                      seq
+                        xengine.write ((((xEngine).xget_default)).apply)
+                        xouter_temp.write ((((xengine).xfrom_string)).apply ("{% include var %}"))
+                        xctx.write (((xContext)).apply ((((unsupported)).apply ("var") ("None: is there a None literal in the EO language?"))))
+                        xmsg.write "No template names provided"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateDoesNotExist)) ((xmsg)))))
+                          bogusForceDataize.write ((((xouter_temp).xrender)).apply ((xctx)))
+                xtest_include_from_loader_get_template.write
+                  [xself]
+                    memory > xtmpl
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xtmpl.write ((((xloader).xget_template)).apply ("include_tpl.html"))
+                        xoutput.write ((((xtmpl).xrender)).apply ((((unsupported)).apply ("tmpl") (((((xloader).xget_template)).apply ("index.html"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("indexnn"))
+                xtest_include_immediate_missing.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((((unsupported)).apply ((xEngine)) (TRUE)).xfrom_string)).apply ("{% include \"this_does_not_exist.html\" %}"))
+                xtest_include_recursive.write
+                  [xself]
+                    memory > xengine
+                    memory > xt
+                    memory > xcomments
+                    seq > @
+                      seq
+                        xcomments.write (((unsupported)).apply ((((unsupported)).apply ("comment") ("A1") ("children") ((((unsupported)).apply ((((unsupported)).apply ("comment") ("B1") ("children") ((((unsupported)).apply)))) ((((unsupported)).apply ("comment") ("B2") ("children") ((((unsupported)).apply)))) ((((unsupported)).apply ("comment") ("B3") ("children") ((((unsupported)).apply ((((unsupported)).apply ("comment") ("C1") ("children") ((((unsupported)).apply)))))))))))))
+                        xengine.write (((unsupported)).apply ((xEngine)) (TRUE))
+                        xt.write ((((xengine).xget_template)).apply ("recursive_include.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("Recursion!  A1  Recursion!  B1   B2   B3  Recursion!  C1") ((((((((((((((xt).xrender)).apply ((((xContext)).apply ((((unsupported)).apply ("comments") ((xcomments))))))).xreplace)).apply (" ") ("")).xreplace)).apply ("n") (" ")).xstrip)).apply)))
+                xtest_include_cache.write
+                  [xself]
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.locmem.Loader") ((((unsupported)).apply ("template") ("{% for x in vars %}{% include \"include\" %}{% endfor %}") ("include") ("{% include \"next\" %}") ("next") ("{% load custom %}{% counter %}"))))))) ((((unsupported)).apply ("custom") ("template_tests.templatetags.custom"))))
+                        xoutput.write ((((xengine).xrender_to_string)).apply ("template") ((((unsupported)).apply ("vars") ((((xrange)).apply (9))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ("012345678"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              xtest_repr.write
+                [xself]
+                  memory > xinclude_node
+                  seq > @
+                    seq
+                      xinclude_node.write (((xIncludeNode)).apply ("app/template.html"))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xinclude_node)))) ("<IncludeNode: template='app/template.html'>"))

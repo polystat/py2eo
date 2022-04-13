@@ -1,0 +1,268 @@
+memory > xfid
+memory > xlist
+memory > xxmin
+memory > xValueError
+memory > xFeature
+memory > xforce_str
+memory > xrange
+memory > xstop
+memory > xstart
+memory > xint
+memory > xi
+memory > xOGREnvelope
+memory > xSRSException
+memory > xslice
+memory > xGDALBase
+memory > xOGRGeomType
+memory > xSpatialReference
+memory > xOGRFieldTypes
+memory > xIndexError
+memory > xymax
+memory > xbyref
+memory > xstride
+memory > xproperty
+memory > xbool
+memory > xtuple
+memory > xGDALException
+memory > xc_double
+memory > xxmax
+memory > xlayer_ptr2
+memory > xymin
+memory > xfeat
+memory > xEnvelope
+memory > xforce_bytes
+memory > xmap
+memory > xisinstance
+memory > xGEOSGeometry
+memory > xlen
+memory > xTypeError
+memory > xOGRGeometry
+[] > layer
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xfield_precisions
+        memory > xget_geoms
+        memory > xnum_feat
+        memory > xgeom_api
+        memory > x__getitem__
+        memory > xget_fields
+        memory > xextent
+        memory > xfield_types
+        memory > x_make_feature
+        memory > xfield_widths
+        memory > xcapi
+        memory > x__str__
+        memory > xsrs_api
+        memory > xgeom_type
+        memory > x_get_spatial_filter
+        memory > xtest_capability
+        memory > xfields
+        memory > x__iter__
+        memory > xspatial_filter
+        memory > x__init__
+        memory > xnum_fields
+        memory > xname
+        memory > x__len__
+        memory > xsrs
+        memory > x_set_spatial_filter
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xGDALBase)))
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xlayer_ptr xds]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xlayer_ptr).not).if
+                          (((unsupported)).apply ((((xGDALException)).apply ("Cannot create Layer, invalid pointer given"))))
+                        (((unsupported)).apply (((xself).xptr)) ((xlayer_ptr2)))
+                        (((unsupported)).apply (((xself).x_ds)) ((xds)))
+                        (((unsupported)).apply (((xself).x_ldefn)) (((((xcapi).xget_layer_defn)).apply (((xself).x_ptr)))))
+                        (((unsupported)).apply (((xself).x_random_read)) (((((xself).xtest_capability)).apply ("RandomRead"))))
+                x__getitem__.write
+                  [xself xindex]
+                    seq > @
+                      seq
+                        unsupported
+                        (((xisinstance)).apply ((xindex)) ((xint))).if
+                          seq
+                            ((xindex).less 0).if
+                              (((unsupported)).apply ((((xIndexError)).apply ("Negative indices are not allowed on OGR Layers."))))
+                            (((unsupported)).apply (((((xself).x_make_feature)).apply ((xindex)))))
+                          (((xisinstance)).apply ((xindex)) ((xslice))).if
+                            seq
+                              (((unsupported)).apply ((((unsupported)).apply ((xstart)) ((xstop)) ((xstride)))) (((((xindex).xindices)).apply (((xself).xnum_feat)))))
+                              (((unsupported)).apply ((((unsupported)).apply (((((xself).x_make_feature)).apply ((xfid)))) ((xfid)) ((((xrange)).apply ((xstart)) ((xstop)) ((xstride)))))))
+                            (((unsupported)).apply ((((xTypeError)).apply ("Integers and slices may only be used when indexing OGR Layers."))))
+                x__iter__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        bogusForceDataize.write ((((xcapi).xreset_reading)).apply (((xself).x_ptr)))
+                        (((unsupported)).apply ((xi)) ((((xrange)).apply (((xself).xnum_feat)))))
+                          (((unsupported)).apply ((((xFeature)).apply (((((xcapi).xget_next_feature)).apply (((xself).x_ptr)))) ((xself)))))
+                x__len__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xnum_feat)))
+                x__str__.write
+                  [xself]
+                    seq > @
+                      seq
+                        unsupported
+                        (((unsupported)).apply (((xself).xname)))
+                x_make_feature.write
+                  [xself xfeat_id]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        ((xself).x_random_read).if
+                          (((unsupported)).apply ((xGDALException)))
+                            (((unsupported)).apply ((((xFeature)).apply (((((xcapi).xget_feature)).apply (((xself).xptr)) ((xfeat_id)))) ((xself)))))
+                          (((unsupported)).apply ((xfeat)) ((xself)))
+                            (((xfeat).xfid).eq (xfeat_id)).if
+                              (((unsupported)).apply ((xfeat)))
+                        (((unsupported)).apply ((((xIndexError)).apply (("Invalid feature id: %s.".mod (xfeat_id))))))
+                xextent.write
+                  [xself]
+                    memory > xenv
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xenv.write (((xOGREnvelope)).apply)
+                        bogusForceDataize.write ((((xcapi).xget_extent)).apply (((xself).xptr)) ((((xbyref)).apply ((xenv)))) (1))
+                        (((unsupported)).apply ((((xEnvelope)).apply ((xenv)))))
+                xname.write
+                  [xself]
+                    memory > xname
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xname.write ((((xcapi).xget_fd_name)).apply (((xself).x_ldefn)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xforce_str)) ((xname)) ((((xself).x_ds).xencoding)) (TRUE))))
+                xnum_feat.write
+                  [xself xforce]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xget_feature_count)).apply (((xself).xptr)) ((xforce)))))
+                xnum_fields.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply (((((xcapi).xget_field_count)).apply (((xself).x_ldefn)))))
+                xgeom_type.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xOGRGeomType)).apply (((((xcapi).xget_fd_geom_type)).apply (((xself).x_ldefn)))))))
+                xsrs.write
+                  [xself]
+                    memory > xptr
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((xSRSException)))
+                          seq
+                            xptr.write ((((xcapi).xget_layer_srs)).apply (((xself).xptr)))
+                            (((unsupported)).apply ((((xSpatialReference)).apply (((((xsrs_api).xclone_srs)).apply ((xptr)))))))
+                          (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                xfields.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xforce_str)) (((((xcapi).xget_field_name)).apply (((((xcapi).xget_field_defn)).apply (((xself).x_ldefn)) ((xi)))))) ((((xself).x_ds).xencoding)) (TRUE))) ((xi)) ((((xrange)).apply (((xself).xnum_fields)))))))
+                xfield_types.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xOGRFieldTypes)) (((((xcapi).xget_field_type)).apply (((((xcapi).xget_field_defn)).apply (((xself).x_ldefn)) ((xi)))))))) ((xi)) ((((xrange)).apply (((xself).xnum_fields)))))))
+                xfield_widths.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply (((((xcapi).xget_field_width)).apply (((((xcapi).xget_field_defn)).apply (((xself).x_ldefn)) ((xi)))))) ((xi)) ((((xrange)).apply (((xself).xnum_fields)))))))
+                xfield_precisions.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((unsupported)).apply (((((xcapi).xget_field_precision)).apply (((((xcapi).xget_field_defn)).apply (((xself).x_ldefn)) ((xi)))))) ((xi)) ((((xrange)).apply (((xself).xnum_fields)))))))
+                x_get_spatial_filter.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xGDALException)))
+                        (((unsupported)).apply ((((xOGRGeometry)).apply (((((xgeom_api).xclone_geom)).apply (((((xcapi).xget_spatial_filter)).apply (((xself).xptr)))))))))
+                        (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                x_set_spatial_filter.write
+                  [xself xfilter]
+                    seq > @
+                      (((xisinstance)).apply ((xfilter)) ((xOGRGeometry))).if
+                        bogusForceDataize.write ((((xcapi).xset_spatial_filter)).apply (((xself).xptr)) (((xfilter).xptr)))
+                        (((xisinstance)).apply ((xfilter)) ((((unsupported)).apply ((xtuple)) ((xlist))))).if
+                          seq
+                            (((((xlen)).apply ((xfilter))).eq 4).not).if
+                              (((unsupported)).apply ((((xValueError)).apply ("Spatial filter list/tuple must have 4 elements."))))
+                            (((unsupported)).apply ((((unsupported)).apply ((xxmin)) ((xymin)) ((xxmax)) ((xymax)))) ((((xmap)).apply ((xc_double)) ((xfilter)))))
+                            bogusForceDataize.write ((((xcapi).xset_spatial_filter_rect)).apply (((xself).xptr)) ((xxmin)) ((xymin)) ((xxmax)) ((xymax)))
+                          (((unsupported)).apply ((xfilter)) ("None: is there a None literal in the EO language?")).if
+                            bogusForceDataize.write ((((xcapi).xset_spatial_filter)).apply (((xself).xptr)) ("None: is there a None literal in the EO language?"))
+                            (((unsupported)).apply ((((xTypeError)).apply ("Spatial filter must be either an OGRGeometry instance, a 4-tuple, or None."))))
+                xspatial_filter.write (((xproperty)).apply ((x_get_spatial_filter)) ((x_set_spatial_filter)))
+                xget_fields.write
+                  [xself xfield_name]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xfield_name)) (((xself).xfields))).if
+                          (((unsupported)).apply ((((xGDALException)).apply (("invalid field name: %s".mod (xfield_name))))))
+                        (((unsupported)).apply ((((unsupported)).apply (((((xfeat).xget)).apply ((xfield_name)))) ((xfeat)) ((xself)))))
+                xget_geoms.write
+                  [xself xgeos]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (xgeos).if
+                          seq
+                            (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((((xGEOSGeometry)).apply ((((xfeat).xgeom).xwkb)))) ((xfeat)) ((xself)))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xfeat).xgeom)) ((xfeat)) ((xself)))))
+                xtest_capability.write
+                  [xself xcapability]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xbool)).apply (((((xcapi).xtest_capability)).apply (((xself).xptr)) ((((xforce_bytes)).apply ((xcapability)))))))))

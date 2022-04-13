@@ -1,0 +1,41 @@
+memory > xtopological_sort_as_sets
+memory > xlist
+memory > xCyclicDependencyError
+memory > xstable_topological_sort
+memory > xset
+memory > xSimpleTestCase
+[] > test_topological_sort
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_basic
+        memory > xtest_cyclic_dependency
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_basic.write
+                  [xself]
+                    memory > xdependency_graph
+                    seq > @
+                      seq
+                        xdependency_graph.write (((unsupported)).apply (1) ((((unsupported)).apply (2) (3))) (2) ((((xset)).apply)) (3) ((((xset)).apply)) (4) ((((unsupported)).apply (5) (6))) (5) ((((xset)).apply)) (6) ((((unsupported)).apply (5))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((((xtopological_sort_as_sets)).apply ((xdependency_graph)))))) ((((unsupported)).apply ((((unsupported)).apply (2) (3) (5))) ((((unsupported)).apply (1) (6))) ((((unsupported)).apply (4))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xstable_topological_sort)).apply ((((unsupported)).apply (1) (2) (3) (4) (5) (6))) ((xdependency_graph)))) ((((unsupported)).apply (2) (3) (5) (1) (6) (4))))
+                xtest_cyclic_dependency.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "Cyclic dependency in graph: (1, {2}), (2, {1})"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xCyclicDependencyError)) ((xmsg)))))
+                          bogusForceDataize.write (((xlist)).apply ((((xtopological_sort_as_sets)).apply ((((unsupported)).apply (1) ((((unsupported)).apply (2))) (2) ((((unsupported)).apply (1))))))))

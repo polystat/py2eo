@@ -1,0 +1,116 @@
+memory > xk
+memory > xo
+memory > xrange
+memory > xpart
+memory > xinstructions
+memory > xx
+memory > xs
+memory > xtuple
+memory > xv
+memory > xkwargs
+memory > xlen
+memory > xforeground
+memory > xtext
+[] > termcolors
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xLIGHT_PALETTE
+        memory > xNOCOLOR_PALETTE
+        memory > xRESET
+        memory > xDARK_PALETTE
+        memory > xDEFAULT_PALETTE
+        memory > xcolor_names
+        memory > xbackground
+        memory > xforeground2
+        memory > xPALETTES
+        memory > xcolorize
+        memory > xopt_dict
+        memory > xparse_color_setting
+        memory > xmake_style
+        seq > @
+          seq
+            (((unsupported)).apply)
+            xcolor_names.write (((unsupported)).apply ("black") ("red") ("green") ("yellow") ("blue") ("magenta") ("cyan") ("white"))
+            xforeground2.write (((unsupported)).apply ((((unsupported)).apply ((xcolor_names)) ((xx)))) (("3%s".mod (xx))) ((xx)) ((((xrange)).apply (8))))
+            xbackground.write (((unsupported)).apply ((((unsupported)).apply ((xcolor_names)) ((xx)))) (("4%s".mod (xx))) ((xx)) ((((xrange)).apply (8))))
+            xRESET.write "0"
+            xopt_dict.write (((unsupported)).apply ("bold") ("1") ("underscore") ("4") ("blink") ("5") ("reverse") ("7") ("conceal") ("8"))
+            xcolorize.write
+              [xtext xopts]
+                memory > xcode_list
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xcode_list.write (((unsupported)).apply)
+                    ((((xtext).eq "").and ((((xlen)).apply ((xopts))).eq 1)).and ((((unsupported)).apply ((xopts)) (0)).eq "reset")).if
+                      (((unsupported)).apply (("x1b[%sm".mod (xRESET))))
+                    (((unsupported)).apply ((((unsupported)).apply ((xk)) ((xv)))) (((((xkwargs).xitems)).apply)))
+                      ((xk).eq "fg").if
+                        bogusForceDataize.write ((((xcode_list).xappend)).apply ((((unsupported)).apply ((xforeground)) ((xv)))))
+                        ((xk).eq "bg").if
+                          bogusForceDataize.write ((((xcode_list).xappend)).apply ((((unsupported)).apply ((xbackground)) ((xv)))))
+                    (((unsupported)).apply ((xo)) ((xopts)))
+                      (((unsupported)).apply ((xo)) ((xopt_dict))).if
+                        bogusForceDataize.write ((((xcode_list).xappend)).apply ((((unsupported)).apply ((xopt_dict)) ((xo)))))
+                    (((unsupported)).apply ("noreset") ((xopts))).if
+                      xtext.write ("%sx1b[%sm".mod (((unsupported)).apply (((xtext).or "")) ((xRESET))))
+                    (((unsupported)).apply (("%s%s".mod (((unsupported)).apply (("x1b[%sm".mod (((";".xjoin)).apply ((xcode_list))))) (((xtext).or ""))))))
+            xmake_style.write
+              [xopts]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((((xcolorize)).apply ((xtext)) ((xopts)) ((((unsupported)).apply ((xkwargs)))))))))
+            xNOCOLOR_PALETTE.write "nocolor"
+            xDARK_PALETTE.write "dark"
+            xLIGHT_PALETTE.write "light"
+            xPALETTES.write (((unsupported)).apply ((xNOCOLOR_PALETTE)) ((((unsupported)).apply ("ERROR") ((((unsupported)).apply)) ("SUCCESS") ((((unsupported)).apply)) ("WARNING") ((((unsupported)).apply)) ("NOTICE") ((((unsupported)).apply)) ("SQL_FIELD") ((((unsupported)).apply)) ("SQL_COLTYPE") ((((unsupported)).apply)) ("SQL_KEYWORD") ((((unsupported)).apply)) ("SQL_TABLE") ((((unsupported)).apply)) ("HTTP_INFO") ((((unsupported)).apply)) ("HTTP_SUCCESS") ((((unsupported)).apply)) ("HTTP_REDIRECT") ((((unsupported)).apply)) ("HTTP_NOT_MODIFIED") ((((unsupported)).apply)) ("HTTP_BAD_REQUEST") ((((unsupported)).apply)) ("HTTP_NOT_FOUND") ((((unsupported)).apply)) ("HTTP_SERVER_ERROR") ((((unsupported)).apply)) ("MIGRATE_HEADING") ((((unsupported)).apply)) ("MIGRATE_LABEL") ((((unsupported)).apply)))) ((xDARK_PALETTE)) ((((unsupported)).apply ("ERROR") ((((unsupported)).apply ("fg") ("red") ("opts") ((((unsupported)).apply ("bold"))))) ("SUCCESS") ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("bold"))))) ("WARNING") ((((unsupported)).apply ("fg") ("yellow") ("opts") ((((unsupported)).apply ("bold"))))) ("NOTICE") ((((unsupported)).apply ("fg") ("red"))) ("SQL_FIELD") ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("bold"))))) ("SQL_COLTYPE") ((((unsupported)).apply ("fg") ("green"))) ("SQL_KEYWORD") ((((unsupported)).apply ("fg") ("yellow"))) ("SQL_TABLE") ((((unsupported)).apply ("opts") ((((unsupported)).apply ("bold"))))) ("HTTP_INFO") ((((unsupported)).apply ("opts") ((((unsupported)).apply ("bold"))))) ("HTTP_SUCCESS") ((((unsupported)).apply)) ("HTTP_REDIRECT") ((((unsupported)).apply ("fg") ("green"))) ("HTTP_NOT_MODIFIED") ((((unsupported)).apply ("fg") ("cyan"))) ("HTTP_BAD_REQUEST") ((((unsupported)).apply ("fg") ("red") ("opts") ((((unsupported)).apply ("bold"))))) ("HTTP_NOT_FOUND") ((((unsupported)).apply ("fg") ("yellow"))) ("HTTP_SERVER_ERROR") ((((unsupported)).apply ("fg") ("magenta") ("opts") ((((unsupported)).apply ("bold"))))) ("MIGRATE_HEADING") ((((unsupported)).apply ("fg") ("cyan") ("opts") ((((unsupported)).apply ("bold"))))) ("MIGRATE_LABEL") ((((unsupported)).apply ("opts") ((((unsupported)).apply ("bold"))))))) ((xLIGHT_PALETTE)) ((((unsupported)).apply ("ERROR") ((((unsupported)).apply ("fg") ("red") ("opts") ((((unsupported)).apply ("bold"))))) ("SUCCESS") ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("bold"))))) ("WARNING") ((((unsupported)).apply ("fg") ("yellow") ("opts") ((((unsupported)).apply ("bold"))))) ("NOTICE") ((((unsupported)).apply ("fg") ("red"))) ("SQL_FIELD") ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("bold"))))) ("SQL_COLTYPE") ((((unsupported)).apply ("fg") ("green"))) ("SQL_KEYWORD") ((((unsupported)).apply ("fg") ("blue"))) ("SQL_TABLE") ((((unsupported)).apply ("opts") ((((unsupported)).apply ("bold"))))) ("HTTP_INFO") ((((unsupported)).apply ("opts") ((((unsupported)).apply ("bold"))))) ("HTTP_SUCCESS") ((((unsupported)).apply)) ("HTTP_REDIRECT") ((((unsupported)).apply ("fg") ("green") ("opts") ((((unsupported)).apply ("bold"))))) ("HTTP_NOT_MODIFIED") ((((unsupported)).apply ("fg") ("green"))) ("HTTP_BAD_REQUEST") ((((unsupported)).apply ("fg") ("red") ("opts") ((((unsupported)).apply ("bold"))))) ("HTTP_NOT_FOUND") ((((unsupported)).apply ("fg") ("red"))) ("HTTP_SERVER_ERROR") ((((unsupported)).apply ("fg") ("magenta") ("opts") ((((unsupported)).apply ("bold"))))) ("MIGRATE_HEADING") ((((unsupported)).apply ("fg") ("cyan") ("opts") ((((unsupported)).apply ("bold"))))) ("MIGRATE_LABEL") ((((unsupported)).apply ("opts") ((((unsupported)).apply ("bold"))))))))
+            xDEFAULT_PALETTE.write (xDARK_PALETTE)
+            xparse_color_setting.write
+              [xconfig_string]
+                memory > xopts
+                memory > xfg
+                memory > xdefinition
+                memory > xpalette
+                memory > xparts
+                memory > xrole
+                memory > xstyles
+                memory > xcolors
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    ((xconfig_string).not).if
+                      (((unsupported)).apply ((((unsupported)).apply ((xPALETTES)) ((xDEFAULT_PALETTE)))))
+                    xparts.write (((((((xconfig_string).xlower)).apply).xsplit)).apply (";"))
+                    xpalette.write ((((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE))).xcopy)).apply)
+                    (((unsupported)).apply ((xpart)) ((xparts)))
+                      (((unsupported)).apply ((xpart)) ((xPALETTES))).if
+                        bogusForceDataize.write ((((xpalette).xupdate)).apply ((((unsupported)).apply ((xPALETTES)) ((xpart)))))
+                        (((unsupported)).apply ("=") ((xpart))).if
+                          seq
+                            xdefinition.write (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xrole)) ((xinstructions)))) (((((xpart).xsplit)).apply ("="))))
+                            xrole.write ((((xrole).xupper)).apply)
+                            xstyles.write ((((xinstructions).xsplit)).apply (","))
+                            bogusForceDataize.write ((((xstyles).xreverse)).apply)
+                            xcolors.write (((((((xstyles).xpop)).apply).xsplit)).apply ("/"))
+                            bogusForceDataize.write ((((xcolors).xreverse)).apply)
+                            xfg.write ((((xcolors).xpop)).apply)
+                            (((unsupported)).apply ((xfg)) ((xcolor_names))).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xdefinition)) ("fg"))) ((xfg)))
+                            ((xcolors).and (((unsupported)).apply ((((unsupported)).apply ((xcolors)) ((1.neg)))) ((xcolor_names)))).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xdefinition)) ("bg"))) ((((unsupported)).apply ((xcolors)) ((1.neg)))))
+                            xopts.write (((xtuple)).apply ((((unsupported)).apply ((xs)) ((xs)) ((xstyles)) ((((unsupported)).apply ((xs)) ((xopt_dict)))))))
+                            (xopts).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xdefinition)) ("opts"))) ((xopts)))
+                            ((((unsupported)).apply ((xrole)) ((((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE))))).and (xdefinition)).if
+                              (((unsupported)).apply ((((unsupported)).apply ((xpalette)) ((xrole)))) ((xdefinition)))
+                    ((xpalette).eq (((unsupported)).apply ((xPALETTES)) ((xNOCOLOR_PALETTE)))).if
+                      (((unsupported)).apply ("None: is there a None literal in the EO language?"))
+                    (((unsupported)).apply ((xpalette)))

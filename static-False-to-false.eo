@@ -1,0 +1,128 @@
+memory > xValueError
+memory > xstr
+memory > xparse_http_date
+memory > xEngine
+memory > xHttpResponseNotModified
+memory > xPath
+memory > xOverflowError
+memory > xHttp404
+memory > xTemplateDoesNotExist
+memory > xposixpath
+memory > xmimetypes
+memory > xgettext_lazy
+memory > xContext
+memory > xfalse
+memory > xsafe_join
+memory > xloader
+memory > xhttp_date
+memory > xf
+memory > xHttpResponse
+memory > xint
+memory > xencoding
+memory > xFileResponse
+[] > static
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtemplate_translatable
+        memory > xserve
+        memory > x_
+        memory > xwas_modified_since
+        memory > xdirectory_index
+        memory > xDEFAULT_DIRECTORY_INDEX_TEMPLATE
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xserve.write
+              [xrequest xpath xdocument_root xshow_indexes]
+                memory > xfullpath
+                memory > xstatobj
+                memory > xresponse
+                memory > xcontent_type
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xpath.write (((((((xposixpath).xnormpath)).apply ((xpath))).xlstrip)).apply ("/"))
+                    xfullpath.write (((xPath)).apply ((((xsafe_join)).apply ((xdocument_root)) ((xpath)))))
+                    ((((xfullpath).xis_dir)).apply).if
+                      seq
+                        (xshow_indexes).if
+                          (((unsupported)).apply ((((xdirectory_index)).apply ((xpath)) ((xfullpath)))))
+                        (((unsupported)).apply ((((xHttp404)).apply ((((x_)).apply ("Directory indexes are not allowed here."))))))
+                    (((((xfullpath).xexists)).apply).not).if
+                      (((unsupported)).apply ((((xHttp404)).apply (((((x_)).apply ("“%(path)s” does not exist")).mod (((unsupported)).apply ("path") ((xfullpath))))))))
+                    xstatobj.write ((((xfullpath).xstat)).apply)
+                    ((((xwas_modified_since)).apply ((((((xrequest).xMETA).xget)).apply ("HTTP_IF_MODIFIED_SINCE"))) (((xstatobj).xst_mtime))).not).if
+                      (((unsupported)).apply ((((xHttpResponseNotModified)).apply)))
+                    (((unsupported)).apply ((((unsupported)).apply ((xcontent_type)) ((xencoding)))) (((((xmimetypes).xguess_type)).apply ((((xstr)).apply ((xfullpath)))))))
+                    xcontent_type.write ((xcontent_type).or "application/octet-stream")
+                    xresponse.write (((unsupported)).apply ((xFileResponse)) (((((xfullpath).xopen)).apply ("rb"))) ((xcontent_type)))
+                    (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Last-Modified"))) ((((xhttp_date)).apply (((xstatobj).xst_mtime)))))
+                    (xencoding).if
+                      (((unsupported)).apply ((((unsupported)).apply (((xresponse).xheaders)) ("Content-Encoding"))) ((xencoding)))
+                    (((unsupported)).apply ((xresponse)))
+            xDEFAULT_DIRECTORY_INDEX_TEMPLATE.write (((unsupported)).apply)
+            xtemplate_translatable.write (((xgettext_lazy)).apply ("Index of %(directory)s"))
+            xdirectory_index.write
+              [xpath xfullpath]
+                memory > xt
+                memory > xc
+                memory > xfiles
+                memory > xurl
+                seq > @
+                  seq
+                    (((unsupported)).apply ((xTemplateDoesNotExist)))
+                      xt.write ((((xloader).xselect_template)).apply ((((unsupported)).apply ("static/directory_index.html") ("static/directory_index"))))
+                      seq
+                        xt.write ((((((unsupported)).apply ((xEngine)) ((((unsupported)).apply ("i18n") ("django.templatetags.i18n")))).xfrom_string)).apply ((xDEFAULT_DIRECTORY_INDEX_TEMPLATE)))
+                        xc.write (((xContext)).apply)
+                      xc.write (((unsupported)).apply)
+                    xfiles.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xf)) (((((xfullpath).xiterdir)).apply)))
+                      ((((((xf).xname).xstartswith)).apply (".")).not).if
+                        seq
+                          xurl.write (((xstr)).apply (((((xf).xrelative_to)).apply ((xfullpath)))))
+                          ((((xf).xis_dir)).apply).if
+                            (((unsupported)).apply ((xurl)) ("/"))
+                          bogusForceDataize.write ((((xfiles).xappend)).apply ((xurl)))
+                    bogusForceDataize.write ((((xc).xupdate)).apply ((((unsupported)).apply ("directory") (((xpath).add "/")) ("file_list") ((xfiles)))))
+                    (((unsupported)).apply ((((xHttpResponse)).apply (((((xt).xrender)).apply ((xc)))))))
+            xwas_modified_since.write
+              [xheader xmtime]
+                memory > xheader_mtime
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xValueError)) ((xOverflowError)))))
+                      seq
+                        (((unsupported)).apply ((xheader)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((xValueError)))
+                        xheader_mtime.write (((xparse_http_date)).apply ((xheader)))
+                        ((((xint)).apply ((xmtime))).greater (xheader_mtime)).if
+                          (((unsupported)).apply ((xValueError)))
+                      (((unsupported)).apply (TRUE))
+                    (((unsupported)).apply ((xfalse)))

@@ -1,0 +1,45 @@
+memory > xDEFAULT_DB_ALIAS
+memory > xBaseCommand
+memory > xconnections
+memory > xsuper
+memory > xsql_flush
+memory > xoptions
+[] > sqlflush
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xoutput_transaction
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Returns a list of the SQL statements required to return all tables in the database to the state they were in just after they were installed."
+                xoutput_transaction.write TRUE
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_arguments)).apply ((xparser)))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ((xDEFAULT_DB_ALIAS)) ("Nominates a database to print the SQL for. Defaults to the \"default\" database."))
+                xhandle.write
+                  [xself]
+                    memory > xsql_statements
+                    seq > @
+                      (((unsupported)).apply)
+                        xsql_statements.write (((xsql_flush)).apply (((xself).xstyle)) ((((unsupported)).apply ((xconnections)) ((((unsupported)).apply ((xoptions)) ("database"))))))
+                        (((xsql_statements).not).and ((((unsupported)).apply ((xoptions)) ("verbosity")).geq 1)).if
+                          bogusForceDataize.write (((((xself).xstderr).xwrite)).apply ("No tables found."))
+                        (((unsupported)).apply (((("n".xjoin)).apply ((xsql_statements)))))

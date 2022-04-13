@@ -1,0 +1,106 @@
+memory > xfalse
+memory > xauth
+memory > xhasattr
+memory > xMiddlewareMixin
+memory > xRemoteUserMiddleware
+memory > xImproperlyConfigured
+memory > xisinstance
+memory > xImportError
+memory > xAttributeError
+memory > xKeyError
+memory > xload_backend
+memory > xSimpleLazyObject
+memory > xRemoteUserBackend
+[] > middleware
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xprocess_request
+        memory > xclean_username
+        memory > xheader
+        memory > xget_user
+        memory > xforce_logout_if_no_header
+        memory > x_remove_invalid_user
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xget_user.write
+              [xrequest]
+                seq > @
+                  seq
+                    ((((xhasattr)).apply ((xrequest)) ("_cached_user")).not).if
+                      (((unsupported)).apply (((xrequest).x_cached_user)) (((((xauth).xget_user)).apply ((xrequest)))))
+                    (((unsupported)).apply (((xrequest).x_cached_user)))
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              xprocess_request.write
+                [xself xrequest]
+                  seq > @
+                    seq
+                      ((((xhasattr)).apply ((xrequest)) ("session")).not).if
+                        (((unsupported)).apply ((((xImproperlyConfigured)).apply ("The Django authentication middleware requires session middleware to be installed. Edit your MIDDLEWARE setting to insert 'django.contrib.sessions.middleware.SessionMiddleware' before 'django.contrib.auth.middleware.AuthenticationMiddleware'."))))
+                      (((unsupported)).apply (((xrequest).xuser)) ((((xSimpleLazyObject)).apply ((((unsupported)).apply ((((xget_user)).apply ((xrequest)))))))))
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                (((unsupported)).apply)
+                xheader.write "REMOTE_USER"
+                xforce_logout_if_no_header.write TRUE
+                xprocess_request.write
+                  [xself xrequest]
+                    memory > xuser
+                    memory > xusername
+                    seq > @
+                      seq
+                        ((((xhasattr)).apply ((xrequest)) ("user")).not).if
+                          (((unsupported)).apply ((((xImproperlyConfigured)).apply ("The Django remote user auth middleware requires the authentication middleware to be installed.  Edit your MIDDLEWARE setting to insert 'django.contrib.auth.middleware.AuthenticationMiddleware' before the RemoteUserMiddleware class."))))
+                        (((unsupported)).apply ((xKeyError)))
+                          xusername.write (((unsupported)).apply (((xrequest).xMETA)) (((xself).xheader)))
+                          seq
+                            (((xself).xforce_logout_if_no_header).and (((xrequest).xuser).xis_authenticated)).if
+                              bogusForceDataize.write ((((xself).x_remove_invalid_user)).apply ((xrequest)))
+                            (((unsupported)).apply)
+                        (((xrequest).xuser).xis_authenticated).if
+                          ((((((xrequest).xuser).xget_username)).apply).eq ((((xself).xclean_username)).apply ((xusername)) ((xrequest)))).if
+                            (((unsupported)).apply)
+                            bogusForceDataize.write ((((xself).x_remove_invalid_user)).apply ((xrequest)))
+                        xuser.write (((unsupported)).apply (((xauth).xauthenticate)) ((xrequest)) ((xusername)))
+                        (xuser).if
+                          seq
+                            (((unsupported)).apply (((xrequest).xuser)) ((xuser)))
+                            bogusForceDataize.write ((((xauth).xlogin)).apply ((xrequest)) ((xuser)))
+                xclean_username.write
+                  [xself xusername xrequest]
+                    memory > xbackend
+                    memory > xbackend_str
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xbackend_str.write (((unsupported)).apply (((xrequest).xsession)) (((xauth).xBACKEND_SESSION_KEY)))
+                        xbackend.write ((((xauth).xload_backend)).apply ((xbackend_str)))
+                        (((unsupported)).apply ((xAttributeError)))
+                          xusername.write ((((xbackend).xclean_username)).apply ((xusername)))
+                        (((unsupported)).apply ((xusername)))
+                x_remove_invalid_user.write
+                  [xself xrequest]
+                    memory > xstored_backend
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xImportError)))
+                          xstored_backend.write (((xload_backend)).apply ((((((xrequest).xsession).xget)).apply (((xauth).xBACKEND_SESSION_KEY)) (""))))
+                          bogusForceDataize.write ((((xauth).xlogout)).apply ((xrequest)))
+                          (((xisinstance)).apply ((xstored_backend)) ((xRemoteUserBackend))).if
+                            bogusForceDataize.write ((((xauth).xlogout)).apply ((xrequest)))
+            (((unsupported)).apply ((xRemoteUserMiddleware)))
+              seq
+                (((unsupported)).apply)
+                xforce_logout_if_no_header.write (xfalse)

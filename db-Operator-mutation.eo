@@ -1,0 +1,303 @@
+memory > xtimezone
+memory > xBaseDatabaseCache
+memory > xrouter
+memory > xBaseCache
+memory > xconverter
+memory > xcursor
+memory > xsuper
+memory > xbool
+memory > xmodels
+memory > xkey
+memory > xdatetime
+memory > xpickle
+memory > xlist
+memory > xOptions
+memory > xCacheEntry
+memory > xsettings
+memory > xDatabaseError
+memory > xconnections
+memory > xbase64
+memory > xtransaction
+memory > xlen
+[] > db
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xdelete
+        memory > xhas_key
+        memory > xget
+        memory > xtz_now
+        memory > xclear
+        memory > xdelete_many
+        memory > x_cull
+        memory > x_base_set
+        memory > xpickle_protocol
+        memory > xtouch
+        memory > x__init__
+        memory > xadd
+        memory > x_base_delete_many
+        memory > xget_many
+        memory > xset
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                x__init__.write
+                  [xself xtable]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xdb_table)) ((xtable)))
+                        (((unsupported)).apply (((xself).xapp_label)) ("django_cache"))
+                        (((unsupported)).apply (((xself).xmodel_name)) ("cacheentry"))
+                        (((unsupported)).apply (((xself).xverbose_name)) ("cache entry"))
+                        (((unsupported)).apply (((xself).xverbose_name_plural)) ("cache entries"))
+                        (((unsupported)).apply (((xself).xobject_name)) ("CacheEntry"))
+                        (((unsupported)).apply (((xself).xabstract)) (FALSE))
+                        (((unsupported)).apply (((xself).xmanaged)) (TRUE))
+                        (((unsupported)).apply (((xself).xproxy)) (FALSE))
+                        (((unsupported)).apply (((xself).xswapped)) (FALSE))
+            (((unsupported)).apply ((xBaseCache)))
+              x__init__.write
+                [xself xtable xparams]
+                  memory > x_meta
+                  seq > @
+                    seq
+                      bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xparams)))
+                      (((unsupported)).apply (((xself).x_table)) ((xtable)))
+                      (((unsupported)).apply)
+                        x_meta.write (((xOptions)).apply ((xtable)))
+                      (((unsupported)).apply (((xself).xcache_model_class)) ((xCacheEntry)))
+            (((unsupported)).apply ((xBaseDatabaseCache)))
+              seq
+                xpickle_protocol.write ((xpickle).xHIGHEST_PROTOCOL)
+                xget.write
+                  [xself xkey xdefault xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((((xself).xget_many)).apply ((((unsupported)).apply ((xkey)))) ((xversion))).xget)).apply ((xkey)) ((xdefault)))))
+                xget_many.write
+                  [xself xkeys xversion]
+                    memory > xdb
+                    memory > xvalue
+                    memory > xconnection
+                    memory > xrows
+                    memory > xexpression
+                    memory > xquote_name
+                    memory > xtable
+                    memory > xexpired_keys
+                    memory > xresult
+                    memory > xconverters
+                    memory > xexpires
+                    memory > xkey_map
+                    seq > @
+                      (((unsupported)).apply)
+                        ((xkeys).not).if
+                          (((unsupported)).apply ((((unsupported)).apply)))
+                        xkey_map.write (((unsupported)).apply ((((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))) ((xkey)) ((xkey)) ((xkeys)))
+                        xdb.write ((((xrouter).xdb_for_read)).apply (((xself).xcache_model_class)))
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdb)))
+                        xquote_name.write (((xconnection).xops).xquote_name)
+                        xtable.write (((xquote_name)).apply (((xself).x_table)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply (("SELECT %s, %s, %s FROM %s WHERE %s IN (%s)".mod (((unsupported)).apply ((((xquote_name)).apply ("cache_key"))) ((((xquote_name)).apply ("value"))) ((((xquote_name)).apply ("expires"))) ((xtable)) ((((xquote_name)).apply ("cache_key"))) ((((", ".xjoin)).apply (((((unsupported)).apply ("%s")).mul (((xlen)).apply ((xkey_map)))))))))) ((((xlist)).apply ((xkey_map)))))
+                            xrows.write ((((xcursor).xfetchall)).apply)
+                        xresult.write (((unsupported)).apply)
+                        xexpired_keys.write (((unsupported)).apply)
+                        xexpression.write (((unsupported)).apply (((xmodels).xExpression)) (((((xmodels).xDateTimeField)).apply)))
+                        xconverters.write ((((((xconnection).xops).xget_db_converters)).apply ((xexpression))).sub ((((xexpression).xget_db_converters)).apply ((xconnection))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xkey)) ((xvalue)) ((xexpires)))) ((xrows)))
+                          seq
+                            (((unsupported)).apply ((xconverter)) ((xconverters)))
+                              xexpires.write (((xconverter)).apply ((xexpires)) ((xexpression)) ((xconnection)))
+                            ((xexpires).less (((xtz_now)).apply)).if
+                              bogusForceDataize.write ((((xexpired_keys).xappend)).apply ((xkey)))
+                              seq
+                                xvalue.write (((((xconnection).xops).xprocess_clob)).apply ((xvalue)))
+                                xvalue.write ((((xpickle).xloads)).apply (((((xbase64).xb64decode)).apply (((((xvalue).xencode)).apply)))))
+                                (((unsupported)).apply ((((unsupported)).apply ((xresult)) (((((xkey_map).xget)).apply ((xkey)))))) ((xvalue)))
+                        bogusForceDataize.write ((((xself).x_base_delete_many)).apply ((xexpired_keys)))
+                        (((unsupported)).apply ((xresult)))
+                xset.write
+                  [xself xkey xvalue xtimeout xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        bogusForceDataize.write ((((xself).x_base_set)).apply ("set") ((xkey)) ((xvalue)) ((xtimeout)))
+                xadd.write
+                  [xself xkey xvalue xtimeout xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((((xself).x_base_set)).apply ("add") ((xkey)) ((xvalue)) ((xtimeout)))))
+                xtouch.write
+                  [xself xkey xtimeout xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((((xself).x_base_set)).apply ("touch") ((xkey)) ("None: is there a None literal in the EO language?") ((xtimeout)))))
+                x_base_set.write
+                  [xself xmode xkey xvalue xtimeout]
+                    memory > xnum
+                    memory > xtable
+                    memory > xconnection
+                    memory > xcurrent_expires
+                    memory > xpickled
+                    memory > xexpression
+                    memory > xquote_name
+                    memory > xresult
+                    memory > xnow
+                    memory > xdb
+                    memory > xtz
+                    memory > xb64encoded
+                    memory > xexp
+                    seq > @
+                      (((unsupported)).apply)
+                        xtimeout.write ((((xself).xget_backend_timeout)).apply ((xtimeout)))
+                        xdb.write ((((xrouter).xdb_for_write)).apply (((xself).xcache_model_class)))
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdb)))
+                        xquote_name.write (((xconnection).xops).xquote_name)
+                        xtable.write (((xquote_name)).apply (((xself).x_table)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply (("SELECT COUNT(*) FROM %s".mod (xtable))))
+                            xnum.write (((unsupported)).apply (((((xcursor).xfetchone)).apply)) (0))
+                            xnow.write (((xtz_now)).apply)
+                            xnow.write (((unsupported)).apply (((xnow).xreplace)) (0))
+                            (((unsupported)).apply ((xtimeout)) ("None: is there a None literal in the EO language?")).if
+                              xexp.write ((xdatetime).xmax)
+                              seq
+                                xtz.write (((xsettings).xUSE_TZ).if ((xtimezone).xutc) "None: is there a None literal in the EO language?")
+                                xexp.write (((unsupported)).apply (((xdatetime).xfromtimestamp)) ((xtimeout)) ((xtz)))
+                            xexp.write (((unsupported)).apply (((xexp).xreplace)) (0))
+                            ((xnum).greater ((xself).x_max_entries)).if
+                              bogusForceDataize.write ((((xself).x_cull)).apply ((xdb)) ((xcursor)) ((xnow)) ((xnum)))
+                            xpickled.write ((((xpickle).xdumps)).apply ((xvalue)) (((xself).xpickle_protocol)))
+                            xb64encoded.write (((((((xbase64).xb64encode)).apply ((xpickled))).xdecode)).apply ("latin1"))
+                            (((unsupported)).apply ((xDatabaseError)))
+                              (((unsupported)).apply ((((unsupported)).apply (((xtransaction).xatomic)) ((xdb)))))
+                                seq
+                                  bogusForceDataize.write ((((xcursor).xexecute)).apply (("SELECT %s, %s FROM %s WHERE %s = %%s".mod (((unsupported)).apply ((((xquote_name)).apply ("cache_key"))) ((((xquote_name)).apply ("expires"))) ((xtable)) ((((xquote_name)).apply ("cache_key")))))) ((((unsupported)).apply ((xkey)))))
+                                  xresult.write ((((xcursor).xfetchone)).apply)
+                                  (xresult).if
+                                    seq
+                                      xcurrent_expires.write (((unsupported)).apply ((xresult)) (1))
+                                      xexpression.write (((unsupported)).apply (((xmodels).xExpression)) (((((xmodels).xDateTimeField)).apply)))
+                                      (((unsupported)).apply ((xconverter)) (((((((xconnection).xops).xget_db_converters)).apply ((xexpression))).sub ((((xexpression).xget_db_converters)).apply ((xconnection))))))
+                                        xcurrent_expires.write (((xconverter)).apply ((xcurrent_expires)) ((xexpression)) ((xconnection)))
+                                  xexp.write (((((xconnection).xops).xadapt_datetimefield_value)).apply ((xexp)))
+                                  ((xresult).and ((xmode).eq "touch")).if
+                                    bogusForceDataize.write ((((xcursor).xexecute)).apply (("UPDATE %s SET %s = %%s WHERE %s = %%s".mod (((unsupported)).apply ((xtable)) ((((xquote_name)).apply ("expires"))) ((((xquote_name)).apply ("cache_key")))))) ((((unsupported)).apply ((xexp)) ((xkey)))))
+                                    ((xresult).and (((xmode).eq "set").or (((xmode).eq "add").and ((xcurrent_expires).less (xnow))))).if
+                                      bogusForceDataize.write ((((xcursor).xexecute)).apply (("UPDATE %s SET %s = %%s, %s = %%s WHERE %s = %%s".mod (((unsupported)).apply ((xtable)) ((((xquote_name)).apply ("value"))) ((((xquote_name)).apply ("expires"))) ((((xquote_name)).apply ("cache_key")))))) ((((unsupported)).apply ((xb64encoded)) ((xexp)) ((xkey)))))
+                                      ((xmode).neq "touch").if
+                                        bogusForceDataize.write ((((xcursor).xexecute)).apply (("INSERT INTO %s (%s, %s, %s) VALUES (%%s, %%s, %%s)".mod (((unsupported)).apply ((xtable)) ((((xquote_name)).apply ("cache_key"))) ((((xquote_name)).apply ("value"))) ((((xquote_name)).apply ("expires")))))) ((((unsupported)).apply ((xkey)) ((xb64encoded)) ((xexp)))))
+                                        (((unsupported)).apply (FALSE))
+                              (((unsupported)).apply (FALSE))
+                              (((unsupported)).apply (TRUE))
+                xdelete.write
+                  [xself xkey xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        (((unsupported)).apply (((((xself).x_base_delete_many)).apply ((((unsupported)).apply ((xkey)))))))
+                xdelete_many.write
+                  [xself xkeys xversion]
+                    seq > @
+                      (((unsupported)).apply)
+                        xkeys.write (((unsupported)).apply ((((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))) ((xkey)) ((xkeys)))
+                        bogusForceDataize.write ((((xself).x_base_delete_many)).apply ((xkeys)))
+                x_base_delete_many.write
+                  [xself xkeys]
+                    memory > xdb
+                    memory > xconnection
+                    memory > xtable
+                    memory > xquote_name
+                    seq > @
+                      seq
+                        ((xkeys).not).if
+                          (((unsupported)).apply (FALSE))
+                        xdb.write ((((xrouter).xdb_for_write)).apply (((xself).xcache_model_class)))
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdb)))
+                        xquote_name.write (((xconnection).xops).xquote_name)
+                        xtable.write (((xquote_name)).apply (((xself).x_table)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply (("DELETE FROM %s WHERE %s IN (%s)".mod (((unsupported)).apply ((xtable)) ((((xquote_name)).apply ("cache_key"))) ((((", ".xjoin)).apply (((((unsupported)).apply ("%s")).mul (((xlen)).apply ((xkeys)))))))))) ((xkeys)))
+                            (((unsupported)).apply ((((xbool)).apply (((xcursor).xrowcount)))))
+                xhas_key.write
+                  [xself xkey xversion]
+                    memory > xdb
+                    memory > xconnection
+                    memory > xnow
+                    memory > xquote_name
+                    seq > @
+                      (((unsupported)).apply)
+                        xkey.write (((unsupported)).apply (((xself).xmake_and_validate_key)) ((xkey)) ((xversion)))
+                        xdb.write ((((xrouter).xdb_for_read)).apply (((xself).xcache_model_class)))
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdb)))
+                        xquote_name.write (((xconnection).xops).xquote_name)
+                        xnow.write (((unsupported)).apply (((((xtz_now)).apply).xreplace)) (0) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          seq
+                            bogusForceDataize.write ((((xcursor).xexecute)).apply (("SELECT %s FROM %s WHERE %s = %%s and %s > %%s".mod (((unsupported)).apply ((((xquote_name)).apply ("cache_key"))) ((((xquote_name)).apply (((xself).x_table)))) ((((xquote_name)).apply ("cache_key"))) ((((xquote_name)).apply ("expires")))))) ((((unsupported)).apply ((xkey)) ((((((xconnection).xops).xadapt_datetimefield_value)).apply ((xnow)))))))
+                            (((unsupported)).apply ((((unsupported)).apply (((((xcursor).xfetchone)).apply)) ("None: is there a None literal in the EO language?"))))
+                x_cull.write
+                  [xself xdb xcursor xnow xnum]
+                    memory > xconnection
+                    memory > xlast_cache_key
+                    memory > xtable
+                    memory > xcull_num
+                    memory > xremaining_num
+                    memory > xdeleted_count
+                    seq > @
+                      (((xself).x_cull_frequency).eq 0).if
+                        bogusForceDataize.write ((((xself).xclear)).apply)
+                        seq
+                          xconnection.write (((unsupported)).apply ((xconnections)) ((xdb)))
+                          xtable.write (((((xconnection).xops).xquote_name)).apply (((xself).x_table)))
+                          bogusForceDataize.write ((((xcursor).xexecute)).apply (("DELETE FROM %s WHERE %s < %%s".mod (((unsupported)).apply ((xtable)) ((((((xconnection).xops).xquote_name)).apply ("expires")))))) ((((unsupported)).apply ((((((xconnection).xops).xadapt_datetimefield_value)).apply ((xnow)))))))
+                          xdeleted_count.write ((xcursor).xrowcount)
+                          xremaining_num.write ((xnum).sub (xdeleted_count))
+                          ((xremaining_num).greater ((xself).x_max_entries)).if
+                            seq
+                              xcull_num.write (((unsupported)).apply ((xremaining_num)) (((xself).x_cull_frequency)))
+                              bogusForceDataize.write ((((xcursor).xexecute)).apply (((((((xconnection).xops).xcache_key_culling_sql)).apply).mod (xtable))) ((((unsupported)).apply ((xcull_num)))))
+                              xlast_cache_key.write ((((xcursor).xfetchone)).apply)
+                              (xlast_cache_key).if
+                                bogusForceDataize.write ((((xcursor).xexecute)).apply (("DELETE FROM %s WHERE %s < %%s".mod (((unsupported)).apply ((xtable)) ((((((xconnection).xops).xquote_name)).apply ("cache_key")))))) ((((unsupported)).apply ((((unsupported)).apply ((xlast_cache_key)) (0))))))
+                xclear.write
+                  [xself]
+                    memory > xdb
+                    memory > xconnection
+                    memory > xtable
+                    seq > @
+                      seq
+                        xdb.write ((((xrouter).xdb_for_write)).apply (((xself).xcache_model_class)))
+                        xconnection.write (((unsupported)).apply ((xconnections)) ((xdb)))
+                        xtable.write (((((xconnection).xops).xquote_name)).apply (((xself).x_table)))
+                        (((unsupported)).apply (((((xconnection).xcursor)).apply)) ((xcursor)))
+                          bogusForceDataize.write ((((xcursor).xexecute)).apply (("DELETE FROM %s".mod (xtable))))

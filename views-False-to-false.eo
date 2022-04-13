@@ -1,0 +1,85 @@
+memory > xFieldDoesNotExist
+memory > xapps
+memory > xconnections
+memory > xTransform
+memory > xHttp404
+memory > xisinstance
+memory > xrender_to_kml
+memory > xrender_to_kmz
+memory > xGeometryField
+memory > xAsKML
+memory > xLookupError
+memory > xgetattr
+memory > xmod
+[] > views
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xkml
+        memory > xkmz
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xkml.write
+              [xrequest xlabel xmodel xfield_name xcompress xusing]
+                memory > xklass
+                memory > xconnection
+                memory > xrender
+                memory > xplacemarks
+                memory > xqs
+                memory > xfield
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xplacemarks.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xLookupError)))
+                      xklass.write ((((xapps).xget_model)).apply ((xlabel)) ((xmodel)))
+                      (((unsupported)).apply ((((xHttp404)).apply (("You must supply a valid app label and module name.  Got \"%s.%s\"".mod (((unsupported)).apply ((xlabel)) ((xmodel))))))))
+                    (xfield_name).if
+                      (((unsupported)).apply ((xFieldDoesNotExist)))
+                        seq
+                          xfield.write (((((xklass).x_meta).xget_field)).apply ((xfield_name)))
+                          ((((xisinstance)).apply ((xfield)) ((xGeometryField))).not).if
+                            (((unsupported)).apply ((xFieldDoesNotExist)))
+                        (((unsupported)).apply ((((xHttp404)).apply ("Invalid geometry field."))))
+                    xconnection.write (((unsupported)).apply ((xconnections)) ((xusing)))
+                    (((xconnection).xfeatures).xhas_AsKML_function).if
+                      xplacemarks.write (((unsupported)).apply (((((((xklass).x_default_manager).xusing)).apply ((xusing))).xannotate)) ((((xAsKML)).apply ((xfield_name)))))
+                      seq
+                        xplacemarks.write (((unsupported)).apply)
+                        (((xconnection).xfeatures).xhas_Transform_function).if
+                          seq
+                            xqs.write ((((((((xklass).x_default_manager).xusing)).apply ((xusing))).xannotate)).apply ((((unsupported)).apply ((((unsupported)).apply (("%s_4326".mod (xfield_name))) ((((xTransform)).apply ((xfield_name)) (4326))))))))
+                            (((unsupported)).apply ((xfield_name)) ("_4326"))
+                          xqs.write ((((((((xklass).x_default_manager).xusing)).apply ((xusing))).xall)).apply)
+                        (((unsupported)).apply ((xmod)) ((xqs)))
+                          seq
+                            (((unsupported)).apply (((xmod).xkml)) (((((xgetattr)).apply ((xmod)) ((xfield_name))).xkml)))
+                            bogusForceDataize.write ((((xplacemarks).xappend)).apply ((xmod)))
+                    (xcompress).if
+                      xrender.write (xrender_to_kmz)
+                      xrender.write (xrender_to_kml)
+                    (((unsupported)).apply ((((xrender)).apply ("gis/kml/placemarks.kml") ((((unsupported)).apply ("places") ((xplacemarks)))))))
+            xkmz.write
+              [xrequest xlabel xmodel xfield_name xusing]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((xkml)) ((xrequest)) ((xlabel)) ((xmodel)) ((xfield_name)) (TRUE) ((xusing)))))

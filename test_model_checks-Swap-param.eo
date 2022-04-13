@@ -1,0 +1,443 @@
+memory > xchecks
+memory > xTestCase
+memory > xWarning
+memory > xError
+memory > xAbstractModel
+memory > xoverride_settings
+memory > xParent
+memory > xModel
+memory > xmodels
+memory > xAbstract
+memory > xoverride_system_checks
+memory > xmock
+memory > xProxyModel
+memory > xskipUnlessDBFeature
+memory > xChild
+memory > xisolate_apps
+memory > xSimpleTestCase
+[] > test_model_checks
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_auto_created_pk
+        memory > xhint
+        memory > xtest_skipped_on_model_with_invalid_app_label
+        memory > xtest_collision_in_same_model
+        memory > xmocked_is_overridden
+        memory > xmsg
+        memory > xtest_collision_across_apps_database_routers_installed
+        memory > xtest_collision_in_different_models
+        memory > xtest_collision_in_same_app_database_routers_installed
+        memory > xtest_explicit_inherited_pk
+        memory > xtest_collision_across_apps
+        memory > xtest_no_collision_across_apps_interpolation
+        memory > xtest_skipped_on_abstract_model
+        memory > xtest_default_auto_field_setting
+        memory > xtest_collision_in_same_app
+        memory > xtest_no_collision_for_proxy_models
+        memory > xtest_collision_abstract_model
+        memory > xtest_app_default_auto_field
+        memory > xtest_explicit_pk
+        memory > xtest_auto_created_pk_inherited_abstract_parent
+        memory > xtest_explicit_inherited_parent_link
+        memory > xtest_auto_created_inherited_pk
+        memory > xtest_auto_created_inherited_parent_link
+        memory > xtest_no_collision_for_unmanaged_models
+        memory > xtest_no_collision_abstract_model_interpolation
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xisolate_apps)) ("check_framework") ("apps"))) ((((xoverride_system_checks)).apply ((((unsupported)).apply ((((xchecks).xmodel_checks).xcheck_all_models)))))))
+              seq
+                xtest_collision_in_same_app.write
+                  [xself]
+                    memory > xdb_table
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xdb_table.write "test_table"
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xdb_table.write "test_table"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("db_table 'test_table' is used by multiple models: check_framework.Model1, check_framework.Model2.") ("test_table") ("models.E028"))))))
+                xtest_collision_in_same_app_database_routers_installed.write
+                  [xself]
+                    memory > xdb_table
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xdb_table.write "test_table"
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xdb_table.write "test_table"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) ("db_table 'test_table' is used by multiple models: check_framework.Model1, check_framework.Model2.") ("You have configured settings.DATABASE_ROUTERS. Verify that check_framework.Model1, check_framework.Model2 are correctly routed to separate databases.") ("test_table") ("models.W035"))))) ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))))
+                xtest_collision_across_apps.write
+                  [xself xapps]
+                    memory > xdb_table
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "basic"
+                              xdb_table.write "test_table"
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "check_framework"
+                              xdb_table.write "test_table"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) (((((xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("db_table 'test_table' is used by multiple models: basic.Model1, check_framework.Model2.") ("test_table") ("models.E028"))))))
+                xtest_collision_across_apps_database_routers_installed.write
+                  [xself xapps]
+                    memory > xdb_table
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "basic"
+                              xdb_table.write "test_table"
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "check_framework"
+                              xdb_table.write "test_table"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) (((((xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) ("db_table 'test_table' is used by multiple models: basic.Model1, check_framework.Model2.") ("You have configured settings.DATABASE_ROUTERS. Verify that basic.Model1, check_framework.Model2 are correctly routed to separate databases.") ("test_table") ("models.W035"))))))
+                xtest_no_collision_for_unmanaged_models.write
+                  [xself]
+                    memory > xmanaged
+                    memory > xdb_table
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xdb_table.write "test_table"
+                              xmanaged.write FALSE
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xdb_table.write "test_table"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+                xtest_no_collision_for_proxy_models.write
+                  [xself]
+                    memory > xproxy
+                    memory > xdb_table
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xdb_table.write "test_table"
+                        (((unsupported)).apply ((xModel)))
+                          (((unsupported)).apply)
+                            xproxy.write TRUE
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xModel).x_meta).xdb_table)) ((((xProxyModel).x_meta).xdb_table)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xisolate_apps)) ("check_framework") ("apps"))) ((((xoverride_system_checks)).apply ((((unsupported)).apply ((((xchecks).xmodel_checks).xcheck_all_models)))))))
+              seq
+                xtest_collision_in_same_model.write
+                  [xself]
+                    memory > xindex
+                    memory > xindexes
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply (((xmodels).xIndex)) ((((unsupported)).apply ("id"))) ("foo"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xindexes.write (((unsupported)).apply ((xindex)) ((xindex)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("index name 'foo' is not unique for model check_framework.Model.") ("models.E029"))))))
+                xtest_collision_in_different_models.write
+                  [xself]
+                    memory > xindex
+                    memory > xindexes
+                    seq > @
+                      seq
+                        xindex.write (((unsupported)).apply (((xmodels).xIndex)) ((((unsupported)).apply ("id"))) ("foo"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xindexes.write (((unsupported)).apply ((xindex)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xindexes.write (((unsupported)).apply ((xindex)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("index name 'foo' is not unique among models: check_framework.Model1, check_framework.Model2.") ("models.E030"))))))
+                xtest_collision_abstract_model.write
+                  [xself]
+                    memory > xabstract
+                    memory > xindexes
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xindexes.write (((unsupported)).apply ((((unsupported)).apply (((xmodels).xIndex)) ((((unsupported)).apply ("id"))) ("foo"))))
+                              xabstract.write TRUE
+                        (((unsupported)).apply ((xAbstractModel)))
+                        (((unsupported)).apply ((xAbstractModel)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("index name 'foo' is not unique among models: check_framework.Model1, check_framework.Model2.") ("models.E030"))))))
+                xtest_no_collision_abstract_model_interpolation.write
+                  [xself]
+                    memory > xname
+                    memory > xabstract
+                    memory > xindexes
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xname.write (((unsupported)).apply (((xmodels).xCharField)) (20))
+                            (((unsupported)).apply)
+                              seq
+                                xindexes.write (((unsupported)).apply ((((unsupported)).apply (((xmodels).xIndex)) ((((unsupported)).apply ("name"))) ("%(app_label)s_%(class)s_foo"))))
+                                xabstract.write TRUE
+                        (((unsupported)).apply ((xAbstractModel)))
+                        (((unsupported)).apply ((xAbstractModel)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+                xtest_collision_across_apps.write
+                  [xself xapps]
+                    memory > xindex
+                    memory > xindexes
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        xindex.write (((unsupported)).apply (((xmodels).xIndex)) ((((unsupported)).apply ("id"))) ("foo"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "basic"
+                              xindexes.write (((unsupported)).apply ((xindex)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "check_framework"
+                              xindexes.write (((unsupported)).apply ((xindex)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) (((((xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("index name 'foo' is not unique among models: basic.Model1, check_framework.Model2.") ("models.E030"))))))
+                xtest_no_collision_across_apps_interpolation.write
+                  [xself xapps]
+                    memory > xindex
+                    memory > xconstraints
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        xindex.write (((unsupported)).apply (((xmodels).xIndex)) ((((unsupported)).apply ("id"))) ("%(app_label)s_%(class)s_foo"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "basic"
+                              xconstraints.write (((unsupported)).apply ((xindex)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "check_framework"
+                              xconstraints.write (((unsupported)).apply ((xindex)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) (((((xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+            (((unsupported)).apply ((xTestCase)) ((((unsupported)).apply ((xisolate_apps)) ("check_framework") ("apps"))) ((((xoverride_system_checks)).apply ((((unsupported)).apply ((((xchecks).xmodel_checks).xcheck_all_models)))))) ((((xskipUnlessDBFeature)).apply ("supports_table_check_constraints"))))
+              seq
+                xtest_collision_in_same_model.write
+                  [xself]
+                    memory > xconstraints
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xconstraints.write (((unsupported)).apply ((((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) (0))) ("foo"))) ((((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) (100))) ("foo"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("constraint name 'foo' is not unique for model check_framework.Model.") ("models.E031"))))))
+                xtest_collision_in_different_models.write
+                  [xself]
+                    memory > xconstraints
+                    memory > xconstraint
+                    seq > @
+                      seq
+                        xconstraint.write (((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) (0))) ("foo"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xconstraints.write (((unsupported)).apply ((xconstraint)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xconstraints.write (((unsupported)).apply ((xconstraint)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("constraint name 'foo' is not unique among models: check_framework.Model1, check_framework.Model2.") ("models.E032"))))))
+                xtest_collision_abstract_model.write
+                  [xself]
+                    memory > xabstract
+                    memory > xconstraints
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xconstraints.write (((unsupported)).apply ((((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) (0))) ("foo"))))
+                              xabstract.write TRUE
+                        (((unsupported)).apply ((xAbstractModel)))
+                        (((unsupported)).apply ((xAbstractModel)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("constraint name 'foo' is not unique among models: check_framework.Model1, check_framework.Model2.") ("models.E032"))))))
+                xtest_no_collision_abstract_model_interpolation.write
+                  [xself]
+                    memory > xabstract
+                    memory > xconstraints
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xconstraints.write (((unsupported)).apply ((((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) (0))) ("%(app_label)s_%(class)s_foo"))))
+                              xabstract.write TRUE
+                        (((unsupported)).apply ((xAbstractModel)))
+                        (((unsupported)).apply ((xAbstractModel)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+                xtest_collision_across_apps.write
+                  [xself xapps]
+                    memory > xconstraints
+                    memory > xconstraint
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        xconstraint.write (((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) (0))) ("foo"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "basic"
+                              xconstraints.write (((unsupported)).apply ((xconstraint)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "check_framework"
+                              xconstraints.write (((unsupported)).apply ((xconstraint)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) (((((xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ("constraint name 'foo' is not unique among models: basic.Model1, check_framework.Model2.") ("models.E032"))))))
+                xtest_no_collision_across_apps_interpolation.write
+                  [xself xapps]
+                    memory > xconstraints
+                    memory > xconstraint
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        xconstraint.write (((unsupported)).apply (((xmodels).xCheckConstraint)) ((((unsupported)).apply (((xmodels).xQ)) (0))) ("%(app_label)s_%(class)s_foo"))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "basic"
+                              xconstraints.write (((unsupported)).apply ((xconstraint)))
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            seq
+                              xapp_label.write "check_framework"
+                              xconstraints.write (((unsupported)).apply ((xconstraint)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) (((((xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+            xmocked_is_overridden.write
+              [xself xsetting]
+                seq > @
+                  (((unsupported)).apply ((((xsetting).neq "DEFAULT_AUTO_FIELD").or (((xself).xDEFAULT_AUTO_FIELD).neq "django.db.models.AutoField"))))
+            (((unsupported)).apply ((xSimpleTestCase)) (((((xmock).xpatch)).apply ("django.conf.UserSettingsHolder.is_overridden") ((xmocked_is_overridden)))) ((((unsupported)).apply ((xoverride_settings)) ("django.db.models.AutoField"))) ((((unsupported)).apply ((xisolate_apps)) ("check_framework.apps.CheckDefaultPKConfig") ("apps"))) ((((xoverride_system_checks)).apply ((((unsupported)).apply ((((xchecks).xmodel_checks).xcheck_all_models)))))))
+              seq
+                xmsg.write "Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'."
+                xhint.write "Configure the DEFAULT_AUTO_FIELD setting or the CheckDefaultPKConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'."
+                xtest_auto_created_pk.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) (((xself).xmsg)) (((xself).xhint)) ((xModel)) ("models.W042"))))))
+                xtest_explicit_inherited_pk.write
+                  [xself]
+                    memory > xid
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xid.write (((unsupported)).apply (((xmodels).xAutoField)) (TRUE))
+                        (((unsupported)).apply ((xParent)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+                xtest_skipped_on_model_with_invalid_app_label.write
+                  [xself]
+                    memory > xapp_label
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xapp_label.write "invalid_app_label"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xModel).xcheck)).apply)) ((((unsupported)).apply)))
+                xtest_skipped_on_abstract_model.write
+                  [xself]
+                    memory > xabstract
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xabstract.write TRUE
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xAbstract).xcheck)).apply)) ((((unsupported)).apply)))
+                xtest_explicit_inherited_parent_link.write
+                  [xself]
+                    memory > xparent_ptr
+                    memory > xid
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xid.write (((unsupported)).apply (((xmodels).xAutoField)) (TRUE))
+                        (((unsupported)).apply ((xParent)))
+                          xparent_ptr.write (((unsupported)).apply (((xmodels).xOneToOneField)) ((xParent)) (((xmodels).xCASCADE)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+                xtest_auto_created_inherited_pk.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        (((unsupported)).apply ((xParent)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) (((xself).xmsg)) (((xself).xhint)) ((xParent)) ("models.W042"))))))
+                xtest_auto_created_inherited_parent_link.write
+                  [xself]
+                    memory > xparent_ptr
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        (((unsupported)).apply ((xParent)))
+                          xparent_ptr.write (((unsupported)).apply (((xmodels).xOneToOneField)) ((xParent)) (((xmodels).xCASCADE)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) (((xself).xmsg)) (((xself).xhint)) ((xParent)) ("models.W042"))))))
+                xtest_auto_created_pk_inherited_abstract_parent.write
+                  [xself]
+                    memory > xabstract
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xabstract.write TRUE
+                        (((unsupported)).apply ((xParent)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply ((((unsupported)).apply ((xWarning)) (((xself).xmsg)) (((xself).xhint)) ((xChild)) ("models.W042"))))))
+                xtest_default_auto_field_setting.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+                xtest_explicit_pk.write
+                  [xself]
+                    memory > xid
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          xid.write (((unsupported)).apply (((xmodels).xBigAutoField)) (TRUE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) ((((((xself).xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))
+                xtest_app_default_auto_field.write
+                  [xself xapps]
+                    memory > xapp_label
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          (((unsupported)).apply)
+                            xapp_label.write "check_framework.apps.CheckPKConfig"
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xchecks).xrun_checks)) (((((xapps).xget_app_configs)).apply)))) ((((unsupported)).apply)))

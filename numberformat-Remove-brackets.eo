@@ -1,0 +1,103 @@
+memory > xlist
+memory > xstr
+memory > x_
+memory > xmark_safe
+memory > xfloat
+memory > xexponent
+memory > xDecimal
+memory > xabs
+memory > xTypeError
+memory > xsettings
+memory > xint
+memory > xdigit
+memory > xdigits
+memory > xisinstance
+memory > xlen
+[] > numberformat
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xformat
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xformat.write
+              [xnumber xdecimal_sep xdecimal_pos xgrouping xthousand_sep xforce_grouping xuse_l10n]
+                memory > xdec_part
+                memory > xactive_interval
+                memory > xcoefficient
+                memory > xstr_number
+                memory > xcutoff
+                memory > xint_part_gd
+                memory > xintervals
+                memory > xsign
+                memory > xint_part
+                memory > xuse_grouping
+                memory > xcnt
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xuse_grouping.write (((xuse_l10n).or ((((unsupported)).apply ((xuse_l10n)) ("None: is there a None literal in the EO language?")).and ((xsettings).xUSE_L10N))).and ((xsettings).xUSE_THOUSAND_SEPARATOR))
+                    xuse_grouping.write ((xuse_grouping).or (xforce_grouping))
+                    xuse_grouping.write ((xuse_grouping).and ((xgrouping).neq 0))
+                    (((((xisinstance)).apply ((xnumber)) ((xint))).and ((xuse_grouping).not)).and ((xdecimal_pos).not)).if
+                      (((unsupported)).apply ((((xmark_safe)).apply ((xnumber)))))
+                    xsign.write ""
+                    ((((xisinstance)).apply ((xnumber)) ((xfloat))).and (((unsupported)).apply ("e") (((((xstr)).apply ((xnumber))).xlower)))).if
+                      xnumber.write (((xDecimal)).apply ((((xstr)).apply ((xnumber)))))
+                    (((xisinstance)).apply ((xnumber)) ((xDecimal))).if
+                      seq
+                        (((unsupported)).apply ((xdecimal_pos)) ("None: is there a None literal in the EO language?")).if
+                          seq
+                            xcutoff.write (((xDecimal)).apply (("0.".add ((("1".xrjust)).apply ((xdecimal_pos)) ("0")))))
+                            ((((xabs)).apply ((xnumber))).less (xcutoff)).if
+                              xnumber.write (((xDecimal)).apply ("0"))
+                        (((unsupported)).apply ((((unsupported)).apply ((x_)) ((xdigits)) ((xexponent)))) (((xnumber).xas_tuple)))
+                        (((((xabs)).apply ((xexponent))).add (((xlen)).apply ((xdigits)))).greater 200).if
+                          seq
+                            xnumber.write ((("{:e}".xformat)).apply ((xnumber)))
+                            (((unsupported)).apply ((((unsupported)).apply ((xcoefficient)) ((xexponent)))) (((((xnumber).xsplit)).apply ("e"))))
+                            xcoefficient.write (((xformat)).apply ((xcoefficient)) ((xdecimal_sep)) ((xdecimal_pos)) ((xgrouping)) ((xthousand_sep)) ((xforce_grouping)) ((xuse_l10n)))
+                            (((unsupported)).apply (((("{}e{}".xformat)).apply ((xcoefficient)) ((xexponent)))))
+                          xstr_number.write ((("{:f}".xformat)).apply ((xnumber)))
+                      xstr_number.write (((xstr)).apply ((xnumber)))
+                    ((((unsupported)).apply ((xstr_number)) (0)).eq "-").if
+                      seq
+                        xsign.write "-"
+                        xstr_number.write (((unsupported)).apply ((xstr_number)) ((((unsupported)).apply (1))))
+                    (((unsupported)).apply (".") ((xstr_number))).if
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xint_part)) ((xdec_part)))) (((((xstr_number).xsplit)).apply ("."))))
+                        (((unsupported)).apply ((xdecimal_pos)) ("None: is there a None literal in the EO language?")).if
+                          xdec_part.write (((unsupported)).apply ((xdec_part)) ((((unsupported)).apply ((xdecimal_pos)))))
+                      (((unsupported)).apply ((((unsupported)).apply ((xint_part)) ((xdec_part)))) ((((unsupported)).apply ((xstr_number)) (""))))
+                    (((unsupported)).apply ((xdecimal_pos)) ("None: is there a None literal in the EO language?")).if
+                      xdec_part.write ((xdec_part).add ("0".mul ((xdecimal_pos).sub (((xlen)).apply ((xdec_part))))))
+                    xdec_part.write ((xdec_part).and ((xdecimal_sep).add (xdec_part)))
+                    (xuse_grouping).if
+                      seq
+                        (((unsupported)).apply ((xTypeError)))
+                          xintervals.write (((xlist)).apply ((xgrouping)))
+                          xintervals.write (((unsupported)).apply ((xgrouping)) (0))
+                        xactive_interval.write ((((xintervals).xpop)).apply (0))
+                        xint_part_gd.write ""
+                        xcnt.write 0
+                        (((unsupported)).apply ((xdigit)) ((((unsupported)).apply ((xint_part)) ((((unsupported)).apply ((1.neg)))))))
+                          seq
+                            ((xcnt).and ((xcnt).eq (xactive_interval))).if
+                              seq
+                                (xintervals).if
+                                  xactive_interval.write (((((xintervals).xpop)).apply (0)).or (xactive_interval))
+                                (((unsupported)).apply ((xint_part_gd)) ((((unsupported)).apply ((xthousand_sep)) ((((unsupported)).apply ((1.neg)))))))
+                                xcnt.write 0
+                            (((unsupported)).apply ((xint_part_gd)) ((xdigit)))
+                            (((unsupported)).apply ((xcnt)) (1))
+                        xint_part.write (((unsupported)).apply ((xint_part_gd)) ((((unsupported)).apply ((1.neg)))))
+                    (((unsupported)).apply ((((xsign).add (xint_part)).add (xdec_part))))

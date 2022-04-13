@@ -1,0 +1,174 @@
+memory > xContext
+memory > xtrans_real
+memory > xPOFileAssertionMixin
+memory > xopen
+memory > xactivate
+memory > xFrenchTestCase
+memory > xsuper
+memory > xoverride_settings
+memory > xos
+memory > xTemplate
+memory > x__file__
+memory > xget_language
+memory > xSimpleTestCase
+memory > xfp
+[] > test_percents
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_trans_tag_with_percent_symbol_in_the_middle
+        memory > xtest_translates_with_percent_symbol_using_context
+        memory > xtest_translates_with_string_that_look_like_fmt_spec_with_trans
+        memory > xtest_trans_tag_with_string_that_look_like_fmt_spec
+        memory > xtest_translates_multiple_percent_signs
+        memory > xsetUp
+        memory > xSAMPLEPROJECT_LOCALE
+        memory > xtest_translates_with_a_percent_symbol_at_the_end
+        memory > xtearDown
+        memory > xtest_trans_tag_with_percent_symbol_at_the_end
+        memory > xPO_FILE
+        memory > xtest_translates_with_percent_symbol_in_the_middle
+        memory > xtest_adds_python_format_to_all_percent_signs
+        memory > xSAMPLEPROJECT_DIR
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            xSAMPLEPROJECT_DIR.write (((((xos).xpath).xjoin)).apply ((((((xos).xpath).xdirname)).apply ((((((xos).xpath).xabspath)).apply ((x__file__)))))) ("sampleproject"))
+            xSAMPLEPROJECT_LOCALE.write (((((xos).xpath).xjoin)).apply ((xSAMPLEPROJECT_DIR)) ("locale"))
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((xSAMPLEPROJECT_LOCALE)))))))
+              seq
+                unsupported
+                xPO_FILE.write (((((xos).xpath).xjoin)).apply ((xSAMPLEPROJECT_LOCALE)) ("fr") ("LC_MESSAGES") ("django.po"))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).x_language)) ((((xget_language)).apply)))
+                        (((unsupported)).apply (((xself).x_translations)) (((xtrans_real).x_translations)))
+                        bogusForceDataize.write (((xactivate)).apply ("fr"))
+                xtearDown.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xtrans_real).x_translations)) (((xself).x_translations)))
+                        bogusForceDataize.write (((xactivate)).apply (((xself).x_language)))
+            (((unsupported)).apply ((xPOFileAssertionMixin)) ((xFrenchTestCase)))
+              seq
+                (((unsupported)).apply)
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUp)).apply)
+                        (((unsupported)).apply ((((xopen)).apply (((xself).xPO_FILE)))) ((xfp)))
+                          (((unsupported)).apply (((xself).xpo_contents)) (((((xfp).xread)).apply)))
+                xtest_trans_tag_with_percent_symbol_at_the_end.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertMsgId)).apply ("Literal with a percent symbol at the end %%") (((xself).xpo_contents)))
+                xtest_trans_tag_with_percent_symbol_in_the_middle.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertMsgId)).apply ("Literal with a percent %% symbol in the middle") (((xself).xpo_contents)))
+                        bogusForceDataize.write ((((xself).xassertMsgId)).apply ("It is 100%%") (((xself).xpo_contents)))
+                xtest_trans_tag_with_string_that_look_like_fmt_spec.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertMsgId)).apply ("Looks like a str fmt spec %%s but should not be interpreted as such") (((xself).xpo_contents)))
+                        bogusForceDataize.write ((((xself).xassertMsgId)).apply ("Looks like a str fmt spec %% o but should not be interpreted as such") (((xself).xpo_contents)))
+                xtest_adds_python_format_to_all_percent_signs.write
+                  [xself]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).xassertMsgId)).apply ("1 percent sign %%, 2 percent signs %%%%, 3 percent signs %%%%%%") (((xself).xpo_contents)))
+                        bogusForceDataize.write ((((xself).xassertMsgId)).apply ("%(name)s says: 1 percent sign %%, 2 percent signs %%%%") (((xself).xpo_contents)))
+            (((unsupported)).apply ((xFrenchTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_translates_with_a_percent_symbol_at_the_end.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtrans_tpl
+                    memory > xblock_tpl
+                    seq > @
+                      seq
+                        xexpected.write "Littérale avec un symbole de pour cent à la fin %"
+                        xtrans_tpl.write (((xTemplate)).apply ("{% load i18n %}{% translate \"Literal with a percent symbol at the end %\" %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtrans_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate %}Literal with a percent symbol at the end %{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                xtest_translates_with_percent_symbol_in_the_middle.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtrans_tpl
+                    memory > xblock_tpl
+                    seq > @
+                      seq
+                        xexpected.write "Pour cent littérale % avec un symbole au milieu"
+                        xtrans_tpl.write (((xTemplate)).apply ("{% load i18n %}{% translate \"Literal with a percent % symbol in the middle\" %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtrans_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate %}Literal with a percent % symbol in the middle{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                xtest_translates_with_percent_symbol_using_context.write
+                  [xself]
+                    memory > xtrans_tpl
+                    memory > xblock_tpl
+                    seq > @
+                      seq
+                        xtrans_tpl.write (((xTemplate)).apply ("{% load i18n %}{% translate \"It is 100%\" %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtrans_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ("Il est de 100%"))
+                        xtrans_tpl.write (((xTemplate)).apply ("{% load i18n %}{% translate \"It is 100%\" context \"female\" %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtrans_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ("Elle est de 100%"))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate %}It is 100%{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ("Il est de 100%"))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate context \"female\" %}It is 100%{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ("Elle est de 100%"))
+                xtest_translates_with_string_that_look_like_fmt_spec_with_trans.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtrans_tpl
+                    memory > xblock_tpl
+                    seq > @
+                      seq
+                        xexpected.write "On dirait un spec str fmt %s mais ne devrait pas être interprété comme plus disponible"
+                        xtrans_tpl.write (((xTemplate)).apply ("{% load i18n %}{% translate \"Looks like a str fmt spec %s but should not be interpreted as such\" %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtrans_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate %}Looks like a str fmt spec %s but should not be interpreted as such{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                        xexpected.write "On dirait un spec str fmt % o mais ne devrait pas être interprété comme plus disponible"
+                        xtrans_tpl.write (((xTemplate)).apply ("{% load i18n %}{% translate \"Looks like a str fmt spec % o but should not be interpreted as such\" %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtrans_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate %}Looks like a str fmt spec % o but should not be interpreted as such{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                xtest_translates_multiple_percent_signs.write
+                  [xself]
+                    memory > xexpected
+                    memory > xtrans_tpl
+                    memory > xblock_tpl
+                    seq > @
+                      seq
+                        xexpected.write "1 % signe pour cent, signes %% 2 pour cent, trois signes de pourcentage %%%"
+                        xtrans_tpl.write (((xTemplate)).apply ("{% load i18n %}{% translate \"1 percent sign %, 2 percent signs %%, 3 percent signs %%%\" %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtrans_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate %}1 percent sign %, 2 percent signs %%, 3 percent signs %%%{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))) ((xexpected)))
+                        xblock_tpl.write (((xTemplate)).apply ("{% load i18n %}{% blocktranslate %}{{name}} says: 1 percent sign %, 2 percent signs %%{% endblocktranslate %}"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xblock_tpl).xrender)).apply ((((xContext)).apply ((((unsupported)).apply ("name") ("Django"))))))) ("Django dit: 1 pour cent signe %, deux signes de pourcentage %%"))

@@ -1,0 +1,208 @@
+memory > xContext
+memory > xTemplateSyntaxError
+memory > xEngine
+memory > xos
+memory > xROOT
+memory > xSimpleTestCase
+[] > test_extends_relative
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_normal_extend_variable
+        memory > xtest_extend_error
+        memory > xtest_dir1_extend
+        memory > xtest_mixing1
+        memory > xtest_dir1_extend3
+        memory > xtest_mixing2
+        memory > xtest_dir1_extend1
+        memory > xtest_dir2_include
+        memory > xtest_normal_extend
+        memory > xtest_dir2_extend
+        memory > xtest_dir1_extend2
+        memory > xtest_normal_include_variable
+        memory > xtest_mixing_loop
+        memory > xRELATIVE
+        memory > xtest_normal_include
+        memory > xtest_include_error
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xRELATIVE.write (((((xos).xpath).xjoin)).apply ((xROOT)) ("relative_templates"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_normal_extend.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("one.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one"))
+                xtest_normal_extend_variable.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("one_var.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply ("tmpl") ("./two.html"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one"))
+                xtest_dir1_extend.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/one.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one dir1 one"))
+                xtest_dir1_extend1.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/one1.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one dir1 one"))
+                xtest_dir1_extend2.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/one2.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one dir1 one"))
+                xtest_dir1_extend3.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/one3.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one dir1 one"))
+                xtest_dir2_extend.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/dir2/one.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one dir2 one"))
+                xtest_extend_error.write
+                  [xself]
+                    memory > xmsg
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xmsg.write "The relative path '\"./../two.html\"' points outside the file hierarchy that template 'error_extends.html' is in."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xengine).xrender_to_string)).apply ("error_extends.html"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_normal_include.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/dir2/inc2.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("dir2 include"))
+                xtest_normal_include_variable.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/dir2/inc3.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply ("tmpl") ("./include_content.html"))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("dir2 include"))
+                xtest_dir2_include.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/dir2/inc1.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three"))
+                xtest_include_error.write
+                  [xself]
+                    memory > xmsg
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xmsg.write "The relative path '\"./../three.html\"' points outside the file hierarchy that template 'error_include.html' is in."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xengine).xrender_to_string)).apply ("error_include.html"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_mixing1.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/two.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three two one dir2 one dir1 two"))
+                xtest_mixing2.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    memory > xoutput
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("dir1/three.html"))
+                        xoutput.write ((((xtemplate).xrender)).apply ((((xContext)).apply ((((unsupported)).apply)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xoutput).xstrip)).apply)) ("three dir1 three"))
+                xtest_mixing_loop.write
+                  [xself]
+                    memory > xmsg
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xRELATIVE)))))
+                        xmsg.write "The relative path '\"./dir2/../looped.html\"' was translated to template name 'dir1/looped.html', the same template in which the tag appears."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTemplateSyntaxError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xengine).xrender_to_string)).apply ("dir1/looped.html"))

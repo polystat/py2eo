@@ -1,0 +1,174 @@
+memory > xfalse
+memory > xTextField
+memory > xstr
+memory > xlookups
+memory > xlhs
+memory > xexceptions
+memory > xCheckFieldDefaultMixin
+memory > xtuple
+memory > xargs
+memory > xjson
+memory > xkwargs
+memory > xkey
+memory > xArrayField
+memory > xforms
+memory > xKeyTransform
+memory > xlist
+memory > xField
+memory > xKeyTransformFactory
+memory > xTransform
+memory > xparams
+memory > xsuper
+memory > xHStoreField
+memory > xitem
+memory > xval
+memory > xisinstance
+memory > xdict
+[] > hstore
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xformfield
+        memory > x__call__
+        memory > xvalue_to_string
+        memory > xdescription
+        memory > x_
+        memory > xvalidate
+        memory > xlookup_name
+        memory > xdb_type
+        memory > x__init__
+        memory > xoutput_field
+        memory > xfunction
+        memory > xget_prep_value
+        memory > xget_transform
+        memory > xdefault_error_messages
+        memory > xempty_strings_allowed
+        memory > xas_sql
+        memory > xto_python
+        memory > x__all__
+        memory > x_default_hint
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            x__all__.write (((unsupported)).apply ("HStoreField"))
+            (((unsupported)).apply ((xCheckFieldDefaultMixin)) ((xField)))
+              seq
+                xempty_strings_allowed.write (xfalse)
+                xdescription.write (((x_)).apply ("Map of strings to strings/nulls"))
+                xdefault_error_messages.write (((unsupported)).apply ("not_a_string") ((((x_)).apply ("The value of “%(key)s” is not a string or null."))))
+                x_default_hint.write (((unsupported)).apply ("dict") ("{}"))
+                xdb_type.write
+                  [xself xconnection]
+                    seq > @
+                      (((unsupported)).apply ("hstore"))
+                xget_transform.write
+                  [xself xname]
+                    memory > xtransform
+                    seq > @
+                      seq
+                        xtransform.write ((((((xsuper)).apply).xget_transform)).apply ((xname)))
+                        (xtransform).if
+                          (((unsupported)).apply ((xtransform)))
+                        (((unsupported)).apply ((((xKeyTransformFactory)).apply ((xname)))))
+                xvalidate.write
+                  [xself xvalue xmodel_instance]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xvalidate)).apply ((xvalue)) ((xmodel_instance)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xkey)) ((xval)))) (((((xvalue).xitems)).apply)))
+                          (((((xisinstance)).apply ((xval)) ((xstr))).not).and (((unsupported)).apply ((xval)) ("None: is there a None literal in the EO language?"))).if
+                            (((unsupported)).apply ((((unsupported)).apply (((xexceptions).xValidationError)) ((((unsupported)).apply (((xself).xerror_messages)) ("not_a_string"))) ("not_a_string") ((((unsupported)).apply ("key") ((xkey)))))))
+                xto_python.write
+                  [xself xvalue]
+                    seq > @
+                      seq
+                        (((xisinstance)).apply ((xvalue)) ((xstr))).if
+                          xvalue.write ((((xjson).xloads)).apply ((xvalue)))
+                        (((unsupported)).apply ((xvalue)))
+                xvalue_to_string.write
+                  [xself xobj]
+                    seq > @
+                      (((unsupported)).apply (((((xjson).xdumps)).apply (((((xself).xvalue_from_object)).apply ((xobj)))))))
+                xformfield.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((((xsuper)).apply).xformfield)).apply ((((unsupported)).apply ((((unsupported)).apply ("form_class") (((xforms).xHStoreField)) ((xkwargs)))))))))
+                xget_prep_value.write
+                  [xself xvalue]
+                    memory > xval
+                    memory > xkey
+                    memory > xprep_value
+                    seq > @
+                      seq
+                        xvalue.write ((((((xsuper)).apply).xget_prep_value)).apply ((xvalue)))
+                        (((xisinstance)).apply ((xvalue)) ((xdict))).if
+                          seq
+                            xprep_value.write (((unsupported)).apply)
+                            (((unsupported)).apply ((((unsupported)).apply ((xkey)) ((xval)))) (((((xvalue).xitems)).apply)))
+                              seq
+                                xkey.write (((xstr)).apply ((xkey)))
+                                (((unsupported)).apply ((xval)) ("None: is there a None literal in the EO language?")).if
+                                  xval.write (((xstr)).apply ((xval)))
+                                (((unsupported)).apply ((((unsupported)).apply ((xprep_value)) ((xkey)))) ((xval)))
+                            xvalue.write (xprep_value)
+                        (((xisinstance)).apply ((xvalue)) ((xlist))).if
+                          xvalue.write (((unsupported)).apply ((((xstr)).apply ((xitem)))) ((xitem)) ((xvalue)))
+                        (((unsupported)).apply ((xvalue)))
+            bogusForceDataize.write ((((xHStoreField).xregister_lookup)).apply (((xlookups).xDataContains)))
+            bogusForceDataize.write ((((xHStoreField).xregister_lookup)).apply (((xlookups).xContainedBy)))
+            bogusForceDataize.write ((((xHStoreField).xregister_lookup)).apply (((xlookups).xHasKey)))
+            bogusForceDataize.write ((((xHStoreField).xregister_lookup)).apply (((xlookups).xHasKeys)))
+            bogusForceDataize.write ((((xHStoreField).xregister_lookup)).apply (((xlookups).xHasAnyKeys)))
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xoutput_field.write (((xTextField)).apply)
+                x__init__.write
+                  [xself xkey_name]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                        (((unsupported)).apply (((xself).xkey_name)) ((xkey_name)))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xlhs)) ((xparams)))) (((((xcompiler).xcompile)).apply (((xself).xlhs)))))
+                        (((unsupported)).apply ((((unsupported)).apply (("(%s -> %%s)".mod (xlhs))) (((((xtuple)).apply ((xparams))).add (((unsupported)).apply (((xself).xkey_name))))))))
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xkey_name]
+                    seq > @
+                      (((unsupported)).apply (((xself).xkey_name)) ((xkey_name)))
+                x__call__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xKeyTransform)).apply (((xself).xkey_name)) ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))))
+            (((unsupported)).apply ((xTransform)) (((xHStoreField).xregister_lookup)))
+              seq
+                xlookup_name.write "keys"
+                xfunction.write "akeys"
+                xoutput_field.write (((xArrayField)).apply ((((xTextField)).apply)))
+            (((unsupported)).apply ((xTransform)) (((xHStoreField).xregister_lookup)))
+              seq
+                xlookup_name.write "values"
+                xfunction.write "avals"
+                xoutput_field.write (((xArrayField)).apply ((((xTextField)).apply)))

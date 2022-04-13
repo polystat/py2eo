@@ -1,0 +1,74 @@
+memory > xConcat
+memory > xValue
+memory > xTestCase
+memory > xAuthor
+memory > xx
+memory > xReplace
+memory > xF
+[] > test_replace
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_replace_with_default_arg
+        memory > xtest_replace_expression
+        memory > xtest_update
+        memory > xsetUpTestData
+        memory > xtest_case_sensitive
+        memory > xtest_replace_with_empty_string
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("George R. R. Martin"))
+                        (((unsupported)).apply ((((xAuthor).xobjects).xcreate)) ("J. R. R. Tolkien"))
+                xtest_replace_with_empty_string.write
+                  [xself]
+                    memory > xqs
+                    seq > @
+                      seq
+                        xqs.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xReplace)).apply ((((xF)).apply ("name"))) ((((xValue)).apply ("R. R. "))) ((((xValue)).apply (""))))))
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((xqs)) ((((unsupported)).apply ((((unsupported)).apply ("George R. R. Martin") ("George Martin"))) ((((unsupported)).apply ("J. R. R. Tolkien") ("J. Tolkien"))))) ((((unsupported)).apply ((((unsupported)).apply (((xx).xname)) (((xx).xwithout_middlename)))))) (FALSE))
+                xtest_case_sensitive.write
+                  [xself]
+                    memory > xqs
+                    seq > @
+                      seq
+                        xqs.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xReplace)).apply ((((xF)).apply ("name"))) ((((xValue)).apply ("r. r."))) ((((xValue)).apply (""))))))
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((xqs)) ((((unsupported)).apply ((((unsupported)).apply ("George R. R. Martin") ("George R. R. Martin"))) ((((unsupported)).apply ("J. R. R. Tolkien") ("J. R. R. Tolkien"))))) ((((unsupported)).apply ((((unsupported)).apply (((xx).xname)) (((xx).xsame_name)))))) (FALSE))
+                xtest_replace_expression.write
+                  [xself]
+                    memory > xqs
+                    seq > @
+                      seq
+                        xqs.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xReplace)).apply ((((xConcat)).apply ((((xValue)).apply ("Author: "))) ((((xF)).apply ("name"))))) ((((xValue)).apply ("Author: "))) ((((xValue)).apply (""))))))
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((xqs)) ((((unsupported)).apply ((((unsupported)).apply ("George R. R. Martin") ("George R. R. Martin"))) ((((unsupported)).apply ("J. R. R. Tolkien") ("J. R. R. Tolkien"))))) ((((unsupported)).apply ((((unsupported)).apply (((xx).xname)) (((xx).xsame_name)))))) (FALSE))
+                xtest_update.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xAuthor).xobjects).xupdate)) ((((xReplace)).apply ((((xF)).apply ("name"))) ((((xValue)).apply ("R. R. "))) ((((xValue)).apply (""))))))
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((((((xAuthor).xobjects).xall)).apply)) ((((unsupported)).apply ("George Martin") ("J. Tolkien"))) ((((unsupported)).apply (((xx).xname)))) (FALSE))
+                xtest_replace_with_default_arg.write
+                  [xself]
+                    memory > xqs
+                    seq > @
+                      seq
+                        xqs.write (((unsupported)).apply ((((xAuthor).xobjects).xannotate)) ((((xReplace)).apply ((((xF)).apply ("name"))) ((((xValue)).apply ("R. R. "))))))
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((xqs)) ((((unsupported)).apply ((((unsupported)).apply ("George R. R. Martin") ("George Martin"))) ((((unsupported)).apply ("J. R. R. Tolkien") ("J. Tolkien"))))) ((((unsupported)).apply ((((unsupported)).apply (((xx).xname)) (((xx).xsame_name)))))) (FALSE))

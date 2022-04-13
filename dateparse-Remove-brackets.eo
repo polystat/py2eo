@@ -1,0 +1,115 @@
+memory > xValueError
+memory > xint
+memory > xfloat
+memory > xv
+memory > xmatch
+memory > xlen
+memory > xk
+memory > xget_fixed_timezone
+memory > x_lazy_re_compile
+memory > xdatetime
+[] > dateparse
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xstandard_duration_re
+        memory > xtime_re
+        memory > xparse_duration
+        memory > xdate_re
+        memory > xpostgres_interval_re
+        memory > xparse_time
+        memory > xparse_date
+        memory > xdatetime_re
+        memory > xparse_datetime
+        memory > xiso8601_duration_re
+        seq > @
+          seq
+            unsupported
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xdate_re.write (((x_lazy_re_compile)).apply ("(?P<year>d{4})-(?P<month>d{1,2})-(?P<day>d{1,2})$"))
+            xtime_re.write (((x_lazy_re_compile)).apply ("(?P<hour>d{1,2}):(?P<minute>d{1,2})(?::(?P<second>d{1,2})(?:[.,](?P<microsecond>d{1,6})d{0,6})?)?$"))
+            xdatetime_re.write (((x_lazy_re_compile)).apply ("(?P<year>d{4})-(?P<month>d{1,2})-(?P<day>d{1,2})[T ](?P<hour>d{1,2}):(?P<minute>d{1,2})(?::(?P<second>d{1,2})(?:[.,](?P<microsecond>d{1,6})d{0,6})?)?s*(?P<tzinfo>Z|[+-]d{2}(?::?d{2})?)?$"))
+            xstandard_duration_re.write (((x_lazy_re_compile)).apply ("^(?:(?P<days>-?d+) (days?, )?)?(?P<sign>-?)((?:(?P<hours>d+):)(?=d+:d+))?(?:(?P<minutes>d+):)?(?P<seconds>d+)(?:[.,](?P<microseconds>d{1,6})d{0,6})?$"))
+            xiso8601_duration_re.write (((x_lazy_re_compile)).apply ("^(?P<sign>[-+]?)P(?:(?P<days>d+([.,]d+)?)D)?(?:T(?:(?P<hours>d+([.,]d+)?)H)?(?:(?P<minutes>d+([.,]d+)?)M)?(?:(?P<seconds>d+([.,]d+)?)S)?)?$"))
+            xpostgres_interval_re.write (((x_lazy_re_compile)).apply ("^(?:(?P<days>-?d+) (days? ?))?(?:(?P<sign>[-+])?(?P<hours>d+):(?P<minutes>dd):(?P<seconds>dd)(?:.(?P<microseconds>d{1,6}))?)?$"))
+            xparse_date.write
+              [xvalue]
+                memory > xkw
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xValueError)))
+                      (((unsupported)).apply ((((((xdatetime).xdate).xfromisoformat)).apply ((xvalue)))))
+                      (((unsupported)).apply (((((xdate_re).xmatch)).apply ((xvalue))))).if
+                        seq
+                          xkw.write (((unsupported)).apply ((xk)) ((((xint)).apply ((xv)))) ((((unsupported)).apply ((xk)) ((xv)))) ((((xmatch).xgroupdict).xitems)))
+                          (((unsupported)).apply (((((xdatetime).xdate)).apply ((((unsupported)).apply ((xkw)))))))
+            xparse_time.write
+              [xvalue]
+                memory > xkw
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xValueError)))
+                      (((unsupported)).apply ((((unsupported)).apply (((((((xdatetime).xtime).xfromisoformat)).apply ((xvalue))).xreplace)) ("None: is there a None literal in the EO language?"))))
+                      (((unsupported)).apply (((((xtime_re).xmatch)).apply ((xvalue))))).if
+                        seq
+                          xkw.write ((xmatch).xgroupdict)
+                          (((unsupported)).apply ((((unsupported)).apply ((xkw)) ("microsecond"))) (((((unsupported)).apply ((xkw)) ("microsecond")).and ((((((unsupported)).apply ((xkw)) ("microsecond")).xljust)).apply (6) ("0")))))
+                          xkw.write (((unsupported)).apply ((xk)) ((((xint)).apply ((xv)))) ((((unsupported)).apply ((xk)) ((xv)))) (((xkw).xitems)) ((((unsupported)).apply ((xv)) ("None: is there a None literal in the EO language?"))))
+                          (((unsupported)).apply (((((xdatetime).xtime)).apply ((((unsupported)).apply ((xkw)))))))
+            xparse_datetime.write
+              [xvalue]
+                memory > xoffset_mins
+                memory > xkw
+                memory > xoffset
+                memory > xtzinfo
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((xValueError)))
+                      (((unsupported)).apply ((((((xdatetime).xdatetime).xfromisoformat)).apply ((xvalue)))))
+                      (((unsupported)).apply (((((xdatetime_re).xmatch)).apply ((xvalue))))).if
+                        seq
+                          xkw.write ((xmatch).xgroupdict)
+                          (((unsupported)).apply ((((unsupported)).apply ((xkw)) ("microsecond"))) (((((unsupported)).apply ((xkw)) ("microsecond")).and ((((((unsupported)).apply ((xkw)) ("microsecond")).xljust)).apply (6) ("0")))))
+                          xtzinfo.write ((((xkw).xpop)).apply ("tzinfo"))
+                          ((xtzinfo).eq "Z").if
+                            xtzinfo.write (((xdatetime).xtimezone).xutc)
+                            (((unsupported)).apply ((xtzinfo)) ("None: is there a None literal in the EO language?")).if
+                              seq
+                                xoffset_mins.write (((((xlen)).apply ((xtzinfo))).greater 3).if (((xint)).apply ((((unsupported)).apply ((xtzinfo)) ((((unsupported)).apply ((2.neg))))))) 0)
+                                xoffset.write ((60.mul (((xint)).apply ((((unsupported)).apply ((xtzinfo)) ((((unsupported)).apply (1) (3))))))).add (xoffset_mins))
+                                ((((unsupported)).apply ((xtzinfo)) (0)).eq "-").if
+                                  xoffset.write ((xoffset).neg)
+                                xtzinfo.write (((xget_fixed_timezone)).apply ((xoffset)))
+                          xkw.write (((unsupported)).apply ((xk)) ((((xint)).apply ((xv)))) ((((unsupported)).apply ((xk)) ((xv)))) (((xkw).xitems)) ((((unsupported)).apply ((xv)) ("None: is there a None literal in the EO language?"))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xdatetime).xdatetime)) ((((unsupported)).apply ((xkw)))) ((xtzinfo)))))
+            xparse_duration.write
+              [xvalue]
+                memory > xdays
+                memory > xkw
+                memory > xmatch
+                memory > xsign
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xmatch.write ((((((xstandard_duration_re).xmatch)).apply ((xvalue))).or ((((xiso8601_duration_re).xmatch)).apply ((xvalue)))).or ((((xpostgres_interval_re).xmatch)).apply ((xvalue))))
+                    (xmatch).if
+                      seq
+                        xkw.write ((xmatch).xgroupdict)
+                        xsign.write ((((((xkw).xpop)).apply ("sign") ("+")).eq "-").if (1.neg) 1)
+                        ((((xkw).xget)).apply ("microseconds")).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xkw)) ("microseconds"))) (((((((unsupported)).apply ((xkw)) ("microseconds")).xljust)).apply (6) ("0"))))
+                        xkw.write (((unsupported)).apply ((xk)) ((((xfloat)).apply (((((xv).xreplace)).apply (",") ("."))))) ((((unsupported)).apply ((xk)) ((xv)))) (((xkw).xitems)) ((((unsupported)).apply ((xv)) ("None: is there a None literal in the EO language?"))))
+                        xdays.write ((((xdatetime).xtimedelta)).apply ((((((xkw).xpop)).apply ("days") (0.0)).or 0.0)))
+                        (((xmatch).xre).eq (xiso8601_duration_re)).if
+                          (((unsupported)).apply ((xdays)) ((xsign)))
+                        (((unsupported)).apply (((xdays).add ((xsign).mul ((((xdatetime).xtimedelta)).apply ((((unsupported)).apply ((xkw)))))))))

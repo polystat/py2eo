@@ -1,0 +1,120 @@
+memory > xfalse
+memory > xValueError
+memory > xstr
+memory > xparam_name
+memory > xerr
+memory > xint
+memory > xGDALException
+memory > xfloat
+memory > xoption_type
+memory > xtranslation
+memory > xTextarea
+memory > xjs_name
+memory > xGEOSException
+memory > xisinstance
+memory > xGEOSGeometry
+memory > xTypeError
+memory > xlogging
+[] > widgets
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xlogger
+        memory > xmap_options
+        memory > xgeo_context
+        memory > xget_context
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xgeo_context.write (((unsupported)).apply ("LANGUAGE_BIDI") (((((xtranslation).xget_language_bidi)).apply)))
+            xlogger.write ((((xlogging).xgetLogger)).apply ("django.contrib.gis"))
+            (((unsupported)).apply ((xTextarea)))
+              seq
+                (((unsupported)).apply)
+                xget_context.write
+                  [xself xname xvalue xattrs]
+                    memory > xwkt
+                    memory > xjs_safe_name
+                    memory > xogr
+                    memory > xsrid
+                    seq > @
+                      seq
+                        (xattrs).if
+                          seq
+                            bogusForceDataize.write (((((xself).xparams).xupdate)).apply ((xattrs)))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xparams)) ("editable"))) ((((unsupported)).apply (((xself).xparams)) ("modifiable"))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xparams)) ("editable"))) (TRUE))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xparams)) ("wkt"))) (""))
+                        ((xvalue).and (((xisinstance)).apply ((xvalue)) ((xstr)))).if
+                          (((unsupported)).apply ((((unsupported)).apply ((xGEOSException)) ((xValueError)))))
+                            xvalue.write (((xGEOSGeometry)).apply ((xvalue)))
+                            seq
+                              bogusForceDataize.write ((((xlogger).xerror)).apply ("Error creating geometry from value '%s' (%s)") ((xvalue)) ((xerr)))
+                              xvalue.write "None: is there a None literal in the EO language?"
+                        (((xvalue).and ((((((xvalue).xgeom_type).xupper)).apply).neq ((xself).xgeom_type))).and (((xself).xgeom_type).neq "GEOMETRY")).if
+                          xvalue.write "None: is there a None literal in the EO language?"
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xparams)) ("map_options"))) (((((xself).xmap_options)).apply)))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xparams)) ("name"))) ((xname)))
+                        xjs_safe_name.write ((((((unsupported)).apply (((xself).xparams)) ("name")).xreplace)).apply ("-") ("_"))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xparams)) ("module"))) (("geodjango_%s".mod (xjs_safe_name))))
+                        (xvalue).if
+                          seq
+                            xsrid.write (((unsupported)).apply (((xself).xparams)) ("srid"))
+                            (((xvalue).xsrid).neq (xsrid)).if
+                              (((unsupported)).apply ((xGDALException)))
+                                seq
+                                  xogr.write ((xvalue).xogr)
+                                  bogusForceDataize.write ((((xogr).xtransform)).apply ((xsrid)))
+                                  xwkt.write ((xogr).xwkt)
+                                seq
+                                  bogusForceDataize.write ((((xlogger).xerror)).apply ("Error transforming geometry from srid '%s' to srid '%s' (%s)") (((xvalue).xsrid)) ((xsrid)) ((xerr)))
+                                  xwkt.write ""
+                              xwkt.write ((xvalue).xwkt)
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xparams)) ("wkt"))) ((xwkt)))
+                        bogusForceDataize.write (((((xself).xparams).xupdate)).apply ((xgeo_context)))
+                        (((unsupported)).apply (((xself).xparams)))
+                xmap_options.write
+                  [xself]
+                    memory > xol_bounds
+                    memory > xol_projection
+                    memory > xmap_types
+                    memory > xvalue
+                    memory > xmap_options
+                    seq > @
+                      seq
+                        unsupported
+                        xol_bounds.write
+                          [xextent]
+                            seq > @
+                              (((unsupported)).apply (("new OpenLayers.Bounds(%s)".mod (xextent))))
+                        xol_projection.write
+                          [xsrid]
+                            seq > @
+                              (((unsupported)).apply (("new OpenLayers.Projection(\"EPSG:%s\")".mod (xsrid))))
+                        xmap_types.write (((unsupported)).apply ((((unsupported)).apply ("srid") ("projection") ("srid"))) ((((unsupported)).apply ("display_srid") ("displayProjection") ("srid"))) ((((unsupported)).apply ("units") ("units") ((xstr)))) ((((unsupported)).apply ("max_resolution") ("maxResolution") ((xfloat)))) ((((unsupported)).apply ("max_extent") ("maxExtent") ("bounds"))) ((((unsupported)).apply ("num_zoom") ("numZoomLevels") ((xint)))) ((((unsupported)).apply ("max_zoom") ("maxZoomLevels") ((xint)))) ((((unsupported)).apply ("min_zoom") ("minZoomLevel") ((xint)))))
+                        xmap_options.write (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xparam_name)) ((xjs_name)) ((xoption_type)))) ((xmap_types)))
+                          (((((xself).xparams).xget)).apply ((xparam_name)) ((xfalse))).if
+                            seq
+                              ((xoption_type).eq "srid").if
+                                xvalue.write (((xol_projection)).apply ((((unsupported)).apply (((xself).xparams)) ((xparam_name)))))
+                                ((xoption_type).eq "bounds").if
+                                  xvalue.write (((xol_bounds)).apply ((((unsupported)).apply (((xself).xparams)) ((xparam_name)))))
+                                  (((unsupported)).apply ((xoption_type)) ((((unsupported)).apply ((xfloat)) ((xint))))).if
+                                    xvalue.write (((unsupported)).apply (((xself).xparams)) ((xparam_name)))
+                                    (((unsupported)).apply ((xoption_type)) ((((unsupported)).apply ((xstr))))).if
+                                      xvalue.write ("\"%s\"".mod (((unsupported)).apply (((xself).xparams)) ((xparam_name))))
+                                      (((unsupported)).apply ((xTypeError)))
+                              (((unsupported)).apply ((((unsupported)).apply ((xmap_options)) ((xjs_name)))) ((xvalue)))
+                        (((unsupported)).apply ((xmap_options)))

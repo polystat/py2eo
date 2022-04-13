@@ -1,0 +1,90 @@
+memory > xhttp_date
+memory > xAttributeError
+memory > ximport_module
+memory > xSessionInterrupted
+memory > xUpdateError
+memory > xsettings
+memory > xtime
+memory > xsuper
+memory > xMiddlewareMixin
+memory > xpatch_vary_headers
+[] > middleware
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xprocess_request
+        memory > xprocess_response
+        memory > x__init__
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xMiddlewareMixin)))
+              seq
+                x__init__.write
+                  [xself xget_response]
+                    memory > xengine
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xget_response)))
+                        xengine.write (((ximport_module)).apply (((xsettings).xSESSION_ENGINE)))
+                        (((unsupported)).apply (((xself).xSessionStore)) (((xengine).xSessionStore)))
+                xprocess_request.write
+                  [xself xrequest]
+                    memory > xsession_key
+                    seq > @
+                      seq
+                        xsession_key.write (((((xrequest).xCOOKIES).xget)).apply (((xsettings).xSESSION_COOKIE_NAME)))
+                        (((unsupported)).apply (((xrequest).xsession)) (((((xself).xSessionStore)).apply ((xsession_key)))))
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    memory > xempty
+                    memory > xmax_age
+                    memory > xmodified
+                    memory > xexpires_time
+                    memory > xaccessed
+                    memory > xexpires
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((xAttributeError)))
+                          seq
+                            xaccessed.write (((xrequest).xsession).xaccessed)
+                            xmodified.write (((xrequest).xsession).xmodified)
+                            xempty.write (((((xrequest).xsession).xis_empty)).apply)
+                          (((unsupported)).apply ((xresponse)))
+                        ((((unsupported)).apply (((xsettings).xSESSION_COOKIE_NAME)) (((xrequest).xCOOKIES))).and (xempty)).if
+                          seq
+                            (((unsupported)).apply (((xresponse).xdelete_cookie)) (((xsettings).xSESSION_COOKIE_NAME)) (((xsettings).xSESSION_COOKIE_PATH)) (((xsettings).xSESSION_COOKIE_DOMAIN)) (((xsettings).xSESSION_COOKIE_SAMESITE)))
+                            bogusForceDataize.write (((xpatch_vary_headers)).apply ((xresponse)) ((((unsupported)).apply ("Cookie"))))
+                          seq
+                            (xaccessed).if
+                              bogusForceDataize.write (((xpatch_vary_headers)).apply ((xresponse)) ((((unsupported)).apply ("Cookie"))))
+                            (((xmodified).or ((xsettings).xSESSION_SAVE_EVERY_REQUEST)).and ((xempty).not)).if
+                              seq
+                                (((((xrequest).xsession).xget_expire_at_browser_close)).apply).if
+                                  seq
+                                    xmax_age.write "None: is there a None literal in the EO language?"
+                                    xexpires.write "None: is there a None literal in the EO language?"
+                                  seq
+                                    xmax_age.write (((((xrequest).xsession).xget_expiry_age)).apply)
+                                    xexpires_time.write (((((xtime).xtime)).apply).sub (xmax_age))
+                                    xexpires.write (((xhttp_date)).apply ((xexpires_time)))
+                                (((xresponse).xstatus_code).neq 500).if
+                                  seq
+                                    (((unsupported)).apply ((xUpdateError)))
+                                      bogusForceDataize.write (((((xrequest).xsession).xsave)).apply)
+                                      (((unsupported)).apply ((((xSessionInterrupted)).apply ("The request's session was deleted before the request completed. The user may have logged out in a concurrent request, for example."))))
+                                    (((unsupported)).apply (((xresponse).xset_cookie)) (((xsettings).xSESSION_COOKIE_NAME)) ((((xrequest).xsession).xsession_key)) ((xmax_age)) ((xexpires)) (((xsettings).xSESSION_COOKIE_DOMAIN)) (((xsettings).xSESSION_COOKIE_PATH)) ((((xsettings).xSESSION_COOKIE_SECURE).or "None: is there a None literal in the EO language?")) ((((xsettings).xSESSION_COOKIE_HTTPONLY).or "None: is there a None literal in the EO language?")) (((xsettings).xSESSION_COOKIE_SAMESITE)))
+                        (((unsupported)).apply ((xresponse)))

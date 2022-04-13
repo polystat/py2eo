@@ -1,0 +1,56 @@
+memory > xheaders
+memory > xresponse2
+memory > xargs
+memory > xkwargs
+memory > xpatch_vary_headers
+[] > vary
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xvary_on_headers
+        memory > xvary_on_cookie
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xvary_on_headers.write
+              []
+                memory > xdecorator
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply)
+                    xdecorator.write
+                      [xfunc]
+                        memory > xinner_func
+                        seq > @
+                          seq
+                            xinner_func.write
+                              []
+                                memory > xresponse
+                                seq > @
+                                  (((unsupported)).apply)
+                                    xresponse.write (((xfunc)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                                    bogusForceDataize.write (((xpatch_vary_headers)).apply ((xresponse)) ((xheaders)))
+                                    (((unsupported)).apply ((xresponse2)))
+                            (((unsupported)).apply ((xinner_func)))
+                    (((unsupported)).apply ((xdecorator)))
+            xvary_on_cookie.write
+              [xfunc]
+                memory > xinner_func
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xinner_func.write
+                      []
+                        memory > xresponse
+                        seq > @
+                          (((unsupported)).apply)
+                            xresponse.write (((xfunc)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xkwargs)))))
+                            bogusForceDataize.write (((xpatch_vary_headers)).apply ((xresponse)) ((((unsupported)).apply ("Cookie"))))
+                            (((unsupported)).apply ((xresponse)))
+                    (((unsupported)).apply ((xinner_func)))

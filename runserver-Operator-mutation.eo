@@ -1,0 +1,184 @@
+memory > x_fqdn
+memory > xKeyboardInterrupt
+memory > xerrno
+memory > x_ipv4
+memory > xsocket
+memory > xKeyError
+memory > xBaseCommand
+memory > xWSGIServer
+memory > xoptions
+memory > xCommandError
+memory > xget_internal_wsgi_application
+memory > x_lazy_re_compile
+memory > xdatetime
+memory > xsettings
+memory > xint
+memory > xre
+memory > xsuper
+memory > xsys
+memory > xargs
+memory > xOSError
+memory > xos
+memory > xautoreload
+memory > x_ipv6
+memory > xe
+[] > runserver
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xinner_run
+        memory > xrequires_system_checks
+        memory > xsuppressed_base_arguments
+        memory > xnaiveip_re
+        memory > xserver_cls
+        memory > xexecute
+        memory > xdefault_port
+        memory > xrun
+        memory > xprotocol
+        memory > xhelp
+        memory > xget_handler
+        memory > xdefault_addr
+        memory > xstealth_options
+        memory > xhandle
+        memory > xadd_arguments
+        memory > xdefault_addr_ipv6
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xnaiveip_re.write (((x_lazy_re_compile)).apply ((((unsupported)).apply)) (((xre).xX)))
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Starts a lightweight web server for development."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xstealth_options.write (((unsupported)).apply ("shutdown_message"))
+                xsuppressed_base_arguments.write (((unsupported)).apply ("--verbosity") ("--traceback"))
+                xdefault_addr.write "127.0.0.1"
+                xdefault_addr_ipv6.write "::1"
+                xdefault_port.write "8000"
+                xprotocol.write "http"
+                xserver_cls.write (xWSGIServer)
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("addrport") ("?") ("Optional port number, or ipaddr:port"))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--ipv6") ("-6") ("store_true") ("use_ipv6") ("Tells Django to use an IPv6 address."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--nothreading") ("store_false") ("use_threading") ("Tells Django to NOT use threading."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--noreload") ("store_false") ("use_reloader") ("Tells Django to NOT use the auto-reloader."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--skip-checks") ("store_true") ("Skip system checks."))
+                xexecute.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((xoptions)) ("no_color")).if
+                          (((unsupported)).apply ((((unsupported)).apply (((xos).xenviron)) ("DJANGO_COLORS"))) ("nocolor"))
+                        bogusForceDataize.write ((((((xsuper)).apply).xexecute)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xoptions)))))
+                xget_handler.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        (((unsupported)).apply ((((xget_internal_wsgi_application)).apply)))
+                xhandle.write
+                  [xself]
+                    memory > xm
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xsettings).xDEBUG).not).and (((xsettings).xALLOWED_HOSTS).not)).if
+                          (((unsupported)).apply ((((xCommandError)).apply ("You must set settings.ALLOWED_HOSTS if DEBUG is False."))))
+                        (((unsupported)).apply (((xself).xuse_ipv6)) ((((unsupported)).apply ((xoptions)) ("use_ipv6"))))
+                        (((xself).xuse_ipv6).and (((xsocket).xhas_ipv6).not)).if
+                          (((unsupported)).apply ((((xCommandError)).apply ("Your Python does not support IPv6."))))
+                        (((unsupported)).apply (((xself).x_raw_ipv6)) (FALSE))
+                        ((((unsupported)).apply ((xoptions)) ("addrport")).not).if
+                          seq
+                            (((unsupported)).apply (((xself).xaddr)) (""))
+                            (((unsupported)).apply (((xself).xport)) (((xself).xdefault_port)))
+                          seq
+                            xm.write ((((xre).xmatch)).apply ((xnaiveip_re)) ((((unsupported)).apply ((xoptions)) ("addrport"))))
+                            (((unsupported)).apply ((xm)) ("None: is there a None literal in the EO language?")).if
+                              (((unsupported)).apply ((((xCommandError)).apply (("\"%s\" is not a valid port number or address:port pair.".mod (((unsupported)).apply ((xoptions)) ("addrport")))))))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xaddr)) ((x_ipv4)) ((x_ipv6)) ((x_fqdn)) (((xself).xport)))) (((((xm).xgroups)).apply)))
+                            ((((((xself).xport).xisdigit)).apply).not).if
+                              (((unsupported)).apply ((((xCommandError)).apply (("%r is not a valid port number.".mod ((xself).xport))))))
+                            ((xself).xaddr).if
+                              (x_ipv6).if
+                                seq
+                                  (((unsupported)).apply (((xself).xaddr)) ((((unsupported)).apply (((xself).xaddr)) ((((unsupported)).apply (1) ((1.neg)))))))
+                                  (((unsupported)).apply (((xself).xuse_ipv6)) (TRUE))
+                                  (((unsupported)).apply (((xself).x_raw_ipv6)) (TRUE))
+                                (((xself).xuse_ipv6).and ((x_fqdn).not)).if
+                                  (((unsupported)).apply ((((xCommandError)).apply (("\"%s\" is not a valid IPv6 address.".mod ((xself).xaddr))))))
+                        (((xself).xaddr).not).if
+                          seq
+                            (((unsupported)).apply (((xself).xaddr)) ((((xself).xuse_ipv6).if ((xself).xdefault_addr_ipv6) ((xself).xdefault_addr))))
+                            (((unsupported)).apply (((xself).x_raw_ipv6)) (((xself).xuse_ipv6)))
+                        bogusForceDataize.write ((((xself).xrun)).apply ((((unsupported)).apply ((xoptions)))))
+                xrun.write
+                  [xself]
+                    memory > xuse_reloader
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xuse_reloader.write (((unsupported)).apply ((xoptions)) ("use_reloader"))
+                        (xuse_reloader).if
+                          bogusForceDataize.write ((((xautoreload).xrun_with_reloader)).apply (((xself).xinner_run)) ((((unsupported)).apply ((xoptions)))))
+                          bogusForceDataize.write ((((xself).xinner_run)).apply ("None: is there a None literal in the EO language?") ((((unsupported)).apply ((xoptions)))))
+                xinner_run.write
+                  [xself]
+                    memory > xthreading
+                    memory > xquit_command
+                    memory > xhandler
+                    memory > xERRORS
+                    memory > xshutdown_message
+                    memory > xerror_text
+                    memory > xnow
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xautoreload).xraise_last_exception)).apply)
+                        xthreading.write (((unsupported)).apply ((xoptions)) ("use_threading"))
+                        xshutdown_message.write ((((xoptions).xget)).apply ("shutdown_message") (""))
+                        xquit_command.write ((((xsys).xplatform).eq "win32").if "CTRL-BREAK" "CONTROL-C")
+                        ((((unsupported)).apply ((xoptions)) ("skip_checks")).not).if
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ("Performing system checks...nn"))
+                            (((unsupported)).apply (((xself).xcheck)) (TRUE))
+                        bogusForceDataize.write ((((xself).xcheck_migrations)).apply)
+                        xnow.write (((((((xdatetime).xnow)).apply).xstrftime)).apply ("%B %d, %Y - %X"))
+                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((xnow)))
+                        bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (("Django version %(version)s, using settings %(settings)rnStarting development server at %(protocol)s://%(addr)s:%(port)s/nQuit the server with %(quit_command)s.".mod (((unsupported)).apply ("version") (((((xself).xget_version)).apply)) ("settings") (((xsettings).xSETTINGS_MODULE)) ("protocol") (((xself).xprotocol)) ("addr") ((((xself).x_raw_ipv6).if ("[%s]".mod ((xself).xaddr)) ((xself).xaddr))) ("port") (((xself).xport)) ("quit_command") ((xquit_command))))))
+                        (((unsupported)).apply ((xOSError)) ((xKeyboardInterrupt)))
+                          seq
+                            xhandler.write ((((xself).xget_handler)).apply ((((unsupported)).apply ((xargs)))) ((((unsupported)).apply ((xoptions)))))
+                            (((unsupported)).apply ((xrun)) (((xself).xaddr)) ((((xint)).apply (((xself).xport)))) ((xhandler)) (((xself).xuse_ipv6)) ((xthreading)) (((xself).xserver_cls)))
+                          seq
+                            xERRORS.write (((unsupported)).apply (((xerrno).xEACCES)) ("You don't have permission to access that port.") (((xerrno).xEADDRINUSE)) ("That port is already in use.") (((xerrno).xEADDRNOTAVAIL)) ("That IP address can't be assigned to."))
+                            (((unsupported)).apply ((xKeyError)))
+                              xerror_text.write (((unsupported)).apply ((xERRORS)) (((xe).xerrno)))
+                              xerror_text.write (xe)
+                            bogusForceDataize.write (((((xself).xstderr).xwrite)).apply (("Error: %s".mod (xerror_text))))
+                            bogusForceDataize.write ((((xos).x_exit)).apply (1))
+                          seq
+                            (xshutdown_message).if
+                              bogusForceDataize.write (((((xself).xstdout).xwrite)).apply ((xshutdown_message)))
+                            bogusForceDataize.write ((((xsys).xexit)).apply (0))

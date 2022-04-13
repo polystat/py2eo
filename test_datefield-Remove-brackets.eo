@@ -1,0 +1,202 @@
+memory > xGetDate
+memory > xdatetime
+memory > xValueError
+memory > xdate
+memory > xrepr
+memory > xSelectDateWidget
+memory > xForm
+memory > xSimpleTestCase
+memory > xGetDateShowHiddenInitial
+memory > xValidationError
+memory > xException
+memory > xHiddenInput
+memory > xDateField
+memory > xe
+[] > test_datefield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_datefield_4
+        memory > xtest_form_label_association
+        memory > xtest_datefield_changed
+        memory > xtest_datefield_3
+        memory > xtest_l10n_date_changed
+        memory > xtest_datefield_2
+        memory > xtest_datefield_5
+        memory > xtest_form_field
+        memory > xtest_datefield_strptime
+        memory > xmydate
+        memory > xtest_datefield_1
+        memory > xtest_l10n_invalid_date_in
+        seq > @
+          seq
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xForm)))
+              xmydate.write (((unsupported)).apply ((xDateField)) ((xSelectDateWidget)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_form_field.write
+                  [xself]
+                    memory > xd
+                    memory > xc
+                    memory > xb
+                    memory > xa
+                    seq > @
+                      seq
+                        xa.write (((xGetDate)).apply ((((unsupported)).apply ("mydate_month") ("4") ("mydate_day") ("1") ("mydate_year") ("2008"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xa).xis_valid)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xa).xcleaned_data)) ("mydate"))) ((((xdate)).apply (2008) (4) (1))))
+                        bogusForceDataize.write ((((xself).xassertHTMLEqual)).apply (((((unsupported)).apply ((xa)) ("mydate")).xas_hidden)) ("<input type=\"hidden\" name=\"mydate\" value=\"2008-04-01\" id=\"id_mydate\">"))
+                        xb.write (((xGetDate)).apply ((((unsupported)).apply ("mydate") ("2008-4-1"))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xb).xis_valid)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xb).xcleaned_data)) ("mydate"))) ((((xdate)).apply (2008) (4) (1))))
+                        xc.write (((xGetDate)).apply ((((unsupported)).apply ("mydate_month") ("2") ("mydate_day") ("31") ("mydate_year") ("2010"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xc).xis_valid)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xc).xerrors)) ((((unsupported)).apply ("mydate") ((((unsupported)).apply ("Enter a valid date."))))))
+                        xd.write (((xGetDate)).apply ((((unsupported)).apply ("mydate_month") ("1") ("mydate_day") ("1") ("mydate_year") ("2010"))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<label for=\"id_mydate_month\">") (((xd).xas_p)))
+                xtest_l10n_date_changed.write
+                  [xself]
+                    memory > xb
+                    memory > xmydate
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        xb.write (((unsupported)).apply ((xGetDate)) ((((unsupported)).apply ("mydate_year") ("2008") ("mydate_month") ("4") ("mydate_day") ("1"))) ((((unsupported)).apply ("mydate") ((((xdate)).apply (2008) (4) (1))))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xb).xhas_changed)))
+                        xb.write (((unsupported)).apply ((xGetDate)) ((((unsupported)).apply ("mydate_year") ("2008") ("mydate_month") ("4") ("mydate_day") ("2"))) ((((unsupported)).apply ("mydate") ((((xdate)).apply (2008) (4) (1))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xb).xhas_changed)))
+                        (((unsupported)).apply ((xForm)))
+                          xmydate.write (((unsupported)).apply ((xDateField)) ((xSelectDateWidget)) (TRUE))
+                        xb.write (((unsupported)).apply ((xGetDateShowHiddenInitial)) ((((unsupported)).apply ("mydate_year") ("2008") ("mydate_month") ("4") ("mydate_day") ("1") ("initial-mydate") (((((xHiddenInput).xformat_value)).apply ((((xdate)).apply (2008) (4) (1))))))) ((((unsupported)).apply ("mydate") ((((xdate)).apply (2008) (4) (1))))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xb).xhas_changed)))
+                        xb.write (((unsupported)).apply ((xGetDateShowHiddenInitial)) ((((unsupported)).apply ("mydate_year") ("2008") ("mydate_month") ("4") ("mydate_day") ("22") ("initial-mydate") (((((xHiddenInput).xformat_value)).apply ((((xdate)).apply (2008) (4) (1))))))) ((((unsupported)).apply ("mydate") ((((xdate)).apply (2008) (4) (1))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xb).xhas_changed)))
+                        xb.write (((unsupported)).apply ((xGetDateShowHiddenInitial)) ((((unsupported)).apply ("mydate_year") ("2008") ("mydate_month") ("4") ("mydate_day") ("22") ("initial-mydate") (((((xHiddenInput).xformat_value)).apply ((((xdate)).apply (2008) (4) (1))))))) ((((unsupported)).apply ("mydate") ((((xdate)).apply (2008) (4) (22))))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply (((xb).xhas_changed)))
+                        xb.write (((unsupported)).apply ((xGetDateShowHiddenInitial)) ((((unsupported)).apply ("mydate_year") ("2008") ("mydate_month") ("4") ("mydate_day") ("22") ("initial-mydate") (((((xHiddenInput).xformat_value)).apply ((((xdate)).apply (2008) (4) (22))))))) ((((unsupported)).apply ("mydate") ((((xdate)).apply (2008) (4) (1))))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xb).xhas_changed)))
+                xtest_l10n_invalid_date_in.write
+                  [xself]
+                    memory > xa
+                    seq > @
+                      (((unsupported)).apply)
+                        xa.write (((xGetDate)).apply ((((unsupported)).apply ("mydate_month") ("2") ("mydate_day") ("31") ("mydate_year") ("2010"))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xa).xis_valid)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xa).xerrors)) ((((unsupported)).apply ("mydate") ((((unsupported)).apply ("Voer een geldige datum in."))))))
+                xtest_form_label_association.write
+                  [xself]
+                    memory > xa
+                    seq > @
+                      (((unsupported)).apply)
+                        xa.write (((xGetDate)).apply ((((unsupported)).apply ("mydate_month") ("1") ("mydate_day") ("1") ("mydate_year") ("2010"))))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<label for=\"id_mydate_day\">") (((xa).xas_p)))
+                xtest_datefield_1.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xDateField)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ((((xdate)).apply (2006) (10) (25))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ((((xdatetime)).apply (2006) (10) (25) (14) (30))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ((((xdatetime)).apply (2006) (10) (25) (14) (30) (59))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ((((xdatetime)).apply (2006) (10) (25) (14) (30) (59) (200))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("2006-10-25"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("10/25/2006"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("10/25/06"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("Oct 25 2006"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("October 25 2006"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("October 25, 2006"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("25 October 2006"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("25 October, 2006"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("2006-4-31"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("200a-10-25"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("25/10/06"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'This field is required.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))
+                xtest_datefield_2.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDateField)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("None") ((((xrepr)).apply (((((xf).xclean)).apply ("None: is there a None literal in the EO language?"))))))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((((xf).xclean)).apply (""))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("None") ((((xrepr)).apply (((((xf).xclean)).apply (""))))))
+                xtest_datefield_3.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (((unsupported)).apply ((xDateField)) ((((unsupported)).apply ("%Y %m %d"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ((((xdate)).apply (2006) (10) (25))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ((((xdatetime)).apply (2006) (10) (25) (14) (30))))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply ("2006 10 25"))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("2006-10-25"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("10/25/2006"))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("10/25/06"))
+                xtest_datefield_4.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xDateField)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply (" 10/25/2006 "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply (" 10/25/06 "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply (" Oct 25   2006 "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply (" October  25 2006 "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply (" October 25, 2006 "))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdate)).apply (2006) (10) (25))) (((((xf).xclean)).apply (" 25 October 2006 "))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("   "))
+                xtest_datefield_5.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        xf.write (xDateField)
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xValidationError)) ("'Enter a valid date.'"))))
+                          bogusForceDataize.write ((((xf).xclean)).apply ("ax00b"))
+                xtest_datefield_changed.write
+                  [xself]
+                    memory > xd
+                    memory > xformat
+                    memory > xf
+                    seq > @
+                      seq
+                        xformat.write "%d/%m/%Y"
+                        xf.write (((unsupported)).apply ((xDateField)) ((((unsupported)).apply ((xformat)))))
+                        xd.write (((xdate)).apply (2007) (9) (17))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((((xf).xhas_changed)).apply ((xd)) ("17/09/2007"))))
+                xtest_datefield_strptime.write
+                  [xself]
+                    memory > xf
+                    seq > @
+                      seq
+                        unsupported
+                        xf.write (xDateField)
+                        (((unsupported)).apply ((xException)))
+                          bogusForceDataize.write ((((xf).xstrptime)).apply ("31 мая 2011") ("%d-%b-%y"))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply (((xe).x__class__)) ((xValueError)))

@@ -1,0 +1,55 @@
+memory > xtrans_real
+memory > xapps
+memory > xis_django_module
+memory > xp
+memory > xLocal
+memory > xconfig
+memory > xpath
+memory > xPath
+memory > xgettext
+memory > xsettings
+[] > reloader
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtranslation_file_changed
+        memory > xwatch_for_translation_changes
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xwatch_for_translation_changes.write
+              [xsender]
+                memory > xdirectories
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((unsupported)).apply)
+                    ((xsettings).xUSE_I18N).if
+                      seq
+                        xdirectories.write (((unsupported)).apply ((((xPath)).apply ("locale"))))
+                        bogusForceDataize.write ((((xdirectories).xextend)).apply ((((unsupported)).apply (((((xPath)).apply (((xconfig).xpath))).div "locale")) ((xconfig)) (((((xapps).xget_app_configs)).apply)) (((((xis_django_module)).apply (((xconfig).xmodule))).not)))))
+                        bogusForceDataize.write ((((xdirectories).xextend)).apply ((((unsupported)).apply ((((xPath)).apply ((xp)))) ((xp)) (((xsettings).xLOCALE_PATHS)))))
+                        (((unsupported)).apply ((xpath)) ((xdirectories)))
+                          bogusForceDataize.write ((((xsender).xwatch_dir)).apply ((xpath)) ("**/*.mo"))
+            xtranslation_file_changed.write
+              [xsender xfile_path]
+                seq > @
+                  (((unsupported)).apply)
+                    unsupported
+                    (((xfile_path).xsuffix).eq ".mo").if
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xgettext).x_translations)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xtrans_real).x_translations)) ((((unsupported)).apply)))
+                        (((unsupported)).apply (((xtrans_real).x_default)) ("None: is there a None literal in the EO language?"))
+                        (((unsupported)).apply (((xtrans_real).x_active)) ((((xLocal)).apply)))
+                        (((unsupported)).apply (TRUE))

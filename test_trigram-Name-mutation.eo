@@ -1,0 +1,88 @@
+memory > xround
+memory > xTrigramWordSimilarity
+memory > xCharFieldModel
+memory > xTextFieldModel
+memory > xinstance
+memory > xPostgreSQLTestCase2
+memory > xTrigramSimilarity
+memory > xTrigramTest
+memory > xImportError
+memory > xTrigramDistance
+memory > xmodify_settings
+memory > xTrigramWordDistance
+[] > test_trigram
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_trigram_similarity_alternate
+        memory > xtest_trigram_similarity
+        memory > xsetUpTestData
+        memory > xtest_trigram_search
+        memory > xModel
+        memory > xtest_trigram_word_search
+        memory > xtest_trigram_word_similarity_alternate
+        memory > xtest_trigram_word_similarity
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+            seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xImportError)))
+              seq
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+                (((unsupported)).apply)
+            (((unsupported)).apply ((xPostgreSQLTestCase2)) ((((unsupported)).apply ((xmodify_settings)) ((((unsupported)).apply ("append") ("django.contrib.postgres"))))))
+              seq
+                xModel.write (xCharFieldModel)
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xcls).xModel).xobjects).xbulk_create)).apply ((((unsupported)).apply ((((unsupported)).apply (((xcls).xModel)) ("Matthew"))) ((((unsupported)).apply (((xcls).xModel)) ("Cat sat on mat."))) ((((unsupported)).apply (((xcls).xModel)) ("Dog sat on rug."))))))
+                xtest_trigram_search.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xassertQuerysetEqual)) ((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ("Mathew"))) ((((unsupported)).apply ("Matthew"))) ((((unsupported)).apply (((xinstance).xfield)))))
+                xtest_trigram_word_search.write
+                  [xself]
+                    memory > xobj
+                    seq > @
+                      seq
+                        xobj.write (((unsupported)).apply (((((xself).xModel).xobjects).xcreate)) ("Gumby rides on the path of Middlesbrough"))
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ("Middlesborough"))) ((((unsupported)).apply ((xobj)))))
+                xtest_trigram_similarity.write
+                  [xself]
+                    memory > xsearch
+                    seq > @
+                      seq
+                        xsearch.write "Bat sat on cat."
+                        (((unsupported)).apply (((xself).xassertQuerysetEqual)) (((((((unsupported)).apply (((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ((xsearch))).xannotate)) ((((xTrigramSimilarity)).apply ("field") ((xsearch))))).xorder_by)).apply ("-similarity"))) ((((unsupported)).apply ((((unsupported)).apply ("Cat sat on mat.") (0.625))) ((((unsupported)).apply ("Dog sat on rug.") (0.333333))))) ((((unsupported)).apply ((((unsupported)).apply (((xinstance).xfield)) ((((xround)).apply (((xinstance).xsimilarity)) (6))))))) (TRUE))
+                xtest_trigram_word_similarity.write
+                  [xself]
+                    memory > xsearch
+                    seq > @
+                      seq
+                        xsearch.write "mat"
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((((((unsupported)).apply (((((unsupported)).apply (((((xself).xModel).xobjects).xfilter)) ((xsearch))).xannotate)) ((((xTrigramWordSimilarity)).apply ((xsearch)) ("field")))).xvalues)).apply ("field") ("word_similarity")).xorder_by)).apply ("-word_similarity"))) ((((unsupported)).apply ((((unsupported)).apply ("field") ("Cat sat on mat.") ("word_similarity") (1.0))) ((((unsupported)).apply ("field") ("Matthew") ("word_similarity") (0.75))))))
+                xtest_trigram_similarity_alternate.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xassertQuerysetEqual)) (((((((unsupported)).apply (((((unsupported)).apply (((((xself).xModel).xobjects).xannotate)) ((((xTrigramDistance)).apply ("field") ("Bat sat on cat.")))).xfilter)) (0.7)).xorder_by)).apply ("distance"))) ((((unsupported)).apply ((((unsupported)).apply ("Cat sat on mat.") (0.375))) ((((unsupported)).apply ("Dog sat on rug.") (0.666667))))) ((((unsupported)).apply ((((unsupported)).apply (((xinstance).xfield)) ((((xround)).apply (((xinstance).xdistance)) (6))))))) (TRUE))
+                xtest_trigram_word_similarity_alternate.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((((((((unsupported)).apply (((((unsupported)).apply (((((xself).xModel).xobjects).xannotate)) ((((xTrigramWordDistance)).apply ("mat") ("field")))).xfilter)) (0.7)).xvalues)).apply ("field") ("word_distance")).xorder_by)).apply ("word_distance"))) ((((unsupported)).apply ((((unsupported)).apply ("field") ("Cat sat on mat.") ("word_distance") (0))) ((((unsupported)).apply ("field") ("Matthew") ("word_distance") (0.25))))))
+            (((unsupported)).apply ((xTrigramTest)))
+              seq
+                (((unsupported)).apply)
+                xModel.write (xTextFieldModel)

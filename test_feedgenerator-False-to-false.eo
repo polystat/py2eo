@@ -1,0 +1,153 @@
+memory > xget_fixed_timezone
+memory > xfalse
+memory > xdatetime
+memory > xuse_tz
+memory > xfeedgenerator
+memory > xSimpleTestCase
+[] > test_feedgenerator
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_atom_add_item
+        memory > xtest_rfc3339_date_with_timezone
+        memory > xtest_rfc2822_date_with_timezone
+        memory > xtest_rfc2822_date
+        memory > xtest_rfc3339_date
+        memory > xtest_latest_post_date_returns_utc_time
+        memory > xtest_rfc2822_date_without_time
+        memory > xtest_rfc3339_date_without_time
+        memory > xtest_deterministic_attribute_order
+        memory > xtest_rss_mime_type
+        memory > xtest_get_tag_uri_with_port
+        memory > xtest_feed_without_feed_url_gets_rendered_without_atom_link
+        memory > xtest_atom1_mime_type
+        memory > xtest_feed_with_feed_url_gets_rendered_with_atom_link
+        memory > xtest_get_tag_uri
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xtest_get_tag_uri.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xget_tag_uri)).apply ("http://example.org/foo/bar#headline") (((((xdatetime).xdate)).apply (2004) (10) (25))))) ("tag:example.org,2004-10-25:/foo/bar/headline"))
+                xtest_get_tag_uri_with_port.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xget_tag_uri)).apply ("http://www.example.org:8000/2008/11/14/django#headline") (((((xdatetime).xdatetime)).apply (2008) (11) (14) (13) (37) (0))))) ("tag:www.example.org,2008-11-14:/2008/11/14/django/headline"))
+                xtest_rfc2822_date.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xrfc2822_date)).apply (((((xdatetime).xdatetime)).apply (2008) (11) (14) (13) (37) (0))))) ("Fri, 14 Nov 2008 13:37:00 -0000"))
+                xtest_rfc2822_date_with_timezone.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xrfc2822_date)).apply ((((unsupported)).apply (((xdatetime).xdatetime)) (2008) (11) (14) (13) (37) (0) ((((xget_fixed_timezone)).apply (60))))))) ("Fri, 14 Nov 2008 13:37:00 +0100"))
+                xtest_rfc2822_date_without_time.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xrfc2822_date)).apply (((((xdatetime).xdate)).apply (2008) (11) (14))))) ("Fri, 14 Nov 2008 00:00:00 -0000"))
+                xtest_rfc3339_date.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xrfc3339_date)).apply (((((xdatetime).xdatetime)).apply (2008) (11) (14) (13) (37) (0))))) ("2008-11-14T13:37:00Z"))
+                xtest_rfc3339_date_with_timezone.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xrfc3339_date)).apply ((((unsupported)).apply (((xdatetime).xdatetime)) (2008) (11) (14) (13) (37) (0) ((((xget_fixed_timezone)).apply (120))))))) ("2008-11-14T13:37:00+02:00"))
+                xtest_rfc3339_date_without_time.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xfeedgenerator).xrfc3339_date)).apply (((((xdatetime).xdate)).apply (2008) (11) (14))))) ("2008-11-14T00:00:00Z"))
+                xtest_atom1_mime_type.write
+                  [xself]
+                    memory > xatom_feed
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xatom_feed.write ((((xfeedgenerator).xAtom1Feed)).apply ("title") ("link") ("description"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xatom_feed).xcontent_type)) ("application/atom+xml; charset=utf-8"))
+                xtest_rss_mime_type.write
+                  [xself]
+                    memory > xrss_feed
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xrss_feed.write ((((xfeedgenerator).xRss201rev2Feed)).apply ("title") ("link") ("description"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xrss_feed).xcontent_type)) ("application/rss+xml; charset=utf-8"))
+                xtest_feed_without_feed_url_gets_rendered_without_atom_link.write
+                  [xself]
+                    memory > xfeed
+                    memory > xfeed_content
+                    seq > @
+                      seq
+                        xfeed.write ((((xfeedgenerator).xRss201rev2Feed)).apply ("title") ("/link/") ("descr"))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((unsupported)).apply (((xfeed).xfeed)) ("feed_url"))))
+                        xfeed_content.write ((((xfeed).xwriteString)).apply ("utf-8"))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("<atom:link") ((xfeed_content)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("href=\"/feed/\"") ((xfeed_content)))
+                        bogusForceDataize.write ((((xself).xassertNotIn)).apply ("rel=\"self\"") ((xfeed_content)))
+                xtest_feed_with_feed_url_gets_rendered_with_atom_link.write
+                  [xself]
+                    memory > xfeed
+                    memory > xfeed_content
+                    seq > @
+                      seq
+                        xfeed.write (((unsupported)).apply (((xfeedgenerator).xRss201rev2Feed)) ("title") ("/link/") ("descr") ("/feed/"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xfeed).xfeed)) ("feed_url"))) ("/feed/"))
+                        xfeed_content.write ((((xfeed).xwriteString)).apply ("utf-8"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("<atom:link") ((xfeed_content)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("href=\"/feed/\"") ((xfeed_content)))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("rel=\"self\"") ((xfeed_content)))
+                xtest_atom_add_item.write
+                  [xself]
+                    memory > xfeed
+                    seq > @
+                      seq
+                        xfeed.write ((((xfeedgenerator).xAtom1Feed)).apply ("title") ("/link/") ("descr"))
+                        bogusForceDataize.write ((((xfeed).xadd_item)).apply ("item_title") ("item_link") ("item_description"))
+                        bogusForceDataize.write ((((xfeed).xwriteString)).apply ("utf-8"))
+                xtest_deterministic_attribute_order.write
+                  [xself]
+                    memory > xfeed
+                    memory > xfeed_content
+                    seq > @
+                      seq
+                        xfeed.write ((((xfeedgenerator).xAtom1Feed)).apply ("title") ("/link/") ("desc"))
+                        xfeed_content.write ((((xfeed).xwriteString)).apply ("utf-8"))
+                        bogusForceDataize.write ((((xself).xassertIn)).apply ("href=\"/link/\" rel=\"alternate\"") ((xfeed_content)))
+                xtest_latest_post_date_returns_utc_time.write
+                  [xself]
+                    memory > xrss_feed
+                    seq > @
+                      (((unsupported)).apply ((xuse_tz)) ((((unsupported)).apply (TRUE) ((xfalse)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ((xuse_tz)))))
+                          seq
+                            xrss_feed.write ((((xfeedgenerator).xRss201rev2Feed)).apply ("title") ("link") ("description"))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xrss_feed).xlatest_post_date)).apply).xtzinfo)) ((((xdatetime).xtimezone).xutc)))

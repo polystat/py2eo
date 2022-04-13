@@ -1,0 +1,118 @@
+memory > xreverse
+memory > xAdminSeleniumTestCase
+memory > xBookmark
+memory > xBy
+memory > xUser
+memory > xoverride_settings
+memory > xActionChains
+[] > test_prevent_double_submission
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_cancel_double_submit_alert
+        memory > x_double_click_submit
+        memory > xtest_confirm_double_submit_alert
+        memory > xtest_submit_and_go_back
+        memory > xavailable_apps2
+        memory > xsetUp
+        memory > xtest_single_submit_click_is_success_without_alert
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xAdminSeleniumTestCase)) ((((unsupported)).apply ((xoverride_settings)) ("admin_views.urls"))))
+              seq
+                xavailable_apps2.write ((((unsupported)).apply ("admin_views")).add ((xAdminSeleniumTestCase).xavailable_apps))
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xBOOKMARK_ADD_URL)) ((((xreverse)).apply ("admin:admin_views_bookmark_add"))))
+                        (((unsupported)).apply (((xself).xBOOKMARK_LIST_URL)) ((((xreverse)).apply ("admin:admin_views_bookmark_changelist"))))
+                        (((unsupported)).apply (((xself).xALERT_MESSAGE)) ("You have already submitted this form. Are you sure you want to submit it again?"))
+                        (((unsupported)).apply (((xself).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("secret") ("super@example.com"))))
+                        (((unsupported)).apply (((xself).xadmin_login)) ("super") ("secret") ((((xreverse)).apply ("admin:index"))))
+                xtest_single_submit_click_is_success_without_alert.write
+                  [xself]
+                    memory > xsave_button
+                    memory > xinput_
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).add ((xself).xBOOKMARK_ADD_URL))))
+                        xinput_.write (((((xself).xselenium).xfind_element)).apply (((xBy).xID)) ("id_name"))
+                        bogusForceDataize.write ((((xinput_).xsend_keys)).apply ("Bookmark name"))
+                        xsave_button.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("input[name=_save]"))
+                        bogusForceDataize.write ((((xsave_button).xclick)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xselenium).xcurrent_url)) ((((xself).xlive_server_url).add ((xself).xBOOKMARK_LIST_URL))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xBookmark).xobjects).xcount)).apply)) (1))
+                x_double_click_submit.write
+                  [xself]
+                    memory > xsave_button
+                    memory > xinput_
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).add ((xself).xBOOKMARK_ADD_URL))))
+                        xinput_.write (((((xself).xselenium).xfind_element)).apply (((xBy).xID)) ("id_name"))
+                        bogusForceDataize.write ((((xinput_).xsend_keys)).apply ("Bookmark name"))
+                        xsave_button.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("input[name=_save]"))
+                        bogusForceDataize.write (((((((((xActionChains)).apply (((xself).xselenium))).xdouble_click)).apply ((xsave_button))).xperform)).apply)
+                xtest_confirm_double_submit_alert.write
+                  [xself]
+                    memory > xOBJECTS_CREATED
+                    memory > xalert
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).x_double_click_submit)).apply)
+                        xalert.write ((((xself).xselenium).xswitch_to).xalert)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xalert).xtext)) (((xself).xALERT_MESSAGE)))
+                        bogusForceDataize.write ((((xalert).xaccept)).apply)
+                        bogusForceDataize.write ((((xself).xwait_page_ready)).apply)
+                        xOBJECTS_CREATED.write 1
+                        (((xself).xbrowser).eq "chrome").if
+                          xOBJECTS_CREATED.write 2
+                          (((xself).xbrowser).eq "firefox").if
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xBookmark).xobjects).xcount)).apply)) ((xOBJECTS_CREATED)))
+                xtest_cancel_double_submit_alert.write
+                  [xself]
+                    memory > xalert
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xself).x_double_click_submit)).apply)
+                        xalert.write ((((xself).xselenium).xswitch_to).xalert)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xalert).xtext)) (((xself).xALERT_MESSAGE)))
+                        bogusForceDataize.write ((((xalert).xdismiss)).apply)
+                        bogusForceDataize.write ((((xself).xwait_page_ready)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xBookmark).xobjects).xcount)).apply)) (1))
+                xtest_submit_and_go_back.write
+                  [xself]
+                    memory > xsave_button
+                    memory > xinput_
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((((xself).xselenium).xget)).apply ((((xself).xlive_server_url).add ((xself).xBOOKMARK_ADD_URL))))
+                        xinput_.write (((((xself).xselenium).xfind_element)).apply (((xBy).xID)) ("id_name"))
+                        bogusForceDataize.write ((((xinput_).xsend_keys)).apply ("Bookmark name"))
+                        xsave_button.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("input[name=_save]"))
+                        bogusForceDataize.write ((((xsave_button).xclick)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xBookmark).xobjects).xcount)).apply)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xselenium).xcurrent_url)) ((((xself).xlive_server_url).add ((xself).xBOOKMARK_LIST_URL))))
+                        bogusForceDataize.write (((((xself).xselenium).xback)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xself).xselenium).xcurrent_url)) ((((xself).xlive_server_url).add ((xself).xBOOKMARK_ADD_URL))))
+                        xinput_.write (((((xself).xselenium).xfind_element)).apply (((xBy).xID)) ("id_name"))
+                        bogusForceDataize.write ((((xinput_).xclear)).apply)
+                        bogusForceDataize.write ((((xinput_).xsend_keys)).apply ("Other bookmark name"))
+                        xsave_button.write (((((xself).xselenium).xfind_element)).apply (((xBy).xCSS_SELECTOR)) ("input[name=_save]"))
+                        bogusForceDataize.write ((((xsave_button).xclick)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xBookmark).xobjects).xcount)).apply)) (2))

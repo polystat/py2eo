@@ -1,0 +1,251 @@
+memory > xlist
+memory > xregister_tests
+memory > xNaturalKeyThing
+memory > xTestCase
+memory > xNaturalPKWithDefault
+memory > xFKAsPKNoNaturalKey
+memory > xNaturalKeyAnchor
+memory > xconnection
+memory > xtype
+memory > xFKDataNaturalKey
+memory > xobj
+memory > xchild
+memory > xChild
+memory > xlen
+memory > xNaturalKeySerializerTests
+memory > xserializers
+[] > test_natural
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xforward_ref_fk_with_error_test
+        memory > xfk_as_pk_natural_key_not_called
+        memory > xnatural_pk_mti_test
+        memory > xnatural_key_test
+        memory > xpk_with_default
+        memory > xforward_ref_m2m_test
+        memory > xnatural_key_serializer_test
+        memory > xforward_ref_fk_test
+        memory > xforward_ref_m2m_with_error_test
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+            xnatural_key_serializer_test.write
+              [xself xformat]
+                memory > xinstance
+                memory > xobjects
+                memory > xserialized_data
+                seq > @
+                  seq
+                    (((unsupported)).apply (((((xconnection).xconstraint_checks_disabled)).apply)))
+                      xobjects.write (((unsupported)).apply ((((unsupported)).apply ((((xNaturalKeyAnchor).xobjects).xcreate)) (1100) ("Natural Key Anghor"))) ((((unsupported)).apply ((((xFKDataNaturalKey).xobjects).xcreate)) (1101) (1100))) ((((unsupported)).apply ((((xFKDataNaturalKey).xobjects).xcreate)) (1102) ("None: is there a None literal in the EO language?"))))
+                    xserialized_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((xobjects)) (2) (TRUE))
+                    (((unsupported)).apply ((xobj)) (((((xserializers).xdeserialize)).apply ((xformat)) ((xserialized_data)))))
+                      bogusForceDataize.write ((((xobj).xsave)).apply)
+                    (((unsupported)).apply ((xobj)) ((xobjects)))
+                      seq
+                        xinstance.write (((unsupported)).apply (((((xobj).x__class__).xobjects).xget)) (((xobj).xpk)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xobj).xdata)) (((xinstance).xdata)) (("Objects with PK=%d not equal; expected '%s' (%s), got '%s' (%s)".mod (((unsupported)).apply (((xobj).xpk)) (((xobj).xdata)) ((((xtype)).apply (((xobj).xdata)))) ((xinstance)) ((((xtype)).apply (((xinstance).xdata))))))))
+            xnatural_key_test.write
+              [xself xformat]
+                memory > xbook1
+                memory > xbook2
+                memory > xadrian
+                memory > xstring_data
+                memory > xbooks
+                memory > xjames
+                seq > @
+                  seq
+                    xbook1.write (((unsupported)).apply ("data") ("978-1590597255") ("title") ("The Definitive Guide to Django: Web Development Done Right"))
+                    xbook2.write (((unsupported)).apply ("data") ("978-1590599969") ("title") ("Practical Django Projects"))
+                    xadrian.write (((((xNaturalKeyAnchor).xobjects).xcreate)).apply ((((unsupported)).apply ((xbook1)))))
+                    xjames.write (((((xNaturalKeyAnchor).xobjects).xcreate)).apply ((((unsupported)).apply ((xbook2)))))
+                    xstring_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((((((xNaturalKeyAnchor).xobjects).xall)).apply)) (2) (TRUE) (TRUE))
+                    bogusForceDataize.write ((((xjames).xdelete)).apply)
+                    xbooks.write (((xlist)).apply (((((xserializers).xdeserialize)).apply ((xformat)) ((xstring_data)))))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xbooks)))) (2))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((unsupported)).apply ((xbooks)) (0)).xobject).xtitle)) ((((unsupported)).apply ((xbook1)) ("title"))))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((unsupported)).apply ((xbooks)) (0)).xobject).xpk)) (((xadrian).xpk)))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((unsupported)).apply ((xbooks)) (1)).xobject).xtitle)) ((((unsupported)).apply ((xbook2)) ("title"))))
+                    bogusForceDataize.write ((((xself).xassertIsNone)).apply ((((((unsupported)).apply ((xbooks)) (1)).xobject).xpk)))
+            xnatural_pk_mti_test.write
+              [xself xformat]
+                memory > xchild_2
+                memory > xstring_data
+                memory > xchild_1
+                memory > xchildren
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xchild_1.write (((unsupported)).apply ((((xChild).xobjects).xcreate)) ("1") ("1"))
+                    xchild_2.write (((unsupported)).apply ((((xChild).xobjects).xcreate)) ("2") ("2"))
+                    xstring_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((((unsupported)).apply (((xchild_1).xparent_ptr)) (((xchild_2).xparent_ptr)) ((xchild_2)) ((xchild_1)))) (TRUE) (TRUE))
+                    bogusForceDataize.write ((((xchild_1).xdelete)).apply)
+                    bogusForceDataize.write ((((xchild_2).xdelete)).apply)
+                    (((unsupported)).apply ((xobj)) (((((xserializers).xdeserialize)).apply ((xformat)) ((xstring_data)))))
+                      bogusForceDataize.write ((((xobj).xsave)).apply)
+                    xchildren.write (((((xChild).xobjects).xall)).apply)
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xchildren)))) (2))
+                    (((unsupported)).apply ((xchild)) ((xchildren)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply (((xchild).xchild_data)) (((xchild).xparent_data)))
+            xforward_ref_fk_test.write
+              [xself xformat]
+                memory > xstring_data
+                memory > xt1
+                memory > xt2
+                memory > xobjs_with_deferred_fields
+                seq > @
+                  seq
+                    xt1.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t1"))
+                    xt2.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t2") ((xt1)))
+                    (((unsupported)).apply (((xt1).xother_thing)) ((xt2)))
+                    bogusForceDataize.write ((((xt1).xsave)).apply)
+                    xstring_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((((unsupported)).apply ((xt1)) ((xt2)))) (TRUE) (TRUE))
+                    bogusForceDataize.write ((((((((xNaturalKeyThing).xobjects).xall)).apply).xdelete)).apply)
+                    xobjs_with_deferred_fields.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xobj)) ((((unsupported)).apply (((xserializers).xdeserialize)) ((xformat)) ((xstring_data)) (TRUE))))
+                      seq
+                        bogusForceDataize.write ((((xobj).xsave)).apply)
+                        ((xobj).xdeferred_fields).if
+                          bogusForceDataize.write ((((xobjs_with_deferred_fields).xappend)).apply ((xobj)))
+                    (((unsupported)).apply ((xobj)) ((xobjs_with_deferred_fields)))
+                      bogusForceDataize.write ((((xobj).xsave_deferred_fields)).apply)
+                    xt1.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xget)) ("t1"))
+                    xt2.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xget)) ("t2"))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply (((xt1).xother_thing)) ((xt2)))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply (((xt2).xother_thing)) ((xt1)))
+            xforward_ref_fk_with_error_test.write
+              [xself xformat]
+                memory > xt2
+                memory > xmsg
+                memory > xobjs_with_deferred_fields
+                memory > xobj
+                memory > xstring_data
+                memory > xt1
+                seq > @
+                  seq
+                    xt1.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t1"))
+                    xt2.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t2") ((xt1)))
+                    (((unsupported)).apply (((xt1).xother_thing)) ((xt2)))
+                    bogusForceDataize.write ((((xt1).xsave)).apply)
+                    xstring_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((((unsupported)).apply ((xt1)))) (TRUE) (TRUE))
+                    bogusForceDataize.write ((((((((xNaturalKeyThing).xobjects).xall)).apply).xdelete)).apply)
+                    xobjs_with_deferred_fields.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xobj)) ((((unsupported)).apply (((xserializers).xdeserialize)) ((xformat)) ((xstring_data)) (TRUE))))
+                      seq
+                        bogusForceDataize.write ((((xobj).xsave)).apply)
+                        ((xobj).xdeferred_fields).if
+                          bogusForceDataize.write ((((xobjs_with_deferred_fields).xappend)).apply ((xobj)))
+                    xobj.write (((unsupported)).apply ((xobjs_with_deferred_fields)) (0))
+                    xmsg.write "NaturalKeyThing matching query does not exist"
+                    (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((((xserializers).xbase).xDeserializationError)) ((xmsg)))))
+                      bogusForceDataize.write ((((xobj).xsave_deferred_fields)).apply)
+            xforward_ref_m2m_test.write
+              [xself xformat]
+                memory > xt2
+                memory > xobjs_with_deferred_fields
+                memory > xt3
+                memory > xstring_data
+                memory > xt1
+                seq > @
+                  seq
+                    xt1.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t1"))
+                    xt2.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t2"))
+                    xt3.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t3"))
+                    bogusForceDataize.write (((((xt1).xother_things).xset)).apply ((((unsupported)).apply ((xt2)) ((xt3)))))
+                    xstring_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((((unsupported)).apply ((xt1)) ((xt2)) ((xt3)))) (TRUE) (TRUE))
+                    bogusForceDataize.write ((((((((xNaturalKeyThing).xobjects).xall)).apply).xdelete)).apply)
+                    xobjs_with_deferred_fields.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xobj)) ((((unsupported)).apply (((xserializers).xdeserialize)) ((xformat)) ((xstring_data)) (TRUE))))
+                      seq
+                        bogusForceDataize.write ((((xobj).xsave)).apply)
+                        ((xobj).xdeferred_fields).if
+                          bogusForceDataize.write ((((xobjs_with_deferred_fields).xappend)).apply ((xobj)))
+                    (((unsupported)).apply ((xobj)) ((xobjs_with_deferred_fields)))
+                      bogusForceDataize.write ((((xobj).xsave_deferred_fields)).apply)
+                    xt1.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xget)) ("t1"))
+                    xt2.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xget)) ("t2"))
+                    xt3.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xget)) ("t3"))
+                    bogusForceDataize.write ((((xself).xassertCountEqual)).apply ((((((xt1).xother_things).xall)).apply)) ((((unsupported)).apply ((xt2)) ((xt3)))))
+            xforward_ref_m2m_with_error_test.write
+              [xself xformat]
+                memory > xt2
+                memory > xmsg
+                memory > xobjs_with_deferred_fields
+                memory > xt3
+                memory > xobj
+                memory > xstring_data
+                memory > xt1
+                seq > @
+                  seq
+                    xt1.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t1"))
+                    xt2.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t2"))
+                    xt3.write (((unsupported)).apply ((((xNaturalKeyThing).xobjects).xcreate)) ("t3"))
+                    bogusForceDataize.write (((((xt1).xother_things).xset)).apply ((((unsupported)).apply ((xt2)) ((xt3)))))
+                    bogusForceDataize.write ((((xt1).xsave)).apply)
+                    xstring_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((((unsupported)).apply ((xt1)) ((xt2)))) (TRUE) (TRUE))
+                    bogusForceDataize.write ((((((((xNaturalKeyThing).xobjects).xall)).apply).xdelete)).apply)
+                    xobjs_with_deferred_fields.write (((unsupported)).apply)
+                    (((unsupported)).apply ((xobj)) ((((unsupported)).apply (((xserializers).xdeserialize)) ((xformat)) ((xstring_data)) (TRUE))))
+                      seq
+                        bogusForceDataize.write ((((xobj).xsave)).apply)
+                        ((xobj).xdeferred_fields).if
+                          bogusForceDataize.write ((((xobjs_with_deferred_fields).xappend)).apply ((xobj)))
+                    xobj.write (((unsupported)).apply ((xobjs_with_deferred_fields)) (0))
+                    xmsg.write "NaturalKeyThing matching query does not exist"
+                    (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((((xserializers).xbase).xDeserializationError)) ((xmsg)))))
+                      bogusForceDataize.write ((((xobj).xsave_deferred_fields)).apply)
+            xpk_with_default.write
+              [xself xformat]
+                memory > xstring_data
+                memory > xobjs
+                memory > xobj
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xobj.write (((unsupported)).apply ((((xNaturalPKWithDefault).xobjects).xcreate)) ("name"))
+                    xstring_data.write (((unsupported)).apply (((xserializers).xserialize)) ((xformat)) ((((((xNaturalPKWithDefault).xobjects).xall)).apply)) (TRUE) (TRUE))
+                    xobjs.write (((xlist)).apply (((((xserializers).xdeserialize)).apply ((xformat)) ((xstring_data)))))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xobjs)))) (1))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((unsupported)).apply ((xobjs)) (0)).xobject).xpk)) (((xobj).xpk)))
+            xfk_as_pk_natural_key_not_called.write
+              [xself xformat]
+                memory > xdeserialized_objects
+                memory > xserialized_data
+                memory > xo2
+                memory > xo1
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    xo1.write (((unsupported)).apply ((((xNaturalKeyAnchor).xobjects).xcreate)) ("978-1590599969"))
+                    xo2.write (((unsupported)).apply ((((xFKAsPKNoNaturalKey).xobjects).xcreate)) ((xo1)))
+                    xserialized_data.write ((((xserializers).xserialize)).apply ((xformat)) ((((unsupported)).apply ((xo1)) ((xo2)))))
+                    xdeserialized_objects.write (((xlist)).apply (((((xserializers).xdeserialize)).apply ((xformat)) ((xserialized_data)))))
+                    bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply ((xdeserialized_objects)))) (2))
+                    (((unsupported)).apply ((xobj)) ((xdeserialized_objects)))
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xobj).xobject).xpk)) (((xo1).xpk)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_natural_key_serializer") ((xnatural_key_serializer_test)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_serializer_natural_keys") ((xnatural_key_test)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_serializer_natural_pks_mti") ((xnatural_pk_mti_test)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_forward_references_fks") ((xforward_ref_fk_test)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_forward_references_fk_errors") ((xforward_ref_fk_with_error_test)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_forward_references_m2ms") ((xforward_ref_m2m_test)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_forward_references_m2m_errors") ((xforward_ref_m2m_with_error_test)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_pk_with_default") ((xpk_with_default)))
+            bogusForceDataize.write (((xregister_tests)).apply ((xNaturalKeySerializerTests)) ("test_%s_fk_as_pk_natural_key_not_called") ((xfk_as_pk_natural_key_not_called)))

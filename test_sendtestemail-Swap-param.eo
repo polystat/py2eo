@@ -1,0 +1,88 @@
+memory > xcall_command
+memory > xoverride_settings
+memory > xsorted
+memory > xmail
+memory > xlen
+memory > xSimpleTestCase
+[] > test_sendtestemail
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_admin_receivers
+        memory > xtest_manager_receivers
+        memory > xtest_single_receiver
+        memory > xtest_manager_and_admin_receivers
+        memory > xtest_multiple_receivers
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)) ((((unsupported)).apply ((xoverride_settings)) ((((unsupported)).apply ((((unsupported)).apply ("Admin") ("admin@example.com"))) ((((unsupported)).apply ("Admin and Manager") ("admin_and_manager@example.com"))))) ((((unsupported)).apply ((((unsupported)).apply ("Manager") ("manager@example.com"))) ((((unsupported)).apply ("Admin and Manager") ("admin_and_manager@example.com"))))))))
+              seq
+                (((unsupported)).apply)
+                xtest_single_receiver.write
+                  [xself]
+                    memory > xrecipient
+                    memory > xmail_message
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xrecipient.write "joe@example.com"
+                        bogusForceDataize.write (((xcall_command)).apply ("sendtestemail") ((xrecipient)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (1) ((((xlen)).apply (((xmail).xoutbox)))))
+                        xmail_message.write (((unsupported)).apply (((xmail).xoutbox)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xmail_message).xsubject)) ((((unsupported)).apply (0) (15))))) ("Test email from"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xmail_message).xrecipients)).apply)) ((((unsupported)).apply ((xrecipient)))))
+                xtest_multiple_receivers.write
+                  [xself]
+                    memory > xrecipients
+                    memory > xmail_message
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xrecipients.write (((unsupported)).apply ("joe@example.com") ("jane@example.com"))
+                        bogusForceDataize.write (((xcall_command)).apply ("sendtestemail") ((((unsupported)).apply ((xrecipients)) (0))) ((((unsupported)).apply ((xrecipients)) (1))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xmail).xoutbox)))) (1))
+                        xmail_message.write (((unsupported)).apply (((xmail).xoutbox)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xmail_message).xsubject)) ((((unsupported)).apply (0) (15))))) ("Test email from"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsorted)).apply (((((xmail_message).xrecipients)).apply)))) ((((unsupported)).apply ("jane@example.com") ("joe@example.com"))))
+                xtest_manager_receivers.write
+                  [xself]
+                    memory > xmail_message
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((xcall_command)).apply ("sendtestemail") ("--managers"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xmail).xoutbox)))) (1))
+                        xmail_message.write (((unsupported)).apply (((xmail).xoutbox)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsorted)).apply (((((xmail_message).xrecipients)).apply)))) ((((unsupported)).apply ("admin_and_manager@example.com") ("manager@example.com"))))
+                xtest_admin_receivers.write
+                  [xself]
+                    memory > xmail_message
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((xcall_command)).apply ("sendtestemail") ("--admins"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xmail).xoutbox)))) (1))
+                        xmail_message.write (((unsupported)).apply (((xmail).xoutbox)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsorted)).apply (((((xmail_message).xrecipients)).apply)))) ((((unsupported)).apply ("admin@example.com") ("admin_and_manager@example.com"))))
+                xtest_manager_and_admin_receivers.write
+                  [xself]
+                    memory > xadmin_mail
+                    memory > xmanager_mail
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((xcall_command)).apply ("sendtestemail") ("--managers") ("--admins"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlen)).apply (((xmail).xoutbox)))) (2))
+                        xmanager_mail.write (((unsupported)).apply (((xmail).xoutbox)) (0))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsorted)).apply (((((xmanager_mail).xrecipients)).apply)))) ((((unsupported)).apply ("admin_and_manager@example.com") ("manager@example.com"))))
+                        xadmin_mail.write (((unsupported)).apply (((xmail).xoutbox)) (1))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xsorted)).apply (((((xadmin_mail).xrecipients)).apply)))) ((((unsupported)).apply ("admin@example.com") ("admin_and_manager@example.com"))))

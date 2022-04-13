@@ -1,0 +1,221 @@
+memory > xContentFile
+memory > xTemporaryUploadedFile
+memory > xAbstractMyDocument
+memory > xtempfile
+memory > xopen
+memory > xPath
+memory > xSuspiciousFileOperation
+memory > xMyDocument
+memory > xoverride_settings
+memory > xtmp_file
+memory > xIntegrityError
+memory > x__file__
+memory > xmodels
+memory > xfp
+memory > xtmp
+memory > xpickle
+memory > xTestCase
+memory > xDocument
+memory > xtmp_dir
+memory > xFile
+memory > xos
+[] > test_filefield
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_unique_when_same_filename
+        memory > xtest_pickle
+        memory > xtest_delete_when_file_unset
+        memory > xtest_changed
+        memory > xtest_media_root_pathlib
+        memory > xtest_abstract_filefield_model
+        memory > xtest_unchanged
+        memory > xtest_refresh_from_db
+        memory > xtest_defer
+        memory > xtest_save_without_name
+        memory > xtest_clearable
+        memory > xtest_move_temporary_file
+        memory > xtest_open_returns_self
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xtest_clearable.write
+                  [xself]
+                    memory > xd
+                    memory > xfield
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xd.write (((unsupported)).apply ((xDocument)) ("something.txt"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ("something.txt") (((xd).xmyfile)))
+                        xfield.write (((((xd).x_meta).xget_field)).apply ("myfile"))
+                        bogusForceDataize.write ((((xfield).xsave_form_data)).apply ((xd)) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xd).xmyfile)) (""))
+                xtest_unchanged.write
+                  [xself]
+                    memory > xd
+                    memory > xfield
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xd.write (((unsupported)).apply ((xDocument)) ("something.txt"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xd).xmyfile)) ("something.txt"))
+                        xfield.write (((((xd).x_meta).xget_field)).apply ("myfile"))
+                        bogusForceDataize.write ((((xfield).xsave_form_data)).apply ((xd)) ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xd).xmyfile)) ("something.txt"))
+                xtest_changed.write
+                  [xself]
+                    memory > xd
+                    memory > xfield
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xd.write (((unsupported)).apply ((xDocument)) ("something.txt"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xd).xmyfile)) ("something.txt"))
+                        xfield.write (((((xd).x_meta).xget_field)).apply ("myfile"))
+                        bogusForceDataize.write ((((xfield).xsave_form_data)).apply ((xd)) ("else.txt"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xd).xmyfile)) ("else.txt"))
+                xtest_delete_when_file_unset.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xd.write (((xDocument)).apply)
+                        bogusForceDataize.write (((((xd).xmyfile).xdelete)).apply)
+                xtest_refresh_from_db.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        xd.write (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ("something.txt"))
+                        bogusForceDataize.write ((((xd).xrefresh_from_db)).apply)
+                        bogusForceDataize.write ((((xself).xassertIs)).apply ((((xd).xmyfile).xinstance)) ((xd)))
+                xtest_save_without_name.write
+                  [xself]
+                    memory > xmsg
+                    memory > xdocument
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((xtempfile).xNamedTemporaryFile)) (".txt"))) ((xtmp)))
+                          seq
+                            xdocument.write (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ("something.txt"))
+                            (((unsupported)).apply (((xdocument).xmyfile)) ((((xFile)).apply ((xtmp)))))
+                            xmsg.write "Detected path traversal attempt in '{tmp.name}'"
+                            (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xSuspiciousFileOperation)) ((xmsg)))))
+                              bogusForceDataize.write ((((xdocument).xsave)).apply)
+                xtest_defer.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ("something.txt"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((unsupported)).apply ((((((xDocument).xobjects).xdefer)).apply ("myfile"))) (0)).xmyfile)) ("something.txt"))
+                xtest_unique_when_same_filename.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ("something.txt"))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xIntegrityError)))))
+                          (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ("something.txt"))
+                xtest_move_temporary_file.write
+                  [xself]
+                    memory > xtmp_file_path
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xTemporaryUploadedFile)).apply ("something.txt") ("text/plain") (0) ("UTF-8"))) ((xtmp_file)))
+                          seq
+                            xtmp_file_path.write ((((xtmp_file).xtemporary_file_path)).apply)
+                            (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ((xtmp_file)))
+                            bogusForceDataize.write ((((xself).xassertFalse)).apply ((((((xos).xpath).xexists)).apply ((xtmp_file_path)))) ("Temporary file still exists"))
+                xtest_open_returns_self.write
+                  [xself]
+                    memory > xd
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xd.write (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ("something.txt"))
+                        (((unsupported)).apply ((((xd).xmyfile).xfile)) ((((unsupported)).apply ((xContentFile)) ("") ("bla"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xd).xmyfile)) ((((((xd).xmyfile).xopen)).apply)))
+                xtest_media_root_pathlib.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xtempfile).xTemporaryDirectory)).apply)) ((xtmp_dir)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xoverride_settings)) ((((xPath)).apply ((xtmp_dir)))))))
+                          (((unsupported)).apply ((((xTemporaryUploadedFile)).apply ("foo.txt") ("text/plain") (1) ("utf-8"))) ((xtmp_file)))
+                            seq
+                              (((unsupported)).apply ((((xDocument).xobjects).xcreate)) ((xtmp_file)))
+                              bogusForceDataize.write ((((xself).xassertTrue)).apply ((((((xos).xpath).xexists)).apply ((((((xos).xpath).xjoin)).apply ((xtmp_dir)) ("unused") ("foo.txt"))))))
+                xtest_pickle.write
+                  [xself]
+                    memory > xloaded_myfile
+                    memory > xmyfile_dump
+                    memory > xdump
+                    memory > xloaded_document
+                    memory > xfile1
+                    memory > xdocument
+                    seq > @
+                      (((unsupported)).apply (((((xtempfile).xTemporaryDirectory)).apply)) ((xtmp_dir)))
+                        (((unsupported)).apply ((((unsupported)).apply ((xoverride_settings)) ((((xPath)).apply ((xtmp_dir)))))))
+                          (((unsupported)).apply ((((xopen)).apply ((x__file__)) ("rb"))) ((xfp)))
+                            seq
+                              xfile1.write (((unsupported)).apply ((xFile)) ((xfp)) ("test_file.py"))
+                              xdocument.write (((unsupported)).apply ((xDocument)) ("test_file.py"))
+                              bogusForceDataize.write (((((xdocument).xmyfile).xsave)).apply ("test_file.py") ((xfile1)))
+                              (((unsupported)).apply)
+                                seq
+                                  xdump.write ((((xpickle).xdumps)).apply ((xdocument)))
+                                  xloaded_document.write ((((xpickle).xloads)).apply ((xdump)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdocument).xmyfile)) (((xloaded_document).xmyfile)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xurl)) ((((xloaded_document).xmyfile).xurl)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xstorage)) ((((xloaded_document).xmyfile).xstorage)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xinstance)) ((((xloaded_document).xmyfile).xinstance)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xfield)) ((((xloaded_document).xmyfile).xfield)))
+                                  xmyfile_dump.write ((((xpickle).xdumps)).apply (((xdocument).xmyfile)))
+                                  xloaded_myfile.write ((((xpickle).xloads)).apply ((xmyfile_dump)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply (((xdocument).xmyfile)) ((xloaded_myfile)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xurl)) (((xloaded_myfile).xurl)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xstorage)) (((xloaded_myfile).xstorage)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xinstance)) (((xloaded_myfile).xinstance)))
+                                  bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xdocument).xmyfile).xfield)) (((xloaded_myfile).xfield)))
+                                bogusForceDataize.write (((((xdocument).xmyfile).xdelete)).apply)
+                xtest_abstract_filefield_model.write
+                  [xself]
+                    memory > xabstract
+                    memory > xdocument
+                    memory > xmyfile
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (((unsupported)).apply (((xmodels).xModel)))
+                          seq
+                            xmyfile.write (((unsupported)).apply (((xmodels).xFileField)) ("unused"))
+                            (((unsupported)).apply)
+                              xabstract.write TRUE
+                        (((unsupported)).apply ((xAbstractMyDocument)))
+                        xdocument.write (((unsupported)).apply ((xMyDocument)) ("test_file.py"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xdocument).xmyfile).xfield).xmodel)) ((xMyDocument)))

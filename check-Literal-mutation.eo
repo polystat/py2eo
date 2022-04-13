@@ -1,0 +1,69 @@
+memory > xchecks
+memory > xapps
+memory > xapp_label
+memory > xBaseCommand
+memory > xtag
+memory > xsorted
+memory > xapp_labels
+memory > xgetattr
+memory > xnext
+memory > xoptions
+memory > xCommandError
+memory > xregistry
+memory > xStopIteration
+[] > check
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xrequires_system_checks
+        memory > xadd_arguments
+        memory > xhelp
+        memory > xhandle
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xBaseCommand)))
+              seq
+                xhelp.write "Checks the entire Django project for potential problems."
+                xrequires_system_checks.write (((unsupported)).apply)
+                xadd_arguments.write
+                  [xself xparser]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("args") ("app_label") ("*"))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--tag") ("-t") ("append") ("tags") ("Run only checks labeled with given tag."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--list-tags") ("store_true") ("List available tags."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--deploy") ("store_true") ("Check deployment settings."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--fail-level") ("ERROR") ((((unsupported)).apply ("CRITICAL") ("ERROR") ("WARNING") ("INFO") ("DEBUG"))) ("Message level that will cause the command to exit with a non-zero status. Default is ERROR."))
+                        (((unsupported)).apply (((xparser).xadd_argument)) ("--database") ("append") ("databases") ("Run database related checks against these aliases."))
+                xhandle.write
+                  [xself]
+                    memory > xtags
+                    memory > xapp_configs
+                    memory > xinclude_deployment_checks
+                    memory > xinvalid_tag
+                    seq > @
+                      (((unsupported)).apply)
+                        xinclude_deployment_checks.write (((unsupported)).apply ((xoptions)) ("deploy"))
+                        (((unsupported)).apply ((xoptions)) ("list_tags")).if
+                          seq
+                            bogusForceDataize.write (((((xself).xstdout).xwrite)).apply (((("n".xjoin)).apply ((((xsorted)).apply (((((xregistry).xtags_available)).apply ((xinclude_deployment_checks)))))))))
+                            (((unsupported)).apply)
+                        (xapp_labels).if
+                          xapp_configs.write (((unsupported)).apply (((((xapps).xget_app_config)).apply ((xapp_label)))) ((xapp_label)) ((xapp_labels)))
+                          xapp_configs.write "None: is there a None literal in the EO language?"
+                        xtags.write (((unsupported)).apply ((xoptions)) ("tags"))
+                        (xtags).if
+                          (((unsupported)).apply ((xStopIteration)))
+                            xinvalid_tag.write (((xnext)).apply ((((unsupported)).apply ((xtag)) ((xtag)) ((xtags)) ((((((xchecks).xtag_exists)).apply ((xtag)) ((xinclude_deployment_checks))).not)))))
+                            (((unsupported)).apply ((((xCommandError)).apply (("There is no system check with the \"%s\" tag.".mod (xinvalid_tag))))))
+                        (((unsupported)).apply (((xself).xcheck)) ((xapp_configs)) ((xtags)) (TRUE) ((xinclude_deployment_checks)) ((((xgetattr)).apply ((xchecks)) ((((unsupported)).apply ((xoptions)) ("fail_level"))))) ((((unsupported)).apply ((xoptions)) ("databases"))))

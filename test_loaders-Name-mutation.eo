@@ -1,0 +1,308 @@
+memory > xlist
+memory > xtmpfile
+memory > xEngine
+memory > xtempfile
+memory > xorigin
+memory > xPermissionError
+memory > xTEMPLATE_DIR
+memory > xcheck_sources
+memory > xSimpleTestCase
+memory > xTypeError
+memory > xsuper
+memory > xs
+memory > xsys
+memory > xos
+memory > xTemplateDoesNotExist
+memory > xIsADirectoryError
+memory > xlazystr
+[] > test_loaders
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_file_does_not_exist
+        memory > xset_dirs
+        memory > xtest_case_sensitivity
+        memory > xsource_checker
+        memory > xtest_loaders_dirs_empty
+        memory > xtest_permissions_error
+        memory > xtest_template_name_lazy_string
+        memory > xtest_directory_security
+        memory > xtest_unicode_dir_name
+        memory > xtest_cached_exception_no_traceback
+        memory > xtest_notafile_error
+        memory > xtest_not_installed
+        memory > xtest_get_template
+        memory > xtest_bytestring
+        memory > xsetUp
+        memory > xsetUpClass
+        memory > xtest_unicode_template_name
+        memory > xtest_get_template_missing_debug_on
+        memory > xtest_get_template_missing_debug_off
+        memory > xtest_loaders_dirs
+        memory > xtest_get_dirs
+        memory > xtest_template_name_leading_dash_caching
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xengine)) ((((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))) ((((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.cached.Loader") ((((unsupported)).apply ("django.template.loaders.filesystem.Loader"))))))))))
+                xtest_get_template.write
+                  [xself]
+                    memory > xtemplate2
+                    memory > xcache
+                    memory > xtemplate
+                    seq > @
+                      seq
+                        xtemplate2.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xname)) ((((((xos).xpath).xjoin)).apply ((xTEMPLATE_DIR)) ("index.html"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xtemplate_name)) ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xloader)) ((((unsupported)).apply (((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xloaders)) (0))))
+                        xcache.write ((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xget_template_cache)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xcache)) ("index.html"))) ((xtemplate)))
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xname)) ((((((xos).xpath).xjoin)).apply ((xTEMPLATE_DIR)) ("index.html"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xtemplate_name)) ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xloader)) ((((unsupported)).apply (((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xloaders)) (0))))
+                xtest_get_template_missing_debug_off.write
+                  [xself]
+                    memory > xe
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xengine).xdebug)) (FALSE))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("prod-template-missing.html"))
+                        xe.write (((unsupported)).apply (((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xget_template_cache)) ("prod-template-missing.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xe)) ((xTemplateDoesNotExist)))
+                xtest_get_template_missing_debug_on.write
+                  [xself]
+                    memory > xe
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xengine).xdebug)) (TRUE))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("debug-template-missing.html"))
+                        xe.write (((unsupported)).apply (((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xget_template_cache)) ("debug-template-missing.html"))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply ((xe)) ((xTemplateDoesNotExist)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xe).xargs)) (0))) ("debug-template-missing.html"))
+                xtest_cached_exception_no_traceback.write
+                  [xself]
+                    memory > xe
+                    memory > xerror_msg
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((xself).xengine).xdebug)) (TRUE))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("no-traceback-in-cache.html"))
+                        xe.write (((unsupported)).apply (((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xget_template_cache)) ("no-traceback-in-cache.html"))
+                        xerror_msg.write "Cached TemplateDoesNotExist must not have been thrown."
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xe).x__traceback__)) ((xerror_msg)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xe).x__context__)) ((xerror_msg)))
+                        bogusForceDataize.write ((((xself).xassertIsNone)).apply (((xe).x__cause__)) ((xerror_msg)))
+                xtest_template_name_leading_dash_caching.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xcache_key)).apply ("-template.html") ((((unsupported)).apply)))) ("-template.html"))
+                xtest_template_name_lazy_string.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xcache_key)).apply ((((xlazystr)).apply ("template.html"))) ((((unsupported)).apply)))) ("template.html"))
+                xtest_get_dirs.write
+                  [xself]
+                    memory > xinner_dirs
+                    seq > @
+                      seq
+                        xinner_dirs.write ((((((unsupported)).apply (((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xloaders)) (0)).xget_dirs)).apply)
+                        bogusForceDataize.write ((((xself).xassertSequenceEqual)).apply ((((xlist)).apply (((((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0)).xget_dirs)).apply)))) ((((xlist)).apply ((xinner_dirs)))))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUpClass.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xengine)) ((((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))) ((((unsupported)).apply ("django.template.loaders.filesystem.Loader"))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUpClass)).apply)
+                xset_dirs.write
+                  [xself xdirs]
+                    memory > xoriginal_dirs
+                    seq > @
+                      (((unsupported)).apply)
+                        xoriginal_dirs.write (((xself).xengine).xdirs)
+                        (((unsupported)).apply ((((xself).xengine).xdirs)) ((xdirs)))
+                        (((unsupported)).apply)
+                          (((unsupported)).apply)
+                          (((unsupported)).apply ((((xself).xengine).xdirs)) ((xoriginal_dirs)))
+                xsource_checker.write
+                  [xself xdirs]
+                    memory > xcheck_sources
+                    memory > xloader
+                    seq > @
+                      (((unsupported)).apply)
+                        xloader.write (((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0))
+                        xcheck_sources.write
+                          [xpath xexpected_sources]
+                            seq > @
+                              seq
+                                xexpected_sources.write (((unsupported)).apply ((((((xos).xpath).xabspath)).apply ((xs)))) ((xs)) ((xexpected_sources)))
+                                bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply (((xorigin).xname)) ((xorigin)) (((((xloader).xget_template_sources)).apply ((xpath)))))) ((xexpected_sources)))
+                        (((unsupported)).apply (((((xself).xset_dirs)).apply ((xdirs)))))
+                          (((unsupported)).apply ((xcheck_sources)))
+                xtest_get_template.write
+                  [xself]
+                    memory > xtemplate
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xname)) ((((((xos).xpath).xjoin)).apply ((xTEMPLATE_DIR)) ("index.html"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xtemplate_name)) ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xloader)) ((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xloader_name)) ("django.template.loaders.filesystem.Loader"))
+                xtest_loaders_dirs.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.filesystem.Loader") ((((unsupported)).apply ((xTEMPLATE_DIR)))))))))
+                        xtemplate.write ((((xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xname)) ((((((xos).xpath).xjoin)).apply ((xTEMPLATE_DIR)) ("index.html"))))
+                xtest_loaders_dirs_empty.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      seq
+                        unsupported
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))) ((((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.filesystem.Loader") ((((unsupported)).apply)))))))
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          bogusForceDataize.write ((((xengine).xget_template)).apply ("index.html"))
+                xtest_directory_security.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xsource_checker)).apply ((((unsupported)).apply ("/dir1") ("/dir2"))))) ((xcheck_sources)))
+                        seq
+                          bogusForceDataize.write (((xcheck_sources)).apply ("index.html") ((((unsupported)).apply ("/dir1/index.html") ("/dir2/index.html"))))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("/etc/passwd") ((((unsupported)).apply)))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("etc/passwd") ((((unsupported)).apply ("/dir1/etc/passwd") ("/dir2/etc/passwd"))))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("../etc/passwd") ((((unsupported)).apply)))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("../../../etc/passwd") ((((unsupported)).apply)))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("/dir1/index.html") ((((unsupported)).apply ("/dir1/index.html"))))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("../dir2/index.html") ((((unsupported)).apply ("/dir2/index.html"))))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("/dir1blah") ((((unsupported)).apply)))
+                          bogusForceDataize.write (((xcheck_sources)).apply ("../dir1blah") ((((unsupported)).apply)))
+                xtest_unicode_template_name.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xsource_checker)).apply ((((unsupported)).apply ("/dir1") ("/dir2"))))) ((xcheck_sources)))
+                        bogusForceDataize.write (((xcheck_sources)).apply ("Ångström") ((((unsupported)).apply ("/dir1/Ångström") ("/dir2/Ångström"))))
+                xtest_bytestring.write
+                  [xself]
+                    memory > xloader
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xloader.write (((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0))
+                        xmsg.write "Can't mix strings and bytes in path components"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTypeError)) ((xmsg)))))
+                          bogusForceDataize.write (((xlist)).apply (((((xloader).xget_template_sources)).apply ("xc3x85ngstrxc3xb6m"))))
+                xtest_unicode_dir_name.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xsource_checker)).apply ((((unsupported)).apply ("/Straße"))))) ((xcheck_sources)))
+                        bogusForceDataize.write (((xcheck_sources)).apply ("Ångström") ((((unsupported)).apply ("/Straße/Ångström"))))
+                xtest_case_sensitivity.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xsource_checker)).apply ((((unsupported)).apply ("/dir1") ("/DIR2"))))) ((xcheck_sources)))
+                          seq
+                            bogusForceDataize.write (((xcheck_sources)).apply ("index.html") ((((unsupported)).apply ("/dir1/index.html") ("/DIR2/index.html"))))
+                            bogusForceDataize.write (((xcheck_sources)).apply ("/DIR1/index.HTML") ((((unsupported)).apply ("/DIR1/index.HTML"))))
+                xtest_file_does_not_exist.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                        bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("doesnotexist.html"))
+                xtest_permissions_error.write
+                  [xself]
+                    memory > xtmppath
+                    memory > xtmpdir
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xtempfile).xNamedTemporaryFile)).apply)) ((xtmpfile)))
+                          seq
+                            xtmpdir.write (((((xos).xpath).xdirname)).apply (((xtmpfile).xname)))
+                            xtmppath.write (((((xos).xpath).xjoin)).apply ((xtmpdir)) (((xtmpfile).xname)))
+                            bogusForceDataize.write ((((xos).xchmod)).apply ((xtmppath)) (146))
+                            (((unsupported)).apply (((((xself).xset_dirs)).apply ((((unsupported)).apply ((xtmpdir)))))))
+                              (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xPermissionError)) ("Permission denied"))))
+                                bogusForceDataize.write (((((xself).xengine).xget_template)).apply (((xtmpfile).xname)))
+                xtest_notafile_error.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((((xself).xassertRaises)).apply (((((xsys).xplatform).eq "win32").if (xPermissionError) (xIsADirectoryError))))))
+                        bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("first"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUpClass.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xengine)) ((((unsupported)).apply ((xEngine)) ((((unsupported)).apply ("django.template.loaders.app_directories.Loader"))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUpClass)).apply)
+                xtest_get_template.write
+                  [xself]
+                    memory > xtemplate
+                    seq > @
+                      (((unsupported)).apply)
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xname)) ((((((xos).xpath).xjoin)).apply ((xTEMPLATE_DIR)) ("index.html"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xtemplate_name)) ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xloader)) ((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0))))
+                xtest_not_installed.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((((xself).xassertRaises)).apply ((xTemplateDoesNotExist)))))
+                          bogusForceDataize.write (((((xself).xengine).xget_template)).apply ("index.html"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUpClass.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xengine)) ((((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.locmem.Loader") ((((unsupported)).apply ("index.html") ("index"))))))))))
+                        bogusForceDataize.write ((((((xsuper)).apply).xsetUpClass)).apply)
+                xtest_get_template.write
+                  [xself]
+                    memory > xtemplate
+                    seq > @
+                      seq
+                        xtemplate.write (((((xself).xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xname)) ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xtemplate_name)) ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xloader)) ((((unsupported)).apply ((((xself).xengine).xtemplate_loaders)) (0))))

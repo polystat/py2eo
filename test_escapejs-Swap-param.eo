@@ -1,0 +1,73 @@
+memory > xstr
+memory > xstring
+memory > xescapejs_filter
+memory > xlazy
+memory > xSimpleTestCase
+[] > test_escapejs
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_whitespace
+        memory > xtest_backslashes
+        memory > xtest_escapejs01
+        memory > xtest_script
+        memory > xtest_quotes
+        memory > xtest_paragraph_separator
+        memory > xtest_lazy_string
+        memory > xtest_escapejs02
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_escapejs01.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("escapejs01") ((((unsupported)).apply ("a") ("testingrnjavascript 'string\" <b>escaping</b>"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply)) ((xoutput)))
+                xtest_escapejs02.write
+                  [xself]
+                    memory > xoutput
+                    seq > @
+                      (((unsupported)).apply)
+                        xoutput.write (((((xself).xengine).xrender_to_string)).apply ("escapejs02") ((((unsupported)).apply ("a") ("testingrnjavascript 'string\" <b>escaping</b>"))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xoutput)) ((((unsupported)).apply)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_quotes.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xescapejs_filter)).apply ("\"double quotes\" and 'single quotes'"))) ((((unsupported)).apply)))
+                xtest_backslashes.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xescapejs_filter)).apply (" : backslashes, too"))) ((((unsupported)).apply)))
+                xtest_whitespace.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xescapejs_filter)).apply ("and lots of whitespace: rntvfb"))) ((((unsupported)).apply)))
+                xtest_script.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xescapejs_filter)).apply ("<script>and this</script>"))) ((((unsupported)).apply)))
+                xtest_paragraph_separator.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xescapejs_filter)).apply ("paragraph separator:u2029and line separator:u2028"))) ((((unsupported)).apply)))
+                xtest_lazy_string.write
+                  [xself]
+                    memory > xappend_script
+                    seq > @
+                      seq
+                        xappend_script.write (((xlazy)).apply ((((unsupported)).apply (("<script>this</script>".add (xstring))))) ((xstr)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xescapejs_filter)).apply ((((xappend_script)).apply ("whitespace: rntvfb"))))) ((((unsupported)).apply)))

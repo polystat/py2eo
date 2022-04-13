@@ -1,0 +1,340 @@
+memory > xCoalesce
+memory > xConcatPair
+memory > xIntegerField
+memory > xValue
+memory > xsuper
+memory > xextra_context
+memory > xexpression
+memory > xLeft
+memory > xnumber
+memory > xMySQLSHA2Mixin
+memory > xFunc
+memory > xLength
+memory > xValueError
+memory > xCharField
+memory > xextra
+memory > xOracleHashMixin
+memory > xextra_content
+memory > xRPad
+memory > xhasattr
+memory > xTransform
+memory > xNotSupportedError
+memory > xPostgreSQLSHAMixin
+memory > xLPad
+memory > xexpressions
+memory > xSubstr
+memory > xlen
+[] > text
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtemplate
+        memory > xas_postgresql
+        memory > xget_substr
+        memory > xarity
+        memory > x_paired
+        memory > xlookup_name
+        memory > xas_sqlite
+        memory > x__init__
+        memory > xoutput_field
+        memory > xfunction
+        memory > xas_oracle
+        memory > xas_mysql
+        memory > xcoalesce
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              xas_mysql.write
+                [xself xcompiler xconnection]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) (("SHA2(%%(expressions)s, %s)".mod (((unsupported)).apply (((xself).xfunction)) ((((unsupported)).apply (3)))))) ((((unsupported)).apply ((xextra_content)))))))
+            (((unsupported)).apply)
+              xas_oracle.write
+                [xself xcompiler xconnection]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("LOWER(RAWTOHEX(STANDARD_HASH(UTL_I18N.STRING_TO_RAW(%(expressions)s, 'AL32UTF8'), '%(function)s')))") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply)
+              xas_postgresql.write
+                [xself xcompiler xconnection]
+                  seq > @
+                    (((unsupported)).apply)
+                      (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("ENCODE(DIGEST(%(expressions)s, '%(function)s'), 'hex')") ((((((xself).xfunction).xlower)).apply)) ((((unsupported)).apply ((xextra_content)))))))
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "CHR"
+                xlookup_name.write "chr"
+                xas_mysql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("CHAR") ("%(function)s(%(expressions)s USING utf16)") ((((unsupported)).apply ((xextra_context)))))))
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("%(function)s(%(expressions)s USING NCHAR_CS)") ((((unsupported)).apply ((xextra_context)))))))
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("CHAR") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                (((unsupported)).apply)
+                xfunction.write "CONCAT"
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    memory > xcoalesced
+                    seq > @
+                      (((unsupported)).apply)
+                        xcoalesced.write ((((xself).xcoalesce)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply ((xConcatPair)) ((xcoalesced))).xas_sql)) ((xcompiler)) ((xconnection)) ("%(expressions)s") (" || ") ((((unsupported)).apply ((xextra_context)))))))
+                xas_mysql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("CONCAT_WS") ("%(function)s('', %(expressions)s)") ((((unsupported)).apply ((xextra_context)))))))
+                xcoalesce.write
+                  [xself]
+                    memory > xc
+                    seq > @
+                      seq
+                        xc.write ((((xself).xcopy)).apply)
+                        bogusForceDataize.write ((((xc).xset_source_expressions)).apply ((((unsupported)).apply ((((xCoalesce)).apply ((xexpression)) ((((xValue)).apply (""))))) ((xexpression)) (((((xc).xget_source_expressions)).apply)))))
+                        (((unsupported)).apply ((xc)))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                (((unsupported)).apply)
+                xfunction.write "None: is there a None literal in the EO language?"
+                xtemplate.write "%(expressions)s"
+                x__init__.write
+                  [xself]
+                    memory > xpaired
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((xlen)).apply ((xexpressions))).less 2).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Concat must take at least two expressions"))))
+                        xpaired.write ((((xself).x_paired)).apply ((xexpressions)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xpaired)) ((((unsupported)).apply ((xextra)))))
+                x_paired.write
+                  [xself xexpressions]
+                    seq > @
+                      seq
+                        ((((xlen)).apply ((xexpressions))).eq 2).if
+                          (((unsupported)).apply ((((xConcatPair)).apply ((((unsupported)).apply ((xexpressions)))))))
+                        (((unsupported)).apply ((((xConcatPair)).apply ((((unsupported)).apply ((xexpressions)) (0))) (((((xself).x_paired)).apply ((((unsupported)).apply ((xexpressions)) ((((unsupported)).apply (1))))))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "LEFT"
+                xarity.write 2
+                xoutput_field.write (((xCharField)).apply)
+                x__init__.write
+                  [xself xexpression xlength]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((((xhasattr)).apply ((xlength)) ("resolve_expression")).not).if
+                          ((xlength).less 1).if
+                            (((unsupported)).apply ((((xValueError)).apply ("'length' must be greater than 0."))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)) ((xlength)) ((((unsupported)).apply ((xextra)))))
+                xget_substr.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xSubstr)).apply ((((unsupported)).apply (((xself).xsource_expressions)) (0))) ((((xValue)).apply (1))) ((((unsupported)).apply (((xself).xsource_expressions)) (1))))))
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((((xself).xget_substr)).apply).xas_oracle)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((((((xself).xget_substr)).apply).xas_sqlite)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xTransform)))
+              seq
+                unsupported
+                xfunction.write "LENGTH"
+                xlookup_name.write "length"
+                xoutput_field.write (((xIntegerField)).apply)
+                xas_mysql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("CHAR_LENGTH") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "LOWER"
+                xlookup_name.write "lower"
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "LPAD"
+                xoutput_field.write (((xCharField)).apply)
+                x__init__.write
+                  [xself xexpression xlength xfill_text]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((((xhasattr)).apply ((xlength)) ("resolve_expression")).not).and (((unsupported)).apply ((xlength)) ("None: is there a None literal in the EO language?"))).and ((xlength).less 0)).if
+                          (((unsupported)).apply ((((xValueError)).apply ("'length' must be greater or equal to 0."))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)) ((xlength)) ((xfill_text)) ((((unsupported)).apply ((xextra)))))
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "LTRIM"
+                xlookup_name.write "ltrim"
+            (((unsupported)).apply ((xOracleHashMixin)) ((xTransform)))
+              seq
+                xfunction.write "MD5"
+                xlookup_name.write "md5"
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "ASCII"
+                xlookup_name.write "ord"
+                xoutput_field.write (((xIntegerField)).apply)
+                xas_mysql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("ORD") ((((unsupported)).apply ((xextra_context)))))))
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("UNICODE") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "REPEAT"
+                xoutput_field.write (((xCharField)).apply)
+                x__init__.write
+                  [xself xexpression xnumber]
+                    seq > @
+                      (((unsupported)).apply)
+                        ((((((xhasattr)).apply ((xnumber)) ("resolve_expression")).not).and (((unsupported)).apply ((xnumber)) ("None: is there a None literal in the EO language?"))).and ((xnumber).less 0)).if
+                          (((unsupported)).apply ((((xValueError)).apply ("'number' must be greater or equal to 0."))))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)) ((xnumber)) ((((unsupported)).apply ((xextra)))))
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    memory > xlength
+                    memory > xrpad
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xexpression)) ((xnumber)))) (((xself).xsource_expressions)))
+                        xlength.write ((((unsupported)).apply ((xnumber)) ("None: is there a None literal in the EO language?")).if "None: is there a None literal in the EO language?" ((((xLength)).apply ((xexpression))).mul (xnumber)))
+                        xrpad.write (((xRPad)).apply ((xexpression)) ((xlength)) ((xexpression)))
+                        (((unsupported)).apply (((((xrpad).xas_sql)).apply ((xcompiler)) ((xconnection)) ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "REPLACE"
+                x__init__.write
+                  [xself xexpression xtext xreplacement]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((xexpression)) ((xtext)) ((xreplacement)) ((((unsupported)).apply ((xextra)))))
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "REVERSE"
+                xlookup_name.write "reverse"
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("(SELECT LISTAGG(s) WITHIN GROUP (ORDER BY n DESC) FROM (SELECT LEVEL n, SUBSTR(%(expressions)s, LEVEL, 1) s FROM DUAL CONNECT BY LEVEL <= LENGTH(%(expressions)s)) GROUP BY %(expressions)s)") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xLeft)))
+              seq
+                xfunction.write "RIGHT"
+                xget_substr.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((xSubstr)).apply ((((unsupported)).apply (((xself).xsource_expressions)) (0))) (((((unsupported)).apply (((xself).xsource_expressions)) (1)).mul (((xValue)).apply ((1.neg))))))))
+            (((unsupported)).apply ((xLPad)))
+              xfunction.write "RPAD"
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "RTRIM"
+                xlookup_name.write "rtrim"
+            (((unsupported)).apply ((xOracleHashMixin)) ((xPostgreSQLSHAMixin)) ((xTransform)))
+              seq
+                xfunction.write "SHA1"
+                xlookup_name.write "sha1"
+            (((unsupported)).apply ((xMySQLSHA2Mixin)) ((xPostgreSQLSHAMixin)) ((xTransform)))
+              seq
+                xfunction.write "SHA224"
+                xlookup_name.write "sha224"
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((xNotSupportedError)).apply ("SHA224 is not supported on Oracle."))))
+            (((unsupported)).apply ((xMySQLSHA2Mixin)) ((xOracleHashMixin)) ((xPostgreSQLSHAMixin)) ((xTransform)))
+              seq
+                xfunction.write "SHA256"
+                xlookup_name.write "sha256"
+            (((unsupported)).apply ((xMySQLSHA2Mixin)) ((xOracleHashMixin)) ((xPostgreSQLSHAMixin)) ((xTransform)))
+              seq
+                xfunction.write "SHA384"
+                xlookup_name.write "sha384"
+            (((unsupported)).apply ((xMySQLSHA2Mixin)) ((xOracleHashMixin)) ((xPostgreSQLSHAMixin)) ((xTransform)))
+              seq
+                xfunction.write "SHA512"
+                xlookup_name.write "sha512"
+            (((unsupported)).apply ((xFunc)))
+              seq
+                (((unsupported)).apply)
+                xfunction.write "INSTR"
+                xarity.write 2
+                xoutput_field.write (((xIntegerField)).apply)
+                xas_postgresql.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("STRPOS") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xFunc)))
+              seq
+                xfunction.write "SUBSTRING"
+                xoutput_field.write (((xCharField)).apply)
+                x__init__.write
+                  [xself xexpression xpos xlength]
+                    memory > xexpressions
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        ((((xhasattr)).apply ((xpos)) ("resolve_expression")).not).if
+                          ((xpos).less 1).if
+                            (((unsupported)).apply ((((xValueError)).apply ("'pos' must be greater than 0"))))
+                        xexpressions.write (((unsupported)).apply ((xexpression)) ((xpos)))
+                        (((unsupported)).apply ((xlength)) ("None: is there a None literal in the EO language?")).if
+                          bogusForceDataize.write ((((xexpressions).xappend)).apply ((xlength)))
+                        bogusForceDataize.write ((((((xsuper)).apply).x__init__)).apply ((((unsupported)).apply ((xexpressions)))) ((((unsupported)).apply ((xextra)))))
+                xas_sqlite.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("SUBSTR") ((((unsupported)).apply ((xextra_context)))))))
+                xas_oracle.write
+                  [xself xcompiler xconnection]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply (((((xsuper)).apply).xas_sql)) ((xcompiler)) ((xconnection)) ("SUBSTR") ((((unsupported)).apply ((xextra_context)))))))
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "TRIM"
+                xlookup_name.write "trim"
+            (((unsupported)).apply ((xTransform)))
+              seq
+                xfunction.write "UPPER"
+                xlookup_name.write "upper"

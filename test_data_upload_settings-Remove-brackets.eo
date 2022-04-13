@@ -1,0 +1,199 @@
+memory > xBytesIO
+memory > xFakePayload
+memory > xRequestDataTooBig
+memory > xWSGIRequest
+memory > xTooManyFieldsSent
+memory > xlen
+memory > xSimpleTestCase
+[] > test_data_upload_settings
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_number_exceeded
+        memory > xtest_get_max_fields_exceeded
+        memory > xtest_empty_content_length
+        memory > xTOO_MANY_FIELDS_MSG
+        memory > xsetUp
+        memory > xtest_data_upload_max_memory_size_exceeded
+        memory > xtest_number_not_exceeded
+        memory > xTOO_MUCH_DATA_MSG
+        memory > xtest_file_passes
+        memory > xtest_size_exceeded
+        memory > xtest_no_limit
+        memory > xtest_get_max_fields_not_exceeded
+        memory > xtest_size_not_exceeded
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xTOO_MANY_FIELDS_MSG.write "The number of GET/POST parameters exceeded settings.DATA_UPLOAD_MAX_NUMBER_FIELDS."
+            xTOO_MUCH_DATA_MSG.write "Request body exceeded settings.DATA_UPLOAD_MAX_MEMORY_SIZE."
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    memory > xpayload
+                    seq > @
+                      seq
+                        xpayload.write (((xFakePayload)).apply ("a=1&a=2&a=3rn"))
+                        (((unsupported)).apply (((xself).xrequest)) ((((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("POST") ("CONTENT_TYPE") ("application/x-www-form-urlencoded") ("CONTENT_LENGTH") ((((xlen)).apply ((xpayload)))) ("wsgi.input") ((xpayload)))))))
+                xtest_size_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (12))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xRequestDataTooBig)) ((xTOO_MUCH_DATA_MSG)))))
+                          unsupported
+                xtest_size_not_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (13))))
+                        unsupported
+                xtest_no_limit.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ("None: is there a None literal in the EO language?"))))
+                        unsupported
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    memory > xpayload
+                    seq > @
+                      seq
+                        xpayload.write (((xFakePayload)).apply (((("rn".xjoin)).apply ((((unsupported)).apply ("--boundary") ("Content-Disposition: form-data; name=\"name\"") ("") ("value") ("--boundary--"))))))
+                        (((unsupported)).apply (((xself).xrequest)) ((((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("POST") ("CONTENT_TYPE") ("multipart/form-data; boundary=boundary") ("CONTENT_LENGTH") ((((xlen)).apply ((xpayload)))) ("wsgi.input") ((xpayload)))))))
+                xtest_size_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (10))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xRequestDataTooBig)) ((xTOO_MUCH_DATA_MSG)))))
+                          unsupported
+                xtest_size_not_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (11))))
+                        unsupported
+                xtest_no_limit.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ("None: is there a None literal in the EO language?"))))
+                        unsupported
+                xtest_file_passes.write
+                  [xself]
+                    memory > xpayload
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xpayload.write (((xFakePayload)).apply (((("rn".xjoin)).apply ((((unsupported)).apply ("--boundary") ("Content-Disposition: form-data; name=\"file1\"; filename=\"test.file\"") ("") ("value") ("--boundary--"))))))
+                        xrequest.write (((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("POST") ("CONTENT_TYPE") ("multipart/form-data; boundary=boundary") ("CONTENT_LENGTH") ((((xlen)).apply ((xpayload)))) ("wsgi.input") ((xpayload)))))
+                        (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (1))))
+                          seq
+                            unsupported
+                            bogusForceDataize.write ((((xself).xassertIn)).apply ("file1") (((xrequest).xFILES)) ("Upload file not present"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xrequest)) ((((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("GET") ("wsgi.input") ((((xBytesIO)).apply (""))) ("CONTENT_LENGTH") (3))))))
+                xtest_data_upload_max_memory_size_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (2))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xRequestDataTooBig)) ((xTOO_MUCH_DATA_MSG)))))
+                          unsupported
+                xtest_size_not_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (3))))
+                        unsupported
+                xtest_no_limit.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ("None: is there a None literal in the EO language?"))))
+                        unsupported
+                xtest_empty_content_length.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((((xself).xrequest).xenviron)) ("CONTENT_LENGTH"))) (""))
+                        unsupported
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_get_max_fields_exceeded.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (1))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTooManyFieldsSent)) ((xTOO_MANY_FIELDS_MSG)))))
+                          seq
+                            xrequest.write (((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("GET") ("wsgi.input") ((((xBytesIO)).apply (""))) ("QUERY_STRING") ("a=1&a=2&a=3"))))
+                            (((unsupported)).apply (((xrequest).xGET)) ("a"))
+                xtest_get_max_fields_not_exceeded.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (3))))
+                        seq
+                          xrequest.write (((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("GET") ("wsgi.input") ((((xBytesIO)).apply (""))) ("QUERY_STRING") ("a=1&a=2&a=3"))))
+                          (((unsupported)).apply (((xrequest).xGET)) ("a"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    memory > xpayload
+                    seq > @
+                      seq
+                        xpayload.write (((xFakePayload)).apply (((("rn".xjoin)).apply ((((unsupported)).apply ("--boundary") ("Content-Disposition: form-data; name=\"name1\"") ("") ("value1") ("--boundary") ("Content-Disposition: form-data; name=\"name2\"") ("") ("value2") ("--boundary--"))))))
+                        (((unsupported)).apply (((xself).xrequest)) ((((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("POST") ("CONTENT_TYPE") ("multipart/form-data; boundary=boundary") ("CONTENT_LENGTH") ((((xlen)).apply ((xpayload)))) ("wsgi.input") ((xpayload)))))))
+                xtest_number_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (1))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTooManyFieldsSent)) ((xTOO_MANY_FIELDS_MSG)))))
+                          unsupported
+                xtest_number_not_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (2))))
+                        unsupported
+                xtest_no_limit.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ("None: is there a None literal in the EO language?"))))
+                        unsupported
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    memory > xpayload
+                    seq > @
+                      seq
+                        xpayload.write (((xFakePayload)).apply (((("rn".xjoin)).apply ((((unsupported)).apply ("a=1&a=2&a=3") (""))))))
+                        (((unsupported)).apply (((xself).xrequest)) ((((xWSGIRequest)).apply ((((unsupported)).apply ("REQUEST_METHOD") ("POST") ("CONTENT_TYPE") ("application/x-www-form-urlencoded") ("CONTENT_LENGTH") ((((xlen)).apply ((xpayload)))) ("wsgi.input") ((xpayload)))))))
+                xtest_number_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (2))))
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xTooManyFieldsSent)) ((xTOO_MANY_FIELDS_MSG)))))
+                          unsupported
+                xtest_number_not_exceeded.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (3))))
+                        unsupported
+                xtest_no_limit.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) ("None: is there a None literal in the EO language?"))))
+                        unsupported

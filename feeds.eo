@@ -1,0 +1,177 @@
+memory > xGeoRSSFeed
+memory > xValueError
+memory > xstr
+memory > xcoord
+memory > xAtom1Feed
+memory > xRss201rev2Feed
+memory > xsuper
+memory > xtuple
+memory > xlon
+memory > xlat
+memory > xGeoFeedMixin
+memory > xlist
+memory > xisinstance
+memory > xlen
+[] > feeds
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xgeorss_coords
+        memory > xadd_georss_point
+        memory > xBaseFeed
+        memory > xrss_attributes
+        memory > xfeed_type
+        memory > xroot_attributes
+        memory > xitem_extra_kwargs
+        memory > xadd_georss_element
+        memory > xadd_root_elements
+        memory > xfeed_extra_kwargs
+        memory > xadd_item_elements
+        seq > @
+          seq
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                (((unsupported)).apply)
+                xgeorss_coords.write
+                  [xself xcoords]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        (((unsupported)).apply ((((" ".xjoin)).apply ((((unsupported)).apply (("%f %f".mod (((unsupported)).apply ((((unsupported)).apply ((xcoord)) (1))) ((((unsupported)).apply ((xcoord)) (0)))))) ((xcoord)) ((xcoords)))))))
+                xadd_georss_point.write
+                  [xself xhandler xcoords xw3c_geo]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply)
+                        (xw3c_geo).if
+                          seq
+                            (((unsupported)).apply ((((unsupported)).apply ((xlon)) ((xlat)))) ((((unsupported)).apply ((xcoords)) ((((unsupported)).apply (2))))))
+                            bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("geo:lat") (("%f".mod (xlat))))
+                            bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("geo:lon") (("%f".mod (xlon))))
+                          bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("georss:point") (((((xself).xgeorss_coords)).apply ((((unsupported)).apply ((xcoords)))))))
+                xadd_georss_element.write
+                  [xself xhandler xitem xw3c_geo]
+                    memory > xbox_coords
+                    memory > xgeom
+                    memory > xgtype
+                    seq > @
+                      (((unsupported)).apply)
+                        unsupported
+                        xgeom.write ((((xitem).xget)).apply ("geometry"))
+                        (((unsupported)).apply ((xgeom)) ("None: is there a None literal in the EO language?")).if
+                          (((xisinstance)).apply ((xgeom)) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                            seq
+                              xbox_coords.write "None: is there a None literal in the EO language?"
+                              (((xisinstance)).apply ((((unsupported)).apply ((xgeom)) (0))) ((((unsupported)).apply ((xlist)) ((xtuple))))).if
+                                ((((xlen)).apply ((xgeom))).eq 2).if
+                                  xbox_coords.write (xgeom)
+                                  (((unsupported)).apply ((((xValueError)).apply ("Only should be two sets of coordinates."))))
+                                ((((xlen)).apply ((xgeom))).eq 2).if
+                                  (((unsupported)).apply (((xself).xadd_georss_point)) ((xhandler)) ((xgeom)) ((xw3c_geo)))
+                                  ((((xlen)).apply ((xgeom))).eq 4).if
+                                    xbox_coords.write (((unsupported)).apply ((((unsupported)).apply ((xgeom)) ((((unsupported)).apply (2))))) ((((unsupported)).apply ((xgeom)) ((((unsupported)).apply (2))))))
+                                    (((unsupported)).apply ((((xValueError)).apply ("Only should be 2 or 4 numeric elements."))))
+                              (((unsupported)).apply ((xbox_coords)) ("None: is there a None literal in the EO language?")).if
+                                seq
+                                  (xw3c_geo).if
+                                    (((unsupported)).apply ((((xValueError)).apply ("Cannot use simple GeoRSS box in W3C Geo feeds."))))
+                                  bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("georss:box") (((((xself).xgeorss_coords)).apply ((xbox_coords)))))
+                            seq
+                              xgtype.write ((((((xstr)).apply (((xgeom).xgeom_type))).xlower)).apply)
+                              ((xgtype).eq "point").if
+                                (((unsupported)).apply (((xself).xadd_georss_point)) ((xhandler)) (((xgeom).xcoords)) ((xw3c_geo)))
+                                seq
+                                  (xw3c_geo).if
+                                    (((unsupported)).apply ((((xValueError)).apply ("W3C Geo only supports Point geometries."))))
+                                  (((unsupported)).apply ((xgtype)) ((((unsupported)).apply ("linestring") ("linearring")))).if
+                                    bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("georss:line") (((((xself).xgeorss_coords)).apply (((xgeom).xcoords)))))
+                                    (((unsupported)).apply ((xgtype)) ((((unsupported)).apply ("polygon")))).if
+                                      bogusForceDataize.write ((((xhandler).xaddQuickElement)).apply ("georss:polygon") (((((xself).xgeorss_coords)).apply (((((unsupported)).apply ((xgeom)) (0)).xcoords)))))
+                                      (((unsupported)).apply ((((xValueError)).apply (("Geometry type \"%s\" not supported.".mod ((xgeom).xgeom_type))))))
+            (((unsupported)).apply ((xRss201rev2Feed)) ((xGeoFeedMixin)))
+              seq
+                xrss_attributes.write
+                  [xself]
+                    memory > xattrs
+                    seq > @
+                      seq
+                        xattrs.write ((((((xsuper)).apply).xrss_attributes)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xattrs)) ("xmlns:georss"))) ("http://www.georss.org/georss"))
+                        (((unsupported)).apply ((xattrs)))
+                xadd_item_elements.write
+                  [xself xhandler xitem]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_item_elements)).apply ((xhandler)) ((xitem)))
+                        bogusForceDataize.write ((((xself).xadd_georss_element)).apply ((xhandler)) ((xitem)))
+                xadd_root_elements.write
+                  [xself xhandler]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_root_elements)).apply ((xhandler)))
+                        bogusForceDataize.write ((((xself).xadd_georss_element)).apply ((xhandler)) (((xself).xfeed)))
+            (((unsupported)).apply ((xAtom1Feed)) ((xGeoFeedMixin)))
+              seq
+                xroot_attributes.write
+                  [xself]
+                    memory > xattrs
+                    seq > @
+                      seq
+                        xattrs.write ((((((xsuper)).apply).xroot_attributes)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xattrs)) ("xmlns:georss"))) ("http://www.georss.org/georss"))
+                        (((unsupported)).apply ((xattrs)))
+                xadd_item_elements.write
+                  [xself xhandler xitem]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_item_elements)).apply ((xhandler)) ((xitem)))
+                        bogusForceDataize.write ((((xself).xadd_georss_element)).apply ((xhandler)) ((xitem)))
+                xadd_root_elements.write
+                  [xself xhandler]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_root_elements)).apply ((xhandler)))
+                        bogusForceDataize.write ((((xself).xadd_georss_element)).apply ((xhandler)) (((xself).xfeed)))
+            (((unsupported)).apply ((xRss201rev2Feed)) ((xGeoFeedMixin)))
+              seq
+                xrss_attributes.write
+                  [xself]
+                    memory > xattrs
+                    seq > @
+                      seq
+                        xattrs.write ((((((xsuper)).apply).xrss_attributes)).apply)
+                        (((unsupported)).apply ((((unsupported)).apply ((xattrs)) ("xmlns:geo"))) ("http://www.w3.org/2003/01/geo/wgs84_pos#"))
+                        (((unsupported)).apply ((xattrs)))
+                xadd_item_elements.write
+                  [xself xhandler xitem]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_item_elements)).apply ((xhandler)) ((xitem)))
+                        (((unsupported)).apply (((xself).xadd_georss_element)) ((xhandler)) ((xitem)) (TRUE))
+                xadd_root_elements.write
+                  [xself xhandler]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((((xsuper)).apply).xadd_root_elements)).apply ((xhandler)))
+                        (((unsupported)).apply (((xself).xadd_georss_element)) ((xhandler)) (((xself).xfeed)) (TRUE))
+            (((unsupported)).apply ((xBaseFeed)))
+              seq
+                (((unsupported)).apply)
+                xfeed_type.write (xGeoRSSFeed)
+                xfeed_extra_kwargs.write
+                  [xself xobj]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ("geometry") (((((xself).x_get_dynamic_attr)).apply ("geometry") ((xobj)))))))
+                xitem_extra_kwargs.write
+                  [xself xitem]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ("geometry") (((((xself).x_get_dynamic_attr)).apply ("item_geometry") ((xitem)))))))

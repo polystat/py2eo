@@ -1,0 +1,101 @@
+memory > xdatetime
+memory > xexpected_to_date
+memory > xTestCase
+memory > xmake_aware
+memory > xexpected_from_date
+memory > xquery
+memory > xlookup_params
+memory > xUser
+memory > xEventAdmin
+memory > xEvent
+memory > xfield
+memory > xinvalid_query
+memory > x_
+memory > xmonth
+memory > xRequestFactory
+memory > xtime_zone
+memory > xIncorrectLookupParameters
+memory > xval
+[] > test_date_hierarchy
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xfactory
+        memory > xtest_bounded_params_with_dst_time_zone
+        memory > xsetUpTestData
+        memory > xcustom_site
+        memory > xtest_bounded_params_with_time_zone
+        memory > xtest_invalid_params
+        memory > xassertDateParams
+        memory > xtest_bounded_params
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xTestCase)))
+              seq
+                xfactory.write (((xRequestFactory)).apply)
+                xsetUpTestData.write
+                  [xcls]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xcls).xsuperuser)) ((((unsupported)).apply ((((xUser).xobjects).xcreate_superuser)) ("super") ("a@b.com") ("xxx"))))
+                xassertDateParams.write
+                  [xself xquery xexpected_from_date xexpected_to_date]
+                    memory > xchangelist
+                    memory > xrequest
+                    seq > @
+                      seq
+                        xquery.write (((unsupported)).apply (("date__%s".mod (xfield))) ((xval)) ((((unsupported)).apply ((xfield)) ((xval)))) (((((xquery).xitems)).apply)))
+                        xrequest.write (((((xself).xfactory).xget)).apply ("/") ((xquery)))
+                        (((unsupported)).apply (((xrequest).xuser)) (((xself).xsuperuser)))
+                        xchangelist.write ((((((xEventAdmin)).apply ((xEvent)) ((xcustom_site))).xget_changelist_instance)).apply ((xrequest)))
+                        (((unsupported)).apply ((((unsupported)).apply ((x_)) ((x_)) ((xlookup_params)) ((((unsupported)).apply ((x_)))))) (((((xchangelist).xget_filters)).apply ((xrequest)))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xlookup_params)) ("date__gte"))) ((xexpected_from_date)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((unsupported)).apply ((xlookup_params)) ("date__lt"))) ((xexpected_to_date)))
+                xtest_bounded_params.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ("year") (2017))) ((((xdatetime)).apply (2017) (1) (1))) ((((xdatetime)).apply (2018) (1) (1))))) ((((unsupported)).apply ((((unsupported)).apply ("year") (2017) ("month") (2))) ((((xdatetime)).apply (2017) (2) (1))) ((((xdatetime)).apply (2017) (3) (1))))) ((((unsupported)).apply ((((unsupported)).apply ("year") (2017) ("month") (12))) ((((xdatetime)).apply (2017) (12) (1))) ((((xdatetime)).apply (2018) (1) (1))))) ((((unsupported)).apply ((((unsupported)).apply ("year") (2017) ("month") (12) ("day") (15))) ((((xdatetime)).apply (2017) (12) (15))) ((((xdatetime)).apply (2017) (12) (16))))) ((((unsupported)).apply ((((unsupported)).apply ("year") (2017) ("month") (12) ("day") (31))) ((((xdatetime)).apply (2017) (12) (31))) ((((xdatetime)).apply (2018) (1) (1))))) ((((unsupported)).apply ((((unsupported)).apply ("year") (2017) ("month") (2) ("day") (28))) ((((xdatetime)).apply (2017) (2) (28))) ((((xdatetime)).apply (2017) (3) (1))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xquery)) ((xexpected_from_date)) ((xexpected_to_date)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xquery)))))
+                            bogusForceDataize.write ((((xself).xassertDateParams)).apply ((xquery)) ((xexpected_from_date)) ((xexpected_to_date)))
+                xtest_bounded_params_with_time_zone.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (TRUE) ("Asia/Jerusalem"))))
+                        bogusForceDataize.write ((((xself).xassertDateParams)).apply ((((unsupported)).apply ("year") (2017) ("month") (2) ("day") (28))) ((((xmake_aware)).apply ((((xdatetime)).apply (2017) (2) (28))))) ((((xmake_aware)).apply ((((xdatetime)).apply (2017) (3) (1))))))
+                xtest_bounded_params_with_dst_time_zone.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("Asia/Jerusalem") (3))) ((((unsupported)).apply ("Asia/Jerusalem") (10))) ((((unsupported)).apply ("Pacific/Chatham") (4))) ((((unsupported)).apply ("Pacific/Chatham") (9))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xtime_zone)) ((xmonth)))) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xtime_zone)) ((xmonth)))))
+                            (((unsupported)).apply ((((unsupported)).apply (((xself).xsettings)) (TRUE) ((xtime_zone)))))
+                              bogusForceDataize.write ((((xself).xassertDateParams)).apply ((((unsupported)).apply ("year") (2019) ("month") ((xmonth)))) ((((xmake_aware)).apply ((((xdatetime)).apply (2019) ((xmonth)) (1))))) ((((xmake_aware)).apply ((((xdatetime)).apply (2019) (((xmonth).sub 1)) (1))))))
+                xtest_invalid_params.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      seq
+                        xtests.write (((unsupported)).apply ((((unsupported)).apply ("year") ("x"))) ((((unsupported)).apply ("year") (2017) ("month") ("x"))) ((((unsupported)).apply ("year") (2017) ("month") (12) ("day") ("x"))) ((((unsupported)).apply ("year") (2017) ("month") (13))) ((((unsupported)).apply ("year") (2017) ("month") (12) ("day") (32))) ((((unsupported)).apply ("year") (2017) ("month") (0))) ((((unsupported)).apply ("year") (2017) ("month") (12) ("day") (0))))
+                        (((unsupported)).apply ((xinvalid_query)) ((xtests)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xinvalid_query)))) (((((xself).xassertRaises)).apply ((xIncorrectLookupParameters)))))
+                            bogusForceDataize.write ((((xself).xassertDateParams)).apply ((xinvalid_query)) ("None: is there a None literal in the EO language?") ("None: is there a None literal in the EO language?"))

@@ -1,0 +1,132 @@
+memory > xContext
+memory > xEngine
+memory > xrepr
+memory > xos
+memory > xTEMPLATE_DIR
+memory > xImproperlyConfigured
+memory > xROOT
+memory > xSimpleTestCase
+[] > test_engine
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_cached_loader_priority
+        memory > xtest_no_engines_configured
+        memory > xtest_origin
+        memory > xtest_single_engine_configured
+        memory > xtest_repr
+        memory > xtest_autoescape_off
+        memory > xsetUp
+        memory > xtest_repr_empty
+        memory > xtest_loader_priority
+        memory > xtest_multiple_engines_configured
+        memory > xtest_basic_context
+        memory > xOTHER_DIR
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            xOTHER_DIR.write (((((xos).xpath).xjoin)).apply ((xROOT)) ("other_templates"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_repr_empty.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (xEngine)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xengine)))) ("<Engine: app_dirs=False debug=False loaders=[('django.template.loaders.cached.Loader', ['django.template.loaders.filesystem.Loader'])] string_if_invalid='' file_charset='utf-8' builtins=['django.template.defaulttags', 'django.template.defaultfilters', 'django.template.loader_tags'] autoescape=True>"))
+                xtest_repr.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))) ((((unsupported)).apply ("django.template.context_processors.debug"))) (TRUE) ((((unsupported)).apply ("django.template.loaders.filesystem.Loader"))) ("x") ("utf-16") ((((unsupported)).apply ("custom") ("template_tests.templatetags.custom"))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xrepr)).apply ((xengine)))) ("<Engine: dirs=[{TEMPLATE_DIR!r}] app_dirs=False context_processors=['django.template.context_processors.debug'] debug=True loaders=['django.template.loaders.filesystem.Loader'] string_if_invalid='x' file_charset='utf-16' libraries={'custom': 'template_tests.templatetags.custom'} builtins=['django.template.defaulttags', 'django.template.defaultfilters', 'django.template.loader_tags'] autoescape=False>"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xself).xengine)) ((((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))))))
+                xtest_basic_context.write
+                  [xself]
+                    seq > @
+                      bogusForceDataize.write ((((xself).xassertEqual)).apply ((((((xself).xengine).xrender_to_string)).apply ("test_context.html") ((((unsupported)).apply ("obj") ("test"))))) ("obj:testn"))
+                xtest_autoescape_off.write
+                  [xself]
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))) (FALSE))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xengine).xrender_to_string)).apply ("test_context.html") ((((unsupported)).apply ("obj") ("<script>"))))) ("obj:<script>n"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_no_engines_configured.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "No DjangoTemplates backend is configured."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          unsupported
+                xtest_single_engine_configured.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xEngine).xget_default).xfile_charset)) ("abc"))
+                xtest_multiple_engines_configured.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xEngine).xget_default).xfile_charset)) ("abc"))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_origin.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xengine
+                    seq > @
+                      seq
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xTEMPLATE_DIR)))) (TRUE))
+                        xtemplate.write ((((xengine).xget_template)).apply ("index.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xtemplate).xorigin).xtemplate_name)) ("index.html"))
+                xtest_loader_priority.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xloaders
+                    memory > xengine
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xloaders.write (((unsupported)).apply ("django.template.loaders.filesystem.Loader") ("django.template.loaders.app_directories.Loader"))
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xOTHER_DIR)) ((xTEMPLATE_DIR)))) ((xloaders)))
+                        xtemplate.write ((((xengine).xget_template)).apply ("priority/foo.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtemplate).xrender)).apply ((xContext)))) ("priorityn"))
+                xtest_cached_loader_priority.write
+                  [xself]
+                    memory > xtemplate
+                    memory > xloaders
+                    memory > xengine
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xloaders.write (((unsupported)).apply ((((unsupported)).apply ("django.template.loaders.cached.Loader") ((((unsupported)).apply ("django.template.loaders.filesystem.Loader") ("django.template.loaders.app_directories.Loader"))))))
+                        xengine.write (((unsupported)).apply ((xEngine)) ((((unsupported)).apply ((xOTHER_DIR)) ((xTEMPLATE_DIR)))) ((xloaders)))
+                        xtemplate.write ((((xengine).xget_template)).apply ("priority/foo.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtemplate).xrender)).apply ((xContext)))) ("priorityn"))
+                        xtemplate.write ((((xengine).xget_template)).apply ("priority/foo.html"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((((xtemplate).xrender)).apply ((xContext)))) ("priorityn"))

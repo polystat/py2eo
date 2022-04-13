@@ -1,0 +1,105 @@
+memory > xcheck_setting_languages
+memory > xError
+memory > xcheck_language_settings_consistent
+memory > xtag
+memory > xcheck_setting_language_code
+memory > xcheck_setting_languages_bidi
+memory > xSimpleTestCase
+[] > test_translation
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_invalid_languages_bidi
+        memory > xtest_valid_language_code
+        memory > xtest_valid_languages
+        memory > xtest_valid_variant_consistent_language_settings
+        memory > xtest_invalid_languages
+        memory > xsetUp
+        memory > xtest_invalid_language_code
+        memory > xtest_inconsistent_language_settings
+        memory > xtest_valid_languages_bidi
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xsetUp.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xvalid_tags)) ((((unsupported)).apply ("en") ("mas") ("sgn-ase") ("fr-CA") ("es-419") ("zh-Hans") ("ca-ES-valencia") ("sr@latin"))))
+                        (((unsupported)).apply (((xself).xinvalid_tags)) ((((unsupported)).apply ("None: is there a None literal in the EO language?") (123) ("en") ("eü") ("en_US") ("en--us") ("-en") ("en-") ("en-US.UTF-8") ("en_US.UTF-8") ("ca_ES@valencia"))))
+                xtest_valid_language_code.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xtag)) (((xself).xvalid_tags)))
+                        (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((xtag)))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_setting_language_code)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+                xtest_invalid_language_code.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "You have provided an invalid value for the LANGUAGE_CODE setting: %r."
+                        (((unsupported)).apply ((xtag)) (((xself).xinvalid_tags)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((xtag)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_setting_language_code)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) (((xmsg).mod (xtag))) ("translation.E001"))))))
+                xtest_valid_languages.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xtag)) (((xself).xvalid_tags)))
+                        (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ((((unsupported)).apply ((xtag)) ((xtag)))))))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_setting_languages)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+                xtest_invalid_languages.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "You have provided an invalid language code in the LANGUAGES setting: %r."
+                        (((unsupported)).apply ((xtag)) (((xself).xinvalid_tags)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ((((unsupported)).apply ((xtag)) ((xtag)))))))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_setting_languages)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) (((xmsg).mod (xtag))) ("translation.E002"))))))
+                xtest_valid_languages_bidi.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply ((xtag)) (((xself).xvalid_tags)))
+                        (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ((xtag)))))))
+                          bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_setting_languages_bidi)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))
+                xtest_invalid_languages_bidi.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "You have provided an invalid language code in the LANGUAGES_BIDI setting: %r."
+                        (((unsupported)).apply ((xtag)) (((xself).xinvalid_tags)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((((unsupported)).apply ((xtag)))))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_setting_languages_bidi)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) (((xmsg).mod (xtag))) ("translation.E003"))))))
+                xtest_inconsistent_language_settings.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      (((unsupported)).apply)
+                        xmsg.write "You have provided a value for the LANGUAGE_CODE setting that is not in the LANGUAGES setting."
+                        (((unsupported)).apply ((xtag)) ((((unsupported)).apply ("fr") ("fr-CA") ("fr-357"))))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((xtag)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_language_settings_consistent)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply ((((unsupported)).apply ((xError)) ((xmsg)) ("translation.E004"))))))
+                xtest_valid_variant_consistent_language_settings.write
+                  [xself]
+                    memory > xtests
+                    seq > @
+                      (((unsupported)).apply)
+                        xtests.write (((unsupported)).apply ("fr-CA") ("es-419") ("de-at") ("ca-ES-valencia"))
+                        (((unsupported)).apply ((xtag)) ((xtests)))
+                          (((unsupported)).apply (((((xself).xsubTest)).apply ((xtag)))) ((((unsupported)).apply (((xself).xsettings)) ((xtag)))))
+                            bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xcheck_language_settings_consistent)).apply ("None: is there a None literal in the EO language?"))) ((((unsupported)).apply)))

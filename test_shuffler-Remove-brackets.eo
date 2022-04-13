@@ -1,0 +1,167 @@
+memory > xnum
+memory > xexpected
+memory > xstr
+memory > xrange
+memory > xMyShuffler
+memory > xx
+memory > xShuffler
+memory > xmock
+memory > xn
+memory > xkey
+memory > xRuntimeError
+memory > xindex
+memory > xenumerate
+memory > xseed
+memory > xSimpleTestCase
+[] > test_shuffler
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xtest_shuffle_consistency
+        memory > xtest_hash_item_key
+        memory > xtest_shuffle_same_hash
+        memory > xtest_init
+        memory > xtest_hash_text
+        memory > xtest_hash_text_hash_algorithm
+        memory > xtest_hash_item_seed
+        memory > xtest_shuffle_key
+        memory > xtest_seed_display
+        memory > xtest_init_no_seed_argument
+        memory > xtest_init_none_seed
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                xtest_hash_text.write
+                  [xself]
+                    memory > xactual
+                    seq > @
+                      seq
+                        xactual.write ((((xShuffler).x_hash_text)).apply ("abcd"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ("e2fc714c4727ee9395f324cd2e7f331f"))
+                xtest_hash_text_hash_algorithm.write
+                  [xself]
+                    memory > xactual
+                    memory > xhash_algorithm
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xShuffler)))
+                          xhash_algorithm.write "sha1"
+                        xactual.write ((((xMyShuffler).x_hash_text)).apply ("abcd"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ("81fe8bfe87576c3ecb22426f8e57847382917acf"))
+                xtest_init.write
+                  [xself]
+                    memory > xshuffler
+                    seq > @
+                      seq
+                        xshuffler.write (((xShuffler)).apply (100))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xshuffler).xseed)) (100))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xshuffler).xseed_source)) ("given"))
+                xtest_init_none_seed.write
+                  [xself]
+                    memory > xshuffler
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("random.randint") (200))))
+                          xshuffler.write (((xShuffler)).apply ("None: is there a None literal in the EO language?"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xshuffler).xseed)) (200))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xshuffler).xseed_source)) ("generated"))
+                xtest_init_no_seed_argument.write
+                  [xself]
+                    memory > xshuffler
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply (((xmock).xpatch)) ("random.randint") (300))))
+                          xshuffler.write (xShuffler)
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xshuffler).xseed)) (300))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xshuffler).xseed_source)) ("generated"))
+                xtest_seed_display.write
+                  [xself]
+                    memory > xshuffler
+                    seq > @
+                      seq
+                        xshuffler.write (((xShuffler)).apply (100))
+                        (((unsupported)).apply (((xshuffler).xseed_source)) ("test"))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xshuffler).xseed_display)) ("100 (test)"))
+                xtest_hash_item_seed.write
+                  [xself]
+                    memory > xactual
+                    memory > xshuffler
+                    memory > xcases
+                    seq > @
+                      seq
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply (1234) ("64ad3fb166ddb41a2ca24f1803b8b722"))) ((((unsupported)).apply ("1234") ("64ad3fb166ddb41a2ca24f1803b8b722"))) ((((unsupported)).apply (5678) ("4dde450ad339b6ce45a0a2666e35b975"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xseed)) ((xexpected)))) ((xcases)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xseed)))))
+                            seq
+                              xshuffler.write (((unsupported)).apply ((xShuffler)) ((xseed)))
+                              xactual.write ((((xshuffler).x_hash_item)).apply ("abc") ((((unsupported)).apply ((xx)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ((xexpected)))
+                xtest_hash_item_key.write
+                  [xself]
+                    memory > xactual
+                    memory > xshuffler
+                    memory > xcases
+                    seq > @
+                      seq
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xx)))) ("64ad3fb166ddb41a2ca24f1803b8b722"))) ((((unsupported)).apply ((((unsupported)).apply (((xx).xupper)))) ("ee22e8597bff91742affe4befbf4649a"))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xkey)) ((xexpected)))) ((xcases)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xkey)))))
+                            seq
+                              xshuffler.write (((unsupported)).apply ((xShuffler)) (1234))
+                              xactual.write ((((xshuffler).x_hash_item)).apply ("abc") ((xkey)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ((xexpected)))
+                xtest_shuffle_key.write
+                  [xself]
+                    memory > xactual
+                    memory > xshuffler
+                    memory > xcases
+                    seq > @
+                      seq
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xx)))) ((((unsupported)).apply ("a") ("d") ("b") ("c"))))) ((((unsupported)).apply ((((unsupported)).apply (((xx).xupper)))) ((((unsupported)).apply ("d") ("c") ("a") ("b"))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xnum)) ((((unsupported)).apply ((xkey)) ((xexpected)))))) ((((unsupported)).apply ((xenumerate)) ((xcases)) (1))))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xnum)))))
+                            seq
+                              xshuffler.write (((unsupported)).apply ((xShuffler)) (1234))
+                              xactual.write ((((xshuffler).xshuffle)).apply ((((unsupported)).apply ("a") ("b") ("c") ("d"))) ((xkey)))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ((xexpected)))
+                xtest_shuffle_consistency.write
+                  [xself]
+                    memory > xseq
+                    memory > xshuffler
+                    memory > xactual
+                    memory > xnew_seq
+                    memory > xcases
+                    seq > @
+                      seq
+                        xseq.write (((unsupported)).apply ((((xstr)).apply ((xn)))) ((xn)) ((((xrange)).apply (5))))
+                        xcases.write (((unsupported)).apply ((((unsupported)).apply ("None: is there a None literal in the EO language?") ((((unsupported)).apply ("3") ("0") ("2") ("4") ("1"))))) ((((unsupported)).apply (0) ((((unsupported)).apply ("3") ("2") ("4") ("1"))))) ((((unsupported)).apply (1) ((((unsupported)).apply ("3") ("0") ("2") ("4"))))) ((((unsupported)).apply (2) ((((unsupported)).apply ("3") ("0") ("4") ("1"))))) ((((unsupported)).apply (3) ((((unsupported)).apply ("0") ("2") ("4") ("1"))))) ((((unsupported)).apply (4) ((((unsupported)).apply ("3") ("0") ("2") ("1"))))))
+                        xshuffler.write (((unsupported)).apply ((xShuffler)) (1234))
+                        (((unsupported)).apply ((((unsupported)).apply ((xindex)) ((xexpected)))) ((xcases)))
+                          (((unsupported)).apply ((((unsupported)).apply (((xself).xsubTest)) ((xindex)))))
+                            seq
+                              (((unsupported)).apply ((xindex)) ("None: is there a None literal in the EO language?")).if
+                                xnew_seq.write (xseq)
+                                seq
+                                  xnew_seq.write ((xseq).xcopy)
+                                  (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply ((xnew_seq)) ((xindex)))))))
+                              xactual.write ((((xshuffler).xshuffle)).apply ((xnew_seq)) ((((unsupported)).apply ((xx)))))
+                              bogusForceDataize.write ((((xself).xassertEqual)).apply ((xactual)) ((xexpected)))
+                xtest_shuffle_same_hash.write
+                  [xself]
+                    memory > xshuffler
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xshuffler.write (((unsupported)).apply ((xShuffler)) (1234))
+                        xmsg.write "item 'A' has same hash 'a56ce89262959e151ee2266552f1819c' as item 'a'"
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xRuntimeError)) ((xmsg)))))
+                          bogusForceDataize.write ((((xshuffler).xshuffle)).apply ((((unsupported)).apply ("a") ("b") ("A"))) ((((unsupported)).apply (((xx).xupper)))))

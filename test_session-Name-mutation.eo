@@ -1,0 +1,101 @@
+memory > xconstants
+memory > xHttpRequest
+memory > xSessionStorage
+memory > xhasattr
+memory > xsuper
+memory > xmark_safe
+memory > xlen
+memory > xBaseTests2
+memory > xlist
+memory > xTestCase
+memory > xSafeData
+memory > xImproperlyConfigured
+memory > xMessage
+[] > test_session
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xget_request
+        memory > xstored_messages_count
+        memory > xtest_safedata
+        memory > xstorage_class
+        memory > xtest_get
+        memory > xtest_no_session
+        memory > xstored_session_messages_count
+        memory > xset_session_data
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            xset_session_data.write
+              [xstorage xmessages]
+                seq > @
+                  seq
+                    (((unsupported)).apply)
+                    (((unsupported)).apply ((((unsupported)).apply ((((xstorage).xrequest).xsession)) (((xstorage).xsession_key)))) (((((xstorage).xserialize_messages)).apply ((xmessages)))))
+                    (((xhasattr)).apply ((xstorage)) ("_loaded_data")).if
+                      (((unsupported)).apply ((((unsupported)).apply ((((unsupported)).apply (((xstorage).x_loaded_data)))))))
+            xstored_session_messages_count.write
+              [xstorage]
+                memory > xdata
+                seq > @
+                  seq
+                    xdata.write ((((xstorage).xdeserialize_messages)).apply (((((((xstorage).xrequest).xsession).xget)).apply (((xstorage).xsession_key)) ((((unsupported)).apply)))))
+                    (((unsupported)).apply ((((xlen)).apply ((xdata)))))
+            (((unsupported)).apply ((xBaseTests2)) ((xTestCase)))
+              seq
+                xstorage_class.write (xSessionStorage)
+                xget_request.write
+                  [xself]
+                    memory > xrequest
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xself).xsession)) ((((unsupported)).apply)))
+                        xrequest.write ((((((xsuper)).apply).xget_request)).apply)
+                        (((unsupported)).apply (((xrequest).xsession)) (((xself).xsession)))
+                        (((unsupported)).apply ((xrequest)))
+                xstored_messages_count.write
+                  [xself xstorage xresponse]
+                    seq > @
+                      (((unsupported)).apply ((((xstored_session_messages_count)).apply ((xstorage)))))
+                xtest_no_session.write
+                  [xself]
+                    memory > xmsg
+                    seq > @
+                      seq
+                        xmsg.write "The session-based temporary message storage requires session middleware to be installed, and come before the message middleware in the MIDDLEWARE list."
+                        (((unsupported)).apply (((((xself).xassertRaisesMessage)).apply ((xImproperlyConfigured)) ((xmsg)))))
+                          bogusForceDataize.write ((((xself).xstorage_class)).apply ((((xHttpRequest)).apply)))
+                xtest_get.write
+                  [xself]
+                    memory > xstorage
+                    memory > xexample_messages
+                    seq > @
+                      seq
+                        xstorage.write ((((xself).xstorage_class)).apply (((((xself).xget_request)).apply)))
+                        xexample_messages.write (((unsupported)).apply ("test") ("me"))
+                        bogusForceDataize.write (((xset_session_data)).apply ((xstorage)) ((xexample_messages)))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply ((((xlist)).apply ((xstorage)))) ((xexample_messages)))
+                xtest_safedata.write
+                  [xself]
+                    memory > xmessage
+                    memory > xstorage
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xstorage.write ((((xself).xget_storage)).apply)
+                        xmessage.write (((xMessage)).apply (((xconstants).xDEBUG)) ((((xmark_safe)).apply ("<b>Hello Django!</b>"))))
+                        bogusForceDataize.write (((xset_session_data)).apply ((xstorage)) ((((unsupported)).apply ((xmessage)))))
+                        bogusForceDataize.write ((((xself).xassertIsInstance)).apply (((((unsupported)).apply ((((xlist)).apply ((xstorage)))) (0)).xmessage)) ((xSafeData)))

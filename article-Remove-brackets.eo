@@ -1,0 +1,122 @@
+memory > xsuper
+memory > xArticleTranslation
+memory > xActiveTranslationFieldWithQ
+memory > xArticle
+memory > xsetattr
+memory > xmodels
+memory > xget_language
+memory > xColConstraint
+memory > xAttributeError
+memory > xActiveTranslationField
+memory > xArticleTranslationDescriptor
+memory > xForwardManyToOneDescriptor
+[] > article
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xlang
+        memory > xrequires_unique_target
+        memory > xget_extra_restriction
+        memory > xarticles
+        memory > xactive_translation
+        memory > xas_sql
+        memory > xbody
+        memory > xarticle
+        memory > xactive_translation_q
+        memory > xname
+        memory > xpub_date
+        memory > x__str__
+        memory > xget_extra_descriptor_filter
+        memory > xcontribute_to_class
+        memory > x__set__
+        memory > xtitle
+        memory > x__init__
+        memory > xunique_together
+        memory > xabstract
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply ((xForwardManyToOneDescriptor)))
+              seq
+                (((unsupported)).apply)
+                x__set__.write
+                  [xself xinstance xvalue]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((xinstance)) ("None: is there a None literal in the EO language?")).if
+                          (((unsupported)).apply ((((xAttributeError)).apply (("%s must be accessed via instance".mod (((xself).xfield).xname))))))
+                        bogusForceDataize.write (((((xself).xfield).xset_cached_value)).apply ((xinstance)) ((xvalue)))
+                        ((((unsupported)).apply ((xvalue)) ("None: is there a None literal in the EO language?")).and (((((xself).xfield).xremote_field).xmultiple).not)).if
+                          bogusForceDataize.write ((((((xself).xfield).xremote_field).xset_cached_value)).apply ((xvalue)) ((xinstance)))
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xalias xcol xvalue]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply (((xself).xalias)) (((xself).xcol)) (((xself).xvalue)))) ((((unsupported)).apply ((xalias)) ((xcol)) ((xvalue)))))
+                xas_sql.write
+                  [xself xcompiler xconnection]
+                    memory > xqn
+                    seq > @
+                      seq
+                        xqn.write ((xcompiler).xquote_name_unless_alias)
+                        (((unsupported)).apply ((((unsupported)).apply (("%s.%s = %%s".mod (((unsupported)).apply ((((xqn)).apply (((xself).xalias)))) ((((xqn)).apply (((xself).xcol))))))) ((((unsupported)).apply (((xself).xvalue)))))))
+            (((unsupported)).apply (((xmodels).xForeignObject)))
+              seq
+                (((unsupported)).apply)
+                xrequires_unique_target.write FALSE
+                xget_extra_restriction.write
+                  [xself xalias xrelated_alias]
+                    seq > @
+                      (((unsupported)).apply ((((xColConstraint)).apply ((xalias)) ("lang") ((xget_language)))))
+                xget_extra_descriptor_filter.write
+                  [xself xinstance]
+                    seq > @
+                      (((unsupported)).apply ((((unsupported)).apply ("lang") ((xget_language)))))
+                xcontribute_to_class.write
+                  [xself xcls xname]
+                    seq > @
+                      seq
+                        bogusForceDataize.write ((((xsuper).xcontribute_to_class)).apply ((xcls)) ((xname)))
+                        bogusForceDataize.write (((xsetattr)).apply ((xcls)) (((xself).xname)) ((((xArticleTranslationDescriptor)).apply ((xself)))))
+            (((unsupported)).apply ((xActiveTranslationField)))
+              xget_extra_descriptor_filter.write
+                [xself xinstance]
+                  seq > @
+                    (((unsupported)).apply ((((unsupported)).apply (((xmodels).xQ)) ((xget_language)))))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xactive_translation.write (((unsupported)).apply ((xActiveTranslationField)) ("ArticleTranslation") ((((unsupported)).apply ("id"))) ((((unsupported)).apply ("article"))) ("+") (((xmodels).xCASCADE)) (TRUE))
+                xactive_translation_q.write (((unsupported)).apply ((xActiveTranslationFieldWithQ)) ("ArticleTranslation") ((((unsupported)).apply ("id"))) ((((unsupported)).apply ("article"))) ("+") (((xmodels).xCASCADE)) (TRUE))
+                xpub_date.write ((xmodels).xDateField)
+                x__str__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (((xArticleTranslation).xDoesNotExist)))
+                        (((unsupported)).apply ((((xself).xactive_translation).xtitle)))
+                        (((unsupported)).apply ("[No translation found]"))
+            (((unsupported)).apply ((xArticle)))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xarticle.write ((((xmodels).xForeignKey)).apply ((xArticle)) (((xmodels).xCASCADE)))
+                xlang.write (((unsupported)).apply (((xmodels).xCharField)) (2))
+                xtitle.write (((unsupported)).apply (((xmodels).xCharField)) (100))
+                xbody.write ((xmodels).xTextField)
+                xabstract.write (((unsupported)).apply (((xmodels).xTextField)) (TRUE))
+                (((unsupported)).apply)
+                  xunique_together.write (((unsupported)).apply ("article") ("lang"))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xarticle.write (((unsupported)).apply (((xmodels).xForeignKey)) ((xArticle)) (((xmodels).xCASCADE)) ("tags") ("tag"))
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (255))
+            (((unsupported)).apply (((xmodels).xModel)))
+              seq
+                xarticles.write (((unsupported)).apply (((xmodels).xManyToManyField)) ((xArticle)) ("ideas") ("idea_things"))
+                xname.write (((unsupported)).apply (((xmodels).xCharField)) (255))

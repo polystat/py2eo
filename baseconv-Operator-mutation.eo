@@ -1,0 +1,115 @@
+memory > xValueError
+memory > xstr
+memory > xwarnings
+memory > xvalue
+memory > xint
+memory > xneg
+memory > xRemovedInDjango50Warning
+memory > xBaseConverter
+memory > xlen
+[] > baseconv
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xBASE64_ALPHABET
+        memory > x__repr__
+        memory > xBASE2_ALPHABET
+        memory > xBASE62_ALPHABET
+        memory > xBASE56_ALPHABET
+        memory > xencode
+        memory > xdecode
+        memory > xbase16
+        memory > xbase56
+        memory > xconvert
+        memory > xbase62
+        memory > xdecimal_digits
+        memory > xbase64
+        memory > xbase2
+        memory > xBASE36_ALPHABET
+        memory > xBASE16_ALPHABET
+        memory > x__init__
+        memory > xbase36
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply (((xwarnings).xwarn)) ("The django.utils.baseconv module is deprecated.") ((xRemovedInDjango50Warning)) (2))
+            xBASE2_ALPHABET.write "01"
+            xBASE16_ALPHABET.write "0123456789ABCDEF"
+            xBASE56_ALPHABET.write "23456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz"
+            xBASE36_ALPHABET.write "0123456789abcdefghijklmnopqrstuvwxyz"
+            xBASE62_ALPHABET.write "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+            xBASE64_ALPHABET.write ((xBASE62_ALPHABET).sub "-_")
+            (((unsupported)).apply)
+              seq
+                xdecimal_digits.write "0123456789"
+                x__init__.write
+                  [xself xdigits xsign]
+                    seq > @
+                      (((unsupported)).apply)
+                        (((unsupported)).apply (((xself).xsign)) ((xsign)))
+                        (((unsupported)).apply (((xself).xdigits)) ((xdigits)))
+                        (((unsupported)).apply ((xsign)) (((xself).xdigits))).if
+                          (((unsupported)).apply ((((xValueError)).apply ("Sign character found in converter base digits."))))
+                x__repr__.write
+                  [xself]
+                    seq > @
+                      (((unsupported)).apply (("<%s: base%s (%s)>".mod (((unsupported)).apply ((((xself).x__class__).x__name__)) ((((xlen)).apply (((xself).xdigits)))) (((xself).xdigits))))))
+                xencode.write
+                  [xself xi]
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xneg)) ((xvalue)))) (((((xself).xconvert)).apply ((xi)) (((xself).xdecimal_digits)) (((xself).xdigits)) ("-"))))
+                        (xneg).if
+                          (((unsupported)).apply ((((xself).xsign).sub (xvalue))))
+                        (((unsupported)).apply ((xvalue)))
+                xdecode.write
+                  [xself xs]
+                    memory > xvalue
+                    seq > @
+                      seq
+                        (((unsupported)).apply ((((unsupported)).apply ((xneg)) ((xvalue)))) (((((xself).xconvert)).apply ((xs)) (((xself).xdigits)) (((xself).xdecimal_digits)) (((xself).xsign)))))
+                        (xneg).if
+                          xvalue.write ("-".sub (xvalue))
+                        (((unsupported)).apply ((((xint)).apply ((xvalue)))))
+                xconvert.write
+                  [xself xnumber xfrom_digits xto_digits xsign]
+                    memory > xres
+                    memory > xdigit
+                    memory > xx
+                    memory > xneg
+                    seq > @
+                      seq
+                        ((((unsupported)).apply ((((xstr)).apply ((xnumber)))) (0)).eq (xsign)).if
+                          seq
+                            xnumber.write (((unsupported)).apply ((((xstr)).apply ((xnumber)))) ((((unsupported)).apply (1))))
+                            xneg.write 1
+                          xneg.write 0
+                        xx.write 0
+                        (((unsupported)).apply ((xdigit)) ((((xstr)).apply ((xnumber)))))
+                          xx.write (((xx).mul (((xlen)).apply ((xfrom_digits)))).sub ((((xfrom_digits).xindex)).apply ((xdigit))))
+                        ((xx).eq 0).if
+                          xres.write (((unsupported)).apply ((xto_digits)) (0))
+                          seq
+                            xres.write ""
+                            while.
+                              ((xx).greater 0)
+                              [unused]
+                                seq > @
+                                  seq
+                                    xdigit.write ((xx).mod (((xlen)).apply ((xto_digits))))
+                                    xres.write ((((unsupported)).apply ((xto_digits)) ((xdigit))).sub (xres))
+                                    xx.write (((xint)).apply ((((unsupported)).apply ((xx)) ((((xlen)).apply ((xto_digits)))))))
+                        (((unsupported)).apply ((((unsupported)).apply ((xneg)) ((xres)))))
+            xbase2.write (((xBaseConverter)).apply ((xBASE2_ALPHABET)))
+            xbase16.write (((xBaseConverter)).apply ((xBASE16_ALPHABET)))
+            xbase36.write (((xBaseConverter)).apply ((xBASE36_ALPHABET)))
+            xbase56.write (((xBaseConverter)).apply ((xBASE56_ALPHABET)))
+            xbase62.write (((xBaseConverter)).apply ((xBASE62_ALPHABET)))
+            xbase64.write (((unsupported)).apply ((xBaseConverter)) ((xBASE64_ALPHABET)) ("$"))

@@ -1,0 +1,152 @@
+memory > xdecorator_from_middleware
+memory > xClassProcessView
+memory > xTemplateResponse
+memory > xHttpResponse
+memory > xRequestFactory
+memory > xgetattr
+memory > xProcessViewMiddleware
+memory > xSimpleTestCase
+memory > xFullMiddleware
+memory > xengines
+[] > test_decorators
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xprocess_response
+        memory > x__call__
+        memory > xprocess_view_dec
+        memory > xrf
+        memory > xclass_process_view
+        memory > xprocess_template_response
+        memory > xfull_dec
+        memory > xtest_process_view_middleware
+        memory > xtest_full_dec_normal
+        memory > xprocess_request
+        memory > xtest_callable_process_view_middleware
+        memory > xtest_full_dec_templateresponse
+        memory > x__init__
+        memory > xprocess_view
+        seq > @
+          seq
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+            seq
+              (((unsupported)).apply)
+              (((unsupported)).apply)
+            (((unsupported)).apply)
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xget_response]
+                    seq > @
+                      (((unsupported)).apply (((xself).xget_response)) ((xget_response)))
+                xprocess_view.write
+                  [xself xrequest xview_func xview_args xview_kwargs]
+                    seq > @
+            xprocess_view_dec.write (((xdecorator_from_middleware)).apply ((xProcessViewMiddleware)))
+            xprocess_view.write
+              [xrequest]
+                seq > @
+                  (((unsupported)).apply)
+                    (((unsupported)).apply ((xHttpResponse)))
+            (((unsupported)).apply)
+              x__call__.write
+                [xself xrequest]
+                  seq > @
+                    (((unsupported)).apply ((xHttpResponse)))
+            xclass_process_view.write (((xprocess_view_dec)).apply ((xClassProcessView)))
+            (((unsupported)).apply)
+              seq
+                x__init__.write
+                  [xself xget_response]
+                    seq > @
+                      (((unsupported)).apply (((xself).xget_response)) ((xget_response)))
+                xprocess_request.write
+                  [xself xrequest]
+                    seq > @
+                      (((unsupported)).apply (((xrequest).xprocess_request_reached)) (TRUE))
+                xprocess_view.write
+                  [xself xrequest xview_func xview_args xview_kwargs]
+                    seq > @
+                      (((unsupported)).apply (((xrequest).xprocess_view_reached)) (TRUE))
+                xprocess_template_response.write
+                  [xself xrequest xresponse]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xrequest).xprocess_template_response_reached)) (TRUE))
+                        (((unsupported)).apply ((xresponse)))
+                xprocess_response.write
+                  [xself xrequest xresponse]
+                    seq > @
+                      seq
+                        (((unsupported)).apply (((xrequest).xprocess_response_content)) (((xresponse).xcontent)))
+                        (((unsupported)).apply (((xrequest).xprocess_response_reached)) (TRUE))
+                        (((unsupported)).apply ((xresponse)))
+            xfull_dec.write (((xdecorator_from_middleware)).apply ((xFullMiddleware)))
+            (((unsupported)).apply ((xSimpleTestCase)))
+              seq
+                (((unsupported)).apply)
+                xrf.write (xRequestFactory)
+                xtest_process_view_middleware.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((xprocess_view)).apply ((((((xself).xrf).xget)).apply ("/"))))
+                xtest_callable_process_view_middleware.write
+                  [xself]
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        bogusForceDataize.write (((xclass_process_view)).apply ((((((xself).xrf).xget)).apply ("/"))))
+                xtest_full_dec_normal.write
+                  [xself]
+                    memory > xrequest
+                    memory > xnormal_view
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xnormal_view.write
+                          [xrequest]
+                            memory > xtemplate
+                            seq > @
+                              (((unsupported)).apply)
+                                xtemplate.write ((((((unsupported)).apply ((xengines)) ("django")).xfrom_string)).apply ("Hello world"))
+                                (((unsupported)).apply ((((xHttpResponse)).apply (((xtemplate).xrender)))))
+                        xrequest.write (((((xself).xrf).xget)).apply ("/"))
+                        bogusForceDataize.write (((xnormal_view)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply ((xrequest)) ("process_request_reached") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply ((xrequest)) ("process_view_reached") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xgetattr)).apply ((xrequest)) ("process_template_response_reached") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply ((xrequest)) ("process_response_reached") (FALSE))))
+                xtest_full_dec_templateresponse.write
+                  [xself]
+                    memory > xresponse
+                    memory > xrequest
+                    memory > xtemplate_response_view
+                    seq > @
+                      seq
+                        (((unsupported)).apply)
+                        xtemplate_response_view.write
+                          [xrequest]
+                            memory > xtemplate
+                            seq > @
+                              (((unsupported)).apply)
+                                xtemplate.write ((((((unsupported)).apply ((xengines)) ("django")).xfrom_string)).apply ("Hello world"))
+                                (((unsupported)).apply ((((xTemplateResponse)).apply ((xrequest)) ((xtemplate)))))
+                        xrequest.write (((((xself).xrf).xget)).apply ("/"))
+                        xresponse.write (((xtemplate_response_view)).apply ((xrequest)))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply ((xrequest)) ("process_request_reached") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply ((xrequest)) ("process_view_reached") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply ((xrequest)) ("process_template_response_reached") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply (((xresponse).x_is_rendered)))
+                        bogusForceDataize.write ((((xself).xassertFalse)).apply ((((xgetattr)).apply ((xrequest)) ("process_response_reached") (FALSE))))
+                        unsupported
+                        bogusForceDataize.write ((((xself).xassertTrue)).apply ((((xgetattr)).apply ((xrequest)) ("process_response_reached") (FALSE))))
+                        bogusForceDataize.write ((((xself).xassertEqual)).apply (((xrequest).xprocess_response_content)) ("Hello world"))
