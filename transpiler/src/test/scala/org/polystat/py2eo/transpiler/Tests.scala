@@ -20,7 +20,6 @@ class Tests {
   // the script to convert python files to .yaml containers. Use it to add new big files
   // for i in *.py; do perl -e 'print "python: |\n"; while (<>) { print "  $_" } ' < $i > ${i%.py}.yaml; done
 
-  val separator: String = "/"
   var files = Array.empty[File]
   private val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
 
