@@ -10,10 +10,9 @@ import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
 import java.io.{File, FileInputStream}
-import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.{Files, Path}
+import java.nio.file.{Files, Path, Paths, StandardCopyOption}
 import java.util.concurrent.TimeUnit
-import java.{ lang => jl, util => ju}
+import java.{lang => jl, util => ju}
 import scala.language.postfixOps
 import scala.reflect.io.Directory
 
@@ -56,18 +55,27 @@ class Counter(path: jl.String) {
     //val  result = new File(runEOPath + s"/${file.getName}")
     //val path = Path.of(runEOPath + s"/${file.getName}")
     val path = Path.of(s"$runEOPath/${file.getName}")
-    val test = Files.copy(file.toPath, path, REPLACE_EXISTING).toAbsolutePath
-    println(test)
+
+    val pathResult = Files.move(
+      Paths.get(file.getPath),
+      path,
+      StandardCopyOption.REPLACE_EXISTING
+    )
+
+
+
+//    val test = Files.copy(file.toPath, path, REPLACE_EXISTING).toAbsolutePath
+//    println(test)
     val dir = new java.io.File(runEOPath)
     //var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
-    var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
+    var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$pathResult\"")
     pb = pb.directory(dir)
     pb.inheritIO()
     val process = pb.start
     val ret = process.waitFor(40, TimeUnit.SECONDS)
 
 
-    Files.delete(test)
+    Files.delete(pathResult)
 
     if (ret) {
       process.exitValue == 0
