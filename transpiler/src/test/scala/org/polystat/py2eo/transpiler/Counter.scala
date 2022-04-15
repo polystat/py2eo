@@ -14,13 +14,12 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
 import java.util.concurrent.TimeUnit
 import java.{lang => jl, util => ju}
 import scala.language.postfixOps
-import scala.reflect.io.Directory
 
 
 @RunWith(value = classOf[Parameterized])
 class Counter(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
-  private val runEOPath = Directory.Current.get.jfile + "/runEO"
+  private val runEOPath = Paths.get(".").toAbsolutePath.getParent.getParent + "/runEO"
 
   case class YamlTest(python: String)
 
