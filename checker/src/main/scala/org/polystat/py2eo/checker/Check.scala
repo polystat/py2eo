@@ -32,13 +32,13 @@ object Check {
 
   def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
 
-  private def check(inputPath: Path, outputPath: Path, mutations: Iterable[Mutation]): Iterator[TestResult] = {
+  private def check(inputPath: Path, outputPath: Path, mutations: Iterable[Mutation]): List[TestResult] = {
     if (inputPath isDirectory) {
-      inputPath.toDirectory.list flatMap (item => check(item, outputPath, mutations))
+      inputPath.toDirectory.list.toList flatMap (item => check(item, outputPath, mutations))
     } else if (inputPath hasExtension "yaml") {
-      Iterator(check(inputPath.toFile, outputPath, mutations))
+      List(check(inputPath.toFile, outputPath, mutations))
     } else {
-      Iterator empty
+      List empty
     }
   }
 
