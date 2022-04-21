@@ -21,20 +21,17 @@ class Counter(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
   private val runEOPath = Paths.get(".").toAbsolutePath.getParent.getParent + "/runEO"
 
-  case class YamlTest(python: String)
-
-  def yaml2python(f: File): YamlTest = {
+  def yaml2python(f: File): String = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
 
-    YamlTest(map.get("python"))
+    map.get("python")
   }
 
   def useCageHolder(test: File): Unit = {
     val z = yaml2python(test)
 
-    val res = Transpile(test.getName.replace(".yaml", ""),
-      z.python)
+    val res = Transpile(test.getName.replace(".yaml", ""), z)
 
     res match {
       case None => fail(s"could not transpile ${test.getName}");
