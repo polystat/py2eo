@@ -4,12 +4,13 @@ python: |
     i = 0
     res = []
     while i < 5:
-        try:
-            assert (i != 3)
-            res.append(i)
-        except:
-            continue
-        finally:
-            i += 1
-
-    return not res.__contains__(3)
+      try:
+        assert (i != 3)
+        res.append(i)
+      except:
+        res.append(10)
+        continue
+      finally:
+        i += 1
+    
+    return not res.__contains__(3) and res.__contains__(10)
