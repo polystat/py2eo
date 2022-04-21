@@ -78,11 +78,11 @@ object Write {
       case CompilingResult.passed => "expected data"
     }
 
-    lazy val data = if (stage equals CompilingResult.passed) {
+    lazy val data = if (stage equals CompilingResult.invalid) {
+      stage
+    } else {
       lazy val link = Check.diffName(name, mutation)
       s"<a href=\"$link\">$stage</a>"
-    } else {
-      stage
     }
 
     s"<td class=\"$kind\">$data</td>\n"
