@@ -1,19 +1,15 @@
 enabled: True
 python: |
-  def nestedBreak1():
-    arr1 = [1, 2, 3]
-    arr2 = [4, 5, 6]
-    res = []
-    
-    for i in arr1:
-      for j in arr2:
-        if j == 5:
+  def break2():
+    break_out_flag_inner = False
+    break_out_flag_outer = False
+    for i in range(5):
+      for j in range(5):
+        if j == 2 and i == 0:
+          break_out_flag_inner = True
           break
-        res.append(j)
-      
-      if i == 2:
+      if break_out_flag_inner:
+        break_out_flag_outer = True
         break
-      
-      res.append(i)
     
-    return res == [4, 1, 4]
+    return break_out_flag_inner and break_out_flag_outer
