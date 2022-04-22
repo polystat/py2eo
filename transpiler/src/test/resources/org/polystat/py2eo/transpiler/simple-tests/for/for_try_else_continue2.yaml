@@ -1,14 +1,17 @@
 enabled: True
 python: |
-  def tryForElseContinue():
+  def tryForElseContinue2():
     items = [1, 2, 3, 4, 5, 6, 7, "hello", 100, 200, 300, 400]
     res = []
     for item in items:
       try:
+        if item == "hello":
+          continue
+        
         res.append(int(item))
       except:
-        continue
+        res.append(900)
     else:
-      res.remove(100)
+      res.append(800)
     
-    return not res.__contains__(100)
+    return not res.__contains__(900)
