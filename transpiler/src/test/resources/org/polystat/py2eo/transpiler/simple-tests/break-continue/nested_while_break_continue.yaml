@@ -1,0 +1,23 @@
+enabled: True
+python: |
+  def nested_while_break_continue():
+    arr1 = [1, 2, 3]
+    arr2 = [4, 5, 6]
+    res = []
+    i = -1
+    j = -1
+    
+    while i <= len(arr1):
+      i += 1
+      while j <= len(arr2):
+        j += 1
+        if j >= len(arr2) or arr2[j] == 4:
+          continue
+        res.append(arr2[j])
+      
+      if i >= len(arr1) or arr1[i] == 3:
+        break
+      
+      res.append(arr1[i])
+    
+    return res == [5, 6, 1, 2]
