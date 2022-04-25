@@ -2,6 +2,7 @@ package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
+import org.polystat.py2eo.parser.{Parse, PrintPython}
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
@@ -30,7 +31,7 @@ object Check {
     }
   }
 
-  def diffName(test: Path, mutation: Mutation): String = s"${test.stripExtension}-$mutation-diff.txt"
+  def diffName(name: String, mutation: Mutation): String = s"$name-$mutation-diff.txt"
 
   private def check(inputPath: Path, outputPath: Path, mutations: Iterable[Mutation]): List[TestResult] = {
     if (inputPath isDirectory) {
@@ -57,28 +58,45 @@ object Check {
   }
 
   private def check(test: File, outputPath: Path, mutation: Mutation): CompilingResult = {
-    val original = parseYaml(test)
-    val mutant = Mutate(original, mutation, 1)
-    println(s"checking ${test.stripExtension} with $mutation")
+    val module = test.stripExtension
+    println(s"checking $module with $mutation")
 
-    if (mutant equals original) {
+    val originalPyText = parseYaml(test)
+    val mutatedPyText = Mutate(originalPyText, mutation, 1)
+
+    if (mutatedPyText equals originalPyText) {
       CompilingResult.invalid
     } else {
-      val module = test.stripExtension
-      Transpile(module, mutant) match {
-        case None => CompilingResult.failed
-        case Some(transpiled) =>
-          val mutant = File(outputPath / s"$module-$mutation").addExtension("eo")
-          mutant writeAll transpiled
+      val originalPyFile = File(outputPath / s"$module.py")
+      originalPyFile writeAll PrintPython.print(Parse(originalPyText))
 
-          val original = File(outputPath / test.changeExtension("eo").name)
-          val diff = Process(s"diff $original $mutant", outputPath.jfile).lazyLines_!
+      val mutatedPyFile = File(outputPath / s"$module-$mutation.py")
+      mutatedPyFile writeAll mutatedPyText
 
-          if (diff isEmpty) {
+      val diffPyOutput = Process(s"diff $originalPyFile $mutatedPyFile", outputPath.jfile).lazyLines_!
+      val diffFile = File(outputPath / diffName(module, mutation))
+      diffFile writeAll "Diff between original (left) and mutated (right) python files\n"
+      diffFile appendAll diffPyOutput.mkString("\n")
+
+      Transpile(module, mutatedPyText) match {
+        case None =>
+          diffFile appendAll "\n\nFailed to transpile mutated py file\n"
+          CompilingResult.failed
+
+        case Some(mutatedEoText) =>
+          val mutatedEoFile = File(outputPath / s"$module-$mutation.eo")
+          mutatedEoFile writeAll mutatedEoText
+
+          val originalEoFile = File(outputPath / s"$module.eo")
+          val diffEoOutput = Process(s"diff $originalEoFile $mutatedEoFile", outputPath.jfile).lazyLines_!
+
+          if (diffEoOutput isEmpty) {
+            diffFile appendAll "\n\nNo diff between original and mutated eo files\n"
             CompilingResult.nodiff
           } else {
-            val diffFile = File(outputPath / diffName(test, mutation))
-            diffFile writeAll diff.mkString("\n")
+            diffFile appendAll "\n\nDiff between original (left) and mutated (right) eo files\n"
+            diffFile appendAll diffEoOutput.mkString("\n")
+
             CompilingResult.passed
           }
       }
