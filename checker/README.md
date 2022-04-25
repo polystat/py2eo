@@ -7,4 +7,5 @@ The checker is included in the CI for this repository, resulting in an HTML-tabl
 - compiled for tests that passed the EO compilation but returned an incorrect result when run
 - passed for tests that returned correct result
 
-The resulting table lies here: https://polystat.github.io/py2eo
+The resulting table for simple tests lies on github pages: https://polystat.github.io/py2eo.  
+The resulting table for django source code lies in [this branch](https://github.com/polystat/py2eo/tree/django-results). In order to view it, clone this branch and open `index.html` file in any browser.
