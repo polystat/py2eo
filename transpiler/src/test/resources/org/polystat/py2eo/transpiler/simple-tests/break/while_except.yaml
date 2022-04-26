@@ -1,0 +1,18 @@
+enabled: True
+python: |
+  def while_except():
+    res = []
+    arr = [1, 2, 4, 0, 8]
+    i = 0
+    
+    while True:
+      try:
+        result = 16 // arr[i]
+        res.append(result)
+        i += 1
+      except ZeroDivisionError:
+        res.clear()
+        res.append(42)
+        break
+    
+    return res == [42]

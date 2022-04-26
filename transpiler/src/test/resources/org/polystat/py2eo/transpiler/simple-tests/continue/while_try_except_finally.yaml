@@ -1,0 +1,16 @@
+enabled: True
+python: |
+  def continue1():
+    i = 0
+    res = []
+    while i < 5:
+      try:
+        assert (i != 3)
+        res.append(i)
+      except:
+        res.append(10)
+        continue
+      finally:
+        i += 1
+    
+    return res == [0, 1, 2, 10, 4]

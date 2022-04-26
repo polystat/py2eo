@@ -26,7 +26,9 @@ object Transpile {
     parsed.map(
       parsed => {
         val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(parsed, new SimplePass.Names())
-        val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y0._1, y0._2)
+        val y00 = SimplePass.procStatement(SimplePass.simplifyFor)(y0._1, y0._2)
+        debugPrinter(y00._1, "afterSimplifyFor")
+        val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y00._1, y00._2)
         val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)
         val y = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.xPrefixInExpr))(y2._1, y2._2)
 
@@ -35,26 +37,24 @@ object Transpile {
           debugPrinter(rmExcepts._1, "afterRmExcepts")
           val simIf = SimplePass.procStatement(SimplePass.simplifyIf)(rmExcepts._1, rmExcepts._2)
           debugPrinter(simIf._1, "simplifyIf")
-          val methodCall = SimplePass.procExprInStatement(
-            SimplePass.procExpr(SimplePass.simpleSyntacticMethodCall))(simIf._1, simIf._2)
+          val methodCall = SimplePass.procExprInStatement((SimplePass.simpleSyntacticMethodCall))(simIf._1, simIf._2)
           debugPrinter(methodCall._1, "methodCall")
-          val textractAllCalls = SimplePass.procExprInStatement(
-            SimplePass.procExpr(SimplePass.extractAllCalls))(methodCall._1, methodCall._2)
+          val textractAllCalls = SimplePass.procExprInStatement((SimplePass.extractAllCalls))(methodCall._1, methodCall._2)
           debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
           val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
           val hacked = Suite(List(
             theFun,
             Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-        Assert(Ident("assertMe", ann.pos), None, ann.pos)
+            Assert(Ident("assertMe", ann.pos), None, ann.pos)
           ), ann.pos)
           debugPrinter(hacked, "afterUseCage")
           val eoHacked = Suite(List(
             theFun,
             Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-        Return(Some(Ident("assertMe", ann.pos)), ann.pos)
-      ), ann.pos)
-      val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
-      (eoText.init :+ "  (goto (apply.@)).result > @").mkString("\n")
+            Return(Some(Ident("assertMe", ann.pos)), ann.pos)
+          ), ann.pos)
+          val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
+          (eoText.init :+ "  (goto (apply.@)).result > @").mkString("\n")
         }
         catch {
           case e: Throwable => {
