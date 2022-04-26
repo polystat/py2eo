@@ -5,12 +5,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
+import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
-import java.io.File
+import java.io.{File, FileInputStream}
 import java.nio.file.{Files, Path}
 import java.{lang => jl, util => ju}
-
 
 @RunWith(value = classOf[Parameterized])
 class TestsSimple(path: jl.String) extends Commons {
@@ -27,8 +27,15 @@ object TestsSimple {
     val simpleTestsFolder = new File(testsPrefix + File.separator + "simple-tests" + File.separator)
     Files.walk(simpleTestsFolder.toPath).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
       val testHolder = new File(p.toString)
+      val yaml = new Yaml()
+      val map = yaml.load[java.util.Map[String, String]](new FileInputStream(testHolder))
+
       try {
-        res.addOne(p.toString)
+        if (map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean]){
+          res.addOne(p.toString)
+        }else{
+          println(s"The test ${testHolder.getName} is disabled")
+        }
       } catch {
         case e: YAMLException => fail(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
         case e: ClassCastException => fail(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")

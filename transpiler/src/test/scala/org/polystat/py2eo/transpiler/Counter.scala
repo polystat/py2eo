@@ -94,12 +94,18 @@ object Counter {
     val simpleTestsFolder = new File(testsPrefix + File.separator + "simple-tests" + File.separator)
     Files.walk(simpleTestsFolder.toPath).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
       val testHolder = new File(p.toString)
+      val yaml = new Yaml()
+      val map = yaml.load[java.util.Map[String, String]](new FileInputStream(testHolder))
+
       try {
-        println(testHolder.getPath)
-        res.addOne(p.toString)
+        if (map.containsKey("enabled") && !map.getOrDefault("enabled", "false").asInstanceOf[Boolean]){
+          res.addOne(p.toString)
+        }else{
+          println(s"The test ${testHolder.getName} is disabled")
+        }
       } catch {
-        case e: YAMLException => println(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
-        case e: ClassCastException => println(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
+        case e: YAMLException => fail(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
+        case e: ClassCastException => fail(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
       }
     })
 
