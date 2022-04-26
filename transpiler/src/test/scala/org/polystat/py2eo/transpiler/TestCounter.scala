@@ -17,7 +17,7 @@ import scala.language.postfixOps
 
 
 @RunWith(value = classOf[Parameterized])
-class CounterTests(path: jl.String) {
+class TestCounter(path: jl.String) {
   val testsPrefix: String = getClass.getResource("").getFile
   private val runEOPath = Paths.get(".").toAbsolutePath.getParent.getParent + "/runEO"
 
@@ -83,7 +83,7 @@ class CounterTests(path: jl.String) {
 }
 
 
-object CounterTests {
+object TestCounter {
   @Parameters def parameters: ju.Collection[Array[jl.String]] = {
     val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
 
