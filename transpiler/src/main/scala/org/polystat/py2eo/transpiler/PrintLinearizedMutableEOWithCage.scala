@@ -50,16 +50,30 @@ object PrintLinearizedMutableEOWithCage {
       case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
         val Suite(l0, _) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
+        val init : Option[FuncDef] = l0
+          .find{ case f : FuncDef => f.name == "x__init__" case _ => false }
+          .map{ case f : FuncDef => f }
+        val consArgs = init match {
+          case Some(value) =>
+            val argnames = value.args.tail.map(_.name).mkString(" ")
+            s"$argnames"
+          case None => ""
+        }
+        val callInit = init match {
+          case None => ""
+          case Some(_) => s" (goto ((result.x__init__.apply pResult $consArgs).@))"
+        }
         val decorates = bases.headOption.map(_._2)
           "write." :: indent(
             name ::
             "[]" :: indent(
               "newUID.apply 0 > xid" ::
-              "[] > apply" ::
+              s"[$consArgs] > apply" ::
               indent(
                 "[stackUp] > @" ::
                 indent(
                   (
+                    "cage > pResult" ::
                     "[] > result" ::
                     indent(
                       l.map{
@@ -81,7 +95,7 @@ object PrintLinearizedMutableEOWithCage {
                       ) ++
                       decorates.toList.map(x => "base.result > @")
                     )
-                  ) :+ "seq (result.initFields) (stackUp.forward (return result)) > @"
+                  ) :+ s"seq (result.initFields) (pResult.write result)$callInit (stackUp.forward (return pResult)) > @"
                 )
               )
             )
