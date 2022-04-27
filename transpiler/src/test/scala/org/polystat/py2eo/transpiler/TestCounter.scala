@@ -34,14 +34,14 @@ class TestCounter(path: jl.String) {
     val res = Transpile(test.getName.replace(".yaml", ""), z)
 
     res match {
-      case None => assume(assumption = true,s"could not transpile ${test.getName}");
+      case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) =>
         val path = writeEOFile(
           test, "genCageEO", ".eo", transpiled
         )
 
         if(!run(path)){
-          assume(assumption = true,s"could not run EO ${test.getName}")
+          fail(s"could not run EO ${test.getName}")
         }
     }
   }
