@@ -107,6 +107,6 @@ object Check {
     val input = file slurp
     val map = new Yaml load[java.util.Map[String, String]] input
 
-    map get "python"
+    Transpile.applyStyle(map get "python")
   }
 }
