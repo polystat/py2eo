@@ -1,10 +1,9 @@
 package org.polystat.py2eo.transpiler
 
-import org.polystat.py2eo.parser.{Expression, Parse, Statement}
+import org.polystat.py2eo.parser.{Expression, Parse, PrintPython, Statement}
 
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
-import org.polystat.py2eo.transpiler.Common.TranspilerException
 import org.polystat.py2eo.parser.Expression.{CallIndex, Ident}
 import org.polystat.py2eo.parser.Statement.{Assert, Decorators, FuncDef, Return, Suite}
 
@@ -16,6 +15,10 @@ object Transpile {
 
   def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): String = {
     transpileOption(debugPrinter)(moduleName, pythonCode).getOrElse("Not Supported: input file syntax is not python 3.8")
+  }
+
+  def applyStyle(pythonCode: String): String = {
+    PrintPython.print(Parse(pythonCode))
   }
 
   /// [debugPrinter(statement, stageName)]
