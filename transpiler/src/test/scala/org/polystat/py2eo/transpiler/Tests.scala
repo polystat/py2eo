@@ -44,15 +44,6 @@ class Tests {
 
   def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
 
-  @Ignore
-  @Test def simplifyInheritance(): Unit = {
-    val name = "inheritance"
-    val test = new File(testsPrefix + "/" + name + ".py")
-    def db = debugPrinter(test)(_, _)
-
-    SimplePass.allTheGeneralPasses(db, Parse(test, db), new SimplePass.Names())
-  }
-
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
