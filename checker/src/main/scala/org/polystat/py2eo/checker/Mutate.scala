@@ -21,18 +21,22 @@ object Mutate {
   }
 
   def apply(input: String, mutation: Mutation, occurrenceNumber: Int): String = {
-    mutation match {
-      case Mutation.nameMutation => PrintPython.print(mutateNames(Parse(input), occurrenceNumber))
-      case Mutation.literalMutation => PrintPython.print(mutateLiteral(Parse(input), occurrenceNumber))
-      case Mutation.operatorMutation => input.replace('+', '-')
-      case Mutation.reverseBoolMutation => input.replace("true", "false")
-      case Mutation.breakToContinue => input.replace("break", "continue")
-      case Mutation.breakSyntax => input.replace("def", "df")
-      case Mutation.literalToIdentifier => input.replace("False", "false")
-      case Mutation.removeBrackets => input.replace("()", "")
-      case Mutation.addExcessParam => PrintPython.print(addExcessParam(Parse(input), occurrenceNumber))
-      case Mutation.swapParam => PrintPython.print(swapParam(Parse(input), occurrenceNumber))
-      case _ => throw new IllegalArgumentException
+    Parse(input) match {
+      case None => input
+      case Some(parsed) =>
+        mutation match {
+          case Mutation.nameMutation => PrintPython.print(mutateNames(parsed, occurrenceNumber))
+          case Mutation.literalMutation => PrintPython.print(mutateLiteral(parsed, occurrenceNumber))
+          case Mutation.operatorMutation => input.replace('+', '-')
+          case Mutation.reverseBoolMutation => input.replace("true", "false")
+          case Mutation.breakToContinue => input.replace("break", "continue")
+          case Mutation.breakSyntax => input.replace("def", "df")
+          case Mutation.literalToIdentifier => input.replace("False", "false")
+          case Mutation.removeBrackets => input.replace("()", "")
+          case Mutation.addExcessParam => PrintPython.print(addExcessParam(parsed, occurrenceNumber))
+          case Mutation.swapParam => PrintPython.print(swapParam(parsed, occurrenceNumber))
+          case _ => throw new IllegalArgumentException
+        }
     }
   }
 
