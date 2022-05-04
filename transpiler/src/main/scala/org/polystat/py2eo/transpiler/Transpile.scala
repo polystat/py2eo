@@ -17,15 +17,15 @@ object Transpile {
     transpileOption(debugPrinter)(moduleName, pythonCode).getOrElse("Not Supported: input file syntax is not python 3.8")
   }
 
-  def applyStyle(pythonCode: String): String = {
-    PrintPython.print(Parse(pythonCode))
+  def applyStyle(pythonCode: String): Option[String] = {
+    Parse(pythonCode).map(PrintPython.print)
   }
 
   /// [debugPrinter(statement, stageName)]
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
   def transpileOption(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): Option[String] = {
-    val parsed = try { Some(Parse(pythonCode, debugPrinter)) } catch { case _ : Any => None }
+    val parsed = Parse(pythonCode, debugPrinter)
     parsed.map(
       parsed => {
         val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(parsed, new SimplePass.Names())
@@ -98,7 +98,7 @@ object Transpile {
 
             PrintEO.printSt(
               moduleName, hacked,
-              globals.map(name => s"memory > $name").toList
+              "+package org.eolang" :: "+junit" :: globals.map(name => s"memory > $name").toList
             )
               .mkString("\n")
 
