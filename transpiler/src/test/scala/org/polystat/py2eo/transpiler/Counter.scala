@@ -95,11 +95,7 @@ object Counter {
       val map = yaml.load[java.util.Map[String, String]](new FileInputStream(testHolder))
 
       try {
-        if (map.containsKey("enabled") && !map.getOrDefault("enabled", "false").asInstanceOf[Boolean]){
-          res.addOne(p.toString)
-        }else{
-          println(s"The test ${testHolder.getName} is disabled")
-        }
+        res.addOne(p.toString)
       } catch {
         case e: YAMLException => fail(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
         case e: ClassCastException => fail(s"Couldn't parse ${testHolder.getName} file with error ${e.getMessage}")
