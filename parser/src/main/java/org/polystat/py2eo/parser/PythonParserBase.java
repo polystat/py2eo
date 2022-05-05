@@ -40,6 +40,7 @@ public abstract class PythonParserBase extends Parser {
         super(input);
         //this.removeErrorListeners();
         this.addErrorListener(new IndentationErrorListener());
+        this.addErrorListener(new ThrowingErrorListener());
     }
 
     protected final List<Integer> t_lookahead = List.of(PythonLexer.OPEN_PAREN, PythonLexer.OPEN_BRACK, PythonLexer.DOT);

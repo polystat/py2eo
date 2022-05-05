@@ -2,7 +2,6 @@ package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
-import org.polystat.py2eo.parser.{Parse, PrintPython}
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
@@ -46,29 +45,30 @@ object Check {
   private def check(test: File, outputPath: Path, mutations: Iterable[Mutation]): TestResult = {
     val module = test.stripExtension
     println(s"checking $module")
-    Transpile(module, parseYaml(test)) match {
+    parseYaml(test) match {
       case None => TestResult(module, None)
-      case Some(transpiled) =>
-        val file = File(outputPath / test.changeExtension("eo").name)
-        file writeAll transpiled
+      case Some(parsed) =>
+        Transpile(module, parsed) match {
+          case None => TestResult(module, None)
+          case Some(transpiled) =>
+            val file = File(outputPath / test.changeExtension("eo").name)
+            file writeAll transpiled
 
-        val resultList = mutations map (mutation => (mutation, check(test, outputPath, mutation)))
-        TestResult(module, Some(resultList.toMap[Mutation, CompilingResult]))
+            val resultList = mutations map (mutation => (mutation, check(module, parsed, outputPath, mutation)))
+            TestResult(module, Some(resultList.toMap[Mutation, CompilingResult]))
+        }
     }
   }
 
-  private def check(test: File, outputPath: Path, mutation: Mutation): CompilingResult = {
-    val module = test.stripExtension
+  private def check(module: String, originalPyText: String, outputPath: Path, mutation: Mutation): CompilingResult = {
     println(s"checking $module with $mutation")
-
-    val originalPyText = parseYaml(test)
     val mutatedPyText = Mutate(originalPyText, mutation, 1)
 
     if (mutatedPyText equals originalPyText) {
       CompilingResult.invalid
     } else {
       val originalPyFile = File(outputPath / s"$module.py")
-      originalPyFile writeAll PrintPython.print(Parse(originalPyText))
+      originalPyFile writeAll originalPyText
 
       val mutatedPyFile = File(outputPath / s"$module-$mutation.py")
       mutatedPyFile writeAll mutatedPyText
@@ -103,10 +103,10 @@ object Check {
     }
   }
 
-  private def parseYaml(file: File): String = {
+  private def parseYaml(file: File): Option[String] = {
     val input = file slurp
     val map = new Yaml load[java.util.Map[String, String]] input
 
-    map get "python"
+    Transpile.applyStyle(map get "python")
   }
 }

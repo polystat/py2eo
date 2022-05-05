@@ -21,8 +21,10 @@ trait Commons {
     val yamlObj = yaml2python(test)
 
     if (yamlObj.enabled) {
-      val res = Transpile(test.getName.replace(".yaml", ""),
-        yamlObj.python)
+      val res = Transpile.transpileOption(Main.debugPrinter(test))(
+        test.getName.replace(".yaml", ""),
+        yamlObj.python
+      )
 
       res match {
         case None => fail(s"could not transpile ${test.getName}");

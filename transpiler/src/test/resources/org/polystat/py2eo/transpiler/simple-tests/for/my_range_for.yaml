@@ -4,7 +4,10 @@ python: |
     class StopIteration: pass
     class MyRange:
       i = 0
-      last = 3
+      last = 0
+      def __init__(self, a, b):
+        self.i = a
+        self.last = b
       def __iter__(self): return self
       def __next__(self):
         if (self.i == self.last):
@@ -14,7 +17,7 @@ python: |
           self.i = self.i + 1
           return ret
 
-    r = MyRange()
+    r = MyRange(0, 3)
     z = 0
     for i in r: z = z + i
     return z == 3

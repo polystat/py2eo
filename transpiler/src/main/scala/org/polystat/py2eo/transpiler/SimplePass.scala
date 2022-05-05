@@ -732,7 +732,16 @@ object SimplePass {
         case _ =>
           val (name, ns1) = ns("e")
           val id = Ident(name, e.ann.pos)
-          (Right((Assign(List(id, e), e.ann.pos), id)), ns1)
+          (Right((
+            Suite(
+              List(
+                Assign(List(id, e), e.ann.pos),
+                Assign(List(Field(id, "<", e.ann.pos)), e.ann.pos)
+              ),
+              e.ann.pos
+            ),
+            id
+          )), ns1)
       }
     }
   }
