@@ -72,3 +72,97 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 #### Checker ####
 This repository's CI includes checker - a tool that reduces project testing time using input test mutations. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
+
+## Examples of translation projections
+### 8.1 If-elif-else
+The If-elif-else rule has only one alternative:
+
+![image](https://user-images.githubusercontent.com/5425660/166903431-4f423d1e-6517-4964-8339-e6605d31d875.png)
+##### Python
+```
+  def f(cond1, a, cond2, b, e):
+    if cond1:
+      return a
+    elif cond2:
+      return b
+    else:
+      return c
+```
+##### EO
+```
+[] > f
+  [xcond1NotCopied xaNotCopied xcond2NotCopied xbNotCopied xeNotCopied] > apply
+    [stackUp] > @
+      cage > tmp
+      xcond1NotCopied' > xcond1
+      xaNotCopied' > xa
+      xcond2NotCopied' > xcond2
+      xbNotCopied' > xb
+      xeNotCopied' > xe
+      seq > @
+        stdout "xf\n"
+        xcond1.<
+        xa.<
+        xcond2.<
+        xb.<
+        xe.<
+        (xcond1).if
+          seq
+            stackUp.forward (return (xa))
+            TRUE
+          seq
+            (xcond2).if
+              seq
+                stackUp.forward (return (xb))
+                TRUE
+              seq
+                stackUp.forward (return (xc))
+                TRUE
+            TRUE
+        123
+```
+
+##### Tests
+https://github.com/polystat/py2eo/wiki/Tests-Structure#the-if-statement
+
+### 8.4 Try
+#### try_2
+![image](https://user-images.githubusercontent.com/5425660/166906535-171657ff-b0fd-4843-b668-39d7cf56ff79.png)
+##### Python
+```
+  def f(a, b):
+    try:
+      return a
+    finally:
+      return b
+```
+##### EO
+```
+[] > f
+  [xaNotCopied xbNotCopied] > apply
+    [stackUp] > @
+      cage > tmp
+      xaNotCopied' > xa
+      xbNotCopied' > xb
+      seq > @
+        stdout "xf\n"
+        xa.<
+        xb.<
+        write.
+          xcurrent-exception
+          goto
+            [stackUp]
+              seq > @
+                stackUp.forward (return (xa))
+                stackUp.forward raiseNothing
+        seq
+          if.
+            xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
+            seq
+            0
+          stackUp.forward (return (xb))
+          (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
+        123
+```
+##### Tests
+https://github.com/polystat/py2eo/wiki/Tests-Structure#the-try-statement
