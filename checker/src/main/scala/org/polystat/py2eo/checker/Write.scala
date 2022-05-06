@@ -3,7 +3,8 @@ package org.polystat.py2eo.checker
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.Duration
 import scala.language.postfixOps
 import scala.reflect.io.{File, Path, Streamable}
 
@@ -72,18 +73,21 @@ object Write {
 
   /** Returns table cell with test result */
   private def cell(mutation: Mutation, name: String, stage: Future[CompilingResult]): String = {
-    lazy val kind = stage match {
+    val futureValue = Await.result(stage, Duration.Inf)
+
+    lazy val kind = futureValue match {
       case CompilingResult.invalid => "data"
       case CompilingResult.failed => "unexpected data"
       case CompilingResult.nodiff => "unexpected data"
       case CompilingResult.passed => "expected data"
     }
 
-    lazy val data = if (stage equals CompilingResult.invalid) {
-      stage
+
+    lazy val data = if (futureValue equals CompilingResult.invalid) {
+      futureValue
     } else {
       lazy val link = Check.diffName(name, mutation)
-      s"<a href=\"$link\">$stage</a>"
+      s"<a href=\"$link\">$futureValue</a>"
     }
 
     s"<td class=\"$kind\">$data</td>\n"
@@ -93,7 +97,7 @@ object Write {
   def passed(tests: List[TestResult], mutation: Mutation): Int = {
     applied(tests, mutation) count (test => test.results match {
       case None => false
-      case Some(results) => results(mutation) == CompilingResult.passed
+      case Some(results) => Await.result(results(mutation),Duration.Inf) == CompilingResult.passed
     })
   }
 
