@@ -1,5 +1,10 @@
 package org.polystat.py2eo.transpiler
 
+import java.io.{File, FileInputStream}
+import java.nio.file.{Files, Path, Paths, StandardCopyOption}
+import java.util.concurrent.TimeUnit
+import java.{lang => jl, util => ju}
+
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -9,10 +14,6 @@ import org.polystat.py2eo.transpiler.Main.writeEOFile
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
-import java.io.{File, FileInputStream}
-import java.nio.file.{Files, Path, Paths, StandardCopyOption}
-import java.util.concurrent.TimeUnit
-import java.{lang => jl, util => ju}
 import scala.language.postfixOps
 
 
@@ -64,9 +65,12 @@ class Counter(path: jl.String) {
     var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$pathResult\"")
     pb = pb.directory(dir)
     pb.inheritIO()
+
     val process = pb.start
     val ret = process.waitFor(40, TimeUnit.SECONDS)
 
+    println(process.getErrorStream.toString)
+    println(process.getOutputStream.toString)
 
     Files.delete(pathResult)
 
