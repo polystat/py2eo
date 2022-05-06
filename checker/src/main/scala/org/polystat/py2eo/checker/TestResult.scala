@@ -3,6 +3,8 @@ package org.polystat.py2eo.checker
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 
+import scala.concurrent.Future
+
 object CompilingResult extends Enumeration {
   type CompilingResult = Value
   val invalid: Value = Value("n/a")
@@ -11,4 +13,4 @@ object CompilingResult extends Enumeration {
   val passed: Value = Value("passed")
 }
 
-case class TestResult(name: String, results: Option[Map[Mutation, CompilingResult]])
+case class TestResult(name: String, results: Option[Map[Mutation, Future[CompilingResult]]])

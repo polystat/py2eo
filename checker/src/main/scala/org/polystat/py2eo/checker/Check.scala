@@ -5,6 +5,8 @@ import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.language.postfixOps
 import scala.reflect.io.{File, Path}
 import scala.sys.error
@@ -54,8 +56,8 @@ object Check {
             val file = File(outputPath / test.changeExtension("eo").name)
             file writeAll transpiled
 
-            val resultList = mutations map (mutation => (mutation, check(module, parsed, outputPath, mutation)))
-            TestResult(module, Some(resultList.toMap[Mutation, CompilingResult]))
+            val resultList = mutations map (mutation => (mutation, Future(check(module, parsed, outputPath, mutation))))
+            TestResult(module, Some(resultList.toMap[Mutation, Future[CompilingResult]]))
         }
     }
   }

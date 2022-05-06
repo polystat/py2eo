@@ -3,6 +3,7 @@ package org.polystat.py2eo.checker
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 
+import scala.concurrent.Future
 import scala.language.postfixOps
 import scala.reflect.io.{File, Path, Streamable}
 
@@ -70,7 +71,7 @@ object Write {
   }
 
   /** Returns table cell with test result */
-  private def cell(mutation: Mutation, name: String, stage: CompilingResult): String = {
+  private def cell(mutation: Mutation, name: String, stage: Future[CompilingResult]): String = {
     lazy val kind = stage match {
       case CompilingResult.invalid => "data"
       case CompilingResult.failed => "unexpected data"
