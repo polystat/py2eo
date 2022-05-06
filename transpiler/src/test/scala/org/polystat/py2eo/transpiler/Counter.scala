@@ -66,14 +66,17 @@ class Counter(path: jl.String) {
     pb = pb.directory(dir)
     pb.inheritIO()
 
-    pb.redirectError(new java.io.File(s"$runEOPath/error_${file.getName}.txt"))
+
+    val errorFile = new java.io.File(s"$runEOPath/error_${file.getName}.txt")
+    pb.redirectError(errorFile)
 
     val process = pb.start
     val ret = process.waitFor(40, TimeUnit.SECONDS)
 
-    println(process.getErrorStream.toString)
-    println(process.getOutputStream.toString)
 
+    val source = scala.io.Source.fromFile(errorFile)
+    val lines = try source.mkString finally source.close()
+    println(lines)
 
     Files.delete(pathResult)
 
