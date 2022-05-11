@@ -17,15 +17,13 @@ object Write {
       value < (passed(tests, right).toDouble / applied(tests, right).size)
     }
 
-    lazy val filtered = mutations filter (mutation => applied(tests, mutation).nonEmpty)
-    lazy val sorted = filtered.toList sortWith sorter
-    File(outputPath / "index.html") writeAll html(tests, sorted)
-
-
     for (f <- tests if f.results.isDefined) {
       for (res <- f.results.get) Await.result(res._2, Duration.Inf)
     }
 
+    lazy val filtered = mutations filter (mutation => applied(tests, mutation).nonEmpty)
+    lazy val sorted = filtered.toList sortWith sorter
+    File(outputPath / "index.html") writeAll html(tests, sorted)
   }
 
   /** Returns html file contents */
