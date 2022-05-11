@@ -74,6 +74,23 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 This repository's CI includes checker - a tool that reduces project testing time using input test mutations. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
 ## Examples of translation projections
+
+### 7.1 Assignment statements
+Note:
+* `x` is prepended to each variable name in order to support capital first letter of a name
+* local variable names are statically extracted and declared as `cage` in the beginning of a generated output
+##### Python
+`x = 1`
+##### EO
+This is added at the start of the generated function
+```
+cage > xx
+```
+This is put at the appropriate place according to the execution order
+```
+(xx).write (1)
+```
+
 ### 8.1 If-elif-else
 
 ##### Python
