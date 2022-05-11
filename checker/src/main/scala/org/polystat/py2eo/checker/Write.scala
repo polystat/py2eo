@@ -20,6 +20,12 @@ object Write {
     lazy val filtered = mutations filter (mutation => applied(tests, mutation).nonEmpty)
     lazy val sorted = filtered.toList sortWith sorter
     File(outputPath / "index.html") writeAll html(tests, sorted)
+
+
+    for (f <- tests if f.results.isDefined) {
+      for (res <- f.results.get) Await.result(res._2, Duration.Inf)
+    }
+
   }
 
   /** Returns html file contents */
@@ -105,7 +111,9 @@ object Write {
   def applied(tests: List[TestResult], mutation: Mutation): List[TestResult] = {
     tests filter (test => test.results match {
       case None => false
-      case Some(results) => results(mutation) != CompilingResult.invalid
+      case Some(results) => {
+        Await.result(results(mutation), Duration.Inf) equals CompilingResult.invalid
+      }
     })
   }
 }
