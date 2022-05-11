@@ -1,0 +1,48 @@
++package org.eolang
++junit
+memory > xarr2
+memory > xlen
+[] > nested_while_break_continue
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnested_while_break_continue
+        seq > @
+          xnested_while_break_continue.write
+            []
+              memory > xarr1
+              memory > xarr22
+              memory > xi
+              memory > xres
+              memory > xj
+              seq > @
+                seq
+                  xarr1.write (((unsupported)).apply (1) (2) (3))
+                  xarr22.write (((unsupported)).apply (4) (5) (6))
+                  xres.write (((unsupported)).apply)
+                  xi.write (1.neg)
+                  xj.write (1.neg)
+                  while.
+                    ((xi).leq (((xlen)).apply ((xarr1))))
+                    [unused]
+                      seq > @
+                        seq
+                          (((unsupported)).apply ((xi)) (1))
+                          while.
+                            ((xj).leq (((xlen)).apply ((xarr2))))
+                            [unused]
+                              seq > @
+                                seq
+                                  (((unsupported)).apply ((xj)) (1))
+                                  (((xj).geq (((xlen)).apply ((xarr2)))).or ((((unsupported)).apply ((xarr2)) ((xj))).eq 4)).if
+                                    (((unsupported)).apply)
+                                  bogusForceDataize.write ((((xres).xappend)).apply ((((unsupported)).apply ((xarr2)) ((xj)))))
+                          (((xi).geq (((xlen)).apply ((xarr1)))).or ((((unsupported)).apply ((xarr1)) ((xi))).eq 3)).if
+                            (((unsupported)).apply)
+                          bogusForceDataize.write ((((xres).xappend)).apply ((((unsupported)).apply ((xarr1)) ((xi)))))
+                  (((unsupported)).apply (((xres).eq (((unsupported)).apply (5) (6) (1) (2)))))

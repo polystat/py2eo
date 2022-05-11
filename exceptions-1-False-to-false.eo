@@ -62,10 +62,11 @@
                       newUID.apply 0 > xid
                       [] > apply
                         [stackUp] > @
+                          cage > pResult
                           [] > result
                             xC > xclass
                             seq > initFields
-                          seq (result.initFields) (stackUp.forward (return result)) > @
+                          seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
                   write.
                     xcurrent-exception
                     goto
@@ -74,6 +75,7 @@
                           tmp.write (goto ((((xC)).apply).@))
                           (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                           (e0).write (tmp.result)
+                          ((e0).<)
                           mkCopy (e0) > tmp1
                           (xo).write (tmp1.copy)
                           stackUp.forward (xo)
@@ -81,14 +83,18 @@
                   seq
                     mkCopy (xcurrent-exception.xclass) > tmp2
                     (e4).write (tmp2.copy)
+                    ((e4).<)
                     mkCopy (e4.xid) > tmp3
                     (e5).write (tmp3.copy)
+                    ((e5).<)
                     mkCopy (xC.xid) > tmp4
                     (e6).write (tmp4.copy)
+                    ((e6).<)
                     [] > tmp5
                       memory > dddata
                       dddata.write (((e5).eq (e6))) > @
                     (e7).write (tmp5.dddata)
+                    ((e7).<)
                     (e7).if
                       seq
                         stackUp.forward (return TRUE)
@@ -96,13 +102,16 @@
                       seq
                         mkCopy (xcurrent-exception.xclass) > tmp6
                         (e1).write (tmp6.copy)
+                        ((e1).<)
                         mkCopy (e1.xid) > tmp7
                         (e2).write (tmp7.copy)
+                        ((e2).<)
                         (lhs1).write (1)
                         [] > tmp8
                           memory > dddata
                           dddata.write (((e2).eq (lhs1))) > @
                         (e3).write (tmp8.dddata)
+                        ((e3).<)
                         (e3).if
                           seq
                             stackUp.forward (return (xfalse))

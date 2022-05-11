@@ -1,0 +1,55 @@
++package org.eolang
++junit
+memory > xrange
+memory > xStopIteration
+[] > nested_for_break1
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnested_for_continue1
+        seq > @
+          xnested_for_continue1.write
+            []
+              memory > xit0
+              memory > xit1
+              memory > xcontinue_out_flag_inner
+              memory > xj
+              memory > xcontinue_out_flag_outer
+              memory > xi
+              seq > @
+                seq
+                  xcontinue_out_flag_inner.write FALSE
+                  xcontinue_out_flag_outer.write FALSE
+                  seq
+                    xit0.write ((((((xrange)).apply (5)).x__iter__)).apply)
+                    (((unsupported)).apply ((xStopIteration)))
+                      while.
+                        TRUE
+                        [unused]
+                          seq > @
+                            seq
+                              xi.write ((((xit0).x__next__)).apply)
+                              seq
+                                seq
+                                  xit1.write ((((((xrange)).apply (5)).x__iter__)).apply)
+                                  (((unsupported)).apply ((xStopIteration)))
+                                    while.
+                                      TRUE
+                                      [unused]
+                                        seq > @
+                                          seq
+                                            xj.write ((((xit1).x__next__)).apply)
+                                            (((xj).eq 2).and ((xi).eq 0)).if
+                                              seq
+                                                xcontinue_out_flag_inner.write TRUE
+                                                (((unsupported)).apply)
+                                (xcontinue_out_flag_inner).if
+                                  seq
+                                    xcontinue_out_flag_outer.write TRUE
+                                    (((unsupported)).apply)
+                  (((unsupported)).apply (((xcontinue_out_flag_inner).and (xcontinue_out_flag_outer))))

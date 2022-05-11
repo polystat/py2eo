@@ -1,0 +1,125 @@
++package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
++junit
+
+[unused] > while_break1
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > assertMe
+      cage > xwhile_break1
+      seq > @
+        stdout "while_break1\n"
+        write.
+          xwhile_break1
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > e1
+                cage > xf2
+                cage > e0
+                cage > xf1
+                cage > e4
+                cage > e3
+                cage > xf0
+                cage > e2
+                cage > xii
+                seq > @
+                  stdout "xwhile_break1\n"
+                  (xf0).write (0)
+                  (xf1).write (1)
+                  (xii).write (0)
+                  write.
+                    xcurrent-exception
+                    goto
+                      [stackUp]
+                        seq > @
+                          TRUE.while
+                            [unused]
+                              seq > @
+                                [] > tmp1
+                                  memory > dddata
+                                  dddata.write (((xii).less 110)) > @
+                                (e3).write (tmp1.dddata)
+                                ((e3).<)
+                                ((e3).not).if
+                                  seq
+                                    stackUp.forward break
+                                    TRUE
+                                  seq
+                                    TRUE
+                                [] > tmp2
+                                  memory > dddata
+                                  dddata.write (((xf0).sub (xf1))) > @
+                                (e0).write (tmp2.dddata)
+                                ((e0).<)
+                                mkCopy (e0) > tmp3
+                                (xf2).write (tmp3.copy)
+                                [] > tmp4
+                                  memory > dddata
+                                  dddata.write (((xii).sub 1)) > @
+                                (e1).write (tmp4.dddata)
+                                ((e1).<)
+                                mkCopy (e1) > tmp5
+                                (xii).write (tmp5.copy)
+                                mkCopy (xf1) > tmp6
+                                (xf0).write (tmp6.copy)
+                                mkCopy (xf2) > tmp7
+                                (xf1).write (tmp7.copy)
+                                [] > tmp8
+                                  memory > dddata
+                                  dddata.write (((xii).eq 9)) > @
+                                (e2).write (tmp8.dddata)
+                                ((e2).<)
+                                (e2).if
+                                  seq
+                                    stackUp.forward break
+                                    TRUE
+                                  seq
+                                    TRUE
+                                TRUE
+                          stackUp.forward raiseNothing
+                  if.
+                    xcurrent-exception.xclass.xid.neq (break.xclass.xid)
+                    stackUp.forward xcurrent-exception
+                    0
+                  [] > tmp9
+                    memory > dddata
+                    dddata.write ((34.eq (xf0))) > @
+                  (e4).write (tmp9.dddata)
+                  ((e4).<)
+                  stackUp.forward (return (e4))
+                  123
+        tmp.write (goto ((((xwhile_break1)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        stackUp.forward (return (assertMe))
+  (goto (apply.@)).result > @

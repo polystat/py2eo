@@ -1,0 +1,69 @@
++package org.eolang
++junit
+memory > xfalse
+memory > xStopIteration
+[] > nested_for_break_continue_else
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnested_for_break_continue_else
+        seq > @
+          xnested_for_break_continue_else.write
+            []
+              memory > xk
+              memory > xl2
+              memory > xl1
+              memory > xit0
+              memory > xl3
+              memory > xit1
+              memory > xi
+              memory > xres
+              memory > xit2
+              memory > xj
+              seq > @
+                seq
+                  xres.write (xfalse)
+                  xl1.write (((unsupported)).apply (1) (2) (3))
+                  xl2.write (((unsupported)).apply (10) (20) (30))
+                  xl3.write (((unsupported)).apply (100) (200) (300))
+                  seq
+                    xit0.write ((((xl1).x__iter__)).apply)
+                    (((unsupported)).apply ((xStopIteration)))
+                      while.
+                        TRUE
+                        [unused]
+                          seq > @
+                            seq
+                              xi.write ((((xit0).x__next__)).apply)
+                              seq
+                                seq
+                                  xit1.write ((((xl2).x__iter__)).apply)
+                                  (((unsupported)).apply ((xStopIteration)))
+                                    while.
+                                      TRUE
+                                      [unused]
+                                        seq > @
+                                          seq
+                                            xj.write ((((xit1).x__next__)).apply)
+                                            seq
+                                              seq
+                                                xit2.write ((((xl3).x__iter__)).apply)
+                                                (((unsupported)).apply ((xStopIteration)))
+                                                  while.
+                                                    TRUE
+                                                    [unused]
+                                                      seq > @
+                                                        seq
+                                                          xk.write ((((xit2).x__next__)).apply)
+                                                          ((((xi).eq 2).and ((xj).eq 20)).and ((xk).eq 200)).if
+                                                            seq
+                                                              xres.write TRUE
+                                                              (((unsupported)).apply)
+                                              (((unsupported)).apply)
+                                (((unsupported)).apply)
+                  (((unsupported)).apply ((xres)))

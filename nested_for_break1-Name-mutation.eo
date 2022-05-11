@@ -1,0 +1,56 @@
++package org.eolang
++junit
+memory > xrange
+memory > xStopIteration
+[] > nested_for_break1
+  [args...] > unsupported
+  [args...] > xunsupported
+  memory > bogusForceDataize
+  memory > xbogusForceDataize
+  memory > xhack
+  seq > @
+    xhack.write
+      []
+        memory > xnested_for_break1
+        seq > @
+          xnested_for_break1.write
+            []
+              memory > xit0
+              memory > xit1
+              memory > xi
+              memory > xbreak_out_flag_inner
+              memory > xbreak_out_flag_outer
+              memory > xbreak_out_flag_outer2
+              memory > xj
+              seq > @
+                seq
+                  xbreak_out_flag_inner.write FALSE
+                  xbreak_out_flag_outer2.write FALSE
+                  seq
+                    xit0.write ((((((xrange)).apply (5)).x__iter__)).apply)
+                    (((unsupported)).apply ((xStopIteration)))
+                      while.
+                        TRUE
+                        [unused]
+                          seq > @
+                            seq
+                              xi.write ((((xit0).x__next__)).apply)
+                              seq
+                                seq
+                                  xit1.write ((((((xrange)).apply (5)).x__iter__)).apply)
+                                  (((unsupported)).apply ((xStopIteration)))
+                                    while.
+                                      TRUE
+                                      [unused]
+                                        seq > @
+                                          seq
+                                            xj.write ((((xit1).x__next__)).apply)
+                                            (((xj).eq 2).and ((xi).eq 0)).if
+                                              seq
+                                                xbreak_out_flag_inner.write TRUE
+                                                (((unsupported)).apply)
+                                (xbreak_out_flag_inner).if
+                                  seq
+                                    xbreak_out_flag_outer.write TRUE
+                                    (((unsupported)).apply)
+                  (((unsupported)).apply (((xbreak_out_flag_inner).and (xbreak_out_flag_outer))))

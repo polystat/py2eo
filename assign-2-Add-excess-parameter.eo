@@ -50,18 +50,21 @@
                 seq > @
                   stdout "xassignTest2\n"
                   (xa).write (1)
-                  [] > tmp1
+                  [] > tmp4
                     memory > dddata
                     dddata.write (((xa).sub 2)) > @
-                  (e0).write (tmp1.dddata)
-                  [] > tmp2
+                  (e0).write (tmp4.dddata)
+                  ((e0).<)
+                  [] > tmp5
                     memory > dddata
                     dddata.write ((1.neg)) > @
-                  (e1).write (tmp2.dddata)
-                  [] > tmp3
+                  (e1).write (tmp5.dddata)
+                  ((e1).<)
+                  [] > tmp6
                     memory > dddata
                     dddata.write (((e0).eq (e1))) > @
-                  (e2).write (tmp3.dddata)
+                  (e2).write (tmp6.dddata)
+                  ((e2).<)
                   stackUp.forward (return (e2))
                   123
         tmp.write (goto ((((xassignTest2)).apply).@))

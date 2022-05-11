@@ -1,6 +1,9 @@
++package org.eolang
++junit
 memory > xlist
 memory > xlength
 memory > xrange
+memory > xStopIteration
 memory > xi
 memory > xlen
 [] > gen-2
@@ -25,11 +28,21 @@ memory > xlen
                   xrev_str.write
                     []
                       memory > xlength2
+                      memory > xit0
+                      memory > xi
                       seq > @
                         seq
                           xlength2.write (((xlen)).apply ((xcheckStr)))
-                          (((unsupported)).apply ((xi)) ((((xrange)).apply (((xlength).sub 1)) ((1.neg)) ((1.neg)))))
-                            (((unsupported)).apply ((((unsupported)).apply ((xcheckStr)) ((xi)))))
+                          seq
+                            xit0.write ((((((xrange)).apply (((xlength).sub 1)) ((1.neg)) ((1.neg))).x__iter__)).apply)
+                            (((unsupported)).apply ((xStopIteration)))
+                              while.
+                                TRUE
+                                [unused]
+                                  seq > @
+                                    seq
+                                      xi.write ((((xit0).x__next__)).apply)
+                                      (((unsupported)).apply ((((unsupported)).apply ((xcheckStr)) ((xi)))))
                   xresList.write (((unsupported)).apply)
                   (((unsupported)).apply (((((xresList).xappend)).apply ((xi)))) ((xi)) ((((xrev_str)).apply)))
                   (((unsupported)).apply (((((xlen)).apply ((xresList))).eq (((xlen)).apply ((((xlist)).apply ((xcheckStr))))))))

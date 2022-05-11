@@ -1,97 +1,35 @@
-1,92c1
-< memory > xFriend3
-< memory > xCitizens
-< memory > xFriend
-< memory > xParent
-< memory > xChild
-< memory > xFriend2
-< memory > xhasattr
-< [] > inheritance-test
-<   [args...] > unsupported
-<   [args...] > xunsupported
-<   memory > bogusForceDataize
-<   memory > xbogusForceDataize
-<   memory > xhack
-<   seq > @
-<     xhack.write
-<       []
-<         memory > xinheritanceTesting
-<         seq > @
-<           xinheritanceTesting.write
-<             []
-<               memory > xcount
-<               memory > xcheckPeople
-<               memory > xgetPeople
-<               memory > xgetParent
-<               memory > xtestCheck
-<               memory > xpName
-<               memory > xname
-<               memory > xchName
-<               seq > @
-<                 seq
-<                   (((unsupported)).apply raiseme)
-<                     xpName.write "Bob"
-<                   (((unsupported)).apply raiseme)
-<                     seq
-<                       xchName.write "Steve"
-<                       xgetParent.write
-<                         []
-<                           seq > @
-<                             (((unsupported)).apply raiseme (((((xParent)).apply raiseme).xpName)))
-<                   (((unsupported)).apply raiseme ((xParent)) ((xChild)))
-<                     seq
-<                       xname.write "Dan"
-<                       xgetPeople.write
-<                         [xself]
-<                           seq > @
-<                             seq
-<                               bogusForceDataize.write ((((xself).x__setattr__)).apply raiseme ("age") (100))
-<                               (((unsupported)).apply raiseme (((((((((xself).xpName).x__len__)).apply raiseme).greater 0).and ((((((xself).xchName).x__len__)).apply raiseme).greater 0)).and (((xhasattr)).apply raiseme ((xself)) ("age")))))
-<                   (((unsupported)).apply raiseme ((xParent)) ((xChild)) ((xFriend)))
-<                     seq
-<                       xname.write "Dan"
-<                       xgetPeople.write
-<                         [xself]
-<                           seq > @
-<                             seq
-<                               bogusForceDataize.write ((((xself).x__setattr__)).apply raiseme ("age") (100))
-<                               (((unsupported)).apply raiseme (((xself).xgetPeople)))
-<                   (((unsupported)).apply raiseme ((xFriend)) ((xChild)) ((xFriend2)))
-<                     seq
-<                       xname.write "Dan"
-<                       xgetPeople.write
-<                         [xself]
-<                           seq > @
-<                             seq
-<                               bogusForceDataize.write ((((xself).x__setattr__)).apply raiseme ("age") (100))
-<                               (((unsupported)).apply raiseme (((xself).xgetPeople)))
-<                   (((unsupported)).apply raiseme ((xFriend)) ((xFriend3)) ((xFriend2)))
-<                     seq
-<                       xname.write "Dan"
-<                       xgetPeople.write
-<                         [xself]
-<                           seq > @
-<                             seq
-<                               bogusForceDataize.write ((((xself).x__setattr__)).apply raiseme ("age") (100))
-<                               (((unsupported)).apply raiseme (((xself).xgetPeople)))
-<                   (((unsupported)).apply raiseme ((xFriend)))
-<                     seq
-<                       xcount.write 100000
-<                       xcheckPeople.write
-<                         [xself]
-<                           seq > @
-<                             (((unsupported)).apply raiseme (((((xself).xcount).greater 0).and ((((xself).xgetPeople)).apply raiseme))))
-<                   xtestCheck.write
-<                     []
-<                       memory > xc
-<                       seq > @
-<                         seq
-<                           xc.write (((xCitizens)).apply raiseme)
-<                           bogusForceDataize.write ((((xc).x__setattr__)).apply raiseme ("mid_age") (45))
-<                           bogusForceDataize.write ((((xc).x__delattr__)).apply raiseme ("mid_age"))
-<                           (((unsupported)).apply raiseme ((((((xc).xgetPeople)).apply raiseme).and (((xhasattr)).apply raiseme ((xc)) ("mid_age")))))
-<                   (((unsupported)).apply raiseme ((((xtestCheck)).apply raiseme)))
-\ No newline at end of file
+Diff between original (left) and mutated (right) python files
+1c1
+< def inheritanceTesting(): # 1:0-61:-1
 ---
-> Not Supported: input file syntax is not python 3.8
-\ No newline at end of file
+> df inheritanceTesting(): # 1:0-61:-1
+6c6
+<         def getParent(): # 9:8-13:3
+---
+>         df getParent(): # 9:8-13:3
+10c10
+<         def getPeople(self): # 16:8-21:3
+---
+>         df getPeople(self): # 16:8-21:3
+15c15
+<         def getPeople(self): # 24:8-29:3
+---
+>         df getPeople(self): # 24:8-29:3
+20c20
+<         def getPeople(self): # 32:8-37:3
+---
+>         df getPeople(self): # 32:8-37:3
+25c25
+<         def getPeople(self): # 40:8-45:3
+---
+>         df getPeople(self): # 40:8-45:3
+30c30
+<         def checkPeople(self): # 48:8-52:3
+---
+>         df checkPeople(self): # 48:8-52:3
+32c32
+<     def testCheck(): # 52:4-60:3
+---
+>     df testCheck(): # 52:4-60:3
+
+Failed to transpile mutated py file
