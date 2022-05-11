@@ -7,58 +7,31 @@
     <version>0.0.1</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <eolang.version>0.22.2</eolang.version>
+        <eolang.version>0.21.7</eolang.version>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
-        <pathToEo>${eo_path}</pathToEo>
     </properties>
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/eo-test/04-pull/org/eolang/</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/../transpiler/src/main/eo</directory>
-									<include>**.eo</include>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.eolang</groupId>
                 <artifactId>eo-maven-plugin</artifactId>
                 <version>${eolang.version}</version>
                 <executions>
-					<execution>
-						<id>compile</id>
+                    <execution>
+                        <id>compile</id>
                         <goals>
                             <goal>register</goal>
                             <goal>assemble</goal>
                             <goal>transpile</goal>
                         </goals>
-						<configuration>
-                            <sourcesDir>${project.baseDir}/../../</sourcesDir>
-                            <includeSources>
-                                <glob>${eo_path}</glob>
-                            </includeSources>
-						  <targetDir>${project.basedir}/target/eo-test</targetDir>
-						  <addSourcesRoot>false</addSourcesRoot>
-						  <addTestSourcesRoot>true</addTestSourcesRoot>
-						  <generatedDir>${project.basedir}/target/generated-test-sources</generatedDir>
-						</configuration>
+                        <configuration>
+                            <sourcesDir>${project.basedir}</sourcesDir>
+                            <targetDir>${project.basedir}/target/eo-test</targetDir>
+                            <addSourcesRoot>false</addSourcesRoot>
+                            <addTestSourcesRoot>true</addTestSourcesRoot>
+                            <generatedDir>${project.basedir}/target/generated-test-sources</generatedDir>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

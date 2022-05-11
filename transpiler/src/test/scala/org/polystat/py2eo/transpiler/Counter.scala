@@ -1,10 +1,5 @@
 package org.polystat.py2eo.transpiler
 
-import java.io.{File, FileInputStream}
-import java.nio.file.{Files, Path, Paths, StandardCopyOption}
-import java.util.concurrent.TimeUnit
-import java.{lang => jl, util => ju}
-
 import org.junit.Assert.fail
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -14,7 +9,12 @@ import org.polystat.py2eo.transpiler.Main.writeEOFile
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
+import java.io.{File, FileInputStream}
+import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.{Files, Path, Paths}
+import java.{lang => jl, util => ju}
 import scala.language.postfixOps
+import scala.sys.process.Process
 
 
 @RunWith(value = classOf[Parameterized])
@@ -49,48 +49,56 @@ class Counter(path: jl.String) {
 
 
   private def run(file: File):Boolean = {
-    //val  result = new File(runEOPath + s"/${file.getName}")
+    val  test = new File(runEOPath + s"/${file.getName}")
     //val path = Path.of(runEOPath + s"/${file.getName}")
     val path = Path.of(s"$runEOPath/${file.getName}")
 
-    val pathResult = Files.move(
-      Paths.get(file.getPath),
-      path,
-      StandardCopyOption.REPLACE_EXISTING
-    )
-//    val test = Files.copy(file.toPath, path, REPLACE_EXISTING).toAbsolutePath
-//    println(test)
-    val dir = new java.io.File(runEOPath)
-    //var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
-    var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$pathResult\"")
-    pb = pb.directory(dir)
-    pb.inheritIO()
+    val result = Files.copy(file.toPath, Path.of(s"$runEOPath/test.eo"), REPLACE_EXISTING)
+    val ret = Process("mvn clean test", new File(runEOPath)).! == 0
 
+    Files delete result
 
-    val errorFile = new java.io.File(s"$runEOPath/error_${file.getName}.txt")
-    pb.redirectError(errorFile)
+    ret
 
-    val outPut = new java.io.File(s"$runEOPath/output_${file.getName}.txt")
-    pb.redirectOutput(outPut)
-
-    val process = pb.start
-    val ret = process.waitFor(40, TimeUnit.SECONDS)
-
-    val sourceOutput = scala.io.Source.fromFile(outPut)
-    val linesOutput = try sourceOutput.mkString finally sourceOutput.close()
-    println(linesOutput)
-
-    val source = scala.io.Source.fromFile(errorFile)
-    val lines = try source.mkString finally source.close()
-    println(lines)
-
-    Files.delete(pathResult)
-
-    if (ret) {
-      process.exitValue == 0
-    } else {
-      false
-    }
+//    val pathResult = Files.move(
+//      Paths.get(file.getPath),
+//      path,
+//      StandardCopyOption.REPLACE_EXISTING
+//    )
+////    val test = Files.copy(file.toPath, path, REPLACE_EXISTING).toAbsolutePath
+////    println(test)
+//    val dir = new java.io.File(runEOPath)
+//    //var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
+//
+//    var pb = new ProcessBuilder("C:\\apache\\bin\\mvn.cmd", "clean", "test", s"-DpathToEo=\"${pathResult.getParent}\"", "-X")
+//    pb = pb.directory(dir)
+//    pb.inheritIO()
+//
+//
+//    val errorFile = new java.io.File(s"$runEOPath/error_${file.getName}.txt")
+//    pb.redirectError(errorFile)
+//
+//    val outPut = new java.io.File(s"$runEOPath/output_${file.getName}.txt")
+//    pb.redirectOutput(outPut)
+//
+//    val process = pb.start
+//    val ret = process.waitFor(40, TimeUnit.SECONDS)
+//
+//    val sourceOutput = scala.io.Source.fromFile(outPut)
+//    val linesOutput = try sourceOutput.mkString finally sourceOutput.close()
+//    println(linesOutput)
+//
+//    val source = scala.io.Source.fromFile(errorFile)
+//    val lines = try source.mkString finally source.close()
+//    println(lines)
+//
+//    //Files.delete(pathResult)
+//
+//    if (ret) {
+//      process.exitValue == 0
+//    } else {
+//      false
+//    }
   }
 
   @Test def testDef(): Unit = {
