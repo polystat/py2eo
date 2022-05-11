@@ -30,9 +30,9 @@ class Counter(path: jl.String) {
   }
 
   def useCageHolder(test: File): Unit = {
-    val z = yaml2python(test)
+    val yamlData = yaml2python(test)
 
-    val res = Transpile(test.getName.replace(".yaml", ""), z)
+    val res = Transpile(test.getName.replace(".yaml", ""), yamlData)
 
     res match {
       case None => fail(s"could not transpile ${test.getName}");
@@ -41,64 +41,20 @@ class Counter(path: jl.String) {
           test, "genCageEO", ".eo", transpiled
         )
 
-        if(!run(path)){
+        if (!run(path)) {
           fail(s"could not run EO ${test.getName}")
         }
     }
   }
 
 
-  private def run(file: File):Boolean = {
-    val  test = new File(runEOPath + s"/${file.getName}")
-    //val path = Path.of(runEOPath + s"/${file.getName}")
-    val path = Path.of(s"$runEOPath/${file.getName}")
-
+  private def run(file: File): Boolean = {
     val result = Files.copy(file.toPath, Path.of(s"$runEOPath/test.eo"), REPLACE_EXISTING)
     val ret = Process("mvn clean test", new File(runEOPath)).! == 0
 
     Files delete result
 
     ret
-
-//    val pathResult = Files.move(
-//      Paths.get(file.getPath),
-//      path,
-//      StandardCopyOption.REPLACE_EXISTING
-//    )
-////    val test = Files.copy(file.toPath, path, REPLACE_EXISTING).toAbsolutePath
-////    println(test)
-//    val dir = new java.io.File(runEOPath)
-//    //var pb = new ProcessBuilder("mvn", "clean", "test", s"-DpathToEo=\"$test\"")
-//
-//    var pb = new ProcessBuilder("C:\\apache\\bin\\mvn.cmd", "clean", "test", s"-DpathToEo=\"${pathResult.getParent}\"", "-X")
-//    pb = pb.directory(dir)
-//    pb.inheritIO()
-//
-//
-//    val errorFile = new java.io.File(s"$runEOPath/error_${file.getName}.txt")
-//    pb.redirectError(errorFile)
-//
-//    val outPut = new java.io.File(s"$runEOPath/output_${file.getName}.txt")
-//    pb.redirectOutput(outPut)
-//
-//    val process = pb.start
-//    val ret = process.waitFor(40, TimeUnit.SECONDS)
-//
-//    val sourceOutput = scala.io.Source.fromFile(outPut)
-//    val linesOutput = try sourceOutput.mkString finally sourceOutput.close()
-//    println(linesOutput)
-//
-//    val source = scala.io.Source.fromFile(errorFile)
-//    val lines = try source.mkString finally source.close()
-//    println(lines)
-//
-//    //Files.delete(pathResult)
-//
-//    if (ret) {
-//      process.exitValue == 0
-//    } else {
-//      false
-//    }
   }
 
   @Test def testDef(): Unit = {
@@ -115,8 +71,6 @@ object Counter {
     val simpleTestsFolder = new File(testsPrefix + File.separator + "simple-tests" + File.separator)
     Files.walk(simpleTestsFolder.toPath).filter((p: Path) => p.toString.endsWith(".yaml")).forEach((p: Path) => {
       val testHolder = new File(p.toString)
-      val yaml = new Yaml()
-      val map = yaml.load[java.util.Map[String, String]](new FileInputStream(testHolder))
 
       try {
         res.addOne(p.toString)
