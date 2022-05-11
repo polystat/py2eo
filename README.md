@@ -75,55 +75,120 @@ This repository's CI includes checker - a tool that reduces project testing time
 
 ## Examples of translation projections
 ### 8.1 If-elif-else
-The If-elif-else rule has only one alternative:
 
-![image](https://user-images.githubusercontent.com/5425660/166903431-4f423d1e-6517-4964-8339-e6605d31d875.png)
 ##### Python
 ```
-  def f(cond1, a, cond2, b, e):
-    if cond1:
-      return a
-    elif cond2:
-      return b
-    else:
-      return c
-```
-##### EO
-```
-[] > f
-  [xcond1NotCopied xaNotCopied xcond2NotCopied xbNotCopied xeNotCopied] > apply
-    [stackUp] > @
-      cage > tmp
-      xcond1NotCopied' > xcond1
-      xaNotCopied' > xa
-      xcond2NotCopied' > xcond2
-      xbNotCopied' > xb
-      xeNotCopied' > xe
-      seq > @
-        stdout "xf\n"
-        xcond1.<
-        xa.<
-        xcond2.<
-        xb.<
-        xe.<
-        (xcond1).if
-          seq
-            stackUp.forward (return (xa))
-            TRUE
-          seq
-            (xcond2).if
-              seq
-                stackUp.forward (return (xb))
-                TRUE
-              seq
-                stackUp.forward (return (xc))
-                TRUE
-            TRUE
-        123
+x = 1
+if True:
+  x = 2
 ```
 
+##### EO
+```
+cage > tmp
+cage > xx
+seq > @
+  (xx).write (1)
+  TRUE.if
+    seq
+      (xx).write (2)
+      TRUE
+    seq
+      TRUE
+  123
+```
+
+##### Python
+```
+x = 1
+if True:
+  x = 2
+elif False:
+  x = 3
+else:
+  x = 4
+```
+
+##### EO
+```
+cage > tmp
+cage > xx
+seq > @
+  (xx).write (1)
+  TRUE.if
+    seq
+      (xx).write (2)
+      TRUE
+    seq
+      FALSE.if
+        seq
+          (xx).write (3)
+          TRUE
+        seq
+          (xx).write (4)
+          TRUE
+      TRUE
+  123
+```
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-if-statement
+
+### 8.2 While
+##### Python
+Imagine that the following code is a whole body of a function
+```
+x = 0
+while True:
+  x = x + 1
+```
+
+##### EO
+Here, we have to support `break` with the help of `goto`, but also we should be able to pass other non-trivial returns like exceptions and `return` through the `goto` construct. This makes the code more complicated than just a direct use of `while`
+First, we declare `x` and some temporary variables
+```
+[stackUp]
+  seq > @
+    cage > tmp
+    cage > xx
+    cage > e0
+```
+```
+    seq > @
+      (xx).write (0)
+```
+Here, we wrap the `while` in a `goto` and store the result
+```
+      write.
+        xcurrent-exception
+        goto
+          [stackUp]
+            seq > @
+              TRUE.while
+                [unused]
+                  seq > @
+ ```
+ This part is just an overly generalized implementation of `x = x + 1`
+ ```
+                    [] > tmp1
+                      memory > dddata
+                      dddata.write (((xx).add 1)) > @
+                    (e0).write (tmp1.dddata)
+                    ((e0).<)
+                    mkCopy (e0) > tmp2
+                    (xx).write (tmp2.copy)
+                    TRUE
+ ```
+ Now, if we leave the `while` normally, we must still return something to be written to the `current-exception` variable, which is the `raiseNothing` object
+ ```
+              stackUp.forward raiseNothing
+ ```
+ Next, if the `goto` result is not `break`, we basically rethrow it to the outer frame. Note, there are two `stackUp` objects here. The inner one is used to exit the while loop, while the outer one is used to exit the whole code block. It is only needed if the block is a body of another `while` or function or `try` block. 
+ ```
+       if.
+        xcurrent-exception.xclass.xid.neq (break.xclass.xid)
+        stackUp.forward xcurrent-exception
+        0
+```
 
 ### 8.4 Try
 #### try_2
