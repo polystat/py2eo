@@ -70,9 +70,15 @@ class Counter(path: jl.String) {
     val errorFile = new java.io.File(s"$runEOPath/error_${file.getName}.txt")
     pb.redirectError(errorFile)
 
+    val outPut = new java.io.File(s"$runEOPath/output_${file.getName}.txt")
+    pb.redirectOutput(outPut)
+
     val process = pb.start
     val ret = process.waitFor(40, TimeUnit.SECONDS)
 
+    val sourceOutput = scala.io.Source.fromFile(outPut)
+    val linesOutput = try sourceOutput.mkString finally sourceOutput.close()
+    println(linesOutput)
 
     val source = scala.io.Source.fromFile(errorFile)
     val lines = try source.mkString finally source.close()
