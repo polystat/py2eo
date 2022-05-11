@@ -114,6 +114,18 @@ where `mkCopy` looks like this
   copy.< > @
 ```
 
+### 7.6 Return
+See [the section on function definition](https://github.com/polystat/py2eo#86-function-definition)
+
+### 7.8 Raise
+See [the section on exceptions](https://github.com/polystat/py2eo#84-try)
+
+### 7.9 Break
+See [the section on while](https://github.com/polystat/py2eo#82-while)
+
+### 7.10 Continue
+See [the section on while](https://github.com/polystat/py2eo#82-while)
+
 ### 8.1 If-elif-else
 
 ##### Python
