@@ -10,18 +10,15 @@ object Write {
 
   /** Write testing results to index.html in the provided directory */
   def apply(outputPath: Path, tests: List[TestResult], mutations: Iterable[Mutation]): Unit = {
-    def sorter(left: Mutation, right: Mutation): Boolean = {
-      lazy val value = passed(tests, left).toDouble / applied(tests, left).size
-      value < (passed(tests, right).toDouble / applied(tests, right).size)
-    }
+    val awaited = tests map (test => test.await)
 
-    lazy val filtered = mutations filter (mutation => applied(tests, mutation).nonEmpty)
-    lazy val sorted = filtered.toList sortWith sorter
-    File(outputPath / "index.html") writeAll html(tests, sorted)
+    lazy val filtered = mutations filter (mutation => applied(awaited, mutation).nonEmpty)
+    lazy val sorted = filtered.toList sortWith sorter(awaited)
+    File(outputPath / "index.html") writeAll html(awaited, sorted)
   }
 
   /** Returns html file contents */
-  private def html(tests: List[TestResult], mutations: List[Mutation]): String = {
+  private def html(tests: List[AwaitedTestResult], mutations: List[Mutation]): String = {
     lazy val stream = getClass getResourceAsStream "head.html"
     lazy val head = Streamable slurp stream
     lazy val body = s"<body>\n${table(tests, mutations)}</body>\n"
@@ -30,7 +27,7 @@ object Write {
   }
 
   /** Returns full table */
-  private def table(tests: List[TestResult], mutations: List[Mutation]): String = {
+  private def table(tests: List[AwaitedTestResult], mutations: List[Mutation]): String = {
     lazy val head = header(mutations)
     lazy val sum = summary(tests, mutations)
     lazy val body = tests map (test => row(test, mutations)) mkString
@@ -45,8 +42,8 @@ object Write {
   }
 
   /** Returns table summary */
-  private def summary(tests: List[TestResult], mutations: List[Mutation]): String = {
-    def result(tests: List[TestResult], mutation: Mutation): String = {
+  private def summary(tests: List[AwaitedTestResult], mutations: List[Mutation]): String = {
+    def result(tests: List[AwaitedTestResult], mutation: Mutation): String = {
       s"${passed(tests, mutation)} of ${applied(tests, mutation) size}"
     }
 
@@ -55,7 +52,7 @@ object Write {
   }
 
   /** Returns table row */
-  private def row(test: TestResult, mutations: List[Mutation]): String = {
+  private def row(test: AwaitedTestResult, mutations: List[Mutation]): String = {
     lazy val name = test.name
     test.results match {
       case None =>
@@ -88,8 +85,14 @@ object Write {
     s"<td class=\"$kind\">$data</td>\n"
   }
 
+  /** Sorter for mutations */
+  def sorter(tests: List[AwaitedTestResult])(left: Mutation, right: Mutation): Boolean = {
+    lazy val value = passed(tests, left).toDouble / applied(tests, left).size
+    value < (passed(tests, right).toDouble / applied(tests, right).size)
+  }
+
   /** Returns passed tests count */
-  def passed(tests: List[TestResult], mutation: Mutation): Int = {
+  def passed(tests: List[AwaitedTestResult], mutation: Mutation): Int = {
     applied(tests, mutation) count (test => test.results match {
       case None => false
       case Some(results) => results(mutation) == CompilingResult.passed
@@ -97,7 +100,7 @@ object Write {
   }
 
   /** Returns list of tests with applied mutation */
-  def applied(tests: List[TestResult], mutation: Mutation): List[TestResult] = {
+  def applied(tests: List[AwaitedTestResult], mutation: Mutation): List[AwaitedTestResult] = {
     tests filter (test => test.results match {
       case None => false
       case Some(results) => results(mutation) != CompilingResult.invalid
