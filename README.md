@@ -133,6 +133,56 @@ seq > @
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-if-statement
 
+### 8.6 Function definition
+The non-trivial part here is to allow a function body to both do a `return` and to throw exceptions, which are not caught inside the function. This necessity forces us to wrap a function body in an object to be called with the help of `goto`. 
+
+#### Function definition example
+##### Python
+```
+def f(): return 5
+```
+##### EO
+Here, `apply` subobject is used to pass parameters (none in this example), the inner anonymous object with parameter `stackUp` should be called with the `goto`. 
+
+The `stackUp` is used both 
+* to throw exceptions 
+* to return values normally, in which case they are wrapped into a `return` object, so that they can be differentiated from exceptions
+```
+[] > f
+  [] > apply
+    [stackUp] > @
+      cage > tmp
+      seq > @
+        stackUp.forward (return 5)
+        123
+```
+
+#### Function call example
+##### Python
+`x = f()`
+##### EO
+Here, we first actually call `f`, then we must check if it returned normally or with exception. The exception is rethrown.
+The call
+```
+tmp.write (goto ((((xf)).apply).@))
+```
+Check for exception
+```
+(tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+```
+Extract a result from the return object
+```
+(e0).write (tmp.result)
+((e0).<)
+```
+Assign its copy to `x`. 
+```
+mkCopy (e0) > tmp1
+(xx).write (tmp1.copy)
+123
+
+```
+
 ### 8.2 While
 ##### Python
 Imagine that the following code is a whole body of a function
