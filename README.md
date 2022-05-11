@@ -91,6 +91,29 @@ This is put at the appropriate place according to the execution order
 (xx).write (1)
 ```
 
+##### Python
+`x = x + 1`
+##### EO
+Seems overly complicated, but this is a generalized variant of [this](https://github.com/objectionary/eo/issues/462#issuecomment-989631295) hack.
+Maybe the part with `dddata` can be simplified.
+```
+seq > @
+  [] > tmp1
+    memory > dddata
+    dddata.write (((xx).add 1)) > @
+  (e0).write (tmp1.dddata)
+  ((e0).<)
+  mkCopy (e0) > tmp2
+  (xx).write (tmp2.copy)
+  123
+```
+where `mkCopy` looks like this
+```
+[x] > mkCopy
+  x' > copy
+  copy.< > @
+```
+
 ### 8.1 If-elif-else
 
 ##### Python
