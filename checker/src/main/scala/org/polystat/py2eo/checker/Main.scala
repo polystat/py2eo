@@ -3,7 +3,7 @@ package org.polystat.py2eo.checker
 import org.polystat.py2eo.checker.Mutate.Mutation
 
 import scala.language.postfixOps
-import scala.reflect.io.{File, Path, Streamable}
+import scala.reflect.io.Path
 
 object Main {
 
