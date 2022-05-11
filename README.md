@@ -352,3 +352,43 @@ except StopIteration:
 ```
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-try-statement
+
+### 8.7 Class
+A class is basically its constructor, i.e., a function, which returns an object. 
+##### Python
+```
+class c:
+  field = 1
+o = c()
+o.field = 2
+```
+##### EO
+Here `c` has the same calling convention as other functions (it has a field `apply` and must be called with `goto`). The inner `result` is the object to be returned. It is returned through a cage, otherwise this code just hangs.
+```
+[] > c
+  newUID.apply 0 > xid
+  [] > apply
+    [stackUp] > @
+      cage > pResult
+      [] > result
+        cage > xfield
+        xc > xclass
+        seq > initFields
+          xfield.write 1
+      seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
+```
+This is how object `o` is created:
+```
+tmp.write (goto ((((xc)).apply).@))
+(tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+(e0).write (tmp.result)
+((e0).<)
+mkCopy (e0) > tmp1
+(xo).write (tmp1.copy)
+```
+Field assignment is then straightforward:
+```
+((xo).xfield).write (2)
+```
+
+
