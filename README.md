@@ -190,6 +190,25 @@ Here, we wrap the `while` in a `goto` and store the result
         0
 ```
 
+### 8.3 For
+A `for` loop over an iterator is transformed into a `while` inside a `try`. The resulting code is then transformed to EO
+##### Python
+```
+x = 0
+for i in r: x = x + i
+```
+##### Python after `for` elimination
+```
+x = 0
+it0 = r.__iter__()
+try:
+    while (True):
+        i = it0.__next__()
+        x = (x + i)
+except StopIteration:
+    pass
+```
+
 ### 8.4 Try
 #### try_2
 ![image](https://user-images.githubusercontent.com/5425660/166906535-171657ff-b0fd-4843-b668-39d7cf56ff79.png)
