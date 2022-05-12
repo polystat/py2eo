@@ -75,6 +75,19 @@ This repository's CI includes checker - a tool that reduces project testing time
 
 ## Examples of translation projections
 
+### 6.1 Arithmetic conversion
+Complex and float numbers are not yet supported, so no implicit conversion is needed.
+
+### 6.2.4 6.2.5 6.2.6 6.2.7 Displays for lists, sets and dictionaries
+Will be supported via a python-to-python pass: a display will be converted to a `for` loop
+
+### 6.2.8 Generator expressions
+Same as displays
+
+### 6.2.9 Yield expression
+Is a part of coroutines. No plans to support the coroutines now.
+
+### 6.3.4 Call
 
 
 ### 7.1 Expressions statements
