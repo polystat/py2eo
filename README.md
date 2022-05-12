@@ -282,7 +282,7 @@ Here, we wrap the `while` in a `goto` and store the result
 ```
 
 ### 8.3 For
-A `for` loop over an iterator is transformed into a `while` inside a `try`. The resulting code is then transformed to EO
+A `for` loop over an iterator is transformed into a `while` inside a `try`:
 ##### Python
 ```
 x = 0
@@ -299,6 +299,7 @@ try:
 except StopIteration:
     pass
 ```
+The resulting code is then transformed to EO.
 
 ### 8.4 Try
 #### try_2
