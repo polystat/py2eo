@@ -5,11 +5,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import org.polystat.py2eo.transpiler.Main.writeEOFile
+import org.polystat.py2eo.transpiler.Main.writeFile
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
-import java.io.{File, FileInputStream}
+import java.io.{File, FileInputStream, FileWriter}
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.{Files, Path, Paths}
 import java.{lang => jl, util => ju}
@@ -37,7 +37,7 @@ class Counter(path: jl.String) {
     res match {
       case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) =>
-        val path = writeEOFile(
+        val path = writeFile(
           test, "genCageEO", ".eo", transpiled
         )
 

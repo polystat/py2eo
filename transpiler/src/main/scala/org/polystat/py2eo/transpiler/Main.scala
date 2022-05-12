@@ -66,20 +66,7 @@ object Main {
     s.mkString
   }
 
-  def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String, otherLocation: Boolean = false): String = {
-    val moduleName = test.getName.substring(0, test.getName.lastIndexOf("."))
-    val outPath = if (!otherLocation) test.getAbsoluteFile.getParentFile.getPath + "/" + dirSuffix else dirSuffix
-    val d = new File(outPath)
-    if (!d.exists()) d.mkdir()
-    val outName = outPath + "/" + moduleName + fileSuffix
-    val output = new FileWriter(outName)
-    output.write(what)
-    output.close()
-    outName
-  }
-
-
-  def writeEOFile(test: File, dirSuffix: String, fileSuffix: String, what: String, otherLocation: Boolean = false): File = {
+  def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String, otherLocation: Boolean = false): File = {
     val moduleName = test.getName.substring(0, test.getName.lastIndexOf("."))
     val outPath = if (!otherLocation) test.getAbsoluteFile.getParentFile.getPath + "/" + dirSuffix else dirSuffix
     val d = new File(outPath)
