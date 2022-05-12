@@ -2,7 +2,7 @@ package org.polystat.py2eo.transpiler
 
 import org.junit.Assert.assertTrue
 import org.junit.{Ignore, Test}
-import org.polystat.py2eo.parser.{Parse, Statement}
+import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.transpiler.Common.dfsFiles
 import org.yaml.snakeyaml.Yaml
 

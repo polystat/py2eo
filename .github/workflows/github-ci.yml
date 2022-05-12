@@ -53,8 +53,8 @@ jobs:
 
   polystatIntegration:
     strategy:
-        matrix:
-            os: [ ubuntu-latest ]
+      matrix:
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     needs: test
     steps:
@@ -70,7 +70,7 @@ jobs:
         with:
           name: package
 
-      - name: download polystat 
+      - name: download polystat
         run: wget https://repo.maven.apache.org/maven2/org/polystat/polystat/0.4.0/polystat-0.4.0-jar-with-dependencies.jar
       - name: translate python
         run: java -jar ./transpiler.jar ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.py
@@ -85,8 +85,8 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-            name: py2eo output
-            path: ./transpiler/src/test.eo
+          name: py2eo output
+          path: ./transpiler/src/test.eo
 
 
   runEO:
@@ -109,7 +109,7 @@ jobs:
           name: artifacts
           path: ./
       - name: Build with Maven
-        run: cd ./runEO && mvn clean test && ls -la ./target/eo-test/04-pull/org/eolang/
+        run: cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests/*/genCageEO/*.eo ./runEO && cd ./runEO && mvn clean test
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
