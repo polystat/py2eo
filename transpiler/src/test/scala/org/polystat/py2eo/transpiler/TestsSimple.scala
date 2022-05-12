@@ -9,7 +9,7 @@ import java.io.File
 import java.{lang => jl, util => ju}
 
 object TestsSimple extends Commons {
-  @Parameters def parameters: ju.Collection[Array[jl.String]] = collect("simple-tests", needsFiltering = true)
+  @Parameters def parameters: ju.Collection[Array[jl.String]] = collect("simple-tests", filterEnabled = true)
 }
 
 @RunWith(value = classOf[Parameterized])

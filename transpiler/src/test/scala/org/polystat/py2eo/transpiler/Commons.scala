@@ -24,7 +24,7 @@ trait Commons {
     }
   }
 
-  def collect(dir: String, needsFiltering: Boolean = false): ju.Collection[Array[jl.String]] = {
+  def collect(dir: String, filterEnabled: Boolean = false): ju.Collection[Array[jl.String]] = {
     val testsPrefix = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
 
     val res = collection.mutable.ArrayBuffer[String]()
@@ -34,7 +34,7 @@ trait Commons {
 
       try {
         val map = new Yaml().load[java.util.Map[String, String]](new FileInputStream(testHolder))
-        if (needsFiltering) {
+        if (filterEnabled) {
           if (map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean]) {
             res.addOne(p.toString)
           } else {
