@@ -75,7 +75,12 @@ This repository's CI includes checker - a tool that reduces project testing time
 
 ## Examples of translation projections
 
-### 7.1 Assignment statements
+
+
+### 7.1 Expressions statements
+Should be easy but not yet done.
+
+### 7.2 Assignment statements
 Note:
 * `x` is prepended to each variable name in order to support capital first letter of a name
 * local variable names are statically extracted and declared as `cage` in the beginning of a generated output
@@ -114,8 +119,20 @@ where `mkCopy` looks like this
   copy.< > @
 ```
 
+### 7.3 Assert
+Will be done as a python-to-python pass, which basically substitutes `assert` to `raise AssertionException`
+
+### 7.4 Pass
+Does nothing
+
+### 7.5 Del
+Is an operator to delete attributes of objects dynamically. Not supported therefore.
+
 ### 7.6 Return
 See [the section on function definition](https://github.com/polystat/py2eo#86-function-definition)
+
+### 7.7 Yield
+Is a part of coroutines. No plans to support the coroutines now.
 
 ### 7.8 Raise
 See [the section on exceptions](https://github.com/polystat/py2eo#84-try)
@@ -125,6 +142,15 @@ See [the section on while](https://github.com/polystat/py2eo#82-while)
 
 ### 7.10 Continue
 See [the section on while](https://github.com/polystat/py2eo#82-while)
+
+### 7.11 Import
+Not yet supported. 
+
+### 7.12 Global
+Later. Needs closure for full support. 
+
+### 7.13 Nonlocal 
+Later. Needs closure for full support. 
 
 ### 8.1 If-elif-else
 
@@ -184,56 +210,6 @@ seq > @
 ```
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-if-statement
-
-### 8.6 Function definition
-The non-trivial part here is to allow a function body to both do a `return` and to throw exceptions, which are not caught inside the function. This necessity forces us to wrap a function body in an object to be called with the help of `goto`. 
-
-#### Function definition example
-##### Python
-```
-def f(): return 5
-```
-##### EO
-Here, `apply` subobject is used to pass parameters (none in this example), the inner anonymous object with parameter `stackUp` should be called with the `goto`. 
-
-The `stackUp` is used both 
-* to throw exceptions 
-* to return values normally, in which case they are wrapped into a `return` object, so that they can be differentiated from exceptions
-```
-[] > f
-  [] > apply
-    [stackUp] > @
-      cage > tmp
-      seq > @
-        stackUp.forward (return 5)
-        123
-```
-
-#### Function call example
-##### Python
-`x = f()`
-##### EO
-Here, we first actually call `f`, then we must check if it returned normally or with exception. The exception is rethrown.
-The call
-```
-tmp.write (goto ((((xf)).apply).@))
-```
-Check for exception
-```
-(tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
-```
-Extract a result from the return object
-```
-(e0).write (tmp.result)
-((e0).<)
-```
-Assign its copy to `x`. 
-```
-mkCopy (e0) > tmp1
-(xx).write (tmp1.copy)
-123
-
-```
 
 ### 8.2 While
 ##### Python
@@ -353,6 +329,60 @@ except StopIteration:
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-try-statement
 
+### 8.5 With
+Not yet implemented. The plan is to do it as a python-to-python pass according do the example [here](https://docs.python.org/3.8/reference/compound_stmts.html#the-with-statement)
+
+### 8.6 Function definition
+The non-trivial part here is to allow a function body to both do a `return` and to throw exceptions, which are not caught inside the function. This necessity forces us to wrap a function body in an object to be called with the help of `goto`. 
+
+#### Function definition example
+##### Python
+```
+def f(): return 5
+```
+##### EO
+Here, `apply` subobject is used to pass parameters (none in this example), the inner anonymous object with parameter `stackUp` should be called with the `goto`. 
+
+The `stackUp` is used both 
+* to throw exceptions 
+* to return values normally, in which case they are wrapped into a `return` object, so that they can be differentiated from exceptions
+```
+[] > f
+  [] > apply
+    [stackUp] > @
+      cage > tmp
+      seq > @
+        stackUp.forward (return 5)
+        123
+```
+
+#### Function call example
+##### Python
+`x = f()`
+##### EO
+Here, we first actually call `f`, then we must check if it returned normally or with exception. The exception is rethrown.
+The call
+```
+tmp.write (goto ((((xf)).apply).@))
+```
+Check for exception
+```
+(tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+```
+Extract a result from the return object
+```
+(e0).write (tmp.result)
+((e0).<)
+```
+Assign its copy to `x`. 
+```
+mkCopy (e0) > tmp1
+(xx).write (tmp1.copy)
+123
+
+```
+
+
 ### 8.7 Class
 A class is basically its constructor, i.e., a function, which returns an object. 
 ##### Python
@@ -391,4 +421,5 @@ Field assignment is then straightforward:
 ((xo).xfield).write (2)
 ```
 
-
+### 8.8 Coroutines
+No plans to support this. 
