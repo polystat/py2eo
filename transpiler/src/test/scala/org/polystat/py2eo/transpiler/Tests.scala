@@ -2,7 +2,7 @@ package org.polystat.py2eo.transpiler
 
 import org.junit.Assert.assertTrue
 import org.junit.{Ignore, Test}
-import org.polystat.py2eo.parser.{Parse, Statement}
+import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.transpiler.Common.dfsFiles
 import org.yaml.snakeyaml.Yaml
 
@@ -44,6 +44,7 @@ class Tests {
 
   def chopExtension(fileName : String): String = fileName.substring(0, fileName.lastIndexOf("."))
 
+  @Ignore
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
