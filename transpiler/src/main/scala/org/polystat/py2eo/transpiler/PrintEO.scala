@@ -19,13 +19,19 @@ object PrintEO {
   type Text = List[String]
 
   def binop(op : Binops.T): String = op match {
+    case Binops.Pow => "pow"
     case Binops.Plus => "add"
     case Binops.Minus => "sub"
     case Binops.Mul => "mul"
-    case Binops.Div => "div"
+    case Binops.FloorDiv => "div"
     case Binops.And => "and"
     case Binops.Or => "or"
+    case Binops.Xor => "xor"
     case Binops.Mod => "mod"
+    case Binops.Shl => "left"
+    case Binops.Shr => "right"
+    case Binops.And => "and"
+    case Binops.Or => "or"
   }
 
   def compop(t: Compops.T): String = t match {
