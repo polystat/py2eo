@@ -1,6 +1,6 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.fail
+import org.junit.Assert.{assertTrue, fail}
 import org.polystat.py2eo.transpiler.Main.writeFile
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
@@ -8,6 +8,7 @@ import org.yaml.snakeyaml.error.YAMLException
 import java.io.{File, FileInputStream}
 import java.nio.file.{Files, Path}
 import java.{lang => jl, util => ju}
+import scala.sys.process.{Process, ProcessLogger}
 
 trait Commons {
   val testsPrefix: String = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
@@ -16,6 +17,26 @@ trait Commons {
     val map = new Yaml().load[java.util.Map[String, String]](new FileInputStream(f))
     map.get("python")
   }
+
+  case class YamlTest(python : String, enabled : Boolean)
+
+  def yaml2pythonModel(f : File): YamlTest = {
+    val yaml = new Yaml()
+    val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
+    YamlTest(map.get("python"), map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean])
+  }
+
+  val python: String = {
+    val stdout = new StringBuilder()
+    val stderr = new StringBuilder()
+    assertTrue(0 == (Process("python --version") ! ProcessLogger(stdout.append(_), stderr.append(_))))
+    val pattern = "Python (\\d+)".r
+    val Some(match1) = pattern.findFirstMatchIn(if (stderr.toString() == "") stdout.toString() else stderr.toString())
+    if (match1.group(1) == "2") "python3" else "python"
+  }
+
+
+  def chopExtension(fileName: String): String = fileName.substring(0, fileName.lastIndexOf("."))
 
   def useCageHolder(test: File): Unit = {
     Transpile(test.getName.replace(".yaml", ""), yaml2python(test)) match {
