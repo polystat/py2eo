@@ -81,6 +81,34 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>cpython</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <!-- If you have classpath issue like NoDefClassError,... -->
+                            <!-- useManifestOnlyJar>false</useManifestOnlyJar -->
+                            <includes>
+                                <include>**/CPythonTests**</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/Test*.*</exclude>
+                                <exclude>**/*Suite.*</exclude>
+                            </excludes>
+                            <testFailureIgnore>true</testFailureIgnore>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
