@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xwhile_break1
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e1
                 cage > xf2
                 cage > e0
@@ -117,10 +119,12 @@
                     dddata.write ((34.eq (xf0))) > @
                   (e4).write (tmp9.dddata)
                   ((e4).<)
-                  stackUp.forward (return (e4))
+                  toReturn.write ((e4))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xwhile_break1)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

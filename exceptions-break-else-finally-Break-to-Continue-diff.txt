@@ -9,7 +9,7 @@ Diff between original (left) and mutated (right) eo files
 < +alias goto org.eolang.gray.goto
 < +alias stdout org.eolang.io.stdout
 < +alias cage org.eolang.gray.cage
-6,105c3,30
+6,109c3,30
 < 
 < [unused] > exceptions-break-else-finally
 <   [] > apply
@@ -40,6 +40,7 @@ Diff between original (left) and mutated (right) eo files
 <           0 > xid
 <       cage > xcurrent-exception
 <       cage > tmp
+<       cage > toReturn
 <       cage > assertMe
 <       cage > xtebf
 <       seq > @
@@ -50,6 +51,7 @@ Diff between original (left) and mutated (right) eo files
 <             [] > apply
 <               [stackUp] > @
 <                 cage > tmp
+<                 cage > toReturn
 <                 cage > lhs0
 <                 cage > lhs1
 <                 cage > e0
@@ -103,12 +105,14 @@ Diff between original (left) and mutated (right) eo files
 <                       mkCopy (lhs1) > tmp3
 <                       (e0).write (tmp3.copy)
 <                       TRUE
-<                   stackUp.forward (return (e0))
+<                   toReturn.write ((e0))
+<                   stackUp.forward (return toReturn)
 <                   123
 <         tmp.write (goto ((((xtebf)).apply).@))
 <         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
 <         (assertMe).write (tmp.result)
-<         stackUp.forward (return (assertMe))
+<         toReturn.write ((assertMe))
+<         stackUp.forward (return toReturn)
 <   (goto (apply.@)).result > @
 \ No newline at end of file
 ---

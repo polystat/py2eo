@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xmyC
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e6
                 cage > xd
                 cage > e7
@@ -72,11 +74,13 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       seq > @
                                         stdout "xh\n"
                                         xself.<
-                                        stackUp.forward (return 1)
+                                        toReturn.write (1)
+                                        stackUp.forward (return toReturn)
                                         123
                               write.
                                 xg
@@ -84,6 +88,7 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       cage > lhs0
                                       cage > e1
@@ -100,7 +105,8 @@
                                         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                                         (e1).write (tmp.result)
                                         ((e1).<)
-                                        stackUp.forward (return (e1))
+                                        toReturn.write ((e1))
+                                        stackUp.forward (return toReturn)
                                         123
                           seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
                   write.
@@ -122,11 +128,13 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       seq > @
                                         stdout "xh\n"
                                         xself.<
-                                        stackUp.forward (return 3)
+                                        toReturn.write (3)
+                                        stackUp.forward (return toReturn)
                                         123
                               write.
                                 xf
@@ -134,6 +142,7 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       cage > lhs2
                                       cage > e3
@@ -150,7 +159,8 @@
                                         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                                         (e3).write (tmp.result)
                                         ((e3).<)
-                                        stackUp.forward (return (e3))
+                                        toReturn.write ((e3))
+                                        stackUp.forward (return toReturn)
                                         123
                               base.result.xclass.xid
                             base.result > @
@@ -176,10 +186,12 @@
                     dddata.write (((e6).eq (lhs6))) > @
                   (e7).write (tmp8.dddata)
                   ((e7).<)
-                  stackUp.forward (return (e7))
+                  toReturn.write ((e7))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xmyC)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

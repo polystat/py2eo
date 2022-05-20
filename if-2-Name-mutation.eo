@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xconditionalCheck2
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e0
                 cage > xb2
                 cage > xa
@@ -55,10 +57,12 @@
                     dddata.write (((xa).greater (xb))) > @
                   (e0).write (tmp1.dddata)
                   ((e0).<)
-                  stackUp.forward (return (e0))
+                  toReturn.write ((e0))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xconditionalCheck2)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

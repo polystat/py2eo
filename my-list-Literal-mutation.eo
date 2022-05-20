@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xmyLi
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e1
                 cage > e5
                 cage > lhs1
@@ -75,6 +77,7 @@
                       [xheadNotCopied xtailNotCopied] > apply
                         [stackUp] > @
                           cage > tmp
+                          cage > toReturn
                           xheadNotCopied' > xhead
                           xtailNotCopied' > xtail
                           cage > xo
@@ -87,43 +90,46 @@
                             (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                             (e0).write (tmp.result)
                             ((e0).<)
-                            mkCopy (e0) > tmp1
-                            (xo).write (tmp1.copy)
-                            mkCopy (xhead) > tmp2
-                            ((xo).xhead).write (tmp2.copy)
-                            mkCopy (xtail) > tmp3
-                            ((xo).xtail).write (tmp3.copy)
-                            stackUp.forward (return (xo))
+                            mkCopy (e0) > tmp9
+                            (xo).write (tmp9.copy)
+                            mkCopy (xhead) > tmp10
+                            ((xo).xhead).write (tmp10.copy)
+                            mkCopy (xtail) > tmp11
+                            ((xo).xtail).write (tmp11.copy)
+                            toReturn.write ((xo))
+                            stackUp.forward (return toReturn)
                             123
                   (xlst).write ("None: is there a None literal in the EO language?")
                   tmp.write (goto ((((xco)).apply (1) ((xlst))).@))
                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                   (e1).write (tmp.result)
                   ((e1).<)
-                  mkCopy (e1) > tmp4
-                  (xlst).write (tmp4.copy)
+                  mkCopy (e1) > tmp12
+                  (xlst).write (tmp12.copy)
                   tmp.write (goto ((((xco)).apply (2) ((xlst))).@))
                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                   (e2).write (tmp.result)
                   ((e2).<)
-                  mkCopy (e2) > tmp5
-                  (xlst).write (tmp5.copy)
-                  mkCopy (xlst.xtail) > tmp6
-                  (e3).write (tmp6.copy)
+                  mkCopy (e2) > tmp13
+                  (xlst).write (tmp13.copy)
+                  mkCopy (xlst.xtail) > tmp14
+                  (e3).write (tmp14.copy)
                   ((e3).<)
-                  mkCopy (e3.xhead) > tmp7
-                  (e4).write (tmp7.copy)
+                  mkCopy (e3.xhead) > tmp15
+                  (e4).write (tmp15.copy)
                   ((e4).<)
                   (lhs1).write (1)
-                  [] > tmp8
+                  [] > tmp16
                     memory > dddata
                     dddata.write (((e4).eq (lhs1))) > @
-                  (e5).write (tmp8.dddata)
+                  (e5).write (tmp16.dddata)
                   ((e5).<)
-                  stackUp.forward (return (e5))
+                  toReturn.write ((e5))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xmyLi)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xmyRange
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e18
                 cage > e12
                 cage > e7
@@ -104,6 +106,7 @@
                                   [xselfNotCopied xaNotCopied xbNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       xaNotCopied' > xa
                                       xbNotCopied' > xb
@@ -123,11 +126,13 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       seq > @
                                         stdout "x__iter__\n"
                                         xself.<
-                                        stackUp.forward (return (xself))
+                                        toReturn.write ((xself))
+                                        stackUp.forward (return toReturn)
                                         123
                               write.
                                 x__next__
@@ -135,6 +140,7 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       cage > e1
                                       cage > xret
@@ -184,7 +190,8 @@
                                             ((e3).<)
                                             mkCopy (e3) > tmp10
                                             ((xself).xi).write (tmp10.copy)
-                                            stackUp.forward (return (xret))
+                                            toReturn.write ((xret))
+                                            stackUp.forward (return toReturn)
                                             TRUE
                                         123
                           seq (result.initFields) (pResult.write result) (goto ((result.x__init__.apply pResult xa xb).@)) (stackUp.forward (return pResult)) > @
@@ -285,10 +292,12 @@
                     dddata.write (((xz).eq 1)) > @
                   (e21).write (tmp31.dddata)
                   ((e21).<)
-                  stackUp.forward (return (e21))
+                  toReturn.write ((e21))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xmyRange)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

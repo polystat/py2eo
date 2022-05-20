@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xtest
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e6
                 cage > e7
                 cage > e4
@@ -71,6 +73,7 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       seq > @
                                         stdout "x__init__\n"
@@ -84,6 +87,7 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       cage > lhs0
                                       cage > e1
@@ -136,10 +140,12 @@
                     dddata.write (((e6).eq (lhs8))) > @
                   (e7).write (tmp7.dddata)
                   ((e7).<)
-                  stackUp.forward (return (e7))
+                  toReturn.write ((e7))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xtest)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

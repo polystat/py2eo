@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xassignTest4
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > lhs0
                 cage > e1
                 cage > e0
@@ -63,10 +65,12 @@
                     dddata.write (((e0).eq (lhs0))) > @
                   (e1).write (tmp2.dddata)
                   ((e1).<)
-                  stackUp.forward (return (e1))
+                  toReturn.write ((e1))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xassignTest4)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

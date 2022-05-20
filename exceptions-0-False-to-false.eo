@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xte0
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 seq > @
                   stdout "xte0\n"
                   write.
@@ -53,16 +55,19 @@
                           stackUp.forward raiseEmpty
                           stackUp.forward raiseNothing
                   seq
-                    stackUp.forward (return TRUE)
+                    toReturn.write (TRUE)
+                    stackUp.forward (return toReturn)
                     if.
                       xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
                       seq
                       0
                     (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
-                  stackUp.forward (return (xfalse))
+                  toReturn.write ((xfalse))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xte0)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

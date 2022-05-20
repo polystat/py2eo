@@ -1,25 +1,123 @@
 +package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
 +junit
-memory > xcomplex
-[] > conversion-20
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory > bogusForceDataize
-  memory > xbogusForceDataize
-  memory > xhack
-  seq > @
-    xhack.write
-      []
-        memory > xtest
-        seq > @
-          xtest.write
-            []
-              memory > xx
-              memory > xy
-              memory > xz
-              seq > @
-                seq
-                  xx.write 5
-                  xy.write 3
-                  xz.write (((unsupported)).apply ((xy)) ((((xcomplex)).apply ((xx)) ((xy)))))
-                  (((unsupported)).apply (((((xz).x__class__).eq (xcomplex)).and ((((xz).ximag).x__class__).eq (((xz).xreal).x__class__)))))
+
+[unused] > conversion-20
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      cage > tmp
+      cage > toReturn
+      cage > assertMe
+      cage > xtest
+      seq > @
+        stdout "conversion-20\n"
+        write.
+          xtest
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > toReturn
+                cage > e5
+                cage > e7
+                cage > e0
+                cage > e3
+                cage > xz
+                cage > e6
+                cage > lhs0
+                cage > xx
+                cage > e1
+                cage > e4
+                cage > xy
+                cage > e8
+                cage > lhs2
+                cage > e2
+                cage > lhs7
+                seq > @
+                  stdout "xtest\n"
+                  (xx).write (5)
+                  (xy).write (3)
+                  mkCopy (xy) > tmp1
+                  (lhs0).write (tmp1.copy)
+                  tmp.write (goto ((((xcomplex)).apply ((xx)) ((xy))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e0).write (tmp.result)
+                  ((e0).<)
+                  [] > tmp2
+                    memory > dddata
+                    dddata.write (((lhs0).pow (e0))) > @
+                  (e1).write (tmp2.dddata)
+                  ((e1).<)
+                  mkCopy (e1) > tmp3
+                  (xz).write (tmp3.copy)
+                  mkCopy (xz.x__class__) > tmp4
+                  (e2).write (tmp4.copy)
+                  ((e2).<)
+                  mkCopy (xcomplex) > tmp5
+                  (lhs2).write (tmp5.copy)
+                  [] > tmp6
+                    memory > dddata
+                    dddata.write (((e2).eq (lhs2))) > @
+                  (e3).write (tmp6.dddata)
+                  ((e3).<)
+                  (e3).if
+                    seq
+                      mkCopy (xz.ximag) > tmp7
+                      (e4).write (tmp7.copy)
+                      ((e4).<)
+                      mkCopy (e4.x__class__) > tmp8
+                      (e5).write (tmp8.copy)
+                      ((e5).<)
+                      mkCopy (xz.xreal) > tmp9
+                      (e6).write (tmp9.copy)
+                      ((e6).<)
+                      mkCopy (e6.x__class__) > tmp10
+                      (e7).write (tmp10.copy)
+                      ((e7).<)
+                      [] > tmp11
+                        memory > dddata
+                        dddata.write (((e5).eq (e7))) > @
+                      (e8).write (tmp11.dddata)
+                      ((e8).<)
+                      TRUE
+                    seq
+                      (lhs7).write (FALSE)
+                      mkCopy (lhs7) > tmp12
+                      (e8).write (tmp12.copy)
+                      TRUE
+                  toReturn.write ((e8))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xtest)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @

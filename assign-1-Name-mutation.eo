@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xassignTest1
       seq > @
@@ -43,16 +44,19 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > xb2
                 cage > xa
                 seq > @
                   stdout "xassignTest1\n"
                   (xa).write (1)
                   (xb2).write (2)
-                  stackUp.forward (return TRUE)
+                  toReturn.write (TRUE)
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xassignTest1)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xmyC
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > lhs0
                 cage > e1
                 cage > xc
@@ -72,6 +74,7 @@
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
                                       cage > tmp
+                                      cage > toReturn
                                       xselfNotCopied' > xself
                                       cage > e0
                                       seq > @
@@ -80,7 +83,8 @@
                                         mkCopy (xself.xvalue) > tmp1
                                         (e0).write (tmp1.copy)
                                         ((e0).<)
-                                        stackUp.forward (return (e0))
+                                        toReturn.write ((e0))
+                                        stackUp.forward (return toReturn)
                                         123
                           seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
                   tmp.write (goto ((((xc)).apply).@))
@@ -105,10 +109,12 @@
                     dddata.write (((e3).eq (lhs2))) > @
                   (e4).write (tmp5.dddata)
                   ((e4).<)
-                  stackUp.forward (return (e4))
+                  toReturn.write ((e4))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xmyC)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

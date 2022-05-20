@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xtest
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e5
                 cage > lhs1
                 cage > e0
@@ -106,10 +108,12 @@
                       mkCopy (lhs5) > tmp8
                       (e5).write (tmp8.copy)
                       TRUE
-                  stackUp.forward (return (e5))
+                  toReturn.write ((e5))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xtest)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @

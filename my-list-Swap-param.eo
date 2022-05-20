@@ -33,6 +33,7 @@
           0 > xid
       cage > xcurrent-exception
       cage > tmp
+      cage > toReturn
       cage > assertMe
       cage > xmyLi
       seq > @
@@ -43,6 +44,7 @@
             [] > apply
               [stackUp] > @
                 cage > tmp
+                cage > toReturn
                 cage > e1
                 cage > e5
                 cage > lhs1
@@ -75,6 +77,7 @@
                       [xheadNotCopied xtailNotCopied] > apply
                         [stackUp] > @
                           cage > tmp
+                          cage > toReturn
                           xheadNotCopied' > xhead
                           xtailNotCopied' > xtail
                           cage > xo
@@ -93,7 +96,8 @@
                             ((xo).xhead).write (tmp2.copy)
                             mkCopy (xtail) > tmp3
                             ((xo).xtail).write (tmp3.copy)
-                            stackUp.forward (return (xo))
+                            toReturn.write ((xo))
+                            stackUp.forward (return toReturn)
                             123
                   (xlst).write ("None: is there a None literal in the EO language?")
                   tmp.write (goto ((((xco)).apply ((xlst)) (1)).@))
@@ -120,10 +124,12 @@
                     dddata.write (((e4).eq (lhs1))) > @
                   (e5).write (tmp8.dddata)
                   ((e5).<)
-                  stackUp.forward (return (e5))
+                  toReturn.write ((e5))
+                  stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xmyLi)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
-        stackUp.forward (return (assertMe))
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
   (goto (apply.@)).result > @
