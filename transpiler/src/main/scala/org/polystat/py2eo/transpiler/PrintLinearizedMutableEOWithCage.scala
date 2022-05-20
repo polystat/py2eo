@@ -144,7 +144,10 @@ object PrintLinearizedMutableEOWithCage {
       case Assign(List(e), _) => List(pe(e))
       case Return(e, ann) => e match {
         case Some(value) =>
-          List(s"stackUp.forward (return ${pe(value)})")
+          List(
+            s"toReturn.write (${pe(value)})",
+            "stackUp.forward (return toReturn)"
+          )
         case None => List("stackUp.forward (return 0)")
       }
       case IfSimple(cond, yes, no, _) =>
@@ -218,6 +221,7 @@ object PrintLinearizedMutableEOWithCage {
         "[stackUp] > @" :: indent(
           preface ++ (
             "cage > tmp" ::
+            "cage > toReturn" ::
             argCopies ++ memories ++ (
               "seq > @" :: indent(
                 ("stdout \"" + f.name + "\\n\"") ::
