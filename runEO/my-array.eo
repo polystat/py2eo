@@ -1,0 +1,52 @@
++package org.eolang
++alias cage org.eolang.gray.cage
++alias goto org.eolang.gray.goto
++junit
+
+[] > test-my-array
+  [x] > mkCopy
+    x' > copy
+    copy.< > @
+  [result] > return
+    [] > xclass
+      3 > xid
+  [] > my-array
+    [initValue] > apply
+      [stackUp] > @
+        cage > pResult
+        [] > result
+          cage > value
+
+          [] > length
+            [] > apply
+              [stackUp] > @
+                seq > @
+                  stackUp.forward (return (value.length))
+                  123
+
+          [] > get
+            [i] > apply
+              [stackUp] > @
+                seq > @
+                  stackUp.forward (return (value.get i))
+                  123
+
+          [] > append
+            [x] > apply
+              [stackUp] > @
+                seq > @
+                  mkCopy value > tmp
+                  value.write (tmp.copy.append x)
+                  stackUp.forward (return 0)
+
+        seq > @
+          result.value.write initValue
+          pResult.write result
+          stackUp.forward (return pResult)
+
+  (goto ((my-array.apply (* 1)).@)).result > a
+  seq > @
+    (goto ((a.append.apply 2).@)).result
+    and.
+      ((goto (a.length.apply.@)).result.eq 2)
+      (goto ((a.get.apply 1).@)).result.eq 2
