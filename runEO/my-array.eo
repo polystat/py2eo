@@ -17,21 +17,21 @@
         [] > result
           cage > value
 
-          [] > length
+          [] > xlength
             [self] > apply
               [stackUp] > @
                 seq > @
                   stackUp.forward (return (self.value.length))
                   123
 
-          [] > get
+          [] > xget
             [self i] > apply
               [stackUp] > @
                 seq > @
                   stackUp.forward (return (self.value.get i))
                   123
 
-          [] > append
+          [] > xappend
             [self x] > apply
               [stackUp] > @
                 seq > @
@@ -46,7 +46,7 @@
 
   (goto ((xmyArray.apply (*)).@)).result > a
   seq > @
-    (goto ((a.append.apply a 2).@)).result
+    (goto ((a.xappend.apply a 2).@)).result
     and.
-      ((goto ((a.length.apply a).@)).result.eq 1)
-      (goto ((a.get.apply a 0).@)).result.eq 2
+      ((goto ((a.xlength.apply a).@)).result.eq 1)
+      (goto ((a.xget.apply a 0).@)).result.eq 2
