@@ -33,7 +33,9 @@ object Transpile {
         debugPrinter(y00._1, "afterSimplifyFor")
         val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y00._1, y00._2)
         val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)
-        val y = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.xPrefixInExpr))(y2._1, y2._2)
+        val y = SimplePass.simpleProcExprInStatement(Expression.map(
+          x => SimplePass.addExplicitConstructorOfCollection(SimplePass.xPrefixInExpr(x))
+        ))(y2._1, y2._2)
 
         try {
           val rmExcepts = SimplePass.procStatement(SimplePass.simplifyExcepts)(y._1, y._2)
