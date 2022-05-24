@@ -53,7 +53,8 @@ object PrintEO {
   def printExpr(value : T) : String = {
     def e = printExpr _
     value match {
-      case CollectionCons(kind, l, _) => "(* " + l.map(e).mkString(space) + crb
+      case CollectionCons(kind, l, _) =>
+        "(*" + l.map(x => " " + e(x)).mkString + crb
       case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
       case IntLiteral(value, _) => value.toString()
       case FloatLiteral(value, _) => value.toString
