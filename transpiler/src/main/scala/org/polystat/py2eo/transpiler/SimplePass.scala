@@ -799,6 +799,14 @@ object SimplePass {
     }
   }
 
+  def addExplicitConstructorOfCollection(e : T) : T = {
+    e match {
+      case CollectionCons(kind, l, ann) =>
+        CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
+      case _ => e
+    }
+  }
+
   def xPrefixInStatement(x : Statement.T, ns : NamesU) : (Statement.T, NamesU) = {
     def pref(s : String) = s"x$s"
     (
