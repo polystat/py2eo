@@ -238,7 +238,8 @@ object PrintLinearizedMutableEOWithCage {
   def printTest(testName : String, st : Statement.T) : Text = {
     HackName.count = 0 // todo: imperative style suddenly
     println(s"doing $testName")
-    val mkCopy = List(
+    val mkCopy = {
+    List(
       "[x] > mkCopy",
       "  x' > copy",
       "  copy.< > @",
@@ -264,7 +265,38 @@ object PrintLinearizedMutableEOWithCage {
       "  [] > xclass",
       "    0 > xid",
       "cage > xcurrent-exception"
-    )
+    ) ++
+    """|[] > xmyArray
+      |  [initValue] > apply
+      |    [stackUp] > @
+      |      cage > pResult
+      |      [] > result
+      |        cage > value
+      |        [] > xlength
+      |          [self] > apply
+      |            [stackUp] > @
+      |              seq > @
+      |                stackUp.forward (return (self.value.length))
+      |                123
+      |        [] > xget
+      |          [self i] > apply
+      |            [stackUp] > @
+      |              seq > @
+      |                stackUp.forward (return (self.value.get i))
+      |                123
+      |        [] > xappend
+      |          [self x] > apply
+      |            [stackUp] > @
+      |              seq > @
+      |                mkCopy (self.value) > tmp
+      |                self.value.write (tmp.copy.append x)
+      |                stackUp.forward (return 0)
+      |      seq > @
+      |        result.value.write initValue
+      |        pResult.write result
+      |        stackUp.forward (return pResult)"""
+        .stripMargin.split("\n")
+    }
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
