@@ -29,6 +29,7 @@ object Check {
       error("Provided tests directory doesn't contain .yaml files")
     } else {
       Write(outputPath, res, mutations)
+      WriteGrouped(outputPath = outputPath, tests = res, mutations = mutations)
     }
   }
 
@@ -48,16 +49,16 @@ object Check {
     val module = test.stripExtension
     println(s"checking $module")
     parseYaml(test) match {
-      case None => TestResult(module, None)
+      case None => TestResult(module, None, test.parent.name)
       case Some(parsed) =>
         Transpile(module, parsed) match {
-          case None => TestResult(module, None)
+          case None => TestResult(module, None, test.parent.name)
           case Some(transpiled) =>
             val file = File(outputPath / test.changeExtension("eo").name)
             file writeAll transpiled
 
             val resultList = mutations map (mutation => (mutation, Future(check(module, parsed, outputPath, mutation))))
-            TestResult(module, Some(resultList.toMap[Mutation, Future[CompilingResult]]))
+            TestResult(module, Some(resultList.toMap[Mutation, Future[CompilingResult]]), test.parent.name)
         }
     }
   }

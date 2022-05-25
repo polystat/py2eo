@@ -21,7 +21,7 @@ object Write {
   private def html(tests: List[AwaitedTestResult], mutations: List[Mutation]): String = {
     lazy val stream = getClass getResourceAsStream "head.html"
     lazy val head = Streamable slurp stream
-    lazy val body = s"<body>\n${table(tests, mutations)}</body>\n"
+    lazy val body = s"<body>\n${newWriter()}\n${table(tests, mutations)}</body>\n"
 
     s"<html lang=\"en-US\">\n$head$body</html>\n"
   }
@@ -33,6 +33,10 @@ object Write {
     lazy val body = tests map (test => row(test, mutations)) mkString
 
     s"<table id=programs>\n$head$sum$body</table>\n"
+  }
+
+  private def newWriter(): String = {
+    s"<a href=\"index_new.html \">\n new table</a>\n"
   }
 
   /** Returns table header */

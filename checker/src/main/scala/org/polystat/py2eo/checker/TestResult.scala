@@ -15,17 +15,17 @@ object CompilingResult extends Enumeration {
 }
 
 
-case class AwaitedTestResult(name: String, results: Option[Map[Mutation, CompilingResult]])
+case class AwaitedTestResult(name: String, results: Option[Map[Mutation, CompilingResult]], folder:String)
 
-case class TestResult(name: String, results: Option[Map[Mutation, Future[CompilingResult]]]) {
+case class TestResult(name: String, results: Option[Map[Mutation, Future[CompilingResult]]], folder:String) {
   def await: AwaitedTestResult = {
     results match {
-      case None => AwaitedTestResult(name, None)
+      case None => AwaitedTestResult(name, None, folder)
       case Some(resultMap) =>
         val set = resultMap.toSet
         val awaited = for {(mutation, futureResult) <- set} yield (mutation, Await.result(futureResult, Duration.Inf))
 
-        AwaitedTestResult(name, Some(awaited.toMap))
+        AwaitedTestResult(name, Some(awaited.toMap), folder)
     }
   }
 }
