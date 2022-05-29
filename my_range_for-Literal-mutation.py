@@ -10,7 +10,7 @@ def myRange(): # 1:0-24:33
         def __iter__(self): # 10:8-12:7
             return self # 11:12-11:22
         def __next__(self): # 12:8-19:3
-            if ((self.i == self.last )): # 13:54-15:11 
+            if ((self.i == self.last )): # 13:55-15:11 
                 raise StopIteration() # 14:16-14:36
             else: # 15:30-19:3
                 ret = self.i # 16:16-16:27

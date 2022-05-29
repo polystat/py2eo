@@ -3,7 +3,7 @@ def for_try_else_continue2(): # 1:0-15:91
     res2 = [] # 3:4-3:11
     for item in items: # 4:4-15:3
         try: # 5:8-13:3
-            if ((item == "hello" )): # 6:48-9:11 
+            if ((item == "hello" )): # 6:49-9:11 
                 continue # 7:16-7:23
 
             res.append(int(item)) # 9:12-9:32

@@ -1,14 +1,14 @@
-def tebf(): # 1:0-11:-1
-    finallyHappened = False # 2:2-2:24
-    elseHappened = False # 3:2-3:21
-    while (True): # 4:2-10:1
-        try: # 5:4-9:37
-            continue # 6:6-6:10
+def tebf(): # 1:0-14:63
+    finallyHappened = False # 2:4-2:26
+    elseHappened = False # 3:4-3:23
+    while (True): # 4:4-14:3
+        try: # 5:8-14:3
+            continue # 6:12-6:16
         except :
-            pass # 7:12-7:15
+            pass # 8:12-8:15
         else:
-            elseHappened = True # 8:10-8:28
+            elseHappened = True # 10:12-10:30
         finally:
-            finallyHappened = True # 9:13-9:34
+            finallyHappened = True # 12:12-12:33
 
-    return (finallyHappened and (not elseHappened)) # 10:2-10:46
+    return (finallyHappened and (not elseHappened)) # 14:4-14:50

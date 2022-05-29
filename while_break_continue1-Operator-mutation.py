@@ -1,15 +1,15 @@
-def while_break_continue1(): # 1:0-11:-1
-    i = 0  # 2:2-2:6
-    j = 0  # 3:2-3:6
-    while (True): # 4:2-9:1
-        i-=1  # 5:4-5:9
-        if ((i == 3  )): # 6:15-6:24 
-            break # 6:15-6:19
+def while_break_continue1(): # 1:0-15:-1
+    i = 0  # 2:4-2:8
+    j = 0  # 3:4-3:8
+    while (True): # 4:4-14:3
+        i-=1  # 5:8-5:11
+        if ((i == 3  )): # 6:37-9:7 
+            break # 7:12-7:16
 
-        if ((j == 2  )): # 7:15-7:27 
-            continue # 7:15-7:22
+        if ((j == 2  )): # 9:37-12:7 
+            continue # 10:12-10:19
 
-        j-=1  # 8:4-8:9
+        j-=1  # 12:8-12:11
 
-    return ((i == 3  ) and (j == 2  )) # 9:2-9:29
-assert whileBreakContinue() # 11:0-11:26
+    return ((i == 3  ) and (j == 2  )) # 14:4-14:37
+assert whileBreakContinue() # 15:0-15:26

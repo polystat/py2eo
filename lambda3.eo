@@ -1,26 +1,157 @@
 +package org.eolang
++alias goto org.eolang.gray.goto
++alias stdout org.eolang.io.stdout
++alias cage org.eolang.gray.cage
 +junit
-memory > xlist
-memory > xx
-memory > xmap
-memory > xlen
-[] > lambda3
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory > bogusForceDataize
-  memory > xbogusForceDataize
-  memory > xhack
-  seq > @
-    xhack.write
-      []
-        memory > xlambda1
-        seq > @
-          xlambda1.write
-            []
-              memory > xnew_list
-              memory > xmy_list
-              seq > @
-                seq
-                  xmy_list.write (((unsupported)).apply (1) (5) (4) (6) (8) (11) (3) (12))
-                  xnew_list.write (((xlist)).apply ((((xmap)).apply ((((unsupported)).apply (((xx).mul 2)))) ((xmy_list)))))
-                  (((unsupported)).apply (((((xlen)).apply ((xnew_list))).eq 8)))
+
+[unused] > lambda3
+  [] > apply
+    [stackUp] > @
+      [x] > mkCopy
+        x' > copy
+        copy.< > @
+      [] > newUID
+        memory > cur
+        seq > apply
+          cur.write (cur.is-empty.if 5 (cur.add 1))
+          cur
+      [] > raiseEmpty
+        [] > xclass
+          4 > xid
+      [res] > return
+        res > result
+        [] > xclass
+          3 > xid
+      [] > break
+        [] > xclass
+          2 > xid
+      [] > continue
+        [] > xclass
+          1 > xid
+      [] > raiseNothing
+        [] > xclass
+          0 > xid
+      cage > xcurrent-exception
+      [] > xmyArray
+        [initValue] > apply
+          [stackUp] > @
+            cage > pResult
+            [] > result
+              cage > value
+              [] > xlength
+                [self] > apply
+                  [stackUp] > @
+                    seq > @
+                      stackUp.forward (return (self.value.length))
+                      123
+              [] > xget
+                [self i] > apply
+                  [stackUp] > @
+                    seq > @
+                      stackUp.forward (return (self.value.get i))
+                      123
+              [] > xappend
+                [self x] > apply
+                  [stackUp] > @
+                    seq > @
+                      mkCopy (self.value) > tmp
+                      self.value.write (tmp.copy.append x)
+                      stackUp.forward (return 0)
+            seq > @
+              result.value.write initValue
+              pResult.write result
+              stackUp.forward (return pResult)
+      cage > tmp
+      cage > toReturn
+      cage > assertMe
+      cage > xlambda1
+      seq > @
+        stdout "lambda3\n"
+        write.
+          xlambda1
+          []
+            [] > apply
+              [stackUp] > @
+                cage > tmp
+                cage > toReturn
+                cage > lhs0
+                cage > lhs1
+                cage > e0
+                cage > lhs2
+                cage > e3
+                cage > lhs3
+                cage > e2
+                cage > xnew_list
+                cage > xmy_list
+                cage > lhs4
+                cage > e5
+                cage > lhs5
+                cage > e4
+                cage > anonFun0
+                seq > @
+                  stdout "xlambda1\n"
+                  tmp.write (goto ((((xmyArray)).apply ((* 1 5 4 6 8 11 3 12))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e0).write (tmp.result)
+                  ((e0).<)
+                  mkCopy (e0) > tmp1
+                  (xmy_list).write (tmp1.copy)
+                  mkCopy (xlist) > tmp2
+                  (lhs3).write (tmp2.copy)
+                  mkCopy (xmap) > tmp3
+                  (lhs0).write (tmp3.copy)
+                  write.
+                    anonFun0
+                    []
+                      [xxNotCopied] > apply
+                        [stackUp] > @
+                          cage > tmp
+                          cage > toReturn
+                          xxNotCopied' > xx
+                          cage > e1
+                          seq > @
+                            stdout "anonFun0\n"
+                            xx.<
+                            [] > tmp4
+                              memory > dddata
+                              dddata.write (((xx).mul 2)) > @
+                            (e1).write (tmp4.dddata)
+                            ((e1).<)
+                            toReturn.write ((e1))
+                            stackUp.forward (return toReturn)
+                            123
+                  mkCopy (xmy_list) > tmp5
+                  (lhs1).write (tmp5.copy)
+                  tmp.write (goto ((((lhs0)).apply ((anonFun0)) ((lhs1))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e2).write (tmp.result)
+                  ((e2).<)
+                  mkCopy (e2) > tmp6
+                  (lhs2).write (tmp6.copy)
+                  tmp.write (goto ((((lhs3)).apply ((lhs2))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e3).write (tmp.result)
+                  ((e3).<)
+                  mkCopy (e3) > tmp7
+                  (lhs4).write (tmp7.copy)
+                  mkCopy (lhs4) > tmp8
+                  (xnew_list).write (tmp8.copy)
+                  tmp.write (goto ((((xlen)).apply ((xnew_list))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e4).write (tmp.result)
+                  ((e4).<)
+                  (lhs5).write (8)
+                  [] > tmp9
+                    memory > dddata
+                    dddata.write (((e4).eq (lhs5))) > @
+                  (e5).write (tmp9.dddata)
+                  ((e5).<)
+                  toReturn.write ((e5))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xlambda1)).apply).@))
+        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @

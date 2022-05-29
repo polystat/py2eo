@@ -1,4 +1,4 @@
-def myC(): # 1:0-13:35
+def myC(): # 1:0-13:37
     class c(): # 2:4-7:3
         def h(self): # 3:8-5:7
             return 1  # 4:12-4:19

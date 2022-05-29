@@ -1,9 +1,9 @@
-def myC(): # 1:0-8:-1
-    class c(): # 2:4-5:3
+def myC(): # 1:0-9:43
+    class c(): # 2:4-6:3
         value = 11  # 3:8-3:17
-        def getValue(self): # 4:8-4:49
-            return self.value # 4:28-4:44
-    class d(c): # 5:4-5:24
-        pass # 5:16-5:19
-    o = d() # 6:4-6:10
-    return (o.getValue() == 11  ) # 7:4-7:28
+        def getValue(self): # 4:8-6:3
+            return self.value # 5:12-5:28
+    class d(c): # 6:4-8:3
+        pass # 7:8-7:11
+    o = d() # 8:4-8:10
+    return (o.getValue() == 11  ) # 9:4-9:32

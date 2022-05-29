@@ -1,4 +1,4 @@
-def test(): # 1:0-5:22
-    my_list = [10 , 6 , 6 , 10 ] # 2:2-2:25
-    a = ((x ** 2 ) for x in my_list) # 4:2-4:30
-    return (next(a) == 100  ) # 5:2-5:22
+def test(): # 1:0-4:39
+    my_list = [10 , 6 , 6 , 10 ] # 2:4-2:31
+    a = ((x ** 2 ) for x in my_list) # 3:4-3:35
+    return (next(a) == 100  ) # 4:4-4:28

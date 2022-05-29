@@ -1,8 +1,8 @@
-def for_continue(): # 1:0-7:18
-    for val in "string": # 2:2-7:1
-        res = val # 3:4-3:12
-        if ((val == "i" )): # 4:18-7:1 
-            continue # 5:6-5:10
+def for_continue(): # 1:0-8:34
+    for val in "string": # 2:4-8:3
+        res = val # 3:8-3:16
+        if ((val == "i" )): # 4:39-8:3 
+            continue # 5:12-5:16
 
 
-    return (res == 'i' ) # 7:2-7:18
+    return (res == 'i' ) # 8:4-8:23

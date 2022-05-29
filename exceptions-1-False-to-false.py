@@ -1,12 +1,12 @@
-def te1(): # 1:0-9:-1
-    class C(): # 2:2-2:17
-        pass # 2:11-2:14
-    try: # 3:2-7:24
-        o = C() # 4:4-4:10
-        raise o # 5:4-5:10
+def te1(): # 1:0-12:26
+    class C(): # 2:4-4:3
+        pass # 3:8-3:11
+    try: # 4:4-12:3
+        o = C() # 5:8-5:14
+        raise o # 6:8-6:14
     except C:
-        return True # 6:12-6:22
+        return True # 8:8-8:18
     except :
-        return false # 7:10-7:21
+        return false # 10:8-10:19
 
-    return false # 8:2-8:13
+    return false # 12:4-12:15

@@ -1,7 +1,7 @@
-def te0(): # 1:0-6:-1
-    try: # 2:2-4:23
-        raise # 3:4-3:8
+def te0(): # 1:0-7:26
+    try: # 2:4-7:3
+        raise # 3:8-3:12
     except :
-        return True # 4:10-4:20
+        return True # 5:8-5:18
 
-    return false # 5:2-5:13
+    return false # 7:4-7:15

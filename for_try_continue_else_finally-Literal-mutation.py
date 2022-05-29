@@ -12,7 +12,7 @@ def for_try_continue_else_finally(): # 1:0-20:42
             res.append(11 ) # 12:12-12:26
         finally:
             res.append(num) # 14:12-14:26
-            if ((len(res) == 2  )): # 15:49-18:11 
+            if ((len(res) == 2  )): # 15:50-18:11 
                 break # 16:16-16:20
 
             res.append(13 ) # 18:12-18:26

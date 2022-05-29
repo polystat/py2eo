@@ -32,6 +32,35 @@
         [] > xclass
           0 > xid
       cage > xcurrent-exception
+      [] > xmyArray
+        [initValue] > apply
+          [stackUp] > @
+            cage > pResult
+            [] > result
+              cage > value
+              [] > xlength
+                [self] > apply
+                  [stackUp] > @
+                    seq > @
+                      stackUp.forward (return (self.value.length))
+                      123
+              [] > xget
+                [self i] > apply
+                  [stackUp] > @
+                    seq > @
+                      stackUp.forward (return (self.value.get i))
+                      123
+              [] > xappend
+                [self x] > apply
+                  [stackUp] > @
+                    seq > @
+                      mkCopy (self.value) > tmp
+                      self.value.write (tmp.copy.append x)
+                      stackUp.forward (return 0)
+            seq > @
+              result.value.write initValue
+              pResult.write result
+              stackUp.forward (return pResult)
       cage > tmp
       cage > toReturn
       cage > assertMe
@@ -64,53 +93,53 @@
                   stdout "xtest\n"
                   (xx).write (5.15)
                   (xy2).write (3.14)
-                  mkCopy (xx) > tmp3
-                  (lhs0).write (tmp3.copy)
+                  mkCopy (xx) > tmp1
+                  (lhs0).write (tmp1.copy)
                   tmp.write (goto ((((xcomplex)).apply ((xx)) ((xy))).@))
                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                   (e0).write (tmp.result)
                   ((e0).<)
-                  [] > tmp4
+                  [] > tmp2
                     memory > dddata
                     dddata.write (((lhs0).mul (e0))) > @
-                  (e1).write (tmp4.dddata)
+                  (e1).write (tmp2.dddata)
                   ((e1).<)
-                  mkCopy (e1) > tmp5
-                  (xz).write (tmp5.copy)
-                  mkCopy (xz.x__class__) > tmp6
-                  (e2).write (tmp6.copy)
+                  mkCopy (e1) > tmp3
+                  (xz).write (tmp3.copy)
+                  mkCopy (xz.x__class__) > tmp4
+                  (e2).write (tmp4.copy)
                   ((e2).<)
-                  mkCopy (xcomplex) > tmp7
-                  (lhs2).write (tmp7.copy)
-                  [] > tmp8
+                  mkCopy (xcomplex) > tmp5
+                  (lhs2).write (tmp5.copy)
+                  [] > tmp6
                     memory > dddata
                     dddata.write (((e2).eq (lhs2))) > @
-                  (e3).write (tmp8.dddata)
+                  (e3).write (tmp6.dddata)
                   ((e3).<)
                   (e3).if
                     seq
-                      mkCopy (xz.ximag) > tmp9
-                      (e4).write (tmp9.copy)
+                      mkCopy (xz.ximag) > tmp7
+                      (e4).write (tmp7.copy)
                       ((e4).<)
-                      mkCopy (e4.x__class__) > tmp10
-                      (e5).write (tmp10.copy)
+                      mkCopy (e4.x__class__) > tmp8
+                      (e5).write (tmp8.copy)
                       ((e5).<)
-                      mkCopy (xz.xreal) > tmp11
-                      (e6).write (tmp11.copy)
+                      mkCopy (xz.xreal) > tmp9
+                      (e6).write (tmp9.copy)
                       ((e6).<)
-                      mkCopy (e6.x__class__) > tmp12
-                      (e7).write (tmp12.copy)
+                      mkCopy (e6.x__class__) > tmp10
+                      (e7).write (tmp10.copy)
                       ((e7).<)
-                      [] > tmp13
+                      [] > tmp11
                         memory > dddata
                         dddata.write (((e5).eq (e7))) > @
-                      (e8).write (tmp13.dddata)
+                      (e8).write (tmp11.dddata)
                       ((e8).<)
                       TRUE
                     seq
                       (lhs7).write (FALSE)
-                      mkCopy (lhs7) > tmp14
-                      (e8).write (tmp14.copy)
+                      mkCopy (lhs7) > tmp12
+                      (e8).write (tmp12.copy)
                       TRUE
                   toReturn.write ((e8))
                   stackUp.forward (return toReturn)

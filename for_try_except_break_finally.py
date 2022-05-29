@@ -1,14 +1,14 @@
-def for_try_except_break_finally(): # 1:0-14:18
-    res = [] # 2:2-2:9
-    for num in [1 , 2 ]: # 3:2-14:1
-        try: # 4:4-14:1
-            result = (num // 0 ) # 5:6-5:22
+def for_try_except_break_finally(): # 1:0-14:38
+    res = [] # 2:4-2:11
+    for num in [1 , 2 ]: # 3:4-14:3
+        try: # 4:8-14:3
+            result = (num // 0 ) # 5:12-5:31
         except ZeroDivisionError:
-            print("Sorry ! You are dividing by zero ") # 7:6-7:47
-            break # 8:6-8:10
+            print("Sorry ! You are dividing by zero ") # 7:12-7:53
+            break # 8:12-8:16
         else:
-            print("Yeah ! Your answer is :", result) # 10:6-10:45
+            print("Yeah ! Your answer is :", result) # 10:12-10:51
         finally:
-            res.append(num) # 12:6-12:20
+            res.append(num) # 12:12-12:26
 
-    return (res == [1 ,] ) # 14:2-14:18
+    return (res == [1 ,] ) # 14:4-14:25

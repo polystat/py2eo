@@ -1,24 +1,24 @@
-def myRange(): # 1:0-24:-1
-    class StopIteration(): # 2:2-2:29
-        pass # 2:23-2:26
-    class MyRange(): # 3:2-18:1
-        i = 0  # 4:4-4:8
-        last = 0  # 5:4-5:11
-        def __init__(self, a, b): # 6:4-9:3
-            self.i = a # 7:6-7:15
-            self.last = b # 8:6-8:18
-        def __iter__(self): # 9:4-9:39
-            return self # 9:24-9:34
-        def __next__(self): # 10:4-18:1
-            if ((self.i == self.last )): # 11:31-13:5 
-                raise StopIteration() # 12:8-12:28
-            else: # 13:11-18:1
-                ret = self.i # 14:8-14:19
-                self.i = (self.i + 1 ) # 15:8-15:26
-                return ret # 16:8-16:17
-    r = MyRange(0 , 3 ) # 18:2-18:18
-    z = 0  # 19:2-19:6
-    for i in r: # 20:2-20:25
-        z = (z + i) # 20:14-20:22
+def myRange(): # 1:0-24:33
+    class StopIteration(): # 2:4-4:3
+        pass # 3:8-3:11
+    class MyRange(): # 4:4-19:3
+        i = 0  # 5:8-5:12
+        last = 0  # 6:8-6:15
+        def __init__(self, a, b): # 7:8-10:7
+            self.i = a # 8:12-8:21
+            self.last = b # 9:12-9:24
+        def __iter__(self): # 10:8-12:7
+            return self # 11:12-11:22
+        def __next__(self): # 12:8-19:3
+            if ((self.i == self.last )): # 13:54-15:11 
+                raise StopIteration() # 14:16-14:36
+            else: # 15:30-19:3
+                ret = self.i # 16:16-16:27
+                self.i = (self.i + 1 ) # 17:16-17:37
+                return ret # 18:16-18:25
+    r = MyRange(0 , 3 ) # 19:4-19:22
+    z = 0  # 20:4-20:8
+    for i in r: # 21:4-24:3
+        z = (z + i) # 22:8-22:18
 
-    return (z == 3  ) # 21:2-21:14
+    return (z == 3  ) # 24:4-24:20

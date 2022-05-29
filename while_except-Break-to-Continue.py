@@ -1,16 +1,16 @@
-def while_except(): # 1:0-16:19
-    res = [] # 2:2-2:9
-    arr = [1 , 2 , 4 , 0 , 8 ] # 3:2-3:22
-    i = 0  # 4:2-4:6
-    while (True): # 6:2-16:1
-        try: # 7:4-16:1
-            result = (16  // arr[i]) # 8:6-8:26
-            res.append(result) # 9:6-9:23
-            i+=1  # 10:6-10:11
+def while_except(): # 1:0-16:39
+    res = [] # 2:4-2:11
+    arr = [1 , 2 , 4 , 0 , 8 ] # 3:4-3:29
+    i = 0  # 4:4-4:8
+    while (True): # 5:4-16:3
+        try: # 6:8-16:3
+            result = (16  // arr[i]) # 7:12-7:35
+            res.append(result) # 8:12-8:29
+            i+=1  # 9:12-9:15
         except ZeroDivisionError:
-            res.clear() # 12:6-12:16
-            res.append(42 ) # 13:6-13:19
-            continue # 14:6-14:10
+            res.clear() # 11:12-11:22
+            res.append(42 ) # 12:12-12:26
+            continue # 13:12-13:16
 
 
-    return (res == [42 ,] ) # 16:2-16:19
+    return (res == [42 ,] ) # 16:4-16:26

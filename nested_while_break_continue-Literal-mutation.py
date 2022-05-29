@@ -8,7 +8,7 @@ def nested_while_break_continue(): # 1:0-21:49
         i+=1  # 8:8-8:11
         while ((j <= len(arr2) )): # 9:8-16:7
             j+=2  # 10:12-10:15
-            if (((j >= len(arr2) ) or (arr2[j] == 4  ))): # 11:71-14:11 
+            if (((j >= len(arr2) ) or (arr2[j] == 4  ))): # 11:72-14:11 
                 continue # 12:16-12:23
 
             res.append(arr2[j]) # 14:12-14:30

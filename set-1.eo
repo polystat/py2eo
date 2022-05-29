@@ -32,6 +32,35 @@
         [] > xclass
           0 > xid
       cage > xcurrent-exception
+      [] > xmyArray
+        [initValue] > apply
+          [stackUp] > @
+            cage > pResult
+            [] > result
+              cage > value
+              [] > xlength
+                [self] > apply
+                  [stackUp] > @
+                    seq > @
+                      stackUp.forward (return (self.value.length))
+                      123
+              [] > xget
+                [self i] > apply
+                  [stackUp] > @
+                    seq > @
+                      stackUp.forward (return (self.value.get i))
+                      123
+              [] > xappend
+                [self x] > apply
+                  [stackUp] > @
+                    seq > @
+                      mkCopy (self.value) > tmp
+                      self.value.write (tmp.copy.append x)
+                      stackUp.forward (return 0)
+            seq > @
+              result.value.write initValue
+              pResult.write result
+              stackUp.forward (return pResult)
       cage > tmp
       cage > toReturn
       cage > assertMe
@@ -48,19 +77,27 @@
                 cage > lhs0
                 cage > e1
                 cage > e0
+                cage > lhs2
+                cage > e2
                 seq > @
                   stdout "xtest\n"
-                  tmp.write (goto ((((xlen)).apply ((* 1 2 3 2))).@))
+                  mkCopy (xlen) > tmp1
+                  (lhs0).write (tmp1.copy)
+                  tmp.write (goto ((((xmyArray)).apply ((* 1 2 3 2))).@))
                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                   (e0).write (tmp.result)
                   ((e0).<)
-                  (lhs0).write (3)
-                  [] > tmp1
-                    memory > dddata
-                    dddata.write (((e0).eq (lhs0))) > @
-                  (e1).write (tmp1.dddata)
+                  tmp.write (goto ((((lhs0)).apply ((e0))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e1).write (tmp.result)
                   ((e1).<)
-                  toReturn.write ((e1))
+                  (lhs2).write (3)
+                  [] > tmp2
+                    memory > dddata
+                    dddata.write (((e1).eq (lhs2))) > @
+                  (e2).write (tmp2.dddata)
+                  ((e2).<)
+                  toReturn.write ((e2))
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xtest)).apply).@))

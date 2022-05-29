@@ -1,19 +1,19 @@
 Diff between original (left) and mutated (right) python files
 1c1
-< def while_break1(): # 1:0-12:-1
+< def while_break1(): # 1:0-14:35
 ---
-> def while_continue1(): # 1:0-12:-1
+> def while_continue1(): # 1:0-14:35
 11c11
-<             break # 10:20-10:24
+<             break # 11:12-11:16
 ---
->             continue # 10:20-10:24
+>             continue # 11:12-11:16
 
 Diff between original (left) and mutated (right) eo files
 2,4d1
 < +alias goto org.eolang.gray.goto
 < +alias stdout org.eolang.io.stdout
 < +alias cage org.eolang.gray.cage
-6,129c3,36
+6,158c3,36
 < 
 < [unused] > while_break1
 <   [] > apply
@@ -43,6 +43,35 @@ Diff between original (left) and mutated (right) eo files
 <         [] > xclass
 <           0 > xid
 <       cage > xcurrent-exception
+<       [] > xmyArray
+<         [initValue] > apply
+<           [stackUp] > @
+<             cage > pResult
+<             [] > result
+<               cage > value
+<               [] > xlength
+<                 [self] > apply
+<                   [stackUp] > @
+<                     seq > @
+<                       stackUp.forward (return (self.value.length))
+<                       123
+<               [] > xget
+<                 [self i] > apply
+<                   [stackUp] > @
+<                     seq > @
+<                       stackUp.forward (return (self.value.get i))
+<                       123
+<               [] > xappend
+<                 [self x] > apply
+<                   [stackUp] > @
+<                     seq > @
+<                       mkCopy (self.value) > tmp
+<                       self.value.write (tmp.copy.append x)
+<                       stackUp.forward (return 0)
+<             seq > @
+<               result.value.write initValue
+<               pResult.write result
+<               stackUp.forward (return pResult)
 <       cage > tmp
 <       cage > toReturn
 <       cage > assertMe

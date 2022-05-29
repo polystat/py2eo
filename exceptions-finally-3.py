@@ -1,18 +1,18 @@
-def te3(): # 1:0-14:-1
-    class c(BaseException): # 2:2-2:32
-        pass # 2:26-2:29
-    try: # 3:2-12:34
-        try: # 4:4-12:1
-            x = 1  # 5:6-5:10
-            raise StopIteration # 6:6-6:24
+def te3(): # 1:0-18:35
+    class c(BaseException): # 2:4-4:3
+        pass # 3:8-3:11
+    try: # 4:4-18:3
+        try: # 5:8-15:3
+            x = 1  # 6:12-6:16
+            raise StopIteration # 7:12-7:30
         except c:
-            return False # 7:14-7:25
+            return False # 9:12-9:23
         else:
-            return False # 8:11-8:22
+            return False # 11:12-11:23
         finally:
-            x+=10  # 10:6-10:12
-            print(x) # 11:6-11:13
+            x+=10  # 13:12-13:16
+            print(x) # 14:12-14:19
     except StopIteration:
-        x+=100  # 12:24-12:31
+        x+=100  # 16:8-16:13
 
-    return (x == 111  ) # 13:2-13:16
+    return (x == 111  ) # 18:4-18:22

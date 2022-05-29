@@ -1,21 +1,21 @@
-def nested_for_break_continue(): # 1:0-22:-1
-    flag = false # 2:2-2:13
-    nums = [1 , 2 , 3 , 4 ] # 3:2-3:20
-    nums2 = [1 , 4 , 9 , 16 ] # 4:2-4:22
-    res = [] # 5:2-5:9
-    for num in nums: # 7:2-21:1
-        for num2 in nums2: # 8:4-18:3
-            if (((num == 3  ) and (num2 == 9  ))): # 9:32-12:5 
-                continue # 10:8-10:15
+def nested_for_break_continue(): # 1:0-21:100
+    flag = false # 2:4-2:15
+    nums = [1 , 2 , 3 , 4 ] # 3:4-3:26
+    nums2 = [1 , 4 , 9 , 16 ] # 4:4-4:28
+    res = [] # 5:4-5:11
+    for num in nums: # 6:4-21:3
+        for num2 in nums2: # 7:8-17:7
+            if (((num == 3  ) and (num2 == 9  ))): # 8:63-11:11 
+                continue # 9:16-9:23
 
-            res.append((num2 + num)) # 12:6-12:27
-            if (((num == 7  ) and (num2 == 49  ))): # 14:33-18:3 
-                flag = True # 15:8-15:18
-                break # 16:8-16:12
-
-
-        if (flag): # 18:12-21:1 
-            break # 19:6-19:10
+            res.append((num2 + num)) # 11:12-11:35
+            if (((num == 7  ) and (num2 == 49  ))): # 12:65-17:7 
+                flag = True # 13:16-13:26
+                break # 14:16-14:20
 
 
-    return (res == [2 , 5 , 10 , 17 , 3 , 6 , 11 , 18 , 4 , 7 , 19 , 5 , 8 , 13 , 20 ] ) # 21:2-21:67
+        if (flag): # 17:32-21:3 
+            break # 18:12-18:16
+
+
+    return (res == [2 , 5 , 10 , 17 , 3 , 6 , 11 , 18 , 4 , 7 , 19 , 5 , 8 , 13 , 20 ] ) # 21:4-21:87

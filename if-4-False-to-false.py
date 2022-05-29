@@ -1,7 +1,7 @@
-def conditionalCheck4(): # 1:0-7:16
-    a = 4  # 2:2-2:6
-    b = 2  # 3:2-3:6
-    if ((a == b )): # 4:12-6:1 
-        return false # 5:6-5:17
-    else: # 6:7-7:16
-        return True # 7:6-7:16
+def conditionalCheck4(): # 1:0-7:29
+    a = 4  # 2:4-2:8
+    b = 2  # 3:4-3:8
+    if ((a == b )): # 4:31-6:3 
+        return false # 5:8-5:19
+    else: # 6:20-7:29
+        return True # 7:8-7:18

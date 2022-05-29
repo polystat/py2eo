@@ -1,10 +1,10 @@
-def my_decorator(func): # 1:0-8:-1
-    def wrapper(): # 2:2-6:1
-        print("Something is happening before the function is called.") # 3:6-3:67
-        func() # 4:6-4:11
-        print("Something is happening after the function is called.") # 5:6-5:66
-    return wrapper # 6:2-6:15
+def my_decorator(func): # 1:0-7:-1
+    def wrapper(): # 2:4-6:3
+        print("Something is happening before the function is called.") # 3:8-3:69
+        func() # 4:8-4:13
+        print("Something is happening after the function is called.") # 5:8-5:68
+    return wrapper # 6:4-6:17
 @my_decorator
-def say_whee(): # 9:0-11:12
-    print("Whee!") # 10:2-10:15
-    return True # 11:2-11:12
+def say_whee(): # 8:0-10:27
+    print("Whee!") # 9:4-9:17
+    return True # 10:4-10:14

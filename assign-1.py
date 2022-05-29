@@ -1,4 +1,4 @@
-def assignTest1(): # 1:0-4:12
-    a = 1  # 2:2-2:6
-    b = 2  # 3:2-3:6
-    return True # 4:2-4:12
+def assignTest1(): # 1:0-4:25
+    a = 1  # 2:4-2:8
+    b = 2  # 3:4-3:8
+    return True # 4:4-4:14

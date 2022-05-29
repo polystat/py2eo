@@ -1,4 +1,4 @@
-def test(): # 1:0-5:-1
-    a = True # 2:2-2:9
-    b = True # 3:2-3:9
-    return bool((a and b)) # 4:2-4:21
+def test(): # 1:0-4:36
+    a = True # 2:4-2:11
+    b = True # 3:4-3:11
+    return bool((a and b)) # 4:4-4:25

@@ -6,10 +6,10 @@ def while_try_else_continue_break(): # 1:0-21:61
         i+=1  # 6:8-6:11
         item = items[i] # 7:8-7:22
         try: # 8:8-19:3
-            if ((item == "hello" )): # 9:49-12:11 
+            if ((item == "hello" )): # 9:50-12:11 
                 continue # 10:16-10:23
 
-            if ((item == 100  )): # 12:47-15:11 
+            if ((item == 100  )): # 12:48-15:11 
                 break # 13:16-13:20
 
             res.append(int(item)) # 15:12-15:32

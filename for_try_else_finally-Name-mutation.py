@@ -11,7 +11,7 @@ def for_try_else_finally(): # 1:0-19:60
             print("Yeah ! Your answer is :", result) # 11:12-11:51
             res.append(num) # 12:12-12:26
         finally:
-            if ((len(res) == 2  )): # 14:49-17:11 
+            if ((len(res) == 2  )): # 14:50-17:11 
                 break # 15:16-15:20
 
             res.append(12 ) # 17:12-17:26

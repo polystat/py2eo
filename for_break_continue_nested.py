@@ -1,17 +1,17 @@
-def for_break_continue_nested(): # 1:0-17:39
-    arr1 = [1 , 2 , 3 ] # 2:2-2:17
-    arr2 = [4 , 5 , 6 ] # 3:2-3:17
-    res = [] # 4:2-4:9
-    for i in arr1: # 6:2-17:1
-        for j in arr2: # 7:4-12:3
-            if ((j == 5  )): # 8:16-10:5 
-                continue # 9:8-9:15
+def for_break_continue_nested(): # 1:0-17:65
+    arr1 = [1 , 2 , 3 ] # 2:4-2:22
+    arr2 = [4 , 5 , 6 ] # 3:4-3:22
+    res = [] # 4:4-4:11
+    for i in arr1: # 5:4-17:3
+        for j in arr2: # 6:8-12:7
+            if ((j == 5  )): # 7:41-10:11 
+                continue # 8:16-8:23
 
-            res.append(j) # 10:6-10:18
+            res.append(j) # 10:12-10:24
 
-        if ((i == 2  )): # 12:14-15:3 
-            continue # 13:6-13:13
+        if ((i == 2  )): # 12:38-15:7 
+            continue # 13:12-13:19
 
-        res.append(i) # 15:4-15:16
+        res.append(i) # 15:8-15:20
 
-    return (res == [4 , 6 , 1 , 4 , 6 , 4 , 6 , 3 ] ) # 17:2-17:39
+    return (res == [4 , 6 , 1 , 4 , 6 , 4 , 6 , 3 ] ) # 17:4-17:52

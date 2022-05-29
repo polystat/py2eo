@@ -1,4 +1,4 @@
-def test(): # 1:0-9:48
+def test(): # 1:0-9:46
     class emp(): # 2:4-9:3
         def __init__(self): # 3:8-6:7
             self.name = 'xyz' # 4:12-4:28

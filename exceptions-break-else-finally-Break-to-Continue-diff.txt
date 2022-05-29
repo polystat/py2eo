@@ -1,15 +1,15 @@
 Diff between original (left) and mutated (right) python files
 6c6
-<             break # 6:6-6:10
+<             break # 6:12-6:16
 ---
->             continue # 6:6-6:10
+>             continue # 6:12-6:16
 
 Diff between original (left) and mutated (right) eo files
 2,4d1
 < +alias goto org.eolang.gray.goto
 < +alias stdout org.eolang.io.stdout
 < +alias cage org.eolang.gray.cage
-6,109c3,30
+6,138c3,30
 < 
 < [unused] > exceptions-break-else-finally
 <   [] > apply
@@ -39,6 +39,35 @@ Diff between original (left) and mutated (right) eo files
 <         [] > xclass
 <           0 > xid
 <       cage > xcurrent-exception
+<       [] > xmyArray
+<         [initValue] > apply
+<           [stackUp] > @
+<             cage > pResult
+<             [] > result
+<               cage > value
+<               [] > xlength
+<                 [self] > apply
+<                   [stackUp] > @
+<                     seq > @
+<                       stackUp.forward (return (self.value.length))
+<                       123
+<               [] > xget
+<                 [self i] > apply
+<                   [stackUp] > @
+<                     seq > @
+<                       stackUp.forward (return (self.value.get i))
+<                       123
+<               [] > xappend
+<                 [self x] > apply
+<                   [stackUp] > @
+<                     seq > @
+<                       mkCopy (self.value) > tmp
+<                       self.value.write (tmp.copy.append x)
+<                       stackUp.forward (return 0)
+<             seq > @
+<               result.value.write initValue
+<               pResult.write result
+<               stackUp.forward (return pResult)
 <       cage > tmp
 <       cage > toReturn
 <       cage > assertMe
