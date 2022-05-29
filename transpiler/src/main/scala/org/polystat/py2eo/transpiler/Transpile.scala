@@ -18,7 +18,7 @@ object Transpile {
   }
 
   def applyStyle(pythonCode: String): Option[String] = {
-    Parse(pythonCode).map(PrintPython.print)
+    Parse(pythonCode).map(PrintPython.print).flatMap(Parse.apply).map(PrintPython.print)
   }
 
   /// [debugPrinter(statement, stageName)]

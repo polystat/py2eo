@@ -9,19 +9,17 @@ import scala.reflect.io.{File, Path, Streamable}
 object Write {
 
   /** Write testing results to index.html in the provided directory */
-  def apply(outputPath: Path, tests: List[TestResult], mutations: Iterable[Mutation]): Unit = {
-    val awaited = tests map (test => test.await)
-
-    lazy val filtered = mutations filter (mutation => applied(awaited, mutation).nonEmpty)
-    lazy val sorted = filtered.toList sortWith sorter(awaited)
-    File(outputPath / "index.html") writeAll html(awaited, sorted)
+  def apply(outputPath: Path, tests: List[AwaitedTestResult], mutations: Iterable[Mutation]): Unit = {
+    lazy val filtered = mutations filter (mutation => applied(tests, mutation).nonEmpty)
+    lazy val sorted = filtered.toList sortWith sorter(tests)
+    File(outputPath / "index.html") writeAll html(tests, sorted)
   }
 
   /** Returns html file contents */
   private def html(tests: List[AwaitedTestResult], mutations: List[Mutation]): String = {
     lazy val stream = getClass getResourceAsStream "head.html"
     lazy val head = Streamable slurp stream
-    lazy val body = s"<body>\n${table(tests, mutations)}</body>\n"
+    lazy val body = s"<body>\n${table(tests, mutations)}<a href=\"${WriteConstructions.filename}\">Constructions</a></body>\n"
 
     s"<html lang=\"en-US\">\n$head$body</html>\n"
   }
@@ -58,11 +56,11 @@ object Write {
       case None =>
         lazy val colspan = mutations size
         lazy val str = s"<td colspan=\"$colspan\" class=\"data\">Original test couldn't be transpiled</td>"
-        s"<tr>\n<th class=\"left\">$name</th>\n$str</tr>\n"
+        s"<tr>\n<th class=\"left\">$name of ${test.category}</th>\n$str</tr>\n"
 
       case Some(results) =>
         lazy val cells = mutations map (mutation => cell(mutation, name, results(mutation)))
-        s"<tr>\n<th class=\"left\">$name</th>\n${cells mkString}</tr>\n"
+        s"<tr>\n<th class=\"left\">$name of ${test.category}</th>\n${cells mkString}</tr>\n"
     }
   }
 

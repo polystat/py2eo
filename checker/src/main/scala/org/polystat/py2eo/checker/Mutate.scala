@@ -13,10 +13,7 @@ object Mutate {
     val operatorMutation: Mutation = Value("Operator-mutation")
     val reverseBoolMutation: Mutation = Value("Reverse-bool-literal")
     val breakToContinue: Mutation = Value("Break-to-Continue")
-    val breakSyntax: Mutation = Value("def-to-df")
     val literalToIdentifier: Mutation = Value("False-to-false")
-    val removeBrackets: Mutation = Value("Remove-brackets")
-    val addExcessParam: Mutation = Value("Add-excess-parameter")
     val swapParam: Mutation = Value("Swap-param")
   }
 
@@ -30,10 +27,7 @@ object Mutate {
           case Mutation.operatorMutation => input.replace('+', '-')
           case Mutation.reverseBoolMutation => input.replace("true", "false")
           case Mutation.breakToContinue => input.replace("break", "continue")
-          case Mutation.breakSyntax => input.replace("def", "df")
           case Mutation.literalToIdentifier => input.replace("False", "false")
-          case Mutation.removeBrackets => input.replace("()", "")
-          case Mutation.addExcessParam => PrintPython.print(addExcessParam(parsed, occurrenceNumber))
           case Mutation.swapParam => PrintPython.print(swapParam(parsed, occurrenceNumber))
           case _ => throw new IllegalArgumentException
         }
@@ -61,21 +55,9 @@ object Mutate {
     SimplePass.simpleProcExprInStatementAcc[Int](mutateNamesHelper)(acc, s)._2
   }
 
-  private def addExcessParam(s: Statement.T, acc: Int): Statement.T = {
-    def addExcessParamHelper(acc: Int, expr: Expression.T): (Int, Expression.T) = expr match {
-      case Expression.CallIndex(flag, callee, args, ann) if acc == 0 => (
-        -1, Expression.CallIndex(flag, callee, args.appended(Some(""), Expression.StringLiteral(List("abc"), ann)), ann)
-      )
-      case Expression.CallIndex(_, _, _, _) => (acc - 1, expr)
-      case _ => (acc, expr)
-    }
-
-    SimplePass.simpleProcExprInStatementAcc[Int](addExcessParamHelper)(acc, s)._2
-  }
-
   private def swapParam(s: Statement.T, acc: Int): Statement.T = {
     def swapParamHelper(acc: Int, expr: Expression.T): (Int, Expression.T) = expr match {
-      case Expression.CallIndex(flag, callee, args, ann) if acc == 0 => (
+      case Expression.CallIndex(flag, callee, args, ann) if acc == 0 && args.length > 1 => (
         -1, Expression.CallIndex(flag, callee, args.reverse, ann)
       )
       case Expression.CallIndex(_, _, _, _) => (acc - 1, expr)
