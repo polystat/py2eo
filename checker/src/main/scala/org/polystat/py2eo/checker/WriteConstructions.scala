@@ -32,10 +32,10 @@ object WriteConstructions {
   /** Returns table body */
   private def body(tests: List[AwaitedTestResult]): String = {
     val constructions = (tests map (test => test.category)).toSet
-    val constructionsMap = (for (c <- constructions) yield (c, tests filter (test => test.category == c))).toMap
 
-    val body = for ((construction, list) <- constructionsMap) yield {
-      val data = list.exists(test => {
+    val body = for (construction <- constructions) yield {
+      val relevant = tests filter (test => test.category == construction)
+      val data = relevant.exists(test => {
         val sublist = test.results.getOrElse(Map.empty).values.toList
         sublist.contains(CompilingResult.failed) || sublist.contains(CompilingResult.nodiff)
       })
