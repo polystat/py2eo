@@ -39,9 +39,11 @@ class Counter(path: jl.String) extends Commons {
 
   private def run(file: File): Boolean = {
     val result = Files.copy(file.toPath, Path.of(s"$runEOPath/test.eo"), REPLACE_EXISTING)
-    val ret = Process("mvn clean test", new File(runEOPath)).! == 0
+    val process = Process("mvn clean test", new File(runEOPath)).run
+    val ret = process.exitValue == 0
 
     Files delete result
+    process.destroy
 
     ret
   }
