@@ -1,0 +1,101 @@
++package preface
++alias pyint preface.pyint
+
+[value] > pyfloat
+  # Absolute value of $ (i.e., with no sign)
+  [] > abs
+    pyfloat (^.value.abs) > @
+
+  # Sum of $ and x
+  [x] > add
+    pyfloat (^.value.add (x.float.value)) > @
+
+  # Converts this to bool
+  [] > bool
+    ^.value.neq 0.0 > @
+
+  # Ceiling of $
+  [] > ceil
+    if. > @
+      ^.gt 0.0
+      pyint (^.value.as-int.add 1)
+      pyint (^.value.as-int)
+
+  # Class name of $
+  [] > class
+    "float" > @
+
+  # Tests that $ = x
+  [x] > eq
+    ^.value.eq (x.float.value) > @
+
+  # Converts this to float
+  [] > float
+    ^ > @
+
+  # Floor of $
+  [] > floor
+    if. > @
+      ^.ge 0.0
+      pyint (^.value.as-int)
+      pyint (^.value.as-int.sub 1)
+
+  # Quotient of the division of $ by x
+  [x] > floordiv
+    pyfloat (^.value.div x.float.value) > @
+
+  # Tests that $ ≥ x
+  [x] > ge
+    ^.value.geq x.float.value > @
+
+  # Tests that $ > x
+  [x] > gt
+    ^.value.greater x.float.value > @
+
+  # Converts this to int
+  [] > int
+    pyint (^.value.as-int) > @
+
+  # Tests that $ ≤ x
+  [x] > le
+    ^.value.leq (x.float.value) > @
+
+  # Tests that $ < x
+  [x] > lt
+    ^.value.less (x.float.value) > @
+
+  # Multiplication of $ and x
+  [x] > mul
+    pyfloat (^.value.mul x.float.value) > @
+
+  # Tests that $ ≠ x
+  [x] > ne
+    ^.value.neq (x.float.value) > @
+
+  # Negation of $
+  [] > neg
+    pyfloat (^.value.neg) > @
+
+  # NOT
+  [] > not
+    pyfloat (^.bool.not.as-float) > @
+
+  # x'th power of $
+  [x] > pow
+    pyfloat (^.value.pow x.float.value) > @
+
+  # Converts this to string
+  [] > str
+    ^.value.as-string > @
+
+  # Difference between $ and x
+  [x] > sub
+    pyfloat (^.value.sub x.float.value) > @
+
+  # Truncate $
+  [] > trunc
+    pyint (^.value.as-int) > @
+
+  # Tests that $ is integer
+  [] > is_integer
+    ^.int.eq ^.value
