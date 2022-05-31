@@ -22,7 +22,8 @@ object Counter extends Commons {
 class Counter(path: jl.String) extends Commons {
   private val runEOPath = Paths.get(".").toAbsolutePath.getParent.getParent + "/runEO"
 
-  @Test def testDef(): Unit = {
+  @Test(timeout=120000)
+  def testDef(): Unit = {
     val test = new File(path)
     val yamlData = yaml2python(test)
 
