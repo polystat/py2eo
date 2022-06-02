@@ -27,7 +27,7 @@ This transpiler receives as input data python code. Then received code is simpli
 #### How to use it? ####
 - Go to some directory on your PC
 - Create directory `Transpiler Test`
-- Download and save into this folder `py2eo` transpiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/0.0.4/py2eo-0.0.4-jar-with-dependencies.jar)
+- Download and save into this folder `py2eo` transpiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/0.0.11.2/py2eo-0.0.11.2-jar-with-dependencies.jar)
 - Create in this folder test file with `python` code named `sample_test.py` and paste the code below into it:
     ```
     def conditionalCheck2():
