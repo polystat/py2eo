@@ -21,6 +21,9 @@ object PrintLinearizedMutableEOWithCage {
     "+alias goto org.eolang.gray.goto",
     "+alias stdout org.eolang.io.stdout",
     "+alias cage org.eolang.gray.cage",
+    "+alias pyint preface.pyint",
+    "+alias pystring preface.pystring",
+    "+alias pybool preface.pybool",
     //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
     ""
@@ -123,14 +126,7 @@ object PrintLinearizedMutableEOWithCage {
         val seqOfFields1 = seqOfFields(rhs)
         val doNotCopy = seqOfFields1.isEmpty
         if (doNotCopy)
-          if (isLiteral(rhs)) {
-            List(s"${pe(lhs)}.write (${pe(rhs)}" + ")")
-          } else {
-            val tmp = HackName()
-            (s"[] > $tmp" ::
-              indent("memory > dddata" :: s"dddata.write (${pe(rhs)}) > @" :: List())) :+
-              s"${pe(lhs)}.write ($tmp.dddata)"
-          }
+          List(s"${pe(lhs)}.write (${pe(rhs)}" + ")", s"${pe(lhs)}.force")
         else {
           val tmp = HackName()
           //            val Ident(name, _) = rhs
@@ -153,7 +149,7 @@ object PrintLinearizedMutableEOWithCage {
       case IfSimple(cond, yes, no, _) =>
         val stsY = printSt(yes)
         val stsN = printSt(no)
-        pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "TRUE")) ++ indent("seq" :: indent(stsN :+ "TRUE"))
+        pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "(pybool TRUE)")) ++ indent("seq" :: indent(stsN :+ "(pybool TRUE)"))
       case While(cond, body, Some(Pass(_)), _) =>
         "write." :: indent(
           "xcurrent-exception" ::
@@ -162,7 +158,7 @@ object PrintLinearizedMutableEOWithCage {
               "seq > @" :: indent(
                 (
                   pe(cond) + ".while" :: indent(
-                  "[unused]" :: indent("seq > @" :: indent(printSt(body) :+ "TRUE"))
+                  "[unused]" :: indent("seq > @" :: indent(printSt(body) :+ "(pybool TRUE)"))
                   )
                 ) :+ "stackUp.forward raiseNothing"
               )
@@ -179,6 +175,7 @@ object PrintLinearizedMutableEOWithCage {
       case Raise(Some(e), None, _) => List("stackUp.forward %s".format(pe(e)))
 
       case Try(ttry, List((None, exc)), eelse, ffinally, ann) =>
+        "xcaught.write (pybool TRUE)" ::
         "write." :: indent(
           "xcurrent-exception" ::
           "goto" :: indent(
@@ -190,13 +187,18 @@ object PrintLinearizedMutableEOWithCage {
           )
         ) ++
         ("seq" :: indent(
-          printSt(exc) ++
+          ("if." :: indent(
+            "is-exception (xcurrent-exception.xclass.xid)" ::
+            "seq" :: indent(printSt(exc) :+ "0")  ++
+            List("0")
+          )) ++
           ("if." :: indent(
             "xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)" ::
-            "seq" :: (indent(printSt(eelse.getOrElse(Pass(ann)))) :+ "0")
+            "seq" :: (indent(printSt(eelse.getOrElse(Pass(ann))) :+ "0")) ++
+            List("0")
           )) ++
           printSt(ffinally.getOrElse(Pass(ann))) ++
-          List("(xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0")
+          List("((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0")
         ))
     }
 
@@ -245,26 +247,35 @@ object PrintLinearizedMutableEOWithCage {
       "  copy.< > @",
       "[] > newUID",
       "  memory > cur",
-      "  seq > apply",
-      "    cur.write (cur.is-empty.if 5 (cur.add 1))",
-      "    cur",
+      "  [unused] > apply",
+      "    seq > @",
+      "      cur.write (cur.is-empty.if (5) (cur.add (1)))",
+      "      (pyint cur)",
       "[] > raiseEmpty",
       "  [] > xclass",
-      "    4 > xid",
+      "    (pyint 4) > xid",
       "[res] > return",
       "  res > result",
       "  [] > xclass",
-      "    3 > xid",
+      "    (pyint 3) > xid",
       "[] > break",
       "  [] > xclass",
-      "    2 > xid",
+      "    (pyint 2) > xid",
       "[] > continue",
       "  [] > xclass",
-      "    1 > xid",
+      "    (pyint 1) > xid",
       "[] > raiseNothing",
       "  [] > xclass",
-      "    0 > xid",
-      "cage > xcurrent-exception"
+      "    (pyint 0) > xid",
+      "[id] > is-exception",
+      "  id.greater (pyint 3) > @",
+      "[id] > is-break-continue-return",
+      "  (id.greater (pyint 0)).and (id.less (pyint 4)) > @",
+      "cage > xcurrent-exception",
+      "cage > xcaught",
+      "pyint 0 > dummy-int-usage",
+      "pybool TRUE > dummy-bool-usage",
+      "pystring \"\" > dummy-bool-string",
     ) ++
     """|[] > xmyArray
       |  [initValue] > apply
@@ -276,7 +287,7 @@ object PrintLinearizedMutableEOWithCage {
       |          [self] > apply
       |            [stackUp] > @
       |              seq > @
-      |                stackUp.forward (return (self.value.length))
+      |                stackUp.forward (return (pyint (self.value.length)))
       |                123
       |        [] > xget
       |          [self i] > apply

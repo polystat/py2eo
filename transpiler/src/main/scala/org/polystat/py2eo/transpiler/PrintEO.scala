@@ -31,7 +31,6 @@ object PrintEO {
     case Binops.Shl => "left"
     case Binops.Shr => "right"
     case Binops.And => "and"
-    case Binops.Or => "or"
   }
 
   def compop(t: Compops.T): String = t match {
@@ -55,15 +54,17 @@ object PrintEO {
     value match {
       case CollectionCons(kind, l, _) =>
         "(*" + l.map(x => " " + e(x)).mkString + crb
-      case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
-      case IntLiteral(value, _) => value.toString()
-      case FloatLiteral(value, _) => value.toString
+      case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")" // todo: see <<-- there
+      case IntLiteral(value, _) => s"(pyint $value)"
+      case FloatLiteral(value, _) => s"(pyfloat $value)"
       case StringLiteral(List(value), _) =>
-        if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
+        if (value == "") "(pystring \"\")" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'') {
-          "\"" + value + "\""
-        } else { value }
-      case BoolLiteral(value, _) => if (value) "TRUE" else "FALSE"
+          s"(pystring \"$value\")"
+        } else { s"(pystring $value)" }
+      case BoolLiteral(value, _) =>
+        val v = if (value) "TRUE" else "FALSE"
+        s"(pybool $v)"
       //    case NoneLiteral(, _) =>
       case Binop(op, l, r, _) =>  orb + e(l) + "." + binop(op) + space + e(r) + crb
       case SimpleComparison(op, l, r, _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
@@ -150,6 +151,7 @@ object PrintEO {
     "+package org.eolang",
     "+alias org.eolang.txt.sprintf",
     "+alias org.eolang.io.stdout",
+    "+alias pyint preface.pyint",
     "+junit",
     ""
   )
