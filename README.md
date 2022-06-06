@@ -89,8 +89,22 @@ For all `.py` files (every `.py` is considered as particular test) from Django r
 
 ## Examples of translation projections
 
+## 6. Expressions
+Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order.
+
 ### 6.1 Arithmetic conversion
 Complex and float numbers are not yet supported, so no implicit conversion is needed.
+
+### 6.2.1 Identifiers
+Each identifier is prepended with `x` because a python identifier may start with a capital letter, while one in EO cannot. 
+
+### 6.2.2 Literals
+Integer, boolean, string and float literals are wrapped in respective EO wrapper objects:
+* `10` is translated to `(pyint 10)`
+* `"Hello, world"` is translated to `(pystring "Hello, world")`
+
+### 6.2.3 Parenthesized forms
+Almost every generated EO expression is parenthesized, but these parantheses are not related to the parantheses in the original python expressions.
 
 ### 6.2.4 6.2.5 6.2.6 6.2.7 Displays for lists, sets and dictionaries
 Will be supported via a python-to-python pass: a display will be converted to a `for` loop
@@ -101,8 +115,28 @@ Same as displays
 ### 6.2.9 Yield expression
 Is a part of coroutines. No plans to support the coroutines now.
 
-### 6.3.4 Call
+### 6.3.1 Attribute references
+Statically known attributes of python classes are translated into attributes of the respective EO objects, so `obj.attr` is translated to `obj.attr`.
 
+### 6.3.2-3 Subscriptions, slicing
+This is not yet implemented, but should be implemented with calling `.__getitem__` and `.__setitem__` methods of array objects. That is,
+* `a[i]` should be translated to something like `(a.__getitem__ i)`
+* and `a[i] = x` should be translated to something like `(a.__setitem__ i x)`
+
+### 6.3.4 Call
+See section 8.6 on function definition for the examples on how to call a function.
+
+### 6.4 Await
+Is a part of coroutines, no plans to support it.
+
+### 6.5-11 Different arithmetics and logic binary and unary operations
+Are translated to calls of the respective functions of the EO standard library. Like, `a == b` is translated to `(a.eq b)`, `not x` goes to `(x.not)` and so on.
+
+### 6.12 Assignment expressions
+Not yet supported.
+
+### 6.13 Conditional expressions
+`a if c else b` -> `(c).if (a) (b)`
 
 ### 7.1 Expressions statements
 Should be easy but not yet done.
