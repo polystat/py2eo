@@ -147,7 +147,7 @@ This is not yet implemented, but should be implemented with calling `.__getitem_
 * and `a[i] = x` should be translated to something like `(a.__setitem__ i x)`
 
 ### 6.3.4 Call
-See section 8.6 on function definition for the examples on how to call a function.
+See [the section on function definition](https://github.com/polystat/py2eo#86-function-definition) for the examples on how to call a function.
 
 ### 6.4 Await
 Is a part of coroutines, no plans to support it.
@@ -207,7 +207,7 @@ where `mkCopy` looks like this
 Will be done as a python-to-python pass, which basically substitutes `assert` to `raise AssertionException`
 
 ### 7.4 Pass
-Does nothing
+`pass` is a statement, which does nothing
 
 ### 7.5 Del
 Is an operator to delete attributes of objects dynamically. Not supported therefore.
