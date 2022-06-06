@@ -2,6 +2,7 @@ package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
+import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -117,7 +118,7 @@ object Check {
     val input = file slurp
     val map = new Yaml load[java.util.Map[String, String]] input
 
-    Some(map get "python")
+    Transpile.applyStyle(map get "python")
   }
 
   private def transpile(module: String, input: String): Option[String] = {
