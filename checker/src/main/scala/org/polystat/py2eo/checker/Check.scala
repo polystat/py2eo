@@ -2,17 +2,18 @@ package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
-import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.language.postfixOps
-import scala.reflect.io.{File, Path}
+import scala.reflect.io.{Directory, File, Path, Streamable}
 import scala.sys.error
 import scala.sys.process.Process
 
 object Check {
+
+  private val tempDir = Directory.makeTemp()
 
   /**
    * Apply analysis to every yaml test in the input directory
@@ -23,6 +24,10 @@ object Check {
    */
   def apply(inputPath: Path, outputPath: Path, mutations: Iterable[Mutation]): Unit = {
     outputPath.createDirectory()
+
+    val stream = getClass getResourceAsStream "compiler.py"
+    val compiler = Streamable slurp stream
+    (tempDir / "compiler.py").createFile().writeAll(compiler)
 
     val testResults = check(inputPath, outputPath, mutations)
     if (testResults isEmpty) {
@@ -53,14 +58,14 @@ object Check {
     parseYaml(test) match {
       case None => TestResult(module, category, None)
       case Some(parsed) =>
-        Transpile(module, parsed) match {
+        transpile(module, parsed) match {
           case None => TestResult(module, category, None)
           case Some(transpiled) =>
             val file = File(outputPath / test.changeExtension("eo").name)
             file writeAll transpiled
 
-            val resultList = mutations map (mutation => (mutation, Future(check(module, parsed, outputPath, mutation))))
-            TestResult(module, category, Some(resultList.toMap[Mutation, Future[CompilingResult]]))
+            val resultList = mutations map (mutation => (mutation, check(module, parsed, outputPath, mutation)))
+            TestResult(module, category, Some(resultList.toMap))
         }
     }
   }
@@ -83,7 +88,7 @@ object Check {
       diffFile writeAll "Diff between original (left) and mutated (right) python files\n"
       diffFile appendAll diffPyOutput.mkString("\n")
 
-      Transpile(module, mutatedPyText) match {
+      transpile(module, mutatedPyText) match {
         case None =>
           diffFile appendAll "\n\nFailed to transpile mutated py file\n"
           CompilingResult.failed
@@ -112,6 +117,24 @@ object Check {
     val input = file slurp
     val map = new Yaml load[java.util.Map[String, String]] input
 
-    Transpile.applyStyle(map get "python")
+    Some(map get "python")
+  }
+
+  private def transpile(module: String, input: String): Option[String] = {
+    try {
+      val file = (tempDir / "test.py").createFile()
+      val output = File(tempDir / "output.pyc")
+      file.writeAll(input)
+      val ret = Process("python3 compiler.py", tempDir.jfile).!
+
+      val result = if (ret == 0) Some(output.bytes().mkString) else None
+
+      file.delete
+      if (ret == 0) output.delete
+
+      result
+    } catch {
+      case _: Exception => None
+    }
   }
 }

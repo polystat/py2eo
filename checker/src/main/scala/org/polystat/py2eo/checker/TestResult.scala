@@ -17,13 +17,13 @@ object CompilingResult extends Enumeration {
 
 case class AwaitedTestResult(name: String, category: String, results: Option[Map[Mutation, CompilingResult]])
 
-case class TestResult(name: String, category: String, results: Option[Map[Mutation, Future[CompilingResult]]]) {
+case class TestResult(name: String, category: String, results: Option[Map[Mutation, CompilingResult]]) {
   def await: AwaitedTestResult = {
     results match {
       case None => AwaitedTestResult(name, category, None)
       case Some(resultMap) =>
         val set = resultMap.toSet
-        val awaited = for {(mutation, futureResult) <- set} yield (mutation, Await.result(futureResult, Duration.Inf))
+        val awaited = for {(mutation, futureResult) <- set} yield (mutation, futureResult)
 
         AwaitedTestResult(name, category, Some(awaited.toMap))
     }
