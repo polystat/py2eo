@@ -58,7 +58,7 @@ class CPythonTests extends Commons {
               println(s"OBLOM for $name")
               throw e
           }
-          val eoText = Transpile.transpile(db)(name, py.python)
+          val eoText = Transpile.transpile(db)(name, Transpile.Parameters(wrapInAFunction = false), py.python)
           writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)
           Files.copy(
             Paths.get(s"$dirName/afterParser/$name.py"),

@@ -1,0 +1,77 @@
++package preface
++alias pybool preface.pybool
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias fakeclasses preface.fakeclasses
+
+[value] > pyint
+
+  fakeclasses.pyIntClass > x__class__
+
+  # Tests that $ = x
+  [x] > eq
+    pybool (value.eq (x.value)) > @
+
+  [x] > neq
+    pybool (value.neq (x.value)) > @
+
+  [x] > less
+    pybool (value.less (x.value)) > @
+
+  [x] > leq
+    pybool (value.leq (x.value)) > @
+
+  [x] > greater
+    pybool (value.greater (x.value)) > @
+
+  [x] > geq
+    pybool (value.geq (x.value)) > @
+
+  [x] > pow
+    pyint (value.pow (x.value)) > @
+
+  [x] > and
+    pyint (value.and (x.value)) > @
+
+  [x] > or
+    pyint (value.or (x.value)) > @
+
+  [x] > xor
+    pyint (value.xor (x.value)) > @
+
+  [x] > add
+    pyint (value.add (x.value)) > @
+
+  [x] > mul
+    pyint (value.mul (x.value)) > @
+
+  [x] > div
+    pyint (value.div (x.value)) > @
+
+  [x] > mod
+    pyint (value.mod (x.value)) > @
+
+  [x] > left
+    pyint (value.left (x.value)) > @
+
+  [x] > right
+    pyint (value.right (x.value)) > @
+
+  # Negation of $
+  [] > neg
+    pyint (value.neg) > @
+
+  # Difference between $ and x
+  [x] > sub
+    pyint (value.sub (x.value)) > @
+
+  [] > as-string
+    value.as-string > @
+
+  [] > force
+    value > @
+
+  seq > @
+    stdout (sprintf "dataizing value %d\n" value)
+    value
+

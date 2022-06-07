@@ -9,12 +9,14 @@ import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef,
 
 object Transpile {
 
-  def apply(moduleName: String, pythonCode: String): Option[String] = {
-    transpileOption((_, _) => ())(moduleName, pythonCode)
+  case class Parameters(wrapInAFunction : Boolean)
+
+  def apply(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
+    transpileOption((_, _) => ())(moduleName, opt, pythonCode)
   }
 
-  def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): String = {
-    transpileOption(debugPrinter)(moduleName, pythonCode).getOrElse("Not Supported: input file syntax is not python 3.8")
+  def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String): String = {
+    transpileOption(debugPrinter)(moduleName, opt, pythonCode).getOrElse("Not Supported: input file syntax is not python 3.8")
   }
 
   def applyStyle(pythonCode: String): Option[String] = {
@@ -24,11 +26,24 @@ object Transpile {
   /// [debugPrinter(statement, stageName)]
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
-  def transpileOption(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, pythonCode: String): Option[String] = {
+  def transpileOption(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
     val parsed = Parse(pythonCode, debugPrinter)
     parsed.map(
       parsed => {
-        val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(parsed, new SimplePass.Names())
+        val ym1 = if (opt.wrapInAFunction) {
+          val ann = parsed.ann
+          Suite(List(
+              FuncDef(
+                "wrapper", List(), None, None, None,
+                Suite(List(parsed, Return(Some(Expression.BoolLiteral(true, ann.pos)), ann.pos)), ann.pos),
+                Decorators(List()), HashMap(), false, ann.pos
+              )
+            ),
+            ann.pos
+          )
+        } else
+          { parsed }
+        val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(ym1, new SimplePass.Names())
         val y00 = SimplePass.procStatement(SimplePass.simplifyFor)(y0._1, y0._2)
         debugPrinter(y00._1, "afterSimplifyFor")
         val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y00._1, y00._2)

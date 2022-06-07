@@ -39,7 +39,11 @@ trait Commons {
   def chopExtension(fileName: String): String = fileName.substring(0, fileName.lastIndexOf("."))
 
   def useCageHolder(test: File): Unit = {
-    Transpile(test.getName.replace(".yaml", ""), yaml2python(test)) match {
+    Transpile.transpileOption(Main.debugPrinter(test))(
+      test.getName.replace(".yaml", ""),
+      Transpile.Parameters(wrapInAFunction = false),
+      yaml2python(test)
+    ) match {
       case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) => writeFile(test, "genCageEO", ".eo", transpiled)
     }
