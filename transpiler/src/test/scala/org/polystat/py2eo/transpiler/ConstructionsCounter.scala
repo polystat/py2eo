@@ -12,7 +12,7 @@ import scala.sys.process.Process
 class ConstructionsCounter() extends Commons {
   private val currentDirectory = Directory.Current.get
   private val testsPath = currentDirectory / "transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
-  private val pom = Streamable.slurp(getClass.getResourceAsStream("runEOPom.xml"))
+  private val pom = File(currentDirectory / "runEO" / "pom.xml").slurp
 
   @Test
   def test(): Unit = {
@@ -34,7 +34,7 @@ class ConstructionsCounter() extends Commons {
 
       val total = relevant.size
       val passed = relevant.count(res => res._3)
-      println(s"$construction tests passed: ${(100f * passed) / total}% ($passed of $total)")
+      println(s"${construction.name} tests passed: ${(100f * passed) / total}% ($passed of $total)")
     }
   }
 
