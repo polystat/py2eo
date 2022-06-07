@@ -27,7 +27,7 @@ This transpiler receives as input data python code. Then received code is simpli
 #### How to use it? ####
 - Go to some directory on your PC
 - Create directory `Transpiler Test`
-- Download and save into this folder `py2eo` transpiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/0.0.4/py2eo-0.0.4-jar-with-dependencies.jar)
+- Download and save into this folder `py2eo` transpiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/0.0.11.2/py2eo-0.0.11.2-jar-with-dependencies.jar)
 - Create in this folder test file with `python` code named `sample_test.py` and paste the code below into it:
     ```
     def conditionalCheck2():
@@ -75,10 +75,59 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 #### Checker ####
 This repository's CI includes checker - a tool that reduces project testing time using input test mutations. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
+## Test coverage
+At the moment, we have 3 different gorups of tests for Py2EO transpiler (checker with mutations are out of scope here):
+
+- [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), Python language implementation tests, version `3.8`)
+For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue (link?). Java generation will take about a week of total runtime as estimated. Got plans to come back to issue after majority of functional "simple" tests will pass.
+
+- [Django](https://github.com/django/django), a popular `Python` web framework
+For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java (estimates about a week of total runtime) for this group, since сompiling and execution of Java code obtained this way seems to be pointless.
+
+- [Handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler), set of tests divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
+[Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Progress is shown in each release description.
+
 ## Examples of translation projections
+
+## 6. Expressions
+Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
+
+For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to 
+```
+                  (e1).write (((pyint 1).add (pyint 2)))
+                  (e1).force
+                  ((e1).<)
+                  mkCopy (xf) > tmp1
+                  (lhs0).write (tmp1.copy)
+                  (e2).write (((pyint 3).add (pyint 4)))
+                  (e2).force
+                  ((e2).<)
+                  (lhs1).write ((pyint 5))
+                  (lhs1).force
+                  tmp.write (goto ((((lhs0)).apply ((e2)) ((lhs1))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e3).write (tmp.result)
+                  ((e3).<)
+                  (e4).write (((e1).mul (e3)))
+                  (e4).force
+                  ((e4).<)
+                  mkCopy (e4) > tmp2
+                  (xx).write (tmp2.copy)
+```
 
 ### 6.1 Arithmetic conversion
 Complex and float numbers are not yet supported, so no implicit conversion is needed.
+
+### 6.2.1 Identifiers
+Each identifier is prepended with `x` because a python identifier may start with a capital letter, while one in EO cannot. 
+
+### 6.2.2 Literals
+Integer, boolean, string and float literals are wrapped in respective EO wrapper objects:
+* `10` is translated to `(pyint 10)`
+* `"Hello, world"` is translated to `(pystring "Hello, world")`
+
+### 6.2.3 Parenthesized forms
+Almost every generated EO expression is parenthesized, but these parantheses are not related to the parantheses in the original python expressions.
 
 ### 6.2.4 6.2.5 6.2.6 6.2.7 Displays for lists, sets and dictionaries
 Will be supported via a python-to-python pass: a display will be converted to a `for` loop
@@ -89,8 +138,28 @@ Same as displays
 ### 6.2.9 Yield expression
 Is a part of coroutines. No plans to support the coroutines now.
 
-### 6.3.4 Call
+### 6.3.1 Attribute references
+Statically known attributes of python classes are translated into attributes of the respective EO objects, so `obj.attr` is translated to `obj.attr`.
 
+### 6.3.2-3 Subscriptions, slicing
+This is not yet implemented, but should be implemented with calling `.__getitem__` and `.__setitem__` methods of array objects. That is,
+* `a[i]` should be translated to something like `(a.__getitem__ i)`
+* and `a[i] = x` should be translated to something like `(a.__setitem__ i x)`
+
+### 6.3.4 Call
+See [the section on function definition](https://github.com/polystat/py2eo#86-function-definition) for the examples on how to call a function.
+
+### 6.4 Await
+Is a part of coroutines, no plans to support it.
+
+### 6.5-11 Different arithmetics and logic binary and unary operations
+Are translated to calls of the respective functions of the EO standard library. Like, `a == b` is translated to `(a.eq b)`, `not x` goes to `(x.not)` and so on.
+
+### 6.12 Assignment expressions
+Not yet supported.
+
+### 6.13 Conditional expressions
+`a if c else b` -> `(c).if (a) (b)`
 
 ### 7.1 Expressions statements
 Should be easy but not yet done.
@@ -138,7 +207,7 @@ where `mkCopy` looks like this
 Will be done as a python-to-python pass, which basically substitutes `assert` to `raise AssertionException`
 
 ### 7.4 Pass
-Does nothing
+`pass` is a statement, which does nothing
 
 ### 7.5 Del
 Is an operator to delete attributes of objects dynamically. Not supported therefore.

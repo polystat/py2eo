@@ -24,11 +24,13 @@ object Check {
   def apply(inputPath: Path, outputPath: Path, mutations: Iterable[Mutation]): Unit = {
     outputPath.createDirectory()
 
-    val res = check(inputPath, outputPath, mutations)
-    if (res isEmpty) {
+    val testResults = check(inputPath, outputPath, mutations)
+    if (testResults isEmpty) {
       error("Provided tests directory doesn't contain .yaml files")
     } else {
-      Write(outputPath, res, mutations)
+      val awaitedTestResults = testResults map (testResult => testResult.await)
+      Write(outputPath, awaitedTestResults, mutations)
+      WriteConstructions(outputPath, awaitedTestResults)
     }
   }
 
@@ -46,18 +48,19 @@ object Check {
 
   private def check(test: File, outputPath: Path, mutations: Iterable[Mutation]): TestResult = {
     val module = test.stripExtension
+    val category = test.parent.name
     println(s"checking $module")
     parseYaml(test) match {
-      case None => TestResult(module, None)
+      case None => TestResult(module, category, None)
       case Some(parsed) =>
         Transpile(module, Transpile.Parameters(wrapInAFunction = false), parsed) match {
-          case None => TestResult(module, None)
+          case None => TestResult(module, category, None)
           case Some(transpiled) =>
             val file = File(outputPath / test.changeExtension("eo").name)
             file writeAll transpiled
 
             val resultList = mutations map (mutation => (mutation, Future(check(module, parsed, outputPath, mutation))))
-            TestResult(module, Some(resultList.toMap[Mutation, Future[CompilingResult]]))
+            TestResult(module, category, Some(resultList.toMap[Mutation, Future[CompilingResult]]))
         }
     }
   }
