@@ -26,7 +26,7 @@ trait Commons {
     YamlTest(map.get("python"), map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean])
   }
 
-  val python: String = {
+  def python: String = {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
     assertTrue(0 == (Process("python --version") ! ProcessLogger(stdout.append(_), stderr.append(_))))
