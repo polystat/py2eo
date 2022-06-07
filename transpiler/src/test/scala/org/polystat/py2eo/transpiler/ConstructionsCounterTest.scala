@@ -9,7 +9,7 @@ import scala.concurrent.{Await, Future, TimeoutException, blocking}
 import scala.reflect.io.{Directory, File, Streamable}
 import scala.sys.process.Process
 
-class ConstructionsCounter() extends Commons {
+class ConstructionsCounterTest extends Commons {
   private val currentDirectory = Directory.Current.get
   private val testsPath = currentDirectory / "transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
   private val pom = File(currentDirectory / "runEO" / "pom.xml").slurp
