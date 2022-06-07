@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > for_try_break
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -82,6 +95,7 @@
                 cage > e3
                 cage > e10
                 cage > lhs11
+                cage > xcaught
                 cage > e9
                 cage > e15
                 cage > e19
@@ -112,7 +126,7 @@
                   ((e0).<)
                   mkCopy (e0) > tmp1
                   (xres).write (tmp1.copy)
-                  tmp.write (goto ((((xmyArray)).apply ((* 1 2 4 0 8))).@))
+                  tmp.write (goto ((((xmyArray)).apply ((* (pyint 1) (pyint 2) (pyint 4) (pyint 0) (pyint 8)))).@))
                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                   (e1).write (tmp.result)
                   ((e1).<)
@@ -129,6 +143,9 @@
                   ((e3).<)
                   mkCopy (e3) > tmp5
                   (xit0).write (tmp5.copy)
+                  (xcaught).write ((pybool FALSE))
+                  (xcaught).force
+                  xcaught.write (pybool TRUE)
                   write.
                     xcurrent-exception
                     goto
@@ -139,7 +156,7 @@
                             goto
                               [stackUp]
                                 seq > @
-                                  TRUE.while
+                                  (pybool TRUE).while
                                     [unused]
                                       seq > @
                                         mkCopy (xit0.x__next__) > tmp6
@@ -153,61 +170,66 @@
                                         ((e5).<)
                                         mkCopy (e5) > tmp8
                                         (xnum).write (tmp8.copy)
+                                        (xcaught).write ((pybool FALSE))
+                                        (xcaught).force
+                                        xcaught.write (pybool TRUE)
                                         write.
                                           xcurrent-exception
                                           goto
                                             [stackUp]
                                               seq > @
-                                                [] > tmp9
-                                                  memory > dddata
-                                                  dddata.write ((16.div (xnum))) > @
-                                                (e6).write (tmp9.dddata)
+                                                (e6).write (((pyint 16).div (xnum)))
+                                                (e6).force
                                                 ((e6).<)
-                                                mkCopy (e6) > tmp10
-                                                (xresult).write (tmp10.copy)
-                                                mkCopy (xres.xappend) > tmp11
-                                                (e7).write (tmp11.copy)
+                                                mkCopy (e6) > tmp9
+                                                (xresult).write (tmp9.copy)
+                                                mkCopy (xres.xappend) > tmp10
+                                                (e7).write (tmp10.copy)
                                                 ((e7).<)
-                                                mkCopy (xres) > tmp12
-                                                (lhs4).write (tmp12.copy)
-                                                mkCopy (xresult) > tmp13
-                                                (lhs5).write (tmp13.copy)
+                                                mkCopy (xres) > tmp11
+                                                (lhs4).write (tmp11.copy)
+                                                mkCopy (xresult) > tmp12
+                                                (lhs5).write (tmp12.copy)
                                                 tmp.write (goto ((((e7)).apply ((lhs4)) ((lhs5))).@))
                                                 (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                                                 (e8).write (tmp.result)
                                                 ((e8).<)
                                                 stackUp.forward raiseNothing
                                         seq
-                                          mkCopy (xcurrent-exception.xclass) > tmp14
-                                          (e10).write (tmp14.copy)
-                                          ((e10).<)
-                                          mkCopy (e10.xid) > tmp15
-                                          (e11).write (tmp15.copy)
-                                          ((e11).<)
-                                          mkCopy (xZeroDivisionError.xid) > tmp16
-                                          (e12).write (tmp16.copy)
-                                          ((e12).<)
-                                          [] > tmp17
-                                            memory > dddata
-                                            dddata.write (((e11).eq (e12))) > @
-                                          (e13).write (tmp17.dddata)
-                                          ((e13).<)
-                                          (e13).if
+                                          if.
+                                            is-exception (xcurrent-exception.xclass.xid)
                                             seq
-                                              tmp.write (goto ((((xprint)).apply ("Sorry ! You are dividing by zero ")).@))
-                                              (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
-                                              (e9).write (tmp.result)
-                                              ((e9).<)
-                                              stackUp.forward break
-                                              TRUE
-                                            seq
-                                              TRUE
+                                              mkCopy (xcurrent-exception.xclass) > tmp13
+                                              (e10).write (tmp13.copy)
+                                              ((e10).<)
+                                              mkCopy (e10.xid) > tmp14
+                                              (e11).write (tmp14.copy)
+                                              ((e11).<)
+                                              mkCopy (xZeroDivisionError.xid) > tmp15
+                                              (e12).write (tmp15.copy)
+                                              ((e12).<)
+                                              (e13).write (((e11).eq (e12)))
+                                              (e13).force
+                                              ((e13).<)
+                                              (e13).if
+                                                seq
+                                                  stdout (sprintf "%s\n" ((pystring "Sorry ! You are dividing by zero ").as-string))
+                                                  ((e9).<)
+                                                  stackUp.forward break
+                                                  (xcaught).write ((pybool TRUE))
+                                                  (xcaught).force
+                                                  (pybool TRUE)
+                                                seq
+                                                  (pybool TRUE)
+                                              0
+                                            0
                                           if.
                                             xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
                                             seq
+                                              0
                                             0
-                                          (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
-                                        TRUE
+                                          ((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
+                                        (pybool TRUE)
                                   stackUp.forward raiseNothing
                           if.
                             xcurrent-exception.xclass.xid.neq (break.xclass.xid)
@@ -215,40 +237,44 @@
                             0
                           stackUp.forward raiseNothing
                   seq
-                    mkCopy (xcurrent-exception.xclass) > tmp18
-                    (e14).write (tmp18.copy)
-                    ((e14).<)
-                    mkCopy (e14.xid) > tmp19
-                    (e15).write (tmp19.copy)
-                    ((e15).<)
-                    mkCopy (xStopIteration.xid) > tmp20
-                    (e16).write (tmp20.copy)
-                    ((e16).<)
-                    [] > tmp21
-                      memory > dddata
-                      dddata.write (((e15).eq (e16))) > @
-                    (e17).write (tmp21.dddata)
-                    ((e17).<)
-                    (e17).if
+                    if.
+                      is-exception (xcurrent-exception.xclass.xid)
                       seq
-                        TRUE
-                      seq
-                        TRUE
+                        mkCopy (xcurrent-exception.xclass) > tmp16
+                        (e14).write (tmp16.copy)
+                        ((e14).<)
+                        mkCopy (e14.xid) > tmp17
+                        (e15).write (tmp17.copy)
+                        ((e15).<)
+                        mkCopy (xStopIteration.xid) > tmp18
+                        (e16).write (tmp18.copy)
+                        ((e16).<)
+                        (e17).write (((e15).eq (e16)))
+                        (e17).force
+                        ((e17).<)
+                        (e17).if
+                          seq
+                            (xcaught).write ((pybool TRUE))
+                            (xcaught).force
+                            (pybool TRUE)
+                          seq
+                            (pybool TRUE)
+                        0
+                      0
                     if.
                       xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
                       seq
+                        0
                       0
-                    (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
-                  mkCopy (xres) > tmp22
-                  (lhs11).write (tmp22.copy)
-                  tmp.write (goto ((((xmyArray)).apply ((* 16 8 4))).@))
+                    ((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
+                  mkCopy (xres) > tmp19
+                  (lhs11).write (tmp19.copy)
+                  tmp.write (goto ((((xmyArray)).apply ((* (pyint 16) (pyint 8) (pyint 4)))).@))
                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                   (e18).write (tmp.result)
                   ((e18).<)
-                  [] > tmp23
-                    memory > dddata
-                    dddata.write (((lhs11).eq (e18))) > @
-                  (e19).write (tmp23.dddata)
+                  (e19).write (((lhs11).eq (e18)))
+                  (e19).force
                   ((e19).<)
                   toReturn.write ((e19))
                   stackUp.forward (return toReturn)

@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > arithmetics-integer
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -154,312 +167,276 @@
                 cage > e19
                 seq > @
                   stdout "xarithmetics_integer\n"
-                  [] > tmp1
-                    memory > dddata
-                    dddata.write ((10.pow 2)) > @
-                  (e0).write (tmp1.dddata)
+                  (e0).write (((pyint 10).pow (pyint 2)))
+                  (e0).force
                   ((e0).<)
-                  (lhs0).write (100)
-                  [] > tmp2
-                    memory > dddata
-                    dddata.write (((e0).eq (lhs0))) > @
-                  (e1).write (tmp2.dddata)
+                  (lhs0).write ((pyint 100))
+                  (lhs0).force
+                  (e1).write (((e0).eq (lhs0)))
+                  (e1).force
                   ((e1).<)
-                  mkCopy (e1) > tmp3
-                  (xpow).write (tmp3.copy)
-                  [] > tmp4
-                    memory > dddata
-                    dddata.write ((1.neg)) > @
-                  (e2).write (tmp4.dddata)
+                  mkCopy (e1) > tmp1
+                  (xpow).write (tmp1.copy)
+                  (e2).write (((pyint 1).neg))
+                  (e2).force
                   ((e2).<)
-                  [] > tmp5
-                    memory > dddata
-                    dddata.write ((0.sub 1)) > @
-                  (e3).write (tmp5.dddata)
+                  (e3).write (((pyint 0).sub (pyint 1)))
+                  (e3).force
                   ((e3).<)
-                  [] > tmp6
-                    memory > dddata
-                    dddata.write (((e2).eq (e3))) > @
-                  (e4).write (tmp6.dddata)
+                  (e4).write (((e2).eq (e3)))
+                  (e4).force
                   ((e4).<)
-                  mkCopy (e4) > tmp7
-                  (xuminus2).write (tmp7.copy)
-                  (lhs3).write (1)
-                  [] > tmp8
-                    memory > dddata
-                    dddata.write ((1)) > @
-                  (e5).write (tmp8.dddata)
+                  mkCopy (e4) > tmp2
+                  (xuminus2).write (tmp2.copy)
+                  (lhs3).write ((pyint 1))
+                  (lhs3).force
+                  (e5).write (((pyint 1)))
+                  (e5).force
                   ((e5).<)
-                  [] > tmp9
-                    memory > dddata
-                    dddata.write (((lhs3).eq (e5))) > @
-                  (e6).write (tmp9.dddata)
+                  (e6).write (((lhs3).eq (e5)))
+                  (e6).force
                   ((e6).<)
-                  mkCopy (e6) > tmp10
-                  (xuplus).write (tmp10.copy)
-                  [] > tmp11
-                    memory > dddata
-                    dddata.write ((10.mul 10)) > @
-                  (e7).write (tmp11.dddata)
+                  mkCopy (e6) > tmp3
+                  (xuplus).write (tmp3.copy)
+                  (e7).write (((pyint 10).mul (pyint 10)))
+                  (e7).force
                   ((e7).<)
-                  (lhs5).write (100)
-                  [] > tmp12
-                    memory > dddata
-                    dddata.write (((e7).eq (lhs5))) > @
-                  (e8).write (tmp12.dddata)
+                  (lhs5).write ((pyint 100))
+                  (lhs5).force
+                  (e8).write (((e7).eq (lhs5)))
+                  (e8).force
                   ((e8).<)
-                  mkCopy (e8) > tmp13
-                  (xmul).write (tmp13.copy)
-                  [] > tmp14
-                    memory > dddata
-                    dddata.write ((100.div 11)) > @
-                  (e9).write (tmp14.dddata)
+                  mkCopy (e8) > tmp4
+                  (xmul).write (tmp4.copy)
+                  (e9).write (((pyint 100).div (pyint 11)))
+                  (e9).force
                   ((e9).<)
-                  (lhs7).write (9)
-                  [] > tmp15
-                    memory > dddata
-                    dddata.write (((e9).eq (lhs7))) > @
-                  (e10).write (tmp15.dddata)
+                  (lhs7).write ((pyint 9))
+                  (lhs7).force
+                  (e10).write (((e9).eq (lhs7)))
+                  (e10).force
                   ((e10).<)
-                  mkCopy (e10) > tmp16
-                  (xdiv).write (tmp16.copy)
-                  [] > tmp17
-                    memory > dddata
-                    dddata.write ((100.mod 11)) > @
-                  (e11).write (tmp17.dddata)
+                  mkCopy (e10) > tmp5
+                  (xdiv).write (tmp5.copy)
+                  (e11).write (((pyint 100).mod (pyint 11)))
+                  (e11).force
                   ((e11).<)
-                  (lhs9).write (1)
-                  [] > tmp18
-                    memory > dddata
-                    dddata.write (((e11).eq (lhs9))) > @
-                  (e12).write (tmp18.dddata)
+                  (lhs9).write ((pyint 1))
+                  (lhs9).force
+                  (e12).write (((e11).eq (lhs9)))
+                  (e12).force
                   ((e12).<)
-                  mkCopy (e12) > tmp19
-                  (xrem).write (tmp19.copy)
-                  [] > tmp20
-                    memory > dddata
-                    dddata.write ((1.add 10)) > @
-                  (e13).write (tmp20.dddata)
+                  mkCopy (e12) > tmp6
+                  (xrem).write (tmp6.copy)
+                  (e13).write (((pyint 1).add (pyint 10)))
+                  (e13).force
                   ((e13).<)
-                  (lhs11).write (11)
-                  [] > tmp21
-                    memory > dddata
-                    dddata.write (((e13).eq (lhs11))) > @
-                  (e14).write (tmp21.dddata)
+                  (lhs11).write ((pyint 11))
+                  (lhs11).force
+                  (e14).write (((e13).eq (lhs11)))
+                  (e14).force
                   ((e14).<)
-                  mkCopy (e14) > tmp22
-                  (xadd).write (tmp22.copy)
-                  [] > tmp23
-                    memory > dddata
-                    dddata.write ((10.sub 1)) > @
-                  (e15).write (tmp23.dddata)
+                  mkCopy (e14) > tmp7
+                  (xadd).write (tmp7.copy)
+                  (e15).write (((pyint 10).sub (pyint 1)))
+                  (e15).force
                   ((e15).<)
-                  (lhs13).write (9)
-                  [] > tmp24
-                    memory > dddata
-                    dddata.write (((e15).eq (lhs13))) > @
-                  (e16).write (tmp24.dddata)
+                  (lhs13).write ((pyint 9))
+                  (lhs13).force
+                  (e16).write (((e15).eq (lhs13)))
+                  (e16).force
                   ((e16).<)
-                  mkCopy (e16) > tmp25
-                  (xsub).write (tmp25.copy)
-                  [] > tmp26
-                    memory > dddata
-                    dddata.write ((1.left 1)) > @
-                  (e17).write (tmp26.dddata)
+                  mkCopy (e16) > tmp8
+                  (xsub).write (tmp8.copy)
+                  (e17).write (((pyint 1).left (pyint 1)))
+                  (e17).force
                   ((e17).<)
-                  (lhs15).write (2)
-                  [] > tmp27
-                    memory > dddata
-                    dddata.write (((e17).eq (lhs15))) > @
-                  (e18).write (tmp27.dddata)
+                  (lhs15).write ((pyint 2))
+                  (lhs15).force
+                  (e18).write (((e17).eq (lhs15)))
+                  (e18).force
                   ((e18).<)
-                  mkCopy (e18) > tmp28
-                  (xshl).write (tmp28.copy)
-                  [] > tmp29
-                    memory > dddata
-                    dddata.write ((3.right 1)) > @
-                  (e19).write (tmp29.dddata)
+                  mkCopy (e18) > tmp9
+                  (xshl).write (tmp9.copy)
+                  (e19).write (((pyint 3).right (pyint 1)))
+                  (e19).force
                   ((e19).<)
-                  (lhs17).write (1)
-                  [] > tmp30
-                    memory > dddata
-                    dddata.write (((e19).eq (lhs17))) > @
-                  (e20).write (tmp30.dddata)
+                  (lhs17).write ((pyint 1))
+                  (lhs17).force
+                  (e20).write (((e19).eq (lhs17)))
+                  (e20).force
                   ((e20).<)
-                  mkCopy (e20) > tmp31
-                  (xshr).write (tmp31.copy)
-                  [] > tmp32
-                    memory > dddata
-                    dddata.write ((13.and 6)) > @
-                  (e21).write (tmp32.dddata)
+                  mkCopy (e20) > tmp10
+                  (xshr).write (tmp10.copy)
+                  (e21).write (((pyint 13).and (pyint 6)))
+                  (e21).force
                   ((e21).<)
-                  (lhs19).write (4)
-                  [] > tmp33
-                    memory > dddata
-                    dddata.write (((e21).eq (lhs19))) > @
-                  (e22).write (tmp33.dddata)
+                  (lhs19).write ((pyint 4))
+                  (lhs19).force
+                  (e22).write (((e21).eq (lhs19)))
+                  (e22).force
                   ((e22).<)
-                  mkCopy (e22) > tmp34
-                  (xandd).write (tmp34.copy)
-                  [] > tmp35
-                    memory > dddata
-                    dddata.write ((10.or 12)) > @
-                  (e23).write (tmp35.dddata)
+                  mkCopy (e22) > tmp11
+                  (xandd).write (tmp11.copy)
+                  (e23).write (((pyint 10).or (pyint 12)))
+                  (e23).force
                   ((e23).<)
-                  (lhs21).write (14)
-                  [] > tmp36
-                    memory > dddata
-                    dddata.write (((e23).eq (lhs21))) > @
-                  (e24).write (tmp36.dddata)
+                  (lhs21).write ((pyint 14))
+                  (lhs21).force
+                  (e24).write (((e23).eq (lhs21)))
+                  (e24).force
                   ((e24).<)
-                  mkCopy (e24) > tmp37
-                  (xorr).write (tmp37.copy)
-                  [] > tmp38
-                    memory > dddata
-                    dddata.write ((2.xor 3)) > @
-                  (e25).write (tmp38.dddata)
+                  mkCopy (e24) > tmp12
+                  (xorr).write (tmp12.copy)
+                  (e25).write (((pyint 2).xor (pyint 3)))
+                  (e25).force
                   ((e25).<)
-                  (lhs23).write (1)
-                  [] > tmp39
-                    memory > dddata
-                    dddata.write (((e25).eq (lhs23))) > @
-                  (e26).write (tmp39.dddata)
+                  (lhs23).write ((pyint 1))
+                  (lhs23).force
+                  (e26).write (((e25).eq (lhs23)))
+                  (e26).force
                   ((e26).<)
-                  mkCopy (e26) > tmp40
-                  (xxorr).write (tmp40.copy)
-                  [] > tmp41
-                    memory > dddata
-                    dddata.write (((xpow).not)) > @
-                  (e27).write (tmp41.dddata)
+                  mkCopy (e26) > tmp13
+                  (xxorr).write (tmp13.copy)
+                  (e27).write (((xpow).not))
+                  (e27).force
                   ((e27).<)
                   (e27).if
                     seq
-                      (lhs25).write (TRUE)
-                      TRUE
+                      (lhs25).write ((pybool TRUE))
+                      (lhs25).force
+                      (pybool TRUE)
                     seq
-                      [] > tmp42
-                        memory > dddata
-                        dddata.write (((xuminus).not)) > @
-                      (e28).write (tmp42.dddata)
+                      (e28).write (((xuminus).not))
+                      (e28).force
                       ((e28).<)
-                      mkCopy (e28) > tmp43
-                      (lhs25).write (tmp43.copy)
-                      TRUE
-                  [] > tmp44
-                    memory > dddata
-                    dddata.write (((lhs25).not)) > @
-                  (e29).write (tmp44.dddata)
+                      mkCopy (e28) > tmp14
+                      (lhs25).write (tmp14.copy)
+                      (pybool TRUE)
+                  (e29).write (((lhs25).not))
+                  (e29).force
                   ((e29).<)
                   (e29).if
                     seq
-                      mkCopy (xuplus) > tmp45
-                      (lhs27).write (tmp45.copy)
-                      TRUE
+                      mkCopy (xuplus) > tmp15
+                      (lhs27).write (tmp15.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs28).write (FALSE)
-                      mkCopy (lhs28) > tmp46
-                      (lhs27).write (tmp46.copy)
-                      TRUE
+                      (lhs28).write ((pybool FALSE))
+                      (lhs28).force
+                      mkCopy (lhs28) > tmp16
+                      (lhs27).write (tmp16.copy)
+                      (pybool TRUE)
                   (lhs27).if
                     seq
-                      mkCopy (xmul) > tmp47
-                      (lhs29).write (tmp47.copy)
-                      TRUE
+                      mkCopy (xmul) > tmp17
+                      (lhs29).write (tmp17.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs30).write (FALSE)
-                      mkCopy (lhs30) > tmp48
-                      (lhs29).write (tmp48.copy)
-                      TRUE
+                      (lhs30).write ((pybool FALSE))
+                      (lhs30).force
+                      mkCopy (lhs30) > tmp18
+                      (lhs29).write (tmp18.copy)
+                      (pybool TRUE)
                   (lhs29).if
                     seq
-                      mkCopy (xdiv) > tmp49
-                      (lhs31).write (tmp49.copy)
-                      TRUE
+                      mkCopy (xdiv) > tmp19
+                      (lhs31).write (tmp19.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs32).write (FALSE)
-                      mkCopy (lhs32) > tmp50
-                      (lhs31).write (tmp50.copy)
-                      TRUE
+                      (lhs32).write ((pybool FALSE))
+                      (lhs32).force
+                      mkCopy (lhs32) > tmp20
+                      (lhs31).write (tmp20.copy)
+                      (pybool TRUE)
                   (lhs31).if
                     seq
-                      mkCopy (xrem) > tmp51
-                      (lhs33).write (tmp51.copy)
-                      TRUE
+                      mkCopy (xrem) > tmp21
+                      (lhs33).write (tmp21.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs34).write (FALSE)
-                      mkCopy (lhs34) > tmp52
-                      (lhs33).write (tmp52.copy)
-                      TRUE
+                      (lhs34).write ((pybool FALSE))
+                      (lhs34).force
+                      mkCopy (lhs34) > tmp22
+                      (lhs33).write (tmp22.copy)
+                      (pybool TRUE)
                   (lhs33).if
                     seq
-                      mkCopy (xadd) > tmp53
-                      (lhs35).write (tmp53.copy)
-                      TRUE
+                      mkCopy (xadd) > tmp23
+                      (lhs35).write (tmp23.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs36).write (FALSE)
-                      mkCopy (lhs36) > tmp54
-                      (lhs35).write (tmp54.copy)
-                      TRUE
+                      (lhs36).write ((pybool FALSE))
+                      (lhs36).force
+                      mkCopy (lhs36) > tmp24
+                      (lhs35).write (tmp24.copy)
+                      (pybool TRUE)
                   (lhs35).if
                     seq
-                      mkCopy (xsub) > tmp55
-                      (lhs37).write (tmp55.copy)
-                      TRUE
+                      mkCopy (xsub) > tmp25
+                      (lhs37).write (tmp25.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs38).write (FALSE)
-                      mkCopy (lhs38) > tmp56
-                      (lhs37).write (tmp56.copy)
-                      TRUE
+                      (lhs38).write ((pybool FALSE))
+                      (lhs38).force
+                      mkCopy (lhs38) > tmp26
+                      (lhs37).write (tmp26.copy)
+                      (pybool TRUE)
                   (lhs37).if
                     seq
-                      mkCopy (xshl) > tmp57
-                      (lhs39).write (tmp57.copy)
-                      TRUE
+                      mkCopy (xshl) > tmp27
+                      (lhs39).write (tmp27.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs40).write (FALSE)
-                      mkCopy (lhs40) > tmp58
-                      (lhs39).write (tmp58.copy)
-                      TRUE
+                      (lhs40).write ((pybool FALSE))
+                      (lhs40).force
+                      mkCopy (lhs40) > tmp28
+                      (lhs39).write (tmp28.copy)
+                      (pybool TRUE)
                   (lhs39).if
                     seq
-                      mkCopy (xshr) > tmp59
-                      (lhs41).write (tmp59.copy)
-                      TRUE
+                      mkCopy (xshr) > tmp29
+                      (lhs41).write (tmp29.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs42).write (FALSE)
-                      mkCopy (lhs42) > tmp60
-                      (lhs41).write (tmp60.copy)
-                      TRUE
+                      (lhs42).write ((pybool FALSE))
+                      (lhs42).force
+                      mkCopy (lhs42) > tmp30
+                      (lhs41).write (tmp30.copy)
+                      (pybool TRUE)
                   (lhs41).if
                     seq
-                      mkCopy (xandd) > tmp61
-                      (lhs43).write (tmp61.copy)
-                      TRUE
+                      mkCopy (xandd) > tmp31
+                      (lhs43).write (tmp31.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs44).write (FALSE)
-                      mkCopy (lhs44) > tmp62
-                      (lhs43).write (tmp62.copy)
-                      TRUE
+                      (lhs44).write ((pybool FALSE))
+                      (lhs44).force
+                      mkCopy (lhs44) > tmp32
+                      (lhs43).write (tmp32.copy)
+                      (pybool TRUE)
                   (lhs43).if
                     seq
-                      mkCopy (xorr) > tmp63
-                      (lhs45).write (tmp63.copy)
-                      TRUE
+                      mkCopy (xorr) > tmp33
+                      (lhs45).write (tmp33.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs46).write (FALSE)
-                      mkCopy (lhs46) > tmp64
-                      (lhs45).write (tmp64.copy)
-                      TRUE
+                      (lhs46).write ((pybool FALSE))
+                      (lhs46).force
+                      mkCopy (lhs46) > tmp34
+                      (lhs45).write (tmp34.copy)
+                      (pybool TRUE)
                   (lhs45).if
                     seq
-                      mkCopy (xxorr) > tmp65
-                      (lhs47).write (tmp65.copy)
-                      TRUE
+                      mkCopy (xxorr) > tmp35
+                      (lhs47).write (tmp35.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs48).write (FALSE)
-                      mkCopy (lhs48) > tmp66
-                      (lhs47).write (tmp66.copy)
-                      TRUE
+                      (lhs48).write ((pybool FALSE))
+                      (lhs48).force
+                      mkCopy (lhs48) > tmp36
+                      (lhs47).write (tmp36.copy)
+                      (pybool TRUE)
                   toReturn.write ((lhs47))
                   stackUp.forward (return toReturn)
                   123

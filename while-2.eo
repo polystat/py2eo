@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > while-2
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -80,41 +93,39 @@
                 cage > xa
                 seq > @
                   stdout "xwhileCheck2\n"
-                  (xa).write (4)
-                  (xb).write (2)
+                  (xa).write ((pyint 4))
+                  (xa).force
+                  (xb).write ((pyint 2))
+                  (xb).force
                   write.
                     xcurrent-exception
                     goto
                       [stackUp]
                         seq > @
-                          TRUE.while
+                          (pybool TRUE).while
                             [unused]
                               seq > @
-                                [] > tmp1
-                                  memory > dddata
-                                  dddata.write (((xa).greater (xb))) > @
-                                (e1).write (tmp1.dddata)
+                                (e1).write (((xa).greater (xb)))
+                                (e1).force
                                 ((e1).<)
                                 ((e1).not).if
                                   seq
                                     stackUp.forward break
-                                    TRUE
+                                    (pybool TRUE)
                                   seq
-                                    TRUE
-                                [] > tmp2
-                                  memory > dddata
-                                  dddata.write (((xb).add 1)) > @
-                                (e0).write (tmp2.dddata)
+                                    (pybool TRUE)
+                                (e0).write (((xb).add (pyint 1)))
+                                (e0).force
                                 ((e0).<)
-                                mkCopy (e0) > tmp3
-                                (xb).write (tmp3.copy)
-                                TRUE
+                                mkCopy (e0) > tmp1
+                                (xb).write (tmp1.copy)
+                                (pybool TRUE)
                           stackUp.forward raiseNothing
                   if.
                     xcurrent-exception.xclass.xid.neq (break.xclass.xid)
                     stackUp.forward xcurrent-exception
                     0
-                  toReturn.write (TRUE)
+                  toReturn.write ((pybool TRUE))
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xwhileCheck2)).apply).@))

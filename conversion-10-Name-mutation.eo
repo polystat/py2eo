@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > conversion-10
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -91,56 +104,53 @@
                 cage > lhs7
                 seq > @
                   stdout "xtest\n"
-                  (xx).write (5)
-                  (xy2).write (3.14)
+                  (xx).write ((pyint 5))
+                  (xx).force
+                  (xy2).write ((pyfloat 3.14))
+                  (xy2).force
                   mkCopy (xx) > tmp1
                   (lhs0).write (tmp1.copy)
                   tmp.write (goto ((((xcomplex)).apply ((xx)) ((xy))).@))
                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
                   (e0).write (tmp.result)
                   ((e0).<)
-                  [] > tmp2
-                    memory > dddata
-                    dddata.write (((lhs0).sub (e0))) > @
-                  (e1).write (tmp2.dddata)
+                  (e1).write (((lhs0).sub (e0)))
+                  (e1).force
                   ((e1).<)
-                  mkCopy (e1) > tmp3
-                  (xz).write (tmp3.copy)
-                  mkCopy (xz.x__class__) > tmp4
-                  (e2).write (tmp4.copy)
+                  mkCopy (e1) > tmp2
+                  (xz).write (tmp2.copy)
+                  mkCopy (xz.x__class__) > tmp3
+                  (e2).write (tmp3.copy)
                   ((e2).<)
-                  mkCopy (xcomplex) > tmp5
-                  (lhs2).write (tmp5.copy)
-                  [] > tmp6
-                    memory > dddata
-                    dddata.write (((e2).eq (lhs2))) > @
-                  (e3).write (tmp6.dddata)
+                  mkCopy (xcomplex) > tmp4
+                  (lhs2).write (tmp4.copy)
+                  (e3).write (((e2).eq (lhs2)))
+                  (e3).force
                   ((e3).<)
                   (e3).if
                     seq
-                      mkCopy (xz.ximag) > tmp7
-                      (e4).write (tmp7.copy)
+                      mkCopy (xz.ximag) > tmp5
+                      (e4).write (tmp5.copy)
                       ((e4).<)
-                      mkCopy (e4.x__class__) > tmp8
-                      (e5).write (tmp8.copy)
+                      mkCopy (e4.x__class__) > tmp6
+                      (e5).write (tmp6.copy)
                       ((e5).<)
-                      mkCopy (xz.xreal) > tmp9
-                      (e6).write (tmp9.copy)
+                      mkCopy (xz.xreal) > tmp7
+                      (e6).write (tmp7.copy)
                       ((e6).<)
-                      mkCopy (e6.x__class__) > tmp10
-                      (e7).write (tmp10.copy)
+                      mkCopy (e6.x__class__) > tmp8
+                      (e7).write (tmp8.copy)
                       ((e7).<)
-                      [] > tmp11
-                        memory > dddata
-                        dddata.write (((e5).eq (e7))) > @
-                      (e8).write (tmp11.dddata)
+                      (e8).write (((e5).eq (e7)))
+                      (e8).force
                       ((e8).<)
-                      TRUE
+                      (pybool TRUE)
                     seq
-                      (lhs7).write (FALSE)
-                      mkCopy (lhs7) > tmp12
-                      (e8).write (tmp12.copy)
-                      TRUE
+                      (lhs7).write ((pybool FALSE))
+                      (lhs7).force
+                      mkCopy (lhs7) > tmp9
+                      (e8).write (tmp9.copy)
+                      (pybool TRUE)
                   toReturn.write ((e8))
                   stackUp.forward (return toReturn)
                   123

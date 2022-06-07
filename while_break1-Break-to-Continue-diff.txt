@@ -9,11 +9,15 @@ Diff between original (left) and mutated (right) python files
 >             continue # 11:12-11:16
 
 Diff between original (left) and mutated (right) eo files
-2,4d1
+2,8d1
 < +alias goto org.eolang.gray.goto
 < +alias stdout org.eolang.io.stdout
+< +alias sprintf org.eolang.txt.sprintf
 < +alias cage org.eolang.gray.cage
-6,158c3,36
+< +alias pyint preface.pyint
+< +alias pystring preface.pystring
+< +alias pybool preface.pybool
+10,164c3,36
 < 
 < [unused] > while_break1
 <   [] > apply
@@ -23,26 +27,35 @@ Diff between original (left) and mutated (right) eo files
 <         copy.< > @
 <       [] > newUID
 <         memory > cur
-<         seq > apply
-<           cur.write (cur.is-empty.if 5 (cur.add 1))
-<           cur
+<         [unused] > apply
+<           seq > @
+<             cur.write (cur.is-empty.if (5) (cur.add (1)))
+<             (pyint cur)
 <       [] > raiseEmpty
 <         [] > xclass
-<           4 > xid
+<           (pyint 4) > xid
 <       [res] > return
 <         res > result
 <         [] > xclass
-<           3 > xid
+<           (pyint 3) > xid
 <       [] > break
 <         [] > xclass
-<           2 > xid
+<           (pyint 2) > xid
 <       [] > continue
 <         [] > xclass
-<           1 > xid
+<           (pyint 1) > xid
 <       [] > raiseNothing
 <         [] > xclass
-<           0 > xid
+<           (pyint 0) > xid
+<       [id] > is-exception
+<         id.greater (pyint 3) > @
+<       [id] > is-break-continue-return
+<         (id.greater (pyint 0)).and (id.less (pyint 4)) > @
 <       cage > xcurrent-exception
+<       cage > xcaught
+<       pyint 0 > dummy-int-usage
+<       pybool TRUE > dummy-bool-usage
+<       pystring (sprintf "") > dummy-bool-string
 <       [] > xmyArray
 <         [initValue] > apply
 <           [stackUp] > @
@@ -53,7 +66,7 @@ Diff between original (left) and mutated (right) eo files
 <                 [self] > apply
 <                   [stackUp] > @
 <                     seq > @
-<                       stackUp.forward (return (self.value.length))
+<                       stackUp.forward (return (pyint (self.value.length)))
 <                       123
 <               [] > xget
 <                 [self i] > apply
@@ -96,67 +109,60 @@ Diff between original (left) and mutated (right) eo files
 <                 cage > xii
 <                 seq > @
 <                   stdout "xwhile_break1\n"
-<                   (xf0).write (0)
-<                   (xf1).write (1)
-<                   (xii).write (0)
+<                   (xf0).write ((pyint 0))
+<                   (xf0).force
+<                   (xf1).write ((pyint 1))
+<                   (xf1).force
+<                   (xii).write ((pyint 0))
+<                   (xii).force
 <                   write.
 <                     xcurrent-exception
 <                     goto
 <                       [stackUp]
 <                         seq > @
-<                           TRUE.while
+<                           (pybool TRUE).while
 <                             [unused]
 <                               seq > @
-<                                 [] > tmp1
-<                                   memory > dddata
-<                                   dddata.write (((xii).less 110)) > @
-<                                 (e3).write (tmp1.dddata)
+<                                 (e3).write (((xii).less (pyint 110)))
+<                                 (e3).force
 <                                 ((e3).<)
 <                                 ((e3).not).if
 <                                   seq
 <                                     stackUp.forward break
-<                                     TRUE
+<                                     (pybool TRUE)
 <                                   seq
-<                                     TRUE
-<                                 [] > tmp2
-<                                   memory > dddata
-<                                   dddata.write (((xf0).add (xf1))) > @
-<                                 (e0).write (tmp2.dddata)
+<                                     (pybool TRUE)
+<                                 (e0).write (((xf0).add (xf1)))
+<                                 (e0).force
 <                                 ((e0).<)
-<                                 mkCopy (e0) > tmp3
-<                                 (xf2).write (tmp3.copy)
-<                                 [] > tmp4
-<                                   memory > dddata
-<                                   dddata.write (((xii).add 1)) > @
-<                                 (e1).write (tmp4.dddata)
+<                                 mkCopy (e0) > tmp1
+<                                 (xf2).write (tmp1.copy)
+<                                 (e1).write (((xii).add (pyint 1)))
+<                                 (e1).force
 <                                 ((e1).<)
-<                                 mkCopy (e1) > tmp5
-<                                 (xii).write (tmp5.copy)
-<                                 mkCopy (xf1) > tmp6
-<                                 (xf0).write (tmp6.copy)
-<                                 mkCopy (xf2) > tmp7
-<                                 (xf1).write (tmp7.copy)
-<                                 [] > tmp8
-<                                   memory > dddata
-<                                   dddata.write (((xii).eq 9)) > @
-<                                 (e2).write (tmp8.dddata)
+<                                 mkCopy (e1) > tmp2
+<                                 (xii).write (tmp2.copy)
+<                                 mkCopy (xf1) > tmp3
+<                                 (xf0).write (tmp3.copy)
+<                                 mkCopy (xf2) > tmp4
+<                                 (xf1).write (tmp4.copy)
+<                                 (e2).write (((xii).eq (pyint 9)))
+<                                 (e2).force
 <                                 ((e2).<)
 <                                 (e2).if
 <                                   seq
 <                                     stackUp.forward break
-<                                     TRUE
+<                                     (pybool TRUE)
 <                                   seq
-<                                     TRUE
-<                                 TRUE
+<                                     (pybool TRUE)
+<                                 (pybool TRUE)
 <                           stackUp.forward raiseNothing
 <                   if.
 <                     xcurrent-exception.xclass.xid.neq (break.xclass.xid)
 <                     stackUp.forward xcurrent-exception
 <                     0
-<                   [] > tmp9
-<                     memory > dddata
-<                     dddata.write ((34.eq (xf0))) > @
-<                   (e4).write (tmp9.dddata)
+<                   (e4).write (((pyint 34).eq (xf0)))
+<                   (e4).force
 <                   ((e4).<)
 <                   toReturn.write ((e4))
 <                   stackUp.forward (return toReturn)
@@ -188,19 +194,19 @@ Diff between original (left) and mutated (right) eo files
 >               memory > xii
 >               seq > @
 >                 seq
->                   xf0.write 0
->                   xf1.write 1
->                   xii.write 0
+>                   xf0.write (pyint 0)
+>                   xf1.write (pyint 1)
+>                   xii.write (pyint 0)
 >                   while.
->                     ((xii).less 110)
+>                     ((xii).less (pyint 110))
 >                     [unused]
 >                       seq > @
 >                         seq
 >                           xf2.write ((xf0).add (xf1))
->                           xii.write ((xii).add 1)
+>                           xii.write ((xii).add (pyint 1))
 >                           xf0.write (xf1)
 >                           xf1.write (xf2)
->                           ((xii).eq 9).if
+>                           ((xii).eq (pyint 9)).if
 >                             (((unsupported)).apply)
->                   (((unsupported)).apply ((34.eq (xf0))))
+>                   (((unsupported)).apply (((pyint 34).eq (xf0))))
 \ No newline at end of file

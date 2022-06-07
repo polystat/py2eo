@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > exceptions-else-2
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -79,31 +92,36 @@
                 cage > e1
                 seq > @
                   stdout "xte2\n"
+                  xcaught.write (pybool TRUE)
                   write.
                     xcurrent-exception
                     goto
                       [stackUp]
                         seq > @
-                          (xx).write (1)
+                          (xx).write ((pyint 1))
+                          (xx).force
                           stackUp.forward raiseNothing
                   seq
-                    (xx).write (5)
+                    if.
+                      is-exception (xcurrent-exception.xclass.xid)
+                      seq
+                        (xx).write ((pyint 5))
+                        (xx).force
+                        0
+                      0
                     if.
                       xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
                       seq
-                        [] > tmp1
-                          memory > dddata
-                          dddata.write (((xx).sub 2)) > @
-                        (e0).write (tmp1.dddata)
+                        (e0).write (((xx).sub (pyint 2)))
+                        (e0).force
                         ((e0).<)
-                        mkCopy (e0) > tmp2
-                        (xx).write (tmp2.copy)
+                        mkCopy (e0) > tmp1
+                        (xx).write (tmp1.copy)
+                        0
                       0
-                    (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
-                  [] > tmp3
-                    memory > dddata
-                    dddata.write (((xx).eq 3)) > @
-                  (e1).write (tmp3.dddata)
+                    ((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
+                  (e1).write (((xx).eq (pyint 3)))
+                  (e1).force
                   ((e1).<)
                   toReturn.write ((e1))
                   stackUp.forward (return toReturn)

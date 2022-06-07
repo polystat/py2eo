@@ -9,11 +9,15 @@ Diff between original (left) and mutated (right) python files
 >             continue # 9:12-9:16
 
 Diff between original (left) and mutated (right) eo files
-2,4d1
+2,8d1
 < +alias goto org.eolang.gray.goto
 < +alias stdout org.eolang.io.stdout
+< +alias sprintf org.eolang.txt.sprintf
 < +alias cage org.eolang.gray.cage
-6,195c3,26
+< +alias pyint preface.pyint
+< +alias pystring preface.pystring
+< +alias pybool preface.pybool
+10,220c3,26
 < 
 < [unused] > for_try_else_break
 <   [] > apply
@@ -23,26 +27,35 @@ Diff between original (left) and mutated (right) eo files
 <         copy.< > @
 <       [] > newUID
 <         memory > cur
-<         seq > apply
-<           cur.write (cur.is-empty.if 5 (cur.add 1))
-<           cur
+<         [unused] > apply
+<           seq > @
+<             cur.write (cur.is-empty.if (5) (cur.add (1)))
+<             (pyint cur)
 <       [] > raiseEmpty
 <         [] > xclass
-<           4 > xid
+<           (pyint 4) > xid
 <       [res] > return
 <         res > result
 <         [] > xclass
-<           3 > xid
+<           (pyint 3) > xid
 <       [] > break
 <         [] > xclass
-<           2 > xid
+<           (pyint 2) > xid
 <       [] > continue
 <         [] > xclass
-<           1 > xid
+<           (pyint 1) > xid
 <       [] > raiseNothing
 <         [] > xclass
-<           0 > xid
+<           (pyint 0) > xid
+<       [id] > is-exception
+<         id.greater (pyint 3) > @
+<       [id] > is-break-continue-return
+<         (id.greater (pyint 0)).and (id.less (pyint 4)) > @
 <       cage > xcurrent-exception
+<       cage > xcaught
+<       pyint 0 > dummy-int-usage
+<       pybool TRUE > dummy-bool-usage
+<       pystring (sprintf "") > dummy-bool-string
 <       [] > xmyArray
 <         [initValue] > apply
 <           [stackUp] > @
@@ -53,7 +66,7 @@ Diff between original (left) and mutated (right) eo files
 <                 [self] > apply
 <                   [stackUp] > @
 <                     seq > @
-<                       stackUp.forward (return (self.value.length))
+<                       stackUp.forward (return (pyint (self.value.length)))
 <                       123
 <               [] > xget
 <                 [self i] > apply
@@ -93,6 +106,7 @@ Diff between original (left) and mutated (right) eo files
 <                 cage > xitems
 <                 cage > e10
 <                 cage > lhs11
+<                 cage > xcaught
 <                 cage > e9
 <                 cage > e15
 <                 cage > xitem
@@ -114,7 +128,7 @@ Diff between original (left) and mutated (right) eo files
 <                 cage > e11
 <                 seq > @
 <                   stdout "xfor_try_else_break\n"
-<                   tmp.write (goto ((((xmyArray)).apply ((* 1 2 3 4 5 6 7 "hello" 1 2 3 4))).@))
+<                   tmp.write (goto ((((xmyArray)).apply ((* (pyint 1) (pyint 2) (pyint 3) (pyint 4) (pyint 5) (pyint 6) (pyint 7) (pystring "hello") (pyint 1) (pyint 2) (pyint 3) (pyint 4)))).@))
 <                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
 <                   (e0).write (tmp.result)
 <                   ((e0).<)
@@ -137,6 +151,9 @@ Diff between original (left) and mutated (right) eo files
 <                   ((e3).<)
 <                   mkCopy (e3) > tmp5
 <                   (xit0).write (tmp5.copy)
+<                   (xcaught).write ((pybool FALSE))
+<                   (xcaught).force
+<                   xcaught.write (pybool TRUE)
 <                   write.
 <                     xcurrent-exception
 <                     goto
@@ -147,7 +164,7 @@ Diff between original (left) and mutated (right) eo files
 <                             goto
 <                               [stackUp]
 <                                 seq > @
-<                                   TRUE.while
+<                                   (pybool TRUE).while
 <                                     [unused]
 <                                       seq > @
 <                                         mkCopy (xit0.x__next__) > tmp6
@@ -161,6 +178,7 @@ Diff between original (left) and mutated (right) eo files
 <                                         ((e5).<)
 <                                         mkCopy (e5) > tmp8
 <                                         (xitem).write (tmp8.copy)
+<                                         xcaught.write (pybool TRUE)
 <                                         write.
 <                                           xcurrent-exception
 <                                           goto
@@ -181,23 +199,30 @@ Diff between original (left) and mutated (right) eo files
 <                                                 ((e8).<)
 <                                                 stackUp.forward raiseNothing
 <                                         seq
-<                                           mkCopy (xres.xappend) > tmp11
-<                                           (e9).write (tmp11.copy)
-<                                           ((e9).<)
-<                                           mkCopy (xres) > tmp12
-<                                           (lhs6).write (tmp12.copy)
-<                                           (lhs7).write (100)
-<                                           tmp.write (goto ((((e9)).apply ((lhs6)) ((lhs7))).@))
-<                                           (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
-<                                           (e10).write (tmp.result)
-<                                           ((e10).<)
-<                                           stackUp.forward break
+<                                           if.
+<                                             is-exception (xcurrent-exception.xclass.xid)
+<                                             seq
+<                                               mkCopy (xres.xappend) > tmp11
+<                                               (e9).write (tmp11.copy)
+<                                               ((e9).<)
+<                                               mkCopy (xres) > tmp12
+<                                               (lhs6).write (tmp12.copy)
+<                                               (lhs7).write ((pyint 100))
+<                                               (lhs7).force
+<                                               tmp.write (goto ((((e9)).apply ((lhs6)) ((lhs7))).@))
+<                                               (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+<                                               (e10).write (tmp.result)
+<                                               ((e10).<)
+<                                               stackUp.forward break
+<                                               0
+<                                             0
 <                                           if.
 <                                             xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
 <                                             seq
+<                                               0
 <                                             0
-<                                           (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
-<                                         TRUE
+<                                           ((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
+<                                         (pybool TRUE)
 <                                   stackUp.forward raiseNothing
 <                           if.
 <                             xcurrent-exception.xclass.xid.neq (break.xclass.xid)
@@ -227,47 +252,47 @@ Diff between original (left) and mutated (right) eo files
 >               memory > xitem
 >               seq > @
 >                 seq
->                   xitems.write (((xmyArray)).apply ((((unsupported)).apply (1) (2) (3) (4) (5) (6) (7) ("hello") (1) (2) (3) (4))))
+>                   xitems.write (((xmyArray)).apply ((((unsupported)).apply ((pyint 1)) ((pyint 2)) ((pyint 3)) ((pyint 4)) ((pyint 5)) ((pyint 6)) ((pyint 7)) ((pystring "hello")) ((pyint 1)) ((pyint 2)) ((pyint 3)) ((pyint 4)))))
 >                   xres.write (((xmyArray)).apply ((((unsupported)).apply)))
-197,212c28,30
-<                     mkCopy (xcurrent-exception.xclass) > tmp13
-<                     (e11).write (tmp13.copy)
-<                     ((e11).<)
-<                     mkCopy (e11.xid) > tmp14
-<                     (e12).write (tmp14.copy)
-<                     ((e12).<)
-<                     mkCopy (xStopIteration.xid) > tmp15
-<                     (e13).write (tmp15.copy)
-<                     ((e13).<)
-<                     [] > tmp16
-<                       memory > dddata
-<                       dddata.write (((e12).eq (e13))) > @
-<                     (e14).write (tmp16.dddata)
-<                     ((e14).<)
-<                     (e14).if
+222,269c28,41
+<                     if.
+<                       is-exception (xcurrent-exception.xclass.xid)
 <                       seq
----
->                     xit0.write ((((xitems).x__iter__)).apply)
->                     (((unsupported)).apply ((xStopIteration)))
->                       while.
-214,240c32,41
-<                       seq
-<                         TRUE
+<                         mkCopy (xcurrent-exception.xclass) > tmp13
+<                         (e11).write (tmp13.copy)
+<                         ((e11).<)
+<                         mkCopy (e11.xid) > tmp14
+<                         (e12).write (tmp14.copy)
+<                         ((e12).<)
+<                         mkCopy (xStopIteration.xid) > tmp15
+<                         (e13).write (tmp15.copy)
+<                         ((e13).<)
+<                         (e14).write (((e12).eq (e13)))
+<                         (e14).force
+<                         ((e14).<)
+<                         (e14).if
+<                           seq
+<                             (xcaught).write ((pybool TRUE))
+<                             (xcaught).force
+<                             (pybool TRUE)
+<                           seq
+<                             (pybool TRUE)
+<                         0
+<                       0
 <                     if.
 <                       xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
 <                       seq
+<                         0
 <                       0
-<                     (xcurrent-exception.xclass.xid.neq (raiseNothing.xclass.xid)).if (stackUp.forward xcurrent-exception) 0
-<                   mkCopy (xres) > tmp17
-<                   (lhs11).write (tmp17.copy)
-<                   tmp.write (goto ((((xmyArray)).apply ((* 1 2 3 4 5 6 7 100))).@))
+<                     ((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
+<                   mkCopy (xres) > tmp16
+<                   (lhs11).write (tmp16.copy)
+<                   tmp.write (goto ((((xmyArray)).apply ((* (pyint 1) (pyint 2) (pyint 3) (pyint 4) (pyint 5) (pyint 6) (pyint 7) (pyint 100)))).@))
 <                   (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
 <                   (e15).write (tmp.result)
 <                   ((e15).<)
-<                   [] > tmp18
-<                     memory > dddata
-<                     dddata.write (((lhs11).eq (e15))) > @
-<                   (e16).write (tmp18.dddata)
+<                   (e16).write (((lhs11).eq (e15)))
+<                   (e16).force
 <                   ((e16).<)
 <                   toReturn.write ((e16))
 <                   stackUp.forward (return toReturn)
@@ -280,6 +305,10 @@ Diff between original (left) and mutated (right) eo files
 <   (goto (apply.@)).result > @
 \ No newline at end of file
 ---
+>                     xit0.write ((((xitems).x__iter__)).apply)
+>                     (((unsupported)).apply ((xStopIteration)))
+>                       while.
+>                         (pybool TRUE)
 >                         [unused]
 >                           seq > @
 >                             seq
@@ -287,7 +316,7 @@ Diff between original (left) and mutated (right) eo files
 >                               (((unsupported)).apply)
 >                                 bogusForceDataize.write ((((xres).xappend)).apply ((((xint)).apply ((xitem)))))
 >                                 seq
->                                   bogusForceDataize.write ((((xres).xappend)).apply (100))
+>                                   bogusForceDataize.write ((((xres).xappend)).apply ((pyint 100)))
 >                                   (((unsupported)).apply)
->                   (((unsupported)).apply (((xres).eq (((xmyArray)).apply ((((unsupported)).apply (1) (2) (3) (4) (5) (6) (7) (100)))))))
+>                   (((unsupported)).apply (((xres).eq (((xmyArray)).apply ((((unsupported)).apply ((pyint 1)) ((pyint 2)) ((pyint 3)) ((pyint 4)) ((pyint 5)) ((pyint 6)) ((pyint 7)) ((pyint 100))))))))
 \ No newline at end of file

@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > conversion-5
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -86,32 +99,29 @@
                 cage > e3
                 seq > @
                   stdout "xtest\n"
-                  (xnum_int).write (123)
-                  (xnum_flo2).write (1.23)
-                  (xnum_int_2).write (13)
-                  [] > tmp1
-                    memory > dddata
-                    dddata.write (((xnum_int).mul (xnum_flo))) > @
-                  (e0).write (tmp1.dddata)
+                  (xnum_int).write ((pyint 123))
+                  (xnum_int).force
+                  (xnum_flo2).write ((pyfloat 1.23))
+                  (xnum_flo2).force
+                  (xnum_int_2).write ((pyint 13))
+                  (xnum_int_2).force
+                  (e0).write (((xnum_int).mul (xnum_flo)))
+                  (e0).force
                   ((e0).<)
-                  mkCopy (xnum_int_2) > tmp2
-                  (lhs0).write (tmp2.copy)
-                  [] > tmp3
-                    memory > dddata
-                    dddata.write (((e0).sub (lhs0))) > @
-                  (e1).write (tmp3.dddata)
+                  mkCopy (xnum_int_2) > tmp1
+                  (lhs0).write (tmp1.copy)
+                  (e1).write (((e0).sub (lhs0)))
+                  (e1).force
                   ((e1).<)
-                  mkCopy (e1) > tmp4
-                  (xnum_new).write (tmp4.copy)
-                  mkCopy (xnum_new.x__class__) > tmp5
-                  (e2).write (tmp5.copy)
+                  mkCopy (e1) > tmp2
+                  (xnum_new).write (tmp2.copy)
+                  mkCopy (xnum_new.x__class__) > tmp3
+                  (e2).write (tmp3.copy)
                   ((e2).<)
-                  mkCopy (xint) > tmp6
-                  (lhs2).write (tmp6.copy)
-                  [] > tmp7
-                    memory > dddata
-                    dddata.write (((e2).eq (lhs2))) > @
-                  (e3).write (tmp7.dddata)
+                  mkCopy (xint) > tmp4
+                  (lhs2).write (tmp4.copy)
+                  (e3).write (((e2).eq (lhs2)))
+                  (e3).force
                   ((e3).<)
                   toReturn.write ((e3))
                   stackUp.forward (return toReturn)

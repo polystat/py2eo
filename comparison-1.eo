@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > comparison-1
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -112,192 +125,192 @@
                 cage > lhs7
                 seq > @
                   stdout "xcomp1\n"
-                  (lhs0).write (1)
-                  (lhs1).write (TRUE)
+                  (lhs0).write ((pyint 1))
+                  (lhs0).force
+                  (lhs1).write ((pybool TRUE))
+                  (lhs1).force
                   (lhs1).if
                     seq
-                      (lhs2).write (4)
+                      (lhs2).write ((pyint 4))
+                      (lhs2).force
                       mkCopy (lhs1) > tmp1
                       (lhs13).write (tmp1.copy)
                       (lhs13).if
                         seq
-                          [] > tmp2
-                            memory > dddata
-                            dddata.write (((lhs0).leq (lhs2))) > @
-                          (e0).write (tmp2.dddata)
+                          (e0).write (((lhs0).leq (lhs2)))
+                          (e0).force
                           ((e0).<)
-                          TRUE
+                          (pybool TRUE)
                         seq
-                          (lhs14).write (FALSE)
-                          mkCopy (lhs14) > tmp3
-                          (e0).write (tmp3.copy)
-                          TRUE
-                      mkCopy (e0) > tmp4
-                      (lhs1).write (tmp4.copy)
-                      TRUE
+                          (lhs14).write ((pybool FALSE))
+                          (lhs14).force
+                          mkCopy (lhs14) > tmp2
+                          (e0).write (tmp2.copy)
+                          (pybool TRUE)
+                      mkCopy (e0) > tmp3
+                      (lhs1).write (tmp3.copy)
+                      (pybool TRUE)
                     seq
-                      TRUE
+                      (pybool TRUE)
                   (lhs1).if
                     seq
-                      (lhs3).write (4)
-                      mkCopy (lhs1) > tmp5
-                      (lhs15).write (tmp5.copy)
+                      (lhs3).write ((pyint 4))
+                      (lhs3).force
+                      mkCopy (lhs1) > tmp4
+                      (lhs15).write (tmp4.copy)
                       (lhs15).if
                         seq
-                          [] > tmp6
-                            memory > dddata
-                            dddata.write (((lhs2).eq (lhs3))) > @
-                          (e1).write (tmp6.dddata)
+                          (e1).write (((lhs2).eq (lhs3)))
+                          (e1).force
                           ((e1).<)
-                          TRUE
+                          (pybool TRUE)
                         seq
-                          (lhs16).write (FALSE)
-                          mkCopy (lhs16) > tmp7
-                          (e1).write (tmp7.copy)
-                          TRUE
-                      mkCopy (e1) > tmp8
-                      (lhs1).write (tmp8.copy)
-                      TRUE
+                          (lhs16).write ((pybool FALSE))
+                          (lhs16).force
+                          mkCopy (lhs16) > tmp5
+                          (e1).write (tmp5.copy)
+                          (pybool TRUE)
+                      mkCopy (e1) > tmp6
+                      (lhs1).write (tmp6.copy)
+                      (pybool TRUE)
                     seq
-                      TRUE
+                      (pybool TRUE)
                   (lhs1).if
                     seq
-                      (lhs4).write (3)
-                      mkCopy (lhs1) > tmp9
-                      (lhs17).write (tmp9.copy)
+                      (lhs4).write ((pyint 3))
+                      (lhs4).force
+                      mkCopy (lhs1) > tmp7
+                      (lhs17).write (tmp7.copy)
                       (lhs17).if
                         seq
-                          [] > tmp10
-                            memory > dddata
-                            dddata.write (((lhs3).greater (lhs4))) > @
-                          (e2).write (tmp10.dddata)
+                          (e2).write (((lhs3).greater (lhs4)))
+                          (e2).force
                           ((e2).<)
-                          TRUE
+                          (pybool TRUE)
                         seq
-                          (lhs18).write (FALSE)
-                          mkCopy (lhs18) > tmp11
-                          (e2).write (tmp11.copy)
-                          TRUE
-                      mkCopy (e2) > tmp12
-                      (lhs1).write (tmp12.copy)
-                      TRUE
+                          (lhs18).write ((pybool FALSE))
+                          (lhs18).force
+                          mkCopy (lhs18) > tmp8
+                          (e2).write (tmp8.copy)
+                          (pybool TRUE)
+                      mkCopy (e2) > tmp9
+                      (lhs1).write (tmp9.copy)
+                      (pybool TRUE)
                     seq
-                      TRUE
+                      (pybool TRUE)
                   (lhs1).if
                     seq
-                      (lhs5).write (4)
-                      mkCopy (lhs1) > tmp13
-                      (lhs19).write (tmp13.copy)
+                      (lhs5).write ((pyint 4))
+                      (lhs5).force
+                      mkCopy (lhs1) > tmp10
+                      (lhs19).write (tmp10.copy)
                       (lhs19).if
                         seq
-                          [] > tmp14
-                            memory > dddata
-                            dddata.write (((lhs4).less (lhs5))) > @
-                          (e3).write (tmp14.dddata)
+                          (e3).write (((lhs4).less (lhs5)))
+                          (e3).force
                           ((e3).<)
-                          TRUE
+                          (pybool TRUE)
                         seq
-                          (lhs20).write (FALSE)
-                          mkCopy (lhs20) > tmp15
-                          (e3).write (tmp15.copy)
-                          TRUE
-                      mkCopy (e3) > tmp16
-                      (lhs1).write (tmp16.copy)
-                      TRUE
+                          (lhs20).write ((pybool FALSE))
+                          (lhs20).force
+                          mkCopy (lhs20) > tmp11
+                          (e3).write (tmp11.copy)
+                          (pybool TRUE)
+                      mkCopy (e3) > tmp12
+                      (lhs1).write (tmp12.copy)
+                      (pybool TRUE)
                     seq
-                      TRUE
+                      (pybool TRUE)
                   (lhs1).if
                     seq
-                      [] > tmp17
-                        memory > dddata
-                        dddata.write ((1.neg)) > @
-                      (e4).write (tmp17.dddata)
+                      (e4).write (((pyint 1).neg))
+                      (e4).force
                       ((e4).<)
-                      mkCopy (e4) > tmp18
-                      (lhs6).write (tmp18.copy)
-                      mkCopy (lhs1) > tmp19
-                      (lhs21).write (tmp19.copy)
+                      mkCopy (e4) > tmp13
+                      (lhs6).write (tmp13.copy)
+                      mkCopy (lhs1) > tmp14
+                      (lhs21).write (tmp14.copy)
                       (lhs21).if
                         seq
-                          [] > tmp20
-                            memory > dddata
-                            dddata.write (((lhs5).neq (lhs6))) > @
-                          (e5).write (tmp20.dddata)
+                          (e5).write (((lhs5).neq (lhs6)))
+                          (e5).force
                           ((e5).<)
-                          TRUE
+                          (pybool TRUE)
                         seq
-                          (lhs22).write (FALSE)
-                          mkCopy (lhs22) > tmp21
-                          (e5).write (tmp21.copy)
-                          TRUE
-                      mkCopy (e5) > tmp22
-                      (lhs1).write (tmp22.copy)
-                      TRUE
+                          (lhs22).write ((pybool FALSE))
+                          (lhs22).force
+                          mkCopy (lhs22) > tmp15
+                          (e5).write (tmp15.copy)
+                          (pybool TRUE)
+                      mkCopy (e5) > tmp16
+                      (lhs1).write (tmp16.copy)
+                      (pybool TRUE)
                     seq
-                      TRUE
+                      (pybool TRUE)
                   (lhs1).if
                     seq
-                      (lhs7).write (1)
-                      (lhs8).write (TRUE)
+                      (lhs7).write ((pyint 1))
+                      (lhs7).force
+                      (lhs8).write ((pybool TRUE))
+                      (lhs8).force
                       (lhs8).if
                         seq
-                          (lhs9).write (4)
-                          mkCopy (lhs8) > tmp23
-                          (lhs23).write (tmp23.copy)
+                          (lhs9).write ((pyint 4))
+                          (lhs9).force
+                          mkCopy (lhs8) > tmp17
+                          (lhs23).write (tmp17.copy)
                           (lhs23).if
                             seq
-                              [] > tmp24
-                                memory > dddata
-                                dddata.write (((lhs7).leq (lhs9))) > @
-                              (e6).write (tmp24.dddata)
+                              (e6).write (((lhs7).leq (lhs9)))
+                              (e6).force
                               ((e6).<)
-                              TRUE
+                              (pybool TRUE)
                             seq
-                              (lhs24).write (FALSE)
-                              mkCopy (lhs24) > tmp25
-                              (e6).write (tmp25.copy)
-                              TRUE
-                          mkCopy (e6) > tmp26
-                          (lhs8).write (tmp26.copy)
-                          TRUE
+                              (lhs24).write ((pybool FALSE))
+                              (lhs24).force
+                              mkCopy (lhs24) > tmp18
+                              (e6).write (tmp18.copy)
+                              (pybool TRUE)
+                          mkCopy (e6) > tmp19
+                          (lhs8).write (tmp19.copy)
+                          (pybool TRUE)
                         seq
-                          TRUE
+                          (pybool TRUE)
                       (lhs8).if
                         seq
-                          (lhs10).write (1)
-                          mkCopy (lhs8) > tmp27
-                          (lhs25).write (tmp27.copy)
+                          (lhs10).write ((pyint 1))
+                          (lhs10).force
+                          mkCopy (lhs8) > tmp20
+                          (lhs25).write (tmp20.copy)
                           (lhs25).if
                             seq
-                              [] > tmp28
-                                memory > dddata
-                                dddata.write (((lhs9).less (lhs10))) > @
-                              (e7).write (tmp28.dddata)
+                              (e7).write (((lhs9).less (lhs10)))
+                              (e7).force
                               ((e7).<)
-                              TRUE
+                              (pybool TRUE)
                             seq
-                              (lhs26).write (FALSE)
-                              mkCopy (lhs26) > tmp29
-                              (e7).write (tmp29.copy)
-                              TRUE
-                          mkCopy (e7) > tmp30
-                          (lhs8).write (tmp30.copy)
-                          TRUE
+                              (lhs26).write ((pybool FALSE))
+                              (lhs26).force
+                              mkCopy (lhs26) > tmp21
+                              (e7).write (tmp21.copy)
+                              (pybool TRUE)
+                          mkCopy (e7) > tmp22
+                          (lhs8).write (tmp22.copy)
+                          (pybool TRUE)
                         seq
-                          TRUE
-                      [] > tmp31
-                        memory > dddata
-                        dddata.write (((lhs8).not)) > @
-                      (e8).write (tmp31.dddata)
+                          (pybool TRUE)
+                      (e8).write (((lhs8).not))
+                      (e8).force
                       ((e8).<)
-                      mkCopy (e8) > tmp32
-                      (lhs11).write (tmp32.copy)
-                      TRUE
+                      mkCopy (e8) > tmp23
+                      (lhs11).write (tmp23.copy)
+                      (pybool TRUE)
                     seq
-                      (lhs12).write (FALSE)
-                      mkCopy (lhs12) > tmp33
-                      (lhs11).write (tmp33.copy)
-                      TRUE
+                      (lhs12).write ((pybool FALSE))
+                      (lhs12).force
+                      mkCopy (lhs12) > tmp24
+                      (lhs11).write (tmp24.copy)
+                      (pybool TRUE)
                   toReturn.write ((lhs11))
                   stackUp.forward (return toReturn)
                   123

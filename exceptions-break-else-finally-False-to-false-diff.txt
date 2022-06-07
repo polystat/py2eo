@@ -7,31 +7,25 @@ Diff between original (left) and mutated (right) python files
 >     elseHappened = false # 3:4-3:23
 
 Diff between original (left) and mutated (right) eo files
-84,85c84,87
-<                   (xfinallyHappened).write (FALSE)
-<                   (xelseHappened).write (FALSE)
+97,100c97,100
+<                   (xfinallyHappened).write ((pybool FALSE))
+<                   (xfinallyHappened).force
+<                   (xelseHappened).write ((pybool FALSE))
+<                   (xelseHappened).force
 ---
 >                   mkCopy (xfalse) > tmp1
 >                   (xfinallyHappened).write (tmp1.copy)
 >                   mkCopy (xfalse) > tmp2
 >                   (xelseHappened).write (tmp2.copy)
-115,116c117,118
+139,140c139,140
 <                   mkCopy (xfinallyHappened) > tmp1
 <                   (lhs0).write (tmp1.copy)
 ---
 >                   mkCopy (xfinallyHappened) > tmp3
 >                   (lhs0).write (tmp3.copy)
-119c121
-<                       [] > tmp2
+150,151c150,151
+<                       mkCopy (lhs1) > tmp2
+<                       (e0).write (tmp2.copy)
 ---
->                       [] > tmp4
-122c124
-<                       (e0).write (tmp2.dddata)
----
->                       (e0).write (tmp4.dddata)
-127,128c129,130
-<                       mkCopy (lhs1) > tmp3
-<                       (e0).write (tmp3.copy)
----
->                       mkCopy (lhs1) > tmp5
->                       (e0).write (tmp5.copy)
+>                       mkCopy (lhs1) > tmp4
+>                       (e0).write (tmp4.copy)

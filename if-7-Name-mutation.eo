@@ -1,7 +1,11 @@
 +package org.eolang
 +alias goto org.eolang.gray.goto
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.gray.cage
++alias pyint preface.pyint
++alias pystring preface.pystring
++alias pybool preface.pybool
 +junit
 
 [unused] > if-7
@@ -12,26 +16,35 @@
         copy.< > @
       [] > newUID
         memory > cur
-        seq > apply
-          cur.write (cur.is-empty.if 5 (cur.add 1))
-          cur
+        [unused] > apply
+          seq > @
+            cur.write (cur.is-empty.if (5) (cur.add (1)))
+            (pyint cur)
       [] > raiseEmpty
         [] > xclass
-          4 > xid
+          (pyint 4) > xid
       [res] > return
         res > result
         [] > xclass
-          3 > xid
+          (pyint 3) > xid
       [] > break
         [] > xclass
-          2 > xid
+          (pyint 2) > xid
       [] > continue
         [] > xclass
-          1 > xid
+          (pyint 1) > xid
       [] > raiseNothing
         [] > xclass
-          0 > xid
+          (pyint 0) > xid
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       cage > xcurrent-exception
+      cage > xcaught
+      pyint 0 > dummy-int-usage
+      pybool TRUE > dummy-bool-usage
+      pystring (sprintf "") > dummy-bool-string
       [] > xmyArray
         [initValue] > apply
           [stackUp] > @
@@ -42,7 +55,7 @@
                 [self] > apply
                   [stackUp] > @
                     seq > @
-                      stackUp.forward (return (self.value.length))
+                      stackUp.forward (return (pyint (self.value.length)))
                       123
               [] > xget
                 [self i] > apply
@@ -79,22 +92,22 @@
                 cage > xa
                 seq > @
                   stdout "xconditionalCheck7\n"
-                  (xa).write (4)
-                  (xb2).write (2)
-                  [] > tmp1
-                    memory > dddata
-                    dddata.write (((xa).leq (xb))) > @
-                  (e0).write (tmp1.dddata)
+                  (xa).write ((pyint 4))
+                  (xa).force
+                  (xb2).write ((pyint 2))
+                  (xb2).force
+                  (e0).write (((xa).leq (xb)))
+                  (e0).force
                   ((e0).<)
                   (e0).if
                     seq
-                      toReturn.write (FALSE)
+                      toReturn.write ((pybool FALSE))
                       stackUp.forward (return toReturn)
-                      TRUE
+                      (pybool TRUE)
                     seq
-                      toReturn.write (TRUE)
+                      toReturn.write ((pybool TRUE))
                       stackUp.forward (return toReturn)
-                      TRUE
+                      (pybool TRUE)
                   123
         tmp.write (goto ((((xconditionalCheck7)).apply).@))
         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
