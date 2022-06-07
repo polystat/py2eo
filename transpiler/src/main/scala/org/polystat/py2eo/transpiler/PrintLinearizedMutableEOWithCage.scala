@@ -128,9 +128,9 @@ object PrintLinearizedMutableEOWithCage {
         }
         val seqOfFields1 = seqOfFields(rhs)
         val doNotCopy = seqOfFields1.isEmpty
-        if (doNotCopy)
+        if (doNotCopy) {
           List(s"${pe(lhs)}.write (${pe(rhs)}" + ")", s"${pe(lhs)}.force")
-        else {
+        } else {
           val tmp = HackName()
           //            val Ident(name, _) = rhs
           val Some(l) = seqOfFields1
