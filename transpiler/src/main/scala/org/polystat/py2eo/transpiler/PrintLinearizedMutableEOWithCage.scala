@@ -201,7 +201,9 @@ object PrintLinearizedMutableEOWithCage {
             List("0")
           )) ++
           printSt(ffinally.getOrElse(Pass(ann))) ++
-          List("((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0")
+          List("((is-break-continue-return (xcurrent-exception.xclass.xid)).or "
+               + "((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if "
+               + "(stackUp.forward xcurrent-exception) 0")
         ))
     }
   }
