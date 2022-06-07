@@ -114,8 +114,6 @@ object PrintEO {
       case IfSimple(cond, yes, no, _) =>
         List(printExpr(cond) + ".if") ++ indent(s(yes)) ++ indent(s(no))
       // todo: a hackish printer for single integers only!
-      case Assign(List(CallIndex(true, Expression.Ident("print", _), List((None, n)), _)), _) =>
-        List("stdout (sprintf \"%d\\n\" %s)".format(printExpr(n)))
       case Assign(List(e@UnsupportedExpr(t, value)), _) => List(printExpr(e))
       case Assign(List(c@CallIndex(true, whom, args, _)), ann) =>
         s(Assign(List(Expression.Ident("bogusForceDataize", new GeneralAnnotation()), c), ann.pos))

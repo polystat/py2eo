@@ -20,6 +20,7 @@ object PrintLinearizedMutableEOWithCage {
     "+package org.eolang",
     "+alias goto org.eolang.gray.goto",
     "+alias stdout org.eolang.io.stdout",
+    "+alias sprintf org.eolang.txt.sprintf",
     "+alias cage org.eolang.gray.cage",
     "+alias pyint preface.pyint",
     "+alias pystring preface.pystring",
@@ -48,7 +49,7 @@ object PrintLinearizedMutableEOWithCage {
   private def pe: T => String = printExpr
   private def isFun(f : Statement.T): Boolean = f match { case _: FuncDef => true case _ => false }
 
-  private def printSt(st : Statement.T) : Text =
+  private def printSt(st : Statement.T) : Text = {
     st match {
       case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
         val Suite(l0, _) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
@@ -105,6 +106,8 @@ object PrintLinearizedMutableEOWithCage {
           )
       case NonLocal(_, _) => List()
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
+      case Assign(List(_, CallIndex(true, Expression.Ident("xprint", _), List((None, n)), _)), _) =>
+        List("stdout (sprintf \"%%s\\n\" (%s.as-string))".format(printExpr(n)))
       case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if (seqOfFields(whom).isDefined &&
         seqOfFields(lhs).isDefined) =>
         //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
@@ -201,6 +204,7 @@ object PrintLinearizedMutableEOWithCage {
           List("((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0")
         ))
     }
+  }
 
   private def printFun(preface : List[String], f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
@@ -275,7 +279,7 @@ object PrintLinearizedMutableEOWithCage {
       "cage > xcaught",
       "pyint 0 > dummy-int-usage",
       "pybool TRUE > dummy-bool-usage",
-      "pystring \"\" > dummy-bool-string",
+      "pystring (sprintf \"\") > dummy-bool-string",
     ) ++
     """|[] > xmyArray
       |  [initValue] > apply
