@@ -11,17 +11,15 @@ import scala.sys.process.Process
 
 class TestConstructionsCounter extends Commons {
   private val currentDirectory = Directory.Current.get
-  private val testsPath = currentDirectory / "transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
-  private val pom = File(currentDirectory / "runEO" / "pom.xml").slurp
+  private val testsPath = currentDirectory / "/src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
+  private val pom = File(currentDirectory / ".." / "runEO" / "pom.xml").slurp
 
   @Test
   def test(): Unit = {
     val tests = testsPath.toDirectory.deepFiles.filter(file => file.extension == "yaml").toSet
 
     /** Set of triplets: test name, category and future run result */
-    val results = for {test <- tests} yield {
-      (test, test.parent, Future(passes(test)))
-    }
+    val results = for {test <- tests} yield (test, test.parent, Future(passes(test)))
 
     val awaited = results.map(result => (result._1, result._2, Await.result(result._3, Duration.Inf)))
     val total = awaited.size
