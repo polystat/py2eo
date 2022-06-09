@@ -13,7 +13,6 @@ import scala.language.postfixOps
 import scala.sys.process.Process
 
 class CPythonTests extends Commons {
-  import Main.{debugPrinter, writeFile}
 
   @Test def parserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
