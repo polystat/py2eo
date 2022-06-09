@@ -115,7 +115,7 @@ object Transpile {
 
             PrintEO.printSt(
               moduleName, hacked,
-              "+package org.eolang" :: "+junit" :: globals.map(name => s"memory > $name").toList
+              "+package org.eolang" :: "+junit" :: globals.map(name => s"memory 0 > $name").toList
             )
               .mkString("\n")
 

@@ -102,7 +102,7 @@ object PrintEO {
           "write." ::
             indent(
               name :: "[]" :: indent(
-                l.map{ case (name, _) => "cage > " + name } ++ (
+                l.map{ case (name, _) => "cage 0 > " + name } ++ (
                   "seq > initFields" :: indent(l.map{case (name, value) => s"$name.write " + printExpr(value)})
                   ) ++
                   decorates.toList.map(e => s"${printExpr(e)} > @")
@@ -136,7 +136,7 @@ object PrintEO {
         val body1 = printSt(body)
         List(s"$name.write") ++
           indent(s"[$args1]" ::
-            indent(locals.map(name => s"memory > $name").toList ++ List(decoratesSeq) ++ indent(body1)))
+            indent(locals.map(name => s"memory 0 > $name").toList ++ List(decoratesSeq) ++ indent(body1)))
       case u : Unsupported =>
         val e1 = CallIndex(true, Expression.Ident(unsupported, new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(e1)
@@ -160,9 +160,9 @@ object PrintEO {
       "[] > " + moduleName,
       Ident + "[args...] > unsupported",
       Ident + "[args...] > xunsupported",
-      Ident + "memory > bogusForceDataize",
-      Ident + "memory > xbogusForceDataize",
-      Ident + "memory > xhack",
+      Ident + "memory 0 > bogusForceDataize",
+      Ident + "memory 0 > xbogusForceDataize",
+      Ident + "memory 0 > xhack",
       Ident + decoratesSeq
     ) ++
     indent(indent(printSt(st)))
