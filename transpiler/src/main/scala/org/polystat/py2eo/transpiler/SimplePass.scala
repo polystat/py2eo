@@ -864,13 +864,7 @@ object SimplePass {
         }
       )
       val asIf = if (ex1.isEmpty) Pass(ann.pos) else If(ex1, Some(Pass(ann.pos)), ann.pos)
-      (Suite(
-        List(
-          Assign(List(Ident("xcaught", ann.pos), BoolLiteral(false, ann.pos)), ann.pos),
-          Try(ttry, List((None, asIf)), eelse, ffinally, ann.pos)
-        ),
-        ann.pos
-      ), ns)
+      (Try(ttry, List((None, asIf)), eelse, ffinally, ann.pos), ns)
     case _ => (s, ns)
   }
 
