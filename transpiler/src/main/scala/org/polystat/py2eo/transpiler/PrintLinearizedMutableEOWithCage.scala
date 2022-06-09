@@ -219,7 +219,7 @@ object PrintLinearizedMutableEOWithCage {
     val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > ${parm.name}")
     val memories =
       f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
-      map(x => s"cage > ${x._1}").toList ++
+      map(x => s"cage 0 > ${x._1}").toList ++
       funs.map { f: FuncDef => s"cage 0 > ${f.name}" }
 
     val args2 = (f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
