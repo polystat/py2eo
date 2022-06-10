@@ -2,6 +2,7 @@
 +alias pybool preface.pybool
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
++alias pyfloat preface.pyfloat
 +alias fakeclasses preface.fakeclasses
 
 [value] > pyint
@@ -40,7 +41,14 @@
     pyint (value.xor (x.value)) > @
 
   [x] > add
-    pyint (value.add (x.value)) > @
+    seq > @
+      stdout (sprintf "id %d, id %d\n" (x.x__class__.x__id__) (fakeclasses.pyFloatClass.x__id__))
+      if.
+        (x.x__class__.eq (fakeclasses.pyFloatClass))
+        seq
+          stdout "called\n"
+          (pyfloat (value.as-float)).add x
+        pyint (value.add (x.value))
 
   [x] > mul
     pyint (value.mul (x.value)) > @
