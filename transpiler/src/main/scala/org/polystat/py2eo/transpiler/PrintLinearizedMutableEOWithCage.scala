@@ -23,8 +23,11 @@ object PrintLinearizedMutableEOWithCage {
     "+alias sprintf org.eolang.txt.sprintf",
     "+alias cage org.eolang.gray.cage",
     "+alias pyint preface.pyint",
+    "+alias pyfloat preface.pyfloat",
     "+alias pystring preface.pystring",
     "+alias pybool preface.pybool",
+    "+alias newUID preface.newUID",
+    "+alias fakeclasses preface.fakeclasses",
     //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
     ""
@@ -251,12 +254,6 @@ object PrintLinearizedMutableEOWithCage {
       "[x] > mkCopy",
       "  x' > copy",
       "  copy.< > @",
-      "[] > newUID",
-      "  memory 5 > cur",
-      "  [unused] > apply",
-      "    seq > @",
-      "      cur.write (cur.add (1))",
-      "      (pyint cur)",
       "[] > raiseEmpty",
       "  [] > xclass",
       "    (pyint 4) > xid",
@@ -280,8 +277,11 @@ object PrintLinearizedMutableEOWithCage {
       "cage 0 > xcurrent-exception",
       "cage FALSE > xcaught",
       "pyint 0 > dummy-int-usage",
+      "pyfloat 0 > dummy-float-usage",
       "pybool TRUE > dummy-bool-usage",
       "pystring (sprintf \"\") > dummy-bool-string",
+      "newUID > dummy-newUID",
+      "fakeclasses.pyFloatClass > xfloat",
     ) ++
     """|[] > xmyArray
       |  [initValue] > apply
