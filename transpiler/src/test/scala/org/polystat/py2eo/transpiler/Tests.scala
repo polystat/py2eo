@@ -29,7 +29,7 @@ class Tests extends Commons {
         val name = test.getName
         println(s"parsing $name")
         val eoText = try {
-          Transpile.transpile(db)(chopExtension(name), readFile(test))
+          Transpile.transpile(db)(chopExtension(name), Transpile.Parameters(wrapInAFunction = false), readFile(test))
         } catch {
           case e : Throwable =>
             println(s"failed to transpile $name: ${e.toString}")

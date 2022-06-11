@@ -34,7 +34,7 @@ object Main {
           def db = debugPrinter(pyFile)(_, _)
 
           val moduleName = pyFile.getName.substring(0, pyFile.getName.lastIndexOf("."))
-          val eoText = Transpile.transpile(db)(moduleName, readFile(pyFile))
+          val eoText = Transpile.transpile(db)(moduleName, Transpile.Parameters(wrapInAFunction = true), readFile(pyFile))
           writeFile(pyFile, if (outputFolderPath.nonEmpty) outputFolderPath else "genCageEO",
             ".eo", eoText, outputFolderPath.nonEmpty)
         } else {

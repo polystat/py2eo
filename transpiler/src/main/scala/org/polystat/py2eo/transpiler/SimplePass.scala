@@ -845,7 +845,7 @@ object SimplePass {
   // todo: also must implement named exceptions and del of those a the end of an except clause
   // todo: also must rethrow an exception if it is not catched
   def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case Try(ttry, List((None, _)), eelse, ffinally, _) => (s, ns)
+    case Try(ttry, List((None, x)), eelse, ffinally, ann) => (s, ns)
     case Try(ttry, excepts, eelse, ffinally, ann) =>
       val ex1 = excepts.map(
         x => {
@@ -859,7 +859,7 @@ object SimplePass {
               },
               ann.pos
             ),
-            body
+            Suite(List(body, Assign(List(Ident("xcaught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos)), ann.pos)
           )
         }
       )
