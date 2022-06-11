@@ -6,7 +6,7 @@ import org.yaml.snakeyaml.Yaml
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future, TimeoutException, blocking}
-import scala.reflect.io.{Directory, File, Streamable}
+import scala.reflect.io.{Directory, File}
 import scala.sys.process.Process
 
 class TestConstructionsCounter extends Commons {
@@ -41,7 +41,7 @@ class TestConstructionsCounter extends Commons {
     val contents = new Yaml().load[java.util.Map[String, String]](test.slurp).get("python")
     val module = test.stripExtension
 
-    Transpile(module, contents) match {
+    Transpile(module, Transpile.Parameters(wrapInAFunction = false), contents) match {
       case None => false
       case Some(transpiled) =>
         val dir = Directory.makeTemp()
