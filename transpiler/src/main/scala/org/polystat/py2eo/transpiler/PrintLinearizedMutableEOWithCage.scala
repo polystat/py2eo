@@ -29,6 +29,13 @@ object PrintLinearizedMutableEOWithCage {
     "+alias pycomplex preface.pycomplex",
     "+alias newUID preface.newUID",
     "+alias fakeclasses preface.fakeclasses",
+    "+alias mkCopy preface.mkCopy",
+    "+alias raiseNothing preface.raiseNothing",
+    "+alias continue preface.continue",
+    "+alias break preface.break",
+    "+alias return preface.return",
+    "+alias raiseEmpty preface.raiseEmpty",
+    "+alias xmyArray preface.xmyArray",
     //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
     ""
@@ -257,25 +264,6 @@ object PrintLinearizedMutableEOWithCage {
     println(s"doing $testName")
     val mkCopy = {
     List(
-      "[x] > mkCopy",
-      "  x' > copy",
-      "  copy.< > @",
-      "[] > raiseEmpty",
-      "  [] > xclass",
-      "    (pyint 4) > xid",
-      "[res] > return",
-      "  res > result",
-      "  [] > xclass",
-      "    (pyint 3) > xid",
-      "[] > break",
-      "  [] > xclass",
-      "    (pyint 2) > xid",
-      "[] > continue",
-      "  [] > xclass",
-      "    (pyint 1) > xid",
-      "[] > raiseNothing",
-      "  [] > xclass",
-      "    (pyint 0) > xid",
       "[id] > is-exception",
       "  id.greater (pyint 3) > @",
       "[id] > is-break-continue-return",
@@ -296,36 +284,14 @@ object PrintLinearizedMutableEOWithCage {
       "newUID > dummy-newUID",
       "fakeclasses.pyFloatClass > xfloat",
       "fakeclasses.pyComplexClass > xcomplex",
-    ) ++
-    """|[] > xmyArray
-      |  [initValue] > apply
-      |    [stackUp] > @
-      |      cage result > pResult
-      |      [] > result
-      |        cage initValue > value
-      |        [] > xlength
-      |          [self] > apply
-      |            [stackUp] > @
-      |              seq > @
-      |                stackUp.forward (return (pyint (self.value.length)))
-      |                123
-      |        [] > xget
-      |          [self i] > apply
-      |            [stackUp] > @
-      |              seq > @
-      |                stackUp.forward (return (self.value.get i))
-      |                123
-      |        [] > xappend
-      |          [self x] > apply
-      |            [stackUp] > @
-      |              seq > @
-      |                mkCopy (self.value) > tmp
-      |                self.value.write (tmp.copy.append x)
-      |                stackUp.forward (return 0)
-      |      seq > @
-      |        pResult.write result
-      |        stackUp.forward (return pResult)"""
-        .stripMargin.split("\n")
+      "raiseNothing > dummy-rn",
+      "continue > dummy-continue",
+      "break > dummy-break",
+      "return > dummy-return",
+      "raiseEmpty > dummy-raiseEmpty",
+      "xmyArray > dummy-xmyArray",
+      "mkCopy > dummy-mkCopy",
+    )
     }
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
