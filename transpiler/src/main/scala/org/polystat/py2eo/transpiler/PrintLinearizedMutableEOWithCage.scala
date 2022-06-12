@@ -37,6 +37,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias raiseEmpty preface.raiseEmpty",
     "+alias xmyArray preface.xmyArray",
     "+alias xlen preface.xlen",
+    "+alias xStopIteration preface.xStopIteration",
     //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
     ""
@@ -293,6 +294,7 @@ object PrintLinearizedMutableEOWithCage {
       "xmyArray > dummy-xmyArray",
       "mkCopy > dummy-mkCopy",
       "xlen > dummy-xlen",
+      "xStopIteration > dummy-stop-iteration",
     )
     }
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
