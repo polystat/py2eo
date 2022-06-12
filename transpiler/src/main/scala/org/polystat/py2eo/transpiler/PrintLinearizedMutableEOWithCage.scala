@@ -116,7 +116,7 @@ object PrintLinearizedMutableEOWithCage {
         seqOfFields(lhs).isDefined) =>
         whom match {
           case Ident("xcomplex", ann) if args.size == 2 =>
-            List(s"${pe(lhs)}.write (pycomplex (${pe(args(0)._2)}) (${pe(args(1)._2)}))")
+            List(s"${pe(lhs)}.write (pycomplex ((${pe(args(0)._2)}).as-float) ((${pe(args(1)._2)}).as-float))")
           case _ =>
             //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
             List(
