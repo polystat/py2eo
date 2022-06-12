@@ -2,6 +2,7 @@
 +alias pybool preface.pybool
 +alias pyint preface.pyint
 +alias pyfloat preface.pyfloat
++alias pycomplex preface.pycomplex
 +alias pystring preface.pystring
 +alias newUID preface.newUID
 +alias stdout org.eolang.io.stdout
@@ -14,13 +15,14 @@
         stdout "eq\n"
         pybool (x__id__.eq (x.x__id__))
 
-  fakeclass 5 > pyIntClass
-  fakeclass 6 > pyBoolClass
+  fakeclass 5 > pyBoolClass
+  fakeclass 6 > pyIntClass
   fakeclass 7 > pyFloatClass
+  fakeclass 8 > pyComplexClass
 
   [typ1 typ2] > gt
     seq > @
-      (typ1.eq pyFloatClass).and (typ2.eq pyIntClass)
+      typ1.x__id__.greater (typ2.x__id__)
 
   [obj typ] > has-type
     obj.x__class__.eq typ > @
@@ -35,10 +37,15 @@
           dst.eq pyFloatClass
           seq
             stdout "converting to float\n"
-            pyfloat (obj.value.as-float)
-          seq
-            stdout "Oblom\n"
-            (pystring "Oblom")
+            obj.as-float
+          if.
+            dst.eq pyComplexClass
+            seq
+              stdout "converting to complex\n"
+              pycomplex (obj.as-float) (pyfloat 0.0)
+            seq
+              stdout "Oblom\n"
+              (pystring "Oblom")
 
   [fst snd] > pair
 
