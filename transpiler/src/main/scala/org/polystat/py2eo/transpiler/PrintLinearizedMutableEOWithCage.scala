@@ -83,7 +83,7 @@ object PrintLinearizedMutableEOWithCage {
           "write." :: indent(
             name ::
             "[]" :: indent(
-              "newUID.apply 0 > xid" ::
+              "newUID.apply 0 > x__id__" ::
               s"[$consArgs] > apply" ::
               indent(
                 "[stackUp] > @" ::
@@ -98,7 +98,7 @@ object PrintLinearizedMutableEOWithCage {
                       } ++
                       decorates.toList.map(e => s"goto ((${printExpr(e)}.apply).@) > base") ++
                       (
-                        s"$name > xclass" ::
+                        s"$name > x__class__" ::
                         "seq > initFields" ::
                         indent(
                           l.flatMap{
@@ -106,7 +106,7 @@ object PrintLinearizedMutableEOWithCage {
                             case f : FuncDef =>
                               "write." :: indent(f.name :: printFun(List(), f))
                           } ++
-                          decorates.toList.map(x => "base.result.xclass.xid")
+                          decorates.toList.map(x => "base.result.x__class__.x__id__")
                         )
                       ) ++
                       decorates.toList.map(x => "base.result > @")
@@ -129,7 +129,7 @@ object PrintLinearizedMutableEOWithCage {
             //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
             List(
               s"tmp.write (goto (${pe(rhs)}.@))",
-              "(tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0",
+              "(tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0",
               s"${pe(lhs)}.write (tmp.result)"
             )
         }
@@ -185,7 +185,7 @@ object PrintLinearizedMutableEOWithCage {
             )
           )
         ) ++
-        ("if." :: indent(List("xcurrent-exception.xclass.xid.neq (break.xclass.xid)", "stackUp.forward xcurrent-exception", "0")))
+        ("if." :: indent(List("xcurrent-exception.x__class__.x__id__.neq (break.x__class__.x__id__)", "stackUp.forward xcurrent-exception", "0")))
       case Break(_) => List("stackUp.forward break")
 
       case Pass(_) => List()
@@ -208,18 +208,18 @@ object PrintLinearizedMutableEOWithCage {
         ) ++
         ("seq" :: indent(
           ("if." :: indent(
-            "is-exception (xcurrent-exception.xclass.xid)" ::
+            "is-exception (xcurrent-exception.x__class__.x__id__)" ::
             "seq" :: indent(printSt(exc) :+ "0")  ++
             List("0")
           )) ++
           ("if." :: indent(
-            "xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)" ::
+            "xcurrent-exception.x__class__.x__id__.eq (raiseNothing.x__class__.x__id__)" ::
             "seq" :: (indent(printSt(eelse.getOrElse(Pass(ann))) :+ "0")) ++
             List("0")
           )) ++
           printSt(ffinally.getOrElse(Pass(ann))) ++
-          List("((is-break-continue-return (xcurrent-exception.xclass.xid)).or "
-               + "((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if "
+          List("((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or "
+               + "((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if "
                + "(stackUp.forward xcurrent-exception) 0")
         ))
     }
