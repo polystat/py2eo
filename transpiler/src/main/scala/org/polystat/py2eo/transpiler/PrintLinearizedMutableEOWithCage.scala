@@ -26,6 +26,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias pyfloat preface.pyfloat",
     "+alias pystring preface.pystring",
     "+alias pybool preface.pybool",
+    "+alias pycomplex preface.pycomplex",
     "+alias newUID preface.newUID",
     "+alias fakeclasses preface.fakeclasses",
     //    "+alias sprintf org.eolang.txt.sprintf",
@@ -111,14 +112,19 @@ object PrintLinearizedMutableEOWithCage {
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
       case Assign(List(_, CallIndex(true, Expression.Ident("xprint", _), List((None, n)), _)), _) =>
         List("stdout (sprintf \"%%s\\n\" (%s.as-string))".format(printExpr(n)))
-      case Assign(List(lhs, rhs@CallIndex(true, whom, _, _)), _) if (seqOfFields(whom).isDefined &&
+      case Assign(List(lhs, rhs@CallIndex(true, whom, args, _)), _) if (seqOfFields(whom).isDefined &&
         seqOfFields(lhs).isDefined) =>
-        //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
-        List(
-          s"tmp.write (goto (${pe(rhs)}.@))",
-          "(tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0",
-          s"${pe(lhs)}.write (tmp.result)"
-        )
+        whom match {
+          case Ident("xcomplex", ann) if args.size == 2 =>
+            List(s"${pe(lhs)}.write (pycomplex (${pe(args(0)._2)}) (${pe(args(1)._2)}))")
+          case _ =>
+            //          assert(args.forall{ case (_, Ident(_, _)) => true  case _ => false })
+            List(
+              s"tmp.write (goto (${pe(rhs)}.@))",
+              "(tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0",
+              s"${pe(lhs)}.write (tmp.result)"
+            )
+        }
       case Assign(List(lhs, rhs), _) if seqOfFields(lhs).isDefined =>
         rhs match {
           case _ : DictCons | _ : CollectionCons | _ : Await | _ : Star | _ : DoubleStar |
@@ -279,9 +285,11 @@ object PrintLinearizedMutableEOWithCage {
       "pyint 0 > dummy-int-usage",
       "pyfloat 0 > dummy-float-usage",
       "pybool TRUE > dummy-bool-usage",
+      "pycomplex 0 0 > dummy-pycomplex",
       "pystring (sprintf \"\") > dummy-bool-string",
       "newUID > dummy-newUID",
       "fakeclasses.pyFloatClass > xfloat",
+      "fakeclasses.pyComplexClass > xcomplex",
     ) ++
     """|[] > xmyArray
       |  [initValue] > apply
