@@ -6,13 +6,12 @@ import org.yaml.snakeyaml.Yaml
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future, TimeoutException, blocking}
-import scala.reflect.io.{Directory, File}
+import scala.reflect.io.{File, Path}
 import scala.sys.process.Process
 
 class TestConstructionsCounter extends Commons {
-  private val currentDirectory = Directory.Current.get
-  private val testsPath = currentDirectory / "/src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
-  private val pom = File(currentDirectory / ".." / "runEO" / "pom.xml").slurp
+  private val testsPath: Path = "src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
+  private val runEOPath: Path = "../runEO/"
 
   @Test
   def test(): Unit = {
@@ -41,20 +40,23 @@ class TestConstructionsCounter extends Commons {
     val contents = new Yaml().load[java.util.Map[String, String]](test.slurp).get("python")
     val module = test.stripExtension
 
-    Transpile(module, Transpile.Parameters(wrapInAFunction = false), contents) match {
+    val parameters = Transpile.Parameters(wrapInAFunction = false)
+    Transpile(module, parameters, contents) match {
       case None => false
-      case Some(transpiled) =>
-        val dir = Directory.makeTemp()
-        File(dir / "pom.xml").writeAll(pom)
-        val EOFile = File(dir / "test.eo").createFile()
+      case Some(transpiled) => runEOPath.synchronized {
+        val EOFile = (runEOPath / "test.eo").createFile()
         EOFile.writeAll(transpiled)
 
-        val process = Process("mvn clean test", dir.jfile).run
+        val process = Process("mvn clean test", runEOPath.jfile).run
         val future = Future(blocking(process.exitValue))
 
-        try Await.result(future, 2.minutes) == 0
-        catch { case _: TimeoutException => process.destroy; false }
-        finally dir.deleteRecursively
+        try
+          Await.result(future, 2.minutes) == 0
+        catch {
+          case _: TimeoutException => process.destroy; false
+        } finally
+          EOFile.delete
+      }
     }
   }
 }
