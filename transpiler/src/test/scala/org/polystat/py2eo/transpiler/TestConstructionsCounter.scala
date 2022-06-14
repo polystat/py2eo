@@ -4,7 +4,7 @@ import org.junit.Test
 import org.yaml.snakeyaml.Yaml
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.{Duration, DurationInt}
+import scala.concurrent.duration.DurationInt
 import scala.concurrent.{Await, Future, TimeoutException, blocking}
 import scala.reflect.io.{File, Path}
 import scala.sys.process.Process
@@ -17,22 +17,26 @@ class TestConstructionsCounter extends Commons {
   def test(): Unit = {
     val tests = testsPath.toDirectory.deepFiles.filter(file => file.extension == "yaml").toSet
 
-    /** Set of triplets: test name, category and future run result */
-    val results = for {test <- tests} yield (test, test.parent, Future(passes(test)))
+    /** Set of triplets: test name, category and run result */
+    val results = for {test <- tests} yield (test, test.parent, passes(test))
 
-    val awaited = results.map(result => (result._1, result._2, Await.result(result._3, Duration.Inf)))
-    val total = awaited.size
-    val passed = awaited.count(res => res._3)
+    val total = results.size
+    val passed = results.count(res => res._3)
     println(s"tests passed: ${(100f * passed) / total}% ($passed of $total)")
 
-    val constructions = awaited.map(result => result._2)
-    for (construction <- constructions) {
-      val relevant = awaited.filter(result => result._2 == construction)
+    val constructions = results.map(result => result._2)
+    val constructionsResults = for {construction <- constructions} yield {
+      val relevant = results.filter(result => result._2 == construction)
 
       val total = relevant.size
       val passed = relevant.count(res => res._3)
-      println(s"${construction.name} tests passed: ${(100f * passed) / total}% ($passed of $total)")
+      val percentage = (100f * passed) / total
+      println(s"${construction.name} tests passed: $percentage% ($passed of $total)")
+
+      percentage
     }
+
+    println(s"total constructions passed: ${constructionsResults.sum / constructionsResults.size}%")
   }
 
   /** Returns <code>true</code> if passed running stage */
@@ -43,7 +47,7 @@ class TestConstructionsCounter extends Commons {
     val parameters = Transpile.Parameters(wrapInAFunction = false)
     Transpile(module, parameters, contents) match {
       case None => false
-      case Some(transpiled) => runEOPath.synchronized {
+      case Some(transpiled) =>
         val EOFile = (runEOPath / "test.eo").createFile()
         EOFile.writeAll(transpiled)
 
@@ -56,7 +60,6 @@ class TestConstructionsCounter extends Commons {
           case _: TimeoutException => process.destroy; false
         } finally
           EOFile.delete
-      }
     }
   }
 }
