@@ -870,9 +870,13 @@ object SimplePass {
 
   def simplifyFor(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case For(what, in, body, eelse, false, ann) =>
-      val (it, ns1) = ns("it")
+      val (List(it, inn), ns1) = ns(List("it", "inn"))
       (Suite(List(
-        Assign(List(Ident(it, in.ann.pos), CallIndex(true, Field(in, "__iter__", in.ann.pos), List(), in.ann.pos)), in.ann.pos),
+        Assign(List(Ident(inn, in.ann.pos), in), in.ann.pos),
+        Assign(List(
+          Ident(it, in.ann.pos),
+          CallIndex(true, Field(Ident(inn, in.ann.pos), "__iter__", in.ann.pos), List(), in.ann.pos)
+        ), in.ann.pos),
         Try(
           While(
             BoolLiteral(true, ann.pos),
