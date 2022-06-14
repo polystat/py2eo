@@ -852,9 +852,9 @@ object SimplePass {
           val body = x._2
           (
             SimpleComparison(Compops.Eq,
-              Field(Field(Ident("xcurrent-exception", ann.pos), "xclass", ann.pos), "xid", ann.pos),
+              Field(Field(Ident("xcurrent-exception", ann.pos), "x__class__", ann.pos), "x__id__", ann.pos),
               x._1 match {
-                case Some((e, None)) => Field(e, "xid", ann.pos)
+                case Some((e, None)) => Field(e, "x__id__", ann.pos)
                 case None => IntLiteral(1, ann.pos)
               },
               ann.pos

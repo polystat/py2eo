@@ -1,0 +1,34 @@
++package preface
++alias cage org.eolang.gray.cage
++alias mkCopy preface.mkCopy
++alias pyint preface.pyint
++alias return preface.return
+
+[] > xmyArray
+  [initValue] > apply
+    [stackUp] > @
+      cage result > pResult
+      [] > result
+        cage initValue > value
+        [] > xlength
+          [self] > apply
+            [stackUp] > @
+              seq > @
+                stackUp.forward (return (pyint (self.value.length)))
+                123
+        [] > xget
+          [self i] > apply
+            [stackUp] > @
+              seq > @
+                stackUp.forward (return (self.value.get i))
+                123
+        [] > xappend
+          [self x] > apply
+            [stackUp] > @
+              seq > @
+                mkCopy (self.value) > tmp
+                self.value.write (tmp.copy.append x)
+                stackUp.forward (return 0)
+      seq > @
+        pResult.write result
+        stackUp.forward (return pResult)

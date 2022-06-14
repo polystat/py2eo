@@ -1,0 +1,78 @@
++package preface
++alias fakeclasses preface.fakeclasses
++alias pybool preface.pybool
++alias pyfloat preface.pyfloat
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
+
+[xreal ximag] > pycomplex
+
+  fakeclasses.pyComplexClass > x__class__
+
+  [x] > eq
+    fakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        pybool ((xreal.eq (x.xreal)).and (ximag.eq (x.ximag)))
+        p.fst.eq (p.snd)
+
+  [x] > neq
+    fakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        pybool ((eq x).not)
+        p.fst.neq (p.snd)
+
+  [x] > pow
+    fakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        pycomplex (pyfloat 0.0) (pyfloat 0.0)
+        p.fst.pow (p.snd)
+
+  [x] > div
+    fakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        pycomplex (pyfloat 0.0) (pyfloat 0.0)
+        p.fst.div (p.snd)
+
+  [x] > add
+    fakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        pycomplex (xreal.add (x.xreal)) (ximag.add (x.ximag))
+        p.fst.add (p.snd)
+
+  [x] > mul
+    fakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        pycomplex
+          ((xreal.mul (x.xreal)).sub (ximag.mul (x.ximag)))
+          ((xreal.mul (x.ximag)).add (ximag.mul (x.xreal)))
+        p.fst.mul (p.snd)
+
+  [x] > sub
+    fakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        pycomplex (xreal.sub (x.xreal)) (ximag.sub (x.ximag))
+        p.fst.sub (p.snd)
+
+  [] > force
+    seq > @
+      xreal
+      ximag
+      TRUE
+
+  seq > @
+    stdout (sprintf "dataizing complex %f + j%f\n" xreal ximag)
+    TRUE
