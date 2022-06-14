@@ -95,30 +95,6 @@ These things are supported by the parser. No additional support is needed, becau
 
 
 ## 6. Expressions
-Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
-
-For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to 
-```
-                  (e1).write (((pyint 1).add (pyint 2)))
-                  (e1).force
-                  ((e1).<)
-                  mkCopy (xf) > tmp1
-                  (lhs0).write (tmp1.copy)
-                  (e2).write (((pyint 3).add (pyint 4)))
-                  (e2).force
-                  ((e2).<)
-                  (lhs1).write ((pyint 5))
-                  (lhs1).force
-                  tmp.write (goto ((((lhs0)).apply ((e2)) ((lhs1))).@))
-                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
-                  (e3).write (tmp.result)
-                  ((e3).<)
-                  (e4).write (((e1).mul (e3)))
-                  (e4).force
-                  ((e4).<)
-                  mkCopy (e4) > tmp2
-                  (xx).write (tmp2.copy)
-```
 
 ### 6.1 Arithmetic conversion
 Complex and float numbers are not yet supported, so no implicit conversion is needed.
@@ -165,6 +141,48 @@ Not yet supported.
 
 ### 6.13 Conditional expressions
 `a if c else b` -> `(c).if (a) (b)`
+
+### 6.14 lambda
+An anonymous function is extracted to a named function (this is not hard because complex expressions are splitted into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
+For example code `f = lambda x: x * 10` is translated to something like
+```
+def anonFun0(xx):
+  e0 = xx * 10
+  return e0
+```
+Then this python is translated to EO.
+
+### 6.15 Expression lists
+Not yet supported. Should be supported by explicitly constructing a tuple out of an expression list. A star sholud be implemented as a function, which unfolds an iterable object.
+
+### 6.16 Evaluation order
+Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
+
+For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to 
+```
+                  (e1).write (((pyint 1).add (pyint 2)))
+                  (e1).force
+                  ((e1).<)
+                  mkCopy (xf) > tmp1
+                  (lhs0).write (tmp1.copy)
+                  (e2).write (((pyint 3).add (pyint 4)))
+                  (e2).force
+                  ((e2).<)
+                  (lhs1).write ((pyint 5))
+                  (lhs1).force
+                  tmp.write (goto ((((lhs0)).apply ((e2)) ((lhs1))).@))
+                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (e3).write (tmp.result)
+                  ((e3).<)
+                  (e4).write (((e1).mul (e3)))
+                  (e4).force
+                  ((e4).<)
+                  mkCopy (e4) > tmp2
+                  (xx).write (tmp2.copy)
+```
+
+### 6.17 Operator precedence
+This feature is supported by the parser. For example, for an expression `1 + 2 * 3` the parser generates a syntax tree like `Add(1, Mult(2, 3))`, not `Mult(Add(1, 2), 3)`. 
 
 ### 7.1 Expressions statements
 Should be easy but not yet done.
