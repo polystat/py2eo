@@ -897,7 +897,7 @@ object SimplePass {
             ann.pos
           ),
           List(
-            (Some(Ident("StopIteration", ann.pos), None), Pass(ann.pos))
+            (Some(Ident("StopIteration", ann.pos), None), eelse.getOrElse(Pass(ann.pos)))
           ),
           None,
           None,
