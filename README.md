@@ -89,6 +89,11 @@ For all `.py` files (every `.py` is considered as particular test) from Django r
 
 ## Examples of translation projections
 
+## 2.1 Comments, Identation, Explicit and Implicit line joining, Whitespace between tokens
+These things are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
+
+
+
 ## 6. Expressions
 Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
 
