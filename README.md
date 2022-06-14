@@ -97,7 +97,7 @@ These things are supported by the parser. No additional support is needed, becau
 ## 6. Expressions
 
 ### 6.1 Arithmetic conversion
-Complex and float numbers are not yet supported, so no implicit conversion is needed.
+Complex, float and int numbers are implemented as EO objects, which have a `__class__` field, which is used to get a type of an object. Each arithmetic operation compares types of its operands and performs necessary conversion before evaluating the result.
 
 ### 6.2.1 Identifiers
 Each identifier is prepended with `x` because a python identifier may start with a capital letter, while one in EO cannot. 
