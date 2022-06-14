@@ -91,6 +91,7 @@ object PrintLinearizedMutableEOWithCage {
                 indent(
                   (
                     "cage result > pResult" ::
+                    "cage 0 > tmp" ::
                     "[] > result" ::
                     indent(
                       l.map{
@@ -179,7 +180,7 @@ object PrintLinearizedMutableEOWithCage {
               "seq > @" :: indent(
                 (
                   pe(cond) + ".while" :: indent(
-                  "[unused]" :: indent("seq > @" :: indent(printSt(body) :+ "(pybool TRUE)"))
+                  "[unused]" :: indent("cage 0 > tmp" :: "seq > @" :: indent(printSt(body) :+ "(pybool TRUE)"))
                   )
                 ) :+ "stackUp.forward raiseNothing"
               )
@@ -201,6 +202,7 @@ object PrintLinearizedMutableEOWithCage {
           "xcurrent-exception" ::
           "goto" :: indent(
             "[stackUp]" :: indent(
+              "cage 0 > tmp" ::
               "seq > @" :: indent(
                 printSt(ttry) :+ "stackUp.forward raiseNothing"
               )
