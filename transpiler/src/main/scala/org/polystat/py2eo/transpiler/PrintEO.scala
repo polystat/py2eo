@@ -67,6 +67,10 @@ object PrintEO {
         s"(pybool $v)"
       //    case NoneLiteral(, _) =>
       case Binop(op, l, r, _) =>  orb + e(l) + "." + binop(op) + space + e(r) + crb
+      case SimpleComparison(op, l, r, ann) if (op == Compops.Is || op == Compops.IsNot) =>
+        val l1 = Field(l, "x__id__", ann.pos)
+        val r1 = Field(r, "x__id__", ann.pos)
+        printExpr(SimpleComparison(if (op == Compops.Is) Compops.Eq else Compops.Neq, l1, r1, ann.pos))
       case SimpleComparison(op, l, r, _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
       case FreakingComparison(List(op), List(l, r), _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
       case LazyLAnd(l, r, _) =>  orb + e(l) + ".and " + e(r) + crb
