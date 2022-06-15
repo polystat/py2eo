@@ -175,7 +175,7 @@ object PrintLinearizedMutableEOWithCage {
         pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "(pybool TRUE)")) ++ indent("seq" :: indent(stsN :+ "(pybool TRUE)"))
       case While(cond, body, Some(Pass(_)), _) =>
         "write." :: indent(
-          "xcurrent-exception" ::
+          "tmp" ::
           "goto" :: indent(
             "[stackUp]" :: indent(
               "seq > @" :: indent(
@@ -188,7 +188,7 @@ object PrintLinearizedMutableEOWithCage {
             )
           )
         ) ++
-        ("if." :: indent(List("xcurrent-exception.x__class__.x__id__.neq (break.x__class__.x__id__)", "stackUp.forward xcurrent-exception", "0")))
+        ("if." :: indent(List("tmp.x__class__.x__id__.neq (break.x__class__.x__id__)", "stackUp.forward tmp", "0")))
       case Break(_) => List("stackUp.forward break")
 
       case Pass(_) => List()
