@@ -203,6 +203,7 @@ object PrintLinearizedMutableEOWithCage {
           "xcurrent-exception" ::
           "goto" :: indent(
             "[stackUp]" :: indent(
+              "cage 0 > xcurrent-exception" ::
               "cage 0 > tmp" ::
               "seq > @" :: indent(
                 printSt(ttry) :+ "stackUp.forward raiseNothing"
