@@ -147,6 +147,16 @@ object SimplePass {
     }
   }
 
+  def simplifyAssignmentList(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case Assign(l, ann) if l.size > 2 =>
+      val lhs = l.init
+      val rhs = l.last
+      val (rhsName, ns1) = ns("rhs")
+      val lhs1 = lhs.map(x => Assign(List(x, Ident(rhsName, ann.pos)), ann.pos))
+      (Suite(Assign(List(Ident(rhsName, ann.pos), rhs), ann.pos) :: lhs1, ann.pos), ns1)
+    case _ => (s, ns)
+  }
+
   def procExpr[Acc](f: (Boolean, T, Names[Acc]) => (EAfterPass, Names[Acc]))
               (lhs: Boolean, e: T, ns: Names[Acc]): (EAfterPass, Names[Acc]) = {
     def pe = procExpr[Acc](f)(false, _, _)
