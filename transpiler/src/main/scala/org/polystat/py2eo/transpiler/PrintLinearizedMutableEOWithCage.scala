@@ -288,6 +288,7 @@ object PrintLinearizedMutableEOWithCage {
       "pycomplex 0 0 > dummy-pycomplex",
       "pystring (sprintf \"\") > dummy-bool-string",
       "newUID > dummy-newUID",
+      "fakeclasses.pyIntClass > xint",
       "fakeclasses.pyFloatClass > xfloat",
       "fakeclasses.pyComplexClass > xcomplex",
       "raiseNothing > dummy-rn",
