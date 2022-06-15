@@ -29,8 +29,9 @@
           [self x] > apply
             [stackUp] > @
               seq > @
+                mkCopy (x.value) > tmpx
                 mkCopy (self.value) > tmp
-                self.value.write (tmp.copy.with x)
+                self.value.write (tmp.copy.with (tmpx.copy))
                 stackUp.forward (return 0)
                 123
         [x] > eq
