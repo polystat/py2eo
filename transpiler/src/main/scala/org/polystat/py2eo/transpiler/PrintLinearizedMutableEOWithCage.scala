@@ -38,6 +38,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xmyArray preface.xmyArray",
     "+alias xlen preface.xlen",
     "+alias xStopIteration preface.xStopIteration",
+    "+alias xrange preface.xrange",
     //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
     ""
@@ -91,6 +92,7 @@ object PrintLinearizedMutableEOWithCage {
                 indent(
                   (
                     "cage result > pResult" ::
+                    "cage 0 > tmp" ::
                     "[] > result" ::
                     indent(
                       l.map{
@@ -173,20 +175,20 @@ object PrintLinearizedMutableEOWithCage {
         pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "(pybool TRUE)")) ++ indent("seq" :: indent(stsN :+ "(pybool TRUE)"))
       case While(cond, body, Some(Pass(_)), _) =>
         "write." :: indent(
-          "xcurrent-exception" ::
+          "tmp" ::
           "goto" :: indent(
             "[stackUp]" :: indent(
               "seq > @" :: indent(
                 (
                   pe(cond) + ".while" :: indent(
-                  "[unused]" :: indent("seq > @" :: indent(printSt(body) :+ "(pybool TRUE)"))
+                  "[unused]" :: indent("cage 0 > tmp" :: "seq > @" :: indent(printSt(body) :+ "(pybool TRUE)"))
                   )
                 ) :+ "stackUp.forward raiseNothing"
               )
             )
           )
         ) ++
-        ("if." :: indent(List("xcurrent-exception.x__class__.x__id__.neq (break.x__class__.x__id__)", "stackUp.forward xcurrent-exception", "0")))
+        ("if." :: indent(List("tmp.x__class__.x__id__.neq (break.x__class__.x__id__)", "stackUp.forward tmp", "0")))
       case Break(_) => List("stackUp.forward break")
 
       case Pass(_) => List()
@@ -201,6 +203,8 @@ object PrintLinearizedMutableEOWithCage {
           "xcurrent-exception" ::
           "goto" :: indent(
             "[stackUp]" :: indent(
+              "cage 0 > xcurrent-exception" ::
+              "cage 0 > tmp" ::
               "seq > @" :: indent(
                 printSt(ttry) :+ "stackUp.forward raiseNothing"
               )
@@ -284,6 +288,7 @@ object PrintLinearizedMutableEOWithCage {
       "pycomplex 0 0 > dummy-pycomplex",
       "pystring (sprintf \"\") > dummy-bool-string",
       "newUID > dummy-newUID",
+      "fakeclasses.pyIntClass > xint",
       "fakeclasses.pyFloatClass > xfloat",
       "fakeclasses.pyComplexClass > xcomplex",
       "raiseNothing > dummy-rn",
@@ -295,6 +300,7 @@ object PrintLinearizedMutableEOWithCage {
       "mkCopy > dummy-mkCopy",
       "xlen > dummy-xlen",
       "xStopIteration > dummy-stop-iteration",
+      "xrange > dummy-xrange",
     )
     }
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
