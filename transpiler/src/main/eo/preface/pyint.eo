@@ -1,5 +1,6 @@
 +package preface
 +alias pybool preface.pybool
++alias pyfloat preface.pyfloat
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
 +alias fakeclasses preface.fakeclasses
@@ -8,48 +9,125 @@
 
   fakeclasses.pyIntClass > x__class__
 
-  # Tests that $ = x
   [x] > eq
-    pybool (value.eq (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pybool (value.eq (x.value))
+        p.fst.eq (p.snd)
 
   [x] > neq
-    pybool (value.neq (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pybool (value.neq (x.value))
+        p.fst.neq (p.snd)
 
   [x] > less
-    pybool (value.less (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pybool (value.less (x.value))
+        p.fst.less (p.snd)
 
   [x] > leq
-    pybool (value.leq (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pybool (value.leq (x.value))
+        p.fst.leq (p.snd)
 
   [x] > greater
-    pybool (value.greater (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pybool (value.greater (x.value))
+        p.fst.greater (p.snd)
 
   [x] > geq
-    pybool (value.geq (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pybool (value.geq (x.value))
+        p.fst.geq (p.snd)
 
   [x] > pow
-    pyint (value.pow (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.pow (x.value))
+        p.fst.pow (p.snd)
 
   [x] > and
-    pyint (value.and (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.and (x.value))
+        p.fst.and (p.snd)
 
   [x] > or
-    pyint (value.or (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.or (x.value))
+        p.fst.or (p.snd)
 
   [x] > xor
-    pyint (value.xor (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.xor (x.value))
+        p.fst.xor (p.snd)
 
   [x] > add
-    pyint (value.add (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.add (x.value))
+        p.fst.add (p.snd)
 
   [x] > mul
-    pyint (value.mul (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.mul (x.value))
+        p.fst.mul (p.snd)
 
   [x] > div
-    pyint (value.div (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.div (x.value))
+        p.fst.div (p.snd)
 
   [x] > mod
-    pyint (value.mod (x.value)) > @
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.mod (x.value))
+        p.fst.mod (p.snd)
+
+  [x] > sub
+    fakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        pyint (value.sub (x.value))
+        p.fst.sub (p.snd)
 
   [x] > left
     pyint (value.left (x.value)) > @
@@ -61,12 +139,11 @@
   [] > neg
     pyint (value.neg) > @
 
-  # Difference between $ and x
-  [x] > sub
-    pyint (value.sub (x.value)) > @
-
   [] > as-string
     value.as-string > @
+
+  [] > as-float
+    pyfloat (value.as-float) > @
 
   [] > force
     value > @

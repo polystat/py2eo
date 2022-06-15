@@ -1,7 +1,107 @@
 +package preface
++alias fakeclasses preface.fakeclasses
++alias pybool preface.pybool
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 
 [value] > pyfloat
-  [x] > eq
-  [x] > neg
-  [x] > sub
 
+  fakeclasses.pyFloatClass > x__class__
+
+  [x] > eq
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pybool (value.eq (x.value))
+        p.fst.eq (p.snd)
+
+  [x] > neq
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pybool (value.neq (x.value))
+        p.fst.neq (p.snd)
+
+  [x] > less
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pybool (value.less (x.value))
+        p.fst.less (p.snd)
+
+  [x] > leq
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pybool (value.leq (x.value))
+        p.fst.leq (p.snd)
+
+  [x] > greater
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pybool (value.greater (x.value))
+        p.fst.greater (p.snd)
+
+  [x] > geq
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pybool (value.geq (x.value))
+        p.fst.geq (p.snd)
+
+  [x] > pow
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pyfloat (value.pow (x.value))
+        p.fst.pow (p.snd)
+
+  [x] > div
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pyfloat (value.div (x.value))
+        p.fst.div (p.snd)
+
+  [x] > add
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pyfloat (value.add (x.value))
+        p.fst.add (p.snd)
+
+  [x] > mul
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pyfloat (value.mul (x.value))
+        p.fst.mul (p.snd)
+
+  [x] > sub
+    fakeclasses.convert (pyfloat value) x > p
+    seq > @
+      if.
+        (fakeclasses.has-type x (fakeclasses.pyFloatClass))
+        pyfloat (value.sub (x.value))
+        p.fst.sub (p.snd)
+
+  [] > as-float
+    pyfloat value > @
+
+  [] > force
+    value > @
+
+  seq > @
+    stdout (sprintf "dataizing float %f\n" value)
+    value
