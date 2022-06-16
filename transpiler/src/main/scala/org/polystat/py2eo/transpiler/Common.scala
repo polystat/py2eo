@@ -1,6 +1,9 @@
 package org.polystat.py2eo.transpiler
 
-import java.io.File
+import org.polystat.py2eo.parser.{PrintPython, Statement}
+
+import java.io.{File, FileWriter}
+import scala.io.Source
 
 object Common {
 

@@ -5,7 +5,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import org.polystat.py2eo.transpiler.Main.writeFile
 
 import java.io.File
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
