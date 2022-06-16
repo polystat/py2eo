@@ -25,20 +25,21 @@ This transpiler receives as input data python code. Then received code is simpli
 * For contributors: `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway)
 
 #### How to use it? ####
-- Go to some directory on your PC
-- Create directory `Transpiler Test`
 - Download and save into this folder `py2eo` transpiler executable from this [link](https://repo1.maven.org/maven2/org/polystat/py2eo/transpiler/0.0.11.3/transpiler-0.0.11.3-jar-with-dependencies.jar)
-- Create in this folder test file with `python` code named `sample_test.py` and paste the code below into it:
+- Create test file with `python` code, for example with these contents:
     ```
     def conditionalCheck2():
         a = 4
         b = 2
     ```
-- Open command line and move to the folder `Transpiler Test`
-- Run command `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\sample_test.py`
-- Check output .eo file in `Transpiler Test/genCageEO/sample_test.eo` or in `path_to_output_folder/sample_test.eo` in case of usage `-o` command line parameter
+- Open command line and move to the folder where you saved the transpiler executable
+- Run command `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar <path/to/python/file>`
+- Check output .eo file in the directory with python code with the same name
+- Try using `-o` argument to specify output path and/or name if needed
+- Follow instructions from [eolang repository](https://github.com/objectionary/eo#quick-start) on how to run the resulting eo code.
 
-#### Command line arguments ####
+Additional arguments:
+
 | Option         | Action                         |
 |----------------|--------------------------------|
 | `-h,--help`    | Display available options      |
