@@ -1,0 +1,42 @@
++package preface
++alias cage org.eolang.gray.cage
++alias mkCopy preface.mkCopy
++alias pyint preface.pyint
++alias pybool preface.pybool
++alias return preface.return
+
+[] > xmyArray
+  pyint 10 > x__id__
+  [initValue] > apply
+    [stackUp] > @
+      cage result > pResult
+      [] > result
+        cage initValue > value
+        xmyArray > x__class__
+        [] > xlength
+          [self] > apply
+            [stackUp] > @
+              seq > @
+                stackUp.forward (return (pyint (self.value.length)))
+                123
+        [] > xget
+          [self i] > apply
+            [stackUp] > @
+              seq > @
+                stackUp.forward (return (self.value.get i))
+                123
+        [] > xappend
+          [self x] > apply
+            [stackUp] > @
+              seq > @
+                mkCopy (x.value) > tmpx
+                mkCopy (self.value) > tmp
+                self.value.write (tmp.copy.with (tmpx.copy))
+                stackUp.forward (return 0)
+                123
+        [x] > eq
+          ((x.x__class__.x__id__.eq x__id__).and (pybool (value.eq (x.value)))) > @
+
+      seq > @
+        pResult.write result
+        stackUp.forward (return pResult)
