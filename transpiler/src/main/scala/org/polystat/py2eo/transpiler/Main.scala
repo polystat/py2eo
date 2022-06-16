@@ -13,7 +13,7 @@ object Main {
   /** Usage text */
   private val usage =
     s"""USAGE: java -jar transpiler-$versionCode-jar-with-dependencies.jar file [options]
-       |Options:
+       |OPTIONS:
        |  -h,--help         Display available options
        |  -o <file>         Write output to <file>
        |  -X,--debug        Produce execution debug output
