@@ -1,13 +1,14 @@
 package org.polystat.py2eo.transpiler
 
 import org.junit.Assert.{assertTrue, fail}
-import org.polystat.py2eo.transpiler.Main.writeFile
+import org.polystat.py2eo.parser.{PrintPython, Statement}
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
-import java.io.{File, FileInputStream}
+import java.io.{File, FileInputStream, FileWriter}
 import java.nio.file.{Files, Path}
 import java.{lang => jl, util => ju}
+import scala.io.Source
 import scala.sys.process.{Process, ProcessLogger}
 
 trait Commons {
@@ -18,9 +19,9 @@ trait Commons {
     map.get("python")
   }
 
-  case class YamlTest(python : String, enabled : Boolean)
+  case class YamlTest(python: String, enabled: Boolean)
 
-  def yaml2pythonModel(f : File): YamlTest = {
+  def yaml2pythonModel(f: File): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
     YamlTest(map.get("python"), map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean])
@@ -39,7 +40,7 @@ trait Commons {
   def chopExtension(fileName: String): String = fileName.substring(0, fileName.lastIndexOf("."))
 
   def useCageHolder(test: File): Unit = {
-    Transpile.transpileOption(Main.debugPrinter(test))(
+    Transpile.transpileOption(debugPrinter(test))(
       test.getName.replace(".yaml", ""),
       Transpile.Parameters(wrapInAFunction = false),
       yaml2python(test)
@@ -78,5 +79,27 @@ trait Commons {
     val list = new ju.ArrayList[Array[jl.String]]()
     res.foreach(n => list.add(Array(n)))
     list
+  }
+
+
+  def debugPrinter(module: File)(s: Statement.T, dirSuffix: String): Unit = {
+    writeFile(module, dirSuffix, ".py", PrintPython.print(s))
+  }
+
+  def readFile(f: File): String = {
+    val s = Source.fromFile(f)
+    s.mkString
+  }
+
+  def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String, otherLocation: Boolean = false): File = {
+    val moduleName = test.getName.substring(0, test.getName.lastIndexOf("."))
+    val outPath = if (!otherLocation) test.getAbsoluteFile.getParentFile.getPath + "/" + dirSuffix else dirSuffix
+    val d = new File(outPath)
+    if (!d.exists()) d.mkdir()
+    val outName = outPath + "/" + moduleName + fileSuffix
+    val output = new FileWriter(outName)
+    output.write(what)
+    output.close()
+    new File(outName)
   }
 }

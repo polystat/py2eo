@@ -3,7 +3,6 @@ package org.polystat.py2eo.transpiler
 import org.junit.{Ignore, Test}
 import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.transpiler.Common.dfsFiles
-import org.polystat.py2eo.transpiler.Main.{readFile, writeFile}
 
 import java.io.File
 import scala.concurrent.ExecutionContext.Implicits.global
