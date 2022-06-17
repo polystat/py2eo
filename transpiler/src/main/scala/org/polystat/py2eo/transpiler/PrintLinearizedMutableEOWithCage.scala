@@ -1,7 +1,7 @@
 package org.polystat.py2eo.transpiler
 
 import scala.collection.immutable.HashMap
-import PrintEO.{Text, indent, printExpr}
+import PrintEO.{Text, augop, indent, printExpr}
 import org.polystat.py2eo.parser.{ArgKind, Expression, Statement, VarScope}
 import org.polystat.py2eo.transpiler.Common.GeneratorException
 import org.polystat.py2eo.parser.Expression.{
@@ -9,7 +9,8 @@ import org.polystat.py2eo.parser.Expression.{
   Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
 import org.polystat.py2eo.parser.Statement.{
-  Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Raise, Return, Suite, Try, While
+  AugAssign, Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass,
+  Raise, Return, Suite, Try, While
 }
 
 object PrintLinearizedMutableEOWithCage {
@@ -121,6 +122,8 @@ object PrintLinearizedMutableEOWithCage {
           )
       case NonLocal(_, _) => List()
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
+      case AugAssign(op, lhs, rhs, ann) =>
+        List(s"(${pe(lhs)}).${augop(op)} (${pe(rhs)})")
       case Assign(List(_, CallIndex(true, Expression.Ident("xprint", _), List((None, n)), _)), _) =>
         List("stdout (sprintf \"%%s\\n\" (%s.as-string))".format(printExpr(n)))
       case Assign(List(lhs, rhs@CallIndex(true, whom, args, _)), _) if (seqOfFields(whom).isDefined &&

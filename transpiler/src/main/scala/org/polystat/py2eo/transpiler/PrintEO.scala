@@ -5,7 +5,7 @@ import org.polystat.py2eo.parser.Expression.{
   IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
   UnsupportedExpr
 }
-import org.polystat.py2eo.parser.{Expression, GeneralAnnotation, Statement, VarScope}
+import org.polystat.py2eo.parser.{AugOps, Expression, GeneralAnnotation, Statement, VarScope}
 import org.polystat.py2eo.parser.Statement.{
   Assign, Decorators, FuncDef, IfSimple, ImportAllSymbols, ImportModule, Pass, SimpleObject, Suite, Unsupported, While
 }
@@ -47,6 +47,22 @@ object PrintEO {
     case Unops.Neg => ".unsupported"
     case Unops.LNot => ".not"
     case Unops.Plus => ""
+  }
+
+  def augop(t : AugOps.T) : String = t match {
+    case AugOps.Plus => "aug-add"
+    case AugOps.Minus => "aug-sub"
+    case AugOps.Mul => "aug-mul"
+    case AugOps.At => ???
+    case AugOps.Div => ???
+    case AugOps.Mod => "aug-mod"
+    case AugOps.And => "aug-and"
+    case AugOps.Or => "aug-or"
+    case AugOps.Xor => "aug-xor"
+    case AugOps.Shl => "aug-left"
+    case AugOps.Shr => "aug-right"
+    case AugOps.Pow => "aug-pow"
+    case AugOps.FloorDiv => "aug-div"
   }
 
   def printExpr(value : T) : String = {
