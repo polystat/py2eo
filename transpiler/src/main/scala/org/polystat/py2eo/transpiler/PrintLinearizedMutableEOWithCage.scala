@@ -10,7 +10,7 @@ import org.polystat.py2eo.parser.Expression.{
 }
 import org.polystat.py2eo.parser.Statement.{
   AugAssign, Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass,
-  Raise, Return, Suite, Try, While
+  Raise, Return, Suite, Try, While, Continue
 }
 
 object PrintLinearizedMutableEOWithCage {
@@ -184,7 +184,22 @@ object PrintLinearizedMutableEOWithCage {
               "seq > @" :: indent(
                 (
                   pe(cond) + ".while" :: indent(
-                  "[unused]" :: indent("cage 0 > tmp" :: "seq > @" :: indent(printSt(body) :+ "(pybool TRUE)"))
+                    "[unused]" ::
+                    indent(
+                      "cage 0 > tmp" ::
+                      "seq > @" :: indent(
+                        "write." :: indent(
+                          "tmp" ::
+                          "goto" :: indent(
+                            "[stackUp]" :: indent(
+                              "cage 0 > tmp" ::
+                              "seq > @" ::
+                              indent(printSt(body) :+ "stackUp.forward continue" :+ "123")
+                            )
+                          )
+                        ) ++ List("(tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0", "0")
+                      )
+                    )
                   )
                 ) :+ "stackUp.forward raiseNothing"
               )
@@ -193,6 +208,7 @@ object PrintLinearizedMutableEOWithCage {
         ) ++
         ("if." :: indent(List("tmp.x__class__.x__id__.neq (break.x__class__.x__id__)", "stackUp.forward tmp", "0")))
       case Break(_) => List("stackUp.forward break")
+      case Continue(_) => List("stackUp.forward continue")
 
       case Pass(_) => List()
       case Suite(l, _) => l.flatMap(printSt)
