@@ -5,7 +5,9 @@
 +alias sprintf org.eolang.txt.sprintf
 +alias fakeclasses preface.fakeclasses
 
-[value] > pyint
+[val] > pyint
+
+  memory val > value
 
   fakeclasses.pyIntClass > x__class__
 
@@ -139,6 +141,61 @@
   [] > neg
     pyint (value.neg) > @
 
+  [x] > aug-add
+    seq > @
+      value.write (value.add (x.value))
+      value
+
+  [x] > aug-sub
+    seq > @
+      value.write (value.sub (x.value))
+      value
+
+  [x] > aug-mul
+    seq > @
+      value.write (value.mul (x.value))
+      value
+
+  [x] > aug-div
+    seq > @
+      value.write (value.div (x.value))
+      value
+
+  [x] > aug-mod
+    seq > @
+      value.write (value.mod (x.value))
+      value
+
+  [x] > aug-left
+    seq > @
+      value.write (value.left (x.value))
+      value
+
+  [x] > aug-right
+    seq > @
+      value.write (value.right (x.value))
+      value
+
+  [x] > aug-and
+    seq > @
+      value.write (value.and (x.value))
+      value
+
+  [x] > aug-or
+    seq > @
+      value.write (value.or (x.value))
+      value
+
+  [x] > aug-xor
+    seq > @
+      value.write (value.xor (x.value))
+      value
+
+  [x] > aug-pow
+    seq > @
+      value.write (value.pow (x.value))
+      value
+
   [] > as-string
     value.as-string > @
 
@@ -146,7 +203,7 @@
     pyfloat (value.as-float) > @
 
   [] > force
-    value > @
+    value.write val > @
 
   seq > @
     stdout (sprintf "dataizing value %d\n" value)
