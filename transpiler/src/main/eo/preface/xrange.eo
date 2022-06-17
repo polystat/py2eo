@@ -4,8 +4,6 @@
 +alias xStopIteration preface.xStopIteration
 +alias pyint preface.pyint
 +alias return preface.return
-+alias stdout org.eolang.io.stdout
-+alias sprintf org.eolang.txt.sprintf
 
 [] > xrange
   [end] > apply
@@ -19,10 +17,7 @@
               memory (self.curPos) > pos
               seq > @
                 pos.write (self.curPos)
-                stdout (sprintf "pos = %d\n" pos)
                 self.curPos.write (pos.add 1)
-                stdout (sprintf "pos = %d\n" pos)
-                stdout (sprintf "%d %d %b\n" (self.curPos) (end.value) (pos.eq (end.value)))
                 if.
                   pos.eq (end.value)
                   stackUp.forward ((goto (xStopIteration.apply.@)).result)

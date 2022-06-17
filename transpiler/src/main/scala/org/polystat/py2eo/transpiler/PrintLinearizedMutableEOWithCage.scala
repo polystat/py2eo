@@ -145,8 +145,6 @@ object PrintLinearizedMutableEOWithCage {
                _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
             throw new GeneratorException("these expressions must be wrapped in a function call " +
               "because a copy creation is needed and dataization is impossible")
-          case CallIndex(false, _, _, _) => throw new GeneratorException("this is A PROBLEM") // todo
-          case CallIndex(false, _, _, _) => throw new GeneratorException("this is A PROBLEM") // todo
           case _ => ()
         }
         val seqOfFields1 = seqOfFields(rhs)

@@ -1,9 +1,13 @@
 +package preface
 +alias cage org.eolang.gray.cage
++alias goto org.eolang.gray.goto
++alias xStopIteration preface.xStopIteration
 +alias mkCopy preface.mkCopy
 +alias pyint preface.pyint
 +alias pybool preface.pybool
 +alias return preface.return
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 
 [] > xmyArray
   pyint 10 > x__id__
@@ -19,12 +23,8 @@
               seq > @
                 stackUp.forward (return (pyint (self.value.length)))
                 123
-        [] > xget
-          [self i] > apply
-            [stackUp] > @
-              seq > @
-                stackUp.forward (return (self.value.get i))
-                123
+        [i] > get
+          (value.get (i.value)) > @
         [] > xappend
           [self x] > apply
             [stackUp] > @
@@ -36,6 +36,39 @@
                 123
         [x] > eq
           ((x.x__class__.x__id__.eq x__id__).and (pybool (value.eq (x.value)))) > @
+        [] > x__contains__
+          [self elt] > apply
+            [stackUp] > @
+              seq > result
+                stdout (sprintf "len = %d\n" (self.value.length))
+                self.value.reduce
+                  FALSE
+                  [acc item]
+                    seq > @
+                      stdout (sprintf "acc = %b, item = %d, elt = %d\n" acc item elt)
+                      acc.or ((elt.eq item).value)
+              seq > @
+                stdout (sprintf "len = %d\n" (self.value.length))
+                stackUp.forward (return (pybool result))
+                123
+        [] > iter
+          memory 0 > curPos
+          [] > x__next__
+            [self] > apply
+              [stackUp] > @
+                memory (self.curPos) > pos
+                seq > @
+                  pos.write (self.curPos)
+                  self.curPos.write (pos.add 1)
+                  if.
+                    pos.eq (value.length)
+                    stackUp.forward ((goto (xStopIteration.apply.@)).result)
+                    stackUp.forward (return (value.get (pos)))
+                  123
+        [] > x__iter__
+          [self] > apply
+            [stackUp] > @
+              stackUp.forward (return iter) > @
 
       seq > @
         pResult.write result
