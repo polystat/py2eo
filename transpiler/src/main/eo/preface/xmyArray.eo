@@ -29,13 +29,42 @@
           [self x] > apply
             [stackUp] > @
               seq > @
+                x
                 mkCopy (x.value) > tmpx
                 mkCopy (self.value) > tmp
-                self.value.write (tmp.copy.with (tmpx.copy))
+                self.value.write (tmp.copy.with (pyint (tmpx.copy)))
+                stackUp.forward (return 0)
+                123
+        [] > xclear
+          [self] > apply
+            [stackUp] > @
+              seq > @
+                self.value.write (*)
                 stackUp.forward (return 0)
                 123
         [x] > eq
-          ((x.x__class__.x__id__.eq x__id__).and (pybool (value.eq (x.value)))) > @
+          memory TRUE > acc
+          memory 0 > pos
+          if. > res
+            ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length)))
+            seq
+              stdout (sprintf "%d\n" (value.get 0))
+              stdout (sprintf "%d\n" (x.value.get 0))
+              (acc.and (pos.lt (value.length))).while
+                [unused]
+                  seq > @
+                    stdout (sprintf "comparing %d and %d\n" (value.get pos) (x.value.get pos))
+                    acc.write (acc.and (((value.get pos).eq (x.value.get pos)).value))
+                    pos.write (pos.plus 1)
+                    123
+              pybool acc
+            pybool FALSE
+          seq > @
+            stdout (sprintf "eq called %d %d %d %d\n" (x.x__class__.x__id__) x__id__ (value.length) (x.value.length))
+            stdout (sprintf "%b\n" ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length))))
+            res
+            stdout "after\n"
+            res
         [] > x__contains__
           [self elt] > apply
             [stackUp] > @
