@@ -19,10 +19,10 @@ object PrintLinearizedMutableEOWithCage {
 
   val headers = List(
     "+package org.eolang",
-    "+alias goto org.eolang.gray.goto",
+    "+alias goto org.eolang.goto",
     "+alias stdout org.eolang.io.stdout",
     "+alias sprintf org.eolang.txt.sprintf",
-    "+alias cage org.eolang.gray.cage",
+    "+alias cage org.eolang.cage",
     "+alias pyint preface.pyint",
     "+alias pyfloat preface.pyfloat",
     "+alias pystring preface.pystring",
