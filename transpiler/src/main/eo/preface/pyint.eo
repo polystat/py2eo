@@ -4,6 +4,8 @@
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
 +alias fakeclasses preface.fakeclasses
++alias return preface.return
++alias xZeroDivisionError preface.xZeroDivisionError
 
 [val] > pyint
 
@@ -112,7 +114,11 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pyint (value.div (x.value))
+        (x.value.eq 0).if
+          seq
+            stdout "division by zero\n"
+            (goto (xZeroDivisionError.apply.@)).result
+          (return (pyint (value.div (x.value))))
         p.fst.div (p.snd)
 
   [x] > mod

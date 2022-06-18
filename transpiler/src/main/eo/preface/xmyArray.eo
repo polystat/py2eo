@@ -34,8 +34,20 @@
                 self.value.write (tmp.copy.with (pyint (tmpx.copy)))
                 stackUp.forward (return 0)
                 123
+        [] > xclear
+          [self] > apply
+            [stackUp] > @
+              seq > @
+                self.value.write (*)
+                stackUp.forward (return 0)
+                123
         [x] > eq
-          ((x.x__class__.x__id__.eq x__id__).and (pybool (value.eq (x.value)))) > @
+          ((x.x__class__.x__id__.eq x__id__).and (pybool (value.eq (x.value)))) > res
+          seq > @
+            stdout "eq called\n"
+            res
+            stdout "after\n"
+            res
         [] > x__contains__
           [self elt] > apply
             [stackUp] > @

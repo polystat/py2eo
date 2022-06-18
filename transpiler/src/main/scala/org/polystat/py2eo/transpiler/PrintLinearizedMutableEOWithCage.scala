@@ -39,6 +39,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xmyArray preface.xmyArray",
     "+alias xlen preface.xlen",
     "+alias xStopIteration preface.xStopIteration",
+    "+alias xZeroDivisionError preface.xZeroDivisionError",
     "+alias xrange preface.xrange",
     //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
@@ -124,6 +125,12 @@ object PrintLinearizedMutableEOWithCage {
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
       case AugAssign(op, lhs, rhs, ann) =>
         List(s"(${pe(lhs)}).${augop(op)} (${pe(rhs)})")
+      case Assign(List(lhs, rhs@Expression.Binop(Expression.Binops.FloorDiv, _, _, _)), ann) =>
+        List (
+          s"tmp.write (${pe(rhs)})",
+          "(tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0",
+          s"${pe(lhs)}.write (tmp.result)"
+        )
       case Assign(List(_, CallIndex(true, Expression.Ident("xprint", _), List((None, n)), _)), _) =>
         List("stdout (sprintf \"%%s\\n\" (%s.as-string))".format(printExpr(n)))
       case Assign(List(lhs, rhs@CallIndex(true, whom, args, _)), _) if (seqOfFields(whom).isDefined &&
@@ -317,6 +324,7 @@ object PrintLinearizedMutableEOWithCage {
       "mkCopy > dummy-mkCopy",
       "xlen > dummy-xlen",
       "xStopIteration > dummy-stop-iteration",
+      "xZeroDivisionError > dummy-xZeroDivisionError",
       "xrange > dummy-xrange",
     )
     }
