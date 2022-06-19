@@ -228,6 +228,7 @@ object PrintLinearizedMutableEOWithCage {
           "goto" :: indent(
             "[stackUp]" :: indent(
               "cage 0 > xcurrent-exception" ::
+              "cage 0 > xexcinexc" ::
               "cage 0 > tmp" ::
               "seq > @" :: indent(
                 printSt(ttry) :+ "stackUp.forward raiseNothing"
@@ -236,20 +237,33 @@ object PrintLinearizedMutableEOWithCage {
           )
         ) ++
         ("seq" :: indent(
-          ("if." :: indent(
-            "is-exception (xcurrent-exception.x__class__.x__id__)" ::
-            "seq" :: indent(printSt(exc) :+ "0")  ++
-            List("0")
-          )) ++
+          "write." :: indent (
+            "xexcinexc" ::
+            "goto" :: indent (
+              "[stackUp]" :: indent(
+                "if. > @" :: indent(
+                  "is-exception (xcurrent-exception.x__class__.x__id__)" ::
+                  "seq" :: indent(
+                    printSt(exc) :+ "xcaught.if (stackUp.forward raiseNothing) (stackUp.forward xcurrent-exception)" :+ "0"
+                  )  ++
+                  ("seq" :: indent(List("(stackUp.forward xcurrent-exception)", "0")))
+                )
+              )
+            )
+          ) ++
+          ("xexcinexc.x__class__.x__id__" ::
           ("if." :: indent(
             "xcurrent-exception.x__class__.x__id__.eq (raiseNothing.x__class__.x__id__)" ::
             "seq" :: (indent(printSt(eelse.getOrElse(Pass(ann))) :+ "0")) ++
             List("0")
-          )) ++
+          ))) ++
           printSt(ffinally.getOrElse(Pass(ann))) ++
           List("((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or "
-               + "((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if "
-               + "(stackUp.forward xcurrent-exception) 0")
+              + "((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if "
+              + "(stackUp.forward xcurrent-exception) 0") ++
+          List("((is-break-continue-return (xexcinexc.x__class__.x__id__)).or "
+            + "((is-exception (xexcinexc.x__class__.x__id__)))).if "
+            + "(stackUp.forward xexcinexc) 0")
         ))
     }
   }
@@ -305,6 +319,7 @@ object PrintLinearizedMutableEOWithCage {
       "        stackUp.forward (return x)",
       "        123",
       "cage 0 > xcurrent-exception",
+      "cage 0 > xexcinexc",
       "cage FALSE > xcaught",
       "pyint 0 > dummy-int-usage",
       "pyfloat 0 > dummy-float-usage",
