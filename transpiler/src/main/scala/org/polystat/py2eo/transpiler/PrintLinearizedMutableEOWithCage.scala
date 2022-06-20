@@ -1,7 +1,7 @@
 package org.polystat.py2eo.transpiler
 
 import scala.collection.immutable.HashMap
-import PrintEO.{Text, indent, printExpr}
+import PrintEO.{Text, augop, indent, printExpr}
 import org.polystat.py2eo.parser.{ArgKind, Expression, Statement, VarScope}
 import org.polystat.py2eo.transpiler.Common.GeneratorException
 import org.polystat.py2eo.parser.Expression.{
@@ -9,7 +9,8 @@ import org.polystat.py2eo.parser.Expression.{
   Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
 import org.polystat.py2eo.parser.Statement.{
-  Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Raise, Return, Suite, Try, While
+  AugAssign, Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass,
+  Raise, Return, Suite, Try, While, Continue
 }
 
 object PrintLinearizedMutableEOWithCage {
@@ -18,10 +19,10 @@ object PrintLinearizedMutableEOWithCage {
 
   val headers = List(
     "+package org.eolang",
-    "+alias goto org.eolang.gray.goto",
+    "+alias goto org.eolang.goto",
     "+alias stdout org.eolang.io.stdout",
     "+alias sprintf org.eolang.txt.sprintf",
-    "+alias cage org.eolang.gray.cage",
+    "+alias cage org.eolang.cage",
     "+alias pyint preface.pyint",
     "+alias pyfloat preface.pyfloat",
     "+alias pystring preface.pystring",
@@ -38,6 +39,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xmyArray preface.xmyArray",
     "+alias xlen preface.xlen",
     "+alias xStopIteration preface.xStopIteration",
+    "+alias xZeroDivisionError preface.xZeroDivisionError",
     "+alias xrange preface.xrange",
     //    "+alias sprintf org.eolang.txt.sprintf",
     "+junit",
@@ -121,6 +123,14 @@ object PrintLinearizedMutableEOWithCage {
           )
       case NonLocal(_, _) => List()
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
+      case AugAssign(op, lhs, rhs, ann) =>
+        List(s"(${pe(lhs)}).${augop(op)} (${pe(rhs)})")
+      case Assign(List(lhs, rhs@Expression.Binop(Expression.Binops.FloorDiv, _, _, _)), ann) =>
+        List (
+          s"tmp.write (${pe(rhs)})",
+          "(tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0",
+          s"${pe(lhs)}.write (tmp.result)"
+        )
       case Assign(List(_, CallIndex(true, Expression.Ident("xprint", _), List((None, n)), _)), _) =>
         List("stdout (sprintf \"%%s\\n\" (%s.as-string))".format(printExpr(n)))
       case Assign(List(lhs, rhs@CallIndex(true, whom, args, _)), _) if (seqOfFields(whom).isDefined &&
@@ -142,8 +152,6 @@ object PrintLinearizedMutableEOWithCage {
                _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
             throw new GeneratorException("these expressions must be wrapped in a function call " +
               "because a copy creation is needed and dataization is impossible")
-          case CallIndex(false, _, _, _) => throw new GeneratorException("this is A PROBLEM") // todo
-          case CallIndex(false, _, _, _) => throw new GeneratorException("this is A PROBLEM") // todo
           case _ => ()
         }
         val seqOfFields1 = seqOfFields(rhs)
@@ -181,7 +189,22 @@ object PrintLinearizedMutableEOWithCage {
               "seq > @" :: indent(
                 (
                   pe(cond) + ".while" :: indent(
-                  "[unused]" :: indent("cage 0 > tmp" :: "seq > @" :: indent(printSt(body) :+ "(pybool TRUE)"))
+                    "[unused]" ::
+                    indent(
+                      "cage 0 > tmp" ::
+                      "seq > @" :: indent(
+                        "write." :: indent(
+                          "tmp" ::
+                          "goto" :: indent(
+                            "[stackUp]" :: indent(
+                              "cage 0 > tmp" ::
+                              "seq > @" ::
+                              indent(printSt(body) :+ "stackUp.forward continue" :+ "123")
+                            )
+                          )
+                        ) ++ List("(tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0", "0")
+                      )
+                    )
                   )
                 ) :+ "stackUp.forward raiseNothing"
               )
@@ -190,6 +213,7 @@ object PrintLinearizedMutableEOWithCage {
         ) ++
         ("if." :: indent(List("tmp.x__class__.x__id__.neq (break.x__class__.x__id__)", "stackUp.forward tmp", "0")))
       case Break(_) => List("stackUp.forward break")
+      case Continue(_) => List("stackUp.forward continue")
 
       case Pass(_) => List()
       case Suite(l, _) => l.flatMap(printSt)
@@ -204,6 +228,7 @@ object PrintLinearizedMutableEOWithCage {
           "goto" :: indent(
             "[stackUp]" :: indent(
               "cage 0 > xcurrent-exception" ::
+              "cage 0 > xexcinexc" ::
               "cage 0 > tmp" ::
               "seq > @" :: indent(
                 printSt(ttry) :+ "stackUp.forward raiseNothing"
@@ -212,20 +237,33 @@ object PrintLinearizedMutableEOWithCage {
           )
         ) ++
         ("seq" :: indent(
-          ("if." :: indent(
-            "is-exception (xcurrent-exception.x__class__.x__id__)" ::
-            "seq" :: indent(printSt(exc) :+ "0")  ++
-            List("0")
-          )) ++
+          "write." :: indent (
+            "xexcinexc" ::
+            "goto" :: indent (
+              "[stackUp]" :: indent(
+                "if. > @" :: indent(
+                  "is-exception (xcurrent-exception.x__class__.x__id__)" ::
+                  "seq" :: indent(
+                    printSt(exc) :+ "xcaught.if (stackUp.forward raiseNothing) (stackUp.forward xcurrent-exception)" :+ "0"
+                  )  ++
+                  ("seq" :: indent(List("(stackUp.forward xcurrent-exception)", "0")))
+                )
+              )
+            )
+          ) ++
+          ("xexcinexc.x__class__.x__id__" ::
           ("if." :: indent(
             "xcurrent-exception.x__class__.x__id__.eq (raiseNothing.x__class__.x__id__)" ::
             "seq" :: (indent(printSt(eelse.getOrElse(Pass(ann))) :+ "0")) ++
             List("0")
-          )) ++
+          ))) ++
           printSt(ffinally.getOrElse(Pass(ann))) ++
           List("((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or "
-               + "((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if "
-               + "(stackUp.forward xcurrent-exception) 0")
+              + "((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if "
+              + "(stackUp.forward xcurrent-exception) 0") ++
+          List("((is-break-continue-return (xexcinexc.x__class__.x__id__)).or "
+            + "((is-exception (xexcinexc.x__class__.x__id__)))).if "
+            + "(stackUp.forward xexcinexc) 0")
         ))
     }
   }
@@ -281,6 +319,7 @@ object PrintLinearizedMutableEOWithCage {
       "        stackUp.forward (return x)",
       "        123",
       "cage 0 > xcurrent-exception",
+      "cage 0 > xexcinexc",
       "cage FALSE > xcaught",
       "pyint 0 > dummy-int-usage",
       "pyfloat 0 > dummy-float-usage",
@@ -300,6 +339,7 @@ object PrintLinearizedMutableEOWithCage {
       "mkCopy > dummy-mkCopy",
       "xlen > dummy-xlen",
       "xStopIteration > dummy-stop-iteration",
+      "xZeroDivisionError > dummy-xZeroDivisionError",
       "xrange > dummy-xrange",
     )
     }
