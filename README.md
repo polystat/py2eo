@@ -142,6 +142,14 @@ Not yet supported.
 ### 6.13 Conditional expressions
 `a if c else b` -> `(c).if (a) (b)`
 
+Please, add enough context if you want to try this with our transpiler, for example:
+``` 
+a = 7 
+b = 6
+x = a if a < b else b
+print(x)
+``` 
+
 ### 6.14 lambda
 An anonymous function is extracted to a named function (this is not hard because complex expressions are splitted into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
 For example code `f = lambda x: x * 10` is translated to something like
@@ -151,6 +159,13 @@ def anonFun0(xx):
   return e0
 ```
 Then this python is translated to EO.
+    
+Please, add enough context if you want to try this with our transpiler, for example:
+```
+f = lambda x: x * 10
+x = f(11)
+print(x)
+```
 
 ### 6.15 Expression lists
 Not yet supported. Should be supported by explicitly constructing a tuple out of an expression list. A star sholud be implemented as a function, which unfolds an iterable object.
