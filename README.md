@@ -181,6 +181,13 @@ For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to
                   (xx).write (tmp2.copy)
 ```
 
+Please, add enough context if you want to try this with our transpiler, for example:
+```
+def f(a, b): return a + b
+x = (1 + 2) * f(3 + 4, 5)
+print(x)
+```
+
 ### 6.17 Operator precedence
 This feature is supported by the parser. For example, for an expression `1 + 2 * 3` the parser generates a syntax tree like `Add(1, Mult(2, 3))`, not `Mult(Add(1, 2), 3)`. 
 
