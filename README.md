@@ -493,6 +493,14 @@ print(x)
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-try-statement
 
+#### Try this example
+```
+try:
+  1 // 0
+except ZeroDivisionError:
+  print("Hello, world")
+``` 
+    
 ### 8.5 With
 Not yet implemented. The plan is to do it as a python-to-python pass according do the example [here](https://docs.python.org/3.8/reference/compound_stmts.html#the-with-statement)
 
@@ -546,6 +554,12 @@ mkCopy (e0) > tmp1
 
 ```
 
+#### Try this example
+```
+def f(a, b): return a + b
+x = (1 + 2) * f(3 + 4, 5)
+print(x)
+```
 
 ### 8.7 Class
 A class is basically its constructor, i.e., a function, which returns an object. 
@@ -585,5 +599,17 @@ Field assignment is then straightforward:
 ((xo).xfield).write (2)
 ```
 
+#### Try this example
+```
+class c:
+  field = 1
+o = c()
+o.field = 2
+
+x = o.field
+
+print(x)
+```
+        
 ### 8.8 Coroutines
 No plans to support this. 
