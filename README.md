@@ -107,6 +107,8 @@ Integer, boolean, string and float literals are wrapped in respective EO wrapper
 * `10` is translated to `(pyint 10)`
 * `"Hello, world"` is translated to `(pystring "Hello, world")`
 
+Try to translate `print(10)` or `print("Hello, world")`, for example.
+
 ### 6.2.3 Parenthesized forms
 Almost every generated EO expression is parenthesized, but these parantheses are not related to the parantheses in the original python expressions.
 
@@ -142,6 +144,14 @@ Not yet supported.
 ### 6.13 Conditional expressions
 `a if c else b` -> `(c).if (a) (b)`
 
+Please, add enough context if you want to try this with our transpiler, for example:
+``` 
+a = 7 
+b = 6
+x = a if a < b else b
+print(x)
+``` 
+
 ### 6.14 lambda
 An anonymous function is extracted to a named function (this is not hard because complex expressions are splitted into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
 For example code `f = lambda x: x * 10` is translated to something like
@@ -151,6 +161,13 @@ def anonFun0(xx):
   return e0
 ```
 Then this python is translated to EO.
+    
+Please, add enough context if you want to try this with our transpiler, for example:
+```
+f = lambda x: x * 10
+x = f(11)
+print(x)
+```
 
 ### 6.15 Expression lists
 Not yet supported. Should be supported by explicitly constructing a tuple out of an expression list. A star sholud be implemented as a function, which unfolds an iterable object.
@@ -181,8 +198,21 @@ For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to
                   (xx).write (tmp2.copy)
 ```
 
+Please, add enough context if you want to try this with our transpiler, for example:
+```
+def f(a, b): return a + b
+x = (1 + 2) * f(3 + 4, 5)
+print(x)
+```
+
 ### 6.17 Operator precedence
 This feature is supported by the parser. For example, for an expression `1 + 2 * 3` the parser generates a syntax tree like `Add(1, Mult(2, 3))`, not `Mult(Add(1, 2), 3)`. 
+    
+Try to translate, for example
+```
+x = 1 + 2 * 3
+print(x)
+```
 
 ### 7.1 Expressions statements
 Should be easy but not yet done.
@@ -225,6 +255,12 @@ where `mkCopy` looks like this
   x' > copy
   copy.< > @
 ```
+You may try to run this example:
+```
+x = 1 
+x = x + 2 * 3
+print(x)
+```
 
 ### 7.3 Assert
 Will be done as a python-to-python pass, which basically substitutes `assert` to `raise AssertionException`
@@ -261,6 +297,8 @@ Later. Needs closure for full support.
 
 ### 8.1 If-elif-else
 
+(Try adding `print(x)` at the end of examples below to run them).
+    
 ##### Python
 ```
 x = 1
@@ -375,6 +413,15 @@ Here, we wrap the `while` in a `goto` and store the result
         0
 ```
 
+#### Try to run this example
+```
+x = 1
+while x < 100:
+    x = 2 * x
+
+print(x)
+```
+ 
 ### 8.3 For
 A `for` loop over an iterator is transformed into a `while` inside a `try`:
 ##### Python
@@ -394,6 +441,15 @@ except StopIteration:
     pass
 ```
 The resulting code is then transformed to EO.
+              
+#### Try to run this example
+```
+x = 0
+for i in range(4):
+    x = x + i
+
+print(x)
+```              
 
 ### 8.4 Try
 #### try_2
@@ -437,6 +493,14 @@ The resulting code is then transformed to EO.
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-try-statement
 
+#### Try this example
+```
+try:
+  1 // 0
+except ZeroDivisionError:
+  print("Hello, world")
+``` 
+    
 ### 8.5 With
 Not yet implemented. The plan is to do it as a python-to-python pass according do the example [here](https://docs.python.org/3.8/reference/compound_stmts.html#the-with-statement)
 
@@ -490,6 +554,12 @@ mkCopy (e0) > tmp1
 
 ```
 
+#### Try this example
+```
+def f(a, b): return a + b
+x = (1 + 2) * f(3 + 4, 5)
+print(x)
+```
 
 ### 8.7 Class
 A class is basically its constructor, i.e., a function, which returns an object. 
@@ -529,5 +599,17 @@ Field assignment is then straightforward:
 ((xo).xfield).write (2)
 ```
 
+#### Try this example
+```
+class c:
+  field = 1
+o = c()
+o.field = 2
+
+x = o.field
+
+print(x)
+```
+        
 ### 8.8 Coroutines
 No plans to support this. 
