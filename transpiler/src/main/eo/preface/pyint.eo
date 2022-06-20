@@ -4,8 +4,12 @@
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
 +alias fakeclasses preface.fakeclasses
++alias return preface.return
++alias xZeroDivisionError preface.xZeroDivisionError
 
-[value] > pyint
+[val] > pyint
+
+  memory val > value
 
   fakeclasses.pyIntClass > x__class__
 
@@ -30,7 +34,7 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pybool (value.less (x.value))
+        pybool (value.lt (x.value))
         p.fst.less (p.snd)
 
   [x] > leq
@@ -38,7 +42,7 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pybool (value.leq (x.value))
+        pybool (value.lte (x.value))
         p.fst.leq (p.snd)
 
   [x] > greater
@@ -46,7 +50,7 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pybool (value.greater (x.value))
+        pybool (value.gt (x.value))
         p.fst.greater (p.snd)
 
   [x] > geq
@@ -54,7 +58,7 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pybool (value.geq (x.value))
+        pybool (value.gte (x.value))
         p.fst.geq (p.snd)
 
   [x] > pow
@@ -94,7 +98,7 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pyint (value.add (x.value))
+        pyint (value.plus (x.value))
         p.fst.add (p.snd)
 
   [x] > mul
@@ -102,7 +106,7 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pyint (value.mul (x.value))
+        pyint (value.times (x.value))
         p.fst.mul (p.snd)
 
   [x] > div
@@ -110,7 +114,11 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pyint (value.div (x.value))
+        (x.value.eq 0).if
+          seq
+            stdout "division by zero\n"
+            (goto (xZeroDivisionError.apply.@)).result
+          (return (pyint (value.div (x.value))))
         p.fst.div (p.snd)
 
   [x] > mod
@@ -126,7 +134,7 @@
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pyint (value.sub (x.value))
+        pyint (value.minus (x.value))
         p.fst.sub (p.snd)
 
   [x] > left
@@ -139,6 +147,61 @@
   [] > neg
     pyint (value.neg) > @
 
+  [x] > aug-add
+    seq > @
+      value.write (value.plus (x.value))
+      value
+
+  [x] > aug-sub
+    seq > @
+      value.write (value.minus (x.value))
+      value
+
+  [x] > aug-mul
+    seq > @
+      value.write (value.times (x.value))
+      value
+
+  [x] > aug-div
+    seq > @
+      value.write (value.div (x.value))
+      value
+
+  [x] > aug-mod
+    seq > @
+      value.write (value.mod (x.value))
+      value
+
+  [x] > aug-left
+    seq > @
+      value.write (value.left (x.value))
+      value
+
+  [x] > aug-right
+    seq > @
+      value.write (value.right (x.value))
+      value
+
+  [x] > aug-and
+    seq > @
+      value.write (value.and (x.value))
+      value
+
+  [x] > aug-or
+    seq > @
+      value.write (value.or (x.value))
+      value
+
+  [x] > aug-xor
+    seq > @
+      value.write (value.xor (x.value))
+      value
+
+  [x] > aug-pow
+    seq > @
+      value.write (value.pow (x.value))
+      value
+
   [] > as-string
     value.as-string > @
 
@@ -146,7 +209,7 @@
     pyfloat (value.as-float) > @
 
   [] > force
-    value > @
+    value.write val > @
 
   seq > @
     stdout (sprintf "dataizing value %d\n" value)

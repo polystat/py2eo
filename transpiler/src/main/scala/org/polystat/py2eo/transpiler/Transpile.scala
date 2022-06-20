@@ -11,6 +11,10 @@ object Transpile {
 
   case class Parameters(wrapInAFunction : Boolean)
 
+  def apply(moduleName: String, pythonCode: String): Option[String] = {
+    apply(moduleName, Transpile.Parameters(wrapInAFunction = true), pythonCode)
+  }
+
   def apply(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
     transpileOption((_, _) => ())(moduleName, opt, pythonCode)
   }

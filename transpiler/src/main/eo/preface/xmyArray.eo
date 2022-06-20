@@ -1,9 +1,13 @@
 +package preface
-+alias cage org.eolang.gray.cage
++alias cage org.eolang.cage
++alias goto org.eolang.goto
++alias xStopIteration preface.xStopIteration
 +alias mkCopy preface.mkCopy
 +alias pyint preface.pyint
 +alias pybool preface.pybool
 +alias return preface.return
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 
 [] > xmyArray
   pyint 10 > x__id__
@@ -19,23 +23,81 @@
               seq > @
                 stackUp.forward (return (pyint (self.value.length)))
                 123
-        [] > xget
-          [self i] > apply
-            [stackUp] > @
-              seq > @
-                stackUp.forward (return (self.value.get i))
-                123
+        [i] > get
+          (value.get (i.value)) > @
         [] > xappend
           [self x] > apply
             [stackUp] > @
               seq > @
+                x
                 mkCopy (x.value) > tmpx
                 mkCopy (self.value) > tmp
-                self.value.write (tmp.copy.with (tmpx.copy))
+                self.value.write (tmp.copy.with (pyint (tmpx.copy)))
+                stackUp.forward (return 0)
+                123
+        [] > xclear
+          [self] > apply
+            [stackUp] > @
+              seq > @
+                self.value.write (*)
                 stackUp.forward (return 0)
                 123
         [x] > eq
-          ((x.x__class__.x__id__.eq x__id__).and (pybool (value.eq (x.value)))) > @
+          memory TRUE > acc
+          memory 0 > pos
+          if. > res
+            ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length)))
+            seq
+              stdout (sprintf "%d\n" (value.get 0))
+              stdout (sprintf "%d\n" (x.value.get 0))
+              (acc.and (pos.lt (value.length))).while
+                [unused]
+                  seq > @
+                    stdout (sprintf "comparing %d and %d\n" (value.get pos) (x.value.get pos))
+                    acc.write (acc.and (((value.get pos).eq (x.value.get pos)).value))
+                    pos.write (pos.plus 1)
+                    123
+              pybool acc
+            pybool FALSE
+          seq > @
+            stdout (sprintf "eq called %d %d %d %d\n" (x.x__class__.x__id__) x__id__ (value.length) (x.value.length))
+            stdout (sprintf "%b\n" ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length))))
+            res
+            stdout "after\n"
+            res
+        [] > x__contains__
+          [self elt] > apply
+            [stackUp] > @
+              seq > result
+                stdout (sprintf "len = %d\n" (self.value.length))
+                self.value.reduce
+                  FALSE
+                  [acc item]
+                    seq > @
+                      stdout (sprintf "acc = %b, item = %d, elt = %d\n" acc item elt)
+                      acc.or ((elt.eq item).value)
+              seq > @
+                stdout (sprintf "len = %d\n" (self.value.length))
+                stackUp.forward (return (pybool result))
+                123
+        [] > iter
+          memory 0 > curPos
+          [] > x__next__
+            [self] > apply
+              [stackUp] > @
+                memory (self.curPos) > pos
+                seq > @
+                  pos.write (self.curPos)
+                  self.curPos.write (pos.plus 1)
+                  if.
+                    pos.eq (value.length)
+                    stackUp.forward ((goto (xStopIteration.apply.@)).result)
+                    stackUp.forward (return (value.get (pos)))
+                  123
+        [] > x__iter__
+          [self] > apply
+            [stackUp] > @
+              stackUp.forward (return iter) > @
 
       seq > @
         pResult.write result
