@@ -49,7 +49,9 @@ trait Commons {
     Transpile(name, Transpile.Parameters(wrapInAFunction = false), yaml2python(test)) match {
       case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) =>
-        new FileWriter(results + File.separator + name + ".eo").write(transpiled)
+        val output = new FileWriter(results + File.separator + name + ".eo")
+        output.write(transpiled)
+        output.close()
     }
   }
 
