@@ -1,11 +1,9 @@
 +package preface
-+alias cage org.eolang.gray.cage
-+alias goto org.eolang.gray.goto
++alias cage org.eolang.cage
++alias goto org.eolang.goto
 +alias xStopIteration preface.xStopIteration
 +alias pyint preface.pyint
 +alias return preface.return
-+alias stdout org.eolang.io.stdout
-+alias sprintf org.eolang.txt.sprintf
 
 [] > xrange
   [end] > apply
@@ -19,10 +17,7 @@
               memory (self.curPos) > pos
               seq > @
                 pos.write (self.curPos)
-                stdout (sprintf "pos = %d\n" pos)
-                self.curPos.write (pos.add 1)
-                stdout (sprintf "pos = %d\n" pos)
-                stdout (sprintf "%d %d %b\n" (self.curPos) (end.value) (pos.eq (end.value)))
+                self.curPos.write (pos.plus 1)
                 if.
                   pos.eq (end.value)
                   stackUp.forward ((goto (xStopIteration.apply.@)).result)
