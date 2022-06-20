@@ -107,6 +107,8 @@ Integer, boolean, string and float literals are wrapped in respective EO wrapper
 * `10` is translated to `(pyint 10)`
 * `"Hello, world"` is translated to `(pystring "Hello, world")`
 
+Try to translate `print(10)` or `print("Hello, world")`, for example.
+
 ### 6.2.3 Parenthesized forms
 Almost every generated EO expression is parenthesized, but these parantheses are not related to the parantheses in the original python expressions.
 
@@ -205,6 +207,12 @@ print(x)
 
 ### 6.17 Operator precedence
 This feature is supported by the parser. For example, for an expression `1 + 2 * 3` the parser generates a syntax tree like `Add(1, Mult(2, 3))`, not `Mult(Add(1, 2), 3)`. 
+    
+Try to translate, for example
+```
+x = 1 + 2 * 3
+print(x)
+```
 
 ### 7.1 Expressions statements
 Should be easy but not yet done.
@@ -247,6 +255,12 @@ where `mkCopy` looks like this
   x' > copy
   copy.< > @
 ```
+You may try to run this example:
+```
+x = 1 
+x = x + 2 * 3
+print(x)
+```
 
 ### 7.3 Assert
 Will be done as a python-to-python pass, which basically substitutes `assert` to `raise AssertionException`
@@ -283,6 +297,8 @@ Later. Needs closure for full support.
 
 ### 8.1 If-elif-else
 
+(Try adding `print(x)` at the end of examples below to run them).
+    
 ##### Python
 ```
 x = 1
@@ -397,6 +413,15 @@ Here, we wrap the `while` in a `goto` and store the result
         0
 ```
 
+#### Try to run this example
+```
+x = 1
+while x < 100:
+    x = 2 * x
+
+print(x)
+```
+ 
 ### 8.3 For
 A `for` loop over an iterator is transformed into a `while` inside a `try`:
 ##### Python
@@ -416,6 +441,15 @@ except StopIteration:
     pass
 ```
 The resulting code is then transformed to EO.
+              
+#### Try to run this example
+```
+x = 0
+for i in range(4):
+    x = x + i
+
+print(x)
+```              
 
 ### 8.4 Try
 #### try_2
