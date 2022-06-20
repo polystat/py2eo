@@ -121,7 +121,18 @@ object Transpile {
 
             PrintEO.printSt(
               moduleName, hacked,
-              "+package org.eolang" :: "+junit" :: globals.map(name => s"memory 0 > $name").toList
+              "+package org.eolang" ::
+              "+alias pyint preface.pyint" ::
+              "+alias pyfloat preface.pyfloat" ::
+              "+alias pystring preface.pystring" ::
+              "+alias pybool preface.pybool" ::
+              "+junit" ::
+
+              "pyint 0 > dummy-int-usage" ::
+              "pystring 0 > dummy-string-usage" ::
+              "pyfloat 0 > dummy-float-usage" ::
+              "pybool TRUE > dummy-bool-usage" ::
+              globals.map(name => s"memory 0 > $name").toList
             )
               .mkString("\n")
 
