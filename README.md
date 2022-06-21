@@ -613,3 +613,15 @@ print(x)
         
 ### 8.8 Coroutines
 No plans to support this. 
+    
+### Print
+`print(x)` is translated to `stdout (sprintf "%s" (xx.as-string))`
+ You may use this example:
+ ```
+ x = 1
+ print(x)
+ ```
+ or this
+ ```
+ print("Hello, world!")
+ ```
