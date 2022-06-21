@@ -92,8 +92,61 @@ For all `.py` files (every `.py` is considered as particular test) from Django r
 ## 2.1 Comments, Identation, Explicit and Implicit line joining, Whitespace between tokens
 These things are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
 
+## 4. Execution model
+### 4.2.1 4.2.2 Names
+Dynamically adding/removing names is not supported. All the statically known names are implemented as a `cage` object of EO. This allows to implement assignments. EO objects are also visibility scopes for identifiers, so several variables with the same name in different scopes are implemented directly. 
+    
+### 4.3 Exceptions
 
+Exceptions, `break`, `continue`, `return` are currently all implemented with the help of the `goto` object.   
+    
+Consider this python code
+```
+while True: break
+```
+We can translate it this way
+```
+goto
+  [doBreak]
+    TRUE.while
+      doBreak.forward 0
+```
 
+Now consider this:
+```
+flag = 5
+while True:
+  try:
+    break
+  finally: flag = 10
+```
+From [this section](https://docs.python.org/3/reference/compound_stmts.html#the-try-statement) we know that "When a [return](https://docs.python.org/3/reference/simple_stmts.html#return), [break](https://docs.python.org/3/reference/simple_stmts.html#break) or [continue](https://docs.python.org/3/reference/simple_stmts.html#continue) statement is executed in the [try](https://docs.python.org/3/reference/compound_stmts.html#try) suite of a try…[finally](https://docs.python.org/3/reference/compound_stmts.html#finally) statement, the finally clause is also executed ‘on the way out.’".
+So, our implementation of `try` by means of `goto` must catch both exceptions and the `break`. It then must execute `finally` and rethrow everything that was not processed by the `except` clause (including `break`). The `break` then will be caught again up the stack by the implementation of `while`.
+Like so:
+```
+flag.write 5
+goto
+  [stackUp]
+    TRUE.while
+      write.
+        resultOfTry
+        goto
+          [stackUp]
+            stackUp.forward breakConstant // this is the break
+      if.
+        is-exception resultOfTry
+        // here goes the implementation of except clause, which is BTW empty in our example
+        0
+      flag.write 10 // here goes the implementation of finally, so it is executed for exceptions and for the break
+      if.
+        is-break resultOfTry
+        stackUp.forward resultOfTry  // redirect the break further up the stack
+        0
+```
+
+We may also imagine a `return` that happens somewhere deep in the hierarchy of whiles and trys. This is a kind of semi-manual stack unwinding, IMHO.     
+    
+    
 ## 6. Expressions
 
 ### 6.1 Arithmetic conversion
