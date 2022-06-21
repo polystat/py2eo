@@ -1,14 +1,11 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.{Ignore, Test}
-import org.polystat.py2eo.parser.Statement
-import org.polystat.py2eo.transpiler.Common.dfsFiles
+import org.junit.Test
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
-import scala.language.postfixOps
-import scala.reflect.io.{Directory, File}
+import scala.reflect.io.Directory
 import scala.sys.process.Process
 
 
