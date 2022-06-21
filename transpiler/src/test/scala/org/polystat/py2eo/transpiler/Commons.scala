@@ -13,6 +13,7 @@ import scala.sys.process.{Process, ProcessLogger}
 
 trait Commons {
   val testsPrefix: String = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
+  val resultsPrefix: String = "src/test/resources/org/polystat/py2eo/transpiler/results"
 
   def yaml2python(f: File): String = {
     val map = new Yaml().load[java.util.Map[String, String]](new FileInputStream(f))
@@ -36,17 +37,21 @@ trait Commons {
     if (match1.group(1) == "2") "python3" else "python"
   }
 
-
   def chopExtension(fileName: String): String = fileName.substring(0, fileName.lastIndexOf("."))
 
   def useCageHolder(test: File): Unit = {
-    Transpile.transpileOption(debugPrinter(test))(
-      test.getName.replace(".yaml", ""),
-      Transpile.Parameters(wrapInAFunction = false),
-      yaml2python(test)
-    ) match {
+    val results = new File(resultsPrefix)
+    if (!results.exists) {
+      results.mkdirs()
+    }
+
+    val name = test.getName.replace(".yaml", "")
+    Transpile(name, Transpile.Parameters(wrapInAFunction = false), yaml2python(test)) match {
       case None => fail(s"could not transpile ${test.getName}");
-      case Some(transpiled) => writeFile(test, "genCageEO", ".eo", transpiled)
+      case Some(transpiled) =>
+        val output = new FileWriter(results + File.separator + name + ".eo")
+        output.write(transpiled)
+        output.close()
     }
   }
 
