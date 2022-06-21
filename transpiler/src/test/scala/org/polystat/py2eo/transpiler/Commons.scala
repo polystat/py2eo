@@ -92,7 +92,13 @@ trait Commons {
   }
 
   def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String, otherLocation: Boolean = false): File = {
-    val moduleName = test.getName.substring(0, test.getName.lastIndexOf("."))
+    val moduleName0 = test.getName.substring(0, test.getName.lastIndexOf("."))
+    // do something with hidden files, because current EO fails them
+    val moduleName = if (moduleName0.startsWith(".")) {
+      "p" + moduleName0.substring(1, moduleName0.length)
+    } else {
+      moduleName0
+    }
     val outPath = if (!otherLocation) test.getAbsoluteFile.getParentFile.getPath + "/" + dirSuffix else dirSuffix
     val d = new File(outPath)
     if (!d.exists()) d.mkdir()
