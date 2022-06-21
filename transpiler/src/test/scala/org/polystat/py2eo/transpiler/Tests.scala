@@ -45,4 +45,33 @@ class Tests extends Commons {
     )
     for (f <- futures) Await.result(f, Duration.Inf)
   }
+
+  @Ignore
+  @Test def checkSyntaxForDjango() : Unit = {
+    val django = new File("/tmp/django")
+    val eopaths = asScala(Files.walk(django.toPath).filter(f => f.endsWith("genUnsupportedEO")).toList)
+    val futures = eopaths.map(path =>
+      Future {
+        val from = new File(testsPrefix + "/django-pom.xml").toPath
+        val to = new File(path.toString + "/pom.xml").toPath
+        println(s"$from -> $to")
+        Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING)
+        assert(0 == Process(
+          s"cp -a '$testsPrefix/../../../../../../main/eo/preface/' ${path.toString}"
+          ).!
+        )
+        assert(0 == Process("mvn clean test", path.toFile).!)
+        assert(0 == Process(s"rm -rf ${path.toString}").!)
+//        val stdout = new StringBuilder
+//        val stderr = new StringBuilder
+//        val exitCode = Process("mvn clean test", path.toFile) ! ProcessLogger(stdout append _, stderr append _)
+//        if (0 != exitCode) {
+//          println(s"for path $to stdout is \n $stdout\n stderr is \n $stderr\n")
+//        } else {
+//          assert(0 == Process(s"rm -rf ${path.toString}").!)
+//        }
+      }
+    )
+    for (f <- futures) Await.result(f, Duration.Inf)
+  }
 }
