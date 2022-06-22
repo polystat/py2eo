@@ -6,6 +6,8 @@ import org.polystat.py2eo.transpiler.Common.dfsFiles
 
 import java.io.File
 import java.nio.file.{Files, StandardCopyOption}
+import java.util.stream.Collectors
+import scala.::
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
@@ -49,7 +51,7 @@ class Tests extends Commons {
   @Ignore
   @Test def checkSyntaxForDjango() : Unit = {
     val django = new File("/tmp/django")
-    val eopaths = asScala(Files.walk(django.toPath).filter(f => f.endsWith("genUnsupportedEO")).toList)
+    val eopaths = Files.walk(django.toPath).filter(f => f.endsWith("genUnsupportedEO"))
     val futures = eopaths.map(path =>
       Future {
         val from = new File(testsPrefix + "/django-pom.xml").toPath
@@ -72,6 +74,6 @@ class Tests extends Commons {
 //        }
       }
     )
-    for (f <- futures) Await.result(f, Duration.Inf)
+    futures.forEach(f => Await.result(f, Duration.Inf))
   }
 }
