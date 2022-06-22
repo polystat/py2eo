@@ -3,6 +3,8 @@ package org.polystat.py2eo.transpiler
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
+import org.polystat.py2eo.parser.Statement
+import org.polystat.py2eo.transpiler.Common.dfsFiles
 
 import java.io.File
 import java.nio.file.{Files, StandardCopyOption}
@@ -15,29 +17,40 @@ import scala.sys.process.Process
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class DjangoTest extends Commons {
 
-  @Test def firstlyGenUnsupportedDjango(): Unit = {
-    val root = Directory(testsPrefix)
-    val djangoDir = Directory(root / "django")
-    if (!djangoDir.exists) {
-      assert(0 == Process("git clone https://github.com/django/django", root.jfile).!)
+  @Test def aGenUnsupportedDjango() : Unit = {
+    val root = new File(testsPrefix)
+    val django = new File(testsPrefix + "/django")
+    if (!django.exists()) {
+      //      assert(0 == Process("git clone file:///home/bogus/pythonProjects/django", root).!)
+      assert(0 == Process("git clone -b 4.0 https://github.com/django/django", root).!)
     }
-
-    val tests = djangoDir.deepFiles.filter(_.extension == "py")
-    val futures = for {test <- tests} yield {
+    val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
+    val futures = test.map(test =>
       Future {
-        Transpile(test.stripExtension, test.slurp) match {
-          case None => println(s"failed to transpile ${test.name}")
-          case Some(transpiled) => writeFile(test.jfile, "genUnsupportedEO", ".eo", transpiled)
+        def db(s : Statement.T, str : String) = () // debugPrinter(test)(_, _)
+        val name = test.getName
+        println(s"parsing $name")
+        val eoText = try {
+          Transpile.transpile(db)(
+            chopExtension(name),
+            Transpile.Parameters(wrapInAFunction = false),
+            readFile(test)
+          )
+        } catch {
+          case e : Throwable =>
+            println(s"failed to transpile $name: ${e.toString}")
+            throw e
         }
+        writeFile(test, "genUnsupportedEO", ".eo", eoText)
       }
-    }
-
+    )
     for (f <- futures) Await.result(f, Duration.Inf)
   }
 
-  @Test def secondlyCheckSyntaxForDjango() : Unit = {
-    val django = new File("/tmp/django")
-    val eopaths = Files.walk(django.toPath).filter(f => f.endsWith("genUnsupportedEO"))
+  @Test def bCheckSyntaxForDjango() : Unit = {
+    val django = new File(testsPrefix + "/django")
+    val eopaths = dfsFiles(django).filter(f => f.getName.endsWith("genUnsupportedEO"))
+    println(eopaths)
     val futures = eopaths.map(path =>
       Future {
         val from = new File(testsPrefix + "/django-pom.xml").toPath
@@ -48,7 +61,7 @@ class DjangoTest extends Commons {
           s"cp -a '$testsPrefix/../../../../../../main/eo/preface/' ${path.toString}"
         ).!
         )
-        assert(0 == Process("mvn clean test", path.toFile).!)
+        assert(0 == Process("mvn clean test", path).!)
         assert(0 == Process(s"rm -rf ${path.toString}").!)
         //        val stdout = new StringBuilder
         //        val stderr = new StringBuilder
@@ -60,6 +73,7 @@ class DjangoTest extends Commons {
         //        }
       }
     )
-    futures.forEach(f => Await.result(f, Duration.Inf))
+    for (f <- futures) Await.result(f, Duration.Inf)
   }
 }
+

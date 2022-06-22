@@ -112,7 +112,7 @@ object Common {
 
   def dfsFiles(file : File) : List[File] = {
     if (!file.isDirectory) List(file) else {
-      file.listFiles().toList.flatMap(dfsFiles)
+      file :: file.listFiles().toList.flatMap(dfsFiles)
     }
   }
 
