@@ -38,7 +38,9 @@ object PrintLinearizedMutableEOWithCage {
     "+alias raiseEmpty preface.raiseEmpty",
     "+alias xmyArray preface.xmyArray",
     "+alias xlen preface.xlen",
+    "+alias xiter preface.xiter",
     "+alias xStopIteration preface.xStopIteration",
+    "+alias xTypeError preface.xTypeError",
     "+alias xZeroDivisionError preface.xZeroDivisionError",
     "+alias xrange preface.xrange",
     //    "+alias sprintf org.eolang.txt.sprintf",
@@ -340,6 +342,8 @@ object PrintLinearizedMutableEOWithCage {
       "xlen > dummy-xlen",
       "xStopIteration > dummy-stop-iteration",
       "xZeroDivisionError > dummy-xZeroDivisionError",
+      "xTypeError > dummy-xTypeError",
+      "xiter > dummy-xiter",
       "xrange > dummy-xrange",
     )
     }

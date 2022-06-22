@@ -74,7 +74,7 @@ object Main {
     }
 
     Transpile(input.stripExtension, input.slurp) match {
-      case None => println("Not Supported: input file syntax is not python 3.8")
+      case None => println("\"Not Supported: input file syntax is not python 3.8\" > error")
       case Some(transpiled) => output.createFile().writeAll(transpiled)
     }
   }
