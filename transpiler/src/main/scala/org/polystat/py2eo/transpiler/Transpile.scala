@@ -20,7 +20,7 @@ object Transpile {
   }
 
   def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String): String = {
-    transpileOption(debugPrinter)(moduleName, opt, pythonCode).getOrElse("Not Supported: input file syntax is not python 3.8")
+    transpileOption(debugPrinter)(moduleName, opt, pythonCode).getOrElse("\"Not Supported: input file syntax is not python 3.8\" > error")
   }
 
   def applyStyle(pythonCode: String): Option[String] = {
@@ -120,8 +120,19 @@ object Transpile {
             })(immutable.HashSet(), hacked)
 
             PrintEO.printSt(
-              moduleName, hacked,
-              "+package org.eolang" :: "+junit" :: globals.map(name => s"memory 0 > $name").toList
+              ("y" + moduleName).replaceAll("[^0-9a-zA-Z]", ""), hacked,
+              "+package org.eolang" ::
+              "+alias pyint preface.pyint" ::
+              "+alias pyfloat preface.pyfloat" ::
+              "+alias pystring preface.pystring" ::
+              "+alias pybool preface.pybool" ::
+              "+junit" ::
+
+              "pyint 0 > dummy-int-usage" ::
+              "pystring 0 > dummy-string-usage" ::
+              "pyfloat 0 > dummy-float-usage" ::
+              "pybool TRUE > dummy-bool-usage" ::
+              globals.map(name => s"memory 0 > $name").toList
             )
               .mkString("\n")
 

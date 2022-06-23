@@ -92,8 +92,61 @@ For all `.py` files (every `.py` is considered as particular test) from Django r
 ## 2.1 Comments, Identation, Explicit and Implicit line joining, Whitespace between tokens
 These things are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
 
+## 4. Execution model
+### 4.2.1 4.2.2 Names
+Dynamically adding/removing names is not supported. All the statically known names are implemented as a `cage` object of EO. This allows to implement assignments. EO objects are also visibility scopes for identifiers, so several variables with the same name in different scopes are implemented directly. 
+    
+### 4.3 Exceptions
 
+Exceptions, `break`, `continue`, `return` are currently all implemented with the help of the `goto` object.   
+    
+Consider this python code
+```
+while True: break
+```
+We can translate it this way
+```
+goto
+  [doBreak]
+    TRUE.while
+      doBreak.forward 0
+```
 
+Now consider this:
+```
+flag = 5
+while True:
+  try:
+    break
+  finally: flag = 10
+```
+From [this section](https://docs.python.org/3/reference/compound_stmts.html#the-try-statement) we know that "When a [return](https://docs.python.org/3/reference/simple_stmts.html#return), [break](https://docs.python.org/3/reference/simple_stmts.html#break) or [continue](https://docs.python.org/3/reference/simple_stmts.html#continue) statement is executed in the [try](https://docs.python.org/3/reference/compound_stmts.html#try) suite of a try…[finally](https://docs.python.org/3/reference/compound_stmts.html#finally) statement, the finally clause is also executed ‘on the way out.’".
+So, our implementation of `try` by means of `goto` must catch both exceptions and the `break`. It then must execute `finally` and rethrow everything that was not processed by the `except` clause (including `break`). The `break` then will be caught again up the stack by the implementation of `while`.
+Like so:
+```
+flag.write 5
+goto
+  [stackUp]
+    TRUE.while
+      write.
+        resultOfTry
+        goto
+          [stackUp]
+            stackUp.forward breakConstant // this is the break
+      if.
+        is-exception resultOfTry
+        // here goes the implementation of except clause, which is BTW empty in our example
+        0
+      flag.write 10 // here goes the implementation of finally, so it is executed for exceptions and for the break
+      if.
+        is-break resultOfTry
+        stackUp.forward resultOfTry  // redirect the break further up the stack
+        0
+```
+
+We may also imagine a `return` that happens somewhere deep in the hierarchy of whiles and trys. This is a kind of semi-manual stack unwinding, IMHO.     
+    
+    
 ## 6. Expressions
 
 ### 6.1 Arithmetic conversion
@@ -106,6 +159,8 @@ Each identifier is prepended with `x` because a python identifier may start with
 Integer, boolean, string and float literals are wrapped in respective EO wrapper objects:
 * `10` is translated to `(pyint 10)`
 * `"Hello, world"` is translated to `(pystring "Hello, world")`
+
+Try to translate `print(10)` or `print("Hello, world")`, for example.
 
 ### 6.2.3 Parenthesized forms
 Almost every generated EO expression is parenthesized, but these parantheses are not related to the parantheses in the original python expressions.
@@ -142,6 +197,14 @@ Not yet supported.
 ### 6.13 Conditional expressions
 `a if c else b` -> `(c).if (a) (b)`
 
+Please, add enough context if you want to try this with our transpiler, for example:
+``` 
+a = 7 
+b = 6
+x = a if a < b else b
+print(x)
+``` 
+
 ### 6.14 lambda
 An anonymous function is extracted to a named function (this is not hard because complex expressions are splitted into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
 For example code `f = lambda x: x * 10` is translated to something like
@@ -151,6 +214,13 @@ def anonFun0(xx):
   return e0
 ```
 Then this python is translated to EO.
+    
+Please, add enough context if you want to try this with our transpiler, for example:
+```
+f = lambda x: x * 10
+x = f(11)
+print(x)
+```
 
 ### 6.15 Expression lists
 Not yet supported. Should be supported by explicitly constructing a tuple out of an expression list. A star sholud be implemented as a function, which unfolds an iterable object.
@@ -181,8 +251,21 @@ For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to
                   (xx).write (tmp2.copy)
 ```
 
+Please, add enough context if you want to try this with our transpiler, for example:
+```
+def f(a, b): return a + b
+x = (1 + 2) * f(3 + 4, 5)
+print(x)
+```
+
 ### 6.17 Operator precedence
 This feature is supported by the parser. For example, for an expression `1 + 2 * 3` the parser generates a syntax tree like `Add(1, Mult(2, 3))`, not `Mult(Add(1, 2), 3)`. 
+    
+Try to translate, for example
+```
+x = 1 + 2 * 3
+print(x)
+```
 
 ### 7.1 Expressions statements
 Should be easy but not yet done.
@@ -225,6 +308,12 @@ where `mkCopy` looks like this
   x' > copy
   copy.< > @
 ```
+You may try to run this example:
+```
+x = 1 
+x = x + 2 * 3
+print(x)
+```
 
 ### 7.3 Assert
 Will be done as a python-to-python pass, which basically substitutes `assert` to `raise AssertionException`
@@ -261,6 +350,8 @@ Later. Needs closure for full support.
 
 ### 8.1 If-elif-else
 
+(Try adding `print(x)` at the end of examples below to run them).
+    
 ##### Python
 ```
 x = 1
@@ -375,6 +466,15 @@ Here, we wrap the `while` in a `goto` and store the result
         0
 ```
 
+#### Try to run this example
+```
+x = 1
+while x < 100:
+    x = 2 * x
+
+print(x)
+```
+ 
 ### 8.3 For
 A `for` loop over an iterator is transformed into a `while` inside a `try`:
 ##### Python
@@ -394,6 +494,15 @@ except StopIteration:
     pass
 ```
 The resulting code is then transformed to EO.
+              
+#### Try to run this example
+```
+x = 0
+for i in range(4):
+    x = x + i
+
+print(x)
+```              
 
 ### 8.4 Try
 #### try_2
@@ -437,6 +546,14 @@ The resulting code is then transformed to EO.
 ##### Tests
 https://github.com/polystat/py2eo/wiki/Tests-Structure#the-try-statement
 
+#### Try this example
+```
+try:
+  1 // 0
+except ZeroDivisionError:
+  print("Hello, world")
+``` 
+    
 ### 8.5 With
 Not yet implemented. The plan is to do it as a python-to-python pass according do the example [here](https://docs.python.org/3.8/reference/compound_stmts.html#the-with-statement)
 
@@ -490,6 +607,12 @@ mkCopy (e0) > tmp1
 
 ```
 
+#### Try this example
+```
+def f(a, b): return a + b
+x = (1 + 2) * f(3 + 4, 5)
+print(x)
+```
 
 ### 8.7 Class
 A class is basically its constructor, i.e., a function, which returns an object. 
@@ -529,5 +652,33 @@ Field assignment is then straightforward:
 ((xo).xfield).write (2)
 ```
 
+#### Try this example
+```
+class c:
+  field = 1
+o = c()
+o.field = 2
+
+x = o.field
+
+print(x)
+```
+        
 ### 8.8 Coroutines
 No plans to support this. 
+    
+### Print
+`print(x)` is translated to `stdout (sprintf "%s" (xx.as-string))`
+ You may use this example:
+ ```
+ x = 1
+ print(x)
+ ```
+ or this
+ ```
+ print("Hello, world!")
+ ```
+## How to run the translator on the Django project
+We checked that it is possible to translate all the python files of the Django project to EO. It is not possible to run the generated EO, because parts of python are not supported. But the generated EO is always syntatically correct (though it uses the `unsupported` EO object instead of some not supported python constructs). 
+In order to generate the EO and run the syntax check one may checkout this project and run `mvn verify -Pdjango`. This command runs 2 tests: one downloads sources of Django version 4.0, the other one runs the EO compiler partially (without the "transpile" stage) to check syntax. Both passes run many threads in parallel. The first one takes ~10minutes on Ryzen 3800x with 32gb of RAM, the second one takes ~3 hours.
+ 
