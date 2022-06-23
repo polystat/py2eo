@@ -678,3 +678,7 @@ No plans to support this.
  ```
  print("Hello, world!")
  ```
+## How to run the translator on the Django project
+We checked that it is possible to translate all the python files of the Django project to EO. It is not possible to run the generated EO, because parts of python are not supported. But the generated EO is always syntatically correct (though it uses the `unsupported` EO object instead of some not supported python constructs). 
+In order to generate the EO and run the syntax check one may checkout this project and run `mvn verify -Pdjango`. This command runs 2 tests: one downloads sources of Django version 4.0, the other one runs the EO compiler partially (without the "transpile" stage) to check syntax. Both passes run many threads in parallel. The first one takes ~10minutes on Ryzen 3800x with 32gb of RAM, the second one takes ~3 hours.
+ 
