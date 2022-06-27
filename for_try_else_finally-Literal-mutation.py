@@ -8,7 +8,7 @@ def for_try_else_finally(): # 1:0-19:60
             res.append(num) # 8:12-8:26
             continue # 9:12-9:19
         else:
-            print("Yeah ! Your answer is :", result) # 11:12-11:51
+            pass # 11:12-11:15
             res.append(num) # 12:12-12:26
         finally:
             if ((len(res) == 2  )): # 14:50-17:11 

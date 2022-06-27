@@ -8,7 +8,7 @@ def for_try_finally_break(): # 1:0-15:42
             res.append(13 ) # 8:12-8:26
             break # 9:12-9:16
         else:
-            print("Yeah ! Your answer is :", result) # 11:12-11:51
+            pass # 11:12-11:15
         finally:
             res.append(num) # 13:12-13:26
 

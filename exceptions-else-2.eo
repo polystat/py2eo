@@ -1,83 +1,72 @@
 +package org.eolang
-+alias goto org.eolang.gray.goto
++alias goto org.eolang.goto
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
-+alias cage org.eolang.gray.cage
++alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
 
 [unused] > exceptions-else-2
   [] > apply
     [stackUp] > @
-      [x] > mkCopy
-        x' > copy
-        copy.< > @
-      [] > newUID
-        memory > cur
-        [unused] > apply
-          seq > @
-            cur.write (cur.is-empty.if (5) (cur.add (1)))
-            (pyint cur)
-      [] > raiseEmpty
-        [] > xclass
-          (pyint 4) > xid
-      [res] > return
-        res > result
-        [] > xclass
-          (pyint 3) > xid
-      [] > break
-        [] > xclass
-          (pyint 2) > xid
-      [] > continue
-        [] > xclass
-          (pyint 1) > xid
-      [] > raiseNothing
-        [] > xclass
-          (pyint 0) > xid
       [id] > is-exception
         id.greater (pyint 3) > @
       [id] > is-break-continue-return
         (id.greater (pyint 0)).and (id.less (pyint 4)) > @
-      cage > xcurrent-exception
-      cage > xcaught
-      pyint 0 > dummy-int-usage
-      pybool TRUE > dummy-bool-usage
-      pystring (sprintf "") > dummy-bool-string
-      [] > xmyArray
-        [initValue] > apply
+      [] > xbool
+        [x] > apply
           [stackUp] > @
-            cage > pResult
-            [] > result
-              cage > value
-              [] > xlength
-                [self] > apply
-                  [stackUp] > @
-                    seq > @
-                      stackUp.forward (return (pyint (self.value.length)))
-                      123
-              [] > xget
-                [self i] > apply
-                  [stackUp] > @
-                    seq > @
-                      stackUp.forward (return (self.value.get i))
-                      123
-              [] > xappend
-                [self x] > apply
-                  [stackUp] > @
-                    seq > @
-                      mkCopy (self.value) > tmp
-                      self.value.write (tmp.copy.append x)
-                      stackUp.forward (return 0)
             seq > @
-              result.value.write initValue
-              pResult.write result
-              stackUp.forward (return pResult)
-      cage > tmp
-      cage > toReturn
-      cage > assertMe
-      cage > xte2
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xte2
       seq > @
         stdout "exceptions-else-2\n"
         write.
@@ -85,11 +74,11 @@
           []
             [] > apply
               [stackUp] > @
-                cage > tmp
-                cage > toReturn
-                cage > e0
-                cage > xx
-                cage > e1
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > e0
+                cage 0 > xx
+                cage 0 > e1
                 seq > @
                   stdout "xte2\n"
                   xcaught.write (pybool TRUE)
@@ -97,20 +86,31 @@
                     xcurrent-exception
                     goto
                       [stackUp]
+                        cage 0 > xcurrent-exception
+                        cage 0 > xexcinexc
+                        cage 0 > tmp
                         seq > @
                           (xx).write ((pyint 1))
                           (xx).force
                           stackUp.forward raiseNothing
                   seq
+                    write.
+                      xexcinexc
+                      goto
+                        [stackUp]
+                          if. > @
+                            is-exception (xcurrent-exception.x__class__.x__id__)
+                            seq
+                              (xx).write ((pyint 5))
+                              (xx).force
+                              xcaught.if (stackUp.forward raiseNothing) (stackUp.forward xcurrent-exception)
+                              0
+                            seq
+                              (stackUp.forward xcurrent-exception)
+                              0
+                    xexcinexc.x__class__.x__id__
                     if.
-                      is-exception (xcurrent-exception.xclass.xid)
-                      seq
-                        (xx).write ((pyint 5))
-                        (xx).force
-                        0
-                      0
-                    if.
-                      xcurrent-exception.xclass.xid.eq (raiseNothing.xclass.xid)
+                      xcurrent-exception.x__class__.x__id__.eq (raiseNothing.x__class__.x__id__)
                       seq
                         (e0).write (((xx).add (pyint 2)))
                         (e0).force
@@ -119,7 +119,8 @@
                         (xx).write (tmp1.copy)
                         0
                       0
-                    ((is-break-continue-return (xcurrent-exception.xclass.xid)).or ((is-exception (xcurrent-exception.xclass.xid)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
+                    ((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or ((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
+                    ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
                   (e1).write (((xx).eq (pyint 3)))
                   (e1).force
                   ((e1).<)
@@ -127,7 +128,7 @@
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xte2)).apply).@))
-        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)

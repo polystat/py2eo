@@ -1,83 +1,72 @@
 +package org.eolang
-+alias goto org.eolang.gray.goto
++alias goto org.eolang.goto
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
-+alias cage org.eolang.gray.cage
++alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
 
 [unused] > virtual-method-call
   [] > apply
     [stackUp] > @
-      [x] > mkCopy
-        x' > copy
-        copy.< > @
-      [] > newUID
-        memory > cur
-        [unused] > apply
-          seq > @
-            cur.write (cur.is-empty.if (5) (cur.add (1)))
-            (pyint cur)
-      [] > raiseEmpty
-        [] > xclass
-          (pyint 4) > xid
-      [res] > return
-        res > result
-        [] > xclass
-          (pyint 3) > xid
-      [] > break
-        [] > xclass
-          (pyint 2) > xid
-      [] > continue
-        [] > xclass
-          (pyint 1) > xid
-      [] > raiseNothing
-        [] > xclass
-          (pyint 0) > xid
       [id] > is-exception
         id.greater (pyint 3) > @
       [id] > is-break-continue-return
         (id.greater (pyint 0)).and (id.less (pyint 4)) > @
-      cage > xcurrent-exception
-      cage > xcaught
-      pyint 0 > dummy-int-usage
-      pybool TRUE > dummy-bool-usage
-      pystring (sprintf "") > dummy-bool-string
-      [] > xmyArray
-        [initValue] > apply
+      [] > xbool
+        [x] > apply
           [stackUp] > @
-            cage > pResult
-            [] > result
-              cage > value
-              [] > xlength
-                [self] > apply
-                  [stackUp] > @
-                    seq > @
-                      stackUp.forward (return (pyint (self.value.length)))
-                      123
-              [] > xget
-                [self i] > apply
-                  [stackUp] > @
-                    seq > @
-                      stackUp.forward (return (self.value.get i))
-                      123
-              [] > xappend
-                [self x] > apply
-                  [stackUp] > @
-                    seq > @
-                      mkCopy (self.value) > tmp
-                      self.value.write (tmp.copy.append x)
-                      stackUp.forward (return 0)
             seq > @
-              result.value.write initValue
-              pResult.write result
-              stackUp.forward (return pResult)
-      cage > tmp
-      cage > toReturn
-      cage > assertMe
-      cage > xmyC
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xmyC
       seq > @
         stdout "virtual-method-call\n"
         write.
@@ -85,38 +74,39 @@
           []
             [] > apply
               [stackUp] > @
-                cage > tmp
-                cage > toReturn
-                cage > e6
-                cage > xd
-                cage > e7
-                cage > xo
-                cage > xc
-                cage > e4
-                cage > lhs6
-                cage > lhs4
-                cage > e5
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > e6
+                cage 0 > xd
+                cage 0 > e7
+                cage 0 > xo
+                cage 0 > xc
+                cage 0 > e4
+                cage 0 > lhs6
+                cage 0 > lhs4
+                cage 0 > e5
                 seq > @
                   stdout "xmyC\n"
                   write.
                     xc
                     []
-                      newUID.apply 0 > xid
+                      newUID.apply 0 > x__id__
                       [] > apply
                         [stackUp] > @
-                          cage > pResult
+                          cage result > pResult
+                          cage 0 > tmp
                           [] > result
-                            cage > xh
-                            cage > xg
-                            xc > xclass
+                            cage 0 > xh
+                            cage 0 > xg
+                            xc > x__class__
                             seq > initFields
                               write.
                                 xh
                                 []
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
-                                      cage > tmp
-                                      cage > toReturn
+                                      cage 0 > tmp
+                                      cage 0 > toReturn
                                       xselfNotCopied' > xself
                                       seq > @
                                         stdout "xh\n"
@@ -129,12 +119,12 @@
                                 []
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
-                                      cage > tmp
-                                      cage > toReturn
+                                      cage 0 > tmp
+                                      cage 0 > toReturn
                                       xselfNotCopied' > xself
-                                      cage > lhs0
-                                      cage > e1
-                                      cage > e0
+                                      cage 0 > lhs0
+                                      cage 0 > e1
+                                      cage 0 > e0
                                       seq > @
                                         stdout "xg\n"
                                         xself.<
@@ -144,7 +134,7 @@
                                         mkCopy (xself) > tmp2
                                         (lhs0).write (tmp2.copy)
                                         tmp.write (goto ((((e0)).apply ((lhs0))).@))
-                                        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                                        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                                         (e1).write (tmp.result)
                                         ((e1).<)
                                         toReturn.write ((e1))
@@ -154,23 +144,24 @@
                   write.
                     xd
                     []
-                      newUID.apply 0 > xid
+                      newUID.apply 0 > x__id__
                       [] > apply
                         [stackUp] > @
-                          cage > pResult
+                          cage result > pResult
+                          cage 0 > tmp
                           [] > result
-                            cage > xh
-                            cage > xf
+                            cage 0 > xh
+                            cage 0 > xf
                             goto (((xc).apply).@) > base
-                            xd > xclass
+                            xd > x__class__
                             seq > initFields
                               write.
                                 xh
                                 []
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
-                                      cage > tmp
-                                      cage > toReturn
+                                      cage 0 > tmp
+                                      cage 0 > toReturn
                                       xselfNotCopied' > xself
                                       seq > @
                                         stdout "xh\n"
@@ -183,12 +174,12 @@
                                 []
                                   [xselfNotCopied] > apply
                                     [stackUp] > @
-                                      cage > tmp
-                                      cage > toReturn
+                                      cage 0 > tmp
+                                      cage 0 > toReturn
                                       xselfNotCopied' > xself
-                                      cage > lhs2
-                                      cage > e3
-                                      cage > e2
+                                      cage 0 > lhs2
+                                      cage 0 > e3
+                                      cage 0 > e2
                                       seq > @
                                         stdout "xf\n"
                                         xself.<
@@ -198,17 +189,17 @@
                                         mkCopy (xself) > tmp4
                                         (lhs2).write (tmp4.copy)
                                         tmp.write (goto ((((e2)).apply ((lhs2))).@))
-                                        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                                        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                                         (e3).write (tmp.result)
                                         ((e3).<)
                                         toReturn.write ((e3))
                                         stackUp.forward (return toReturn)
                                         123
-                              base.result.xclass.xid
+                              base.result.x__class__.x__id__
                             base.result > @
                           seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
                   tmp.write (goto ((((xd)).apply).@))
-                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e4).write (tmp.result)
                   ((e4).<)
                   mkCopy (e4) > tmp5
@@ -219,7 +210,7 @@
                   mkCopy (xo) > tmp7
                   (lhs4).write (tmp7.copy)
                   tmp.write (goto ((((e5)).apply ((lhs4))).@))
-                  (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e6).write (tmp.result)
                   ((e6).<)
                   (lhs6).write ((pyint 2))
@@ -231,7 +222,7 @@
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xmyC)).apply).@))
-        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)

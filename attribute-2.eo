@@ -1,21 +1,127 @@
-memory > xA
-[] > attribute-2
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory > bogusForceDataize
-  memory > xbogusForceDataize
-  memory > xhack
-  seq > @
-    xhack.write
-      []
-        memory > xtest
-        memory > xx
-        seq > @
-          seq
-            xtest.write
-              []
-                memory > xa
++package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pyfloat preface.pyfloat
++alias pystring preface.pystring
++alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
++junit
+
+[unused] > attribute-2
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xtest
+      seq > @
+        stdout "attribute-2\n"
+        write.
+          xtest
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > lhs1
+                cage 0 > e0
+                cage 0 > e3
+                cage 0 > e2
+                cage 0 > xA
+                cage 0 > xx
+                cage 0 > e1
                 seq > @
-                  (((unsupported)).apply)
-                    xa.write 123
-            xx.write (((xA)).apply)
+                  stdout "xtest\n"
+                  write.
+                    xA
+                    []
+                      newUID.apply 0 > x__id__
+                      [] > apply
+                        [stackUp] > @
+                          cage result > pResult
+                          cage 0 > tmp
+                          [] > result
+                            cage 0 > xa
+                            xA > x__class__
+                            seq > initFields
+                              xa.write (pyint 123)
+                          seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
+                  tmp.write (goto ((((xA)).apply).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e0).write (tmp.result)
+                  ((e0).<)
+                  mkCopy (e0) > tmp1
+                  (xx).write (tmp1.copy)
+                  mkCopy (xx.xa) > tmp2
+                  (e1).write (tmp2.copy)
+                  ((e1).<)
+                  mkCopy (e1.x__class__) > tmp3
+                  (e2).write (tmp3.copy)
+                  ((e2).<)
+                  mkCopy (xint) > tmp4
+                  (lhs1).write (tmp4.copy)
+                  (e3).write (((e2).eq (lhs1)))
+                  (e3).force
+                  ((e3).<)
+                  toReturn.write ((e3))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xtest)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @

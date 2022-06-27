@@ -1,36 +1,159 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pyfloat preface.pyfloat
++alias pystring preface.pystring
++alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
-memory > xwhileBreakContinue
-[] > while_break_continue1
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory > bogusForceDataize
-  memory > xbogusForceDataize
-  memory > xhack
-  seq > @
-    xhack.write
-      []
-        memory > xwhile_break_continue1
-        seq > @
-          seq
-            xwhile_break_continue1.write
-              []
-                memory > xj
-                memory > xi
+
+[unused] > while_break_continue1
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xwhile_break_continue1
+      seq > @
+        stdout "while_break_continue1\n"
+        write.
+          xwhile_break_continue1
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > lhs0
+                cage 0 > xj
+                cage 0 > e1
+                cage 0 > e0
+                cage 0 > e3
+                cage 0 > xi
+                cage 0 > e2
                 seq > @
-                  seq
-                    xi.write (pyint 0)
-                    xj.write (pyint 0)
-                    while.
-                      (pybool TRUE)
-                      [unused]
+                  stdout "xwhile_break_continue1\n"
+                  (xi).write ((pyint 0))
+                  (xi).force
+                  (xj).write ((pyint 0))
+                  (xj).force
+                  write.
+                    tmp
+                    goto
+                      [stackUp]
                         seq > @
-                          seq
-                            (((unsupported)).apply ((xi)) ((pyint 1)))
-                            ((xi).eq (pyint 3)).if
-                              (((unsupported)).apply)
-                            ((xj).eq (pyint 2)).if
-                              (((unsupported)).apply)
-                            (((unsupported)).apply ((xj)) ((pyint 1)))
-                    (((unsupported)).apply ((((xi).eq (pyint 3)).and ((xj).eq (pyint 2)))))
-            (((unsupported)).apply ((((xwhileBreakContinue)).apply)))
+                          (pybool TRUE).while
+                            [unused]
+                              cage 0 > tmp
+                              seq > @
+                                write.
+                                  tmp
+                                  goto
+                                    [stackUp]
+                                      cage 0 > tmp
+                                      seq > @
+                                        ((xi)).aug-add ((pyint 1))
+                                        (e0).write (((xi).eq (pyint 3)))
+                                        (e0).force
+                                        ((e0).<)
+                                        (e0).if
+                                          seq
+                                            stackUp.forward break
+                                            (pybool TRUE)
+                                          seq
+                                            (pybool TRUE)
+                                        (e1).write (((xj).eq (pyint 2)))
+                                        (e1).force
+                                        ((e1).<)
+                                        (e1).if
+                                          seq
+                                            stackUp.forward continue
+                                            (pybool TRUE)
+                                          seq
+                                            (pybool TRUE)
+                                        ((xj)).aug-add ((pyint 1))
+                                        stackUp.forward continue
+                                        123
+                                (tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                0
+                          stackUp.forward raiseNothing
+                  if.
+                    tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
+                    stackUp.forward tmp
+                    0
+                  (e2).write (((xi).eq (pyint 3)))
+                  (e2).force
+                  ((e2).<)
+                  (e2).if
+                    seq
+                      (e3).write (((xj).eq (pyint 2)))
+                      (e3).force
+                      ((e3).<)
+                      (pybool TRUE)
+                    seq
+                      (lhs0).write ((pybool FALSE))
+                      (lhs0).force
+                      mkCopy (lhs0) > tmp1
+                      (e3).write (tmp1.copy)
+                      (pybool TRUE)
+                  toReturn.write ((e3))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xwhile_break_continue1)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @

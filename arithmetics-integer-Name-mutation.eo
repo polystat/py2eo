@@ -1,83 +1,72 @@
 +package org.eolang
-+alias goto org.eolang.gray.goto
++alias goto org.eolang.goto
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
-+alias cage org.eolang.gray.cage
++alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
 
 [unused] > arithmetics-integer
   [] > apply
     [stackUp] > @
-      [x] > mkCopy
-        x' > copy
-        copy.< > @
-      [] > newUID
-        memory > cur
-        [unused] > apply
-          seq > @
-            cur.write (cur.is-empty.if (5) (cur.add (1)))
-            (pyint cur)
-      [] > raiseEmpty
-        [] > xclass
-          (pyint 4) > xid
-      [res] > return
-        res > result
-        [] > xclass
-          (pyint 3) > xid
-      [] > break
-        [] > xclass
-          (pyint 2) > xid
-      [] > continue
-        [] > xclass
-          (pyint 1) > xid
-      [] > raiseNothing
-        [] > xclass
-          (pyint 0) > xid
       [id] > is-exception
         id.greater (pyint 3) > @
       [id] > is-break-continue-return
         (id.greater (pyint 0)).and (id.less (pyint 4)) > @
-      cage > xcurrent-exception
-      cage > xcaught
-      pyint 0 > dummy-int-usage
-      pybool TRUE > dummy-bool-usage
-      pystring (sprintf "") > dummy-bool-string
-      [] > xmyArray
-        [initValue] > apply
+      [] > xbool
+        [x] > apply
           [stackUp] > @
-            cage > pResult
-            [] > result
-              cage > value
-              [] > xlength
-                [self] > apply
-                  [stackUp] > @
-                    seq > @
-                      stackUp.forward (return (pyint (self.value.length)))
-                      123
-              [] > xget
-                [self i] > apply
-                  [stackUp] > @
-                    seq > @
-                      stackUp.forward (return (self.value.get i))
-                      123
-              [] > xappend
-                [self x] > apply
-                  [stackUp] > @
-                    seq > @
-                      mkCopy (self.value) > tmp
-                      self.value.write (tmp.copy.append x)
-                      stackUp.forward (return 0)
             seq > @
-              result.value.write initValue
-              pResult.write result
-              stackUp.forward (return pResult)
-      cage > tmp
-      cage > toReturn
-      cage > assertMe
-      cage > xarithmetics_integer
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xarithmetics_integer
       seq > @
         stdout "arithmetics-integer\n"
         write.
@@ -85,86 +74,86 @@
           []
             [] > apply
               [stackUp] > @
-                cage > tmp
-                cage > toReturn
-                cage > lhs32
-                cage > e12
-                cage > e23
-                cage > lhs45
-                cage > lhs23
-                cage > lhs15
-                cage > e6
-                cage > lhs40
-                cage > e18
-                cage > lhs0
-                cage > e29
-                cage > lhs25
-                cage > lhs37
-                cage > lhs42
-                cage > e1
-                cage > xorr
-                cage > lhs31
-                cage > lhs48
-                cage > xpow
-                cage > xrem
-                cage > lhs29
-                cage > e5
-                cage > e28
-                cage > lhs44
-                cage > e7
-                cage > lhs17
-                cage > e17
-                cage > xxorr
-                cage > lhs33
-                cage > xuminus2
-                cage > lhs21
-                cage > e0
-                cage > e20
-                cage > lhs43
-                cage > lhs28
-                cage > xshl
-                cage > lhs5
-                cage > e4
-                cage > e24
-                cage > lhs36
-                cage > lhs47
-                cage > e13
-                cage > lhs13
-                cage > xandd
-                cage > xsub
-                cage > e8
-                cage > e16
-                cage > lhs39
-                cage > e27
-                cage > e3
-                cage > lhs27
-                cage > lhs34
-                cage > xmul
-                cage > lhs9
-                cage > lhs35
-                cage > e21
-                cage > xshr
-                cage > e10
-                cage > xadd
-                cage > e25
-                cage > lhs11
-                cage > e14
-                cage > lhs46
-                cage > lhs3
-                cage > e9
-                cage > lhs30
-                cage > lhs19
-                cage > e15
-                cage > xdiv
-                cage > e2
-                cage > lhs41
-                cage > e11
-                cage > e26
-                cage > lhs7
-                cage > e22
-                cage > lhs38
-                cage > xuplus
-                cage > e19
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > lhs32
+                cage 0 > e12
+                cage 0 > e23
+                cage 0 > lhs45
+                cage 0 > lhs23
+                cage 0 > lhs15
+                cage 0 > e6
+                cage 0 > lhs40
+                cage 0 > e18
+                cage 0 > lhs0
+                cage 0 > e29
+                cage 0 > lhs25
+                cage 0 > lhs37
+                cage 0 > lhs42
+                cage 0 > e1
+                cage 0 > xorr
+                cage 0 > lhs31
+                cage 0 > lhs48
+                cage 0 > xpow
+                cage 0 > xrem
+                cage 0 > lhs29
+                cage 0 > e5
+                cage 0 > e28
+                cage 0 > lhs44
+                cage 0 > e7
+                cage 0 > lhs17
+                cage 0 > e17
+                cage 0 > xxorr
+                cage 0 > lhs33
+                cage 0 > xuminus2
+                cage 0 > lhs21
+                cage 0 > e0
+                cage 0 > e20
+                cage 0 > lhs43
+                cage 0 > lhs28
+                cage 0 > xshl
+                cage 0 > lhs5
+                cage 0 > e4
+                cage 0 > e24
+                cage 0 > lhs36
+                cage 0 > lhs47
+                cage 0 > e13
+                cage 0 > lhs13
+                cage 0 > xandd
+                cage 0 > xsub
+                cage 0 > e8
+                cage 0 > e16
+                cage 0 > lhs39
+                cage 0 > e27
+                cage 0 > e3
+                cage 0 > lhs27
+                cage 0 > lhs34
+                cage 0 > xmul
+                cage 0 > lhs9
+                cage 0 > lhs35
+                cage 0 > e21
+                cage 0 > xshr
+                cage 0 > e10
+                cage 0 > xadd
+                cage 0 > e25
+                cage 0 > lhs11
+                cage 0 > e14
+                cage 0 > lhs46
+                cage 0 > lhs3
+                cage 0 > e9
+                cage 0 > lhs30
+                cage 0 > lhs19
+                cage 0 > e15
+                cage 0 > xdiv
+                cage 0 > e2
+                cage 0 > lhs41
+                cage 0 > e11
+                cage 0 > e26
+                cage 0 > lhs7
+                cage 0 > e22
+                cage 0 > lhs38
+                cage 0 > xuplus
+                cage 0 > e19
                 seq > @
                   stdout "xarithmetics_integer\n"
                   (e0).write (((pyint 10).pow (pyint 2)))
@@ -208,8 +197,9 @@
                   ((e8).<)
                   mkCopy (e8) > tmp4
                   (xmul).write (tmp4.copy)
-                  (e9).write (((pyint 100).div (pyint 11)))
-                  (e9).force
+                  tmp.write (((pyint 100).div (pyint 11)))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e9).write (tmp.result)
                   ((e9).<)
                   (lhs7).write ((pyint 9))
                   (lhs7).force
@@ -441,7 +431,7 @@
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xarithmetics_integer)).apply).@))
-        (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)

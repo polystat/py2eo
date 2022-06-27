@@ -7,7 +7,7 @@ def for_try_except_continue_finally(): # 1:0-14:38
             print("Sorry ! You are dividing by zero ") # 7:12-7:53
             continue # 8:12-8:16
         else:
-            print("Yeah ! Your answer is :", result) # 10:12-10:51
+            pass # 10:12-10:15
         finally:
             res.append(num) # 12:12-12:26
 

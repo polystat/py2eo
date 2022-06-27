@@ -1,3 +1,3 @@
-def test(): # 1:0-4:-1
-    return 42  # 2:2-2:10
-    print(42 ) # 3:2-3:10
+def test(): # 1:0-3:26
+    return True # 2:4-2:14
+    return False # 3:4-3:15

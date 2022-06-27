@@ -9,204 +9,23 @@ Diff between original (left) and mutated (right) python files
 >             continue # 11:12-11:16
 
 Diff between original (left) and mutated (right) eo files
-2,8d1
-< +alias goto org.eolang.gray.goto
-< +alias stdout org.eolang.io.stdout
-< +alias sprintf org.eolang.txt.sprintf
-< +alias cage org.eolang.gray.cage
-< +alias pyint preface.pyint
-< +alias pystring preface.pystring
-< +alias pybool preface.pybool
-10,164c3,36
-< 
-< [unused] > while_break1
-<   [] > apply
-<     [stackUp] > @
-<       [x] > mkCopy
-<         x' > copy
-<         copy.< > @
-<       [] > newUID
-<         memory > cur
-<         [unused] > apply
-<           seq > @
-<             cur.write (cur.is-empty.if (5) (cur.add (1)))
-<             (pyint cur)
-<       [] > raiseEmpty
-<         [] > xclass
-<           (pyint 4) > xid
-<       [res] > return
-<         res > result
-<         [] > xclass
-<           (pyint 3) > xid
-<       [] > break
-<         [] > xclass
-<           (pyint 2) > xid
-<       [] > continue
-<         [] > xclass
-<           (pyint 1) > xid
-<       [] > raiseNothing
-<         [] > xclass
-<           (pyint 0) > xid
-<       [id] > is-exception
-<         id.greater (pyint 3) > @
-<       [id] > is-break-continue-return
-<         (id.greater (pyint 0)).and (id.less (pyint 4)) > @
-<       cage > xcurrent-exception
-<       cage > xcaught
-<       pyint 0 > dummy-int-usage
-<       pybool TRUE > dummy-bool-usage
-<       pystring (sprintf "") > dummy-bool-string
-<       [] > xmyArray
-<         [initValue] > apply
-<           [stackUp] > @
-<             cage > pResult
-<             [] > result
-<               cage > value
-<               [] > xlength
-<                 [self] > apply
-<                   [stackUp] > @
-<                     seq > @
-<                       stackUp.forward (return (pyint (self.value.length)))
-<                       123
-<               [] > xget
-<                 [self i] > apply
-<                   [stackUp] > @
-<                     seq > @
-<                       stackUp.forward (return (self.value.get i))
-<                       123
-<               [] > xappend
-<                 [self x] > apply
-<                   [stackUp] > @
-<                     seq > @
-<                       mkCopy (self.value) > tmp
-<                       self.value.write (tmp.copy.append x)
-<                       stackUp.forward (return 0)
-<             seq > @
-<               result.value.write initValue
-<               pResult.write result
-<               stackUp.forward (return pResult)
-<       cage > tmp
-<       cage > toReturn
-<       cage > assertMe
-<       cage > xwhile_break1
-<       seq > @
-<         stdout "while_break1\n"
-<         write.
-<           xwhile_break1
-<           []
-<             [] > apply
-<               [stackUp] > @
-<                 cage > tmp
-<                 cage > toReturn
-<                 cage > e1
-<                 cage > xf2
-<                 cage > e0
-<                 cage > xf1
-<                 cage > e4
-<                 cage > e3
-<                 cage > xf0
-<                 cage > e2
-<                 cage > xii
-<                 seq > @
-<                   stdout "xwhile_break1\n"
-<                   (xf0).write ((pyint 0))
-<                   (xf0).force
-<                   (xf1).write ((pyint 1))
-<                   (xf1).force
-<                   (xii).write ((pyint 0))
-<                   (xii).force
-<                   write.
-<                     xcurrent-exception
-<                     goto
-<                       [stackUp]
-<                         seq > @
-<                           (pybool TRUE).while
-<                             [unused]
-<                               seq > @
-<                                 (e3).write (((xii).less (pyint 110)))
-<                                 (e3).force
-<                                 ((e3).<)
-<                                 ((e3).not).if
-<                                   seq
-<                                     stackUp.forward break
-<                                     (pybool TRUE)
-<                                   seq
-<                                     (pybool TRUE)
-<                                 (e0).write (((xf0).add (xf1)))
-<                                 (e0).force
-<                                 ((e0).<)
-<                                 mkCopy (e0) > tmp1
-<                                 (xf2).write (tmp1.copy)
-<                                 (e1).write (((xii).add (pyint 1)))
-<                                 (e1).force
-<                                 ((e1).<)
-<                                 mkCopy (e1) > tmp2
-<                                 (xii).write (tmp2.copy)
-<                                 mkCopy (xf1) > tmp3
-<                                 (xf0).write (tmp3.copy)
-<                                 mkCopy (xf2) > tmp4
-<                                 (xf1).write (tmp4.copy)
-<                                 (e2).write (((xii).eq (pyint 9)))
-<                                 (e2).force
-<                                 ((e2).<)
-<                                 (e2).if
-<                                   seq
-<                                     stackUp.forward break
-<                                     (pybool TRUE)
-<                                   seq
-<                                     (pybool TRUE)
-<                                 (pybool TRUE)
-<                           stackUp.forward raiseNothing
-<                   if.
-<                     xcurrent-exception.xclass.xid.neq (break.xclass.xid)
-<                     stackUp.forward xcurrent-exception
-<                     0
-<                   (e4).write (((pyint 34).eq (xf0)))
-<                   (e4).force
-<                   ((e4).<)
-<                   toReturn.write ((e4))
-<                   stackUp.forward (return toReturn)
-<                   123
-<         tmp.write (goto ((((xwhile_break1)).apply).@))
-<         (tmp.xclass.xid.neq (return.xclass.xid)).if (stackUp.forward tmp) 0
-<         (assertMe).write (tmp.result)
-<         toReturn.write ((assertMe))
-<         stackUp.forward (return toReturn)
-<   (goto (apply.@)).result > @
-\ No newline at end of file
+69c69
+<       cage 0 > xwhile_break1
 ---
-> [] > while_break1
->   [args...] > unsupported
->   [args...] > xunsupported
->   memory > bogusForceDataize
->   memory > xbogusForceDataize
->   memory > xhack
->   seq > @
->     xhack.write
->       []
->         memory > xwhile_continue1
->         seq > @
->           xwhile_continue1.write
->             []
->               memory > xf2
->               memory > xf1
->               memory > xf0
->               memory > xii
->               seq > @
->                 seq
->                   xf0.write (pyint 0)
->                   xf1.write (pyint 1)
->                   xii.write (pyint 0)
->                   while.
->                     ((xii).less (pyint 110))
->                     [unused]
->                       seq > @
->                         seq
->                           xf2.write ((xf0).add (xf1))
->                           xii.write ((xii).add (pyint 1))
->                           xf0.write (xf1)
->                           xf1.write (xf2)
->                           ((xii).eq (pyint 9)).if
->                             (((unsupported)).apply)
->                   (((unsupported)).apply (((pyint 34).eq (xf0))))
-\ No newline at end of file
+>       cage 0 > xwhile_continue1
+73c73
+<           xwhile_break1
+---
+>           xwhile_continue1
+89c89
+<                   stdout "xwhile_break1\n"
+---
+>                   stdout "xwhile_continue1\n"
+139c139
+<                                             stackUp.forward break
+---
+>                                             stackUp.forward continue
+158c158
+<         tmp.write (goto ((((xwhile_break1)).apply).@))
+---
+>         tmp.write (goto ((((xwhile_continue1)).apply).@))

@@ -1,48 +1,335 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pyfloat preface.pyfloat
++alias pystring preface.pystring
++alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
-memory > xmyArray
-memory > xlen
-[] > nested_while_break_continue
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory > bogusForceDataize
-  memory > xbogusForceDataize
-  memory > xhack
-  seq > @
-    xhack.write
-      []
-        memory > xnested_while_continue_continue
-        seq > @
-          xnested_while_continue_continue.write
-            []
-              memory > xarr1
-              memory > xi
-              memory > xarr2
-              memory > xres
-              memory > xj
-              seq > @
-                seq
-                  xarr1.write (((xmyArray)).apply ((((unsupported)).apply ((pyint 1)) ((pyint 2)) ((pyint 3)))))
-                  xarr2.write (((xmyArray)).apply ((((unsupported)).apply ((pyint 4)) ((pyint 5)) ((pyint 6)))))
-                  xres.write (((xmyArray)).apply ((((unsupported)).apply)))
-                  xi.write ((pyint 1).neg)
-                  xj.write ((pyint 1).neg)
-                  while.
-                    ((xi).leq (((xlen)).apply ((xarr1))))
-                    [unused]
-                      seq > @
-                        seq
-                          (((unsupported)).apply ((xi)) ((pyint 1)))
-                          while.
-                            ((xj).leq (((xlen)).apply ((xarr2))))
+
+[unused] > nested_while_break_continue
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xnested_while_continue_continue
+      seq > @
+        stdout "nested_while_break_continue\n"
+        write.
+          xnested_while_continue_continue
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > lhs18
+                cage 0 > e23
+                cage 0 > e1
+                cage 0 > lhs14
+                cage 0 > e7
+                cage 0 > e17
+                cage 0 > lhs13
+                cage 0 > xres
+                cage 0 > e3
+                cage 0 > lhs11
+                cage 0 > e14
+                cage 0 > e9
+                cage 0 > e22
+                cage 0 > e19
+                cage 0 > e6
+                cage 0 > e18
+                cage 0 > lhs0
+                cage 0 > e12
+                cage 0 > xj
+                cage 0 > lhs4
+                cage 0 > e5
+                cage 0 > e0
+                cage 0 > e20
+                cage 0 > xarr2
+                cage 0 > lhs5
+                cage 0 > e4
+                cage 0 > e24
+                cage 0 > e13
+                cage 0 > e8
+                cage 0 > e16
+                cage 0 > lhs2
+                cage 0 > e21
+                cage 0 > lhs9
+                cage 0 > e10
+                cage 0 > lhs16
+                cage 0 > e15
+                cage 0 > xi
+                cage 0 > e2
+                cage 0 > xarr1
+                cage 0 > lhs7
+                cage 0 > e11
+                seq > @
+                  stdout "xnested_while_continue_continue\n"
+                  tmp.write (goto ((((xmyArray)).apply ((* (pyint 1) (pyint 2) (pyint 3)))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e0).write (tmp.result)
+                  ((e0).<)
+                  mkCopy (e0) > tmp1
+                  (xarr1).write (tmp1.copy)
+                  tmp.write (goto ((((xmyArray)).apply ((* (pyint 4) (pyint 5) (pyint 6)))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e1).write (tmp.result)
+                  ((e1).<)
+                  mkCopy (e1) > tmp2
+                  (xarr2).write (tmp2.copy)
+                  tmp.write (goto ((((xmyArray)).apply ((*))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e2).write (tmp.result)
+                  ((e2).<)
+                  mkCopy (e2) > tmp3
+                  (xres).write (tmp3.copy)
+                  (e3).write (((pyint 1).neg))
+                  (e3).force
+                  ((e3).<)
+                  mkCopy (e3) > tmp4
+                  (xi).write (tmp4.copy)
+                  (e4).write (((pyint 1).neg))
+                  (e4).force
+                  ((e4).<)
+                  mkCopy (e4) > tmp5
+                  (xj).write (tmp5.copy)
+                  write.
+                    tmp
+                    goto
+                      [stackUp]
+                        seq > @
+                          (pybool TRUE).while
                             [unused]
+                              cage 0 > tmp
                               seq > @
-                                seq
-                                  (((unsupported)).apply ((xj)) ((pyint 1)))
-                                  (((xj).geq (((xlen)).apply ((xarr2)))).or ((((unsupported)).apply ((xarr2)) ((xj))).eq (pyint 4))).if
-                                    (((unsupported)).apply)
-                                  bogusForceDataize.write ((((xres).xappend)).apply ((((unsupported)).apply ((xarr2)) ((xj)))))
-                          (((xi).geq (((xlen)).apply ((xarr1)))).or ((((unsupported)).apply ((xarr1)) ((xi))).eq (pyint 3))).if
-                            (((unsupported)).apply)
-                          bogusForceDataize.write ((((xres).xappend)).apply ((((unsupported)).apply ((xarr1)) ((xi)))))
-                  (((unsupported)).apply (((xres).eq (((xmyArray)).apply ((((unsupported)).apply ((pyint 5)) ((pyint 6)) ((pyint 1)) ((pyint 2))))))))
+                                write.
+                                  tmp
+                                  goto
+                                    [stackUp]
+                                      cage 0 > tmp
+                                      seq > @
+                                        mkCopy (xi) > tmp6
+                                        (lhs16).write (tmp6.copy)
+                                        tmp.write (goto ((((xlen)).apply ((xarr1))).@))
+                                        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                        (e21).write (tmp.result)
+                                        ((e21).<)
+                                        (e22).write (((lhs16).leq (e21)))
+                                        (e22).force
+                                        ((e22).<)
+                                        ((e22).not).if
+                                          seq
+                                            stackUp.forward break
+                                            (pybool TRUE)
+                                          seq
+                                            (pybool TRUE)
+                                        ((xi)).aug-add ((pyint 1))
+                                        write.
+                                          tmp
+                                          goto
+                                            [stackUp]
+                                              seq > @
+                                                (pybool TRUE).while
+                                                  [unused]
+                                                    cage 0 > tmp
+                                                    seq > @
+                                                      write.
+                                                        tmp
+                                                        goto
+                                                          [stackUp]
+                                                            cage 0 > tmp
+                                                            seq > @
+                                                              mkCopy (xj) > tmp7
+                                                              (lhs7).write (tmp7.copy)
+                                                              tmp.write (goto ((((xlen)).apply ((xarr2))).@))
+                                                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                                              (e12).write (tmp.result)
+                                                              ((e12).<)
+                                                              (e13).write (((lhs7).leq (e12)))
+                                                              (e13).force
+                                                              ((e13).<)
+                                                              ((e13).not).if
+                                                                seq
+                                                                  stackUp.forward break
+                                                                  (pybool TRUE)
+                                                                seq
+                                                                  (pybool TRUE)
+                                                              ((xj)).aug-add ((pyint 1))
+                                                              mkCopy (xj) > tmp8
+                                                              (lhs0).write (tmp8.copy)
+                                                              tmp.write (goto ((((xlen)).apply ((xarr2))).@))
+                                                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                                              (e5).write (tmp.result)
+                                                              ((e5).<)
+                                                              (e6).write (((lhs0).geq (e5)))
+                                                              (e6).force
+                                                              ((e6).<)
+                                                              (e6).if
+                                                                seq
+                                                                  (lhs4).write ((pybool TRUE))
+                                                                  (lhs4).force
+                                                                  (pybool TRUE)
+                                                                seq
+                                                                  (e7).write (((xarr2).get (xj)))
+                                                                  (e7).force
+                                                                  ((e7).<)
+                                                                  (lhs2).write ((pyint 4))
+                                                                  (lhs2).force
+                                                                  (e8).write (((e7).eq (lhs2)))
+                                                                  (e8).force
+                                                                  ((e8).<)
+                                                                  mkCopy (e8) > tmp9
+                                                                  (lhs4).write (tmp9.copy)
+                                                                  (pybool TRUE)
+                                                              (lhs4).if
+                                                                seq
+                                                                  stackUp.forward continue
+                                                                  (pybool TRUE)
+                                                                seq
+                                                                  (pybool TRUE)
+                                                              mkCopy (xres.xappend) > tmp10
+                                                              (e9).write (tmp10.copy)
+                                                              ((e9).<)
+                                                              mkCopy (xres) > tmp11
+                                                              (lhs5).write (tmp11.copy)
+                                                              (e10).write (((xarr2).get (xj)))
+                                                              (e10).force
+                                                              ((e10).<)
+                                                              tmp.write (goto ((((e9)).apply ((lhs5)) ((e10))).@))
+                                                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                                              (e11).write (tmp.result)
+                                                              ((e11).<)
+                                                              stackUp.forward continue
+                                                              123
+                                                      (tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                                      0
+                                                stackUp.forward raiseNothing
+                                        if.
+                                          tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
+                                          stackUp.forward tmp
+                                          0
+                                        mkCopy (xi) > tmp12
+                                        (lhs9).write (tmp12.copy)
+                                        tmp.write (goto ((((xlen)).apply ((xarr1))).@))
+                                        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                        (e14).write (tmp.result)
+                                        ((e14).<)
+                                        (e15).write (((lhs9).geq (e14)))
+                                        (e15).force
+                                        ((e15).<)
+                                        (e15).if
+                                          seq
+                                            (lhs13).write ((pybool TRUE))
+                                            (lhs13).force
+                                            (pybool TRUE)
+                                          seq
+                                            (e16).write (((xarr1).get (xi)))
+                                            (e16).force
+                                            ((e16).<)
+                                            (lhs11).write ((pyint 3))
+                                            (lhs11).force
+                                            (e17).write (((e16).eq (lhs11)))
+                                            (e17).force
+                                            ((e17).<)
+                                            mkCopy (e17) > tmp13
+                                            (lhs13).write (tmp13.copy)
+                                            (pybool TRUE)
+                                        (lhs13).if
+                                          seq
+                                            stackUp.forward continue
+                                            (pybool TRUE)
+                                          seq
+                                            (pybool TRUE)
+                                        mkCopy (xres.xappend) > tmp14
+                                        (e18).write (tmp14.copy)
+                                        ((e18).<)
+                                        mkCopy (xres) > tmp15
+                                        (lhs14).write (tmp15.copy)
+                                        (e19).write (((xarr1).get (xi)))
+                                        (e19).force
+                                        ((e19).<)
+                                        tmp.write (goto ((((e18)).apply ((lhs14)) ((e19))).@))
+                                        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                        (e20).write (tmp.result)
+                                        ((e20).<)
+                                        stackUp.forward continue
+                                        123
+                                (tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                0
+                          stackUp.forward raiseNothing
+                  if.
+                    tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
+                    stackUp.forward tmp
+                    0
+                  mkCopy (xres) > tmp16
+                  (lhs18).write (tmp16.copy)
+                  tmp.write (goto ((((xmyArray)).apply ((* (pyint 5) (pyint 6) (pyint 1) (pyint 2)))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e23).write (tmp.result)
+                  ((e23).<)
+                  (e24).write (((lhs18).eq (e23)))
+                  (e24).force
+                  ((e24).<)
+                  toReturn.write ((e24))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xnested_while_continue_continue)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @

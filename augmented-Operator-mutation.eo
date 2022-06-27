@@ -1,53 +1,180 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pyfloat preface.pyfloat
++alias pystring preface.pystring
++alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
-[] > augmented
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory > bogusForceDataize
-  memory > xbogusForceDataize
-  memory > xhack
-  seq > @
-    xhack.write
-      []
-        memory > xaugmented
-        seq > @
-          xaugmented.write
-            []
-              memory > xxorr
-              memory > xmul
-              memory > xshr
-              memory > xplus
-              memory > xdiv
-              memory > xminus
-              memory > xx
-              memory > xorr
-              memory > xpow
-              memory > xmod
-              memory > xshl
-              memory > xandd
-              seq > @
-                seq
-                  xx.write (pyint 2)
-                  (((unsupported)).apply ((xx)) ((pyint 1)))
-                  xplus.write ((xx).eq (pyint 3))
-                  (((unsupported)).apply ((xx)) ((pyint 1)))
-                  xminus.write ((xx).eq (pyint 2))
-                  (((unsupported)).apply ((xx)) ((pyint 3)))
-                  xmul.write ((xx).eq (pyint 6))
-                  (((unsupported)).apply ((xx)) ((pyint 4)))
-                  xdiv.write ((xx).eq (pyint 1))
-                  (((unsupported)).apply ((xx)) ((pyint 2)))
-                  xshl.write ((xx).eq (pyint 4))
-                  (((unsupported)).apply ((xx)) ((pyint 3)))
-                  xmod.write ((xx).eq (pyint 1))
-                  (((unsupported)).apply ((xx)) ((pyint 4)))
-                  xorr.write ((xx).eq (pyint 5))
-                  (((unsupported)).apply ((xx)) ((pyint 4)))
-                  xandd.write ((xx).eq (pyint 4))
-                  (((unsupported)).apply ((xx)) ((pyint 1)))
-                  xshr.write ((xx).eq (pyint 2))
-                  (((unsupported)).apply ((xx)) ((pyint 4)))
-                  xpow.write ((xx).eq (pyint 16))
-                  (((unsupported)).apply ((xx)) ((pyint 24)))
-                  xxorr.write ((xx).eq (pyint 8))
-                  (((unsupported)).apply ((((((((((((xplus).and (xminus)).and (xmul)).and (xdiv)).and (xshl)).and (xmod)).and (xorr)).and (xandd)).and (xshr)).and (xpow)).and (xxorr))))
+
+[unused] > augmented
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xaugmented
+      seq > @
+        stdout "augmented\n"
+        write.
+          xaugmented
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > e6
+                cage 0 > xpow
+                cage 0 > e5
+                cage 0 > e7
+                cage 0 > xxorr
+                cage 0 > e0
+                cage 0 > xshl
+                cage 0 > e4
+                cage 0 > xandd
+                cage 0 > e8
+                cage 0 > e3
+                cage 0 > xmul
+                cage 0 > xmod
+                cage 0 > e9
+                cage 0 > xdiv
+                cage 0 > e2
+                cage 0 > xplus
+                cage 0 > xminus
+                cage 0 > xx
+                cage 0 > e1
+                cage 0 > xorr
+                cage 0 > xshr
+                cage 0 > e10
+                seq > @
+                  stdout "xaugmented\n"
+                  (xx).write ((pyint 2))
+                  (xx).force
+                  ((xx)).aug-sub ((pyint 1))
+                  (e0).write (((xx).eq (pyint 3)))
+                  (e0).force
+                  ((e0).<)
+                  mkCopy (e0) > tmp1
+                  (xplus).write (tmp1.copy)
+                  ((xx)).aug-sub ((pyint 1))
+                  (e1).write (((xx).eq (pyint 2)))
+                  (e1).force
+                  ((e1).<)
+                  mkCopy (e1) > tmp2
+                  (xminus).write (tmp2.copy)
+                  ((xx)).aug-mul ((pyint 3))
+                  (e2).write (((xx).eq (pyint 6)))
+                  (e2).force
+                  ((e2).<)
+                  mkCopy (e2) > tmp3
+                  (xmul).write (tmp3.copy)
+                  ((xx)).aug-div ((pyint 4))
+                  (e3).write (((xx).eq (pyint 1)))
+                  (e3).force
+                  ((e3).<)
+                  mkCopy (e3) > tmp4
+                  (xdiv).write (tmp4.copy)
+                  ((xx)).aug-left ((pyint 2))
+                  (e4).write (((xx).eq (pyint 4)))
+                  (e4).force
+                  ((e4).<)
+                  mkCopy (e4) > tmp5
+                  (xshl).write (tmp5.copy)
+                  ((xx)).aug-mod ((pyint 3))
+                  (e5).write (((xx).eq (pyint 1)))
+                  (e5).force
+                  ((e5).<)
+                  mkCopy (e5) > tmp6
+                  (xmod).write (tmp6.copy)
+                  ((xx)).aug-or ((pyint 4))
+                  (e6).write (((xx).eq (pyint 5)))
+                  (e6).force
+                  ((e6).<)
+                  mkCopy (e6) > tmp7
+                  (xorr).write (tmp7.copy)
+                  ((xx)).aug-and ((pyint 4))
+                  (e7).write (((xx).eq (pyint 4)))
+                  (e7).force
+                  ((e7).<)
+                  mkCopy (e7) > tmp8
+                  (xandd).write (tmp8.copy)
+                  ((xx)).aug-right ((pyint 1))
+                  (e8).write (((xx).eq (pyint 2)))
+                  (e8).force
+                  ((e8).<)
+                  mkCopy (e8) > tmp9
+                  (xshr).write (tmp9.copy)
+                  ((xx)).aug-pow ((pyint 4))
+                  (e9).write (((xx).eq (pyint 16)))
+                  (e9).force
+                  ((e9).<)
+                  mkCopy (e9) > tmp10
+                  (xpow).write (tmp10.copy)
+                  ((xx)).aug-xor ((pyint 24))
+                  (e10).write (((xx).eq (pyint 8)))
+                  (e10).force
+                  ((e10).<)
+                  mkCopy (e10) > tmp11
+                  (xxorr).write (tmp11.copy)
+                  toReturn.write ((((((((((((xplus).if (xminus) (pybool FALSE)).if (xmul) (pybool FALSE)).if (xdiv) (pybool FALSE)).if (xshl) (pybool FALSE)).if (xmod) (pybool FALSE)).if (xorr) (pybool FALSE)).if (xandd) (pybool FALSE)).if (xshr) (pybool FALSE)).if (xpow) (pybool FALSE)).if (xxorr) (pybool FALSE)))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xaugmented)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @

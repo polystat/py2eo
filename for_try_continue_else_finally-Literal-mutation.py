@@ -8,7 +8,7 @@ def for_try_continue_else_finally(): # 1:0-20:42
             res.append(10 ) # 8:12-8:26
             continue # 9:12-9:19
         else:
-            print("Yeah ! Your answer is :", result) # 11:12-11:51
+            pass # 11:12-11:15
             res.append(11 ) # 12:12-12:26
         finally:
             res.append(num) # 14:12-14:26

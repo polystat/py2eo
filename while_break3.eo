@@ -1,35 +1,199 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pyfloat preface.pyfloat
++alias pystring preface.pystring
++alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
-memory > xmyArray
-memory > xlen
-[] > while_break3
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory > bogusForceDataize
-  memory > xbogusForceDataize
-  memory > xhack
-  seq > @
-    xhack.write
-      []
-        memory > xwhile_break3
-        seq > @
-          xwhile_break3.write
-            []
-              memory > xnums
-              memory > xi
-              seq > @
-                seq
-                  xnums.write (((xmyArray)).apply ((((unsupported)).apply ((pyint 1)) ((pyint 2)) ((pyint 3)) ((pyint 4)) ((pyint 5)) ((pyint 6)) ((pyint 7)) ((pyint 8)) ((pyint 9)))))
-                  xi.write (pyint 0)
-                  while.
-                    ((((xlen)).apply ((xnums))).greater (pyint 0))
-                    [unused]
-                      seq > @
-                        seq
-                          ((((unsupported)).apply ((xnums)) ((xi))).eq (pyint 6)).if
-                            seq
-                              bogusForceDataize.write ((((xnums).xclear)).apply)
-                              bogusForceDataize.write ((((xnums).xappend)).apply ((pyint 42)))
-                              (((unsupported)).apply)
-                          (((unsupported)).apply ((xi)) ((pyint 1)))
-                  (((unsupported)).apply (((xnums).eq (((xmyArray)).apply ((((unsupported)).apply ((pyint 42))))))))
+
+[unused] > while_break3
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xwhile_break3
+      seq > @
+        stdout "while_break3\n"
+        write.
+          xwhile_break3
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > e1
+                cage 0 > e5
+                cage 0 > e7
+                cage 0 > e0
+                cage 0 > lhs9
+                cage 0 > e10
+                cage 0 > xi
+                cage 0 > e6
+                cage 0 > lhs0
+                cage 0 > lhs5
+                cage 0 > e4
+                cage 0 > e8
+                cage 0 > lhs2
+                cage 0 > xnums
+                cage 0 > e3
+                cage 0 > lhs3
+                cage 0 > e9
+                cage 0 > e2
+                cage 0 > lhs7
+                seq > @
+                  stdout "xwhile_break3\n"
+                  tmp.write (goto ((((xmyArray)).apply ((* (pyint 1) (pyint 2) (pyint 3) (pyint 4) (pyint 5) (pyint 6) (pyint 7) (pyint 8) (pyint 9)))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e0).write (tmp.result)
+                  ((e0).<)
+                  mkCopy (e0) > tmp1
+                  (xnums).write (tmp1.copy)
+                  (xi).write ((pyint 0))
+                  (xi).force
+                  write.
+                    tmp
+                    goto
+                      [stackUp]
+                        seq > @
+                          (pybool TRUE).while
+                            [unused]
+                              cage 0 > tmp
+                              seq > @
+                                write.
+                                  tmp
+                                  goto
+                                    [stackUp]
+                                      cage 0 > tmp
+                                      seq > @
+                                        tmp.write (goto ((((xlen)).apply ((xnums))).@))
+                                        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                        (e7).write (tmp.result)
+                                        ((e7).<)
+                                        (lhs7).write ((pyint 0))
+                                        (lhs7).force
+                                        (e8).write (((e7).greater (lhs7)))
+                                        (e8).force
+                                        ((e8).<)
+                                        ((e8).not).if
+                                          seq
+                                            stackUp.forward break
+                                            (pybool TRUE)
+                                          seq
+                                            (pybool TRUE)
+                                        (e5).write (((xnums).get (xi)))
+                                        (e5).force
+                                        ((e5).<)
+                                        (lhs5).write ((pyint 6))
+                                        (lhs5).force
+                                        (e6).write (((e5).eq (lhs5)))
+                                        (e6).force
+                                        ((e6).<)
+                                        (e6).if
+                                          seq
+                                            mkCopy (xnums.xclear) > tmp2
+                                            (e1).write (tmp2.copy)
+                                            ((e1).<)
+                                            mkCopy (xnums) > tmp3
+                                            (lhs0).write (tmp3.copy)
+                                            tmp.write (goto ((((e1)).apply ((lhs0))).@))
+                                            (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                            (e2).write (tmp.result)
+                                            ((e2).<)
+                                            mkCopy (xnums.xappend) > tmp4
+                                            (e3).write (tmp4.copy)
+                                            ((e3).<)
+                                            mkCopy (xnums) > tmp5
+                                            (lhs2).write (tmp5.copy)
+                                            (lhs3).write ((pyint 42))
+                                            (lhs3).force
+                                            tmp.write (goto ((((e3)).apply ((lhs2)) ((lhs3))).@))
+                                            (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                            (e4).write (tmp.result)
+                                            ((e4).<)
+                                            stackUp.forward break
+                                            (pybool TRUE)
+                                          seq
+                                            (pybool TRUE)
+                                        ((xi)).aug-add ((pyint 1))
+                                        stackUp.forward continue
+                                        123
+                                (tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                0
+                          stackUp.forward raiseNothing
+                  if.
+                    tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
+                    stackUp.forward tmp
+                    0
+                  mkCopy (xnums) > tmp6
+                  (lhs9).write (tmp6.copy)
+                  tmp.write (goto ((((xmyArray)).apply ((* (pyint 42)))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e9).write (tmp.result)
+                  ((e9).<)
+                  (e10).write (((lhs9).eq (e9)))
+                  (e10).force
+                  ((e10).<)
+                  toReturn.write ((e10))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xwhile_break3)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @
