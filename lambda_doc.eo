@@ -1,0 +1,126 @@
++package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pyfloat preface.pyfloat
++alias pystring preface.pystring
++alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
++junit
+
+[unused] > lambda_doc
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyIntClass > xint
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xlambda1
+      seq > @
+        stdout "lambda_doc\n"
+        write.
+          xlambda1
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > e3
+                cage 0 > e2
+                cage 0 > xf
+                cage 0 > xx
+                cage 0 > e1
+                cage 0 > anonFun0
+                seq > @
+                  stdout "xlambda1\n"
+                  write.
+                    anonFun0
+                    []
+                      [xxNotCopied] > apply
+                        [stackUp] > @
+                          cage 0 > tmp
+                          cage 0 > toReturn
+                          xxNotCopied' > xx
+                          cage 0 > e0
+                          seq > @
+                            stdout "anonFun0\n"
+                            xx.<
+                            (e0).write (((xx).mul (pyint 10)))
+                            (e0).force
+                            ((e0).<)
+                            toReturn.write ((e0))
+                            stackUp.forward (return toReturn)
+                            123
+                  mkCopy (anonFun0) > tmp1
+                  (xf).write (tmp1.copy)
+                  tmp.write (goto ((((xf)).apply ((pyint 11))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e1).write (tmp.result)
+                  ((e1).<)
+                  mkCopy (e1) > tmp2
+                  (xx).write (tmp2.copy)
+                  stdout (sprintf "%s\n" ((xx).as-string))
+                  ((e2).<)
+                  (e3).write (((xx).eq (pyint 110)))
+                  (e3).force
+                  ((e3).<)
+                  toReturn.write ((e3))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xlambda1)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @
