@@ -80,12 +80,29 @@ At the moment, we have 3 different gorups of tests for Py2EO transpiler (checker
 
 - [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), Python language implementation tests, version `3.8`)
 For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue (link?). Java generation will take about a week of total runtime as estimated. Got plans to come back to issue after majority of functional "simple" tests will pass.
+  
+  To run use this from the repository root:
+  `mvn clean verify -B -Pcpython`
 
 - [Django](https://github.com/django/django), a popular `Python` web framework
 For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java (estimates about a week of total runtime) for this group, since сompiling and execution of Java code obtained this way seems to be pointless.
+  
+  To run use this from the repository root:
+  `mvn clean verify -B -Pdjango`
 
 - [Handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler), set of tests divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
 [Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Progress is shown in each release description.
+  
+  To run use this from the repository root:
+  `mvn clean verify`
+  
+  Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`. 
+  - Copy it to the runEO directory:
+    `cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO`
+  - Copy the preface lib:
+    `cp -a transpiler/src/main/eo/preface ./runEO`
+  - Run EO compiler 
+     `cd ./runEO && mvn clean test`
 
 ## Examples of translation projections
 
