@@ -2,11 +2,12 @@ package org.polystat.py2eo.transpiler
 
 import org.junit.Assert.{assertTrue, fail}
 import org.polystat.py2eo.parser.{PrintPython, Statement}
+import org.polystat.py2eo.transpiler.Common.dfsFiles
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
 import java.io.{File, FileInputStream, FileWriter}
-import java.nio.file.{Files, Path}
+import java.nio.file.{Files, Path, StandardCopyOption}
 import java.{lang => jl, util => ju}
 import scala.io.Source
 import scala.sys.process.{Process, ProcessLogger}
@@ -112,5 +113,22 @@ trait Commons {
     output.write(what)
     output.close()
     new File(outName)
+  }
+
+  // there is a temptation to parallelize this code with Future,
+  // but there are strange problems if it is parallelized and called as a test from maven
+  // with the surefire plugin. Basically, the test stops executing in the middle,
+  // but it does not fail, it is just not counted at all
+  def checkEOSyntaxInDirectory(path : String) : Unit = {
+    val root = new File(path)
+    val eopaths = dfsFiles(root).filter(f => f.getName.endsWith("genUnsupportedEO"))
+    println(eopaths)
+    eopaths.foreach(path => {
+      val from = new File(testsPrefix + "/django-pom.xml").toPath
+      val to = new File(path.toString + "/pom.xml").toPath
+      Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING)
+      assert(0 == Process("mvn clean test", path).!)
+      assert(0 == Process(s"rm -rf ${path.toString}").!)
+    })
   }
 }
