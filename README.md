@@ -81,7 +81,7 @@ At the moment, we have 3 different gorups of tests for Py2EO transpiler (checker
 - [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), Python language implementation tests, version `3.8`)
 For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue (link?). Java generation will take about a week of total runtime as estimated. Got plans to come back to issue after majority of functional "simple" tests will pass.
   
-  To run use this from the repository root:
+  To run please install python 3.8.4 or newer, any gcc, then use this from the repository root:
   `mvn clean verify -B -Pcpython`
 
 - [Django](https://github.com/django/django), a popular `Python` web framework
