@@ -32,10 +32,14 @@ trait Commons {
   def python: String = {
     val stdout = new StringBuilder()
     val stderr = new StringBuilder()
-    assertTrue(0 == (Process("python --version") ! ProcessLogger(stdout.append(_), stderr.append(_))))
-    val pattern = "Python (\\d+)".r
-    val Some(match1) = pattern.findFirstMatchIn(if (stderr.toString() == "") stdout.toString() else stderr.toString())
-    if (match1.group(1) == "2") "python3" else "python"
+    val notFound = (Process("python --version") ! ProcessLogger(stdout.append(_), stderr.append(_)))
+    if (notFound != 0)
+      "python3"
+    else {
+      val pattern = "Python (\\d+)".r
+      val Some(match1) = pattern.findFirstMatchIn(if (stderr.toString() == "") stdout.toString() else stderr.toString())
+      if (match1.group(1) == "2") "python3" else "python"
+    }
   }
 
   def chopExtension(fileName: String): String = fileName.substring(0, fileName.lastIndexOf("."))
