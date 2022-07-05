@@ -204,10 +204,12 @@ object SimplePass {
           Slice(from, to, by, ann.pos)
         }
         reconstruct(lhs = false, cons, l, ns)
+      // todo: this is a hack. We do not process the function to be called to make the
+      // output simpler for polystat
       case CallIndex(isCall, whom, args, ann) if isCall =>
-        reconstruct(false, { case h :: t =>
-          CallIndex(isCall, h, args.map(_._1).zip(t), ann.pos)
-        }, whom :: args.map(_._2), ns)
+        reconstruct(false, { case t =>
+          CallIndex(isCall, whom, args.map(_._1).zip(t), ann.pos)
+        }, args.map(_._2), ns)
       case CallIndex(isCall, whom, args, ann) if !isCall =>
         val (Left(whom1), ns1) = procExpr(f)(lhs, whom, ns)
         val argsNoKw = args.map { case (None, x) => x }
