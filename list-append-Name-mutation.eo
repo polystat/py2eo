@@ -76,20 +76,17 @@
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
+                cage 0 > lhs0
                 cage 0 > e1
-                cage 0 > e5
-                cage 0 > lhs1
                 cage 0 > e0
-                cage 0 > xlist
+                cage 0 > e4
                 cage 0 > e3
                 cage 0 > xlist22
-                cage 0 > lhs3
-                cage 0 > e6
-                cage 0 > lhs0
-                cage 0 > lhs5
-                cage 0 > e4
                 cage 0 > e2
-                cage 0 > lhs7
+                cage 0 > lhs4
+                cage 0 > e5
+                cage 0 > lhs2
+                cage 0 > xlist
                 seq > @
                   stdout "xlistGet\n"
                   tmp.write (goto ((((xmyArray)).apply ((* (pyint 1) (pyint 2) (pyint 3)))).@))
@@ -98,45 +95,38 @@
                   ((e0).<)
                   mkCopy (e0) > tmp1
                   (xlist).write (tmp1.copy)
-                  mkCopy (xlist.xappend) > tmp2
-                  (e1).write (tmp2.copy)
-                  ((e1).<)
-                  mkCopy (xlist) > tmp3
-                  (lhs0).write (tmp3.copy)
-                  (lhs1).write ((pyint 4))
-                  (lhs1).force
-                  tmp.write (goto ((((e1)).apply ((lhs0)) ((lhs1))).@))
+                  tmp.write (goto (((((xlist).xappend)).apply ((xlist)) ((pyint 4))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e2).write (tmp.result)
+                  (e1).write (tmp.result)
+                  ((e1).<)
+                  mkCopy (e1) > tmp2
+                  (xlist22).write (tmp2.copy)
+                  (e2).write (((xlist).get (pyint 1)))
+                  (e2).force
                   ((e2).<)
-                  mkCopy (e2) > tmp4
-                  (xlist22).write (tmp4.copy)
-                  (e3).write (((xlist).get (pyint 1)))
+                  (lhs0).write ((pyint 2))
+                  (lhs0).force
+                  (e3).write (((e2).eq (lhs0)))
                   (e3).force
                   ((e3).<)
-                  (lhs3).write ((pyint 2))
-                  (lhs3).force
-                  (e4).write (((e3).eq (lhs3)))
-                  (e4).force
-                  ((e4).<)
-                  (e4).if
+                  (e3).if
                     seq
-                      (e5).write (((xlist).get (pyint 3)))
+                      (e4).write (((xlist).get (pyint 3)))
+                      (e4).force
+                      ((e4).<)
+                      (lhs2).write ((pyint 4))
+                      (lhs2).force
+                      (e5).write (((e4).eq (lhs2)))
                       (e5).force
                       ((e5).<)
-                      (lhs5).write ((pyint 4))
-                      (lhs5).force
-                      (e6).write (((e5).eq (lhs5)))
-                      (e6).force
-                      ((e6).<)
                       (pybool TRUE)
                     seq
-                      (lhs7).write ((pybool FALSE))
-                      (lhs7).force
-                      mkCopy (lhs7) > tmp5
-                      (e6).write (tmp5.copy)
+                      (lhs4).write ((pybool FALSE))
+                      (lhs4).force
+                      mkCopy (lhs4) > tmp3
+                      (e5).write (tmp3.copy)
                       (pybool TRUE)
-                  toReturn.write ((e6))
+                  toReturn.write ((e5))
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xlistGet)).apply).@))

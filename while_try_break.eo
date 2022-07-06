@@ -76,27 +76,24 @@
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
-                cage 0 > e12
                 cage 0 > e1
-                cage 0 > e5
                 cage 0 > e7
                 cage 0 > e0
+                cage 0 > e8
                 cage 0 > xres
                 cage 0 > e3
                 cage 0 > e10
                 cage 0 > xcaught
+                cage 0 > e9
                 cage 0 > xi
                 cage 0 > e6
                 cage 0 > lhs0
+                cage 0 > lhs4
+                cage 0 > e5
                 cage 0 > e4
                 cage 0 > xresult
                 cage 0 > xarr
-                cage 0 > e8
-                cage 0 > lhs2
-                cage 0 > lhs3
-                cage 0 > e9
                 cage 0 > e2
-                cage 0 > lhs7
                 cage 0 > e11
                 seq > @
                   stdout "xwhile_try_break\n"
@@ -149,17 +146,10 @@
                                                 ((e3).<)
                                                 mkCopy (e3) > tmp3
                                                 (xresult).write (tmp3.copy)
-                                                mkCopy (xres.xappend) > tmp4
-                                                (e4).write (tmp4.copy)
-                                                ((e4).<)
-                                                mkCopy (xres) > tmp5
-                                                (lhs2).write (tmp5.copy)
-                                                mkCopy (xresult) > tmp6
-                                                (lhs3).write (tmp6.copy)
-                                                tmp.write (goto ((((e4)).apply ((lhs2)) ((lhs3))).@))
+                                                tmp.write (goto (((((xres).xappend)).apply ((xres)) ((xresult))).@))
                                                 (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                                (e5).write (tmp.result)
-                                                ((e5).<)
+                                                (e4).write (tmp.result)
+                                                ((e4).<)
                                                 ((xi)).aug-add ((pyint 1))
                                                 stackUp.forward raiseNothing
                                         seq
@@ -170,22 +160,22 @@
                                                 if. > @
                                                   is-exception (xcurrent-exception.x__class__.x__id__)
                                                   seq
-                                                    mkCopy (xcurrent-exception.x__class__) > tmp7
-                                                    (e7).write (tmp7.copy)
+                                                    mkCopy (xcurrent-exception.x__class__) > tmp4
+                                                    (e6).write (tmp4.copy)
+                                                    ((e6).<)
+                                                    mkCopy (e6.x__id__) > tmp5
+                                                    (e7).write (tmp5.copy)
                                                     ((e7).<)
-                                                    mkCopy (e7.x__id__) > tmp8
-                                                    (e8).write (tmp8.copy)
+                                                    mkCopy (xZeroDivisionError.x__id__) > tmp6
+                                                    (e8).write (tmp6.copy)
                                                     ((e8).<)
-                                                    mkCopy (xZeroDivisionError.x__id__) > tmp9
-                                                    (e9).write (tmp9.copy)
+                                                    (e9).write (((e7).eq (e8)))
+                                                    (e9).force
                                                     ((e9).<)
-                                                    (e10).write (((e8).eq (e9)))
-                                                    (e10).force
-                                                    ((e10).<)
-                                                    (e10).if
+                                                    (e9).if
                                                       seq
                                                         stdout (sprintf "%s\n" ((pystring "Sorry ! You are dividing by zero ").as-string))
-                                                        ((e6).<)
+                                                        ((e5).<)
                                                         stackUp.forward break
                                                         (xcaught).write ((pybool TRUE))
                                                         (xcaught).force
@@ -214,16 +204,16 @@
                     tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
                     stackUp.forward tmp
                     0
-                  mkCopy (xres) > tmp10
-                  (lhs7).write (tmp10.copy)
+                  mkCopy (xres) > tmp7
+                  (lhs4).write (tmp7.copy)
                   tmp.write (goto ((((xmyArray)).apply ((* (pyint 16) (pyint 8) (pyint 4)))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e11).write (tmp.result)
+                  (e10).write (tmp.result)
+                  ((e10).<)
+                  (e11).write (((lhs4).eq (e10)))
+                  (e11).force
                   ((e11).<)
-                  (e12).write (((lhs7).eq (e11)))
-                  (e12).force
-                  ((e12).<)
-                  toReturn.write ((e12))
+                  toReturn.write ((e11))
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xwhile_try_break)).apply).@))

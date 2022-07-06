@@ -76,25 +76,21 @@
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
+                cage 0 > e6
                 cage 0 > e5
                 cage 0 > e7
                 cage 0 > xinn0
                 cage 0 > e0
                 cage 0 > e4
+                cage 0 > e8
                 cage 0 > e3
-                cage 0 > e10
                 cage 0 > xit0
                 cage 0 > xcaught
                 cage 0 > e9
                 cage 0 > xi
-                cage 0 > e6
-                cage 0 > lhs0
+                cage 0 > e2
                 cage 0 > xx
                 cage 0 > e1
-                cage 0 > e8
-                cage 0 > lhs2
-                cage 0 > e2
-                cage 0 > e11
                 seq > @
                   stdout "xforDocOne\n"
                   (xx).write ((pyint 0))
@@ -105,17 +101,12 @@
                   ((e0).<)
                   mkCopy (e0) > tmp1
                   (xinn0).write (tmp1.copy)
-                  mkCopy (xinn0.x__iter__) > tmp2
-                  (e1).write (tmp2.copy)
-                  ((e1).<)
-                  mkCopy (xinn0) > tmp3
-                  (lhs0).write (tmp3.copy)
-                  tmp.write (goto ((((e1)).apply ((lhs0))).@))
+                  tmp.write (goto (((((xinn0).x__iter__)).apply ((xinn0))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e2).write (tmp.result)
-                  ((e2).<)
-                  mkCopy (e2) > tmp4
-                  (xit0).write (tmp4.copy)
+                  (e1).write (tmp.result)
+                  ((e1).<)
+                  mkCopy (e1) > tmp2
+                  (xit0).write (tmp2.copy)
                   xcaught.write (pybool TRUE)
                   write.
                     xcurrent-exception
@@ -140,22 +131,17 @@
                                             [stackUp]
                                               cage 0 > tmp
                                               seq > @
-                                                mkCopy (xit0.x__next__) > tmp5
-                                                (e3).write (tmp5.copy)
-                                                ((e3).<)
-                                                mkCopy (xit0) > tmp6
-                                                (lhs2).write (tmp6.copy)
-                                                tmp.write (goto ((((e3)).apply ((lhs2))).@))
+                                                tmp.write (goto (((((xit0).x__next__)).apply ((xit0))).@))
                                                 (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                                (e4).write (tmp.result)
-                                                ((e4).<)
-                                                mkCopy (e4) > tmp7
-                                                (xi).write (tmp7.copy)
-                                                (e5).write (((xx).add (xi)))
-                                                (e5).force
-                                                ((e5).<)
-                                                mkCopy (e5) > tmp8
-                                                (xx).write (tmp8.copy)
+                                                (e2).write (tmp.result)
+                                                ((e2).<)
+                                                mkCopy (e2) > tmp3
+                                                (xi).write (tmp3.copy)
+                                                (e3).write (((xx).add (xi)))
+                                                (e3).force
+                                                ((e3).<)
+                                                mkCopy (e3) > tmp4
+                                                (xx).write (tmp4.copy)
                                                 stackUp.forward continue
                                                 123
                                         (tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0
@@ -174,19 +160,19 @@
                           if. > @
                             is-exception (xcurrent-exception.x__class__.x__id__)
                             seq
-                              mkCopy (xcurrent-exception.x__class__) > tmp9
-                              (e6).write (tmp9.copy)
+                              mkCopy (xcurrent-exception.x__class__) > tmp5
+                              (e4).write (tmp5.copy)
+                              ((e4).<)
+                              mkCopy (e4.x__id__) > tmp6
+                              (e5).write (tmp6.copy)
+                              ((e5).<)
+                              mkCopy (xStopIteration.x__id__) > tmp7
+                              (e6).write (tmp7.copy)
                               ((e6).<)
-                              mkCopy (e6.x__id__) > tmp10
-                              (e7).write (tmp10.copy)
+                              (e7).write (((e5).eq (e6)))
+                              (e7).force
                               ((e7).<)
-                              mkCopy (xStopIteration.x__id__) > tmp11
-                              (e8).write (tmp11.copy)
-                              ((e8).<)
-                              (e9).write (((e7).eq (e8)))
-                              (e9).force
-                              ((e9).<)
-                              (e9).if
+                              (e7).if
                                 seq
                                   (xcaught).write ((pybool TRUE))
                                   (xcaught).force
@@ -207,11 +193,11 @@
                     ((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or ((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
                   stdout (sprintf "%s\n" ((xx).as-string))
-                  ((e10).<)
-                  (e11).write (((xx).eq (pyint 6)))
-                  (e11).force
-                  ((e11).<)
-                  toReturn.write ((e11))
+                  ((e8).<)
+                  (e9).write (((xx).eq (pyint 6)))
+                  (e9).force
+                  ((e9).<)
+                  toReturn.write ((e9))
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xforDocOne)).apply).@))

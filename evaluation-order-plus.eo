@@ -77,20 +77,20 @@
                 cage 0 > tmp
                 cage 0 > toReturn
                 cage 0 > e6
-                cage 0 > e12
-                cage 0 > e5
-                cage 0 > e7
                 cage 0 > e0
-                cage 0 > lhs10
-                cage 0 > lhs9
+                cage 0 > e4
                 cage 0 > e10
                 cage 0 > xb
-                cage 0 > lhs12
-                cage 0 > e9
+                cage 0 > lhs4
+                cage 0 > e5
+                cage 0 > lhs1
+                cage 0 > e7
                 cage 0 > xxlist
                 cage 0 > e8
-                cage 0 > lhs7
-                cage 0 > e11
+                cage 0 > e3
+                cage 0 > lhs6
+                cage 0 > lhs3
+                cage 0 > e9
                 cage 0 > xfst
                 cage 0 > xsnd
                 seq > @
@@ -108,23 +108,13 @@
                         [stackUp] > @
                           cage 0 > tmp
                           cage 0 > toReturn
-                          cage 0 > lhs0
                           cage 0 > e1
-                          cage 0 > lhs1
-                          cage 0 > e2
                           seq > @
                             stdout "xfst\n"
-                            mkCopy (xxlist.xappend) > tmp2
-                            (e1).write (tmp2.copy)
-                            ((e1).<)
-                            mkCopy (xxlist) > tmp3
-                            (lhs0).write (tmp3.copy)
-                            (lhs1).write ((pyint 1))
-                            (lhs1).force
-                            tmp.write (goto ((((e1)).apply ((lhs0)) ((lhs1))).@))
+                            tmp.write (goto (((((xxlist).xappend)).apply ((xxlist)) ((pyint 1))).@))
                             (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                            (e2).write (tmp.result)
-                            ((e2).<)
+                            (e1).write (tmp.result)
+                            ((e1).<)
                             toReturn.write ((pyint 1))
                             stackUp.forward (return toReturn)
                             123
@@ -135,77 +125,67 @@
                         [stackUp] > @
                           cage 0 > tmp
                           cage 0 > toReturn
-                          cage 0 > lhs4
-                          cage 0 > e4
-                          cage 0 > e3
-                          cage 0 > lhs3
+                          cage 0 > e2
                           seq > @
                             stdout "xsnd\n"
-                            mkCopy (xxlist.xappend) > tmp4
-                            (e3).write (tmp4.copy)
-                            ((e3).<)
-                            mkCopy (xxlist) > tmp5
-                            (lhs3).write (tmp5.copy)
-                            (lhs4).write ((pyint 2))
-                            (lhs4).force
-                            tmp.write (goto ((((e3)).apply ((lhs3)) ((lhs4))).@))
+                            tmp.write (goto (((((xxlist).xappend)).apply ((xxlist)) ((pyint 2))).@))
                             (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                            (e4).write (tmp.result)
-                            ((e4).<)
+                            (e2).write (tmp.result)
+                            ((e2).<)
                             toReturn.write ((pyint 2))
                             stackUp.forward (return toReturn)
                             123
                   tmp.write (goto ((((xfst)).apply).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e5).write (tmp.result)
-                  ((e5).<)
+                  (e3).write (tmp.result)
+                  ((e3).<)
                   tmp.write (goto ((((xsnd)).apply).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e6).write (tmp.result)
+                  (e4).write (tmp.result)
+                  ((e4).<)
+                  (e5).write (((e3).add (e4)))
+                  (e5).force
+                  ((e5).<)
+                  mkCopy (e5) > tmp2
+                  (xb).write (tmp2.copy)
+                  (e6).write (((xb).eq (pyint 3)))
+                  (e6).force
                   ((e6).<)
-                  (e7).write (((e5).add (e6)))
-                  (e7).force
-                  ((e7).<)
-                  mkCopy (e7) > tmp6
-                  (xb).write (tmp6.copy)
-                  (e8).write (((xb).eq (pyint 3)))
-                  (e8).force
-                  ((e8).<)
+                  (e6).if
+                    seq
+                      (e7).write (((xxlist).get (pyint 0)))
+                      (e7).force
+                      ((e7).<)
+                      (lhs1).write ((pyint 1))
+                      (lhs1).force
+                      (e8).write (((e7).eq (lhs1)))
+                      (e8).force
+                      ((e8).<)
+                      (pybool TRUE)
+                    seq
+                      (lhs3).write ((pybool FALSE))
+                      (lhs3).force
+                      mkCopy (lhs3) > tmp3
+                      (e8).write (tmp3.copy)
+                      (pybool TRUE)
                   (e8).if
                     seq
-                      (e9).write (((xxlist).get (pyint 0)))
+                      (e9).write (((xxlist).get (pyint 1)))
                       (e9).force
                       ((e9).<)
-                      (lhs7).write ((pyint 1))
-                      (lhs7).force
-                      (e10).write (((e9).eq (lhs7)))
+                      (lhs4).write ((pyint 2))
+                      (lhs4).force
+                      (e10).write (((e9).eq (lhs4)))
                       (e10).force
                       ((e10).<)
                       (pybool TRUE)
                     seq
-                      (lhs9).write ((pybool FALSE))
-                      (lhs9).force
-                      mkCopy (lhs9) > tmp7
-                      (e10).write (tmp7.copy)
+                      (lhs6).write ((pybool FALSE))
+                      (lhs6).force
+                      mkCopy (lhs6) > tmp4
+                      (e10).write (tmp4.copy)
                       (pybool TRUE)
-                  (e10).if
-                    seq
-                      (e11).write (((xxlist).get (pyint 1)))
-                      (e11).force
-                      ((e11).<)
-                      (lhs10).write ((pyint 2))
-                      (lhs10).force
-                      (e12).write (((e11).eq (lhs10)))
-                      (e12).force
-                      ((e12).<)
-                      (pybool TRUE)
-                    seq
-                      (lhs12).write ((pybool FALSE))
-                      (lhs12).force
-                      mkCopy (lhs12) > tmp8
-                      (e12).write (tmp8.copy)
-                      (pybool TRUE)
-                  toReturn.write ((e12))
+                  toReturn.write ((e10))
                   stackUp.forward (return toReturn)
                   123
         tmp.write (goto ((((xevaluationOrder)).apply).@))
