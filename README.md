@@ -98,7 +98,9 @@ mvn clean package
 ## What's Next?
 
 Test it now on youw own examples [following detailed instructions](#how-to-transpile-py-to-eo)
+    
 Examine our ways to test it [here](#test-coverage)
+    
 Explore requeirements and architecture design [here](#architecture-and-design)
 
 Also note that `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
