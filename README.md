@@ -64,9 +64,9 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`
+Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`
 
-Create test file with `python` code (e. g. `sample_test.py` in Py2Ro root), for example with these contents:
+Create test file with `python` code (e. g. `sample_test.py` in Py2EO root), for example with these contents:
 ```
 def conditionalCheck2():
     a = 4
