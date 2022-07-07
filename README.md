@@ -21,15 +21,14 @@ This transpiler receives python code as input data. Then received code is simpli
 ## Quick Start
 Install [Java 14](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz), get [Py2EO executable](https://repo1.maven.org/maven2/org/polystat/py2eo/transpiler/0.0.11.3/transpiler-0.0.11.3-jar-with-dependencies.jar).
 
-Then, start with a simple EO program in app.py file:
+Then, start with a simple Python program in app.py file:
 ```
-[] > apply
-       stdout (sprintf "%s\n" ((pystring "Hello world!").as-string))
+print("Hello world!")
 ```
 
 Transpile it:
 ```
-java -jar <path-to-py2eo-executable> app.eo`
+java -jar <path-to-py2eo-executable> app.eo
 ```
 
 You should get app.eo containing (in except of some system stuff):
