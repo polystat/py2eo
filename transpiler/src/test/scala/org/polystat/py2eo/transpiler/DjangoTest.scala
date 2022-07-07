@@ -26,7 +26,8 @@ class DjangoTest extends Commons {
     }
     val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
     val futures = test.map(test =>
-      Future {
+//      Future
+      {
         def db(s : Statement.T, str : String) = () // debugPrinter(test)(_, _)
         val name = test.getName
         println(s"parsing $name")
@@ -44,7 +45,7 @@ class DjangoTest extends Commons {
         writeFile(test, "genUnsupportedEO", ".eo", eoText)
       }
     )
-    for (f <- futures) Await.result(f, Duration.Inf)
+//    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
   @Test def bCheckSyntaxForDjango() : Unit = {
@@ -52,15 +53,16 @@ class DjangoTest extends Commons {
     val eopaths = dfsFiles(django).filter(f => f.getName.endsWith("genUnsupportedEO"))
     println(eopaths)
     val futures = eopaths.map(path =>
-      Future {
+//      Future
+      {
         val from = new File(testsPrefix + "/django-pom.xml").toPath
         val to = new File(path.toString + "/pom.xml").toPath
         println(s"$from -> $to")
         Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING)
-        assert(0 == Process(
-          s"cp -a '$testsPrefix/../../../../../../main/eo/preface/' ${path.toString}"
-        ).!
-        )
+//        assert(0 == Process(
+//          s"cp -a '$testsPrefix/../../../../../../main/eo/preface/' ${path.toString}"
+//        ).!
+//        )
         assert(0 == Process("mvn clean test", path).!)
         assert(0 == Process(s"rm -rf ${path.toString}").!)
         //        val stdout = new StringBuilder
@@ -73,7 +75,7 @@ class DjangoTest extends Commons {
         //        }
       }
     )
-    for (f <- futures) Await.result(f, Duration.Inf)
+//    for (f <- futures) Await.result(f, Duration.Inf)
   }
 }
 
