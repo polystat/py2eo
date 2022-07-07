@@ -39,6 +39,23 @@ You should get app.eo containing (in except of some system stuff):
 
 For detailed instructions [follow](#how-to-transpile-py-to-eo)
 
+## How to contribute
+    
+Fork repository, make changes, send us a `pull request`. We will review your changes and apply them to the `master` branch shortly, provided they don't violate our quality standards. To avoid frustration, before sending us your pull request please run full Maven build:
+```
+mvn clean package
+```
+    
+## What's Next?
+
+Test it now on your own examples [following detailed instructions](#how-to-transpile-py-to-eo)
+    
+Examine our ways to test it [here](#test-coverage)
+    
+Explore requirements and architecture design [here](#architecture-and-design)
+
+Also note that `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
+
 ## How to transpile Py to EO
 > Tested on `Ubuntu` (20.04+) and `Windows` (7+), but instuctions is for `Ubuntu`
 
@@ -87,23 +104,6 @@ Additional arguments:
 | `-o <file>`    | Write output to <file>         |
 | `-X,--debug`   | Produce execution debug output |
 | `-v,--version` | Print version information      |
-
-## How to contribute
-    
-Fork repository, make changes, send us a `pull request`. We will review your changes and apply them to the `master` branch shortly, provided they don't violate our quality standards. To avoid frustration, before sending us your pull request please run full Maven build:
-```
-mvn clean package
-```
-    
-## What's Next?
-
-Test it now on youw own examples [following detailed instructions](#how-to-transpile-py-to-eo)
-    
-Examine our ways to test it [here](#test-coverage)
-    
-Explore requeirements and architecture design [here](#architecture-and-design)
-
-Also note that `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
 
 ## Python syntax and tests coverage
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
