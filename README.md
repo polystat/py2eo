@@ -32,7 +32,7 @@ Transpile it:
 java -jar <path-to-py2eo-executable> app.eo`
 ```
 
-You should get app.eo containing (except of system stuff):
+You should get app.eo containing (in except of some system stuff):
 ```
 [] > apply
     stdout (sprintf "%s\n" ((pystring "Hello world!").as-string))
@@ -58,10 +58,10 @@ You can either use [released transpiler executables](https://repo1.maven.org/mav
 Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git clone https://github.com/polystat/py2eo.git` (install git via `sudo apt install git`), or download [zipped artifacts](https://github.com/polystat/py2eo/archive/refs/heads/master.zip)
 
 Setup the `PATH` and `JAVA_HOME` variables, for example:
-    ```
-    PATH="$PWD/jdk-14.0.1/bin/:$PATH"
-    export JAVA_HOME="$PWD/jdk-14.0.1/"
-    ```
+```
+PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+export JAVA_HOME="$PWD/jdk-14.0.1/"
+```
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
@@ -104,37 +104,98 @@ Explore requeirements and architecture design [here](#architecture-and-design)
 
 Also note that `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
 
-## Test coverage
-At the moment, we have 3 different gorups of tests for Py2EO transpiler (checker with mutations are out of scope here):
+## Python syntax and tests coverage
+We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
 
-- [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), Python language implementation tests, version `3.8`)
-For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue (link?). Java generation will take about a week of total runtime as estimated. Got plans to come back to issue after majority of functional "simple" tests will pass.
-  
-  To run please install python 3.8.4 or newer, any gcc, then use this from the repository root:
-  `mvn clean verify -B -Pcpython`
+[Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Functional tests are grouped by folders corresponding to python syntax constructs we support or are going to support, so we have easy way to calculate overall coverage and `test passes successefully` state. Progress is shown in each release description.
 
-- [Django](https://github.com/django/django), a popular `Python` web framework
-For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java (estimates about a week of total runtime) for this group, since сompiling and execution of Java code obtained this way seems to be pointless.
+#### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ####
   
-  To run use this from the repository root:
-  `mvn clean verify -B -Pdjango`
+To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
+       
+Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 
-- [Handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler), set of tests divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
-[Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Progress is shown in each release description.
-  
-  To run use this from the repository root:
-  `mvn clean verify`
-  
-  Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`. 
-  - Copy it to the runEO directory:
-    `cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO`
-  - Copy the preface lib:
-    `cp -a transpiler/src/main/eo/preface ./runEO`
-  - Run EO compiler 
-     `cd ./runEO && mvn clean test`
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
 
-Checker
-This repository's CI includes checker - a tool that reduces project testing time using input test mutations. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
+```
+cd ~
+wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+
+Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git clone https://github.com/polystat/py2eo.git` (install git via `sudo apt install git`).
+
+Setup the `PATH` and `JAVA_HOME` variables, for example:
+```
+PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+export JAVA_HOME="$PWD/jdk-14.0.1/"
+```
+
+> Check (e. g. via `java -version`) that version `14.*` is used
+
+Go to Py2RO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+       
+Run `mvn clean verify`. Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`. Copy it to the runEO directory with `cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO`, then copy the preface lib with `cp -a transpiler/src/main/eo/preface ./runEO` and run EO compiler with `cd ./runEO && mvn clean test`. You will get detailed statistics in output.
+
+#### Py2EO is capable of transpiling more than hundreds of thousands lines of python code ####
+
+We tested it on [Django](https://github.com/django/django), a popular `Python` web framework. For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java for this, since сompiling and execution of Java code obtained this way seems to be pointless.
+
+To proof this (transpile Django python source code and perform EO syntax verification) on clean `Ubuntu` (20.04+):
+
+Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now).
+
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
+
+```
+cd ~
+wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+
+Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git clone https://github.com/polystat/py2eo.git` (install git via `sudo apt install git`).
+
+Setup the `PATH` and `JAVA_HOME` variables, for example:
+```
+PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+export JAVA_HOME="$PWD/jdk-14.0.1/"
+```
+
+> Check (e. g. via `java -version`) that version `14.*` is used
+
+Go to Py2RO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+
+Run `mvn clean verify -B -Pdjango`. You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results` and verification (provided with EO) results in output.
+       
+Also, we tested Py2EO on [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), python language implementation tests, version `3.8`. For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue. Got plans to come back to issue after majority of functional "simple" tests will pass.
+
+To proof this (transpile CPython tests source code and perform EO syntax verification) on clean `Ubuntu` (20.04+):
+
+Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now) and **gcc compiler**.
+
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
+
+```
+cd ~
+wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+
+Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git clone https://github.com/polystat/py2eo.git` (install git via `sudo apt install git`).
+
+Setup the `PATH` and `JAVA_HOME` variables, for example:
+```
+PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+export JAVA_HOME="$PWD/jdk-14.0.1/"
+```
+
+> Check (e. g. via `java -version`) that version `14.*` is used
+
+Go to Py2RO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+       
+Run `mvn clean verify -B -Pcpython`. You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results` and verification (provided with EO) results in output.
+
+Also we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
 ## Architecture and design
 Py2EO meets the following requirements:
@@ -160,6 +221,19 @@ Py2EO architecture can be described as the following workflow:
 * The resulting simplified AST is then translated to the eolang code and printed to the provided output path or to the file next to the input file
 
 Design decisions can are shown with the following examples of translation projections. Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentaion prodosed there.
+       
+Let's start from classic "Hello, world!"
+       
+`print(x)` is translated to `stdout (sprintf "%s" (xx.as-string))`
+ You may use this example:
+ ```
+ x = 1
+ print(x)
+ ```
+ or this
+ ```
+ print("Hello, world!")
+ ```
 
 Comments, Identation, Explicit and Implicit line joining, Whitespace between tokens ([see sec 2](https://docs.python.org/3.8/reference/lexical_analysis.html)) are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
 
@@ -684,19 +758,4 @@ x = o.field
 print(x)
 ```
         
-No plans to support coroutines ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)). 
-    
-### Print
-`print(x)` is translated to `stdout (sprintf "%s" (xx.as-string))`
- You may use this example:
- ```
- x = 1
- print(x)
- ```
- or this
- ```
- print("Hello, world!")
- ```
-## How to run the translator on the Django project
-We checked that it is possible to translate all the python files of the Django project to EO. It is not possible to run the generated EO, because parts of python are not supported. But the generated EO is always syntatically correct (though it uses the `unsupported` EO object instead of some not supported python constructs). 
-In order to generate the EO and run the syntax check one may checkout this project and run `mvn verify -Pdjango`. This command runs 2 tests: one downloads sources of Django version 4.0, the other one runs the EO compiler partially (without the "transpile" stage) to check syntax. Both passes run many threads in parallel. The first one takes ~10minutes on Ryzen 3800x with 32gb of RAM, the second one takes ~3 hours.
+No plans to support coroutines ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)).
