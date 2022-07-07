@@ -134,9 +134,9 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
        
-Run `mvn clean verify`. Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`. Copy it to the runEO directory with `cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO`, then copy the preface lib with `cp -a transpiler/src/main/eo/preface ./runEO` and run EO compiler with `cd ./runEO && mvn clean test`. You will get detailed statistics in output.
+Run `mvn clean verify`. Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`. Copy them to the runEO directory with `cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO`, then copy the preface lib with `cp -a transpiler/src/main/eo/preface ./runEO` and run EO compiler with `cd ./runEO && mvn clean test`. You will get detailed statistics in output.
 
 #### Py2EO is capable of transpiling more than hundreds of thousands lines of python code ####
 
@@ -164,9 +164,9 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
 
-Run `mvn clean verify -B -Pdjango`. You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results` and verification (provided with EO) results in output.
+Run `mvn clean verify -B -Pdjango`. You will get EO source code under `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/django` and verification (provided with EO) results in output.
        
 Also, we tested Py2EO on [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), python language implementation tests, version `3.8`. For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue. Got plans to come back to issue after majority of functional "simple" tests will pass.
 
@@ -192,9 +192,9 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
        
-Run `mvn clean verify -B -Pcpython`. You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results` and verification (provided with EO) results in output.
+Run `mvn clean verify -B -Pcpython`. You will get EO source code under `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/testParserPrinter/afterParser/cpython` and verification (provided with EO) results in output.
 
 Also we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
