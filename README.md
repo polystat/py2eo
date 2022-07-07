@@ -10,16 +10,16 @@
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 
 ## What is Py2EO?
-This is a transpiler of [Python](https://www.python.org/) to [EOLANG](https://www.eolang.org). It is translates `Python` code to `EOLANG` programming language.
+This is a transpiler of [Python](https://www.python.org/) to [EOLANG](https://www.eolang.org). It translates `Python` code to `EOLANG` programming language.
 
-This transpiler receives python code as input data. Then received code is simplified with AST usage. After successfull simplyfying it is sent to the `py2eo` translator for getting `EOLANG`.
+This transpiler receives python code as input data. Then received code is simplified with several AST->AST passes. After successfull simplification `EOLANG` output is generated.
 
 `EOLANG` code [can be translated to java and executed](https://github.com/objectionary/eo#quick-start) or analyzed statically via [Polystat analyzer](https://github.com/polystat/polystat).
 
 > Traspiler is a source-to-source translator, source-to-source compiler (S2S compiler), transcompiler, or transpiler is a type of translator that takes the source code of a program written in a programming language as its input and produces an equivalent source code in the same or a different programming language
 
 ## Quick Start
-Install [Java 14](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz), get [Py2EO executable](https://repo1.maven.org/maven2/org/polystat/py2eo/transpiler/0.0.11.3/transpiler-0.0.11.3-jar-with-dependencies.jar).
+Install [Java 14](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz), get [Py2EO executable](https://repo1.maven.org/maven2/org/polystat/py2eo/transpiler/0.0.15/transpiler-0.0.15-jar-with-dependencies.jar).
 
 Then, start with a simple Python program in app.py file:
 ```
@@ -31,7 +31,7 @@ Transpile it:
 java -jar <path-to-py2eo-executable> app.eo
 ```
 
-You should get app.eo containing (in except of some system stuff):
+You should get app.eo containing (among a lot of system stuff):
 ```
 [] > apply
     stdout (sprintf "%s\n" ((pystring "Hello world!").as-string))
@@ -41,7 +41,7 @@ For detailed instructions [follow](#how-to-transpile-py-to-eo)
 
 ## How to contribute
     
-Fork repository, make changes, send us a `pull request`. We will review your changes and apply them to the `master` branch shortly, provided they don't violate our quality standards. To avoid frustration, before sending us your pull request please run full Maven build:
+Fork repository, make changes, send us a pull request. We will review your changes and apply them to the master branch shortly, provided they don't violate our quality standards. To avoid frustration, before sending us your pull request please run full Maven build:
 ```
 mvn clean package
 ```
@@ -50,14 +50,14 @@ mvn clean package
 
 Test it now on your own examples [following detailed instructions](#how-to-transpile-py-to-eo)
     
-Examine our ways to test it [here](#test-coverage)
+Examine our ways to test it [here](#python-syntax-and-tests-coverage)
     
 Explore requirements and architecture design [here](#architecture-and-design)
 
-Also note that `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
+Also note that you should use `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
 
 ## How to transpile Py to EO
-> Tested on `Ubuntu` (20.04+) and `Windows` (7+), but instuctions is for `Ubuntu`
+> Tested on `Ubuntu` (20.04+) and `Windows` (7+), but instuctions are for `Ubuntu`
 
 Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 
@@ -69,7 +69,7 @@ wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a
 tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
 ```
 
-You can either use [released transpiler executables](https://repo1.maven.org/maven2/org/polystat/py2eo/transpiler/0.0.11.3/transpiler-0.0.11.3-jar-with-dependencies.jar) or build it on your own: 
+You can either use [released transpiler executables](https://repo1.maven.org/maven2/org/polystat/py2eo/transpiler/) or build it on your own: 
 
 Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git clone https://github.com/polystat/py2eo.git` (install git via `sudo apt install git`), or download [zipped artifacts](https://github.com/polystat/py2eo/archive/refs/heads/master.zip)
 
