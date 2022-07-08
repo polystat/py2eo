@@ -1,7 +1,8 @@
 package org.polystat.py2eo.transpiler
 
 import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.{FixMethodOrder, Test}
+import org.junit.runners.MethodSorters
 
 import java.io.File
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
@@ -12,9 +13,10 @@ import scala.concurrent.{Await, Future}
 import scala.language.postfixOps
 import scala.sys.process.Process
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class CPythonTests extends Commons {
 
-  @Test def parserPrinterOnCPython(): Unit = {
+  @Test def aParserPrinterOnCPython(): Unit = {
     val dirName = testsPrefix + "/testParserPrinter"
     val dir = new File(dirName)
     assert(dir.isDirectory)
@@ -58,7 +60,7 @@ class CPythonTests extends Commons {
               throw e
           }
           val eoText = Transpile.transpile(db)(name, Transpile.Parameters(wrapInAFunction = false), py.python)
-          writeFile(test, "genUnsupportedEOPrim", ".eo", eoText)
+          writeFile(test, "genUnsupportedEO", ".eo", eoText)
           Files.copy(
             Paths.get(s"$dirName/afterParser/$name.py"),
             Paths.get(s"$dirName/afterParser/cpython/Lib/test/$name.py"),
@@ -75,5 +77,9 @@ class CPythonTests extends Commons {
     println(s"have $nprocessors processors")
     assert(0 == Process(s"make -j ${nprocessors + 2}", cpython).!)
     assertTrue(0 == Process("make test", cpython).!)
+  }
+
+  @Test def bCheckEOSyntax() : Unit = {
+    checkEOSyntaxInDirectory(testsPrefix + "/testParserPrinter")
   }
 }
