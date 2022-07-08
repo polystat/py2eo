@@ -133,7 +133,7 @@ trait Commons {
       val to = new File(path.toString + "/pom.xml").toPath
       Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING)
       assert(0 == Process("mvn clean test", path).!)
-      assert(0 == Process(s"rm -rf ${path.toString}").!)
+      assert(0 == Process(s"rm -rf \"${path.toString}/target\"").!)
     })
   }
 }
