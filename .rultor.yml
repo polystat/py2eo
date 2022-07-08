@@ -2,12 +2,15 @@ assets:
   settings.xml: yegor256/polystat-secrets#settings.xml
   pubring.gpg: yegor256/polystat-secrets#pubring.gpg
   secring.gpg: yegor256/polystat-secrets#secring.gpg
+  docker-password: yegor256/polystat-secrets#docker-password
 merge:
   script: mvn clean install
 deploy:
   script: mvn clean install
 release:
   script: |-
+    [[ "${tag}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit -1
+
     wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
     tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
     PATH="$PWD/jdk-14.0.1/bin/:$PATH"
@@ -17,3 +20,8 @@ release:
     mvn clean install -Dinvoker.skip -DskipTests=true
     mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never -DskipTests=true
     
+    mv "transpiler/target/transpiler-${tag}-jar-with-dependencies.jar" py2eo.jar
+    image=yegor256/py2eo
+    sudo docker build "$(pwd)" --tag "${image}:${tag}"
+    cat ../docker-password | sudo docker login --password-stdin --username yegor256
+    sudo docker push "${image}:${tag}"

@@ -105,6 +105,14 @@ Additional arguments:
 | `-X,--debug`   | Produce execution debug output |
 | `-v,--version` | Print version information      |
 
+You can also use [yegor256/py2eo](https://hub.docker.com/r/yegor256/py2eo) image for [Docker](https://docs.docker.com/get-docker/):
+
+```
+$ docker run -v $(pwd):/eo yegor256/py2eo hello.py -o hello.eo
+```
+
+This command will translate `hello.py` in the current directory, saving the output to the `hello.eo` file.
+
 ## Python syntax and tests coverage
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
 
