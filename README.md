@@ -231,7 +231,7 @@ To generate EO files and verify EO syntax afterwards run
 ```
 mvn clean verify -B -Pdjango
 ```
-You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results` and verification (provided with EO) results in output.
+You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/django` and verification (provided with EO) results in output.
     
 #### CPython ####   
  
@@ -276,7 +276,7 @@ To generate EO files and verify EO syntax afterwards run
 ```
 mvn clean verify -B -Pcpython
 ```
-You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results` and verification (provided with EO) results in output.
+You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/testParserPrinter/afterParser/cpython` and verification (provided with EO) results in output.
 
 Also we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
