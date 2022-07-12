@@ -65,7 +65,11 @@ Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [d
 
 ```
 cd ~
+```
+```
 wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+```
 tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
 ```
 
@@ -76,6 +80,8 @@ Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git
 Setup the `PATH` and `JAVA_HOME` variables, for example:
 ```
 PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+```
+```
 export JAVA_HOME="$PWD/jdk-14.0.1/"
 ```
 
@@ -90,7 +96,10 @@ def conditionalCheck2():
     b = 2
 ```
 
-Run `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar <path/to/python/file>`, e. g. `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar sample_test.py`
+Run `java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar <path/to/python/file>`, e. g:
+```
+java -jar .\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar sample_test.py
+```
 
 Check output .eo file in the directory with python code with the same name (e. g. `sample_test.eo`). Try using `-o` argument to specify output path and/or name if needed
 
@@ -114,11 +123,12 @@ $ docker run -v $(pwd):/eo yegor256/py2eo hello.py -o hello.eo
 This command will translate `hello.py` in the current directory, saving the output to the `hello.eo` file.
 
 ## Python syntax and tests coverage
+    
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
 
 [Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Functional tests are grouped by folders corresponding to python syntax constructs we support or are going to support, so we have easy way to calculate overall coverage and `test passes successefully` state. Progress is shown in each release description.
 
-#### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ####
+### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ###
   
 To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
        
@@ -128,7 +138,11 @@ Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [d
 
 ```
 cd ~
+```
+```
 wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+```
 tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
 ```
 
@@ -137,16 +151,45 @@ Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git
 Setup the `PATH` and `JAVA_HOME` variables, for example:
 ```
 PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+```
+```
 export JAVA_HOME="$PWD/jdk-14.0.1/"
 ```
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+Go to Py2RO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables
+```
+mvn clean package -DskipTests=true`
+```
+if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
        
-Run `mvn clean verify`. Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`. Copy them to the runEO directory with `cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO`, then copy the preface lib with `cp -a transpiler/src/main/eo/preface ./runEO` and run EO compiler with `cd ./runEO && mvn clean test`. You will get detailed statistics in output.
+Run transpilation
+```
+mvn clean verify
+```
+Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`.
 
-#### Py2EO is capable of transpiling more than hundreds of thousands lines of python code ####
+Copy it to the runEO directory 
+```
+cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO
+```
+Then copy the preface lib
+```
+cp -a transpiler/src/main/eo/preface ./runEO
+```
+And run EO compiler
+```
+cd ./runEO
+```
+```
+mvn clean test
+```
+You will get detailed statistics in output.
+
+### Py2EO is capable of transpiling more than hundreds of thousands lines of python code ###
+
+#### Django ####
 
 We tested it on [Django](https://github.com/django/django), a popular `Python` web framework. For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java for this, since сompiling and execution of Java code obtained this way seems to be pointless.
 
@@ -158,7 +201,11 @@ Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [d
 
 ```
 cd ~
+```
+```
 wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+```
 tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
 ```
 
@@ -167,26 +214,43 @@ Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git
 Setup the `PATH` and `JAVA_HOME` variables, for example:
 ```
 PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+```
+```
 export JAVA_HOME="$PWD/jdk-14.0.1/"
 ```
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+Go to Py2RO root in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables and run Py2EO build
+```
+mvn clean package -DskipTests=true
+```
+if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
 
-Run `mvn clean verify -B -Pdjango`. You will get EO source code under `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/django` and verification (provided with EO) results in output.
-       
+To generate EO files and verify EO syntax afterwards run
+```
+mvn clean verify -B -Pdjango
+```
+You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/django` and verification (provided with EO) results in output.
+    
+#### CPython ####   
+ 
 Also, we tested Py2EO on [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), python language implementation tests, version `3.8`. For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue. Got plans to come back to issue after majority of functional "simple" tests will pass.
 
 To proof this (transpile CPython tests source code and perform EO syntax verification) on clean `Ubuntu` (20.04+):
 
-Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now) and **gcc compiler**.
+Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
+*Install gcc compiler**
 
 Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
 
 ```
 cd ~
+```
+```
 wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+```gz
 tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
 ```
 
@@ -195,18 +259,29 @@ Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git
 Setup the `PATH` and `JAVA_HOME` variables, for example:
 ```
 PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+```
+```
 export JAVA_HOME="$PWD/jdk-14.0.1/"
 ```
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+Go to Py2RO root and in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables run 
+```
+mvn clean package -DskipTests=true
+```
+If succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
        
-Run `mvn clean verify -B -Pcpython`. You will get EO source code under `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/testParserPrinter/afterParser/cpython` and verification (provided with EO) results in output.
+To generate EO files and verify EO syntax afterwards run 
+```
+mvn clean verify -B -Pcpython
+```
+You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/testParserPrinter/afterParser/cpython` and verification (provided with EO) results in output.
 
 Also we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
 ## Architecture and design
+
 Py2EO meets the following requirements:
 - The jar executable should take the path of the python input file as a command line argument, and optionally take the path of the output file
 - If the Python input file has valid Python 3.9 syntax, translate it to eolang and write the result to the output file provided, or place the result near the input file if no output files were provided
@@ -229,7 +304,11 @@ Py2EO architecture can be described as the following workflow:
   * Extract all function calls to the statement level to make the execution order explicit (i.e., translate `a = f(1) + g(2)` to `tmp1 = f(1); tmp2 = g(2); a = tmp1 + tmp2`
 * The resulting simplified AST is then translated to the eolang code and printed to the provided output path or to the file next to the input file
 
-Design decisions can are shown with the following examples of translation projections. Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentaion prodosed there.
+## How do we project Python to EOLang
+
+We analized [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) to determine the subset of Python features, corresponding restriction, design decisions that are explained within translation projections examples in this section.
+
+> Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentaion prodosed there.
        
 Let's start from classic "Hello, world!"
        
