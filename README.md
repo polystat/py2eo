@@ -123,11 +123,12 @@ $ docker run -v $(pwd):/eo yegor256/py2eo hello.py -o hello.eo
 This command will translate `hello.py` in the current directory, saving the output to the `hello.eo` file.
 
 ## Python syntax and tests coverage
+    
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
 
 [Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Functional tests are grouped by folders corresponding to python syntax constructs we support or are going to support, so we have easy way to calculate overall coverage and `test passes successefully` state. Progress is shown in each release description.
 
-#### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ####
+### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ###
   
 To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
        
@@ -186,7 +187,9 @@ mvn clean test
 ```
 You will get detailed statistics in output.
 
-#### Py2EO is capable of transpiling more than hundreds of thousands lines of python code ####
+### Py2EO is capable of transpiling more than hundreds of thousands lines of python code ###
+
+#### Django ####
 
 We tested it on [Django](https://github.com/django/django), a popular `Python` web framework. For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java for this, since сompiling and execution of Java code obtained this way seems to be pointless.
 
@@ -229,7 +232,9 @@ To generate EO files and verify EO syntax afterwards run
 mvn clean verify -B -Pdjango
 ```
 You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results` and verification (provided with EO) results in output.
-       
+    
+#### CPython ####   
+ 
 Also, we tested Py2EO on [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), python language implementation tests, version `3.8`. For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue. Got plans to come back to issue after majority of functional "simple" tests will pass.
 
 To proof this (transpile CPython tests source code and perform EO syntax verification) on clean `Ubuntu` (20.04+):
@@ -276,7 +281,6 @@ You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat
 Also we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
 ## Architecture and design
-After we performed a deep reliminary analysis of the [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) we had choosen methods, techniques and tools that are implemented now:
 
 Py2EO meets the following requirements:
 - The jar executable should take the path of the python input file as a command line argument, and optionally take the path of the output file
@@ -302,7 +306,7 @@ Py2EO architecture can be described as the following workflow:
 
 ## How do we project Python to EOLang
 
-After we performed a deep reliminary analysis of the [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) we determined the subset of Python features (listed in this section) for implementing together with full list of restrictions to made design decisions that are illustrated with the following examples of translation projections.
+We analized [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) to determine the subset of Python features, corresponding restriction, design decisions that are explained within translation projections examples in this section.
 
 > Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentaion prodosed there.
        
