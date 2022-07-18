@@ -24,6 +24,7 @@ object PrintEO {
     case Binops.Minus => "sub"
     case Binops.Mul => "mul"
     case Binops.FloorDiv => "div"
+    case Binops.Div => "float-div"
     case Binops.And => "and"
     case Binops.Or => "or"
     case Binops.Xor => "xor"
