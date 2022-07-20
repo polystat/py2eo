@@ -16,7 +16,7 @@ import org.polystat.py2eo.parser.Statement.{
   Unsupported, While, With
 }
 
-object SimplePass {
+object StatementPasses {
 
   case class Names[Acc](used: HashMap[String, Int], acc : Acc) {
 
@@ -950,8 +950,8 @@ object SimplePass {
 
     }
 
-    val texplicitBases = SimplePass.procStatement(explicitBases)(s, ns)
-    val (s1, ns1) = SimplePass.procExprInStatement(simplifyInheritance)(texplicitBases._1, texplicitBases._2)
+    val texplicitBases = StatementPasses.procStatement(explicitBases)(s, ns)
+    val (s1, ns1) = StatementPasses.procExprInStatement(simplifyInheritance)(texplicitBases._1, texplicitBases._2)
     (Suite(List(
       ImportSymbol(List("C3"), "eo_getattr", Some("eo_getattr"), s1.ann.pos),
       ImportSymbol(List("C3"), "eo_setattr", Some("eo_setattr"), s1.ann.pos),
@@ -1013,10 +1013,10 @@ object SimplePass {
   }
 
   def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
-    val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)
+    val t1 = StatementPasses.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")
 
-    val tsimplifyIf = SimplePass.procStatement(SimplePass.simplifyIf)(t1._1, t1._2)
+    val tsimplifyIf = StatementPasses.procStatement(StatementPasses.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
     //    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)

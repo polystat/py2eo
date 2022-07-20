@@ -70,7 +70,7 @@ object PrintLinearizedMutableEOWithCage {
   private def printSt(st : Statement.T) : Text = {
     st match {
       case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
-        val Suite(l0, _) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
+        val Suite(l0, _) = StatementPasses.simpleProcStatement(StatementPasses.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
         val init : Option[FuncDef] = l0
           .find{ case f : FuncDef => f.name == "x__init__" case _ => false }
