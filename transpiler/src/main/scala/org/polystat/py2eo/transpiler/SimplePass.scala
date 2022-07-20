@@ -976,6 +976,42 @@ object SimplePass {
     }
   }
 
+  def simplifyCollectionComprehension(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
+    if (!lhs) {
+      e match {
+        case CollectionComprehension(kind, base, l, ann) => {
+          val st = Suite(
+              List(
+                Assign(List(Ident("collectionAccum", ann.pos), CollectionCons(kind, List(), ann.pos)), ann.pos),
+                l.foldRight(
+                  Assign(List(CallIndex(
+                    true,
+                    Field(Ident("collectionAccum", ann.pos), "append", ann.pos),
+                    List((None, base)),
+                    ann.pos
+                  )),
+                    ann.pos
+                  ): Statement.T
+                )((comprehension, accum) => {
+                  comprehension match {
+                    case IfComprehension(cond) =>
+                      IfSimple(cond, accum, Pass(ann.pos), ann.pos)
+                    case ForComprehension(what, in, isAsync) =>
+                      For(what, in, accum, None, isAsync, ann.pos)
+                  }
+                })
+              ),
+              ann.pos
+            )
+          (Right((st : Statement.T, Ident("collectionAccum", ann.pos))), ns)
+        }
+        case x : Any => (Left(x), ns)
+      }
+    } else {
+      (Left(e), ns)
+    }
+  }
+
   def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
     val t1 = SimplePass.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")

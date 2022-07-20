@@ -48,9 +48,11 @@ object Transpile {
         } else
           { parsed }
         val y0 = SimplePass.procStatement(SimplePass.simplifyIf)(ym1, new SimplePass.Names())
-        val y00 = SimplePass.procStatement(SimplePass.simplifyFor)(y0._1, y0._2)
-        debugPrinter(y00._1, "afterSimplifyFor")
-        val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y00._1, y00._2)
+        val y00 = SimplePass.procExprInStatement((SimplePass.simplifyCollectionComprehension))(y0._1, y0._2)
+        debugPrinter(y00._1, "afterSimplifyCollectionComprehension")
+        val y01 = SimplePass.procStatement(SimplePass.simplifyFor)(y00._1, y00._2)
+        debugPrinter(y01._1, "afterSimplifyFor")
+        val y1 = SimplePass.procStatement(SimplePass.xPrefixInStatement)(y01._1, y01._2)
         val y2 = SimplePass.simpleProcExprInStatement(Expression.map(SimplePass.concatStringLiteral))(y1._1, y1._2)
         val y = SimplePass.simpleProcExprInStatement(Expression.map(
           x => SimplePass.addExplicitConstructorOfCollection(SimplePass.xPrefixInExpr(x))
