@@ -20,6 +20,7 @@
    2. [CPython](#cpython)
 8. [Architecture and design](#architecture-and-design)
 9. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
+   1. [while]
 
 
 ## What is Py2EO?
@@ -324,7 +325,9 @@ We analized [python language](https://docs.python.org/3.8/reference/) and [EOlan
 > Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentaion prodosed there.
        
 Let's start from classic "Hello, world!"
-       
+ 
+
+### Print      
 `print(x)` is translated to `stdout (sprintf "%s" (xx.as-string))`
  You may use this example:
  ```
@@ -341,7 +344,8 @@ Comments, Identation, Explicit and Implicit line joining, Whitespace between tok
 A Python program is constructed from code blocks ([see sec 4](https://docs.python.org/3.8/reference/executionmodel.html)). A block is a piece of Python program text that is executed as a unit. Names refer to objects. Names are introduced by name binding operations. Dynamically adding/removing names is not supported. All the statically known names are implemented as a `cage` object of EO. This allows to implement assignments. EO objects are also visibility scopes for identifiers, so several variables with the same name in different scopes are implemented directly.
     
 Exceptions, `break`, `continue`, `return` ([see sec 4](https://docs.python.org/3.8/reference/executionmodel.html)) are currently all implemented with the help of the `goto` object.   
-    
+
+### While
 Consider this python code
 ```
 while True: break
@@ -354,6 +358,7 @@ goto
       doBreak.forward 0
 ```
 
+### While-try-break
 Now consider this:
 ```
 flag = 5
@@ -437,7 +442,8 @@ def anonFun0(xx):
   return e0
 ```
 Then this python is translated to EO.
-    
+
+### Lambda
 Add enough context when try this, for example:
 ```
 f = lambda x: x * 10
@@ -449,6 +455,7 @@ Expression lists ([see sec 6](https://docs.python.org/3.8/reference/expressions.
 
 Evaluation order ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is about lazyness. Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
 
+### Evaluation order
 For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to 
 ```
   (e1).write (((pyint 1).add (pyint 2)))
@@ -472,6 +479,7 @@ For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to
   (xx).write (tmp2.copy)
 ```
 
+### Function def
 Add enough context when try this, for example:
 ```
 def f(a, b): return a + b
@@ -480,7 +488,8 @@ print(x)
 ```
 
 Operator precedence feature ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is supported by the parser. For example, for an expression `1 + 2 * 3` the parser generates a syntax tree like `Add(1, Mult(2, 3))`, not `Mult(Add(1, 2), 3)`. 
-    
+
+### Simple evaluation
 Try to translate, for example
 ```
 x = 1 + 2 * 3
@@ -489,6 +498,7 @@ print(x)
 
 Expressions statements ([see sec 7](https://docs.python.org/3.8/reference/simple_stmts.html)) should be easy to get with but are not yet done.
 
+### Assignment
 Assignment statements ([see sec 7](https://docs.python.org/3.8/reference/simple_stmts.html)) are passed as follows:
 * `x` is prepended to each variable name in order to support capital first letter of a name
 * local variable names are statically extracted and declared as `cage` in the beginning of a generated output
@@ -503,7 +513,7 @@ This is put at the appropriate place according to the execution order
 ```
 (xx).write (1)
 ```
-
+### Evaluation
 ##### Python
 `x = x + 1`
 ##### EO
@@ -554,7 +564,8 @@ For global and Nonlocal ([see sec 7](https://docs.python.org/3.8/reference/simpl
 If-elif-else ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) passes illustrated below:
 
 > Try adding `print(x)` at the end of examples below to run them).
-    
+
+### Conditionals with if
 ##### Python
 ```
 x = 1
@@ -577,6 +588,7 @@ seq > @
   123
 ```
 
+### Conditionals with if-elif-else
 ##### Python
 ```
 x = 1
@@ -610,6 +622,7 @@ seq > @
   123
 ```
 
+### While
 While ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) passes illustrated below:
 ##### Python
 Imagine that the following code is a whole body of a function
@@ -676,7 +689,7 @@ while x < 100:
 
 print(x)
 ```
- 
+### For
 A `for` ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) loop over an iterator is transformed into a `while` inside a `try`:
 ##### Python
 ```
@@ -754,6 +767,7 @@ except ZeroDivisionError:
     
 With ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) is not yet implemented. The plan is to do it as a python-to-python pass according do the example [here](https://docs.python.org/3.8/reference/compound_stmts.html#the-with-statement)
 
+### Function definition
 Function definition ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) is non-trivial part here is to allow a function body to both do a `return` and to throw exceptions, which are not caught inside the function. This necessity forces us to wrap a function body in an object to be called with the help of `goto`. 
 
 Function definition example
