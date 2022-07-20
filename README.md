@@ -8,6 +8,10 @@
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](http://www.rultor.com/b/polystat/py2eo)](http://www.rultor.com/p/polystat/py2eo)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
+## Table of contents
+1. [What is Py2EO?](#what-is-py2eo)
+2. [Quick Start](#quick-start)
+
 
 ## What is Py2EO?
 This is a transpiler of [Python](https://www.python.org/) to [EOLANG](https://www.eolang.org). It translates `Python` code to `EOLANG` programming language.
