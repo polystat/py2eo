@@ -12,15 +12,14 @@
 1. [What is Py2EO?](#what-is-py2eo)
 2. [Quick Start](#quick-start)
 3. [How to contribute](#how-to-contribute)
-4. [How to contribute](#how-to-contribute)
-5. [How to transpile Py to EO](#how-to-transpile-py-to-eo)
-6. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
-7. [Syntax support and passed tests info](#for-now-we-support-529-of-python-syntax-and-572-are-passed-successefully)
-8. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
+4. [How to transpile Py to EO](#how-to-transpile-py-to-eo)
+5. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
+6. [Syntax support and passed tests info](#for-now-we-support-529-of-python-syntax-and-572-are-passed-successefully)
+7. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
    1. [Django](#django)
    2. [CPython](#cpython)
-9. [Architecture and design](#architecture-and-design)
-10. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
+8. [Architecture and design](#architecture-and-design)
+9. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
 
 
 ## What is Py2EO?
