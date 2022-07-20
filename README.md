@@ -20,7 +20,14 @@
    2. [CPython](#cpython)
 8. [Architecture and design](#architecture-and-design)
 9. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
-   1. [while]
+   1. [while](#while)
+   2. [while-try-break](#while-try-break)
+   3. [function definition](#function-def) and [functional definition](#function-definition)
+   4. [conditional-1](#conditionals-with-if-elif-else) and [conditional-2](#conditionals-with-if)
+   5. [assignment](#assignment)
+   6. [evaluation order](#evaluation-order)
+   7. [simple evaluation](#simple-evaluation)
+   8. [lambda](#lambda)
 
 
 ## What is Py2EO?
