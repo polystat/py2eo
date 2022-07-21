@@ -181,7 +181,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 Go to Py2EO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables
 ```
-mvn clean package -DskipTests=true`
+mvn clean package -DskipTests=true
 ```
 if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
        
