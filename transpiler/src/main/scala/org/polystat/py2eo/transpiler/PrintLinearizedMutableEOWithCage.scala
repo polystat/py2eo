@@ -70,7 +70,7 @@ object PrintLinearizedMutableEOWithCage {
   private def printSt(st : Statement.T) : Text = {
     st match {
       case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
-        val Suite(l0, _) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
+        val Suite(l0, _) = StatementPasses.simpleProcStatement(StatementPasses.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
         val init : Option[FuncDef] = l0
           .find{ case f : FuncDef => f.name == "x__init__" case _ => false }
@@ -127,7 +127,8 @@ object PrintLinearizedMutableEOWithCage {
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
       case AugAssign(op, lhs, rhs, ann) =>
         List(s"(${pe(lhs)}).${augop(op)} (${pe(rhs)})")
-      case Assign(List(lhs, rhs@Expression.Binop(Expression.Binops.FloorDiv, _, _, _)), ann) =>
+      case Assign(List(lhs, rhs@Expression.Binop(op, _, _, _)), ann) if
+          op == Expression.Binops.FloorDiv || op == Expression.Binops.Div =>
         List (
           s"tmp.write (${pe(rhs)})",
           "(tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0",
