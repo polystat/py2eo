@@ -179,7 +179,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables
+Go to Py2EO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables
 ```
 mvn clean package -DskipTests=true`
 ```
@@ -242,7 +242,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables and run Py2EO build
+Go to Py2EO root in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables and run Py2EO build
 ```
 mvn clean package -DskipTests=true
 ```
@@ -287,7 +287,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables run 
+Go to Py2EO root and in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables run 
 ```
 mvn clean package -DskipTests=true
 ```
