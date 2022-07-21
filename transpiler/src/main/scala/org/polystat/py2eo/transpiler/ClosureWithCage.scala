@@ -1,7 +1,8 @@
 package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{CallIndex, Field, Ident}
-import SimplePass.{Names, NamesU, procExpr, procStatement, simpleProcStatement}
+import ExpressionPasses.procExpr
+import StatementPasses.{Names, NamesU, procStatement, simpleProcStatement}
 import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement, VarScope}
 import org.polystat.py2eo.parser.Statement.{Assign, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass, Return, SimpleObject, Suite}
 

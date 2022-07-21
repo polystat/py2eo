@@ -24,6 +24,7 @@ object PrintEO {
     case Binops.Minus => "sub"
     case Binops.Mul => "mul"
     case Binops.FloorDiv => "div"
+    case Binops.Div => "float-div"
     case Binops.And => "and"
     case Binops.Or => "or"
     case Binops.Xor => "xor"
@@ -87,6 +88,8 @@ object PrintEO {
         val l1 = Field(l, "x__id__", ann.pos)
         val r1 = Field(r, "x__id__", ann.pos)
         printExpr(SimpleComparison(if (op == Compops.Is) Compops.Eq else Compops.Neq, l1, r1, ann.pos))
+      case SimpleComparison(op, l, r, _) if op == Compops.In =>
+        orb + e(r) + ".x__contains__" + space + e(l) + crb
       case SimpleComparison(op, l, r, _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
       case FreakingComparison(List(op), List(l, r), _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
       case LazyLAnd(l, r, _) =>  orb + e(l) + ".and " + e(r) + crb

@@ -10,7 +10,7 @@ import org.polystat.py2eo.parser.Expression.{
   UnsupportedExpr, Yield, YieldFrom
 }
 import org.polystat.py2eo.parser.{GeneralAnnotation, PrintPython, Statement, VarScope}
-import org.polystat.py2eo.transpiler.SimplePass.{Names, NamesU}
+import org.polystat.py2eo.transpiler.StatementPasses.{Names, NamesU}
 import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef,
   Global, If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject,
@@ -161,12 +161,12 @@ object SimpleAnalysis {
       x => if (x._2._1 == VarScope.Local || x._2._1 == VarScope.Arg) (x._1, (VarScope.ImplicitNonLocal, x._2._2)) else x
     )
     val merged = v.foldLeft(vUpper)((acc, z) => acc.+(z))
-    val (body, _) = SimplePass.procStatementGeneral[NamesU](
+    val (body, _) = StatementPasses.procStatementGeneral[NamesU](
       (s, ns) => s match {
         case f : FuncDef => (computeAccessibleIdentsF(merged, f), ns, false)
         case _ => (s, ns, true)
       }
-    )(f.body, new SimplePass.Names())
+    )(f.body, new StatementPasses.Names())
     FuncDef(
       f.name, f.args, f.otherPositional, f.otherKeyword, f.returnAnnotation,
       body, f.decorators, merged, f.isAsync, f.ann.pos
@@ -174,12 +174,12 @@ object SimpleAnalysis {
   }
 
   def computeAccessibleIdents(s : Statement.T) : Statement.T = {
-    SimplePass.procStatementGeneral[NamesU](
+    StatementPasses.procStatementGeneral[NamesU](
       (s, ns) => s match {
         case f : FuncDef => (computeAccessibleIdentsF(HashMap(), f), ns, false)
         case _ => (s, ns, true)
       }
-    )(s, new SimplePass.Names())._1
+    )(s, new StatementPasses.Names())._1
   }
 
   private def assertStatementIsSimplified(acc : Unit, s : Statement.T) : (Unit, Boolean) = s match {
@@ -191,7 +191,7 @@ object SimpleAnalysis {
       (acc, true)
     case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.seqOfFields(lhs).isDefined  => (acc, true)
     case ClassDef(_, List(), body, Decorators(List()), _) =>{
-      val (Suite(defs, _)) = SimplePass.simpleProcStatement(SimplePass.unSuite)(body)
+      val (Suite(defs, _)) = StatementPasses.simpleProcStatement(StatementPasses.unSuite)(body)
       assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })
       (acc, true)
     }

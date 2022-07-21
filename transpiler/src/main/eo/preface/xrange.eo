@@ -6,11 +6,13 @@
 +alias return preface.return
 
 [] > xrange
-  [end] > apply
+  [args...] > apply
     [stackUp] > @
+      (args.length.eq 1).if (args.get 0) (args.get 1) > end
+      (args.length.eq 1).if 0 (args.get 0) > start
       cage result > pResult
       [] > iter
-        memory 0 > curPos
+        memory start > curPos
         [] > x__next__
           [self] > apply
             [stackUp] > @
