@@ -18,6 +18,18 @@
   [] > force
     value > @
 
+  [c] > x__contains__
+    memory 0 > i
+    memory FALSE > contains
+    seq > @
+      (i.lt (value.length)).while
+        [unused]
+          seq > @
+            contains.write (contains.or ((value.slice i 1).eq (c.value)))
+            i.write (i.plus 1)
+            0
+      pybool contains
+
   seq > @
     stdout (sprintf "dataizing value %s\n" value)
     value
