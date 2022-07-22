@@ -22,7 +22,7 @@
 9. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
    - [while](#while)
    - [while-try-break](#while-try-break)
-   - [function definition](#function-definition) and [functional definition](#function-definition)
+   - [function definition](#function-definition)
    - [conditional-1](#conditionals-with-if-elif-else) and [conditional-2](#conditionals-with-if)
    - [assignment](#assignment)
    - [evaluation order](#evaluation-order)
