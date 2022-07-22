@@ -22,7 +22,7 @@
 9. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
    - [while](#while)
    - [while-try-break](#while-try-break)
-   - [function definition](#function-def) and [functional definition](#function-definition)
+   - [function definition](#function-definition) and [functional definition](#function-definition)
    - [conditional-1](#conditionals-with-if-elif-else) and [conditional-2](#conditionals-with-if)
    - [assignment](#assignment)
    - [evaluation order](#evaluation-order)
@@ -486,7 +486,7 @@ For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to
   (xx).write (tmp2.copy)
 ```
 
-### Function def
+### Function definition
 Add enough context when try this, for example:
 ```
 def f(a, b): return a + b
