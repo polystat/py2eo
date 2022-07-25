@@ -3,11 +3,19 @@
 +alias pyint preface.pyint
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
++alias return preface.return
++alias xStopIteration preface.xStopIteration
 
 [value] > pystring
+
+  [x] > with-value
+    pystring x > @
+
   # Tests that $ = x
   [x] > eq
-    pybool (value.eq (x.value)) > @
+    seq > @
+      stdout (sprintf "pystringc.eq %s %s\n" value (x.value))
+      pybool (value.eq (x.value))
 
   [] > length
     pyint (value.length) > @
@@ -29,6 +37,27 @@
             i.write (i.plus 1)
             0
       pybool contains
+
+  [] > iter
+    memory 0 > curPos
+    [] > x__next__
+      [self] > apply
+        [stackUp] > @
+          memory (self.curPos) > pos
+          seq > @
+            stdout "next\n"
+            pos.write (self.curPos)
+            self.curPos.write (pos.plus 1)
+            if.
+              pos.eq (value.length)
+              stackUp.forward ((goto (xStopIteration.apply.@)).result)
+              stackUp.forward (return (pystring (value.slice pos 1)))
+            123
+
+  [] > x__iter__
+    [self] > apply
+      [stackUp] > @
+        stackUp.forward (return iter) > @
 
   seq > @
     stdout (sprintf "dataizing value %s\n" value)
