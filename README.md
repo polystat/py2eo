@@ -78,7 +78,7 @@ Explore requirements and architecture design [here](#architecture-and-design)
 Also note that you should use `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
 
 ## How to transpile Py to EO
-> Tested on `Ubuntu` (20.04+) and `Windows` (7+), but instuctions are for `Ubuntu`
+> Tested on `Ubuntu` (20.04+) and `Windows` (7+), but instructions are for `Ubuntu`
 
 Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 
@@ -110,7 +110,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`
 
-Create test file with `python` code (e. g. `sample_test.py` in Py2EO root), for example with these contents:
+Create test file with `python` code (e.g. `sample_test.py` in Py2EO root), for example with these contents:
 ```
 def conditionalCheck2():
     a = 4
@@ -155,7 +155,7 @@ To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
        
 Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 
-Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example, you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
 
 ```
 cd ~
@@ -263,7 +263,7 @@ To proof this (transpile CPython tests source code and perform EO syntax verific
 Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 *Install gcc compiler**
 
-Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example, you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
 
 ```
 cd ~
@@ -299,7 +299,7 @@ mvn clean verify -B -Pcpython
 ```
 You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/testParserPrinter/afterParser/cpython` and verification (provided with EO) results in output.
 
-Also we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
+Also, we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
 ## Architecture and design
 
@@ -329,7 +329,7 @@ Py2EO architecture can be described as the following workflow:
 
 We analyzed [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) to determine the subset of Python features, corresponding restriction, design decisions that are explained within translation projections examples in this section.
 
-> Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentaion prodosed there.
+> Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentation prodosed there.
        
 Let's start from classic "Hello, world!"
  
@@ -346,7 +346,7 @@ Let's start from classic "Hello, world!"
  print("Hello, world!")
  ```
 
-Comments, Identation, Explicit and Implicit line joining, Whitespace between tokens ([see sec 2](https://docs.python.org/3.8/reference/lexical_analysis.html)) are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
+Comments, Indentation, Explicit and Implicit line joining, Whitespace between tokens ([see sec 2](https://docs.python.org/3.8/reference/lexical_analysis.html)) are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
 
 A Python program is constructed from code blocks ([see sec 4](https://docs.python.org/3.8/reference/executionmodel.html)). A block is a piece of Python program text that is executed as a unit. Names refer to objects. Names are introduced by name binding operations. Dynamically adding/removing names is not supported. All the statically known names are implemented as a `cage` object of EO. This allows to implement assignments. EO objects are also visibility scopes for identifiers, so several variables with the same name in different scopes are implemented directly.
     
@@ -441,7 +441,7 @@ x = a if a < b else b
 print(x)
 ``` 
 
-An anonymous function/lambda expression ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is extracted to a named function. This is not hard because complex expressions are splitted into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
+An anonymous function/lambda expression ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is extracted to a named function. This is not hard because complex expressions are split into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
 For example code `f = lambda x: x * 10` is translated to something like:
 ```
 def anonFun0(xx):
@@ -460,7 +460,7 @@ print(x)
 
 Expression lists ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) are not yet supported. Should be supported by explicitly constructing a tuple out of an expression list. A star sholud be implemented as a function, which unfolds an iterable object.
 
-Evaluation order ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is about lazyness. Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
+Evaluation order ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is about laziness. Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
 
 ### Evaluation order
 For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to 
