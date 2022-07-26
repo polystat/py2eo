@@ -19,7 +19,7 @@
    - [Django](#django)
    - [CPython](#cpython)
 8. [Architecture and design](#architecture-and-design)
-9. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
+9. [How we translate Python to EOLang](#how-do-we-project-python-to-eolang)
    - [while](#while)
    - [while-try-break](#while-try-break)
    - [function definition](#function-definition)
