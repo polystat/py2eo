@@ -60,20 +60,32 @@
             res
             stdout "after\n"
             res
+        [self elt] > contains-common
+          seq > result
+            stdout (sprintf "len = %d\n" (self.value.length))
+            self.value.reduce
+              FALSE
+              [acc item]
+                seq > @
+                  acc.or ((elt.eq item).value)
+          seq > @
+            stdout (sprintf "len = %d\n" (self.value.length))
+            pybool result
         [] > x__contains__
           [self elt] > apply
             [stackUp] > @
-              seq > result
-                stdout (sprintf "len = %d\n" (self.value.length))
-                self.value.reduce
-                  FALSE
-                  [acc item]
-                    seq > @
-                      acc.or ((elt.eq item).value)
-              seq > @
-                stdout (sprintf "len = %d\n" (self.value.length))
-                stackUp.forward (return (pybool result))
-                123
+              stackUp.forward (return (contains-common self elt)) > @
+        [elt] > contains-hack
+          seq > result
+            stdout (sprintf "len = %d\n" (value.length))
+            value.reduce
+              FALSE
+              [acc item]
+                seq > @
+                  acc.or ((elt.eq item).value)
+          seq > @
+            stdout (sprintf "len = %d\n" (value.length))
+            pybool result
         [] > iter
           memory 0 > curPos
           [] > x__next__
