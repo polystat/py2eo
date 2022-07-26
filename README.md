@@ -8,6 +8,27 @@
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 [![DevOps By Rultor.com](http://www.rultor.com/b/polystat/py2eo)](http://www.rultor.com/p/polystat/py2eo)
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
+## Table of contents
+1. [What is Py2EO?](#what-is-py2eo)
+2. [Quick Start](#quick-start)
+3. [How to contribute](#how-to-contribute)
+4. [How to transpile Py to EO](#how-to-transpile-py-to-eo)
+5. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
+6. [Syntax support and passed tests info](#for-now-we-support-529-of-python-syntax-and-572-are-passed-successefully)
+7. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
+   - [Django](#django)
+   - [CPython](#cpython)
+8. [Architecture and design](#architecture-and-design)
+9. [How we translate Python to EOLang](#how-do-we-project-python-to-eolang)
+   - [while](#while)
+   - [while-try-break](#while-try-break)
+   - [function definition](#function-definition)
+   - [conditional-1](#conditionals-with-if-elif-else) and [conditional-2](#conditionals-with-if)
+   - [assignment](#assignment)
+   - [evaluation order](#evaluation-order)
+   - [simple evaluation](#simple-evaluation)
+   - [lambda](#lambda)
+
 
 ## What is Py2EO?
 This is a transpiler of [Python](https://www.python.org/) to [EOLANG](https://www.eolang.org). It translates `Python` code to `EOLANG` programming language.
@@ -57,7 +78,7 @@ Explore requirements and architecture design [here](#architecture-and-design)
 Also note that you should use `Maven 3.6.3` with `Java 14` or `Maven 3.8.4` with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no `Java 14` package, so manual installation is needed anyway).
 
 ## How to transpile Py to EO
-> Tested on `Ubuntu` (20.04+) and `Windows` (7+), but instuctions are for `Ubuntu`
+> Tested on `Ubuntu` (20.04+) and `Windows` (7+), but instructions are for `Ubuntu`
 
 Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 
@@ -89,7 +110,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 Go to Py2EO root and run `mvn clean package -DskipTests=true` in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables, if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`
 
-Create test file with `python` code (e. g. `sample_test.py` in Py2EO root), for example with these contents:
+Create test file with `python` code (e.g. `sample_test.py` in Py2EO root), for example with these contents:
 ```
 def conditionalCheck2():
     a = 4
@@ -134,7 +155,7 @@ To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
        
 Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 
-Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example, you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
 
 ```
 cd ~
@@ -158,9 +179,9 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables
+Go to Py2EO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables
 ```
-mvn clean package -DskipTests=true`
+mvn clean package -DskipTests=true
 ```
 if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
        
@@ -221,7 +242,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables and run Py2EO build
+Go to Py2EO root in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables and run Py2EO build
 ```
 mvn clean package -DskipTests=true
 ```
@@ -242,7 +263,7 @@ To proof this (transpile CPython tests source code and perform EO syntax verific
 Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now)
 *Install gcc compiler**
 
-Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example, you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
 
 ```
 cd ~
@@ -266,7 +287,7 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2RO root and in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables run 
+Go to Py2EO root and in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables run 
 ```
 mvn clean package -DskipTests=true
 ```
@@ -278,7 +299,7 @@ mvn clean verify -B -Pcpython
 ```
 You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/testParserPrinter/afterParser/cpython` and verification (provided with EO) results in output.
 
-Also we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
+Also, we use **Checker** - a tool that reduces project testing time using input test mutations, as a part of test procedure . It's included in CI. Checkout more [here](https://github.com/polystat/py2eo/blob/master/checker/).
 
 ## Architecture and design
 
@@ -304,14 +325,16 @@ Py2EO architecture can be described as the following workflow:
   * Extract all function calls to the statement level to make the execution order explicit (i.e., translate `a = f(1) + g(2)` to `tmp1 = f(1); tmp2 = g(2); a = tmp1 + tmp2`
 * The resulting simplified AST is then translated to the eolang code and printed to the provided output path or to the file next to the input file
 
-## How do we project Python to EOLang
+## How we translate Python to EOLang
 
-We analized [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) to determine the subset of Python features, corresponding restriction, design decisions that are explained within translation projections examples in this section.
+We analyzed [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) to determine the subset of Python features, corresponding restriction, design decisions that are explained within translation projections examples in this section.
 
-> Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentaion prodosed there.
+> Here we reference to the [python language reference version 3.8.1](https://docs.python.org/3.8/reference/) and are following the order of presentation prodosed there.
        
 Let's start from classic "Hello, world!"
-       
+ 
+
+### Print      
 `print(x)` is translated to `stdout (sprintf "%s" (xx.as-string))`
  You may use this example:
  ```
@@ -323,12 +346,13 @@ Let's start from classic "Hello, world!"
  print("Hello, world!")
  ```
 
-Comments, Identation, Explicit and Implicit line joining, Whitespace between tokens ([see sec 2](https://docs.python.org/3.8/reference/lexical_analysis.html)) are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
+Comments, Indentation, Explicit and Implicit line joining, Whitespace between tokens ([see sec 2](https://docs.python.org/3.8/reference/lexical_analysis.html)) are supported by the parser. No additional support is needed, because these are just pecularities of the syntax. 
 
 A Python program is constructed from code blocks ([see sec 4](https://docs.python.org/3.8/reference/executionmodel.html)). A block is a piece of Python program text that is executed as a unit. Names refer to objects. Names are introduced by name binding operations. Dynamically adding/removing names is not supported. All the statically known names are implemented as a `cage` object of EO. This allows to implement assignments. EO objects are also visibility scopes for identifiers, so several variables with the same name in different scopes are implemented directly.
     
 Exceptions, `break`, `continue`, `return` ([see sec 4](https://docs.python.org/3.8/reference/executionmodel.html)) are currently all implemented with the help of the `goto` object.   
-    
+
+### While
 Consider this python code
 ```
 while True: break
@@ -341,6 +365,7 @@ goto
       doBreak.forward 0
 ```
 
+### While-try-break
 Now consider this:
 ```
 flag = 5
@@ -416,7 +441,7 @@ x = a if a < b else b
 print(x)
 ``` 
 
-An anonymous function/lambda expression ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is extracted to a named function. This is not hard because complex expressions are splitted into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
+An anonymous function/lambda expression ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is extracted to a named function. This is not hard because complex expressions are split into simpler as described [here](https://github.com/polystat/py2eo#616-evaluation-order)). 
 For example code `f = lambda x: x * 10` is translated to something like:
 ```
 def anonFun0(xx):
@@ -424,7 +449,8 @@ def anonFun0(xx):
   return e0
 ```
 Then this python is translated to EO.
-    
+
+### Lambda
 Add enough context when try this, for example:
 ```
 f = lambda x: x * 10
@@ -434,8 +460,9 @@ print(x)
 
 Expression lists ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) are not yet supported. Should be supported by explicitly constructing a tuple out of an expression list. A star sholud be implemented as a function, which unfolds an iterable object.
 
-Evaluation order ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is about lazyness. Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
+Evaluation order ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is about laziness. Python is not lazy and the order of execution of a complex expression is documented. EO is lazy. Thus, each expression must be split into simple pieces and a series of statements must be generated, which force each piece in the correct order. 
 
+### Evaluation order
 For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to 
 ```
   (e1).write (((pyint 1).add (pyint 2)))
@@ -459,6 +486,7 @@ For example, this `x = (1 + 2) * f(3 + 4, 5)` is translated to
   (xx).write (tmp2.copy)
 ```
 
+### Function definition
 Add enough context when try this, for example:
 ```
 def f(a, b): return a + b
@@ -467,7 +495,8 @@ print(x)
 ```
 
 Operator precedence feature ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is supported by the parser. For example, for an expression `1 + 2 * 3` the parser generates a syntax tree like `Add(1, Mult(2, 3))`, not `Mult(Add(1, 2), 3)`. 
-    
+
+### Simple evaluation
 Try to translate, for example
 ```
 x = 1 + 2 * 3
@@ -476,6 +505,7 @@ print(x)
 
 Expressions statements ([see sec 7](https://docs.python.org/3.8/reference/simple_stmts.html)) should be easy to get with but are not yet done.
 
+### Assignment
 Assignment statements ([see sec 7](https://docs.python.org/3.8/reference/simple_stmts.html)) are passed as follows:
 * `x` is prepended to each variable name in order to support capital first letter of a name
 * local variable names are statically extracted and declared as `cage` in the beginning of a generated output
@@ -490,7 +520,7 @@ This is put at the appropriate place according to the execution order
 ```
 (xx).write (1)
 ```
-
+### Evaluation
 ##### Python
 `x = x + 1`
 ##### EO
@@ -541,7 +571,8 @@ For global and Nonlocal ([see sec 7](https://docs.python.org/3.8/reference/simpl
 If-elif-else ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) passes illustrated below:
 
 > Try adding `print(x)` at the end of examples below to run them).
-    
+
+### Conditionals with if
 ##### Python
 ```
 x = 1
@@ -564,6 +595,7 @@ seq > @
   123
 ```
 
+### Conditionals with if-elif-else
 ##### Python
 ```
 x = 1
@@ -597,6 +629,7 @@ seq > @
   123
 ```
 
+### While
 While ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) passes illustrated below:
 ##### Python
 Imagine that the following code is a whole body of a function
@@ -663,7 +696,7 @@ while x < 100:
 
 print(x)
 ```
- 
+### For
 A `for` ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) loop over an iterator is transformed into a `while` inside a `try`:
 ##### Python
 ```
@@ -741,6 +774,7 @@ except ZeroDivisionError:
     
 With ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) is not yet implemented. The plan is to do it as a python-to-python pass according do the example [here](https://docs.python.org/3.8/reference/compound_stmts.html#the-with-statement)
 
+### Function definition
 Function definition ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)) is non-trivial part here is to allow a function body to both do a `return` and to throw exceptions, which are not caught inside the function. This necessity forces us to wrap a function body in an object to be called with the help of `goto`. 
 
 Function definition example
