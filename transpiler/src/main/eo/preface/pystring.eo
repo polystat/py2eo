@@ -4,9 +4,13 @@
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
 +alias return preface.return
++alias fakeclasses preface.fakeclasses
++alias xmyArray preface.xmyArray
 +alias xStopIteration preface.xStopIteration
 
 [value] > pystring
+
+  fakeclasses.pyStringClass > x__class__
 
   [x] > with-value
     pystring x > @
@@ -53,6 +57,17 @@
               stackUp.forward ((goto (xStopIteration.apply.@)).result)
               stackUp.forward (return (pystring (value.slice pos 1)))
             123
+
+  [] > to-my-array
+    goto ((xmyArray.apply (*)).@) > a
+    memory 0 > index
+    seq > @
+      (index.lt (value.length)).while
+        [unused]
+          seq > @
+            goto ((a.xappend.apply a (value.slice index 1)).@)
+            index.write (index.plus 1)
+      a
 
   [] > x__iter__
     [self] > apply
