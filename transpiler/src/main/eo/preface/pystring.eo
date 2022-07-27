@@ -59,13 +59,13 @@
             123
 
   [] > to-my-array
-    goto ((xmyArray.apply (*)).@) > a
+    (goto ((xmyArray.apply (*)).@)).result > a
     memory 0 > index
     seq > @
       (index.lt (value.length)).while
         [unused]
           seq > @
-            goto ((a.xappend.apply a (value.slice index 1)).@)
+            (goto ((a.xappend.apply a (pystring (value.slice index 1))).@)).result
             index.write (index.plus 1)
       a
 
