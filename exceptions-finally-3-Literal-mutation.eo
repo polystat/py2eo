@@ -18,6 +18,8 @@
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
 +alias xlen preface.xlen
++alias xlist preface.xlist
++alias xint preface.xint
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xTypeError preface.xTypeError
@@ -47,7 +49,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      fakeclasses.pyIntClass > xint
       fakeclasses.pyFloatClass > xfloat
       fakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
@@ -58,6 +59,8 @@
       xmyArray > dummy-xmyArray
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xlist > dummy-xlist
+      xint > dummy-xint
       xStopIteration > dummy-stop-iteration
       xZeroDivisionError > dummy-xZeroDivisionError
       xTypeError > dummy-xTypeError
@@ -139,11 +142,11 @@
                                       mkCopy (xcurrent-exception.x__class__) > tmp1
                                       (e0).write (tmp1.copy)
                                       ((e0).<)
-                                      mkCopy (e0.x__id__) > tmp3
-                                      (e1).write (tmp3.copy)
+                                      mkCopy (e0.x__id__) > tmp2
+                                      (e1).write (tmp2.copy)
                                       ((e1).<)
-                                      mkCopy (xc.x__id__) > tmp5
-                                      (e2).write (tmp5.copy)
+                                      mkCopy (xc.x__id__) > tmp3
+                                      (e2).write (tmp3.copy)
                                       ((e2).<)
                                       (e3).write (((e1).eq (e2)))
                                       (e3).force
@@ -184,14 +187,14 @@
                           if. > @
                             is-exception (xcurrent-exception.x__class__.x__id__)
                             seq
-                              mkCopy (xcurrent-exception.x__class__) > tmp7
-                              (e5).write (tmp7.copy)
+                              mkCopy (xcurrent-exception.x__class__) > tmp4
+                              (e5).write (tmp4.copy)
                               ((e5).<)
-                              mkCopy (e5.x__id__) > tmp9
-                              (e6).write (tmp9.copy)
+                              mkCopy (e5.x__id__) > tmp5
+                              (e6).write (tmp5.copy)
                               ((e6).<)
-                              mkCopy (xStopIteration.x__id__) > tmp11
-                              (e7).write (tmp11.copy)
+                              mkCopy (xStopIteration.x__id__) > tmp6
+                              (e7).write (tmp6.copy)
                               ((e7).<)
                               (e8).write (((e6).eq (e7)))
                               (e8).force

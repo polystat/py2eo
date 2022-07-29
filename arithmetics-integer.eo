@@ -18,6 +18,8 @@
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
 +alias xlen preface.xlen
++alias xlist preface.xlist
++alias xint preface.xint
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xTypeError preface.xTypeError
@@ -47,7 +49,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      fakeclasses.pyIntClass > xint
       fakeclasses.pyFloatClass > xfloat
       fakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
@@ -58,6 +59,8 @@
       xmyArray > dummy-xmyArray
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xlist > dummy-xlist
+      xint > dummy-xint
       xStopIteration > dummy-stop-iteration
       xZeroDivisionError > dummy-xZeroDivisionError
       xTypeError > dummy-xTypeError
@@ -66,21 +69,96 @@
       cage 0 > tmp
       cage 0 > toReturn
       cage 0 > assertMe
-      cage 0 > xpowerOperator
+      cage 0 > xarithmetics_integer
       seq > @
         stdout "arithmetics-integer\n"
         write.
-          xpowerOperator
+          xarithmetics_integer
           []
             [] > apply
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
+                cage 0 > lhs32
+                cage 0 > e12
+                cage 0 > e23
+                cage 0 > lhs45
+                cage 0 > lhs23
+                cage 0 > lhs15
+                cage 0 > e6
+                cage 0 > lhs40
+                cage 0 > e18
                 cage 0 > lhs0
+                cage 0 > e29
+                cage 0 > lhs25
+                cage 0 > lhs37
+                cage 0 > lhs42
+                cage 0 > xuminus
                 cage 0 > e1
+                cage 0 > xorr
+                cage 0 > lhs31
+                cage 0 > lhs48
+                cage 0 > xpow
+                cage 0 > xrem
+                cage 0 > lhs29
+                cage 0 > e5
+                cage 0 > e28
+                cage 0 > lhs44
+                cage 0 > e7
+                cage 0 > lhs17
+                cage 0 > e17
+                cage 0 > xxorr
+                cage 0 > lhs33
+                cage 0 > lhs21
                 cage 0 > e0
+                cage 0 > e20
+                cage 0 > lhs43
+                cage 0 > lhs28
+                cage 0 > xshl
+                cage 0 > lhs5
+                cage 0 > e4
+                cage 0 > e24
+                cage 0 > lhs36
+                cage 0 > lhs47
+                cage 0 > e13
+                cage 0 > lhs13
+                cage 0 > xandd
+                cage 0 > xsub
+                cage 0 > e8
+                cage 0 > e16
+                cage 0 > lhs39
+                cage 0 > e27
+                cage 0 > e3
+                cage 0 > lhs27
+                cage 0 > lhs34
+                cage 0 > xmul
+                cage 0 > lhs9
+                cage 0 > lhs35
+                cage 0 > e21
+                cage 0 > xshr
+                cage 0 > e10
+                cage 0 > xadd
+                cage 0 > e25
+                cage 0 > lhs11
+                cage 0 > e14
+                cage 0 > lhs46
+                cage 0 > lhs3
+                cage 0 > e9
+                cage 0 > lhs30
+                cage 0 > lhs19
+                cage 0 > e15
+                cage 0 > xdiv
+                cage 0 > e2
+                cage 0 > lhs41
+                cage 0 > e11
+                cage 0 > e26
+                cage 0 > lhs7
+                cage 0 > e22
+                cage 0 > lhs38
+                cage 0 > xuplus
+                cage 0 > e19
                 seq > @
-                  stdout "xpowerOperator\n"
+                  stdout "xarithmetics_integer\n"
                   (e0).write (((pyint 10).pow (pyint 2)))
                   (e0).force
                   ((e0).<)
@@ -89,10 +167,273 @@
                   (e1).write (((e0).eq (lhs0)))
                   (e1).force
                   ((e1).<)
-                  toReturn.write ((e1))
+                  mkCopy (e1) > tmp1
+                  (xpow).write (tmp1.copy)
+                  (e2).write (((pyint 1).neg))
+                  (e2).force
+                  ((e2).<)
+                  (e3).write (((pyint 0).sub (pyint 1)))
+                  (e3).force
+                  ((e3).<)
+                  (e4).write (((e2).eq (e3)))
+                  (e4).force
+                  ((e4).<)
+                  mkCopy (e4) > tmp2
+                  (xuminus).write (tmp2.copy)
+                  (lhs3).write ((pyint 1))
+                  (lhs3).force
+                  (e5).write (((pyint 1)))
+                  (e5).force
+                  ((e5).<)
+                  (e6).write (((lhs3).eq (e5)))
+                  (e6).force
+                  ((e6).<)
+                  mkCopy (e6) > tmp3
+                  (xuplus).write (tmp3.copy)
+                  (e7).write (((pyint 10).mul (pyint 10)))
+                  (e7).force
+                  ((e7).<)
+                  (lhs5).write ((pyint 100))
+                  (lhs5).force
+                  (e8).write (((e7).eq (lhs5)))
+                  (e8).force
+                  ((e8).<)
+                  mkCopy (e8) > tmp4
+                  (xmul).write (tmp4.copy)
+                  tmp.write (((pyint 100).div (pyint 11)))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e9).write (tmp.result)
+                  ((e9).<)
+                  (lhs7).write ((pyint 9))
+                  (lhs7).force
+                  (e10).write (((e9).eq (lhs7)))
+                  (e10).force
+                  ((e10).<)
+                  mkCopy (e10) > tmp5
+                  (xdiv).write (tmp5.copy)
+                  (e11).write (((pyint 100).mod (pyint 11)))
+                  (e11).force
+                  ((e11).<)
+                  (lhs9).write ((pyint 1))
+                  (lhs9).force
+                  (e12).write (((e11).eq (lhs9)))
+                  (e12).force
+                  ((e12).<)
+                  mkCopy (e12) > tmp6
+                  (xrem).write (tmp6.copy)
+                  (e13).write (((pyint 1).add (pyint 10)))
+                  (e13).force
+                  ((e13).<)
+                  (lhs11).write ((pyint 11))
+                  (lhs11).force
+                  (e14).write (((e13).eq (lhs11)))
+                  (e14).force
+                  ((e14).<)
+                  mkCopy (e14) > tmp7
+                  (xadd).write (tmp7.copy)
+                  (e15).write (((pyint 10).sub (pyint 1)))
+                  (e15).force
+                  ((e15).<)
+                  (lhs13).write ((pyint 9))
+                  (lhs13).force
+                  (e16).write (((e15).eq (lhs13)))
+                  (e16).force
+                  ((e16).<)
+                  mkCopy (e16) > tmp8
+                  (xsub).write (tmp8.copy)
+                  (e17).write (((pyint 1).left (pyint 1)))
+                  (e17).force
+                  ((e17).<)
+                  (lhs15).write ((pyint 2))
+                  (lhs15).force
+                  (e18).write (((e17).eq (lhs15)))
+                  (e18).force
+                  ((e18).<)
+                  mkCopy (e18) > tmp9
+                  (xshl).write (tmp9.copy)
+                  (e19).write (((pyint 3).right (pyint 1)))
+                  (e19).force
+                  ((e19).<)
+                  (lhs17).write ((pyint 1))
+                  (lhs17).force
+                  (e20).write (((e19).eq (lhs17)))
+                  (e20).force
+                  ((e20).<)
+                  mkCopy (e20) > tmp10
+                  (xshr).write (tmp10.copy)
+                  (e21).write (((pyint 13).and (pyint 6)))
+                  (e21).force
+                  ((e21).<)
+                  (lhs19).write ((pyint 4))
+                  (lhs19).force
+                  (e22).write (((e21).eq (lhs19)))
+                  (e22).force
+                  ((e22).<)
+                  mkCopy (e22) > tmp11
+                  (xandd).write (tmp11.copy)
+                  (e23).write (((pyint 10).or (pyint 12)))
+                  (e23).force
+                  ((e23).<)
+                  (lhs21).write ((pyint 14))
+                  (lhs21).force
+                  (e24).write (((e23).eq (lhs21)))
+                  (e24).force
+                  ((e24).<)
+                  mkCopy (e24) > tmp12
+                  (xorr).write (tmp12.copy)
+                  (e25).write (((pyint 2).xor (pyint 3)))
+                  (e25).force
+                  ((e25).<)
+                  (lhs23).write ((pyint 1))
+                  (lhs23).force
+                  (e26).write (((e25).eq (lhs23)))
+                  (e26).force
+                  ((e26).<)
+                  mkCopy (e26) > tmp13
+                  (xxorr).write (tmp13.copy)
+                  (e27).write (((xpow).not))
+                  (e27).force
+                  ((e27).<)
+                  (e27).if
+                    seq
+                      (lhs25).write ((pybool TRUE))
+                      (lhs25).force
+                      (pybool TRUE)
+                    seq
+                      (e28).write (((xuminus).not))
+                      (e28).force
+                      ((e28).<)
+                      mkCopy (e28) > tmp14
+                      (lhs25).write (tmp14.copy)
+                      (pybool TRUE)
+                  (e29).write (((lhs25).not))
+                  (e29).force
+                  ((e29).<)
+                  (e29).if
+                    seq
+                      mkCopy (xuplus) > tmp15
+                      (lhs27).write (tmp15.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs28).write ((pybool FALSE))
+                      (lhs28).force
+                      mkCopy (lhs28) > tmp16
+                      (lhs27).write (tmp16.copy)
+                      (pybool TRUE)
+                  (lhs27).if
+                    seq
+                      mkCopy (xmul) > tmp17
+                      (lhs29).write (tmp17.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs30).write ((pybool FALSE))
+                      (lhs30).force
+                      mkCopy (lhs30) > tmp18
+                      (lhs29).write (tmp18.copy)
+                      (pybool TRUE)
+                  (lhs29).if
+                    seq
+                      mkCopy (xdiv) > tmp19
+                      (lhs31).write (tmp19.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs32).write ((pybool FALSE))
+                      (lhs32).force
+                      mkCopy (lhs32) > tmp20
+                      (lhs31).write (tmp20.copy)
+                      (pybool TRUE)
+                  (lhs31).if
+                    seq
+                      mkCopy (xrem) > tmp21
+                      (lhs33).write (tmp21.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs34).write ((pybool FALSE))
+                      (lhs34).force
+                      mkCopy (lhs34) > tmp22
+                      (lhs33).write (tmp22.copy)
+                      (pybool TRUE)
+                  (lhs33).if
+                    seq
+                      mkCopy (xadd) > tmp23
+                      (lhs35).write (tmp23.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs36).write ((pybool FALSE))
+                      (lhs36).force
+                      mkCopy (lhs36) > tmp24
+                      (lhs35).write (tmp24.copy)
+                      (pybool TRUE)
+                  (lhs35).if
+                    seq
+                      mkCopy (xsub) > tmp25
+                      (lhs37).write (tmp25.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs38).write ((pybool FALSE))
+                      (lhs38).force
+                      mkCopy (lhs38) > tmp26
+                      (lhs37).write (tmp26.copy)
+                      (pybool TRUE)
+                  (lhs37).if
+                    seq
+                      mkCopy (xshl) > tmp27
+                      (lhs39).write (tmp27.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs40).write ((pybool FALSE))
+                      (lhs40).force
+                      mkCopy (lhs40) > tmp28
+                      (lhs39).write (tmp28.copy)
+                      (pybool TRUE)
+                  (lhs39).if
+                    seq
+                      mkCopy (xshr) > tmp29
+                      (lhs41).write (tmp29.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs42).write ((pybool FALSE))
+                      (lhs42).force
+                      mkCopy (lhs42) > tmp30
+                      (lhs41).write (tmp30.copy)
+                      (pybool TRUE)
+                  (lhs41).if
+                    seq
+                      mkCopy (xandd) > tmp31
+                      (lhs43).write (tmp31.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs44).write ((pybool FALSE))
+                      (lhs44).force
+                      mkCopy (lhs44) > tmp32
+                      (lhs43).write (tmp32.copy)
+                      (pybool TRUE)
+                  (lhs43).if
+                    seq
+                      mkCopy (xorr) > tmp33
+                      (lhs45).write (tmp33.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs46).write ((pybool FALSE))
+                      (lhs46).force
+                      mkCopy (lhs46) > tmp34
+                      (lhs45).write (tmp34.copy)
+                      (pybool TRUE)
+                  (lhs45).if
+                    seq
+                      mkCopy (xxorr) > tmp35
+                      (lhs47).write (tmp35.copy)
+                      (pybool TRUE)
+                    seq
+                      (lhs48).write ((pybool FALSE))
+                      (lhs48).force
+                      mkCopy (lhs48) > tmp36
+                      (lhs47).write (tmp36.copy)
+                      (pybool TRUE)
+                  toReturn.write ((lhs47))
                   stackUp.forward (return toReturn)
                   123
-        tmp.write (goto ((((xpowerOperator)).apply).@))
+        tmp.write (goto ((((xarithmetics_integer)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))

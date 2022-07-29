@@ -8,7 +8,7 @@ pyint 0 > dummy-int-usage
 pystring 0 > dummy-string-usage
 pyfloat 0 > dummy-float-usage
 pybool TRUE > dummy-bool-usage
-memory 0 > xround
+memory 0 > round
 [] > yassert1
   [args...] > unsupported
   [args...] > xunsupported
@@ -18,22 +18,22 @@ memory 0 > xround
   seq > @
     xhack.write
       []
-        memory 0 > xdivide
-        memory 0 > xcheck
+        memory 0 > divide
+        memory 0 > check
         seq > @
           seq
-            xdivide.write
-              [xx xy]
+            divide.write
+              [x y]
                 seq > @
                   seq
-                    (((unsupported)).apply (((xy).neq (pyint 0))) ((pystring "Zero division")))
-                    (((unsupported)).apply ((((xround)).apply ((((unsupported)).apply ((xx)) ((xy)))) ((pyint 2)))))
-            xcheck.write
+                    (((unsupported)).apply (((y).neq (pyint 0))) ((pystring "'Zero division'")))
+                    (((unsupported)).apply ((((round)).apply (((x).float-div (y))) ((pyint 2)))))
+            check.write
               []
-                memory 0 > xz
-                memory 0 > xa
+                memory 0 > a
+                memory 0 > z
                 seq > @
                   seq
-                    xz.write (((xdivide)).apply ((pyint 21)) ((pyint 3)))
-                    xa.write (((xdivide)).apply ((pyint 21)) ((pyint 0)))
+                    z.write (((divide)).apply ((pyint 21)) ((pyint 3)))
+                    a.write (((divide)).apply ((pyint 21)) ((pyint 0)))
                     (((unsupported)).apply ((pybool TRUE)))

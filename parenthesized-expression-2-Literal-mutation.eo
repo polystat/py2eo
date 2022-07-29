@@ -1,32 +1,120 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
 +alias pyint preface.pyint
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xlen preface.xlen
++alias xlist preface.xlist
++alias xint preface.xint
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xrange preface.xrange
 +junit
-pyint 0 > dummy-int-usage
-pystring 0 > dummy-string-usage
-pyfloat 0 > dummy-float-usage
-pybool TRUE > dummy-bool-usage
-[] > yparenthesizedexpression2
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory 0 > bogusForceDataize
-  memory 0 > xbogusForceDataize
-  memory 0 > xhack
-  seq > @
-    xhack.write
-      []
-        memory 0 > xtest
-        seq > @
-          xtest.write
-            []
-              memory 0 > xc
-              memory 0 > xb
-              memory 0 > xa
-              seq > @
-                seq
-                  xa.write (pyint 5)
-                  xb.write (pyint 7)
-                  xc.write (pyint 14)
-                  (((unsupported)).apply (((((unsupported)).apply (((xa).add (xb))) ((xc))).eq (pyint 1))))
+
+[unused] > parenthesized-expression-2
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xlist > dummy-xlist
+      xint > dummy-xint
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xtest
+      seq > @
+        stdout "parenthesized-expression-2\n"
+        write.
+          xtest
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > lhs0
+                cage 0 > e1
+                cage 0 > e0
+                cage 0 > xc
+                cage 0 > lhs2
+                cage 0 > xb
+                cage 0 > e2
+                cage 0 > xa
+                seq > @
+                  stdout "xtest\n"
+                  (xa).write ((pyint 5))
+                  (xa).force
+                  (xb).write ((pyint 7))
+                  (xb).force
+                  (xc).write ((pyint 12))
+                  (xc).force
+                  (e0).write (((xa).add (xb)))
+                  (e0).force
+                  ((e0).<)
+                  mkCopy (xc) > tmp1
+                  (lhs0).write (tmp1.copy)
+                  tmp.write (((e0).float-div (lhs0)))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e1).write (tmp.result)
+                  ((e1).<)
+                  (lhs2).write ((pyint 1))
+                  (lhs2).force
+                  (e2).write (((e1).eq (lhs2)))
+                  (e2).force
+                  ((e2).<)
+                  toReturn.write ((e2))
+                  stackUp.forward (return toReturn)
+                  123
+        tmp.write (goto ((((xtest)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+  (goto (apply.@)).result > @

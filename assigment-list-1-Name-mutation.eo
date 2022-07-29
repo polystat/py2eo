@@ -18,6 +18,8 @@
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
 +alias xlen preface.xlen
++alias xlist preface.xlist
++alias xint preface.xint
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xTypeError preface.xTypeError
@@ -47,7 +49,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      fakeclasses.pyIntClass > xint
       fakeclasses.pyFloatClass > xfloat
       fakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
@@ -58,6 +59,8 @@
       xmyArray > dummy-xmyArray
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xlist > dummy-xlist
+      xint > dummy-xint
       xStopIteration > dummy-stop-iteration
       xZeroDivisionError > dummy-xZeroDivisionError
       xTypeError > dummy-xTypeError
@@ -78,7 +81,7 @@
                 cage 0 > toReturn
                 cage 0 > lhs0
                 cage 0 > e1
-                cage 0 > rhs0
+                cage 0 > xrhs0
                 cage 0 > lhs1
                 cage 0 > e0
                 cage 0 > xc
@@ -87,13 +90,13 @@
                 cage 0 > xa
                 seq > @
                   stdout "xt1\n"
-                  (rhs0).write ((pyint 1))
-                  (rhs0).force
-                  mkCopy (rhs0) > tmp1
+                  (xrhs0).write ((pyint 1))
+                  (xrhs0).force
+                  mkCopy (xrhs0) > tmp1
                   (xa).write (tmp1.copy)
-                  mkCopy (rhs0) > tmp2
+                  mkCopy (xrhs0) > tmp2
                   (xb2).write (tmp2.copy)
-                  mkCopy (rhs0) > tmp3
+                  mkCopy (xrhs0) > tmp3
                   (xc).write (tmp3.copy)
                   (e0).write (((xa).eq (pyint 1)))
                   (e0).force

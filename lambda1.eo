@@ -18,6 +18,8 @@
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
 +alias xlen preface.xlen
++alias xlist preface.xlist
++alias xint preface.xint
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xTypeError preface.xTypeError
@@ -47,7 +49,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      fakeclasses.pyIntClass > xint
       fakeclasses.pyFloatClass > xfloat
       fakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
@@ -58,6 +59,8 @@
       xmyArray > dummy-xmyArray
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xlist > dummy-xlist
+      xint > dummy-xint
       xStopIteration > dummy-stop-iteration
       xZeroDivisionError > dummy-xZeroDivisionError
       xTypeError > dummy-xTypeError
@@ -80,11 +83,11 @@
                 cage 0 > e1
                 cage 0 > e2
                 cage 0 > xf
-                cage 0 > anonFun0
+                cage 0 > xanonFun0
                 seq > @
                   stdout "xlambda1\n"
                   write.
-                    anonFun0
+                    xanonFun0
                     []
                       [xxNotCopied] > apply
                         [stackUp] > @
@@ -93,7 +96,7 @@
                           xxNotCopied' > xx
                           cage 0 > e0
                           seq > @
-                            stdout "anonFun0\n"
+                            stdout "xanonFun0\n"
                             xx.<
                             (e0).write (((xx).mul (pyint 10)))
                             (e0).force
@@ -101,7 +104,7 @@
                             toReturn.write ((e0))
                             stackUp.forward (return toReturn)
                             123
-                  mkCopy (anonFun0) > tmp1
+                  mkCopy (xanonFun0) > tmp1
                   (xf).write (tmp1.copy)
                   tmp.write (goto ((((xf)).apply ((pyint 5))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0

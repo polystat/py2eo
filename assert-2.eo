@@ -8,10 +8,9 @@ pyint 0 > dummy-int-usage
 pystring 0 > dummy-string-usage
 pyfloat 0 > dummy-float-usage
 pybool TRUE > dummy-bool-usage
-memory 0 > xprint
-memory 0 > xlen
-memory 0 > xmyArray
-memory 0 > xsum
+memory 0 > sum
+memory 0 > print
+memory 0 > len
 [] > yassert2
   [args...] > unsupported
   [args...] > xunsupported
@@ -21,24 +20,24 @@ memory 0 > xsum
   seq > @
     xhack.write
       []
-        memory 0 > xavg
-        memory 0 > xcheck
+        memory 0 > avg
+        memory 0 > check
         seq > @
           seq
-            xavg.write
-              [xmarks]
+            avg.write
+              [marks]
                 seq > @
                   seq
-                    (((unsupported)).apply (((((xlen)).apply ((xmarks))).neq (pyint 0))) ((pystring "List is empty.")))
-                    (((unsupported)).apply ((((unsupported)).apply ((((xsum)).apply ((xmarks)))) ((((xlen)).apply ((xmarks)))))))
-            xcheck.write
+                    (((unsupported)).apply (((((len)).apply ((marks))).neq (pyint 0))) ((pystring "List is empty.")))
+                    (((unsupported)).apply (((((sum)).apply ((marks))).float-div (((len)).apply ((marks))))))
+            check.write
               []
-                memory 0 > xmark2
-                memory 0 > xmark1
+                memory 0 > mark1
+                memory 0 > mark2
                 seq > @
                   seq
-                    xmark2.write (((xmyArray)).apply ((((unsupported)).apply ((pyint 55)) ((pyint 88)) ((pyint 78)) ((pyint 90)) ((pyint 79)))))
-                    bogusForceDataize.write (((xprint)).apply ((pystring "Average of mark2:")) ((((xavg)).apply ((xmark2)))))
-                    xmark1.write (((xmyArray)).apply ((((unsupported)).apply)))
-                    bogusForceDataize.write (((xprint)).apply ((pystring "Average of mark1:")) ((((xavg)).apply ((xmark1)))))
+                    mark2.write (((unsupported)).apply ((pyint 55)) ((pyint 88)) ((pyint 78)) ((pyint 90)) ((pyint 79)))
+                    bogusForceDataize.write (((print)).apply ((pystring "Average of mark2:")) ((((avg)).apply ((mark2)))))
+                    mark1.write (((unsupported)).apply)
+                    bogusForceDataize.write (((print)).apply ((pystring "Average of mark1:")) ((((avg)).apply ((mark1)))))
                     (((unsupported)).apply ((pybool TRUE)))

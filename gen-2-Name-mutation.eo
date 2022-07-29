@@ -8,13 +8,12 @@ pyint 0 > dummy-int-usage
 pystring 0 > dummy-string-usage
 pyfloat 0 > dummy-float-usage
 pybool TRUE > dummy-bool-usage
-memory 0 > xlist
-memory 0 > xlen
-memory 0 > xmyArray
-memory 0 > xrange
-memory 0 > xi
-memory 0 > xlength
-memory 0 > xStopIteration
+memory 0 > list
+memory 0 > range
+memory 0 > length
+memory 0 > StopIteration
+memory 0 > len
+memory 0 > i
 [] > ygen2
   [args...] > unsupported
   [args...] > xunsupported
@@ -24,36 +23,36 @@ memory 0 > xStopIteration
   seq > @
     xhack.write
       []
-        memory 0 > xtest
+        memory 0 > test
         seq > @
-          xtest.write
+          test.write
             []
-              memory 0 > xresList
-              memory 0 > xcheckStr
-              memory 0 > xrev_str
+              memory 0 > resList
+              memory 0 > rev_str
+              memory 0 > checkStr
               seq > @
                 seq
-                  xcheckStr.write (pystring "Hello World!!!")
-                  xrev_str.write
+                  checkStr.write (pystring "'Hello World!!!'")
+                  rev_str.write
                     []
-                      memory 0 > xlength2
-                      memory 0 > xinn0
-                      memory 0 > xit0
-                      memory 0 > xi
+                      memory 0 > i
+                      memory 0 > it0
+                      memory 0 > inn0
+                      memory 0 > length2
                       seq > @
                         seq
-                          xlength2.write (((xlen)).apply ((xcheckStr)))
+                          length2.write (((len)).apply ((checkStr)))
                           seq
-                            xinn0.write (((xrange)).apply (((xlength).sub (pyint 1))) (((pyint 1).neg)) (((pyint 1).neg)))
-                            xit0.write ((((xinn0).x__iter__)).apply)
-                            (((unsupported)).apply ((xStopIteration)))
+                            inn0.write (((range)).apply (((length).sub (pyint 1))) (((pyint 1).neg)) (((pyint 1).neg)))
+                            it0.write ((((inn0).__iter__)).apply)
+                            (((unsupported)).apply ((StopIteration)))
                               while.
                                 (pybool TRUE)
                                 [unused]
                                   seq > @
                                     seq
-                                      xi.write ((((xit0).x__next__)).apply)
-                                      (((unsupported)).apply ((((unsupported)).apply ((xcheckStr)) ((xi)))))
-                  xresList.write (((xmyArray)).apply ((((unsupported)).apply)))
-                  (((unsupported)).apply (((((xresList).xappend)).apply ((xi)))) ((xi)) ((((xrev_str)).apply)))
-                  (((unsupported)).apply (((((xlen)).apply ((xresList))).eq (((xlen)).apply ((((xlist)).apply ((xcheckStr))))))))
+                                      i.write ((((it0).__next__)).apply)
+                                      (((unsupported)).apply ((((unsupported)).apply ((checkStr)) ((i)))))
+                  resList.write (((unsupported)).apply)
+                  (((unsupported)).apply (((((resList).append)).apply ((i)))) ((i)) ((((rev_str)).apply)))
+                  (((unsupported)).apply (((((len)).apply ((resList))).eq (((len)).apply ((((list)).apply ((checkStr))))))))
