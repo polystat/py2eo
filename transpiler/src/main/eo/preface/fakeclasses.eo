@@ -40,9 +40,14 @@
             obj.as-float
           if.
             dst.eq pyComplexClass
-            seq
-              stdout "converting to complex\n"
-              pycomplex (obj.as-float) (pyfloat 0.0)
+            if.
+              obj.x__class__.eq pyComplexClass
+              seq
+                stdout "convertingc complex to complex\n"
+                pycomplex (obj.xreal) (obj.ximag)
+              seq
+                stdout "converting int or float to complex\n"
+                pycomplex (obj.as-float) (pyfloat 0.0)
             seq
               stdout "Oblom\n"
               (pystring "Oblom")
