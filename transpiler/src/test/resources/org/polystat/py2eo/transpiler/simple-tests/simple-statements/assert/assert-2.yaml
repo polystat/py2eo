@@ -1,13 +1,19 @@
-enabled: False
+enabled: True
 python: |
   def avg(marks):
-    assert len(marks) != 0,"List is empty."
-    return sum(marks)/len(marks)
+    assert len(marks) != 0, "List is empty."
+    return sum(marks) / len(marks)
+  
   
   def check():
-    mark2 = [55,88,78,90,79]
-    print("Average of mark2:",avg(mark2))
-
-    mark1 = []
-    print("Average of mark1:",avg(mark1))
-    return True
+    result = False
+    try:
+      mark2 = [55, 88, 78, 90, 79]
+      print("Average of mark2:", avg(mark2))
+      
+      mark1 = []
+      print("Average of mark1:", avg(mark1))
+    except AssertionError as e:
+      result = str(e) == "List is empty."
+    
+    return result
