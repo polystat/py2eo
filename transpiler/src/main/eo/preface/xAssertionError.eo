@@ -1,13 +1,15 @@
 +package preface
 +alias pyint preface.pyint
 +alias return preface.return
++alias pystring preface.pystring
 +alias cage org.eolang.cage
 
 [] > xAssertionError
   pyint 14 > x__id__
-  [] > apply
+  [args...] > apply
     [stackUp] > @
       cage result > pResult
       [] > result
         xAssertionError > x__class__
+        (args.length.eq 0).if (pystring "") (args.get 0) > xreason
       stackUp.forward (return pResult) > @
