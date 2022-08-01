@@ -34,13 +34,16 @@
         pycomplex (pyfloat 0.0) (pyfloat 0.0)
         p.fst.pow (p.snd)
 
-  [x] > div
+  [x] > float-div
     fakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyComplexClass))
-        return (pycomplex (pyfloat 0.0) (pyfloat 0.0))
-        p.fst.div (p.snd)
+        []
+          p.fst.mul (pycomplex (x.xreal) (x.ximag.neg)) > num
+          ((x.xreal.mul (x.xreal)).add (x.ximag.mul (x.ximag))) > denom
+          return (pycomplex ((num.xreal.float-div denom).result) ((num.ximag.float-div denom).result)) > @
+        p.fst.float-div (p.snd)
 
   [x] > add
     fakeclasses.convert (pycomplex xreal ximag) x > p

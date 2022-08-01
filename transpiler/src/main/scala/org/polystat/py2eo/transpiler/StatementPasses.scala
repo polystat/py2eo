@@ -611,6 +611,23 @@ object StatementPasses {
     case _ => (s, ns)
   }
 
+  def simplifyAssert(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case Assert(what, param, ann) => (
+      IfSimple(
+        Unop(Unops.LNot, what, ann.pos),
+        Raise(
+          Some(CallIndex(true, Ident("AssertionError", ann.pos), param.toList.map((None, _)), ann.pos)),
+          None,
+          ann.pos
+        ),
+        Pass(ann.pos),
+        ann.pos
+      ),
+      ns
+    )
+    case _ => (s, ns)
+  }
+
   def simplifyFor(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case For(what, in, body, eelse, false, ann) =>
       val (List(it, inn), ns1) = ns(List("it", "inn"))

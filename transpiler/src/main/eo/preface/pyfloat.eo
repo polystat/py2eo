@@ -68,13 +68,13 @@
         pyfloat (value.pow (x.value))
         p.fst.pow (p.snd)
 
-  [x] > div
+  [x] > float-div
     fakeclasses.convert (pyfloat value) x > p
     seq > @
       if.
         (fakeclasses.has-type x (fakeclasses.pyFloatClass))
         return (pyfloat (value.div (x.value)))
-        p.fst.div (p.snd)
+        p.fst.float-div (p.snd)
 
   [x] > add
     fakeclasses.convert (pyfloat value) x > p
@@ -99,6 +99,9 @@
         (fakeclasses.has-type x (fakeclasses.pyFloatClass))
         pyfloat (value.minus (x.value))
         p.fst.sub (p.snd)
+
+  [] > neg
+    pyfloat (value.neg) > @
 
   [] > as-float
     pyfloat value > @
