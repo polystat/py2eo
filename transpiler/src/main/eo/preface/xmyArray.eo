@@ -25,6 +25,14 @@
                 123
         [i] > get
           (value.get (i.value)) > @
+        [] > sum
+          memory 0 > i
+          memory 0 > acc
+          while.
+            i.lt (value.length)
+            [unused]
+              acc.plus acc ((value.get i).value) > @
+          (pyint acc) > @
         [] > xappend
           [self x] > apply
             [stackUp] > @
