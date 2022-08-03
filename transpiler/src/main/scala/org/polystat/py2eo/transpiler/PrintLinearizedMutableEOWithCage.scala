@@ -38,6 +38,8 @@ object PrintLinearizedMutableEOWithCage {
     "+alias raiseEmpty preface.raiseEmpty",
     "+alias xmyArray preface.xmyArray",
     "+alias xlen preface.xlen",
+    "+alias xstr preface.xstr",
+    "+alias xsum preface.xsum",
     "+alias xlist preface.xlist",
     "+alias xint preface.xint",
     "+alias xiter preface.xiter",
@@ -285,7 +287,10 @@ object PrintLinearizedMutableEOWithCage {
     val funNames = funs.map { f: FuncDef => f.name }.toSet
     val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > ${parm.name}")
     val memories =
-      f.accessibleIdents.filter(x => x._2._1 == VarScope.Local && !funNames.contains(x._1)).
+      f.accessibleIdents.filter(x =>
+        (x._2._1 == VarScope.Local || x._2._1 == VarScope.ExceptName)
+          && !funNames.contains(x._1)
+      ).
       map(x => s"cage 0 > ${x._1}").toList ++
       funs.map { f: FuncDef => s"cage 0 > ${f.name}" }
 
@@ -344,6 +349,8 @@ object PrintLinearizedMutableEOWithCage {
       "xmyArray > dummy-xmyArray",
       "mkCopy > dummy-mkCopy",
       "xlen > dummy-xlen",
+      "xstr > dummy-xstr",
+      "xsum > dummy-xsum",
       "xlist > dummy-xlist",
       "xint > dummy-xint",
       "xStopIteration > dummy-stop-iteration",

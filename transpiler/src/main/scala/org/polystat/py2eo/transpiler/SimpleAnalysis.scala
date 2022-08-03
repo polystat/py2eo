@@ -128,6 +128,13 @@ object SimpleAnalysis {
       (h, st) => st match {
         case NonLocal(l, ann) => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.NonLocal, ann.pos)))), false)
         case Global(l, ann)   => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.Global, ann.pos)))), false)
+        case Try(ttry, excepts, eelse, ffinally, ann) => (
+          excepts.foldLeft(h){
+            case (h, (Some((_, Some(name))), _)) => h.+((name, (VarScope.ExceptName, ann.pos)))
+            case (h, _) => h
+          },
+          true
+        )
         case _                => (h, dontVisitOtherBlocks(st))
       }
     )(HashMap[String, (VarScope.T, GeneralAnnotation)](), body)

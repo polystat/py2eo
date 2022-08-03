@@ -597,12 +597,18 @@ object StatementPasses {
             SimpleComparison(Compops.Eq,
               Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
               x._1 match {
-                case Some((e, None)) => Field(e, "__id__", ann.pos)
+                case Some((e, _)) => Field(e, "__id__", ann.pos)
                 case None => IntLiteral(1, ann.pos)
               },
               ann.pos
             ),
-            Suite(List(body, Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos)), ann.pos)
+            Suite(
+              (x._1.toList.flatMap(x => x._2.toList.map (
+                name => (Assign(List(Ident(name, ann.pos), Ident("current-exception", ann.pos)), ann.pos))
+              ))) ++
+              List(body, Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos)),
+              ann.pos
+            )
           )
         }
       )
