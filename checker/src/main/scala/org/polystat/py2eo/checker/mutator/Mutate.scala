@@ -1,7 +1,7 @@
-package org.polystat.py2eo.checker
+package org.polystat.py2eo.checker.mutator
 
-import org.cqfn.astranaut.api.{JsonSerializer, TreeProcessor}
-import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
+import org.cqfn.astranaut.api.TreeProcessor
+import org.polystat.py2eo.checker.mutator.Mutate.Mutation.Mutation
 import org.polystat.py2eo.parser.{Parse, PrintPython}
 
 object Mutate {
@@ -16,11 +16,12 @@ object Mutate {
       case None => input
       case Some(parsed) => mutation match {
         case Mutation.operatorMutation =>
-          println(new JsonSerializer(Convert(parsed)).serializeToJsonString())
-
           val treeProcessor = new TreeProcessor
           treeProcessor.loadRulesFromString("Binop(#1, #2)<\"+\"> -> Binop(#1, #2)<\"-\">")
-          PrintPython.print(Convert(treeProcessor.transform(Convert(parsed))))
+
+          val treeProcessorInput = Convert(parsed)
+          val treeProcessorOutput = treeProcessor.transform(treeProcessorInput.toAstranautNode)
+          PrintPython.print(Convert(Node(treeProcessorOutput)))
       }
     }
   }

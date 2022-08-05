@@ -1,12 +1,8 @@
-package org.polystat.py2eo.checker
+package org.polystat.py2eo.checker.mutator
 
-import org.cqfn.astranaut.base.{DraftNode, Node}
 import org.polystat.py2eo.parser.{Expression, GeneralAnnotation, Statement}
 
-import java.util
-import scala.collection.JavaConverters.seqAsJavaListConverter
 import scala.collection.immutable.HashMap
-import scala.jdk.CollectionConverters.CollectionHasAsScala
 
 object Convert {
 
@@ -18,38 +14,21 @@ object Convert {
       case Statement.IfSimple(cond, yes, no, ann) => ???
       case Statement.While(cond, body, eelse, ann) => ???
       case Statement.For(what, in, body, eelse, isAsync, ann) => ???
-      case Statement.Suite(l, ann) => {
-        val result = new DraftNode.Constructor()
-        result.setName("Suite")
-        result.setChildrenList(l.map(apply).asJava)
-        result.createNode
-      }
+      case Statement.Suite(body, _) => Node("Suite", body.map(apply))
       case Statement.AugAssign(op, lhs, rhs, ann) => ???
       case Statement.AnnAssign(lhs, rhsAnn, rhs, ann) => ???
       case Statement.Assign(l, ann) => ???
       case Statement.CreateConst(name, value, ann) => ???
-      case Statement.Pass(ann) => ???
-      case Statement.Break(ann) => ???
-      case Statement.Continue(ann) => ???
-      case Statement.Return(x, _) => {
-        val result = new DraftNode.Constructor()
-        result.setName("Return")
-        result.setChildrenList(x match {
-          case Some(value) => util.Arrays.asList(apply(value))
-          case None => util.Arrays.asList()
-        })
-        result.createNode
-      }
+
+      case Statement.Pass(_) => Node("Pass")
+      case Statement.Break(_) => Node("Break")
+      case Statement.Continue(_) => Node("Continue")
+      case Statement.Return(value, _) => Node("Return", value.map(apply).toList)
+
       case Statement.Assert(what, param, ann) => ???
       case Statement.Raise(e, from, ann) => ???
       case Statement.Del(l, ann) => ???
-      case Statement.FuncDef(name, _, _, _, _, body, _, _, _, _) => {
-        val result = new DraftNode.Constructor()
-        result.setName("FuncDef")
-        result.setData(name)
-        result.setChildrenList(util.Arrays.asList(apply(body)))
-        result.createNode
-      }
+      case Statement.FuncDef(name, _, _, _, _, body, _, _, _, _) => Node("FuncDef", name, List(apply(body)))
       case Statement.ClassDef(name, bases, body, decorators, ann) => ???
       case Statement.SimpleObject(name, decorates, fields, ann) => ???
       case Statement.NonLocal(l, ann) => ???
@@ -67,25 +46,17 @@ object Convert {
     node match {
       case Expression.Assignment(ident, rhs, ann) => ???
       case Expression.Await(what, ann) => ???
-      case Expression.IntLiteral(value, _) => {
-        val result = new DraftNode.Constructor()
-        result.setName("IntLiteral")
-        result.setData(value.toString)
-        result.createNode
-      }
-      case Expression.FloatLiteral(value, ann) => ???
+      case Expression.IntLiteral(value, _) => Node("IntLiteral", value.toString)
+      case Expression.FloatLiteral(value, _) => Node("FloatLiteral", value)
       case Expression.ImagLiteral(value, ann) => ???
-      case Expression.StringLiteral(value, ann) => ???
-      case Expression.BoolLiteral(value, ann) => ???
-      case Expression.NoneLiteral(ann) => ???
-      case Expression.EllipsisLiteral(ann) => ???
-      case Expression.Binop(op, l, r, _) => {
-        val result = new DraftNode.Constructor()
-        result.setName("Binop")
-        result.setData(Expression.Binops.toString(op))
-        result.setChildrenList(util.Arrays.asList(apply(l), apply(r)))
-        result.createNode
-      }
+      case Expression.StringLiteral(value, _) => Node("StringLiteral", value.mkString(" "))
+      case Expression.BoolLiteral(value, _) => Node("BoolLiteral", value.toString)
+      case Expression.NoneLiteral(_) => Node("None")
+      case Expression.EllipsisLiteral(_) => Node("Ellipsis")
+
+      case Expression.Binop(op, lhs, rhs, _) =>
+        Node("Binop", Expression.Binops.toString(op), List(lhs, rhs).map(apply))
+
       case Expression.SimpleComparison(op, l, r, ann) => ???
       case Expression.LazyLAnd(l, r, ann) => ???
       case Expression.LazyLOr(l, r, ann) => ???
@@ -110,34 +81,23 @@ object Convert {
   }
 
   def apply(node: Node): Statement.T = {
-    node.getTypeName match {
-      case "Return" => {
-        if (node.getChildCount == 1) {
-          Statement.Return(Some(parseExpression(node.getChild(0))), nullAnnotation)
-        } else {
-          Statement.Return(None, nullAnnotation)
-        }
-      }
+    node match {
+      case Node("Return", _, children) =>
+        Statement.Return(children.headOption.map(parseExpression), nullAnnotation)
 
-      case "FuncDef" => {
-        val decorators = Statement.Decorators(List.empty)
-        Statement.FuncDef(node.getData, List(), None, None, None, apply(node.getChild(0)), decorators, HashMap.empty, isAsync = false, nullAnnotation)
-      }
+      case Node("Suite", _, children) =>
+        Statement.Suite(children.map(apply), nullAnnotation)
 
-      case "Suite" => {
-        val children = node.getChildrenList.asScala.map(apply)
-        Statement.Suite(children.toList, nullAnnotation)
-      }
+      case Node("FuncDef", Some(name), body :: _) =>
+        Statement.FuncDef(name, List(), None, None, None, apply(body), Statement.Decorators(List.empty), HashMap.empty, isAsync = false, nullAnnotation)
     }
   }
 
   private def parseExpression(node: Node): Expression.T = {
-    node.getTypeName match {
-      case "IntLiteral" => Expression.IntLiteral(node.getData.toInt, nullAnnotation)
-      case "Binop" =>
-        val op = Expression.Binops.ofString(node.getData)
-        Expression.Binop(op, parseExpression(node.getChild(0)), parseExpression(node.getChild(1)), nullAnnotation)
+    node match {
+      case Node("IntLiteral", Some(value), _) => Expression.IntLiteral(value.toInt, nullAnnotation)
+      case Node("Binop", Some(op), lhs :: rhs :: _) =>
+        Expression.Binop(Expression.Binops.ofString(op), parseExpression(lhs), parseExpression(rhs), nullAnnotation)
     }
   }
-
 }

@@ -1,7 +1,8 @@
 package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.CompilingResult.CompilingResult
-import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
+import org.polystat.py2eo.checker.mutator.Mutate
+import org.polystat.py2eo.checker.mutator.Mutate.Mutation.Mutation
 import org.polystat.py2eo.transpiler.Transpile
 import org.yaml.snakeyaml.Yaml
 
