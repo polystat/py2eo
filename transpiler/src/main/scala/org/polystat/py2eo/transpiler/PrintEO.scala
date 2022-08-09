@@ -45,7 +45,7 @@ object PrintEO {
 
   def unop(t: Unops.T): String = t match {
     case Unops.Minus => ".neg"
-    case Unops.Neg => ".unsupported"
+    case Unops.Neg => ".bitwise-not"
     case Unops.LNot => ".not"
     case Unops.Plus => ""
   }
