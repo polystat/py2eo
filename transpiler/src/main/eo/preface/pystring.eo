@@ -74,6 +74,24 @@
       [stackUp] > @
         stackUp.forward (return iter) > @
 
+  [] > xto-int
+    [] > apply
+      [stackUp] > @
+        [s] > is-digit
+          (s.as-bytes.as-int.gte ("0".as-bytes.as-int)).and (s.as-bytes.as-int.lte ("9".as-bytes.as-int)) > @
+        memory 0 > result
+        memory TRUE > input-is-correct
+        memory 0 > i
+        seq > @
+          (i.lt (value.length)).while
+            [unused]
+              value.slice i 1 > x
+              seq > @
+                input-is-correct.write (input-is-correct.and (is-digit x))
+                result.write ((result.mul 10).plus (x.as-bytes.as-int.minus ("0".as-bytes.as-int))
+          stackUp.forward (input-is-correct.if (return (pyint value)) ((goto (xValueError.apply.@)).result)
+          123
+
   seq > @
     stdout (sprintf "dataizing value %s\n" value)
     value
