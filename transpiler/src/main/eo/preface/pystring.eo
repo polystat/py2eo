@@ -78,8 +78,18 @@
   [] > xto-int
     [] > apply
       [stackUp] > @
-        [s] > is-digit
-          (s.as-bytes.as-int.gte ("0".as-bytes.as-int)).and (s.as-bytes.as-int.lte ("9".as-bytes.as-int)) > @
+        (* "0" "1" "2" "3" "4" "5" "6" "7" "8" "9") > digits
+        [s] > to-digit
+          memory 0 > result
+          seq > @
+            while.
+              ((result.lt 10).and (((digits.get result).eq s).not))
+              [unused]
+                seq > @
+                  stdout (sprintf "result %d\n" result)
+                  result.write (result.plus 1)
+                  0
+            result
         memory 0 > result
         memory TRUE > input-is-correct
         memory 0 > i
@@ -87,9 +97,12 @@
           (i.lt (value.length)).while
             [unused]
               value.slice i 1 > x
+              to-digit x > dig
               seq > @
-                input-is-correct.write (input-is-correct.and (is-digit x))
-                result.write ((result.mul 10).plus (x.as-bytes.as-int.minus ("0".as-bytes.as-int)))
+                input-is-correct.write (input-is-correct.and (dig.lt 10))
+                result.write ((result.times 10).plus dig)
+                i.write (i.plus 1)
+                123
           stackUp.forward (input-is-correct.if (return (pyint value)) ((goto (xValueError.apply.@)).result))
           123
 
