@@ -7,6 +7,7 @@
 +alias fakeclasses preface.fakeclasses
 +alias xmyArray preface.xmyArray
 +alias xStopIteration preface.xStopIteration
++alias xValueError preface.xValueError
 
 [value] > pystring
 
@@ -26,6 +27,9 @@
 
   [] > as-string
     pystring value > @
+
+  [] > as-bool
+    pybool ((value.length.eq 0).not) > @
 
   [] > force
     value > @
@@ -73,6 +77,37 @@
     [self] > apply
       [stackUp] > @
         stackUp.forward (return iter) > @
+
+  [] > xto-int
+    [] > apply
+      [stackUp] > @
+        (* "0" "1" "2" "3" "4" "5" "6" "7" "8" "9") > digits
+        [s] > to-digit
+          memory 0 > result
+          seq > @
+            while.
+              ((result.lt 10).and (((digits.get result).eq s).not))
+              [unused]
+                seq > @
+                  stdout (sprintf "result %d\n" result)
+                  result.write (result.plus 1)
+                  0
+            result
+        memory 0 > result
+        memory TRUE > input-is-correct
+        memory 0 > i
+        seq > @
+          (i.lt (value.length)).while
+            [unused]
+              value.slice i 1 > x
+              to-digit x > dig
+              seq > @
+                input-is-correct.write (input-is-correct.and (dig.lt 10))
+                result.write ((result.times 10).plus dig)
+                i.write (i.plus 1)
+                123
+          stackUp.forward (input-is-correct.if (return (pyint value)) ((goto (xValueError.apply.@)).result))
+          123
 
   seq > @
     stdout (sprintf "dataizing value %s\n" value)

@@ -9,8 +9,9 @@ import org.polystat.py2eo.parser.Expression.{
   Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
 import org.polystat.py2eo.parser.Statement.{
-  AugAssign, Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass,
-  Raise, Return, Suite, Try, While, Continue
+  AnnAssign, AugAssign, Assign, Break, ClassDef, Decorators,
+  FuncDef, IfSimple, NonLocal, Pass, Raise, Return, Suite, Try,
+  While, Continue
 }
 
 object PrintLinearizedMutableEOWithCage {
@@ -89,7 +90,7 @@ object PrintLinearizedMutableEOWithCage {
         }
         val callInit = init match {
           case None => ""
-          case Some(_) => s" (goto ((result.x__init__.apply pResult $consArgs).@))"
+          case Some(_) => s" ((goto ((result.x__init__.apply pResult $consArgs).@)).result)"
         }
         val decorates = bases.headOption.map(_._2)
           "write." :: indent(
@@ -131,6 +132,8 @@ object PrintLinearizedMutableEOWithCage {
           )
       case NonLocal(_, _) => List()
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
+      case AnnAssign(lhs, rhsAnn, Some(rhs), ann) =>
+        printSt(Assign(List(lhs, rhs), ann.pos))
       case AugAssign(op, lhs, rhs, ann) =>
         List(s"(${pe(lhs)}).${augop(op)} (${pe(rhs)})")
       case Assign(List(lhs, rhs@Expression.Binop(op, _, _, _)), ann) if
@@ -189,7 +192,7 @@ object PrintLinearizedMutableEOWithCage {
       case IfSimple(cond, yes, no, _) =>
         val stsY = printSt(yes)
         val stsN = printSt(no)
-        pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "(pybool TRUE)")) ++ indent("seq" :: indent(stsN :+ "(pybool TRUE)"))
+        pe(cond) + ".as-bool.if" :: indent("seq" :: indent(stsY :+ "(pybool TRUE)")) ++ indent("seq" :: indent(stsN :+ "(pybool TRUE)"))
       case While(cond, body, Some(Pass(_)), _) =>
         "write." :: indent(
           "tmp" ::
@@ -197,7 +200,7 @@ object PrintLinearizedMutableEOWithCage {
             "[stackUp]" :: indent(
               "seq > @" :: indent(
                 (
-                  pe(cond) + ".while" :: indent(
+                  pe(cond) + ".as-bool.while" :: indent(
                     "[unused]" ::
                     indent(
                       "cage 0 > tmp" ::
@@ -306,7 +309,7 @@ object PrintLinearizedMutableEOWithCage {
               "seq > @" :: indent(
                 ("stdout \"" + f.name + "\\n\"") ::
                 f.args.map(parm => s"${parm.name}.<") ++
-                (printSt(f.body) :+ "123")
+                (printSt(f.body) :+ "stackUp.forward (return 0)" :+ "123")
               )
             )
           )

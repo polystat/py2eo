@@ -72,6 +72,9 @@
         pyint (value.pow (x.value))
         p.fst.pow (p.snd)
 
+  [] > bitwise-not
+    pyint ((value.as-bytes.not).as-int) > @
+
   [x] > and
     fakeclasses.convert (pyint value) x > p
     seq > @
@@ -225,6 +228,13 @@
 
   [] > force
     value.write val > @
+
+  [] > xto-int
+    [] > apply
+      [stackUp] > @
+        seq > @
+          stackUp.forward (return (pyint value))
+          123
 
   seq > @
     stdout (sprintf "dataizing value %d\n" value)

@@ -43,6 +43,24 @@
                 self.value.write (tmp.copy.with (x.with-value (tmpx.copy)))
                 stackUp.forward (return 0)
                 123
+        [] > xremove
+          [self what] > apply
+            [stackUp] > @
+              memory FALSE > removed
+              (goto ((xmyArray.apply (*)).@)).result > accum
+              memory 0 > i
+              seq > @
+                (i.lt (self.value.length)).while
+                  [unused]
+                    self.value.get i > x
+                    seq > @
+                      ((x.eq what).value.and (removed.not)).if
+                        removed.write TRUE
+                        (goto ((accum.xappend.apply accum x).@)).result
+                      i.write (i.plus 1)
+                self.value.write (accum.value)
+                stackUp.forward (return 0)
+                123
         [] > xclear
           [self] > apply
             [stackUp] > @
