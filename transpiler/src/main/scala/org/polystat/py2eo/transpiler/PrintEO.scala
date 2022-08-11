@@ -107,7 +107,7 @@ object PrintEO {
       case CallIndex(isCall, whom, args, _) if !isCall && args.size == 1 =>
         orb + e(whom) + ".get " + e(args(0)._2) + crb
       case Field(whose, name, _) => orb + e(whose) + "." + name + crb
-      case Cond(cond, yes, no, _) => orb + e(cond) + ".if " + e(yes) + space + e(no) + crb
+      case Cond(cond, yes, no, _) => orb + e(cond) + ".as-bool.if " + e(yes) + space + e(no) + crb
       case CallIndex(true, whom, args, _)  =>
         "((" + e(whom) + crb + ".apply" +
           // todo: empty arg list hack

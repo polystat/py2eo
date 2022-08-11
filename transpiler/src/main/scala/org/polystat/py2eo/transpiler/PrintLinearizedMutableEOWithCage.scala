@@ -189,7 +189,7 @@ object PrintLinearizedMutableEOWithCage {
       case IfSimple(cond, yes, no, _) =>
         val stsY = printSt(yes)
         val stsN = printSt(no)
-        pe(cond) + ".if" :: indent("seq" :: indent(stsY :+ "(pybool TRUE)")) ++ indent("seq" :: indent(stsN :+ "(pybool TRUE)"))
+        pe(cond) + ".as-bool.if" :: indent("seq" :: indent(stsY :+ "(pybool TRUE)")) ++ indent("seq" :: indent(stsN :+ "(pybool TRUE)"))
       case While(cond, body, Some(Pass(_)), _) =>
         "write." :: indent(
           "tmp" ::
@@ -197,7 +197,7 @@ object PrintLinearizedMutableEOWithCage {
             "[stackUp]" :: indent(
               "seq > @" :: indent(
                 (
-                  pe(cond) + ".while" :: indent(
+                  pe(cond) + ".as-bool.while" :: indent(
                     "[unused]" ::
                     indent(
                       "cage 0 > tmp" ::
