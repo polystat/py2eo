@@ -87,152 +87,33 @@
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
-                cage 0 > e6
-                cage 0 > xlhs1
                 cage 0 > e1
-                cage 0 > e5
-                cage 0 > e7
-                cage 0 > xinn0
+                cage 0 > lhs1
                 cage 0 > e0
-                cage 0 > xlhs0
-                cage 0 > e4
-                cage 0 > e8
-                cage 0 > e3
-                cage 0 > e10
-                cage 0 > xit0
-                cage 0 > xcaught
-                cage 0 > xi
-                cage 0 > lhs3
-                cage 0 > e9
                 cage 0 > e2
-                cage 0 > xcollectionAccum
-                cage 0 > e11
                 seq > @
                   stdout "xtest\n"
-                  tmp.write (goto ((((xmyArray)).apply ((*))).@))
+                  tmp.write (goto ((((xlist)).apply ((pystring "Hello World!!!"))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e0).write (tmp.result)
                   ((e0).<)
-                  mkCopy (e0) > tmp1
-                  (xcollectionAccum).write (tmp1.copy)
-                  tmp.write (goto ((((xlist)).apply ((pystring "Hello World!!!"))).@))
+                  tmp.write (goto ((((xlen)).apply ((e0))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e1).write (tmp.result)
                   ((e1).<)
-                  tmp.write (goto ((((xrange)).apply ((e1))).@))
-                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e2).write (tmp.result)
+                  (lhs1).write ((pyint 14))
+                  (lhs1).force
+                  (e2).write (((e1).eq (lhs1)))
+                  (e2).force
                   ((e2).<)
-                  mkCopy (e2) > tmp2
-                  (xinn0).write (tmp2.copy)
-                  tmp.write (goto (((((xinn0).x__iter__)).apply ((xinn0))).@))
-                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e3).write (tmp.result)
-                  ((e3).<)
-                  mkCopy (e3) > tmp3
-                  (xit0).write (tmp3.copy)
-                  xcaught.write (pybool TRUE)
-                  write.
-                    xcurrent-exception
-                    goto
-                      [stackUp]
-                        cage 0 > xcurrent-exception
-                        cage 0 > xexcinexc
-                        cage 0 > tmp
-                        seq > @
-                          write.
-                            tmp
-                            goto
-                              [stackUp]
-                                seq > @
-                                  (pybool TRUE).while
-                                    [unused]
-                                      cage 0 > tmp
-                                      seq > @
-                                        write.
-                                          tmp
-                                          goto
-                                            [stackUp]
-                                              cage 0 > tmp
-                                              seq > @
-                                                tmp.write (goto (((((xit0).x__next__)).apply ((xit0))).@))
-                                                (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                                (e4).write (tmp.result)
-                                                ((e4).<)
-                                                mkCopy (e4) > tmp4
-                                                (xi).write (tmp4.copy)
-                                                mkCopy (xcollectionAccum) > tmp5
-                                                (lhs3).write (tmp5.copy)
-                                                (e5).write (((xi).mul (xi)))
-                                                (e5).force
-                                                ((e5).<)
-                                                tmp.write (goto (((((xcollectionAccum).xappend)).apply ((lhs3)) ((e5))).@))
-                                                (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                                (e6).write (tmp.result)
-                                                ((e6).<)
-                                                stackUp.forward continue
-                                                123
-                                        (tmp.x__class__.x__id__.neq (continue.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                        0
-                                  stackUp.forward raiseNothing
-                          if.
-                            tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
-                            stackUp.forward tmp
-                            0
-                          stackUp.forward raiseNothing
-                  seq
-                    write.
-                      xexcinexc
-                      goto
-                        [stackUp]
-                          if. > @
-                            is-exception (xcurrent-exception.x__class__.x__id__)
-                            seq
-                              mkCopy (xcurrent-exception.x__class__) > tmp6
-                              (e7).write (tmp6.copy)
-                              ((e7).<)
-                              mkCopy (e7.x__id__) > tmp7
-                              (e8).write (tmp7.copy)
-                              ((e8).<)
-                              mkCopy (xStopIteration.x__id__) > tmp8
-                              (e9).write (tmp8.copy)
-                              ((e9).<)
-                              (e10).write (((e8).eq (e9)))
-                              (e10).force
-                              ((e10).<)
-                              (e10).if
-                                seq
-                                  (xcaught).write ((pybool TRUE))
-                                  (xcaught).force
-                                  (pybool TRUE)
-                                seq
-                                  (pybool TRUE)
-                              xcaught.if (stackUp.forward raiseNothing) (stackUp.forward xcurrent-exception)
-                              0
-                            seq
-                              (stackUp.forward xcurrent-exception)
-                              0
-                    xexcinexc.x__class__.x__id__
-                    if.
-                      xcurrent-exception.x__class__.x__id__.eq (raiseNothing.x__class__.x__id__)
-                      seq
-                        0
-                      0
-                    ((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or ((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
-                    ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
-                  (xlhs0).write ((pyint 14))
-                  (xlhs0).force
-                  (e11).write (((xcollectionAccum).eq (xlhs0)))
-                  (e11).force
-                  ((e11).<)
-                  mkCopy (e11) > tmp9
-                  (xlhs1).write (tmp9.copy)
-                  toReturn.write ((xlhs1))
+                  toReturn.write ((e2))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xtest)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

@@ -124,7 +124,7 @@
                             goto
                               [stackUp]
                                 seq > @
-                                  (pybool TRUE).while
+                                  (pybool TRUE).as-bool.while
                                     [unused]
                                       cage 0 > tmp
                                       seq > @
@@ -145,7 +145,7 @@
                                                 (e2).write (((xval).eq (pystring "i")))
                                                 (e2).force
                                                 ((e2).<)
-                                                (e2).if
+                                                (e2).as-bool.if
                                                   seq
                                                     stackUp.forward break
                                                     (pybool TRUE)
@@ -181,7 +181,7 @@
                               (e6).write (((e4).eq (e5)))
                               (e6).force
                               ((e6).<)
-                              (e6).if
+                              (e6).as-bool.if
                                 seq
                                   (xcaught).write ((pybool TRUE))
                                   (xcaught).force
@@ -206,10 +206,12 @@
                   ((e7).<)
                   toReturn.write ((e7))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xfor_break)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

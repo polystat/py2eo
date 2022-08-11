@@ -94,16 +94,16 @@
                 cage 0 > xfinallyHappened
                 seq > @
                   stdout "xtebf\n"
-                  mkCopy (xfalse) > tmp1
-                  (xfinallyHappened).write (tmp1.copy)
-                  mkCopy (xfalse) > tmp2
-                  (xelseHappened).write (tmp2.copy)
+                  mkCopy (xfalse) > tmp3
+                  (xfinallyHappened).write (tmp3.copy)
+                  mkCopy (xfalse) > tmp4
+                  (xelseHappened).write (tmp4.copy)
                   write.
                     tmp
                     goto
                       [stackUp]
                         seq > @
-                          (pybool TRUE).while
+                          (pybool TRUE).as-bool.while
                             [unused]
                               cage 0 > tmp
                               seq > @
@@ -158,9 +158,9 @@
                     tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
                     stackUp.forward tmp
                     0
-                  mkCopy (xfinallyHappened) > tmp3
-                  (lhs0).write (tmp3.copy)
-                  (lhs0).if
+                  mkCopy (xfinallyHappened) > tmp5
+                  (lhs0).write (tmp5.copy)
+                  (lhs0).as-bool.if
                     seq
                       (e0).write (((xelseHappened).not))
                       (e0).force
@@ -169,15 +169,17 @@
                     seq
                       (lhs1).write ((pybool FALSE))
                       (lhs1).force
-                      mkCopy (lhs1) > tmp4
-                      (e0).write (tmp4.copy)
+                      mkCopy (lhs1) > tmp6
+                      (e0).write (tmp6.copy)
                       (pybool TRUE)
                   toReturn.write ((e0))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xtebf)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

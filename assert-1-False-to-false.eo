@@ -123,7 +123,7 @@
                             (e2).write (((e1).not))
                             (e2).force
                             ((e2).<)
-                            (e2).if
+                            (e2).as-bool.if
                               seq
                                 tmp.write (goto ((((xAssertionError)).apply ((pystring "Zero division"))).@))
                                 (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
@@ -139,6 +139,7 @@
                             ((e3).<)
                             toReturn.write ((e3))
                             stackUp.forward (return toReturn)
+                            stackUp.forward (return 0)
                             123
                   mkCopy (xfalse) > tmp1
                   (xres).write (tmp1.copy)
@@ -182,7 +183,7 @@
                               (e9).write (((e7).eq (e8)))
                               (e9).force
                               ((e9).<)
-                              (e9).if
+                              (e9).as-bool.if
                                 seq
                                   mkCopy (xcurrent-exception) > tmp6
                                   (xe).write (tmp6.copy)
@@ -208,10 +209,12 @@
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
                   toReturn.write ((xres))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xcheck)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

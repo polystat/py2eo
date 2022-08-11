@@ -103,7 +103,7 @@
                     goto
                       [stackUp]
                         seq > @
-                          (pybool TRUE).while
+                          (pybool TRUE).as-bool.while
                             [unused]
                               cage 0 > tmp
                               seq > @
@@ -116,7 +116,7 @@
                                         (e1).write (((xa).greater (xb)))
                                         (e1).force
                                         ((e1).<)
-                                        ((e1).not).if
+                                        ((e1).not).as-bool.if
                                           seq
                                             stackUp.forward break
                                             (pybool TRUE)
@@ -138,10 +138,12 @@
                     0
                   toReturn.write ((pybool TRUE))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xwhileCheck2)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

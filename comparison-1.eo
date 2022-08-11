@@ -129,13 +129,13 @@
                   (xlhs0).force
                   (xlhs1).write ((pybool TRUE))
                   (xlhs1).force
-                  (xlhs1).if
+                  (xlhs1).as-bool.if
                     seq
                       (xlhs2).write ((pyint 4))
                       (xlhs2).force
                       mkCopy (xlhs1) > tmp1
                       (lhs13).write (tmp1.copy)
-                      (lhs13).if
+                      (lhs13).as-bool.if
                         seq
                           (e0).write (((xlhs0).leq (xlhs2)))
                           (e0).force
@@ -152,13 +152,13 @@
                       (pybool TRUE)
                     seq
                       (pybool TRUE)
-                  (xlhs1).if
+                  (xlhs1).as-bool.if
                     seq
                       (xlhs3).write ((pyint 4))
                       (xlhs3).force
                       mkCopy (xlhs1) > tmp4
                       (lhs15).write (tmp4.copy)
-                      (lhs15).if
+                      (lhs15).as-bool.if
                         seq
                           (e1).write (((xlhs2).eq (xlhs3)))
                           (e1).force
@@ -175,13 +175,13 @@
                       (pybool TRUE)
                     seq
                       (pybool TRUE)
-                  (xlhs1).if
+                  (xlhs1).as-bool.if
                     seq
                       (xlhs4).write ((pyint 3))
                       (xlhs4).force
                       mkCopy (xlhs1) > tmp7
                       (lhs17).write (tmp7.copy)
-                      (lhs17).if
+                      (lhs17).as-bool.if
                         seq
                           (e2).write (((xlhs3).greater (xlhs4)))
                           (e2).force
@@ -198,13 +198,13 @@
                       (pybool TRUE)
                     seq
                       (pybool TRUE)
-                  (xlhs1).if
+                  (xlhs1).as-bool.if
                     seq
                       (xlhs5).write ((pyint 4))
                       (xlhs5).force
                       mkCopy (xlhs1) > tmp10
                       (lhs19).write (tmp10.copy)
-                      (lhs19).if
+                      (lhs19).as-bool.if
                         seq
                           (e3).write (((xlhs4).less (xlhs5)))
                           (e3).force
@@ -221,7 +221,7 @@
                       (pybool TRUE)
                     seq
                       (pybool TRUE)
-                  (xlhs1).if
+                  (xlhs1).as-bool.if
                     seq
                       (e4).write (((pyint 1).neg))
                       (e4).force
@@ -230,7 +230,7 @@
                       (xlhs6).write (tmp13.copy)
                       mkCopy (xlhs1) > tmp14
                       (lhs21).write (tmp14.copy)
-                      (lhs21).if
+                      (lhs21).as-bool.if
                         seq
                           (e5).write (((xlhs5).neq (xlhs6)))
                           (e5).force
@@ -247,19 +247,19 @@
                       (pybool TRUE)
                     seq
                       (pybool TRUE)
-                  (xlhs1).if
+                  (xlhs1).as-bool.if
                     seq
                       (xlhs7).write ((pyint 1))
                       (xlhs7).force
                       (xlhs8).write ((pybool TRUE))
                       (xlhs8).force
-                      (xlhs8).if
+                      (xlhs8).as-bool.if
                         seq
                           (xlhs9).write ((pyint 4))
                           (xlhs9).force
                           mkCopy (xlhs8) > tmp17
                           (lhs23).write (tmp17.copy)
-                          (lhs23).if
+                          (lhs23).as-bool.if
                             seq
                               (e6).write (((xlhs7).leq (xlhs9)))
                               (e6).force
@@ -276,13 +276,13 @@
                           (pybool TRUE)
                         seq
                           (pybool TRUE)
-                      (xlhs8).if
+                      (xlhs8).as-bool.if
                         seq
                           (xlhs10).write ((pyint 1))
                           (xlhs10).force
                           mkCopy (xlhs8) > tmp20
                           (lhs25).write (tmp20.copy)
-                          (lhs25).if
+                          (lhs25).as-bool.if
                             seq
                               (e7).write (((xlhs9).less (xlhs10)))
                               (e7).force
@@ -313,10 +313,12 @@
                       (pybool TRUE)
                   toReturn.write ((xlhs11))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xcomp1)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

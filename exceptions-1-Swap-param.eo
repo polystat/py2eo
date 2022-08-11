@@ -150,7 +150,7 @@
                               (e7).write (((e5).eq (e6)))
                               (e7).force
                               ((e7).<)
-                              (e7).if
+                              (e7).as-bool.if
                                 seq
                                   toReturn.write ((pybool TRUE))
                                   stackUp.forward (return toReturn)
@@ -169,7 +169,7 @@
                                   (e3).write (((e2).eq (lhs1)))
                                   (e3).force
                                   ((e3).<)
-                                  (e3).if
+                                  (e3).as-bool.if
                                     seq
                                       toReturn.write ((pybool FALSE))
                                       stackUp.forward (return toReturn)
@@ -194,10 +194,12 @@
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
                   toReturn.write ((pybool FALSE))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xte1)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

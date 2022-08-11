@@ -118,7 +118,7 @@
                     goto
                       [stackUp]
                         seq > @
-                          (pybool TRUE).while
+                          (pybool TRUE).as-bool.while
                             [unused]
                               cage 0 > tmp
                               seq > @
@@ -166,7 +166,7 @@
                                                     (e7).write (((e5).eq (e6)))
                                                     (e7).force
                                                     ((e7).<)
-                                                    (e7).if
+                                                    (e7).as-bool.if
                                                       seq
                                                         stdout (sprintf "%s\n" ((pystring "Oops!  That was not a valid number.  Try again...").as-string))
                                                         ((e3).<)
@@ -206,7 +206,7 @@
                     0
                   mkCopy (xres) > tmp6
                   (lhs4).write (tmp6.copy)
-                  (lhs4).if
+                  (lhs4).as-bool.if
                     seq
                       mkCopy (xarr) > tmp7
                       (lhs2).write (tmp7.copy)
@@ -226,10 +226,12 @@
                       (pybool TRUE)
                   toReturn.write ((e10))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xwhile_try_except_else)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

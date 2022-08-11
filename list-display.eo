@@ -144,7 +144,7 @@
                             goto
                               [stackUp]
                                 seq > @
-                                  (pybool TRUE).while
+                                  (pybool TRUE).as-bool.while
                                     [unused]
                                       cage 0 > tmp
                                       seq > @
@@ -168,7 +168,7 @@
                                                 (e7).write (((e6).eq (lhs2)))
                                                 (e7).force
                                                 ((e7).<)
-                                                (e7).if
+                                                (e7).as-bool.if
                                                   seq
                                                     mkCopy (xcollectionAccum) > tmp5
                                                     (lhs0).write (tmp5.copy)
@@ -212,7 +212,7 @@
                               (e11).write (((e9).eq (e10)))
                               (e11).force
                               ((e11).<)
-                              (e11).if
+                              (e11).as-bool.if
                                 seq
                                   (xcaught).write ((pybool TRUE))
                                   (xcaught).force
@@ -245,10 +245,12 @@
                   ((e13).<)
                   toReturn.write ((e13))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xlistDisplay)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

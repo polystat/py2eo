@@ -135,7 +135,7 @@
                     goto
                       [stackUp]
                         seq > @
-                          (pybool TRUE).while
+                          (pybool TRUE).as-bool.while
                             [unused]
                               cage 0 > tmp
                               seq > @
@@ -154,7 +154,7 @@
                                         (e11).write (((lhs2).leq (e10)))
                                         (e11).force
                                         ((e11).<)
-                                        ((e11).not).if
+                                        ((e11).not).as-bool.if
                                           seq
                                             (doElse0).write ((pybool TRUE))
                                             (doElse0).force
@@ -180,7 +180,7 @@
                                                 (e4).write (((xitem).eq (pystring "hello")))
                                                 (e4).force
                                                 ((e4).<)
-                                                (e4).if
+                                                (e4).as-bool.if
                                                   seq
                                                     stackUp.forward continue
                                                     (pybool TRUE)
@@ -189,7 +189,7 @@
                                                 (e5).write (((xitem).eq (pyint 100)))
                                                 (e5).force
                                                 ((e5).<)
-                                                (e5).if
+                                                (e5).as-bool.if
                                                   seq
                                                     stackUp.forward continue
                                                     (pybool TRUE)
@@ -240,7 +240,7 @@
                     tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
                     stackUp.forward tmp
                     0
-                  (doElse0).if
+                  (doElse0).as-bool.if
                     seq
                       tmp.write (goto (((((xres).xappend)).apply ((xres)) ((pyint 800))).@))
                       (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
@@ -260,10 +260,12 @@
                   ((e13).<)
                   toReturn.write ((e13))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xwhile_try_else_continue_continue)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

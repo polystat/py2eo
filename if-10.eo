@@ -91,17 +91,19 @@
                 cage 0 > xc
                 seq > @
                   stdout "xconditionalCheck9\n"
-                  (xc).write (((pybool TRUE).if (pyint 42) (pyint 43)))
+                  (xc).write (((pybool TRUE).as-bool.if (pyint 42) (pyint 43)))
                   (xc).force
                   (e0).write (((xc).eq (pyint 42)))
                   (e0).force
                   ((e0).<)
                   toReturn.write ((e0))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xconditionalCheck9)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

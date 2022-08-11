@@ -150,7 +150,7 @@
                             goto
                               [stackUp]
                                 seq > @
-                                  (pybool TRUE).while
+                                  (pybool TRUE).as-bool.while
                                     [unused]
                                       cage 0 > tmp
                                       seq > @
@@ -202,7 +202,7 @@
                                                             (e10).write (((e8).eq (e9)))
                                                             (e10).force
                                                             ((e10).<)
-                                                            (e10).if
+                                                            (e10).as-bool.if
                                                               seq
                                                                 stdout (sprintf "%s\n" ((pystring "Sorry ! You are dividing by zero ").as-string))
                                                                 ((e5).<)
@@ -240,7 +240,7 @@
                                                   (e13).write (((e12).eq (lhs2)))
                                                   (e13).force
                                                   ((e13).<)
-                                                  (e13).if
+                                                  (e13).as-bool.if
                                                     seq
                                                       stackUp.forward break
                                                       (pybool TRUE)
@@ -282,7 +282,7 @@
                               (e18).write (((e16).eq (e17)))
                               (e18).force
                               ((e18).<)
-                              (e18).if
+                              (e18).as-bool.if
                                 seq
                                   (xcaught).write ((pybool TRUE))
                                   (xcaught).force
@@ -313,10 +313,12 @@
                   ((e20).<)
                   toReturn.write ((e20))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xfor_try_else_finally)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

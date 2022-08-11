@@ -112,7 +112,7 @@
                     goto
                       [stackUp]
                         seq > @
-                          (pybool TRUE).while
+                          (pybool TRUE).as-bool.while
                             [unused]
                               cage 0 > tmp
                               seq > @
@@ -125,7 +125,7 @@
                                         (e4).write (((xn).greater (pyint 0)))
                                         (e4).force
                                         ((e4).<)
-                                        ((e4).not).if
+                                        ((e4).not).as-bool.if
                                           seq
                                             stackUp.forward break
                                             (pybool TRUE)
@@ -135,7 +135,7 @@
                                         (e2).write (((xn).eq (pyint 5)))
                                         (e2).force
                                         ((e2).<)
-                                        (e2).if
+                                        (e2).as-bool.if
                                           seq
                                             stackUp.forward continue
                                             (pybool TRUE)
@@ -143,7 +143,7 @@
                                             (e1).write (((xn).eq (pyint 2)))
                                             (e1).force
                                             ((e1).<)
-                                            (e1).if
+                                            (e1).as-bool.if
                                               seq
                                                 stackUp.forward continue
                                                 (pybool TRUE)
@@ -174,10 +174,12 @@
                   ((e6).<)
                   toReturn.write ((e6))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xcontinue_continue6)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

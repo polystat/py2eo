@@ -128,6 +128,7 @@
                             ((e1).<)
                             toReturn.write ((pyint 1))
                             stackUp.forward (return toReturn)
+                            stackUp.forward (return 0)
                             123
                   write.
                     xsnd
@@ -145,6 +146,7 @@
                             ((e2).<)
                             toReturn.write ((pyint 2))
                             stackUp.forward (return toReturn)
+                            stackUp.forward (return 0)
                             123
                   tmp.write (goto ((((xfst)).apply).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
@@ -162,7 +164,7 @@
                   (e6).write (((xb).eq (pyint 3)))
                   (e6).force
                   ((e6).<)
-                  (e6).if
+                  (e6).as-bool.if
                     seq
                       (e7).write (((xxlist).get (pyint 0)))
                       (e7).force
@@ -179,7 +181,7 @@
                       mkCopy (lhs3) > tmp3
                       (e8).write (tmp3.copy)
                       (pybool TRUE)
-                  (e8).if
+                  (e8).as-bool.if
                     seq
                       (e9).write (((xxlist).get (pyint 1)))
                       (e9).force
@@ -198,10 +200,12 @@
                       (pybool TRUE)
                   toReturn.write ((e10))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xevaluationOrder)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

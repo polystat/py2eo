@@ -161,7 +161,7 @@
                     goto
                       [stackUp]
                         seq > @
-                          (pybool TRUE).while
+                          (pybool TRUE).as-bool.while
                             [unused]
                               cage 0 > tmp
                               seq > @
@@ -180,7 +180,7 @@
                                         (e20).write (((lhs16).leq (e19)))
                                         (e20).force
                                         ((e20).<)
-                                        ((e20).not).if
+                                        ((e20).not).as-bool.if
                                           seq
                                             stackUp.forward break
                                             (pybool TRUE)
@@ -192,7 +192,7 @@
                                           goto
                                             [stackUp]
                                               seq > @
-                                                (pybool TRUE).while
+                                                (pybool TRUE).as-bool.while
                                                   [unused]
                                                     cage 0 > tmp
                                                     seq > @
@@ -211,7 +211,7 @@
                                                               (e12).write (((lhs7).leq (e11)))
                                                               (e12).force
                                                               ((e12).<)
-                                                              ((e12).not).if
+                                                              ((e12).not).as-bool.if
                                                                 seq
                                                                   stackUp.forward break
                                                                   (pybool TRUE)
@@ -227,7 +227,7 @@
                                                               (e6).write (((lhs0).geq (e5)))
                                                               (e6).force
                                                               ((e6).<)
-                                                              (e6).if
+                                                              (e6).as-bool.if
                                                                 seq
                                                                   (lhs4).write ((pybool TRUE))
                                                                   (lhs4).force
@@ -244,7 +244,7 @@
                                                                   mkCopy (e8) > tmp9
                                                                   (lhs4).write (tmp9.copy)
                                                                   (pybool TRUE)
-                                                              (lhs4).if
+                                                              (lhs4).as-bool.if
                                                                 seq
                                                                   stackUp.forward continue
                                                                   (pybool TRUE)
@@ -277,7 +277,7 @@
                                         (e14).write (((lhs9).geq (e13)))
                                         (e14).force
                                         ((e14).<)
-                                        (e14).if
+                                        (e14).as-bool.if
                                           seq
                                             (lhs13).write ((pybool TRUE))
                                             (lhs13).force
@@ -294,7 +294,7 @@
                                             mkCopy (e16) > tmp12
                                             (lhs13).write (tmp12.copy)
                                             (pybool TRUE)
-                                        (lhs13).if
+                                        (lhs13).as-bool.if
                                           seq
                                             stackUp.forward continue
                                             (pybool TRUE)
@@ -329,10 +329,12 @@
                   ((e22).<)
                   toReturn.write ((e22))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xnested_while_continue_continue)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @

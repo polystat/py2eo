@@ -127,7 +127,7 @@
                     goto
                       [stackUp]
                         seq > @
-                          (pybool TRUE).while
+                          (pybool TRUE).as-bool.while
                             [unused]
                               cage 0 > tmp
                               seq > @
@@ -183,7 +183,7 @@
                                                     (e9).write (((e7).eq (e8)))
                                                     (e9).force
                                                     ((e9).<)
-                                                    (e9).if
+                                                    (e9).as-bool.if
                                                       seq
                                                         stdout (sprintf "%s\n" ((pystring "Sorry ! You are dividing by zero ").as-string))
                                                         ((e5).<)
@@ -226,10 +226,12 @@
                   ((e11).<)
                   toReturn.write ((e11))
                   stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
                   123
         tmp.write (goto ((((xwhile_try_continue)).apply).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   (goto (apply.@)).result > @
