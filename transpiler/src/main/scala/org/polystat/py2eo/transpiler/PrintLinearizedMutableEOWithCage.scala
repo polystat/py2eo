@@ -9,8 +9,9 @@ import org.polystat.py2eo.parser.Expression.{
   Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
 }
 import org.polystat.py2eo.parser.Statement.{
-  AugAssign, Assign, Break, ClassDef, Decorators, FuncDef, IfSimple, NonLocal, Pass,
-  Raise, Return, Suite, Try, While, Continue
+  AnnAssign, AugAssign, Assign, Break, ClassDef, Decorators,
+  FuncDef, IfSimple, NonLocal, Pass, Raise, Return, Suite, Try,
+  While, Continue
 }
 
 object PrintLinearizedMutableEOWithCage {
@@ -131,6 +132,8 @@ object PrintLinearizedMutableEOWithCage {
           )
       case NonLocal(_, _) => List()
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
+      case AnnAssign(lhs, rhsAnn, Some(rhs), ann) =>
+        printSt(Assign(List(lhs, rhs), ann.pos))
       case AugAssign(op, lhs, rhs, ann) =>
         List(s"(${pe(lhs)}).${augop(op)} (${pe(rhs)})")
       case Assign(List(lhs, rhs@Expression.Binop(op, _, _, _)), ann) if
