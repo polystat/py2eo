@@ -90,7 +90,7 @@ object PrintLinearizedMutableEOWithCage {
         }
         val callInit = init match {
           case None => ""
-          case Some(_) => s" (goto ((result.x__init__.apply pResult $consArgs).@))"
+          case Some(_) => s" ((goto ((result.x__init__.apply pResult $consArgs).@)).result)"
         }
         val decorates = bases.headOption.map(_._2)
           "write." :: indent(
