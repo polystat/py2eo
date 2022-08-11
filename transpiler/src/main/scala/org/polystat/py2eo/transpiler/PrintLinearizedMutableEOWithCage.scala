@@ -309,7 +309,7 @@ object PrintLinearizedMutableEOWithCage {
               "seq > @" :: indent(
                 ("stdout \"" + f.name + "\\n\"") ::
                 f.args.map(parm => s"${parm.name}.<") ++
-                (printSt(f.body) :+ "123")
+                (printSt(f.body) :+ "stackUp.forward (return 0)" :+ "123")
               )
             )
           )
