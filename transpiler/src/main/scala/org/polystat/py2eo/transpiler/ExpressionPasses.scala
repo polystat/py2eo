@@ -122,6 +122,8 @@ object ExpressionPasses {
     e match {
       case CollectionCons(kind, l, ann) =>
         CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
+      case DictCons(l, ann) =>
+        CallIndex(true, Ident("xmyMap", e.ann.pos), List((None, e)), e.ann.pos)
       case _ => e
     }
   }

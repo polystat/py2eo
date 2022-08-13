@@ -1,0 +1,56 @@
++package preface
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pybool preface.pybool
++alias return preface.return
++alias stdout org.eolang.io.stdout
+
+[] > xmyMap
+  pyint 16 > x__id__
+  [initValue] > apply
+    [stackUp] > @
+      cage result > pResult
+      [] > result
+        cage initValue > value
+        xmyMap > x__class__
+        [] > xlength
+          [self] > apply
+            [stackUp] > @
+              seq > @
+                stackUp.forward (return (pyint (self.value.length)))
+                123
+        [stackUp key] > xget
+          memory 0 > i
+          seq > @
+            if.
+              (value.get i).fst.eq key
+              stackUp.forward ((value.get i).snd)
+              i.write (i.plus 1)
+        [] > xclear
+          [self] > apply
+            [stackUp] > @
+              seq > @
+                self.value.write (*)
+                stackUp.forward (return 0)
+                123
+        [x] > eq
+          memory TRUE > acc
+          memory 0 > pos
+          if. > res
+            ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length)))
+            seq
+              (acc.and (pos.lt (value.length))).while
+                [unused]
+                  seq > @
+                    acc.write (acc.and (((value.get pos).eq (x.value.get pos)).value))
+                    pos.write (pos.plus 1)
+                    123
+              pybool acc
+            pybool FALSE
+          seq > @
+            res
+            stdout "after\n"
+            res
+      seq > @
+        pResult.write result
+        stackUp.forward (return pResult)
