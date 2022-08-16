@@ -6,17 +6,17 @@
 +alias pyint preface.pyint
 +alias pybool preface.pybool
 +alias return preface.return
++alias fakeclasses preface.fakeclasses
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
 
 [] > xmyArray
-  pyint 10 > x__id__
   [initValue] > apply
     [stackUp] > @
       cage result > pResult
       [] > result
         cage initValue > value
-        xmyArray > x__class__
+        fakeclasses.pyListClass > x__class__
         [] > xlength
           [self] > apply
             [stackUp] > @
@@ -72,7 +72,7 @@
           memory TRUE > acc
           memory 0 > pos
           if. > res
-            ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length)))
+            ((x.x__class__.eq (fakeclasses.pyListClass)).value.and (value.length.eq (x.value.length)))
             seq
               (acc.and (pos.lt (value.length))).while
                 [unused]
