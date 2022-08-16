@@ -4,6 +4,7 @@
 +alias pybool preface.pybool
 +alias return preface.return
 +alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
 
 [] > xmyMap
   pyint 16 > x__id__
@@ -19,13 +20,20 @@
               seq > @
                 stackUp.forward (return (pyint (self.value.length)))
                 123
-        [stackUp key] > xget
-          memory 0 > i
-          seq > @
-            if.
-              (value.get i).fst.eq key
-              stackUp.forward ((value.get i).snd)
-              i.write (i.plus 1)
+        [] > xget
+          [self key] > apply
+            [stackUp] > @
+              memory 0 > i
+              seq > @
+                stdout (sprintf "xget %s\n" key)
+                (i.lt (self.value.length)).while
+                  [unused]
+                    seq > @
+                      stdout (sprintf "%s ?= %s\n" ((self.value.get i).fst) key)
+                      if.
+                        (self.value.get i).fst.eq key
+                        stackUp.forward (return ((self.value.get i).snd))
+                        i.write (i.plus 1)
         [] > xclear
           [self] > apply
             [stackUp] > @
