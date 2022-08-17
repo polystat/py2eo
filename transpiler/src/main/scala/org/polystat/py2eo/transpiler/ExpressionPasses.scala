@@ -143,9 +143,9 @@ object ExpressionPasses {
 
   def addExplicitConstructorOfCollection(e : T) : T = {
     e match {
-      case CollectionCons(kind, l, ann) =>
+      case CollectionCons(CollectionKind.List, l, ann) =>
         CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
-      case DictCons(l, ann) =>
+      case DictCons(_, _) | CollectionCons(CollectionKind.Set, _, _) =>
         CallIndex(true, Ident("xmyMap", e.ann.pos), List((None, e)), e.ann.pos)
       case _ => e
     }

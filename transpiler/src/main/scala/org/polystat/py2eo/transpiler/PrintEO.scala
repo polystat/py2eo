@@ -1,7 +1,7 @@
 package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{
-  Binop, Binops, BoolLiteral, CallIndex, CollectionCons, Compops, Cond,
+  Binop, Binops, BoolLiteral, CallIndex, CollectionCons, CollectionKind, Compops, Cond,
   DictCons, Field, FloatLiteral, FreakingComparison, IntLiteral, LazyLAnd,
   LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
   UnsupportedExpr
@@ -70,8 +70,11 @@ object PrintEO {
   def printExpr(value : T) : String = {
     def e = printExpr _
     value match {
-      case CollectionCons(kind, l, _) =>
+      case CollectionCons(CollectionKind.List, l, _) =>
         "(*" + l.map(x => " " + e(x)).mkString + crb
+      case CollectionCons(CollectionKind.Set, l, _) =>
+        val elts = l.map(k => s"(pair ${e(k)} (pyint 0))").mkString(" ")
+        (s"((* ${elts}))")
       case DictCons(l, ann) =>
         val elts = l.map{
           case Left((k, v)) => s"(pair ${e(k)} ${e(v)})"
