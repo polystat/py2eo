@@ -5,6 +5,8 @@
 +alias return preface.return
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
++alias mkCopy preface.mkCopy
++alias pair preface.pair
 
 [] > xmyMap
   pyint 16 > x__id__
@@ -12,7 +14,7 @@
     [stackUp] > @
       cage result > pResult
       [] > result
-        cage initValue > value
+        cage (*) > value
         xmyMap > x__class__
         [] > xlength
           [self] > apply
@@ -34,6 +36,39 @@
                         (self.value.get i).fst.eq key
                         stackUp.forward (return ((self.value.get i).snd))
                         i.write (i.plus 1)
+                stdout "get left the loop\n"
+                0
+        [] > x__contains__
+          [self key] > apply
+            [stackUp] > @
+              memory 0 > i
+              seq > @
+                (i.lt (self.value.length)).while
+                  [unused]
+                    seq > @
+                      stdout (sprintf "%s ?= %s\n" ((self.value.get i).fst) key)
+                      if.
+                        (self.value.get i).fst.eq key
+                        stackUp.forward (return (pybool TRUE))
+                        i.write (i.plus 1)
+                stdout "c1\n"
+                stackUp.forward (return (pybool FALSE))
+        [] > xadd
+          [self key val] > apply
+            [stackUp] > @
+              seq > @
+                key
+                (goto ((x__contains__.apply self key).@)).result.if
+                  stackUp.forward (return 0)
+                  0
+                stdout "2\n"
+                mkCopy (self.value) > tmp
+                mkCopy (key.value) > kv
+                mkCopy (val.value) > vv
+                self.value.write (tmp.copy.with (pair (key.with-value (kv.copy)) (val.with-value (vv.copy))))
+                stdout "3\n"
+                stackUp.forward (return 0)
+                123
         [] > xclear
           [self] > apply
             [stackUp] > @
@@ -60,5 +95,11 @@
             stdout "after\n"
             res
       seq > @
+        memory 0 > i
+        (i.lt (initValue.length)).while
+          [unused]
+            seq > @
+              (goto ((result.xadd.apply result ((initValue.get i).fst) ((initValue.get i).snd)).@)).result
+              i.write (i.plus 1)
         pResult.write result
         stackUp.forward (return pResult)
