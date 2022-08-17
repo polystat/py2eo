@@ -53,6 +53,17 @@
                         i.write (i.plus 1)
                 stdout "c1\n"
                 stackUp.forward (return (pybool FALSE))
+        [elt] > contains-hack
+          seq > result
+            stdout (sprintf "len = %d\n" (value.length))
+            value.reduce
+              FALSE
+              [acc item]
+                seq > @
+                  acc.or ((elt.eq (item.fst)).value)
+          seq > @
+            stdout (sprintf "len = %d\n" (value.length))
+            pybool result
         [] > xadd
           [self key val] > apply
             [stackUp] > @
