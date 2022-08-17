@@ -73,13 +73,13 @@ object PrintEO {
       case CollectionCons(CollectionKind.List, l, _) =>
         "(*" + l.map(x => " " + e(x)).mkString + crb
       case CollectionCons(CollectionKind.Set, l, _) =>
-        val elts = l.map(k => s"(pair ${e(k)} (pyint 0))").mkString(" ")
-        (s"((* ${elts}))")
+        val elts = l.map(k => s" (pair ${e(k)} (pyint 0))").mkString("")
+        (s"((*${elts}))")
       case DictCons(l, ann) =>
         val elts = l.map{
-          case Left((k, v)) => s"(pair ${e(k)} ${e(v)})"
-        }.mkString(" ")
-        (s"((* ${elts}))")
+          case Left((k, v)) => s" (pair ${e(k)} ${e(v)})"
+        }.mkString("")
+        (s"((*${elts}))")
       case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")" // todo: see <<-- there
       case IntLiteral(value, _) => s"(pyint $value)"
       case FloatLiteral(value, _) => s"(pyfloat $value)"
