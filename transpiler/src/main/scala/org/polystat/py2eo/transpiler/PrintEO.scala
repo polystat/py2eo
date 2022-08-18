@@ -70,8 +70,9 @@ object PrintEO {
   def printExpr(value : T) : String = {
     def e = printExpr _
     value match {
-      case CollectionCons(CollectionKind.List, l, _) =>
-        "(*" + l.map(x => " " + e(x)).mkString + crb
+      case CollectionCons(kind, l, _)
+        if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
+          "(*" + l.map(x => " " + e(x)).mkString + crb
       case CollectionCons(CollectionKind.Set, l, _) =>
         val elts = l.map(k => s" (pair ${e(k)} (pyint 0))").mkString("")
         (s"((*${elts}))")
