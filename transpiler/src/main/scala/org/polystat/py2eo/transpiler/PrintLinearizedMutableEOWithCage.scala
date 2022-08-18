@@ -25,6 +25,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias sprintf org.eolang.txt.sprintf",
     "+alias cage org.eolang.cage",
     "+alias pyint preface.pyint",
+    "+alias pair preface.pair",
     "+alias pyfloat preface.pyfloat",
     "+alias pystring preface.pystring",
     "+alias pybool preface.pybool",
@@ -38,6 +39,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias return preface.return",
     "+alias raiseEmpty preface.raiseEmpty",
     "+alias xmyArray preface.xmyArray",
+    "+alias xmyMap preface.xmyMap",
     "+alias xlen preface.xlen",
     "+alias xstr preface.xstr",
     "+alias xsum preface.xsum",
@@ -159,15 +161,19 @@ object PrintLinearizedMutableEOWithCage {
             )
         }
       case Assign(List(lhs, rhs), _) if seqOfFields(lhs).isDefined =>
-        rhs match {
-          case _ : DictCons | _ : CollectionCons | _ : Await | _ : Star | _ : DoubleStar |
+        val collectionCons = rhs match {
+          case _ : Await | _ : Star | _ : DoubleStar |
                _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
             throw new GeneratorException("these expressions must be wrapped in a function call " +
               "because a copy creation is needed and dataization is impossible")
-          case _ => ()
+          case _ : CollectionCons | _ : DictCons => true
+          case _ => false
         }
         val seqOfFields1 = seqOfFields(rhs)
         val doNotCopy = seqOfFields1.isEmpty
+        if (collectionCons) {
+          List(s"${pe(lhs)}.write (${pe(rhs)}" + ")")
+        } else
         if (doNotCopy) {
           List(s"${pe(lhs)}.write (${pe(rhs)}" + ")", s"${pe(lhs)}.force")
         } else {
@@ -350,8 +356,10 @@ object PrintLinearizedMutableEOWithCage {
       "return > dummy-return",
       "raiseEmpty > dummy-raiseEmpty",
       "xmyArray > dummy-xmyArray",
+      "xmyMap > dummy-xmyMap",
       "mkCopy > dummy-mkCopy",
       "xlen > dummy-xlen",
+      "pair > dummy-pair",
       "xstr > dummy-xstr",
       "xsum > dummy-xsum",
       "xlist > dummy-xlist",

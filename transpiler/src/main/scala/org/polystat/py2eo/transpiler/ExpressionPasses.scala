@@ -57,6 +57,29 @@ object ExpressionPasses {
       e match {
         case CallIndex(true, what@Field(obj@Ident(_, _), fname, fann), args, ann) =>
           (Left(CallIndex(true, what, (None, obj) :: args, ann.pos)), ns)
+        case CallIndex(true, what@Field(obj, fname, fann), args, ann) =>
+          val (List(objName, idName), ns1) = ns(List("obj", "id"))
+          (
+            Right((
+              Suite(
+                List(
+                  Assign(List(Ident(objName, ann.pos), obj), ann.pos),
+                  Assign(List(
+                    Ident(idName, ann.pos),
+                    CallIndex(
+                      true,
+                      Field(Ident(objName, ann.pos), fname, fann),
+                      (None, Ident(objName, ann.pos)) :: args,
+                      ann.pos
+                    )
+                  ), ann.pos)
+                ),
+                ann.pos
+              ),
+              Ident(idName, ann.pos)
+            )),
+            ns1
+          )
         case CallIndex(isCall, Field(_, _, _), args, ann) => ??? // todo: must be implemented as above, but a bit more complicated
         case x : Any => (Left(x), ns)
       }
@@ -120,8 +143,11 @@ object ExpressionPasses {
 
   def addExplicitConstructorOfCollection(e : T) : T = {
     e match {
-      case CollectionCons(kind, l, ann) =>
-        CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
+      case CollectionCons(kind, l, ann)
+        if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
+          CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
+      case DictCons(_, _) | CollectionCons(CollectionKind.Set, _, _) =>
+        CallIndex(true, Ident("xmyMap", e.ann.pos), List((None, e)), e.ann.pos)
       case _ => e
     }
   }
