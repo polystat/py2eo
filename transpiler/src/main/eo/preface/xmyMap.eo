@@ -7,6 +7,7 @@
 +alias sprintf org.eolang.txt.sprintf
 +alias mkCopy preface.mkCopy
 +alias pair preface.pair
++alias xmyArray preface.xmyArray
 
 [] > xmyMap
   pyint 16 > x__id__
@@ -89,6 +90,22 @@
                 self.value.write (*)
                 stackUp.forward (return 0)
                 123
+        [] > xkeys
+          [self] > apply
+            [stackUp] > @
+              (goto ((xmyArray.apply (*)).@)).result > accum
+              memory 0 > i
+              seq > @
+                (i.lt (value.length)).while
+                  [unused]
+                    (self.value.get i).fst > x
+                    seq > @
+                      (goto ((accum.xappend.apply accum x).@)).result
+                      i.write (i.plus 1)
+                      0
+                stdout (sprintf "keys len = %d\n" (accum.value.length))
+                stackUp.forward (return accum)
+                0
         [x] > eq
           memory TRUE > acc
           memory 0 > pos
