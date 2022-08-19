@@ -39,6 +39,22 @@
                         i.write (i.plus 1)
                 stdout "get left the loop\n"
                 0
+        [] > xget-internal
+          [key] > apply
+            [stackUp] > @
+              memory 0 > i
+              seq > @
+                stdout (sprintf "xget %s\n" key)
+                (i.lt (value.length)).while
+                  [unused]
+                    seq > @
+                      stdout (sprintf "%s ?= %s\n" ((value.get i).fst) key)
+                      if.
+                        (value.get i).fst.eq key
+                        stackUp.forward (return ((value.get i).snd))
+                        i.write (i.plus 1)
+                stdout "get left the loop\n"
+                0
         [] > x__contains__
           [self key] > apply
             [stackUp] > @
@@ -71,12 +87,10 @@
                 (goto ((x__contains__.apply self key).@)).result.if
                   stackUp.forward (return 0)
                   0
-                stdout "2\n"
                 mkCopy (self.value) > tmp
                 mkCopy (key.value) > kv
                 mkCopy (val.value) > vv
                 self.value.write (tmp.copy.with (pair (key.with-value (kv.copy)) (val.with-value (vv.copy))))
-                stdout "3\n"
                 stackUp.forward (return 0)
                 123
         [] > xappend
@@ -106,21 +120,47 @@
                 stdout (sprintf "keys len = %d\n" (accum.value.length))
                 stackUp.forward (return accum)
                 0
+        [] > xkeys-internal
+          [] > apply
+            [stackUp] > @
+              (goto ((xmyArray.apply (*)).@)).result > accum
+              memory 0 > i
+              seq > @
+                (i.lt (value.length)).while
+                  [unused]
+                    (value.get i).fst > x
+                    seq > @
+                      (goto ((accum.xappend.apply accum x).@)).result
+                      i.write (i.plus 1)
+                      0
+                stdout (sprintf "keys len = %d\n" (accum.value.length))
+                stackUp.forward (return accum)
+                0
         [x] > eq
           memory TRUE > acc
           memory 0 > pos
+          (goto ((xkeys-internal.apply).@)).result > my-keys
+          (goto ((x.xkeys.apply x).@)).result > his-keys
           if. > res
             ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length)))
-            seq
-              (acc.and (pos.lt (value.length))).while
-                [unused]
-                  seq > @
-                    acc.write (acc.and (((value.get pos).eq (x.value.get pos)).value))
-                    pos.write (pos.plus 1)
-                    123
-              pybool acc
+            if.
+              my-keys.eq his-keys
+              seq
+                (acc.and (pos.lt (my-keys.value.length))).while
+                  [unused]
+                    my-keys.value.get i > key
+                    (goto ((xget-internal.apply key).@)).result > my-value
+                    (goto ((x.xget.apply x key).@)).result > his-value
+                    seq > @
+                      stdout (sprintf "i = %d\n" pos)
+                      acc.write (acc.and ((my-value.eq his-value).value))
+                      pos.write (pos.plus 1)
+                      123
+                pybool acc
+              pybool FALSE
             pybool FALSE
           seq > @
+            stdout "eq\n"
             res
             stdout "after\n"
             res
