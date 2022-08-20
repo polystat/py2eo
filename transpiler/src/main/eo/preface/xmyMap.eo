@@ -10,6 +10,7 @@
 +alias xmyArray preface.xmyArray
 
 [] > xmyMap
+  [value] > wrapper
   pyint 16 > x__id__
   [initValue] > apply
     [stackUp] > @
@@ -28,14 +29,12 @@
             [stackUp] > @
               memory 0 > i
               seq > @
-                stdout (sprintf "xget %s\n" key)
                 (i.lt (self.value.length)).while
                   [unused]
                     seq > @
-                      stdout (sprintf "%s ?= %s\n" ((self.value.get i).fst) key)
                       if.
-                        (self.value.get i).fst.eq key
-                        stackUp.forward (return ((self.value.get i).snd))
+                        (self.value.get i).value.fst.eq key
+                        stackUp.forward (return ((self.value.get i).value.snd))
                         i.write (i.plus 1)
                 stdout "get left the loop\n"
                 0
@@ -44,14 +43,12 @@
             [stackUp] > @
               memory 0 > i
               seq > @
-                stdout (sprintf "xget %s\n" key)
                 (i.lt (value.length)).while
                   [unused]
                     seq > @
-                      stdout (sprintf "%s ?= %s\n" ((value.get i).fst) key)
                       if.
-                        (value.get i).fst.eq key
-                        stackUp.forward (return ((value.get i).snd))
+                        (value.get i).value.fst.eq key
+                        stackUp.forward (return ((value.get i).value.snd))
                         i.write (i.plus 1)
                 stdout "get left the loop\n"
                 0
@@ -64,7 +61,7 @@
                   [unused]
                     seq > @
                       if.
-                        (self.value.get i).fst.eq key
+                        (self.value.get i).value.fst.eq key
                         stackUp.forward (return (pybool TRUE))
                         i.write (i.plus 1)
                 stdout "c1\n"
@@ -76,7 +73,7 @@
               FALSE
               [acc item]
                 seq > @
-                  acc.or ((elt.eq (item.fst)).value)
+                  acc.or ((elt.eq (item.value.fst)).value)
           seq > @
             stdout (sprintf "len = %d\n" (value.length))
             pybool result
@@ -88,9 +85,9 @@
                   stackUp.forward (return 0)
                   0
                 mkCopy (self.value) > tmp
-                mkCopy (key.value) > kv
-                mkCopy (val.value) > vv
-                self.value.write (tmp.copy.with (pair (key.with-value (kv.copy)) (val.with-value (vv.copy))))
+                mkCopy (key) > kv
+                mkCopy (val) > vv
+                self.value.write (tmp.copy.with (wrapper (pair ((kv.copy)) ((vv.copy)))))
                 stackUp.forward (return 0)
                 123
         [] > xappend
@@ -112,7 +109,7 @@
               seq > @
                 (i.lt (value.length)).while
                   [unused]
-                    (self.value.get i).fst > x
+                    (self.value.get i).value.fst > x
                     seq > @
                       (goto ((accum.xappend.apply accum x).@)).result
                       i.write (i.plus 1)
@@ -128,7 +125,7 @@
               seq > @
                 (i.lt (value.length)).while
                   [unused]
-                    (value.get i).fst > x
+                    (value.get i).value.fst > x
                     seq > @
                       (goto ((accum.xappend.apply accum x).@)).result
                       i.write (i.plus 1)
