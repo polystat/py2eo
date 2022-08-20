@@ -99,6 +99,8 @@ object PrintLinearizedMutableEOWithCage {
             name ::
             "[]" :: indent(
               "newUID.apply 0 > x__id__" ::
+              "[x] > eq" ::
+              "  x__id__.eq (x.x__id__) > @" ::
               s"[$consArgs] > apply" ::
               indent(
                 "[stackUp] > @" ::
