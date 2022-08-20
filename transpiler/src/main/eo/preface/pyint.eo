@@ -20,17 +20,16 @@
     fakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pybool (value.eq (x.value))
-        p.fst.eq (p.snd)
+        ((fakeclasses.has-type x (fakeclasses.pyIntClass)).not).and
+          ((fakeclasses.has-type x (fakeclasses.pyFloatClass)).not).and ((fakeclasses.has-type x (fakeclasses.pyComplexClass)).not)
+        pybool FALSE
+        if.
+          (fakeclasses.has-type x (fakeclasses.pyIntClass))
+          pybool (value.eq (x.value))
+          p.fst.eq (p.snd)
 
   [x] > neq
-    fakeclasses.convert (pyint value) x > p
-    seq > @
-      if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
-        pybool (value.neq (x.value))
-        p.fst.neq (p.snd)
+    (eq x).not > @
 
   [x] > less
     fakeclasses.convert (pyint value) x > p
