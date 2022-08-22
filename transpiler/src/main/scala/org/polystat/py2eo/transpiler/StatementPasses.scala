@@ -594,12 +594,23 @@ object StatementPasses {
         x => {
           val body = x._2
           (
-            SimpleComparison(Compops.Eq,
-              Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
-              x._1 match {
-                case Some((e, _)) => Field(e, "__id__", ann.pos)
-                case None => IntLiteral(1, ann.pos)
-              },
+            Binop(Expression.Binops.Or,
+              SimpleComparison(Compops.Eq,
+                Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
+                x._1 match {
+                  case Some((e, _)) => Field(e, "__id__", ann.pos)
+                  case None => IntLiteral(1, ann.pos)
+                },
+                ann.pos
+              ),
+              SimpleComparison(Compops.Eq,
+                Field(Ident("current-exception", ann.pos), "__id__", ann.pos),
+                x._1 match {
+                  case Some((e, _)) => Field(e, "__id__", ann.pos)
+                  case None => IntLiteral(1, ann.pos)
+                },
+                ann.pos
+              ),
               ann.pos
             ),
             Suite(
