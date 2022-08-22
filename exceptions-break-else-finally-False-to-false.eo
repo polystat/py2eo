@@ -4,6 +4,7 @@
 +alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pair preface.pair
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
@@ -17,7 +18,10 @@
 +alias return preface.return
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
++alias xmyMap preface.xmyMap
 +alias xlen preface.xlen
++alias xmap preface.xmap
++alias xfilter preface.xfilter
 +alias xstr preface.xstr
 +alias xsum preface.xsum
 +alias xlist preface.xlist
@@ -61,8 +65,12 @@
       return > dummy-return
       raiseEmpty > dummy-raiseEmpty
       xmyArray > dummy-xmyArray
+      xmyMap > dummy-xmyMap
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xmap > dummy-xmap
+      xfilter > dummy-xfilter
+      pair > dummy-pair
       xstr > dummy-xstr
       xsum > dummy-xsum
       xlist > dummy-xlist
@@ -94,10 +102,10 @@
                 cage 0 > xfinallyHappened
                 seq > @
                   stdout "xtebf\n"
-                  mkCopy (xfalse) > tmp3
-                  (xfinallyHappened).write (tmp3.copy)
-                  mkCopy (xfalse) > tmp4
-                  (xelseHappened).write (tmp4.copy)
+                  mkCopy (xfalse) > tmp1
+                  (xfinallyHappened).write (tmp1.copy)
+                  mkCopy (xfalse) > tmp2
+                  (xelseHappened).write (tmp2.copy)
                   write.
                     tmp
                     goto
@@ -158,8 +166,8 @@
                     tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
                     stackUp.forward tmp
                     0
-                  mkCopy (xfinallyHappened) > tmp5
-                  (lhs0).write (tmp5.copy)
+                  mkCopy (xfinallyHappened) > tmp3
+                  (lhs0).write (tmp3.copy)
                   (lhs0).as-bool.if
                     seq
                       (e0).write (((xelseHappened).not))
@@ -169,8 +177,8 @@
                     seq
                       (lhs1).write ((pybool FALSE))
                       (lhs1).force
-                      mkCopy (lhs1) > tmp6
-                      (e0).write (tmp6.copy)
+                      mkCopy (lhs1) > tmp4
+                      (e0).write (tmp4.copy)
                       (pybool TRUE)
                   toReturn.write ((e0))
                   stackUp.forward (return toReturn)

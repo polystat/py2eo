@@ -4,6 +4,7 @@
 +alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pair preface.pair
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
@@ -17,7 +18,10 @@
 +alias return preface.return
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
++alias xmyMap preface.xmyMap
 +alias xlen preface.xlen
++alias xmap preface.xmap
++alias xfilter preface.xfilter
 +alias xstr preface.xstr
 +alias xsum preface.xsum
 +alias xlist preface.xlist
@@ -61,8 +65,12 @@
       return > dummy-return
       raiseEmpty > dummy-raiseEmpty
       xmyArray > dummy-xmyArray
+      xmyMap > dummy-xmyMap
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xmap > dummy-xmap
+      xfilter > dummy-xfilter
+      pair > dummy-pair
       xstr > dummy-xstr
       xsum > dummy-xsum
       xlist > dummy-xlist
@@ -350,14 +358,14 @@
                           if. > @
                             is-exception (xcurrent-exception.x__class__.x__id__)
                             seq
-                              mkCopy (xcurrent-exception.x__class__) > tmp17
-                              (e17).write (tmp17.copy)
+                              mkCopy (xcurrent-exception.x__class__) > tmp1
+                              (e17).write (tmp1.copy)
                               ((e17).<)
-                              mkCopy (e17.x__id__) > tmp18
-                              (e18).write (tmp18.copy)
+                              mkCopy (e17.x__id__) > tmp2
+                              (e18).write (tmp2.copy)
                               ((e18).<)
-                              mkCopy (xStopIteration.x__id__) > tmp19
-                              (e19).write (tmp19.copy)
+                              mkCopy (xStopIteration.x__id__) > tmp3
+                              (e19).write (tmp3.copy)
                               ((e19).<)
                               (e20).write (((e18).eq (e19)))
                               (e20).force
@@ -382,8 +390,8 @@
                       0
                     ((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or ((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
-                  mkCopy (xres) > tmp20
-                  (lhs8).write (tmp20.copy)
+                  mkCopy (xres) > tmp4
+                  (lhs8).write (tmp4.copy)
                   tmp.write (goto ((((xmyArray)).apply ((* (pyint 2) (pyint 5) (pyint 10) (pyint 17) (pyint 3) (pyint 6) (pyint 11) (pyint 18) (pyint 4) (pyint 7) (pyint 19) (pyint 5) (pyint 8) (pyint 13) (pyint 20)))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e21).write (tmp.result)

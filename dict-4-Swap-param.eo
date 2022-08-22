@@ -1,35 +1,161 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pair preface.pair
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias fakeclasses preface.fakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xmyMap preface.xmyMap
++alias xlen preface.xlen
++alias xmap preface.xmap
++alias xfilter preface.xfilter
++alias xstr preface.xstr
++alias xsum preface.xsum
++alias xlist preface.xlist
++alias xint preface.xint
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xAssertionError preface.xAssertionError
++alias xValueError preface.xValueError
++alias xrange preface.xrange
 +junit
-pyint 0 > dummy-int-usage
-pystring 0 > dummy-string-usage
-pyfloat 0 > dummy-float-usage
-pybool TRUE > dummy-bool-usage
-memory 0 > A
-[] > ydict4
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory 0 > bogusForceDataize
-  memory 0 > xbogusForceDataize
-  memory 0 > xhack
-  seq > @
-    xhack.write
-      []
-        memory 0 > test
-        seq > @
-          test.write
-            []
-              memory 0 > x
-              memory 0 > a
-              memory 0 > dict
-              seq > @
-                seq
-                  (((unsupported)).apply)
-                    a.write (pyint 123)
-                  x.write (((A)).apply)
-                  (((unsupported)).apply (((x).a)) ((pyint 13)))
-                  dict.write (((unsupported)).apply ((pystring "'name'")) ((pystring "'John'")) ((pyint 1)) ((x)))
-                  (((unsupported)).apply (((((((dict).get)).apply ((pyint 1))).__class__).eq (A))))
+
+[unused] > dict-4
+  [] > apply
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > apply
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      fakeclasses.pyFloatClass > xfloat
+      fakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      xmyMap > dummy-xmyMap
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xmap > dummy-xmap
+      xfilter > dummy-xfilter
+      pair > dummy-pair
+      xstr > dummy-xstr
+      xsum > dummy-xsum
+      xlist > dummy-xlist
+      xint > dummy-xint
+      xStopIteration > dummy-stop-iteration
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xAssertionError > dummy-xAssertionError
+      xValueError > dummy-xValueError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xtest
+      seq > @
+        stdout "dict-4\n"
+        write.
+          xtest
+          []
+            [] > apply
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > xdict
+                cage 0 > lhs1
+                cage 0 > e0
+                cage 0 > e4
+                cage 0 > e3
+                cage 0 > e2
+                cage 0 > xA
+                cage 0 > xx
+                cage 0 > e1
+                seq > @
+                  stdout "xtest\n"
+                  write.
+                    xA
+                    []
+                      newUID.apply 0 > x__id__
+                      [x] > eq
+                        x__id__.eq (x.x__id__) > @
+                      [] > apply
+                        [stackUp] > @
+                          cage result > pResult
+                          cage 0 > tmp
+                          [] > result
+                            cage 0 > xa
+                            xA > x__class__
+                            seq > initFields
+                              xa.write (pyint 123)
+                          seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
+                  tmp.write (goto ((((xA)).apply).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e0).write (tmp.result)
+                  ((e0).<)
+                  mkCopy (e0) > tmp1
+                  (xx).write (tmp1.copy)
+                  ((xx).xa).write ((pyint 13))
+                  ((xx).xa).force
+                  tmp.write (goto ((((xmyMap)).apply (((* (pair (pystring "name") (pystring "John")) (pair (pyint 1) (xx)))))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e1).write (tmp.result)
+                  ((e1).<)
+                  mkCopy (e1) > tmp2
+                  (xdict).write (tmp2.copy)
+                  tmp.write (goto (((((xdict).xget)).apply ((xdict)) ((pyint 1))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e2).write (tmp.result)
+                  ((e2).<)
+                  mkCopy (e2.x__class__) > tmp3
+                  (e3).write (tmp3.copy)
+                  ((e3).<)
+                  mkCopy (xA) > tmp4
+                  (lhs1).write (tmp4.copy)
+                  (e4).write (((e3).eq (lhs1)))
+                  (e4).force
+                  ((e4).<)
+                  toReturn.write ((e4))
+                  stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
+                  123
+        tmp.write (goto ((((xtest)).apply).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
+  (goto (apply.@)).result > @

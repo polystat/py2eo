@@ -4,6 +4,7 @@
 +alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pair preface.pair
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
@@ -17,7 +18,10 @@
 +alias return preface.return
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
++alias xmyMap preface.xmyMap
 +alias xlen preface.xlen
++alias xmap preface.xmap
++alias xfilter preface.xfilter
 +alias xstr preface.xstr
 +alias xsum preface.xsum
 +alias xlist preface.xlist
@@ -61,8 +65,12 @@
       return > dummy-return
       raiseEmpty > dummy-raiseEmpty
       xmyArray > dummy-xmyArray
+      xmyMap > dummy-xmyMap
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xmap > dummy-xmap
+      xfilter > dummy-xfilter
+      pair > dummy-pair
       xstr > dummy-xstr
       xsum > dummy-xsum
       xlist > dummy-xlist
@@ -133,28 +141,28 @@
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e0).write (tmp.result)
                   ((e0).<)
-                  mkCopy (e0) > tmp1
-                  (xnums).write (tmp1.copy)
+                  mkCopy (e0) > tmp5
+                  (xnums).write (tmp5.copy)
                   tmp.write (goto ((((xmyArray)).apply ((* (pyint 1) (pyint 4) (pyint 9) (pyint 16)))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e1).write (tmp.result)
                   ((e1).<)
-                  mkCopy (e1) > tmp2
-                  (xnums2).write (tmp2.copy)
+                  mkCopy (e1) > tmp6
+                  (xnums2).write (tmp6.copy)
                   tmp.write (goto ((((xmyArray)).apply ((*))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e2).write (tmp.result)
                   ((e2).<)
-                  mkCopy (e2) > tmp3
-                  (xres).write (tmp3.copy)
-                  mkCopy (xnums) > tmp4
-                  (xinn0).write (tmp4.copy)
+                  mkCopy (e2) > tmp7
+                  (xres).write (tmp7.copy)
+                  mkCopy (xnums) > tmp8
+                  (xinn0).write (tmp8.copy)
                   tmp.write (goto (((((xinn0).x__iter__)).apply ((xinn0))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e3).write (tmp.result)
                   ((e3).<)
-                  mkCopy (e3) > tmp5
-                  (xit0).write (tmp5.copy)
+                  mkCopy (e3) > tmp9
+                  (xit0).write (tmp9.copy)
                   xcaught.write (pybool TRUE)
                   write.
                     xcurrent-exception
@@ -183,16 +191,16 @@
                                                 (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                                                 (e4).write (tmp.result)
                                                 ((e4).<)
-                                                mkCopy (e4) > tmp6
-                                                (xnum).write (tmp6.copy)
-                                                mkCopy (xnums2) > tmp7
-                                                (xinn1).write (tmp7.copy)
+                                                mkCopy (e4) > tmp10
+                                                (xnum).write (tmp10.copy)
+                                                mkCopy (xnums2) > tmp11
+                                                (xinn1).write (tmp11.copy)
                                                 tmp.write (goto (((((xinn1).x__iter__)).apply ((xinn1))).@))
                                                 (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                                                 (e5).write (tmp.result)
                                                 ((e5).<)
-                                                mkCopy (e5) > tmp8
-                                                (xit1).write (tmp8.copy)
+                                                mkCopy (e5) > tmp12
+                                                (xit1).write (tmp12.copy)
                                                 xcaught.write (pybool TRUE)
                                                 write.
                                                   xcurrent-exception
@@ -221,8 +229,8 @@
                                                                               (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                                                                               (e6).write (tmp.result)
                                                                               ((e6).<)
-                                                                              mkCopy (e6) > tmp9
-                                                                              (xnum2).write (tmp9.copy)
+                                                                              mkCopy (e6) > tmp13
+                                                                              (xnum2).write (tmp13.copy)
                                                                               (e7).write (((xnum).eq (pyint 3)))
                                                                               (e7).force
                                                                               ((e7).<)
@@ -235,8 +243,8 @@
                                                                                 seq
                                                                                   (lhs0).write ((pybool FALSE))
                                                                                   (lhs0).force
-                                                                                  mkCopy (lhs0) > tmp10
-                                                                                  (e8).write (tmp10.copy)
+                                                                                  mkCopy (lhs0) > tmp14
+                                                                                  (e8).write (tmp14.copy)
                                                                                   (pybool TRUE)
                                                                               (e8).as-bool.if
                                                                                 seq
@@ -244,8 +252,8 @@
                                                                                   (pybool TRUE)
                                                                                 seq
                                                                                   (pybool TRUE)
-                                                                              mkCopy (xres) > tmp11
-                                                                              (lhs1).write (tmp11.copy)
+                                                                              mkCopy (xres) > tmp15
+                                                                              (lhs1).write (tmp15.copy)
                                                                               (e9).write (((xnum2).add (xnum)))
                                                                               (e9).force
                                                                               ((e9).<)
@@ -265,8 +273,8 @@
                                                                                 seq
                                                                                   (lhs3).write ((pybool FALSE))
                                                                                   (lhs3).force
-                                                                                  mkCopy (lhs3) > tmp12
-                                                                                  (e12).write (tmp12.copy)
+                                                                                  mkCopy (lhs3) > tmp16
+                                                                                  (e12).write (tmp16.copy)
                                                                                   (pybool TRUE)
                                                                               (e12).as-bool.if
                                                                                 seq
@@ -294,14 +302,14 @@
                                                         if. > @
                                                           is-exception (xcurrent-exception.x__class__.x__id__)
                                                           seq
-                                                            mkCopy (xcurrent-exception.x__class__) > tmp13
-                                                            (e13).write (tmp13.copy)
+                                                            mkCopy (xcurrent-exception.x__class__) > tmp17
+                                                            (e13).write (tmp17.copy)
                                                             ((e13).<)
-                                                            mkCopy (e13.x__id__) > tmp14
-                                                            (e14).write (tmp14.copy)
+                                                            mkCopy (e13.x__id__) > tmp18
+                                                            (e14).write (tmp18.copy)
                                                             ((e14).<)
-                                                            mkCopy (xStopIteration.x__id__) > tmp15
-                                                            (e15).write (tmp15.copy)
+                                                            mkCopy (xStopIteration.x__id__) > tmp19
+                                                            (e15).write (tmp19.copy)
                                                             ((e15).<)
                                                             (e16).write (((e14).eq (e15)))
                                                             (e16).force
@@ -350,14 +358,14 @@
                           if. > @
                             is-exception (xcurrent-exception.x__class__.x__id__)
                             seq
-                              mkCopy (xcurrent-exception.x__class__) > tmp16
-                              (e17).write (tmp16.copy)
+                              mkCopy (xcurrent-exception.x__class__) > tmp20
+                              (e17).write (tmp20.copy)
                               ((e17).<)
-                              mkCopy (e17.x__id__) > tmp17
-                              (e18).write (tmp17.copy)
+                              mkCopy (e17.x__id__) > tmp21
+                              (e18).write (tmp21.copy)
                               ((e18).<)
-                              mkCopy (xStopIteration.x__id__) > tmp18
-                              (e19).write (tmp18.copy)
+                              mkCopy (xStopIteration.x__id__) > tmp22
+                              (e19).write (tmp22.copy)
                               ((e19).<)
                               (e20).write (((e18).eq (e19)))
                               (e20).force
@@ -382,8 +390,8 @@
                       0
                     ((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or ((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
-                  mkCopy (xres) > tmp19
-                  (lhs8).write (tmp19.copy)
+                  mkCopy (xres) > tmp23
+                  (lhs8).write (tmp23.copy)
                   tmp.write (goto ((((xmyArray)).apply ((* (pyint 2) (pyint 5) (pyint 10) (pyint 17) (pyint 3) (pyint 6) (pyint 11) (pyint 18) (pyint 4) (pyint 7) (pyint 19) (pyint 5) (pyint 8) (pyint 13) (pyint 20)))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e21).write (tmp.result)

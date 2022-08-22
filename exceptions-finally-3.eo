@@ -4,6 +4,7 @@
 +alias sprintf org.eolang.txt.sprintf
 +alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pair preface.pair
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
@@ -17,7 +18,10 @@
 +alias return preface.return
 +alias raiseEmpty preface.raiseEmpty
 +alias xmyArray preface.xmyArray
++alias xmyMap preface.xmyMap
 +alias xlen preface.xlen
++alias xmap preface.xmap
++alias xfilter preface.xfilter
 +alias xstr preface.xstr
 +alias xsum preface.xsum
 +alias xlist preface.xlist
@@ -61,8 +65,12 @@
       return > dummy-return
       raiseEmpty > dummy-raiseEmpty
       xmyArray > dummy-xmyArray
+      xmyMap > dummy-xmyMap
       mkCopy > dummy-mkCopy
       xlen > dummy-xlen
+      xmap > dummy-xmap
+      xfilter > dummy-xfilter
+      pair > dummy-pair
       xstr > dummy-xstr
       xsum > dummy-xsum
       xlist > dummy-xlist
@@ -106,6 +114,8 @@
                     xc
                     []
                       newUID.apply 0 > x__id__
+                      [x] > eq
+                        x__id__.eq (x.x__id__) > @
                       [] > apply
                         [stackUp] > @
                           cage result > pResult
@@ -147,14 +157,14 @@
                                   if. > @
                                     is-exception (xcurrent-exception.x__class__.x__id__)
                                     seq
-                                      mkCopy (xcurrent-exception.x__class__) > tmp7
-                                      (e0).write (tmp7.copy)
+                                      mkCopy (xcurrent-exception.x__class__) > tmp1
+                                      (e0).write (tmp1.copy)
                                       ((e0).<)
-                                      mkCopy (e0.x__id__) > tmp8
-                                      (e1).write (tmp8.copy)
+                                      mkCopy (e0.x__id__) > tmp2
+                                      (e1).write (tmp2.copy)
                                       ((e1).<)
-                                      mkCopy (xc.x__id__) > tmp9
-                                      (e2).write (tmp9.copy)
+                                      mkCopy (xc.x__id__) > tmp3
+                                      (e2).write (tmp3.copy)
                                       ((e2).<)
                                       (e3).write (((e1).eq (e2)))
                                       (e3).force
@@ -195,14 +205,14 @@
                           if. > @
                             is-exception (xcurrent-exception.x__class__.x__id__)
                             seq
-                              mkCopy (xcurrent-exception.x__class__) > tmp10
-                              (e5).write (tmp10.copy)
+                              mkCopy (xcurrent-exception.x__class__) > tmp4
+                              (e5).write (tmp4.copy)
                               ((e5).<)
-                              mkCopy (e5.x__id__) > tmp11
-                              (e6).write (tmp11.copy)
+                              mkCopy (e5.x__id__) > tmp5
+                              (e6).write (tmp5.copy)
                               ((e6).<)
-                              mkCopy (xStopIteration.x__id__) > tmp12
-                              (e7).write (tmp12.copy)
+                              mkCopy (xStopIteration.x__id__) > tmp6
+                              (e7).write (tmp6.copy)
                               ((e7).<)
                               (e8).write (((e6).eq (e7)))
                               (e8).force
