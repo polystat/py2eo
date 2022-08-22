@@ -244,7 +244,7 @@ object PrintLinearizedMutableEOWithCage {
       case Raise(Some(e), None, _) => List("stackUp.forward %s".format(pe(e)))
 
       case Try(ttry, List((None, exc)), eelse, ffinally, ann) =>
-        "xcaught.write (pybool TRUE)" ::
+        "xcaught.write (pybool FALSE)" ::
         "write." :: indent(
           "xcurrent-exception" ::
           "goto" :: indent(
