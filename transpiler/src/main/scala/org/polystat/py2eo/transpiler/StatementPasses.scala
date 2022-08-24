@@ -594,7 +594,7 @@ object StatementPasses {
         x => {
           val body = x._2
           (
-            Binop(Expression.Binops.Or,
+            LazyLOr(
               SimpleComparison(Compops.Eq,
                 Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
                 x._1 match {
