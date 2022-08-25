@@ -609,12 +609,20 @@ object StatementPasses {
                 },
                 ann.pos
               ),
-              SimpleComparison(Compops.Eq,
-                Field(Ident("current-exception", ann.pos), "__id__", ann.pos),
-                x._1 match {
-                  case Some((e, _)) => Field(e, "__id__", ann.pos)
-                  case None => IntLiteral(1, ann.pos)
-                },
+              LazyLAnd(
+                SimpleComparison(Compops.Eq,
+                  Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
+                  Field(Field(Ident("fakeclasses", ann.pos), "pyTypeClass", ann.pos), "__id__", ann.pos),
+                  ann.pos
+                ),
+                SimpleComparison(Compops.Eq,
+                  Field(Ident("current-exception", ann.pos), "__id__", ann.pos),
+                  x._1 match {
+                    case Some((e, _)) => Field(e, "__id__", ann.pos)
+                    case None => IntLiteral(1, ann.pos)
+                  },
+                  ann.pos
+                ),
                 ann.pos
               ),
               ann.pos
