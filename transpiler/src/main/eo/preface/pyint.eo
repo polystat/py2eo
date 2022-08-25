@@ -3,7 +3,7 @@
 +alias pyfloat preface.pyfloat
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
-+alias fakeclasses preface.fakeclasses
++alias xfakeclasses preface.xfakeclasses
 +alias return preface.return
 +alias xZeroDivisionError preface.xZeroDivisionError
 
@@ -11,20 +11,20 @@
 
   memory val > value
 
-  fakeclasses.pyIntClass > x__class__
+  xfakeclasses.pyIntClass > x__class__
 
   [x] > with-value
     pyint x > @
 
   [x] > eq
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        ((fakeclasses.has-type x (fakeclasses.pyIntClass)).not).and
-          ((fakeclasses.has-type x (fakeclasses.pyFloatClass)).not).and ((fakeclasses.has-type x (fakeclasses.pyComplexClass)).not)
+        ((xfakeclasses.has-type x (xfakeclasses.pyIntClass)).not).and
+          ((xfakeclasses.has-type x (xfakeclasses.pyFloatClass)).not).and ((xfakeclasses.has-type x (xfakeclasses.pyComplexClass)).not)
         pybool FALSE
         if.
-          (fakeclasses.has-type x (fakeclasses.pyIntClass))
+          (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
           pybool (value.eq (x.value))
           p.fst.eq (p.snd)
 
@@ -32,42 +32,42 @@
     (eq x).not > @
 
   [x] > less
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pybool (value.lt (x.value))
         p.fst.less (p.snd)
 
   [x] > leq
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pybool (value.lte (x.value))
         p.fst.leq (p.snd)
 
   [x] > greater
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pybool (value.gt (x.value))
         p.fst.greater (p.snd)
 
   [x] > geq
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pybool (value.gte (x.value))
         p.fst.geq (p.snd)
 
   [x] > pow
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.pow (x.value))
         p.fst.pow (p.snd)
 
@@ -75,50 +75,50 @@
     pyint ((value.as-bytes.not).as-int) > @
 
   [x] > and
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.and (x.value))
         p.fst.and (p.snd)
 
   [x] > or
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.or (x.value))
         p.fst.or (p.snd)
 
   [x] > xor
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.xor (x.value))
         p.fst.xor (p.snd)
 
   [x] > add
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.plus (x.value))
         p.fst.add (p.snd)
 
   [x] > mul
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.times (x.value))
         p.fst.mul (p.snd)
 
   [x] > div
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         (x.value.eq 0).if
           seq
             stdout "division by zero\n"
@@ -127,10 +127,10 @@
         p.fst.div (p.snd)
 
   [x] > float-div
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         (x.value.eq 0).if
           seq
             stdout "division by zero\n"
@@ -139,18 +139,18 @@
         p.fst.float-div (p.snd)
 
   [x] > mod
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.mod (x.value))
         p.fst.mod (p.snd)
 
   [x] > sub
-    fakeclasses.convert (pyint value) x > p
+    xfakeclasses.convert (pyint value) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyIntClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
         pyint (value.minus (x.value))
         p.fst.sub (p.snd)
 

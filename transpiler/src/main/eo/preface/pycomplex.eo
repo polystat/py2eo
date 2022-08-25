@@ -1,5 +1,5 @@
 +package preface
-+alias fakeclasses preface.fakeclasses
++alias xfakeclasses preface.xfakeclasses
 +alias pybool preface.pybool
 +alias pyfloat preface.pyfloat
 +alias stdout org.eolang.io.stdout
@@ -8,37 +8,37 @@
 
 [xreal ximag] > pycomplex
 
-  fakeclasses.pyComplexClass > x__class__
+  xfakeclasses.pyComplexClass > x__class__
 
   [x] > eq
-    fakeclasses.convert (pycomplex xreal ximag) x > p
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
         pybool ((xreal.eq (x.xreal)).and (ximag.eq (x.ximag)))
         p.fst.eq (p.snd)
 
   [x] > neq
-    fakeclasses.convert (pycomplex xreal ximag) x > p
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
         pybool ((eq x).not)
         p.fst.neq (p.snd)
 
   [x] > pow
-    fakeclasses.convert (pycomplex xreal ximag) x > p
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
         pycomplex (pyfloat 0.0) (pyfloat 0.0)
         p.fst.pow (p.snd)
 
   [x] > float-div
-    fakeclasses.convert (pycomplex xreal ximag) x > p
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
         []
           p.fst.mul (pycomplex (x.xreal) (x.ximag.neg)) > num
           ((x.xreal.mul (x.xreal)).add (x.ximag.mul (x.ximag))) > denom
@@ -46,28 +46,28 @@
         p.fst.float-div (p.snd)
 
   [x] > add
-    fakeclasses.convert (pycomplex xreal ximag) x > p
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
         pycomplex (xreal.add (x.xreal)) (ximag.add (x.ximag))
         p.fst.add (p.snd)
 
   [x] > mul
-    fakeclasses.convert (pycomplex xreal ximag) x > p
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
         pycomplex
           ((xreal.mul (x.xreal)).sub (ximag.mul (x.ximag)))
           ((xreal.mul (x.ximag)).add (ximag.mul (x.xreal)))
         p.fst.mul (p.snd)
 
   [x] > sub
-    fakeclasses.convert (pycomplex xreal ximag) x > p
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
     seq > @
       if.
-        (fakeclasses.has-type x (fakeclasses.pyComplexClass))
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
         pycomplex (xreal.sub (x.xreal)) (ximag.sub (x.ximag))
         p.fst.sub (p.snd)
 
