@@ -587,14 +587,21 @@ object StatementPasses {
   //  or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
   // todo: also must implement named exceptions and del of those a the end of an except clause
   // todo: also must rethrow an exception if it is not catched
+  def preSimplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case Try(ttry, List((None, x)), eelse, ffinally, ann) =>
+      print("empty except\n")
+      (
+        Try(ttry, List((None, Suite(List(
+          Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos),
+          x
+        ), ann.pos))), eelse, ffinally, ann),
+        ns
+      )
+    case _ => (s, ns)
+  }
+
   def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case Try(ttry, List((None, x)), eelse, ffinally, ann) => (
-      Try(ttry, List((None, Suite(List(
-        Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos),
-        x
-      ), ann.pos))), eelse, ffinally, ann),
-      ns
-    )
+    case Try(ttry, List((None, x)), eelse, ffinally, ann) => (s, ns)
     case Try(ttry, excepts, eelse, ffinally, ann) =>
       val ex1 = excepts.map(
         x => {
