@@ -631,7 +631,7 @@ object StatementPasses {
               (x._1.toList.flatMap(x => x._2.toList.map (
                 name => (Assign(List(Ident(name, ann.pos), Ident("current-exception", ann.pos)), ann.pos))
               ))) ++
-              List(body, Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos)),
+              List(Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos), body),
               ann.pos
             )
           )
