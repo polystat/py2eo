@@ -587,6 +587,19 @@ object StatementPasses {
   //  or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
   // todo: also must implement named exceptions and del of those a the end of an except clause
   // todo: also must rethrow an exception if it is not catched
+  def preSimplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case Try(ttry, List((None, x)), eelse, ffinally, ann) =>
+      print("empty except\n")
+      (
+        Try(ttry, List((None, Suite(List(
+          Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos),
+          x
+        ), ann.pos))), eelse, ffinally, ann),
+        ns
+      )
+    case _ => (s, ns)
+  }
+
   def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case Try(ttry, List((None, x)), eelse, ffinally, ann) => (s, ns)
     case Try(ttry, excepts, eelse, ffinally, ann) =>
@@ -594,19 +607,38 @@ object StatementPasses {
         x => {
           val body = x._2
           (
-            SimpleComparison(Compops.Eq,
-              Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
-              x._1 match {
-                case Some((e, _)) => Field(e, "__id__", ann.pos)
-                case None => IntLiteral(1, ann.pos)
-              },
+            LazyLOr(
+              SimpleComparison(Compops.Eq,
+                Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
+                x._1 match {
+                  case Some((e, _)) => Field(e, "__id__", ann.pos)
+                  case None => IntLiteral(1, ann.pos)
+                },
+                ann.pos
+              ),
+              LazyLAnd(
+                SimpleComparison(Compops.Eq,
+                  Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
+                  Field(Field(Ident("fakeclasses", ann.pos), "pyTypeClass", ann.pos), "__id__", ann.pos),
+                  ann.pos
+                ),
+                SimpleComparison(Compops.Eq,
+                  Field(Ident("current-exception", ann.pos), "__id__", ann.pos),
+                  x._1 match {
+                    case Some((e, _)) => Field(e, "__id__", ann.pos)
+                    case None => IntLiteral(1, ann.pos)
+                  },
+                  ann.pos
+                ),
+                ann.pos
+              ),
               ann.pos
             ),
             Suite(
               (x._1.toList.flatMap(x => x._2.toList.map (
                 name => (Assign(List(Ident(name, ann.pos), Ident("current-exception", ann.pos)), ann.pos))
               ))) ++
-              List(body, Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos)),
+              List(Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos), body),
               ann.pos
             )
           )

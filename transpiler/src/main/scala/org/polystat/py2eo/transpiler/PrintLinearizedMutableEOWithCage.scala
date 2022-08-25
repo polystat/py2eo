@@ -31,7 +31,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias pybool preface.pybool",
     "+alias pycomplex preface.pycomplex",
     "+alias newUID preface.newUID",
-    "+alias fakeclasses preface.fakeclasses",
+    "+alias xfakeclasses preface.xfakeclasses",
     "+alias mkCopy preface.mkCopy",
     "+alias raiseNothing preface.raiseNothing",
     "+alias continue preface.continue",
@@ -49,6 +49,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xint preface.xint",
     "+alias xiter preface.xiter",
     "+alias xStopIteration preface.xStopIteration",
+    "+alias xBaseException preface.xBaseException",
     "+alias xTypeError preface.xTypeError",
     "+alias xZeroDivisionError preface.xZeroDivisionError",
     "+alias xAssertionError preface.xAssertionError",
@@ -244,7 +245,7 @@ object PrintLinearizedMutableEOWithCage {
       case Raise(Some(e), None, _) => List("stackUp.forward %s".format(pe(e)))
 
       case Try(ttry, List((None, exc)), eelse, ffinally, ann) =>
-        "xcaught.write (pybool TRUE)" ::
+        "xcaught.write (pybool FALSE)" ::
         "write." :: indent(
           "xcurrent-exception" ::
           "goto" :: indent(
@@ -352,8 +353,8 @@ object PrintLinearizedMutableEOWithCage {
       "pycomplex 0 0 > dummy-pycomplex",
       "pystring (sprintf \"\") > dummy-bool-string",
       "newUID > dummy-newUID",
-      "fakeclasses.pyFloatClass > xfloat",
-      "fakeclasses.pyComplexClass > xcomplex",
+      "xfakeclasses.pyFloatClass > xfloat",
+      "xfakeclasses.pyComplexClass > xcomplex",
       "raiseNothing > dummy-rn",
       "continue > dummy-continue",
       "break > dummy-break",
@@ -371,6 +372,7 @@ object PrintLinearizedMutableEOWithCage {
       "xlist > dummy-xlist",
       "xint > dummy-xint",
       "xStopIteration > dummy-stop-iteration",
+      "xBaseException > dummy-base-exception",
       "xZeroDivisionError > dummy-xZeroDivisionError",
       "xAssertionError > dummy-xAssertionError",
       "xValueError > dummy-xValueError",
