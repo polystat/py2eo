@@ -317,7 +317,7 @@ object PrintLinearizedMutableEOWithCage {
         )
     })
     "[]" :: indent(
-      s"[args...] > apply" :: indent(
+      "[args...] > apply" :: indent(
         s"(*${defaultArgs.mkString}) > defaultArgs" ::
         args2 ++
         ("[stackUp] > @" :: indent(
