@@ -52,7 +52,9 @@ object Transpile {
         debugPrinter(y._1, "afterSimplifyFor")
 
         try {
-          val rmAssert = StatementPasses.procStatement(StatementPasses.simplifyAssert)(y._1, y._2)
+          val rmWith = StatementPasses.procStatement(StatementPasses.simplifyWith)(y._1, y._2)
+          debugPrinter(rmWith._1, "afterRmWith")
+          val rmAssert = StatementPasses.procStatement(StatementPasses.simplifyAssert)(rmWith._1, rmWith._2)
           debugPrinter(rmAssert._1, "afterRmAssert")
           val preRmExcepts = StatementPasses.procStatement(StatementPasses.preSimplifyExcepts)(rmAssert._1, rmAssert._2)
           debugPrinter(preRmExcepts._1, "afterRmExcepts")
