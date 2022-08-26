@@ -308,11 +308,19 @@ object PrintLinearizedMutableEOWithCage {
       map(x => s"cage 0 > ${x._1}").toList ++
       funs.map { f: FuncDef => s"cage 0 > ${f.name}" }
 
-    val args2 = (f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
-      argname + "NotCopied" }).mkString(" ")
+    val (_, args2, defaultArgs) = (f.args.foldLeft((0, List[String](), List[String]())){
+      case ((i, args, defaultArgs), Parameter(argname, kind, None, defaultValue, _)) if kind != ArgKind.Keyword =>
+        (
+          i + 1,
+          ((s"(args.length.gt $i).if (args.get $i) (defaultArgs.get $i) > ${argname}NotCopied") :: args),
+          defaultArgs :+ (defaultValue match { case None => " 0" case Some(value) => " " + pe(value) })
+        )
+    })
     "[]" :: indent(
-      s"[$args2] > apply" :: indent(
-        "[stackUp] > @" :: indent(
+      s"[args...] > apply" :: indent(
+        s"(*${defaultArgs.mkString}) > defaultArgs" ::
+        args2 ++
+        ("[stackUp] > @" :: indent(
           preface ++ (
             "cage 0 > tmp" ::
             "cage 0 > toReturn" ::
@@ -324,7 +332,7 @@ object PrintLinearizedMutableEOWithCage {
               )
             )
           )
-        )
+        ))
       )
     )
   }
