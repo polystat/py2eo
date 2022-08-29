@@ -10,7 +10,7 @@
 +alias pybool preface.pybool
 +alias pycomplex preface.pycomplex
 +alias newUID preface.newUID
-+alias fakeclasses preface.fakeclasses
++alias xfakeclasses preface.xfakeclasses
 +alias mkCopy preface.mkCopy
 +alias raiseNothing preface.raiseNothing
 +alias continue preface.continue
@@ -28,6 +28,7 @@
 +alias xint preface.xint
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
++alias xBaseException preface.xBaseException
 +alias xTypeError preface.xTypeError
 +alias xZeroDivisionError preface.xZeroDivisionError
 +alias xAssertionError preface.xAssertionError
@@ -57,8 +58,8 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      fakeclasses.pyFloatClass > xfloat
-      fakeclasses.pyComplexClass > xcomplex
+      xfakeclasses.pyFloatClass > xfloat
+      xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
       break > dummy-break
@@ -76,6 +77,7 @@
       xlist > dummy-xlist
       xint > dummy-xint
       xStopIteration > dummy-stop-iteration
+      xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
       xAssertionError > dummy-xAssertionError
       xValueError > dummy-xValueError
@@ -95,27 +97,37 @@
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
-                cage 0 > e6
                 cage 0 > e12
                 cage 0 > xlhs1
                 cage 0 > e1
                 cage 0 > e5
                 cage 0 > e7
+                cage 0 > e17
                 cage 0 > xinn0
-                cage 0 > e0
                 cage 0 > xlhs0
-                cage 0 > e4
                 cage 0 > e3
                 cage 0 > xresList
                 cage 0 > e10
-                cage 0 > xit0
-                cage 0 > xi
+                cage 0 > lhs11
+                cage 0 > e19
+                cage 0 > e6
+                cage 0 > e18
+                cage 0 > e0
+                cage 0 > e20
+                cage 0 > e4
+                cage 0 > e13
                 cage 0 > e8
+                cage 0 > e16
                 cage 0 > xlist
+                cage 0 > e14
+                cage 0 > xit0
                 cage 0 > xlhs2
+                cage 0 > lhs12
                 cage 0 > xcaught
                 cage 0 > lhs3
                 cage 0 > e9
+                cage 0 > e15
+                cage 0 > xi
                 cage 0 > e2
                 cage 0 > xcollectionAccum
                 cage 0 > e11
@@ -147,7 +159,7 @@
                   ((e3).<)
                   mkCopy (e3) > tmp5
                   (xit0).write (tmp5.copy)
-                  xcaught.write (pybool TRUE)
+                  xcaught.write (pybool FALSE)
                   write.
                     xcurrent-exception
                     goto
@@ -219,6 +231,48 @@
                               ((e10).<)
                               (e10).as-bool.if
                                 seq
+                                  (lhs12).write ((pybool TRUE))
+                                  (lhs12).force
+                                  (pybool TRUE)
+                                seq
+                                  mkCopy (xcurrent-exception.x__class__) > tmp11
+                                  (e11).write (tmp11.copy)
+                                  ((e11).<)
+                                  mkCopy (e11.x__id__) > tmp12
+                                  (e12).write (tmp12.copy)
+                                  ((e12).<)
+                                  mkCopy (xfakeclasses.xpyTypeClass) > tmp13
+                                  (e13).write (tmp13.copy)
+                                  ((e13).<)
+                                  mkCopy (e13.x__id__) > tmp14
+                                  (e14).write (tmp14.copy)
+                                  ((e14).<)
+                                  (e15).write (((e12).eq (e14)))
+                                  (e15).force
+                                  ((e15).<)
+                                  (e15).as-bool.if
+                                    seq
+                                      mkCopy (xcurrent-exception.x__id__) > tmp15
+                                      (e16).write (tmp15.copy)
+                                      ((e16).<)
+                                      mkCopy (xStopIteration.x__id__) > tmp16
+                                      (e17).write (tmp16.copy)
+                                      ((e17).<)
+                                      (e18).write (((e16).eq (e17)))
+                                      (e18).force
+                                      ((e18).<)
+                                      (pybool TRUE)
+                                    seq
+                                      (lhs11).write ((pybool FALSE))
+                                      (lhs11).force
+                                      mkCopy (lhs11) > tmp17
+                                      (e18).write (tmp17.copy)
+                                      (pybool TRUE)
+                                  mkCopy (e18) > tmp18
+                                  (lhs12).write (tmp18.copy)
+                                  (pybool TRUE)
+                              (lhs12).as-bool.if
+                                seq
                                   (xcaught).write ((pybool TRUE))
                                   (xcaught).force
                                   (pybool TRUE)
@@ -239,17 +293,17 @@
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
                   tmp.write (goto ((((xlen)).apply ((xcollectionAccum))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e11).write (tmp.result)
-                  ((e11).<)
-                  mkCopy (e11) > tmp11
-                  (xlhs0).write (tmp11.copy)
+                  (e19).write (tmp.result)
+                  ((e19).<)
+                  mkCopy (e19) > tmp19
+                  (xlhs0).write (tmp19.copy)
                   (xlhs1).write ((pyint 14))
                   (xlhs1).force
-                  (e12).write (((xlhs0).eq (xlhs1)))
-                  (e12).force
-                  ((e12).<)
-                  mkCopy (e12) > tmp12
-                  (xlhs2).write (tmp12.copy)
+                  (e20).write (((xlhs0).eq (xlhs1)))
+                  (e20).force
+                  ((e20).<)
+                  mkCopy (e20) > tmp20
+                  (xlhs2).write (tmp20.copy)
                   toReturn.write ((xlhs2))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)

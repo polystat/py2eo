@@ -10,7 +10,7 @@
 +alias pybool preface.pybool
 +alias pycomplex preface.pycomplex
 +alias newUID preface.newUID
-+alias fakeclasses preface.fakeclasses
++alias xfakeclasses preface.xfakeclasses
 +alias mkCopy preface.mkCopy
 +alias raiseNothing preface.raiseNothing
 +alias continue preface.continue
@@ -28,6 +28,7 @@
 +alias xint preface.xint
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
++alias xBaseException preface.xBaseException
 +alias xTypeError preface.xTypeError
 +alias xZeroDivisionError preface.xZeroDivisionError
 +alias xAssertionError preface.xAssertionError
@@ -57,8 +58,8 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      fakeclasses.pyFloatClass > xfloat
-      fakeclasses.pyComplexClass > xcomplex
+      xfakeclasses.pyFloatClass > xfloat
+      xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
       break > dummy-break
@@ -76,6 +77,7 @@
       xlist > dummy-xlist
       xint > dummy-xint
       xStopIteration > dummy-stop-iteration
+      xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
       xAssertionError > dummy-xAssertionError
       xValueError > dummy-xValueError
@@ -96,20 +98,30 @@
                 cage 0 > tmp
                 cage 0 > toReturn
                 cage 0 > e6
+                cage 0 > e12
                 cage 0 > e5
                 cage 0 > e7
+                cage 0 > e17
                 cage 0 > xinn0
                 cage 0 > e0
-                cage 0 > e4
-                cage 0 > e8
-                cage 0 > e3
-                cage 0 > xit0
+                cage 0 > e10
                 cage 0 > xcaught
                 cage 0 > e9
-                cage 0 > e2
+                cage 0 > e15
                 cage 0 > xi2
                 cage 0 > xx
                 cage 0 > e1
+                cage 0 > e4
+                cage 0 > e13
+                cage 0 > e8
+                cage 0 > e16
+                cage 0 > e3
+                cage 0 > lhs6
+                cage 0 > e14
+                cage 0 > xit0
+                cage 0 > e2
+                cage 0 > lhs7
+                cage 0 > e11
                 seq > @
                   stdout "xforDocOne\n"
                   (xx).write ((pyint 0))
@@ -126,7 +138,7 @@
                   ((e1).<)
                   mkCopy (e1) > tmp2
                   (xit0).write (tmp2.copy)
-                  xcaught.write (pybool TRUE)
+                  xcaught.write (pybool FALSE)
                   write.
                     xcurrent-exception
                     goto
@@ -193,6 +205,48 @@
                               ((e7).<)
                               (e7).as-bool.if
                                 seq
+                                  (lhs7).write ((pybool TRUE))
+                                  (lhs7).force
+                                  (pybool TRUE)
+                                seq
+                                  mkCopy (xcurrent-exception.x__class__) > tmp8
+                                  (e8).write (tmp8.copy)
+                                  ((e8).<)
+                                  mkCopy (e8.x__id__) > tmp9
+                                  (e9).write (tmp9.copy)
+                                  ((e9).<)
+                                  mkCopy (xfakeclasses.xpyTypeClass) > tmp10
+                                  (e10).write (tmp10.copy)
+                                  ((e10).<)
+                                  mkCopy (e10.x__id__) > tmp11
+                                  (e11).write (tmp11.copy)
+                                  ((e11).<)
+                                  (e12).write (((e9).eq (e11)))
+                                  (e12).force
+                                  ((e12).<)
+                                  (e12).as-bool.if
+                                    seq
+                                      mkCopy (xcurrent-exception.x__id__) > tmp12
+                                      (e13).write (tmp12.copy)
+                                      ((e13).<)
+                                      mkCopy (xStopIteration.x__id__) > tmp13
+                                      (e14).write (tmp13.copy)
+                                      ((e14).<)
+                                      (e15).write (((e13).eq (e14)))
+                                      (e15).force
+                                      ((e15).<)
+                                      (pybool TRUE)
+                                    seq
+                                      (lhs6).write ((pybool FALSE))
+                                      (lhs6).force
+                                      mkCopy (lhs6) > tmp14
+                                      (e15).write (tmp14.copy)
+                                      (pybool TRUE)
+                                  mkCopy (e15) > tmp15
+                                  (lhs7).write (tmp15.copy)
+                                  (pybool TRUE)
+                              (lhs7).as-bool.if
+                                seq
                                   (xcaught).write ((pybool TRUE))
                                   (xcaught).force
                                   (pybool TRUE)
@@ -212,11 +266,11 @@
                     ((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or ((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
                   stdout (sprintf "%s\n" ((xx).as-string))
-                  ((e8).<)
-                  (e9).write (((xx).eq (pyint 6)))
-                  (e9).force
-                  ((e9).<)
-                  toReturn.write ((e9))
+                  ((e16).<)
+                  (e17).write (((xx).eq (pyint 6)))
+                  (e17).force
+                  ((e17).<)
+                  toReturn.write ((e17))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
                   123

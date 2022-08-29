@@ -10,7 +10,7 @@
 +alias pybool preface.pybool
 +alias pycomplex preface.pycomplex
 +alias newUID preface.newUID
-+alias fakeclasses preface.fakeclasses
++alias xfakeclasses preface.xfakeclasses
 +alias mkCopy preface.mkCopy
 +alias raiseNothing preface.raiseNothing
 +alias continue preface.continue
@@ -28,6 +28,7 @@
 +alias xint preface.xint
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
++alias xBaseException preface.xBaseException
 +alias xTypeError preface.xTypeError
 +alias xZeroDivisionError preface.xZeroDivisionError
 +alias xAssertionError preface.xAssertionError
@@ -57,8 +58,8 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      fakeclasses.pyFloatClass > xfloat
-      fakeclasses.pyComplexClass > xcomplex
+      xfakeclasses.pyFloatClass > xfloat
+      xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
       break > dummy-break
@@ -76,6 +77,7 @@
       xlist > dummy-xlist
       xint > dummy-xint
       xStopIteration > dummy-stop-iteration
+      xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
       xAssertionError > dummy-xAssertionError
       xValueError > dummy-xValueError
@@ -95,18 +97,38 @@
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
-                cage 0 > e6
+                cage 0 > e12
                 cage 0 > e1
                 cage 0 > e5
                 cage 0 > xo
-                cage 0 > e0
                 cage 0 > xC
-                cage 0 > e4
-                cage 0 > e3
+                cage 0 > e14
                 cage 0 > xcaught
-                cage 0 > e2
+                cage 0 > e9
+                cage 0 > e15
+                cage 0 > e22
+                cage 0 > e19
+                cage 0 > e6
+                cage 0 > e18
                 cage 0 > lhs1
                 cage 0 > e7
+                cage 0 > lhs17
+                cage 0 > e17
+                cage 0 > e0
+                cage 0 > e20
+                cage 0 > e4
+                cage 0 > e13
+                cage 0 > e8
+                cage 0 > e16
+                cage 0 > lhs8
+                cage 0 > e3
+                cage 0 > lhs6
+                cage 0 > e21
+                cage 0 > lhs9
+                cage 0 > e10
+                cage 0 > lhs16
+                cage 0 > e2
+                cage 0 > e11
                 seq > @
                   stdout "xte1\n"
                   write.
@@ -123,7 +145,7 @@
                             xC > x__class__
                             seq > initFields
                           seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
-                  xcaught.write (pybool TRUE)
+                  xcaught.write (pybool FALSE)
                   write.
                     xcurrent-exception
                     goto
@@ -149,30 +171,72 @@
                             is-exception (xcurrent-exception.x__class__.x__id__)
                             seq
                               mkCopy (xcurrent-exception.x__class__) > tmp2
-                              (e4).write (tmp2.copy)
-                              ((e4).<)
-                              mkCopy (e4.x__id__) > tmp3
-                              (e5).write (tmp3.copy)
-                              ((e5).<)
+                              (e11).write (tmp2.copy)
+                              ((e11).<)
+                              mkCopy (e11.x__id__) > tmp3
+                              (e12).write (tmp3.copy)
+                              ((e12).<)
                               mkCopy (xC.x__id__) > tmp4
-                              (e6).write (tmp4.copy)
-                              ((e6).<)
-                              (e7).write (((e5).eq (e6)))
-                              (e7).force
-                              ((e7).<)
-                              (e7).as-bool.if
+                              (e13).write (tmp4.copy)
+                              ((e13).<)
+                              (e14).write (((e12).eq (e13)))
+                              (e14).force
+                              ((e14).<)
+                              (e14).as-bool.if
                                 seq
-                                  toReturn.write ((pybool TRUE))
-                                  stackUp.forward (return toReturn)
-                                  (xcaught).write ((pybool TRUE))
-                                  (xcaught).force
+                                  (lhs17).write ((pybool TRUE))
+                                  (lhs17).force
                                   (pybool TRUE)
                                 seq
                                   mkCopy (xcurrent-exception.x__class__) > tmp5
-                                  (e1).write (tmp5.copy)
+                                  (e15).write (tmp5.copy)
+                                  ((e15).<)
+                                  mkCopy (e15.x__id__) > tmp6
+                                  (e16).write (tmp6.copy)
+                                  ((e16).<)
+                                  mkCopy (xfakeclasses.xpyTypeClass) > tmp7
+                                  (e17).write (tmp7.copy)
+                                  ((e17).<)
+                                  mkCopy (e17.x__id__) > tmp8
+                                  (e18).write (tmp8.copy)
+                                  ((e18).<)
+                                  (e19).write (((e16).eq (e18)))
+                                  (e19).force
+                                  ((e19).<)
+                                  (e19).as-bool.if
+                                    seq
+                                      mkCopy (xcurrent-exception.x__id__) > tmp9
+                                      (e20).write (tmp9.copy)
+                                      ((e20).<)
+                                      mkCopy (xC.x__id__) > tmp10
+                                      (e21).write (tmp10.copy)
+                                      ((e21).<)
+                                      (e22).write (((e20).eq (e21)))
+                                      (e22).force
+                                      ((e22).<)
+                                      (pybool TRUE)
+                                    seq
+                                      (lhs16).write ((pybool FALSE))
+                                      (lhs16).force
+                                      mkCopy (lhs16) > tmp11
+                                      (e22).write (tmp11.copy)
+                                      (pybool TRUE)
+                                  mkCopy (e22) > tmp12
+                                  (lhs17).write (tmp12.copy)
+                                  (pybool TRUE)
+                              (lhs17).as-bool.if
+                                seq
+                                  (xcaught).write ((pybool TRUE))
+                                  (xcaught).force
+                                  toReturn.write ((pybool TRUE))
+                                  stackUp.forward (return toReturn)
+                                  (pybool TRUE)
+                                seq
+                                  mkCopy (xcurrent-exception.x__class__) > tmp13
+                                  (e1).write (tmp13.copy)
                                   ((e1).<)
-                                  mkCopy (e1.x__id__) > tmp6
-                                  (e2).write (tmp6.copy)
+                                  mkCopy (e1.x__id__) > tmp14
+                                  (e2).write (tmp14.copy)
                                   ((e2).<)
                                   (lhs1).write ((pyint 1))
                                   (lhs1).force
@@ -181,10 +245,51 @@
                                   ((e3).<)
                                   (e3).as-bool.if
                                     seq
-                                      toReturn.write ((pybool FALSE))
-                                      stackUp.forward (return toReturn)
+                                      (lhs9).write ((pybool TRUE))
+                                      (lhs9).force
+                                      (pybool TRUE)
+                                    seq
+                                      mkCopy (xcurrent-exception.x__class__) > tmp15
+                                      (e4).write (tmp15.copy)
+                                      ((e4).<)
+                                      mkCopy (e4.x__id__) > tmp16
+                                      (e5).write (tmp16.copy)
+                                      ((e5).<)
+                                      mkCopy (xfakeclasses.xpyTypeClass) > tmp17
+                                      (e6).write (tmp17.copy)
+                                      ((e6).<)
+                                      mkCopy (e6.x__id__) > tmp18
+                                      (e7).write (tmp18.copy)
+                                      ((e7).<)
+                                      (e8).write (((e5).eq (e7)))
+                                      (e8).force
+                                      ((e8).<)
+                                      (e8).as-bool.if
+                                        seq
+                                          mkCopy (xcurrent-exception.x__id__) > tmp19
+                                          (e9).write (tmp19.copy)
+                                          ((e9).<)
+                                          (lhs6).write ((pyint 1))
+                                          (lhs6).force
+                                          (e10).write (((e9).eq (lhs6)))
+                                          (e10).force
+                                          ((e10).<)
+                                          (pybool TRUE)
+                                        seq
+                                          (lhs8).write ((pybool FALSE))
+                                          (lhs8).force
+                                          mkCopy (lhs8) > tmp20
+                                          (e10).write (tmp20.copy)
+                                          (pybool TRUE)
+                                      mkCopy (e10) > tmp21
+                                      (lhs9).write (tmp21.copy)
+                                      (pybool TRUE)
+                                  (lhs9).as-bool.if
+                                    seq
                                       (xcaught).write ((pybool TRUE))
                                       (xcaught).force
+                                      toReturn.write ((pybool FALSE))
+                                      stackUp.forward (return toReturn)
                                       (pybool TRUE)
                                     seq
                                       (pybool TRUE)
