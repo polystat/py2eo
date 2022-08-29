@@ -412,7 +412,9 @@ Try to translate `print(10)` or `print("Hello, world")`, for example.
 
 Considering parenthesized forms ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)). Almost every generated EO expression is parenthesized, but these parantheses are not related to the parantheses in the original python expressions.
 
-Displays for lists, sets and dictionaries ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) are supported via a python-to-python pass: a display will be converted to a `for` loop. Generator expressions ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) are processed the same way as displays.
+Displays for lists, sets and dictionaries ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) are supported via a python-to-python pass: a display will be converted to a `for` loop. 
+
+Generator expressions ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) are a simplified form of coroutines and may contain `yield`, so they are not supported.
 
 Yield expression ([see sec 6](https://docs.python.org/3.8/reference/expressions.html)) is a part of coroutines. We have no plans to support the coroutines right now.
 
