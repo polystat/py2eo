@@ -20,8 +20,8 @@ object Mutate {
           treeProcessor.loadRulesFromString("Binop(#1, #2)<\"+\"> -> Binop(#1, #2)<\"-\">")
 
           val treeProcessorInput = Convert(parsed)
-          val treeProcessorOutput = treeProcessor.transform(treeProcessorInput.toAstranautNode)
-          PrintPython.print(Convert(Node(treeProcessorOutput)))
+          val treeProcessorOutput = treeProcessor.transform(treeProcessorInput)
+          PrintPython.print(Convert(treeProcessorOutput))
       }
     }
   }
