@@ -6,7 +6,7 @@ import java.util.{List => JList}
 import scala.jdk.CollectionConverters.{CollectionHasAsScala, SeqHasAsJava}
 import scala.language.implicitConversions
 
-/** Wrapper for astranaut node for using in switch-case statements */
+/** Wrapper for astranaut node for using in match expressions */
 final case class Node(name: String, data: Option[String], children: List[Node])
 
 /** Companion object for easy node creating and conversions */
