@@ -1,9 +1,9 @@
 package org.polystat.py2eo.checker.mutator
 
-import org.cqfn.astranaut.base.{Node => AstranautNode}
-import org.cqfn.astranaut.base.DraftNode
+import org.cqfn.astranaut.base.{DraftNode, Node => AstranautNode}
 
 import java.util.{List => JList}
+import scala.jdk.CollectionConverters.{CollectionHasAsScala, SeqHasAsJava}
 import scala.language.implicitConversions
 
 /** Wrapper for astranaut node for using in switch-case statements */
@@ -55,14 +55,8 @@ object Node {
   implicit def fromAstranautNode(node: AstranautNode): Node = Node(node)
 
   /** Implicit conversion from java list to scala list */
-  private implicit def ListAsScala[A](list: JList[A]): List[A] = {
-    import scala.jdk.CollectionConverters.CollectionHasAsScala
-    list.asScala.toList
-  }
+  private implicit def ListAsScala[A](l: JList[A]): List[A] = l.asScala.toList
 
   /** Implicit conversion from scala list to java list */
-  private implicit def ListAsJava[A](list: List[A]): JList[A] = {
-    import scala.jdk.CollectionConverters.SeqHasAsJava
-    list.asJava
-  }
+  private implicit def ListAsJava[A](l: List[A]): JList[A] = l.asJava
 }
