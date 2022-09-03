@@ -1,10 +1,9 @@
 package org.polystat.py2eo.checker.mutator
 
-import org.cqfn.astranaut.base
+import org.cqfn.astranaut.base.{Node => AstranautNode}
 import org.cqfn.astranaut.base.DraftNode
 
-import scala.jdk.CollectionConverters.CollectionHasAsScala
-import scala.jdk.CollectionConverters.SeqHasAsJava
+import java.util.{List => JList}
 import scala.language.implicitConversions
 
 /** Wrapper for astranaut node for using in switch-case statements */
@@ -14,10 +13,10 @@ final case class Node(name: String, data: Option[String], children: List[Node])
 object Node {
 
   /** Converter from an astranaut node class */
-  def apply(node: base.Node): Node = {
+  def apply(node: AstranautNode): Node = {
     val name = node.getTypeName
     val data = Option(node.getData).filter(_.nonEmpty)
-    val children = node.getChildrenList.asScala.toList.map(apply)
+    val children = node.getChildrenList.map(apply)
 
     Node(name, data, children)
   }
@@ -43,15 +42,27 @@ object Node {
   }
 
   /** Converter to an astranaut node class */
-  implicit def toAstranautNode(node: Node): base.Node = {
+  implicit def toAstranautNode(node: Node): AstranautNode = {
     val result = new DraftNode.Constructor
     result.setName(node.name)
     node.data.foreach(result.setData)
-    result.setChildrenList(node.children.map(toAstranautNode).asJava)
+    result.setChildrenList(node.children.map(toAstranautNode))
 
     result.createNode
   }
 
   /** Converter to an astranaut node class */
-  implicit def fromAstranautNode(node: base.Node): Node = Node(node)
+  implicit def fromAstranautNode(node: AstranautNode): Node = Node(node)
+
+  /** Implicit conversion from java list to scala list */
+  private implicit def ListAsScala[A](list: JList[A]): List[A] = {
+    import scala.jdk.CollectionConverters.CollectionHasAsScala
+    list.asScala.toList
+  }
+
+  /** Implicit conversion from scala list to java list */
+  private implicit def ListAsJava[A](list: List[A]): JList[A] = {
+    import scala.jdk.CollectionConverters.SeqHasAsJava
+    list.asJava
+  }
 }
