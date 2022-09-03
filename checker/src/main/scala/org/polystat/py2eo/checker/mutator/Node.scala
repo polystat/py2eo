@@ -8,9 +8,9 @@ import scala.jdk.CollectionConverters.SeqHasAsJava
 import scala.language.implicitConversions
 
 /** Wrapper for astranaut node for using in switch-case statements */
-case class Node(name: String, data: Option[String], children: List[Node] = Nil)
+final case class Node(name: String, data: Option[String], children: List[Node])
 
-/** Companion object for easy node creating */
+/** Companion object for easy node creating and conversions */
 object Node {
 
   /** Converter from an astranaut node class */
@@ -23,16 +23,24 @@ object Node {
   }
 
   /** Returns a node with the given name without data nor children */
-  def apply(name: String): Node = Node(name, None)
+  def apply(name: String): Node = {
+    Node(name, None, Nil)
+  }
 
   /** Returns a node with the given name and data without children */
-  def apply(name: String, data: String): Node = Node(name, Some(data))
+  def apply(name: String, data: String): Node = {
+    Node(name, Some(data), Nil)
+  }
 
   /** Returns a node with the given children without data */
-  def apply(name: String, children: List[Node]): Node = Node(name, None, children)
+  def apply(name: String, children: List[Node]): Node = {
+    Node(name, None, children)
+  }
 
   /** Returns a node with the given data and children */
-  def apply(name: String, data: String, children: List[Node]): Node = Node(name, Some(data), children)
+  def apply(name: String, data: String, children: List[Node]): Node = {
+    Node(name, Some(data), children)
+  }
 
   /** Converter to an astranaut node class */
   implicit def toAstranautNode(node: Node): base.Node = {
