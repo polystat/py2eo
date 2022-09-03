@@ -16,7 +16,7 @@ object Node {
   /** Converter from an astranaut node class */
   def apply(node: base.Node): Node = {
     val name = node.getTypeName
-    val data = if (node.getData.nonEmpty) Some(node.getData) else None
+    val data = Option(node.getData).filter(_.nonEmpty)
     val children = node.getChildrenList.asScala.toList.map(apply)
 
     Node(name, data, children)
