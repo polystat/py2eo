@@ -14,33 +14,55 @@ import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, Names, NamesU,
 import scala.collection.immutable.HashMap
 
 object ExpressionPasses {
-  def simplifyCollectionComprehension(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
+
+  def simplifyComprehensionList(inner : Statement.T, l : List[Comprehension], ann : GeneralAnnotation) : Statement.T = {
+    l.foldRight(inner : Statement.T)((comprehension, accum) => {
+      comprehension match {
+        case IfComprehension(cond) =>
+          IfSimple(cond, accum, Pass(ann.pos), ann.pos)
+        case ForComprehension(what, in, isAsync) =>
+          For(what, in, accum, None, isAsync, ann.pos)
+      }
+    })
+  }
+
+  def simplifyComprehension(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
     if (!lhs) {
       e match {
         case CollectionComprehension(kind, base, l, ann) => {
+          val inner = Assign(List(CallIndex(
+            true,
+            Field(Ident("collectionAccum", ann.pos), "append", ann.pos),
+            List((None, base)),
+            ann.pos
+          )),
+            ann.pos
+          )
           val st = Suite(
-              List(
-                Assign(List(Ident("collectionAccum", ann.pos), CollectionCons(kind, List(), ann.pos)), ann.pos),
-                l.foldRight(
-                  Assign(List(CallIndex(
-                    true,
-                    Field(Ident("collectionAccum", ann.pos), "append", ann.pos),
-                    List((None, base)),
-                    ann.pos
-                  )),
-                    ann.pos
-                  ): Statement.T
-                )((comprehension, accum) => {
-                  comprehension match {
-                    case IfComprehension(cond) =>
-                      IfSimple(cond, accum, Pass(ann.pos), ann.pos)
-                    case ForComprehension(what, in, isAsync) =>
-                      For(what, in, accum, None, isAsync, ann.pos)
-                  }
-                })
-              ),
-              ann.pos
-            )
+            List(
+              Assign(List(Ident("collectionAccum", ann.pos), CollectionCons(kind, List(), ann.pos)), ann.pos),
+              simplifyComprehensionList(inner, l, ann)
+            ),
+            ann.pos
+          )
+          (Right((st : Statement.T, Ident("collectionAccum", ann.pos))), ns)
+        }
+        case DictComprehension(Left((k, v)), l, ann) => {
+          val inner = Assign(List(CallIndex(
+            true,
+            Field(Ident("collectionAccum", ann.pos), "add", ann.pos),
+            List((None, k),(None, v)),
+            ann.pos
+          )),
+            ann.pos
+          )
+          val st = Suite(
+            List(
+              Assign(List(Ident("collectionAccum", ann.pos), DictCons(List(), ann.pos)), ann.pos),
+              simplifyComprehensionList(inner, l, ann)
+            ),
+            ann.pos
+          )
           (Right((st : Statement.T, Ident("collectionAccum", ann.pos))), ns)
         }
         case x : Any => (Left(x), ns)
@@ -57,6 +79,29 @@ object ExpressionPasses {
       e match {
         case CallIndex(true, what@Field(obj@Ident(_, _), fname, fann), args, ann) =>
           (Left(CallIndex(true, what, (None, obj) :: args, ann.pos)), ns)
+        case CallIndex(true, what@Field(obj, fname, fann), args, ann) =>
+          val (List(objName, idName), ns1) = ns(List("obj", "id"))
+          (
+            Right((
+              Suite(
+                List(
+                  Assign(List(Ident(objName, ann.pos), obj), ann.pos),
+                  Assign(List(
+                    Ident(idName, ann.pos),
+                    CallIndex(
+                      true,
+                      Field(Ident(objName, ann.pos), fname, fann),
+                      (None, Ident(objName, ann.pos)) :: args,
+                      ann.pos
+                    )
+                  ), ann.pos)
+                ),
+                ann.pos
+              ),
+              Ident(idName, ann.pos)
+            )),
+            ns1
+          )
         case CallIndex(isCall, Field(_, _, _), args, ann) => ??? // todo: must be implemented as above, but a bit more complicated
         case x : Any => (Left(x), ns)
       }
@@ -120,8 +165,11 @@ object ExpressionPasses {
 
   def addExplicitConstructorOfCollection(e : T) : T = {
     e match {
-      case CollectionCons(kind, l, ann) =>
-        CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
+      case CollectionCons(kind, l, ann)
+        if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
+          CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
+      case DictCons(_, _) | CollectionCons(CollectionKind.Set, _, _) =>
+        CallIndex(true, Ident("xmyMap", e.ann.pos), List((None, e)), e.ann.pos)
       case _ => e
     }
   }
@@ -314,6 +362,12 @@ object ExpressionPasses {
         reconstruct(lhs, { case base :: l2 =>
           val l3 = call2comprehensions(l.zip(l2))
           CollectionComprehension(kind, base, l3, ann.pos)
+        }, l1, ns)
+      case DictComprehension(Left((k, v)), l, ann) =>
+        val l1 = k :: v :: comprehensions2calls(l, ann)
+        reconstruct(lhs, { case k :: v :: l2 =>
+          val l3 = call2comprehensions(l.zip(l2))
+          DictComprehension(Left((k, v)), l3, ann.pos)
         }, l1, ns)
       case GeneratorComprehension(base, l, ann) =>
         val l1 = base :: comprehensions2calls(l, ann)

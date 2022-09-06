@@ -1,8 +1,9 @@
 package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{
-  Binop, Binops, BoolLiteral, CallIndex, CollectionCons, Compops, Cond, Field, FloatLiteral, FreakingComparison,
-  IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
+  Binop, Binops, BoolLiteral, CallIndex, CollectionCons, CollectionKind, Compops, Cond,
+  DictCons, Field, FloatLiteral, FreakingComparison, IntLiteral, LazyLAnd,
+  LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
   UnsupportedExpr
 }
 import org.polystat.py2eo.parser.{AugOps, Expression, GeneralAnnotation, Statement, VarScope}
@@ -69,8 +70,17 @@ object PrintEO {
   def printExpr(value : T) : String = {
     def e = printExpr _
     value match {
-      case CollectionCons(kind, l, _) =>
-        "(*" + l.map(x => " " + e(x)).mkString + crb
+      case CollectionCons(kind, l, _)
+        if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
+          "(*" + l.map(x => " " + e(x)).mkString + crb
+      case CollectionCons(CollectionKind.Set, l, _) =>
+        val elts = l.map(k => s" (pair ${e(k)} (pyint 0))").mkString("")
+        (s"((*${elts}))")
+      case DictCons(l, ann) =>
+        val elts = l.map{
+          case Left((k, v)) => s" (pair ${e(k)} ${e(v)})"
+        }.mkString("")
+        (s"((*${elts}))")
       case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")" // todo: see <<-- there
       case IntLiteral(value, _) => s"(pyint $value)"
       case FloatLiteral(value, _) => s"(pyfloat $value)"

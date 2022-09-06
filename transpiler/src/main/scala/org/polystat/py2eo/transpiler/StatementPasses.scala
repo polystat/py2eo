@@ -587,6 +587,19 @@ object StatementPasses {
   //  or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
   // todo: also must implement named exceptions and del of those a the end of an except clause
   // todo: also must rethrow an exception if it is not catched
+  def preSimplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case Try(ttry, List((None, x)), eelse, ffinally, ann) =>
+      print("empty except\n")
+      (
+        Try(ttry, List((None, Suite(List(
+          Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos),
+          x
+        ), ann.pos))), eelse, ffinally, ann),
+        ns
+      )
+    case _ => (s, ns)
+  }
+
   def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case Try(ttry, List((None, x)), eelse, ffinally, ann) => (s, ns)
     case Try(ttry, excepts, eelse, ffinally, ann) =>
@@ -594,19 +607,38 @@ object StatementPasses {
         x => {
           val body = x._2
           (
-            SimpleComparison(Compops.Eq,
-              Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
-              x._1 match {
-                case Some((e, _)) => Field(e, "__id__", ann.pos)
-                case None => IntLiteral(1, ann.pos)
-              },
+            LazyLOr(
+              SimpleComparison(Compops.Eq,
+                Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
+                x._1 match {
+                  case Some((e, _)) => Field(e, "__id__", ann.pos)
+                  case None => IntLiteral(1, ann.pos)
+                },
+                ann.pos
+              ),
+              LazyLAnd(
+                SimpleComparison(Compops.Eq,
+                  Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
+                  Field(Field(Ident("fakeclasses", ann.pos), "pyTypeClass", ann.pos), "__id__", ann.pos),
+                  ann.pos
+                ),
+                SimpleComparison(Compops.Eq,
+                  Field(Ident("current-exception", ann.pos), "__id__", ann.pos),
+                  x._1 match {
+                    case Some((e, _)) => Field(e, "__id__", ann.pos)
+                    case None => IntLiteral(1, ann.pos)
+                  },
+                  ann.pos
+                ),
+                ann.pos
+              ),
               ann.pos
             ),
             Suite(
               (x._1.toList.flatMap(x => x._2.toList.map (
                 name => (Assign(List(Ident(name, ann.pos), Ident("current-exception", ann.pos)), ann.pos))
               ))) ++
-              List(body, Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos)),
+              List(Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos), body),
               ann.pos
             )
           )
@@ -614,6 +646,112 @@ object StatementPasses {
       )
       val asIf = if (ex1.isEmpty) Pass(ann.pos) else If(ex1, Some(Pass(ann.pos)), ann.pos)
       (Try(ttry, List((None, asIf)), eelse, ffinally, ann.pos), ns)
+    case _ => (s, ns)
+  }
+
+  def simplifyWith(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+    case With(List((cms, target)), body, isAsync, ann) =>
+      assert(!isAsync)
+      val (List(manager, value, hit_except), ns1) =
+        ns(List("manager", "value", "hit_except"))
+      val managerId = Ident(manager, ann.pos)
+      val enter = Field(managerId, "__enter__", ann.pos)
+      val exit = Field(managerId, "__exit__", ann.pos)
+      val code = Suite(
+        List(
+          Assign(List(Ident(manager, ann.pos), cms), ann.pos),
+          Assign(List(
+              Ident(value, ann.pos),
+              CallIndex(
+                true,
+                enter,
+                List(),
+                ann.pos
+              )
+            ),
+            ann.pos
+          ),
+          Assign(List(
+              Ident(hit_except, ann.pos),
+              BoolLiteral(false, ann.pos)
+            ),
+            ann.pos
+          ),
+          Try(
+            target match {
+              case Some(v) =>
+                Suite(List(
+                    Assign(List(v, Ident(value, ann.pos)), ann.pos),
+                    body
+                  ),
+                  ann.pos
+                )
+              case None => body
+            },
+            List(
+              (
+                None,
+                Suite(
+                  List(
+                    Assign(List(
+                        Ident(hit_except, ann.pos),
+                        BoolLiteral(true, ann.pos)
+                      ),
+                      ann.pos
+                    ),
+                    IfSimple(
+                      Unop(
+                        Unops.LNot,
+                        CallIndex(
+                          true,
+                          exit,
+                          List(
+                            (None, Field(Ident("current-exception", ann.pos), "__class__", ann.pos)),
+                            (None, Ident("current-exception", ann.pos)),
+                            (None, NoneLiteral(ann.pos))
+                          ),
+                          ann.pos
+                        ),
+                        ann.pos
+                      ),
+                      Raise(None, None, ann.pos),
+                      Pass(ann.pos),
+                      ann.pos
+                    )
+                  ),
+                  ann.pos
+                )
+              )
+            ),
+            None,
+            Some(
+              IfSimple(
+                Unop(Unops.LNot, Ident(hit_except, ann.pos), ann.pos),
+                Assign(
+                  List(
+                    CallIndex(
+                      true,
+                      exit,
+                      List(
+                        (None, NoneLiteral(ann.pos)),
+                        (None, NoneLiteral(ann.pos)),
+                        (None, NoneLiteral(ann.pos))
+                      ),
+                      ann.pos
+                    )
+                  ),
+                  ann.pos
+                ),
+                Pass(ann.pos),
+                ann.pos
+              )
+            ),
+            ann.pos
+          )
+        ),
+        ann.pos
+      )
+      (code, ns1)
     case _ => (s, ns)
   }
 

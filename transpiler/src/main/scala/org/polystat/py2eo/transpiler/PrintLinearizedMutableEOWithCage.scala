@@ -25,12 +25,13 @@ object PrintLinearizedMutableEOWithCage {
     "+alias sprintf org.eolang.txt.sprintf",
     "+alias cage org.eolang.cage",
     "+alias pyint preface.pyint",
+    "+alias pair preface.pair",
     "+alias pyfloat preface.pyfloat",
     "+alias pystring preface.pystring",
     "+alias pybool preface.pybool",
     "+alias pycomplex preface.pycomplex",
     "+alias newUID preface.newUID",
-    "+alias fakeclasses preface.fakeclasses",
+    "+alias xfakeclasses preface.xfakeclasses",
     "+alias mkCopy preface.mkCopy",
     "+alias raiseNothing preface.raiseNothing",
     "+alias continue preface.continue",
@@ -38,13 +39,17 @@ object PrintLinearizedMutableEOWithCage {
     "+alias return preface.return",
     "+alias raiseEmpty preface.raiseEmpty",
     "+alias xmyArray preface.xmyArray",
+    "+alias xmyMap preface.xmyMap",
     "+alias xlen preface.xlen",
+    "+alias xmap preface.xmap",
+    "+alias xfilter preface.xfilter",
     "+alias xstr preface.xstr",
     "+alias xsum preface.xsum",
     "+alias xlist preface.xlist",
     "+alias xint preface.xint",
     "+alias xiter preface.xiter",
     "+alias xStopIteration preface.xStopIteration",
+    "+alias xBaseException preface.xBaseException",
     "+alias xTypeError preface.xTypeError",
     "+alias xZeroDivisionError preface.xZeroDivisionError",
     "+alias xAssertionError preface.xAssertionError",
@@ -97,9 +102,11 @@ object PrintLinearizedMutableEOWithCage {
             name ::
             "[]" :: indent(
               "newUID.apply 0 > x__id__" ::
+              "[x] > eq" ::
+              "  x__id__.eq (x.x__id__) > @" ::
               (
                 init match {
-                  case Some(value) => ""
+                  case Some(value) => "[] > empty-string"
                   case None => "(goto (apply.@)).result > @"
                 }
               ) ::
@@ -165,15 +172,19 @@ object PrintLinearizedMutableEOWithCage {
             )
         }
       case Assign(List(lhs, rhs), _) if seqOfFields(lhs).isDefined =>
-        rhs match {
-          case _ : DictCons | _ : CollectionCons | _ : Await | _ : Star | _ : DoubleStar |
+        val collectionCons = rhs match {
+          case _ : Await | _ : Star | _ : DoubleStar |
                _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
             throw new GeneratorException("these expressions must be wrapped in a function call " +
               "because a copy creation is needed and dataization is impossible")
-          case _ => ()
+          case _ : CollectionCons | _ : DictCons => true
+          case _ => false
         }
         val seqOfFields1 = seqOfFields(rhs)
         val doNotCopy = seqOfFields1.isEmpty
+        if (collectionCons) {
+          List(s"${pe(lhs)}.write (${pe(rhs)}" + ")")
+        } else
         if (doNotCopy) {
           List(s"${pe(lhs)}.write (${pe(rhs)}" + ")", s"${pe(lhs)}.force")
         } else {
@@ -240,7 +251,7 @@ object PrintLinearizedMutableEOWithCage {
       case Raise(Some(e), None, _) => List("stackUp.forward %s".format(pe(e)))
 
       case Try(ttry, List((None, exc)), eelse, ffinally, ann) =>
-        "xcaught.write (pybool TRUE)" ::
+        "xcaught.write (pybool FALSE)" ::
         "write." :: indent(
           "xcurrent-exception" ::
           "goto" :: indent(
@@ -348,21 +359,26 @@ object PrintLinearizedMutableEOWithCage {
       "pycomplex 0 0 > dummy-pycomplex",
       "pystring (sprintf \"\") > dummy-bool-string",
       "newUID > dummy-newUID",
-      "fakeclasses.pyFloatClass > xfloat",
-      "fakeclasses.pyComplexClass > xcomplex",
+      "xfakeclasses.pyFloatClass > xfloat",
+      "xfakeclasses.pyComplexClass > xcomplex",
       "raiseNothing > dummy-rn",
       "continue > dummy-continue",
       "break > dummy-break",
       "return > dummy-return",
       "raiseEmpty > dummy-raiseEmpty",
       "xmyArray > dummy-xmyArray",
+      "xmyMap > dummy-xmyMap",
       "mkCopy > dummy-mkCopy",
       "xlen > dummy-xlen",
+      "xmap > dummy-xmap",
+      "xfilter > dummy-xfilter",
+      "pair > dummy-pair",
       "xstr > dummy-xstr",
       "xsum > dummy-xsum",
       "xlist > dummy-xlist",
       "xint > dummy-xint",
       "xStopIteration > dummy-stop-iteration",
+      "xBaseException > dummy-base-exception",
       "xZeroDivisionError > dummy-xZeroDivisionError",
       "xAssertionError > dummy-xAssertionError",
       "xValueError > dummy-xValueError",
