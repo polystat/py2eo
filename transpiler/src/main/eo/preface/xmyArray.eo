@@ -11,19 +11,22 @@
 +alias sprintf org.eolang.txt.sprintf
 
 [] > xmyArray
+  xmyArray > extract
   [initValue] > apply
-    [stackUp] > @
+    [stackUp] > extract
       cage result > pResult
       [] > result
         cage initValue > value
         xfakeclasses.pyListClass > x__class__
+        pResult > extract
         [] > to-my-array
           pResult > @
         [x] > with-value
-          (goto ((xmyArray.apply x).@)).result > @
+          (goto ((xmyArray.apply x).extract)).result > @
         [] > xlength
+          xlength > extract
           [self] > apply
-            [stackUp] > @
+            [stackUp] > extract
               seq > @
                 stackUp.forward (return (pyint (self.value.length)))
                 123
@@ -38,8 +41,9 @@
               acc.plus acc ((value.get i).value) > @
           (pyint acc) > @
         [] > xappend
+          xappend > extract
           [self x] > apply
-            [stackUp] > @
+            [stackUp] > extract
               seq > @
                 x
                 mkCopy (x.value) > tmpx
@@ -48,10 +52,11 @@
                 stackUp.forward (return 0)
                 123
         [] > xremove
+          xremove > extract
           [self what] > apply
-            [stackUp] > @
+            [stackUp] > extract
               memory FALSE > removed
-              (goto ((xmyArray.apply (*)).@)).result > accum
+              (goto ((xmyArray.apply (*)).extract)).result > accum
               memory 0 > i
               seq > @
                 (i.lt (self.value.length)).while
@@ -60,14 +65,15 @@
                     seq > @
                       ((x.eq what).value.and (removed.not)).if
                         removed.write TRUE
-                        (goto ((accum.xappend.apply accum x).@)).result
+                        (goto ((accum.xappend.apply accum x).extract)).result
                       i.write (i.plus 1)
                 self.value.write (accum.value)
                 stackUp.forward (return 0)
                 123
         [] > xclear
+          xclear > extract
           [self] > apply
-            [stackUp] > @
+            [stackUp] > extract
               seq > @
                 self.value.write (*)
                 stackUp.forward (return 0)
@@ -102,8 +108,9 @@
             stdout (sprintf "len = %d\n" (self.value.length))
             pybool result
         [] > x__contains__
+          x__contains__ > extract
           [self elt] > apply
-            [stackUp] > @
+            [stackUp] > extract
               stackUp.forward (return (contains-common self elt)) > @
         [elt] > contains-hack
           seq > result
@@ -119,20 +126,22 @@
         [] > iter
           memory 0 > curPos
           [] > x__next__
+            x__next__ > extract
             [self] > apply
-              [stackUp] > @
+              [stackUp] > extract
                 memory (self.curPos) > pos
                 seq > @
                   pos.write (self.curPos)
                   self.curPos.write (pos.plus 1)
                   if.
                     pos.eq (value.length)
-                    stackUp.forward ((goto (xStopIteration.apply.@)).result)
+                    stackUp.forward ((goto (xStopIteration.apply.extract)).result)
                     stackUp.forward (return (value.get (pos)))
                   123
         [] > x__iter__
+          x__iter__ > extract
           [self] > apply
-            [stackUp] > @
+            [stackUp] > extract
               stackUp.forward (return iter) > @
 
       seq > @

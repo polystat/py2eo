@@ -51,7 +51,7 @@ object Transpile {
         val y = StatementPasses.procStatement(StatementPasses.simplifyFor)(y0._1, y0._2)
         debugPrinter(y._1, "afterSimplifyFor")
 
-        try {
+//        try {
           val rmWith = StatementPasses.procStatement(StatementPasses.simplifyWith)(y._1, y._2)
           debugPrinter(rmWith._1, "afterRmWith")
           val rmAssert = StatementPasses.procStatement(StatementPasses.simplifyAssert)(rmWith._1, rmWith._2)
@@ -97,8 +97,8 @@ object Transpile {
             Return(Some(Ident("assertMe", ann.pos)), ann.pos)
           ), ann.pos)
           val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
-          (eoText.init :+ "  (goto (apply.@)).result > @").mkString("\n")
-        }
+          (eoText.init :+ "  (goto (apply.extract)).result > @").mkString("\n")
+        /*}
         catch {
           case e: Throwable => {
     //        println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
@@ -154,7 +154,7 @@ object Transpile {
               .mkString("\n")
 
           }
-        }
+        }*/
       }
     )
   }

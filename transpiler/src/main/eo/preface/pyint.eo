@@ -9,6 +9,8 @@
 
 [val] > pyint
 
+  pyint val > extract
+
   memory val > value
 
   xfakeclasses.pyIntClass > x__class__
@@ -122,7 +124,7 @@
         (x.value.eq 0).if
           seq
             stdout "division by zero\n"
-            (goto (xZeroDivisionError.apply.@)).result
+            (goto (xZeroDivisionError.apply.extract)).result
           (return (pyint (value.div (x.value))))
         p.fst.div (p.snd)
 
@@ -134,7 +136,7 @@
         (x.value.eq 0).if
           seq
             stdout "division by zero\n"
-            (goto (xZeroDivisionError.apply.@)).result
+            (goto (xZeroDivisionError.apply.extract)).result
           (return (pyfloat (value.as-float.div (x.value.as-float))))
         p.fst.float-div (p.snd)
 
@@ -230,7 +232,7 @@
 
   [] > xto-int
     [] > apply
-      [stackUp] > @
+      [stackUp] > extract
         seq > @
           stackUp.forward (return (pyint value))
           123

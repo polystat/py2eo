@@ -11,6 +11,8 @@
 
 [value] > pystring
 
+  pystring value > extract
+
   xfakeclasses.pyStringClass > x__class__
 
   [x] > with-value
@@ -50,7 +52,7 @@
     memory 0 > curPos
     [] > x__next__
       [self] > apply
-        [stackUp] > @
+        [stackUp] > extract
           memory (self.curPos) > pos
           seq > @
             stdout "next\n"
@@ -58,29 +60,29 @@
             self.curPos.write (pos.plus 1)
             if.
               pos.eq (value.length)
-              stackUp.forward ((goto (xStopIteration.apply.@)).result)
+              stackUp.forward ((goto (xStopIteration.apply.extract)).result)
               stackUp.forward (return (pystring (value.slice pos 1)))
             123
 
   [] > to-my-array
-    (goto ((xmyArray.apply (*)).@)).result > a
+    (goto ((xmyArray.apply (*)).extract)).result > a
     memory 0 > index
     seq > @
       (index.lt (value.length)).while
         [unused]
           seq > @
-            (goto ((a.xappend.apply a (pystring (value.slice index 1))).@)).result
+            (goto ((a.xappend.apply a (pystring (value.slice index 1))).extract)).result
             index.write (index.plus 1)
       a
 
   [] > x__iter__
     [self] > apply
-      [stackUp] > @
+      [stackUp] > extract
         stackUp.forward (return iter) > @
 
   [] > xto-int
     [] > apply
-      [stackUp] > @
+      [stackUp] > extract
         (* "0" "1" "2" "3" "4" "5" "6" "7" "8" "9") > digits
         [s] > to-digit
           memory 0 > result
@@ -106,7 +108,7 @@
                 result.write ((result.times 10).plus dig)
                 i.write (i.plus 1)
                 123
-          stackUp.forward (input-is-correct.if (return (pyint value)) ((goto (xValueError.apply.@)).result))
+          stackUp.forward (input-is-correct.if (return (pyint value)) ((goto (xValueError.apply.extract)).result))
           123
 
   seq > @

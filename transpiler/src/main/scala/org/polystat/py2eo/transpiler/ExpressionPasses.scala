@@ -192,7 +192,7 @@ object ExpressionPasses {
             Suite(
               List(
                 Assign(List(id, e), e.ann.pos),
-                Assign(List(Field(id, "<", e.ann.pos)), e.ann.pos)
+//                Assign(List(Field(id, "<", e.ann.pos)), e.ann.pos)
               ),
               e.ann.pos
             ),

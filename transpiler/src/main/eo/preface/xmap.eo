@@ -3,16 +3,17 @@
 +alias xmyArray preface.xmyArray
 
 [] > xmap
+  xmap > extract
   [f l] > apply
-    [stackUp] > @
-      (goto ((xmyArray.apply (*)).@)).result > ans
+    [stackUp] > extract
+      (goto ((xmyArray.apply (*)).extract)).result > ans
       memory 0 > i
       seq > @
         (i.lt (l.value.length)).while
           [unused]
-            (goto ((f.apply (l.value.get i)).@)).result > to-append
+            (goto ((f.apply (l.value.get i)).extract)).result > to-append
             seq > @
-              (goto ((ans.xappend.apply ans to-append).@)).result
+              (goto ((ans.xappend.apply ans to-append).extract)).result
               i.write (i.plus 1)
               123
         stackUp.forward (return ans)

@@ -1,9 +1,13 @@
 +package preface
 +alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
 
 [] > xlen
+  xlen > extract
   [obj] > apply
-    [stackUp] > @
+    [stackUp] > extract
       seq > @
-        stackUp.forward (goto ((obj.xlength.apply obj).@))
+        stdout "before call\n"
+        stackUp.forward (goto ((obj.xlength.apply obj).extract))
+        stdout "after call\n"
         123

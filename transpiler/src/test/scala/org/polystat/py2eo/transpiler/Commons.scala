@@ -46,19 +46,21 @@ trait Commons {
   def chopExtension(fileName: String): String = fileName.substring(0, fileName.lastIndexOf("."))
 
   def useCageHolder(test: File): Unit = {
+    println(s"start test ${test.getName}")
     val results = new File(resultsPrefix)
     if (!results.exists) {
       results.mkdirs()
     }
 
     val name = test.getName.replace(".yaml", "")
-    Transpile(name, Transpile.Parameters(wrapInAFunction = false), yaml2python(test)) match {
+    Transpile.transpileOption(debugPrinter(test))(name, Transpile.Parameters(wrapInAFunction = false), yaml2python(test)) match {
       case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) =>
         val output = new FileWriter(results + File.separator + name + ".eo")
         output.write(transpiled)
         output.close()
     }
+    println(s"finish test ${test.getName}")
   }
 
   def collect(dir: String, filterEnabled: Boolean = false): ju.Collection[Array[jl.String]] = {

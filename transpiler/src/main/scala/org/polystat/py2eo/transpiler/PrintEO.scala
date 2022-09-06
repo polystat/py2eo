@@ -67,20 +67,20 @@ object PrintEO {
     case AugOps.FloorDiv => "aug-div"
   }
 
-  def printExpr(value : T) : String = {
+  def printExpr(lhs : Boolean, value : T) : String = {
     def e = printExpr _
-    value match {
+    val toExtract = value match {
       case CollectionCons(kind, l, _)
         if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
-          "(*" + l.map(x => " " + e(x)).mkString + crb
+          "(wrapper (*" + l.map(x => " " + e(false, x)).mkString + crb + crb
       case CollectionCons(CollectionKind.Set, l, _) =>
-        val elts = l.map(k => s" (pair ${e(k)} (pyint 0))").mkString("")
-        (s"((*${elts}))")
+        val elts = l.map(k => s" (pair ${e(false, k)} (pyint 0))").mkString("")
+        (s"(wrapper (*${elts}))")
       case DictCons(l, ann) =>
         val elts = l.map{
-          case Left((k, v)) => s" (pair ${e(k)} ${e(v)})"
+          case Left((k, v)) => s" (pair ${e(false, k)} ${e(false, v)})"
         }.mkString("")
-        (s"((*${elts}))")
+        (s"(wrapper (*${elts}))")
       case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")" // todo: see <<-- there
       case IntLiteral(value, _) => s"(pyint $value)"
       case FloatLiteral(value, _) => s"(pyfloat $value)"
@@ -93,37 +93,38 @@ object PrintEO {
         val v = if (value) "TRUE" else "FALSE"
         s"(pybool $v)"
       //    case NoneLiteral(, _) =>
-      case Binop(op, l, r, _) =>  orb + e(l) + "." + binop(op) + space + e(r) + crb
+      case Binop(op, l, r, _) =>  orb + e(false, l) + "." + binop(op) + space + e(false, r) + crb
       case SimpleComparison(op, l, r, ann) if (op == Compops.Is || op == Compops.IsNot) =>
         val l1 = Field(l, "x__id__", ann.pos)
         val r1 = Field(r, "x__id__", ann.pos)
-        printExpr(SimpleComparison(if (op == Compops.Is) Compops.Eq else Compops.Neq, l1, r1, ann.pos))
+        printExpr(false, SimpleComparison(if (op == Compops.Is) Compops.Eq else Compops.Neq, l1, r1, ann.pos))
       case SimpleComparison(op, l, r, _) if op == Compops.In =>
-        s"(${e(r)}.contains-hack ${e(l)})"
+        s"(${e(false, r)}.contains-hack ${e(false, l)})"
       case SimpleComparison(op, l, r, _) if op == Compops.NotIn =>
-        s"((${e(r)}.contains-hack ${e(l)}).not)"
-      case SimpleComparison(op, l, r, _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
-      case FreakingComparison(List(op), List(l, r), _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
-      case LazyLAnd(l, r, _) =>  orb + e(l) + ".and " + e(r) + crb
-      case LazyLOr(l, r, _) =>  orb + e(l) + ".or " + e(r) + crb
-      case Unop(op, x, _) => orb + e(x) + unop(op) + crb
+        s"((${e(false, r)}.contains-hack ${e(false, l)}).not)"
+      case SimpleComparison(op, l, r, _) => orb + e(false, l) + "." + compop(op) + space + e(false, r) + crb
+      case FreakingComparison(List(op), List(l, r), _) => orb + e(false, l) + "." + compop(op) + space + e(false, r) + crb
+      case LazyLAnd(l, r, _) =>  orb + e(false, l) + ".and " + e(false, r) + crb
+      case LazyLOr(l, r, _) =>  orb + e(false, l) + ".or " + e(false, r) + crb
+      case Unop(op, x, _) => orb + e(false, x) + unop(op) + crb
       case Expression.Ident(name, _) => orb + (name) + crb
       case CallIndex(false, from, List((_, StringLiteral(List(fname), _))), _)
         if fname == "\"callme\"" || (from match { case Expression.Ident("closure", _) => true case _ => false}) =>
-          e(Field(from, fname.substring(1, fname.length - 1), from.ann.pos))
+          e(false, Field(from, fname.substring(1, fname.length - 1), from.ann.pos))
       case u : UnsupportedExpr =>
         val e1 = CallIndex(true, Expression.Ident(unsupported, u.ann.pos), u.children.map(e => (None, e)), u.ann.pos)
-        e(e1)
+        e(false, e1)
       case CallIndex(isCall, whom, args, _) if !isCall && args.size == 1 =>
-        orb + e(whom) + ".get " + e(args(0)._2) + crb
-      case Field(whose, name, _) => orb + e(whose) + "." + name + crb
-      case Cond(cond, yes, no, _) => orb + e(cond) + ".as-bool.if " + e(yes) + space + e(no) + crb
+        orb + e(false, whom) + ".get " + e(false, args(0)._2) + crb
+      case Field(whose, name, _) => orb + e(false, whose) + "." + name + crb
+      case Cond(cond, yes, no, _) => orb + e(false, cond) + ".as-bool.if " + e(false, yes) + space + e(false, no) + crb
       case CallIndex(true, whom, args, _)  =>
-        "((" + e(whom) + crb + ".apply" +
+        "((" + e(false, whom) + crb + ".apply" +
           // todo: empty arg list hack
-          ((args.map{case (None, ee) => " (" + e(ee) + crb}).mkString("")) +
+          ((args.map{case (None, ee) => " (" + e(false, ee) + crb}).mkString("")) +
         crb
     }
+    if (lhs) toExtract else s"($toExtract.extract)"
   }
 
   def indent(l : Text): List[String] = l.map(Ident + _)
@@ -138,32 +139,32 @@ object PrintEO {
             indent(
               name :: "[]" :: indent(
                 l.map{ case (name, _) => "cage 0 > " + name } ++ (
-                  "seq > initFields" :: indent(l.map{case (name, value) => s"$name.write " + printExpr(value)})
+                  "seq > initFields" :: indent(l.map{case (name, value) => s"$name.write " + printExpr(false, value)})
                   ) ++
-                  decorates.toList.map(e => s"${printExpr(e)} > @")
+                  decorates.toList.map(e => s"${printExpr(false, e)} > @")
               )
             )
           ) :+ s"($name.initFields)"
       case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List() // todo: a quick hack
       case Pass(_) => List()
       case IfSimple(cond, yes, no, _) =>
-        List(printExpr(cond) + ".if") ++ indent(s(yes)) ++ indent(s(no))
+        List(printExpr(false, cond) + ".if") ++ indent(s(yes)) ++ indent(s(no))
       // todo: a hackish printer for single integers only!
-      case Assign(List(e@UnsupportedExpr(t, value)), _) => List(printExpr(e))
+      case Assign(List(e@UnsupportedExpr(t, value)), _) => List(printExpr(false, e))
       case Assign(List(c@CallIndex(true, whom, args, _)), ann) =>
         s(Assign(List(Expression.Ident("bogusForceDataize", new GeneralAnnotation()), c), ann.pos))
       case Assign(List(Expression.Ident(lname, _), erhs), _) =>
-        List((lname) + ".write " + printExpr(erhs))
+        List((lname) + ".write " + printExpr(false, erhs))
       case Assign(List(_), _) => List(unsupported)
       case Suite(List(st), _) => s(st)
       case Suite(l, _) => List("seq") ++ indent(l.flatMap(s))
       case u : Unsupported =>
         val e1 = CallIndex(true, Expression.Ident(unsupported, new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
-        val head = printExpr(e1)
+        val head = printExpr(false, e1)
         List(head) ++ indent(u.sts.flatMap(s))
       case While(cond, body, Some(Pass(_)), _) =>
         List("while.",
-          Ident + printExpr(cond),
+          Ident + printExpr(false, cond),
         ) ++ indent("[unused]" :: indent(decoratesSeq :: indent(printSt(body))))
       case FuncDef(name, args, None, None, None, body, Decorators(List()), h, false, _) =>
         val locals = h.filter(z => z._2._1 == VarScope.Local).keys
@@ -174,7 +175,7 @@ object PrintEO {
             indent(locals.map(name => s"memory 0 > $name").toList ++ List(decoratesSeq) ++ indent(body1)))
       case u : Unsupported =>
         val e1 = CallIndex(true, Expression.Ident(unsupported, new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
-        val head = printExpr(e1)
+        val head = printExpr(false, e1)
         List(head) ++ indent(u.sts.flatMap(s))
 
     }
