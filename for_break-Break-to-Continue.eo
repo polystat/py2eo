@@ -37,14 +37,14 @@
 +junit
 
 [unused] > for_break
-  [] > apply
+  [] > ap
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
       [id] > is-break-continue-return
         (id.greater (pyint 0)).and (id.less (pyint 4)) > @
       [] > xbool
-        [x] > apply
+        [x] > ap
           [stackUp] > @
             seq > @
               stackUp.forward (return x)
@@ -93,7 +93,7 @@
         write.
           xfor_continue
           []
-            [] > apply
+            [] > ap
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -124,7 +124,7 @@
                   stdout "xfor_continue\n"
                   (xinn0).write ((pystring "string"))
                   (xinn0).force
-                  tmp.write (goto (((((xinn0).x__iter__)).apply ((xinn0))).@))
+                  tmp.write (goto (((((xinn0).x__iter__)).ap ((xinn0))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e0).write (tmp.result)
                   ((e0).<)
@@ -154,7 +154,7 @@
                                             [stackUp]
                                               cage 0 > tmp
                                               seq > @
-                                                tmp.write (goto (((((xit0).x__next__)).apply ((xit0))).@))
+                                                tmp.write (goto (((((xit0).x__next__)).ap ((xit0))).@))
                                                 (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                                                 (e1).write (tmp.result)
                                                 ((e1).<)
@@ -270,10 +270,10 @@
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
                   123
-        tmp.write (goto ((((xfor_continue)).apply).@))
+        tmp.write (goto ((((xfor_continue)).ap).@))
         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
         (assertMe).write (tmp.result)
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (apply.@)).result > @
+  (goto (ap.@)).result > @

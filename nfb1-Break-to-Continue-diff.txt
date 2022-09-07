@@ -1,0 +1,74 @@
+Diff between original (left) and mutated (right) python files
+2,3c2,3
+<     break_out_flag_inner = False # 2:4-2:31
+<     break_out_flag_outer = False # 3:4-3:31
+---
+>     continue_out_flag_inner = False # 2:4-2:31
+>     continue_out_flag_outer = False # 3:4-3:31
+7,8c7,8
+<                 break_out_flag_inner = True # 7:16-7:42
+<                 break # 8:16-8:20
+---
+>                 continue_out_flag_inner = True # 7:16-7:42
+>                 continue # 8:16-8:20
+11,13c11,13
+<         if (break_out_flag_inner): # 11:47-16:3 
+<             break_out_flag_outer = True # 12:12-12:38
+<             break # 13:12-13:16
+---
+>         if (continue_out_flag_inner): # 11:47-16:3 
+>             continue_out_flag_outer = True # 12:12-12:38
+>             continue # 13:12-13:16
+16c16
+<     return (break_out_flag_inner and break_out_flag_outer) # 16:4-16:57
+\ No newline at end of file
+---
+>     return (continue_out_flag_inner and continue_out_flag_outer) # 16:4-16:57
+\ No newline at end of file
+
+Diff between original (left) and mutated (right) eo files
+110d109
+<                 cage 0 > e22
+122d120
+<                 cage 0 > xbreak_out_flag_inner
+125d122
+<                 cage 0 > xbreak_out_flag_outer
+136a134
+>                 cage 0 > xcontinue_out_flag_inner
+145a144,145
+>                 cage 0 > e22
+>                 cage 0 > xcontinue_out_flag_outer
+148,151c148,151
+<                   (xbreak_out_flag_inner).write ((pybool FALSE))
+<                   (xbreak_out_flag_inner).force
+<                   (xbreak_out_flag_outer).write ((pybool FALSE))
+<                   (xbreak_out_flag_outer).force
+---
+>                   (xcontinue_out_flag_inner).write ((pybool FALSE))
+>                   (xcontinue_out_flag_inner).force
+>                   (xcontinue_out_flag_outer).write ((pybool FALSE))
+>                   (xcontinue_out_flag_outer).force
+253,255c253,255
+<                                                                                   (xbreak_out_flag_inner).write ((pybool TRUE))
+<                                                                                   (xbreak_out_flag_inner).force
+<                                                                                   stackUp.forward break
+---
+>                                                                                   (xcontinue_out_flag_inner).write ((pybool TRUE))
+>                                                                                   (xcontinue_out_flag_inner).force
+>                                                                                   stackUp.forward continue
+351c351
+<                                                 (xbreak_out_flag_inner).as-bool.if
+---
+>                                                 (xcontinue_out_flag_inner).as-bool.if
+353,355c353,355
+<                                                     (xbreak_out_flag_outer).write ((pybool TRUE))
+<                                                     (xbreak_out_flag_outer).force
+<                                                     stackUp.forward break
+---
+>                                                     (xcontinue_out_flag_outer).write ((pybool TRUE))
+>                                                     (xcontinue_out_flag_outer).force
+>                                                     stackUp.forward continue
+451c451
+<                   toReturn.write (((xbreak_out_flag_inner).as-bool.if (xbreak_out_flag_outer) (pybool FALSE)))
+---
+>                   toReturn.write (((xcontinue_out_flag_inner).as-bool.if (xcontinue_out_flag_outer) (pybool FALSE)))
