@@ -12,20 +12,20 @@
 [] > xmyMap
   [value] > wrapper
   pyint 16 > x__id__
-  [initValue] > apply
+  [initValue] > ap
     [stackUp] > @
       cage result > pResult
       [] > result
         cage (*) > value
         xmyMap > x__class__
         [] > xlength
-          [self] > apply
+          [self] > ap
             [stackUp] > @
               seq > @
                 stackUp.forward (return (pyint (self.value.length)))
                 123
         [] > xget
-          [self key] > apply
+          [self key] > ap
             [stackUp] > @
               memory 0 > i
               seq > @
@@ -39,7 +39,7 @@
                 stdout "get left the loop\n"
                 0
         [] > xget-internal
-          [key] > apply
+          [key] > ap
             [stackUp] > @
               memory 0 > i
               seq > @
@@ -53,7 +53,7 @@
                 stdout "get left the loop\n"
                 0
         [] > x__contains__
-          [self key] > apply
+          [self key] > ap
             [stackUp] > @
               memory 0 > i
               seq > @
@@ -78,10 +78,10 @@
             stdout (sprintf "len = %d\n" (value.length))
             pybool result
         [] > xadd
-          [self key val] > apply
+          [self key val] > ap
             [stackUp] > @
               seq > @
-                (goto ((x__contains__.apply self key).@)).result.if
+                (goto ((x__contains__.ap self key).@)).result.if
                   stackUp.forward (return 0)
                   0
                 mkCopy (self.value) > tmp
@@ -91,43 +91,43 @@
                 stackUp.forward (return 0)
                 123
         [] > xappend
-          [self key] > apply
+          [self key] > ap
             [stackUp] > @
-              stackUp.forward (goto ((xadd.apply self key (pyint 0)).@)) > @
+              stackUp.forward (goto ((xadd.ap self key (pyint 0)).@)) > @
         [] > xclear
-          [self] > apply
+          [self] > ap
             [stackUp] > @
               seq > @
                 self.value.write (*)
                 stackUp.forward (return 0)
                 123
         [] > xkeys
-          [self] > apply
+          [self] > ap
             [stackUp] > @
-              (goto ((xmyArray.apply (*)).@)).result > accum
+              (goto ((xmyArray.ap (*)).@)).result > accum
               memory 0 > i
               seq > @
                 (i.lt (value.length)).while
                   [unused]
                     (self.value.get i).value.fst > x
                     seq > @
-                      (goto ((accum.xappend.apply accum x).@)).result
+                      (goto ((accum.xappend.ap accum x).@)).result
                       i.write (i.plus 1)
                       0
                 stdout (sprintf "keys len = %d\n" (accum.value.length))
                 stackUp.forward (return accum)
                 0
         [] > xkeys-internal
-          [] > apply
+          [] > ap
             [stackUp] > @
-              (goto ((xmyArray.apply (*)).@)).result > accum
+              (goto ((xmyArray.ap (*)).@)).result > accum
               memory 0 > i
               seq > @
                 (i.lt (value.length)).while
                   [unused]
                     (value.get i).value.fst > x
                     seq > @
-                      (goto ((accum.xappend.apply accum x).@)).result
+                      (goto ((accum.xappend.ap accum x).@)).result
                       i.write (i.plus 1)
                       0
                 stdout (sprintf "keys len = %d\n" (accum.value.length))
@@ -136,8 +136,8 @@
         [x] > eq
           memory TRUE > acc
           memory 0 > pos
-          (goto ((xkeys-internal.apply).@)).result > my-keys
-          (goto ((x.xkeys.apply x).@)).result > his-keys
+          (goto ((xkeys-internal.ap).@)).result > my-keys
+          (goto ((x.xkeys.ap x).@)).result > his-keys
           if. > res
             ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length)))
             if.
@@ -146,8 +146,8 @@
                 (acc.and (pos.lt (my-keys.value.length))).while
                   [unused]
                     my-keys.value.get i > key
-                    (goto ((xget-internal.apply key).@)).result > my-value
-                    (goto ((x.xget.apply x key).@)).result > his-value
+                    (goto ((xget-internal.ap key).@)).result > my-value
+                    (goto ((x.xget.ap x key).@)).result > his-value
                     seq > @
                       stdout (sprintf "i = %d\n" pos)
                       acc.write (acc.and ((my-value.eq his-value).value))
@@ -166,7 +166,7 @@
         (i.lt (initValue.length)).while
           [unused]
             seq > @
-              (goto ((result.xadd.apply result ((initValue.get i).fst) ((initValue.get i).snd)).@)).result
+              (goto ((result.xadd.ap result ((initValue.get i).fst) ((initValue.get i).snd)).@)).result
               i.write (i.plus 1)
         pResult.write result
         stackUp.forward (return pResult)

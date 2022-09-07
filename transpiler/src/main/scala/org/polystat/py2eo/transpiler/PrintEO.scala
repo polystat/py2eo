@@ -119,7 +119,7 @@ object PrintEO {
       case Field(whose, name, _) => orb + e(whose) + "." + name + crb
       case Cond(cond, yes, no, _) => orb + e(cond) + ".as-bool.if " + e(yes) + space + e(no) + crb
       case CallIndex(true, whom, args, _)  =>
-        "((" + e(whom) + crb + ".apply" +
+        "((" + e(whom) + crb + ".ap" +
           // todo: empty arg list hack
           ((args.map{case (None, ee) => " (" + e(ee) + crb}).mkString("")) +
         crb
