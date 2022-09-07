@@ -11,7 +11,7 @@
 +alias sprintf org.eolang.txt.sprintf
 
 [] > xmyArray
-  [initValue] > apply
+  [initValue] > ap
     [stackUp] > @
       cage result > pResult
       [] > result
@@ -20,9 +20,9 @@
         [] > to-my-array
           pResult > @
         [x] > with-value
-          (goto ((xmyArray.apply x).@)).result > @
+          (goto ((xmyArray.ap x).@)).result > @
         [] > xlength
-          [self] > apply
+          [self] > ap
             [stackUp] > @
               seq > @
                 stackUp.forward (return (pyint (self.value.length)))
@@ -38,7 +38,7 @@
               acc.plus acc ((value.get i).value) > @
           (pyint acc) > @
         [] > xappend
-          [self x] > apply
+          [self x] > ap
             [stackUp] > @
               seq > @
                 x
@@ -48,10 +48,10 @@
                 stackUp.forward (return 0)
                 123
         [] > xremove
-          [self what] > apply
+          [self what] > ap
             [stackUp] > @
               memory FALSE > removed
-              (goto ((xmyArray.apply (*)).@)).result > accum
+              (goto ((xmyArray.ap (*)).@)).result > accum
               memory 0 > i
               seq > @
                 (i.lt (self.value.length)).while
@@ -60,13 +60,13 @@
                     seq > @
                       ((x.eq what).value.and (removed.not)).if
                         removed.write TRUE
-                        (goto ((accum.xappend.apply accum x).@)).result
+                        (goto ((accum.xappend.ap accum x).@)).result
                       i.write (i.plus 1)
                 self.value.write (accum.value)
                 stackUp.forward (return 0)
                 123
         [] > xclear
-          [self] > apply
+          [self] > ap
             [stackUp] > @
               seq > @
                 self.value.write (*)
@@ -102,7 +102,7 @@
             stdout (sprintf "len = %d\n" (self.value.length))
             pybool result
         [] > x__contains__
-          [self elt] > apply
+          [self elt] > ap
             [stackUp] > @
               stackUp.forward (return (contains-common self elt)) > @
         [elt] > contains-hack
@@ -116,10 +116,10 @@
           seq > @
             stdout (sprintf "len = %d\n" (value.length))
             pybool result
-        [] > iter
+        [unused] > iter
           memory 0 > curPos
           [] > x__next__
-            [self] > apply
+            [self] > ap
               [stackUp] > @
                 memory (self.curPos) > pos
                 seq > @
@@ -127,13 +127,13 @@
                   self.curPos.write (pos.plus 1)
                   if.
                     pos.eq (value.length)
-                    stackUp.forward ((goto (xStopIteration.apply.@)).result)
+                    stackUp.forward ((goto (xStopIteration.ap.@)).result)
                     stackUp.forward (return (value.get (pos)))
                   123
         [] > x__iter__
-          [self] > apply
+          [self] > ap
             [stackUp] > @
-              stackUp.forward (return iter) > @
+              stackUp.forward (return (iter 0)) > @
 
       seq > @
         pResult.write result

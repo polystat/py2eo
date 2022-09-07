@@ -95,16 +95,16 @@ object PrintLinearizedMutableEOWithCage {
         }
         val callInit = init match {
           case None => ""
-          case Some(_) => s" ((goto ((result.x__init__.apply pResult $consArgs).@)).result)"
+          case Some(_) => s" ((goto ((result.x__init__.ap pResult $consArgs).@)).result)"
         }
         val decorates = bases.headOption.map(_._2)
           "write." :: indent(
             name ::
             "[]" :: indent(
-              "newUID.apply 0 > x__id__" ::
+              "newUID.ap 0 > x__id__" ::
               "[x] > eq" ::
               "  x__id__.eq (x.x__id__) > @" ::
-              s"[$consArgs] > apply" ::
+              s"[$consArgs] > ap" ::
               indent(
                 "[stackUp] > @" ::
                 indent(
@@ -117,7 +117,7 @@ object PrintLinearizedMutableEOWithCage {
                         case Assign(List(Ident(fieldName, _), rhs), _) => s"cage 0 > $fieldName"
                         case f : FuncDef => s"cage 0 > ${f.name}"
                       } ++
-                      decorates.toList.map(e => s"goto ((${printExpr(e)}.apply).@) > base") ++
+                      decorates.toList.map(e => s"goto ((${printExpr(e)}.ap).@) > base") ++
                       (
                         s"$name > x__class__" ::
                         "seq > initFields" ::
@@ -311,7 +311,7 @@ object PrintLinearizedMutableEOWithCage {
     val args2 = (f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
       argname + "NotCopied" }).mkString(" ")
     "[]" :: indent(
-      s"[$args2] > apply" :: indent(
+      s"[$args2] > ap" :: indent(
         "[stackUp] > @" :: indent(
           preface ++ (
             "cage 0 > tmp" ::
@@ -339,7 +339,7 @@ object PrintLinearizedMutableEOWithCage {
       "[id] > is-break-continue-return",
       "  (id.greater (pyint 0)).and (id.less (pyint 4)) > @",
       "[] > xbool",
-      "  [x] > apply",
+      "  [x] > ap",
       "    [stackUp] > @",
       "      seq > @",
       "        stackUp.forward (return x)",

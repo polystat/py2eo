@@ -6,7 +6,7 @@
 +alias return preface.return
 
 [] > xrange
-  [args...] > apply
+  [args...] > ap
     [stackUp] > @
       (args.length.eq 1).if (args.get 0) (args.get 1) > end
       (args.length.eq 1).if 0 (args.get 0) > start
@@ -14,7 +14,7 @@
       [] > iter
         memory start > curPos
         [] > x__next__
-          [self] > apply
+          [self] > ap
             [stackUp] > @
               memory (self.curPos) > pos
               seq > @
@@ -22,12 +22,12 @@
                 self.curPos.write (pos.plus 1)
                 if.
                   pos.eq (end.value)
-                  stackUp.forward ((goto (xStopIteration.apply.@)).result)
+                  stackUp.forward ((goto (xStopIteration.ap.@)).result)
                   stackUp.forward (return (pyint pos))
                 123
       [] > result
         [] > x__iter__
-          [self] > apply
+          [self] > ap
             [stackUp] > @
               stackUp.forward (return iter) > @
       stackUp.forward (return pResult) > @
