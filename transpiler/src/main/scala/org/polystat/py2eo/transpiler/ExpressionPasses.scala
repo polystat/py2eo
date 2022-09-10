@@ -215,7 +215,7 @@ object ExpressionPasses {
     val e1 = e match {
       case CallIndex(isCall, _, args, _) if !isCall || args.exists(x => x._1.nonEmpty) =>
         mkUnsupportedExprInner(e)
-      case StringLiteral(value, ann) if value.exists(
+      case StringLiteral(value, ann) if value.length > 1 || value.exists(
         s => (s.head != '\'' && s.head != '"') || "\\\\[^\"'\\\\]".r.findFirstMatchIn(s).nonEmpty
       ) => mkUnsupportedExprInner(e)
       case ImagLiteral(_, _) => mkUnsupportedExprInner(e)
