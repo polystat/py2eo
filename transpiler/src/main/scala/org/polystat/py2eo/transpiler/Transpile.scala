@@ -7,12 +7,23 @@ import scala.collection.immutable.HashMap
 import org.polystat.py2eo.parser.Expression.{CallIndex, Ident}
 import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef, Return, Suite}
 
+import java.nio.charset.MalformedInputException
+
 object Transpile {
 
   case class Parameters(wrapInAFunction : Boolean)
 
   def apply(moduleName: String, pythonCode: String): Option[String] = {
     apply(moduleName, Transpile.Parameters(wrapInAFunction = true), pythonCode)
+  }
+
+  def apply(moduleName: String, pythonFile : scala.reflect.io.File): Option[String] = {
+    try {
+      apply(moduleName, Transpile.Parameters(wrapInAFunction = true), pythonFile.slurp())
+    }
+    catch {
+      case _ : MalformedInputException => Some("UnsupportedSyntax > error")
+    }
   }
 
   def apply(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
