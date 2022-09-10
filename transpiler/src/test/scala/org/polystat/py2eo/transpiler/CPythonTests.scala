@@ -41,7 +41,7 @@ final class CPythonTests extends Commons {
         val module = test.stripExtension
         println(s"transpiling $module")
 
-        Transpile(module, test.slurp) match {
+        Transpile(module, test) match {
           case None => fail()
           case Some(transpiled) =>
             val result = File(eoFiles / s"$module.eo")
