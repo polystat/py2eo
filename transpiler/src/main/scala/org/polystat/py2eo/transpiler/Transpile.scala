@@ -106,7 +106,7 @@ object Transpile {
             val unsupportedExpr = StatementPasses.simpleProcExprInStatement(Expression.map(ExpressionPasses.mkUnsupportedExpr))(y._1, y._2)
             val unsupportedSt = StatementPasses.procStatement(StatementPasses.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 
-            val hacked = SimpleAnalysis.computeAccessibleIdents(
+            val hacked = ComputeAccessibleIdents.computeAccessibleIdents(
               FuncDef(
                 "xhack", List(), None, None, None, unsupportedSt._1, Decorators(List()),
                 HashMap(), isAsync = false, unsupportedSt._1.ann.pos
@@ -115,7 +115,7 @@ object Transpile {
             debugPrinter(hacked, "afterMkUnsupported")
 
             def findGlobals(l: Set[String], f: FuncDef): Set[String] = {
-              SimpleAnalysis.foldSE[Set[String]](
+              AnalysisSupport.foldSE[Set[String]](
                 (l, e) => {
                   e match {
                     //            case Ident("ValueError") => println(f.accessibleIdents("ValueError")); l
@@ -127,7 +127,7 @@ object Transpile {
               )(l, f.body)
             }
 
-            val globals = SimpleAnalysis.foldSS[Set[String]]((l, st) => {
+            val globals = AnalysisSupport.foldSS[Set[String]]((l, st) => {
               (
                 st match {
                   case f: FuncDef => findGlobals(l, f)

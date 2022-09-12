@@ -204,7 +204,7 @@ object ExpressionPasses {
 
   def mkUnsupportedExpr(e: Expression.T): T = {
     def mkUnsupportedExprInner(original : Expression.T): UnsupportedExpr = {
-      new UnsupportedExpr(original, SimpleAnalysis.childrenE(original), original.ann.pos)
+      new UnsupportedExpr(original, AnalysisSupport.childrenE(original), original.ann.pos)
     }
     def supportedCompOp(op : Expression.Compops.T) =
       try {

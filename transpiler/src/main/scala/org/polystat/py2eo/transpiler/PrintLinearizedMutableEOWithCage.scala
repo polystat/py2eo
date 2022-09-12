@@ -293,7 +293,7 @@ object PrintLinearizedMutableEOWithCage {
 
   private def printFun(preface : List[String], f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
-    val funs = SimpleAnalysis.foldSS[List[FuncDef]]((l, st) => st match {
+    val funs = AnalysisSupport.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
       case _ : ClassDef => (l, false)
       case _ => (l, true)
@@ -382,7 +382,7 @@ object PrintLinearizedMutableEOWithCage {
     )
     }
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
-      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
+      ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
     val hack = printFun(mkCopy, theTest)
     headers ++ ((s"[unused] > ${theTest.name}" :: hack.tail))

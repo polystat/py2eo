@@ -511,7 +511,7 @@ object StatementPasses {
 
   def mkUnsupported(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
     def mkUnsupportedInner(original: Statement.T, declareVars: List[String], ann: GeneralAnnotation): Unsupported = {
-      new Unsupported(original, declareVars, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1, ann)
+      new Unsupported(original, declareVars, AnalysisSupport.childrenS(original)._2, AnalysisSupport.childrenS(original)._1, ann)
     }
     (s match {
     case Assign(List(_), _) => s
