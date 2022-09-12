@@ -13,11 +13,11 @@ import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, Names, NamesU,
 
 import scala.collection.immutable.HashMap
 
-object ExpressionPasses {
+object GenericExpressionPasses {
 
   def procExpr[Acc](f: (Boolean, T, Names[Acc]) => (EAfterPass, Names[Acc]))
               (lhs: Boolean, e: T, ns: Names[Acc]): (EAfterPass, Names[Acc]) = {
-    def pe = ExpressionPasses.procExpr[Acc](f)(false, _, _)
+    def pe = GenericExpressionPasses.procExpr[Acc](f)(false, _, _)
 
     def reconstruct(lhs: Boolean, cons: List[T] => T, l: List[T], ns: Names[Acc]): (EAfterPass, Names[Acc]) = {
       forceAllIfNecessary(f)(l.map(x => (lhs, x)), ns) match {
@@ -72,7 +72,7 @@ object ExpressionPasses {
           ns
         )
       case CallIndex(isCall, whom, args, ann) if !isCall =>
-        val (Left(whom1), ns1) = ExpressionPasses.procExpr(f)(lhs, whom, ns)
+        val (Left(whom1), ns1) = GenericExpressionPasses.procExpr(f)(lhs, whom, ns)
         val argsNoKw = args.map { case (None, x) => x }
         reconstruct(lhs = false, args => new CallIndex(whom1, args, isCall, ann.pos), argsNoKw, ns1)
       case u: UnsupportedExpr =>

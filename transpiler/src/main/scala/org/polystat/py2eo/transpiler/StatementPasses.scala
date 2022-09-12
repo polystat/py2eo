@@ -131,7 +131,7 @@ object StatementPasses {
   def forceAllIfNecessary[Acc](f: (Boolean, T, Names[Acc]) => (EAfterPass, Names[Acc]))
                          (l: List[(Boolean, T)], ns: Names[Acc]): Either[(List[T], Names[Acc]), (List[(Statement.T, Ident)], Names[Acc])] = {
     val (l1, ns1) = l.foldLeft((List[EAfterPass](), ns))((acc, e) => {
-      val xe = ExpressionPasses.procExpr(f)(e._1, e._2, acc._2)
+      val xe = GenericExpressionPasses.procExpr(f)(e._1, e._2, acc._2)
       (acc._1 :+ xe._1, xe._2)
     })
     val hasStatement = l1.exists(_.isRight)
@@ -186,7 +186,7 @@ object StatementPasses {
       case IfSimple(cond, yes, no, ann) =>
         val (yes1, ns1) = pst(yes, ns)
         val (no1, ns2) = pst(no, ns1)
-        ExpressionPasses.procExpr(f)(false, cond, ns2) match {
+        GenericExpressionPasses.procExpr(f)(false, cond, ns2) match {
           case (Left(cond), ns) => (IfSimple(cond, yes1, no1, ann.pos), ns)
           case (Right((scond, cond)), ns) => (Suite(List(scond, IfSimple(cond, yes1, no1, ann.pos)), ann.pos), ns)
         }
@@ -202,7 +202,7 @@ object StatementPasses {
       case While(cond, body, Some(eelse), ann) =>
         val (body1, ns1) = pst(body, ns)
         val (else1, ns2) = pst(eelse, ns1)
-        ExpressionPasses.procExpr(f)(false, cond, ns2) match {
+        GenericExpressionPasses.procExpr(f)(false, cond, ns2) match {
           case (Left(cond), ns) => (While(cond, body1, Some(else1), ann.pos), ns)
           case (Right((scond, cond)), ns) =>
             val ann = cond.ann.pos
@@ -244,14 +244,14 @@ object StatementPasses {
         }
 
       case Assign(List(l, r), ann) =>
-        val rp = ExpressionPasses.procExpr(f)(lhs = false, r, ns)
-        val lp = ExpressionPasses.procExpr(f)(lhs = true, l, rp._2)
+        val rp = GenericExpressionPasses.procExpr(f)(lhs = false, r, ns)
+        val lp = GenericExpressionPasses.procExpr(f)(lhs = true, l, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(str ++ stl :+ Assign(List(el, er), ann.pos), ann.pos), lp._2)
 
       case CreateConst(name, r, ann) =>
-        val rp = ExpressionPasses.procExpr(f)(lhs = false, r, ns)
+        val rp = GenericExpressionPasses.procExpr(f)(lhs = false, r, ns)
         val (str, er) = procEA(rp._1)
         (Suite(str :+ CreateConst(name, er, ann.pos), ann.pos), rp._2)
 
@@ -279,16 +279,16 @@ object StatementPasses {
         }
 
       case AugAssign(op, lhs, rhs, ann) =>
-        val rp = ExpressionPasses.procExpr(f)(lhs = false, rhs, ns)
-        val lp = ExpressionPasses.procExpr(f)(lhs = true, lhs, rp._2)
+        val rp = GenericExpressionPasses.procExpr(f)(lhs = false, rhs, ns)
+        val lp = GenericExpressionPasses.procExpr(f)(lhs = true, lhs, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(stl ++ str :+ AugAssign(op, el, er, ann.pos), ann.pos), ns)
-      case Return(Some(x), ann) => ExpressionPasses.procExpr(f)(false, x, ns) match {
+      case Return(Some(x), ann) => GenericExpressionPasses.procExpr(f)(false, x, ns) match {
         case (Left(e), ns) => (Return(Some(e), ann.pos), ns)
         case (Right((st, e)), ns) => (Suite(List(st, Return(Some(e), e.ann.pos)), ann.pos), ns)
       }
-      case Raise(Some(x), None, ann) => ExpressionPasses.procExpr(f)(false, x, ns) match {
+      case Raise(Some(x), None, ann) => GenericExpressionPasses.procExpr(f)(false, x, ns) match {
         case (Left(e), ns) => (Raise(Some(e), None, ann.pos), ns)
         case (Right((st, e)), ns) => (Suite(List(st, Raise(Some(e), None, e.ann.pos)), ann.pos), ns)
       }
@@ -814,7 +814,7 @@ object StatementPasses {
 
   def simplifyInheritance(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
 
-    def simplifyInheritance: (Boolean, T, NamesU) => (EAfterPass, NamesU) = ExpressionPasses.procExpr({
+    def simplifyInheritance: (Boolean, T, NamesU) => (EAfterPass, NamesU) = GenericExpressionPasses.procExpr({
       case (false, Field(obj, name, ann), ns) =>
         (Left(CallIndex(isCall = true, Ident("eo_getattr", ann.pos), List((None, obj),
           (None, StringLiteral(List("\"" + name + "\""), ann.pos))), ann.pos)), ns)
