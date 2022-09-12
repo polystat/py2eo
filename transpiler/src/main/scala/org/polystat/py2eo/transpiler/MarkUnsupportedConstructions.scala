@@ -1,11 +1,9 @@
 package org.polystat.py2eo.transpiler
 
-import org.polystat.py2eo.parser.Expression
-import org.polystat.py2eo.parser.Expression.{
-  AnonFun, Assignment, Await, Binop, CallIndex, CollectionComprehension, CollectionCons, DictComprehension,
-  DictCons, DoubleStar, EllipsisLiteral, FloatLiteral, FreakingComparison, GeneratorComprehension, ImagLiteral,
-  IntLiteral, SimpleComparison, Slice, Star, StringLiteral, T, UnsupportedExpr, Yield, YieldFrom
-}
+import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement}
+import org.polystat.py2eo.parser.Expression.{AnonFun, Assignment, Await, Binop, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar, EllipsisLiteral, FloatLiteral, FreakingComparison, GeneratorComprehension, Ident, ImagLiteral, IntLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, UnsupportedExpr, Yield, YieldFrom}
+import org.polystat.py2eo.parser.Statement.{AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, Decorators, Del, For, FuncDef, Global, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, Try, Unsupported, While, With}
+import org.polystat.py2eo.transpiler.StatementPasses.NamesU
 
 object MarkUnsupportedConstructions {
   def mkUnsupportedExpr(e: Expression.T): T = {
@@ -47,5 +45,30 @@ object MarkUnsupportedConstructions {
       case _ => e
     }
     e1
+  }
+
+  def mkUnsupported(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
+    def mkUnsupportedInner(original: Statement.T, declareVars: List[String], ann: GeneralAnnotation): Unsupported = {
+      new Unsupported(original, declareVars, AnalysisSupport.childrenS(original)._2, AnalysisSupport.childrenS(original)._1, ann)
+    }
+    (s match {
+    case Assign(List(_), _) => s
+    case Assign(List(Ident(_, _), _), _) => s
+    case Assign(l, ann) => mkUnsupportedInner(s, l.init.flatMap { case Ident(s, _) => List(s) case _ => List() }, ann.pos)
+    case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, accessibleIdents, isAsync, ann)
+      if decorators.l.nonEmpty || otherKeyword.nonEmpty || otherPositional.nonEmpty || isAsync || returnAnnotation.nonEmpty ||
+        args.exists(x => x.default.nonEmpty || x.paramAnn.nonEmpty || x.kind == ArgKind.Keyword) =>
+      val body1 = mkUnsupportedInner(body, List(), body.ann.pos)
+      FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
+        Decorators(List()), accessibleIdents, false, ann.pos)
+    case While(_, _, None, _) => s
+    case While(_, _, Some(Pass(_)), _) => s
+    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | Break(_) | _: ClassDef | _: AnnAssign |
+      Assert(_, _, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | NonLocal(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
+      ImportAllSymbols(_, _) | Return(_, _) | While(_, _, _, _) => mkUnsupportedInner(s, List(), s.ann.pos)
+    case ImportModule(what, as, _) => mkUnsupportedInner(s, as.toList, s.ann.pos)
+    case ImportSymbol(from, what, as, _) => mkUnsupportedInner(s, as.toList, s.ann.pos)
+    case _ => s
+  }, ns)
   }
 }

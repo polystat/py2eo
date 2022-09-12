@@ -47,34 +47,34 @@ object Transpile {
           )
         } else
           { parsed }
-        val y0 = StatementPasses.procStatement(StatementPasses.simplifyIf)(ym1, new StatementPasses.Names())
-        val y = StatementPasses.procStatement(StatementPasses.simplifyFor)(y0._1, y0._2)
+        val y0 = StatementPasses.procStatement(SimplifyIf.simplifyIf)(ym1, new StatementPasses.Names())
+        val y = StatementPasses.procStatement(SimplifyFor.simplifyFor)(y0._1, y0._2)
         debugPrinter(y._1, "afterSimplifyFor")
 
         try {
-          val rmWith = StatementPasses.procStatement(StatementPasses.simplifyWith)(y._1, y._2)
+          val rmWith = StatementPasses.procStatement(SimplifyWith.simplifyWith)(y._1, y._2)
           debugPrinter(rmWith._1, "afterRmWith")
-          val rmAssert = StatementPasses.procStatement(StatementPasses.simplifyAssert)(rmWith._1, rmWith._2)
+          val rmAssert = StatementPasses.procStatement(SimplifyAssert.simplifyAssert)(rmWith._1, rmWith._2)
           debugPrinter(rmAssert._1, "afterRmAssert")
-          val preRmExcepts = StatementPasses.procStatement(StatementPasses.preSimplifyExcepts)(rmAssert._1, rmAssert._2)
+          val preRmExcepts = StatementPasses.procStatement(SimplifyExceptions.preSimplifyExcepts)(rmAssert._1, rmAssert._2)
           debugPrinter(preRmExcepts._1, "afterRmExcepts")
-          val rmExcepts = StatementPasses.procStatement(StatementPasses.simplifyExcepts)(preRmExcepts._1, preRmExcepts._2)
+          val rmExcepts = StatementPasses.procStatement(SimplifyExceptions.simplifyExcepts)(preRmExcepts._1, preRmExcepts._2)
           debugPrinter(rmExcepts._1, "afterRmExcepts")
-          val simIf = StatementPasses.procStatement(StatementPasses.simplifyIf)(rmExcepts._1, rmExcepts._2)
+          val simIf = StatementPasses.procStatement(SimplifyIf.simplifyIf)(rmExcepts._1, rmExcepts._2)
           debugPrinter(simIf._1, "simplifyIf")
-          val simAssList = StatementPasses.procStatement(StatementPasses.simplifyAssignmentList)(simIf._1, simIf._2)
+          val simAssList = StatementPasses.procStatement(SimplifyAssignmentList.simplifyAssignmentList)(simIf._1, simIf._2)
           debugPrinter(simAssList._1, "simplifyAssList")
           val simCompr = StatementPasses.procExprInStatement((SimplifyComprehension.simplifyComprehension))(simAssList._1, simAssList._2)
           debugPrinter(simCompr._1, "afterSimplifyCollectionComprehension")
-          val simForAgain = StatementPasses.procStatement(StatementPasses.simplifyFor)(simCompr._1, simCompr._2)
+          val simForAgain = StatementPasses.procStatement(SimplifyFor.simplifyFor)(simCompr._1, simCompr._2)
           debugPrinter(simForAgain._1, "afterSimForAgain")
-          val rmExceptsAgain = StatementPasses.procStatement(StatementPasses.simplifyExcepts)(simForAgain._1, simForAgain._2)
+          val rmExceptsAgain = StatementPasses.procStatement(SimplifyExceptions.simplifyExcepts)(simForAgain._1, simForAgain._2)
           debugPrinter(rmExceptsAgain._1, "afterRmExceptsAgain")
-          val simIfAgain = StatementPasses.procStatement(StatementPasses.simplifyIf)(rmExceptsAgain._1, rmExceptsAgain._2)
+          val simIfAgain = StatementPasses.procStatement(SimplifyIf.simplifyIf)(rmExceptsAgain._1, rmExceptsAgain._2)
           debugPrinter(simIf._1, "simplifyIf")
           val simConcatStringLit = StatementPasses.simpleProcExprInStatement(Expression.map(ConcatStringLiteral.concatStringLiteral))(simIfAgain._1, simIfAgain._2)
           debugPrinter(simConcatStringLit._1, "afterConcatStringLit")
-          val simxPrefixSt = StatementPasses.procStatement(StatementPasses.xPrefixInStatement)(simConcatStringLit._1, simConcatStringLit._2)
+          val simxPrefixSt = StatementPasses.procStatement(PrefixIdentsWithX.xPrefixInStatement)(simConcatStringLit._1, simConcatStringLit._2)
           debugPrinter(simxPrefixSt._1, "afterXPrefixSt")
           val simXPrefixExpr = StatementPasses.simpleProcExprInStatement(Expression.map(
             x => AddExplicitConstructionOfCollection.addExplicitConstructorOfCollection(PrefixIdentsWithX.xPrefixInExpr(x))
@@ -104,7 +104,7 @@ object Transpile {
     //        println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
     //        throw e
             val unsupportedExpr = StatementPasses.simpleProcExprInStatement(Expression.map(MarkUnsupportedConstructions.mkUnsupportedExpr))(y._1, y._2)
-            val unsupportedSt = StatementPasses.procStatement(StatementPasses.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
+            val unsupportedSt = StatementPasses.procStatement(MarkUnsupportedConstructions.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 
             val hacked = ComputeAccessibleIdents.computeAccessibleIdents(
               FuncDef(
