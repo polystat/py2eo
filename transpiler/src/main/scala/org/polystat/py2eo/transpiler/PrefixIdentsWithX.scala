@@ -2,7 +2,9 @@ package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{AnonFun, Assignment, CallIndex, Field, Ident, Parameter, T}
 import org.polystat.py2eo.parser.Statement
-import org.polystat.py2eo.parser.Statement.{ClassDef, CreateConst, FuncDef, Global, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, SimpleObject, Try, Unsupported}
+import org.polystat.py2eo.parser.Statement.{
+  ClassDef, CreateConst, FuncDef, Global, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, SimpleObject, Try, Unsupported
+}
 import org.polystat.py2eo.transpiler.StatementPasses.NamesU
 
 object PrefixIdentsWithX {
