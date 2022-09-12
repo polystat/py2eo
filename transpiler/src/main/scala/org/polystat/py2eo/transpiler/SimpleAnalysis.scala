@@ -189,32 +189,4 @@ object SimpleAnalysis {
     )(s, new StatementPasses.Names())._1
   }
 
-  private def assertStatementIsSimplified(acc : Unit, s : Statement.T) : (Unit, Boolean) = s match {
-    case
-      IfSimple(_, _, _, _) | While(_, _, _, _) | Suite(_, _) | Assign(List(_), _)
-      | Return(_, _) | FuncDef(_, _, _, _, _, _, Decorators(List()), _, _, _)
-      | NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | ImportModule(_, _, _)
-      | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) =>
-      (acc, true)
-    case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.seqOfFields(lhs).isDefined  => (acc, true)
-    case ClassDef(_, List(), body, Decorators(List()), _) =>{
-      val (Suite(defs, _)) = StatementPasses.simpleProcStatement(StatementPasses.unSuite)(body)
-      assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })
-      (acc, true)
-    }
-  }
-
-  private def assertExpressionIsSimplified(acc : Unit, e : T) : Unit = e match {
-    case FreakingComparison(List(_), List(_, _), _) => ()
-    case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _)
-      | CallIndex(false, _, _, _) | FreakingComparison(_, _, _) | AnonFun(_, _, _, _, _) =>
-      throw new ASTAnalysisException("these must never happen after all passes: " + PrintPython.printExpr(e))
-    case _ => ()
-  }
-
-  def checkIsSimplified(s : Statement.T) : Unit = {
-    foldSS(assertStatementIsSimplified)((), s)
-    foldSE(assertExpressionIsSimplified, _ => true)((), s)
-  }
-
 }
