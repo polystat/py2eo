@@ -498,53 +498,12 @@ object StatementPasses {
   }
 
 
-  def simplifyInheritance(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
-
-    def simplifyInheritance: (Boolean, T, NamesU) => (EAfterPass, NamesU) = GenericExpressionPasses.procExpr({
-      case (false, Field(obj, name, ann), ns) =>
-        (Left(CallIndex(isCall = true, Ident("eo_getattr", ann.pos), List((None, obj),
-          (None, StringLiteral(List("\"" + name + "\""), ann.pos))), ann.pos)), ns)
-      case (false, CallIndex(_, Ident("getattr", anni), args, annc), ns) =>
-        (Left(CallIndex(isCall = true, Ident("eo_getattr", anni.pos), args, annc.pos)), ns)
-      case (false, CallIndex(_, Ident("setattr", anni), args, annc), ns) =>
-        (Left(CallIndex(isCall = true, Ident("eo_setattr", anni.pos), args, annc.pos)), ns)
-      case (_, e, ns) => (Left(e), ns)
-    })
-
-    def explicitBases(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = s match {
-      case ClassDef(name, bases0, body, decorators, ann) =>
-        val (newBody, ns1) = explicitBases(body, ns)
-        val basesPos = if (bases0.isEmpty) ann.pos else GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
-        (ClassDef(name, List(), Suite(List(
-          Assign(List(Ident("eo_bases", basesPos),
-            CollectionCons(CollectionKind.List, bases0.map { case (None, x) => x }, basesPos)), basesPos),
-          newBody),
-          body.ann.pos),
-          decorators, ann.pos), ns1)
-      case _ => (s, ns)
-
-    }
-
-    val texplicitBases = StatementPasses.procStatement(explicitBases)(s, ns)
-    val (s1, ns1) = StatementPasses.procExprInStatement(simplifyInheritance)(texplicitBases._1, texplicitBases._2)
-    (Suite(List(
-      ImportSymbol(List("C3"), "eo_getattr", Some("eo_getattr"), s1.ann.pos),
-      ImportSymbol(List("C3"), "eo_setattr", Some("eo_setattr"), s1.ann.pos),
-      s1
-    ), s1.ann.pos),
-    ns1)
-
-  }
-
   def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
     val t1 = StatementPasses.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")
 
     val tsimplifyIf = StatementPasses.procStatement(SimplifyIf.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
-
-    //    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
-    //    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
 
     tsimplifyIf
   }
