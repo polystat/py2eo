@@ -103,7 +103,7 @@ object Transpile {
           case e: Throwable => {
     //        println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
     //        throw e
-            val unsupportedExpr = StatementPasses.simpleProcExprInStatement(Expression.map(ExpressionPasses.mkUnsupportedExpr))(y._1, y._2)
+            val unsupportedExpr = StatementPasses.simpleProcExprInStatement(Expression.map(MarkUnsupportedConstructions.mkUnsupportedExpr))(y._1, y._2)
             val unsupportedSt = StatementPasses.procStatement(StatementPasses.mkUnsupported)(unsupportedExpr._1, unsupportedExpr._2)
 
             val hacked = ComputeAccessibleIdents.computeAccessibleIdents(
