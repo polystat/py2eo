@@ -15,17 +15,6 @@ import scala.collection.immutable.HashMap
 
 object ExpressionPasses {
 
-  def addExplicitConstructorOfCollection(e : T) : T = {
-    e match {
-      case CollectionCons(kind, l, ann)
-        if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
-          CallIndex(true, Ident("xmyArray", e.ann.pos), List((None, e)), e.ann.pos)
-      case DictCons(_, _) | CollectionCons(CollectionKind.Set, _, _) =>
-        CallIndex(true, Ident("xmyMap", e.ann.pos), List((None, e)), e.ann.pos)
-      case _ => e
-    }
-  }
-
   def procExpr[Acc](f: (Boolean, T, Names[Acc]) => (EAfterPass, Names[Acc]))
               (lhs: Boolean, e: T, ns: Names[Acc]): (EAfterPass, Names[Acc]) = {
     def pe = ExpressionPasses.procExpr[Acc](f)(false, _, _)
