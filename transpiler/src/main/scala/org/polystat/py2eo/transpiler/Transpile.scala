@@ -80,7 +80,7 @@ object Transpile {
             x => ExpressionPasses.addExplicitConstructorOfCollection(ExpressionPasses.xPrefixInExpr(x))
           ))(simxPrefixSt._1, simxPrefixSt._2)
           debugPrinter(simXPrefixExpr._1, "afterXPrefixExpr")
-          val methodCall = StatementPasses.procExprInStatement((ExpressionPasses.simpleSyntacticMethodCall))(simXPrefixExpr._1, simXPrefixExpr._2)
+          val methodCall = StatementPasses.procExprInStatement((AddExplicitSelf2MethodCalls.simpleSyntacticMethodCall))(simXPrefixExpr._1, simXPrefixExpr._2)
           debugPrinter(methodCall._1, "methodCall")
           val textractAllCalls = StatementPasses.procExprInStatement((ExpressionPasses.extractAllCalls))(methodCall._1, methodCall._2)
           debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
