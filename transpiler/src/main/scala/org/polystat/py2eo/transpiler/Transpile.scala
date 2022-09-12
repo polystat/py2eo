@@ -72,7 +72,7 @@ object Transpile {
           debugPrinter(rmExceptsAgain._1, "afterRmExceptsAgain")
           val simIfAgain = StatementPasses.procStatement(StatementPasses.simplifyIf)(rmExceptsAgain._1, rmExceptsAgain._2)
           debugPrinter(simIf._1, "simplifyIf")
-          val simConcatStringLit = StatementPasses.simpleProcExprInStatement(Expression.map(ExpressionPasses.concatStringLiteral))(simIfAgain._1, simIfAgain._2)
+          val simConcatStringLit = StatementPasses.simpleProcExprInStatement(Expression.map(ConcatStringLiteral.concatStringLiteral))(simIfAgain._1, simIfAgain._2)
           debugPrinter(simConcatStringLit._1, "afterConcatStringLit")
           val simxPrefixSt = StatementPasses.procStatement(StatementPasses.xPrefixInStatement)(simConcatStringLit._1, simConcatStringLit._2)
           debugPrinter(simxPrefixSt._1, "afterXPrefixSt")
