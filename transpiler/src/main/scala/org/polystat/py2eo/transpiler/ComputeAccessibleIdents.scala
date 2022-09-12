@@ -2,7 +2,9 @@ package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{CollectionCons, Ident, Parameter}
 import org.polystat.py2eo.parser.{GeneralAnnotation, Statement, VarScope}
-import org.polystat.py2eo.parser.Statement.{AnnAssign, Assign, ClassDef, CreateConst, FuncDef, Global, NonLocal, SimpleObject, Try, Unsupported}
+import org.polystat.py2eo.parser.Statement.{
+  AnnAssign, Assign, ClassDef, CreateConst, FuncDef, Global, NonLocal, SimpleObject, Try, Unsupported
+}
 import org.polystat.py2eo.transpiler.Common.ASTAnalysisException
 import org.polystat.py2eo.transpiler.StatementPasses.NamesU
 import AnalysisSupport.foldSS
