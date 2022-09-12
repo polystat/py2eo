@@ -82,7 +82,7 @@ object Transpile {
           debugPrinter(simXPrefixExpr._1, "afterXPrefixExpr")
           val methodCall = StatementPasses.procExprInStatement((AddExplicitSelf2MethodCalls.simpleSyntacticMethodCall))(simXPrefixExpr._1, simXPrefixExpr._2)
           debugPrinter(methodCall._1, "methodCall")
-          val textractAllCalls = StatementPasses.procExprInStatement((ExpressionPasses.extractAllCalls))(methodCall._1, methodCall._2)
+          val textractAllCalls = StatementPasses.procExprInStatement((ExtractAllCalls.extractAllCalls))(methodCall._1, methodCall._2)
           debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
           val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
           val hacked = Suite(List(
