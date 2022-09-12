@@ -64,7 +64,7 @@ object Transpile {
           debugPrinter(simIf._1, "simplifyIf")
           val simAssList = StatementPasses.procStatement(StatementPasses.simplifyAssignmentList)(simIf._1, simIf._2)
           debugPrinter(simAssList._1, "simplifyAssList")
-          val simCompr = StatementPasses.procExprInStatement((ExpressionPasses.simplifyComprehension))(simAssList._1, simAssList._2)
+          val simCompr = StatementPasses.procExprInStatement((SimplifyComprehension.simplifyComprehension))(simAssList._1, simAssList._2)
           debugPrinter(simCompr._1, "afterSimplifyCollectionComprehension")
           val simForAgain = StatementPasses.procStatement(StatementPasses.simplifyFor)(simCompr._1, simCompr._2)
           debugPrinter(simForAgain._1, "afterSimForAgain")
