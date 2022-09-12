@@ -2,7 +2,7 @@ package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.{GeneralAnnotation, Statement}
 import org.polystat.py2eo.parser.Statement.{If, IfSimple, Pass}
-import org.polystat.py2eo.transpiler.StatementPasses.NamesU
+import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyIf {
   def simplifyIf(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = s match {

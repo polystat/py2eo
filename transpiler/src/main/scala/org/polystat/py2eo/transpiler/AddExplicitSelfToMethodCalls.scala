@@ -2,7 +2,7 @@ package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{CallIndex, Field, Ident, T}
 import org.polystat.py2eo.parser.Statement.{Assign, Suite}
-import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, NamesU}
+import org.polystat.py2eo.transpiler.GenericStatementPasses.{EAfterPass, NamesU}
 
 object AddExplicitSelfToMethodCalls {
   // explicitly substitute the self to each method call

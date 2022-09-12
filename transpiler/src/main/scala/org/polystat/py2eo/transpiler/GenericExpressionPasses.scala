@@ -9,7 +9,7 @@ import org.polystat.py2eo.parser.Expression.{
 }
 import org.polystat.py2eo.parser.{Expression, GeneralAnnotation, Statement}
 import org.polystat.py2eo.parser.Statement.{Assign, Decorators, For, FuncDef, IfSimple, Pass, Return, Suite}
-import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, Names, NamesU, forceAllIfNecessary, forceSt, forceSt2}
+import org.polystat.py2eo.transpiler.GenericStatementPasses.{EAfterPass, Names, NamesU, forceAllIfNecessary, forceSt, forceSt2}
 
 import scala.collection.immutable.HashMap
 

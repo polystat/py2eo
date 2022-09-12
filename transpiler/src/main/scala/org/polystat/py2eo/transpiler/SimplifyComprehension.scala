@@ -6,7 +6,7 @@ import org.polystat.py2eo.parser.Expression.{
 }
 import org.polystat.py2eo.parser.{GeneralAnnotation, Statement}
 import org.polystat.py2eo.parser.Statement.{Assign, For, IfSimple, Pass, Suite}
-import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, NamesU}
+import org.polystat.py2eo.transpiler.GenericStatementPasses.{EAfterPass, NamesU}
 
 object SimplifyComprehension {
   private def simplifyComprehensionList(inner : Statement.T, l : List[Comprehension], ann : GeneralAnnotation) : Statement.T = {

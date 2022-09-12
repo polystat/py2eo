@@ -5,7 +5,7 @@ import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.parser.Statement.{
   ClassDef, CreateConst, FuncDef, Global, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, SimpleObject, Try, Unsupported
 }
-import org.polystat.py2eo.transpiler.StatementPasses.NamesU
+import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object PrefixIdentsWithX {
   // need this because EO only allows first letters of idents to be small

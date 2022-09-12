@@ -16,7 +16,7 @@ import org.polystat.py2eo.parser.Statement.{
   Unsupported, While, With
 }
 
-object StatementPasses {
+object GenericStatementPasses {
 
   case class Names[Acc](used: HashMap[String, Int], acc : Acc) {
 
@@ -499,10 +499,10 @@ object StatementPasses {
 
 
   def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
-    val t1 = StatementPasses.procStatement((a, b) => (a, b))(s, ns)
+    val t1 = GenericStatementPasses.procStatement((a, b) => (a, b))(s, ns)
     debugPrinter(t1._1, "afterEmptyProcStatement")
 
-    val tsimplifyIf = StatementPasses.procStatement(SimplifyIf.simplifyIf)(t1._1, t1._2)
+    val tsimplifyIf = GenericStatementPasses.procStatement(SimplifyIf.simplifyIf)(t1._1, t1._2)
     debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
 
     tsimplifyIf

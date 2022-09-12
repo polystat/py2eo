@@ -10,7 +10,7 @@ import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, Decorators, Del, For, FuncDef, Global,
   ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, Try, Unsupported, While, With
 }
-import org.polystat.py2eo.transpiler.StatementPasses.NamesU
+import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object MarkUnsupportedConstructions {
   def mkUnsupportedExpr(e: Expression.T): T = {

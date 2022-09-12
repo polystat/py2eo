@@ -3,7 +3,7 @@ package org.polystat.py2eo.transpiler
 import org.polystat.py2eo.parser.Expression.{BoolLiteral, Compops, Field, Ident, IntLiteral, LazyLAnd, LazyLOr, SimpleComparison}
 import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.parser.Statement.{Assign, If, Pass, Suite, Try}
-import org.polystat.py2eo.transpiler.StatementPasses.NamesU
+import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyExceptions {
   def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {

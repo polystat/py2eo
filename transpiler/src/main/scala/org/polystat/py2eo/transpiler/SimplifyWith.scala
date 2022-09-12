@@ -3,7 +3,7 @@ package org.polystat.py2eo.transpiler
 import org.polystat.py2eo.parser.Expression.{BoolLiteral, CallIndex, Field, Ident, NoneLiteral, Unop, Unops}
 import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.parser.Statement.{Assign, IfSimple, Pass, Raise, Suite, Try, With}
-import org.polystat.py2eo.transpiler.StatementPasses.NamesU
+import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyWith {
   def simplifyWith(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {

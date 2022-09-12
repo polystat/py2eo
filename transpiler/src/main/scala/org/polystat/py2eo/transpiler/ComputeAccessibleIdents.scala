@@ -6,7 +6,7 @@ import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assign, ClassDef, CreateConst, FuncDef, Global, NonLocal, SimpleObject, Try, Unsupported
 }
 import org.polystat.py2eo.transpiler.Common.ASTAnalysisException
-import org.polystat.py2eo.transpiler.StatementPasses.NamesU
+import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 import AnalysisSupport.foldSS
 
 import scala.collection.immutable.HashMap
@@ -63,12 +63,12 @@ object ComputeAccessibleIdents {
       x => if (x._2._1 == VarScope.Local || x._2._1 == VarScope.Arg) (x._1, (VarScope.ImplicitNonLocal, x._2._2)) else x
     )
     val merged = v.foldLeft(vUpper)((acc, z) => acc.+(z))
-    val (body, _) = StatementPasses.procStatementGeneral[NamesU](
+    val (body, _) = GenericStatementPasses.procStatementGeneral[NamesU](
       (s, ns) => s match {
         case f : FuncDef => (ComputeAccessibleIdents.computeAccessibleIdentsF(merged, f), ns, false)
         case _ => (s, ns, true)
       }
-    )(f.body, new StatementPasses.Names())
+    )(f.body, new GenericStatementPasses.Names())
     FuncDef(
       f.name, f.args, f.otherPositional, f.otherKeyword, f.returnAnnotation,
       body, f.decorators, merged, f.isAsync, f.ann.pos
@@ -76,11 +76,11 @@ object ComputeAccessibleIdents {
   }
 
   def computeAccessibleIdents(s : Statement.T) : Statement.T = {
-    StatementPasses.procStatementGeneral[NamesU](
+    GenericStatementPasses.procStatementGeneral[NamesU](
       (s, ns) => s match {
         case f : FuncDef => (ComputeAccessibleIdents.computeAccessibleIdentsF(HashMap(), f), ns, false)
         case _ => (s, ns, true)
       }
-    )(s, new StatementPasses.Names())._1
+    )(s, new GenericStatementPasses.Names())._1
   }
 }

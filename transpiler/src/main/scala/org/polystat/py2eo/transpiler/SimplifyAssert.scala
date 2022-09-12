@@ -3,7 +3,7 @@ package org.polystat.py2eo.transpiler
 import org.polystat.py2eo.parser.Expression.{CallIndex, Ident, Unop, Unops}
 import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.parser.Statement.{Assert, IfSimple, Pass, Raise}
-import org.polystat.py2eo.transpiler.StatementPasses.NamesU
+import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyAssert {
   def simplifyAssert(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {

@@ -5,7 +5,7 @@ import org.polystat.py2eo.parser.Expression.{
   Ident, IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, StringLiteral, T
 }
 import org.polystat.py2eo.parser.Statement.{Assign, Suite}
-import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, NamesU}
+import org.polystat.py2eo.transpiler.GenericStatementPasses.{EAfterPass, NamesU}
 
 object ExtractAllCalls {
   // translate an expression to something like a three register code in order to extract each function call with

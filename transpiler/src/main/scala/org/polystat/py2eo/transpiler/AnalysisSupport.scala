@@ -10,7 +10,7 @@ import org.polystat.py2eo.parser.Expression.{
   UnsupportedExpr, Yield, YieldFrom
 }
 import org.polystat.py2eo.parser.{GeneralAnnotation, PrintPython, Statement, VarScope}
-import org.polystat.py2eo.transpiler.StatementPasses.{Names, NamesU}
+import org.polystat.py2eo.transpiler.GenericStatementPasses.{Names, NamesU}
 import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef,
   Global, If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject,
