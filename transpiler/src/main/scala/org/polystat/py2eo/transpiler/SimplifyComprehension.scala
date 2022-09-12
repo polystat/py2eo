@@ -9,7 +9,7 @@ import org.polystat.py2eo.parser.Statement.{Assign, For, IfSimple, Pass, Suite}
 import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, NamesU}
 
 object SimplifyComprehension {
-  def simplifyComprehensionList(inner : Statement.T, l : List[Comprehension], ann : GeneralAnnotation) : Statement.T = {
+  private def simplifyComprehensionList(inner : Statement.T, l : List[Comprehension], ann : GeneralAnnotation) : Statement.T = {
     l.foldRight(inner : Statement.T)((comprehension, accum) => {
       comprehension match {
         case IfComprehension(cond) =>
