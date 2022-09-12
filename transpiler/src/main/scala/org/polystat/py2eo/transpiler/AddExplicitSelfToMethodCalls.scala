@@ -4,7 +4,7 @@ import org.polystat.py2eo.parser.Expression.{CallIndex, Field, Ident, T}
 import org.polystat.py2eo.parser.Statement.{Assign, Suite}
 import org.polystat.py2eo.transpiler.StatementPasses.{EAfterPass, NamesU}
 
-object AddExplicitSelf2MethodCalls {
+object AddExplicitSelfToMethodCalls {
   // explicitly substitute the self to each method call
   // todo: does not work if a class method is returned as a function and then called
   def simpleSyntacticMethodCall(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
