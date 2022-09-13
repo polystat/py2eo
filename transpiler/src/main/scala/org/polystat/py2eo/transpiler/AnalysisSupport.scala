@@ -10,14 +10,14 @@ import org.polystat.py2eo.parser.Expression.{
   UnsupportedExpr, Yield, YieldFrom
 }
 import org.polystat.py2eo.parser.{GeneralAnnotation, PrintPython, Statement, VarScope}
-import org.polystat.py2eo.transpiler.StatementPasses.{Names, NamesU}
+import org.polystat.py2eo.transpiler.GenericStatementPasses.{Names, NamesU}
 import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For, FuncDef,
   Global, If, IfSimple, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, SimpleObject,
   Suite, Try, Unsupported, While, With
 }
 
-object SimpleAnalysis {
+object AnalysisSupport {
 
   private def childrenComprehension(c : Comprehension) = c match {
     case IfComprehension(cond) => List(cond)
@@ -115,106 +115,6 @@ object SimpleAnalysis {
       val (ls, _) = childrenS(s)
       ls.foldLeft(acc)(foldSS(f))
     }
-  }
-
-  private def classifyVariablesAssignedInFunctionBody(args : List[Parameter], body : Statement.T)
-  : HashMap[String, (VarScope.T, GeneralAnnotation)] = {
-    type H = HashMap[String, (VarScope.T, GeneralAnnotation)]
-    def dontVisitOtherBlocks(s : Statement.T) : Boolean = s match {
-      case FuncDef(_, _, _, _, _, _, _, _, _, _) | ClassDef(_, _, _, _, _) => false
-      case _ => true
-    }
-    val allNonLocalAndGlobalNames = foldSS[H](
-      (h, st) => st match {
-        case NonLocal(l, ann) => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.NonLocal, ann.pos)))), false)
-        case Global(l, ann)   => (l.foldLeft(h)((h, name) => h.+((name, (VarScope.Global, ann.pos)))), false)
-        case Try(ttry, excepts, eelse, ffinally, ann) => (
-          excepts.foldLeft(h){
-            case (h, (Some((_, Some(name))), _)) => h.+((name, (VarScope.ExceptName, ann.pos)))
-            case (h, _) => h
-          },
-          true
-        )
-        case _                => (h, dontVisitOtherBlocks(st))
-      }
-    )(HashMap[String, (VarScope.T, GeneralAnnotation)](), body)
-    val allNonLocalAndGlobalAndLocalNames = foldSS[H](
-      (h, st) => {
-        def add0(h : H, name : String, ann : GeneralAnnotation) : H =
-          if (h.contains(name)) h else h.+((name, (VarScope.Local, ann.pos)))
-        def add(name : String, ann : GeneralAnnotation) = add0(h, name, ann)
-        st match {
-          case ClassDef(name, _, _, _, ann) => (add(name, ann), false)
-          case SimpleObject(name, _, _, ann) => (add(name, ann), false)
-          case FuncDef(name, _, _, _, _, _, _, _, _, ann)  => (add(name, ann), false)
-          case Assign(List(CollectionCons(_, _, _), _), _) =>
-            throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")
-          case Assign(l, _) if l.size > 2 =>
-            throw new ASTAnalysisException("run this analysis after all assignment simplification passes!")
-          case Assign(List(Ident(name, _), _), ann) => (add(name, ann), true)
-          case AnnAssign(Ident(name, _), _, _, ann) => (add(name, ann), true)
-          case u : Unsupported => (u.declareVars.foldLeft(h)(add0(_, _, u.ann)), true)
-          case CreateConst(name, _, ann) => (add(name, ann), true)
-          case _ => (h, true)
-        }
-      }
-    )(allNonLocalAndGlobalNames, body)
-    args.foldLeft(allNonLocalAndGlobalAndLocalNames)((h, name) => h.+((name.name, (VarScope.Arg, name.ann))))
-  }
-
-  private def computeAccessibleIdentsF(upperVars : HashMap[String, (VarScope.T, GeneralAnnotation)], f : FuncDef) : FuncDef = {
-    val v = classifyVariablesAssignedInFunctionBody(f.args, f.body)
-    val vUpper = upperVars.map(
-      x => if (x._2._1 == VarScope.Local || x._2._1 == VarScope.Arg) (x._1, (VarScope.ImplicitNonLocal, x._2._2)) else x
-    )
-    val merged = v.foldLeft(vUpper)((acc, z) => acc.+(z))
-    val (body, _) = StatementPasses.procStatementGeneral[NamesU](
-      (s, ns) => s match {
-        case f : FuncDef => (computeAccessibleIdentsF(merged, f), ns, false)
-        case _ => (s, ns, true)
-      }
-    )(f.body, new StatementPasses.Names())
-    FuncDef(
-      f.name, f.args, f.otherPositional, f.otherKeyword, f.returnAnnotation,
-      body, f.decorators, merged, f.isAsync, f.ann.pos
-    )
-  }
-
-  def computeAccessibleIdents(s : Statement.T) : Statement.T = {
-    StatementPasses.procStatementGeneral[NamesU](
-      (s, ns) => s match {
-        case f : FuncDef => (computeAccessibleIdentsF(HashMap(), f), ns, false)
-        case _ => (s, ns, true)
-      }
-    )(s, new StatementPasses.Names())._1
-  }
-
-  private def assertStatementIsSimplified(acc : Unit, s : Statement.T) : (Unit, Boolean) = s match {
-    case
-      IfSimple(_, _, _, _) | While(_, _, _, _) | Suite(_, _) | Assign(List(_), _)
-      | Return(_, _) | FuncDef(_, _, _, _, _, _, Decorators(List()), _, _, _)
-      | NonLocal(_, _) | Pass(_) | Break(_) | Continue(_) | ImportModule(_, _, _)
-      | ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) =>
-      (acc, true)
-    case Assign(List(lhs, _), _) if PrintLinearizedMutableEOWithCage.seqOfFields(lhs).isDefined  => (acc, true)
-    case ClassDef(_, List(), body, Decorators(List()), _) =>{
-      val (Suite(defs, _)) = StatementPasses.simpleProcStatement(StatementPasses.unSuite)(body)
-      assert(defs.forall{ case Assign(List(Ident(_, _), _), _) => true case _ => false })
-      (acc, true)
-    }
-  }
-
-  private def assertExpressionIsSimplified(acc : Unit, e : T) : Unit = e match {
-    case FreakingComparison(List(_), List(_, _), _) => ()
-    case Star(_, _) | DoubleStar(_, _) | CollectionComprehension(_, _, _, _) | DictComprehension(_, _, _)
-      | CallIndex(false, _, _, _) | FreakingComparison(_, _, _) | AnonFun(_, _, _, _, _) =>
-      throw new ASTAnalysisException("these must never happen after all passes: " + PrintPython.printExpr(e))
-    case _ => ()
-  }
-
-  def checkIsSimplified(s : Statement.T) : Unit = {
-    foldSS(assertStatementIsSimplified)((), s)
-    foldSE(assertExpressionIsSimplified, _ => true)((), s)
   }
 
 }

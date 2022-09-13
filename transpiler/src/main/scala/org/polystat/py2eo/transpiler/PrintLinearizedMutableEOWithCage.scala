@@ -69,7 +69,7 @@ object PrintLinearizedMutableEOWithCage {
     }
   }
 
-  def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
+  private def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
     case Field(whose, name, _) => seqOfFields(whose).map(_ :+ name)
 //    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
     case Ident(name, _) => Some(List(name))
@@ -82,7 +82,7 @@ object PrintLinearizedMutableEOWithCage {
   private def printSt(st : Statement.T) : Text = {
     st match {
       case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
-        val Suite(l0, _) = StatementPasses.simpleProcStatement(StatementPasses.unSuite)(body)
+        val Suite(l0, _) = GenericStatementPasses.simpleProcStatement(GenericStatementPasses.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
         val init : Option[FuncDef] = l0
           .find{ case f : FuncDef => f.name == "x__init__" case _ => false }
@@ -293,7 +293,7 @@ object PrintLinearizedMutableEOWithCage {
 
   private def printFun(preface : List[String], f : FuncDef) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
-    val funs = SimpleAnalysis.foldSS[List[FuncDef]]((l, st) => st match {
+    val funs = AnalysisSupport.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
       case _ : ClassDef => (l, false)
       case _ => (l, true)
@@ -382,7 +382,7 @@ object PrintLinearizedMutableEOWithCage {
     )
     }
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
-      SimpleAnalysis.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
+      ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
     val hack = printFun(mkCopy, theTest)
     headers ++ ((s"[unused] > ${theTest.name}" :: hack.tail))

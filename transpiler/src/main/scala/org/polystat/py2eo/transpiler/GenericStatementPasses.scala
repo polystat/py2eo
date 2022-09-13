@@ -16,7 +16,7 @@ import org.polystat.py2eo.parser.Statement.{
   Unsupported, While, With
 }
 
-object StatementPasses {
+object GenericStatementPasses {
 
   case class Names[Acc](used: HashMap[String, Int], acc : Acc) {
 
@@ -123,15 +123,10 @@ object StatementPasses {
     ((Assign(List(l, e), e.ann.pos), l), ns1)
   }
 
-  def forceSt2[Acc](e: EAfterPass, ns: Names[Acc]): ((Statement.T, Ident), Names[Acc]) = e match {
-    case Left(e) => forceSt(e, ns)
-    case Right(value) => (value, ns)
-  }
-
   def forceAllIfNecessary[Acc](f: (Boolean, T, Names[Acc]) => (EAfterPass, Names[Acc]))
                          (l: List[(Boolean, T)], ns: Names[Acc]): Either[(List[T], Names[Acc]), (List[(Statement.T, Ident)], Names[Acc])] = {
     val (l1, ns1) = l.foldLeft((List[EAfterPass](), ns))((acc, e) => {
-      val xe = ExpressionPasses.procExpr(f)(e._1, e._2, acc._2)
+      val xe = GenericExpressionPasses.procExpr(f)(e._1, e._2, acc._2)
       (acc._1 :+ xe._1, xe._2)
     })
     val hasStatement = l1.exists(_.isRight)
@@ -145,16 +140,6 @@ object StatementPasses {
         })
       )
     }
-  }
-
-  def simplifyAssignmentList(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case Assign(l, ann) if l.size > 2 =>
-      val lhs = l.init
-      val rhs = l.last
-      val (rhsName, ns1) = ns("rhs")
-      val lhs1 = lhs.map(x => Assign(List(x, Ident(rhsName, ann.pos)), ann.pos))
-      (Suite(Assign(List(Ident(rhsName, ann.pos), rhs), ann.pos) :: lhs1, ann.pos), ns1)
-    case _ => (s, ns)
   }
 
   // it DOES call procExpr itself!
@@ -186,7 +171,7 @@ object StatementPasses {
       case IfSimple(cond, yes, no, ann) =>
         val (yes1, ns1) = pst(yes, ns)
         val (no1, ns2) = pst(no, ns1)
-        ExpressionPasses.procExpr(f)(false, cond, ns2) match {
+        GenericExpressionPasses.procExpr(f)(false, cond, ns2) match {
           case (Left(cond), ns) => (IfSimple(cond, yes1, no1, ann.pos), ns)
           case (Right((scond, cond)), ns) => (Suite(List(scond, IfSimple(cond, yes1, no1, ann.pos)), ann.pos), ns)
         }
@@ -202,7 +187,7 @@ object StatementPasses {
       case While(cond, body, Some(eelse), ann) =>
         val (body1, ns1) = pst(body, ns)
         val (else1, ns2) = pst(eelse, ns1)
-        ExpressionPasses.procExpr(f)(false, cond, ns2) match {
+        GenericExpressionPasses.procExpr(f)(false, cond, ns2) match {
           case (Left(cond), ns) => (While(cond, body1, Some(else1), ann.pos), ns)
           case (Right((scond, cond)), ns) =>
             val ann = cond.ann.pos
@@ -244,14 +229,14 @@ object StatementPasses {
         }
 
       case Assign(List(l, r), ann) =>
-        val rp = ExpressionPasses.procExpr(f)(lhs = false, r, ns)
-        val lp = ExpressionPasses.procExpr(f)(lhs = true, l, rp._2)
+        val rp = GenericExpressionPasses.procExpr(f)(lhs = false, r, ns)
+        val lp = GenericExpressionPasses.procExpr(f)(lhs = true, l, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(str ++ stl :+ Assign(List(el, er), ann.pos), ann.pos), lp._2)
 
       case CreateConst(name, r, ann) =>
-        val rp = ExpressionPasses.procExpr(f)(lhs = false, r, ns)
+        val rp = GenericExpressionPasses.procExpr(f)(lhs = false, r, ns)
         val (str, er) = procEA(rp._1)
         (Suite(str :+ CreateConst(name, er, ann.pos), ann.pos), rp._2)
 
@@ -279,16 +264,16 @@ object StatementPasses {
         }
 
       case AugAssign(op, lhs, rhs, ann) =>
-        val rp = ExpressionPasses.procExpr(f)(lhs = false, rhs, ns)
-        val lp = ExpressionPasses.procExpr(f)(lhs = true, lhs, rp._2)
+        val rp = GenericExpressionPasses.procExpr(f)(lhs = false, rhs, ns)
+        val lp = GenericExpressionPasses.procExpr(f)(lhs = true, lhs, rp._2)
         val (str, er) = procEA(rp._1)
         val (stl, el) = procEA(lp._1)
         (Suite(stl ++ str :+ AugAssign(op, el, er, ann.pos), ann.pos), ns)
-      case Return(Some(x), ann) => ExpressionPasses.procExpr(f)(false, x, ns) match {
+      case Return(Some(x), ann) => GenericExpressionPasses.procExpr(f)(false, x, ns) match {
         case (Left(e), ns) => (Return(Some(e), ann.pos), ns)
         case (Right((st, e)), ns) => (Suite(List(st, Return(Some(e), e.ann.pos)), ann.pos), ns)
       }
-      case Raise(Some(x), None, ann) => ExpressionPasses.procExpr(f)(false, x, ns) match {
+      case Raise(Some(x), None, ann) => GenericExpressionPasses.procExpr(f)(false, x, ns) match {
         case (Left(e), ns) => (Raise(Some(e), None, ann.pos), ns)
         case (Right((st, e)), ns) => (Suite(List(st, Raise(Some(e), None, e.ann.pos)), ann.pos), ns)
       }
@@ -316,7 +301,7 @@ object StatementPasses {
     }
   }
 
-  def list2option[T](l : List[T]) : Option[T] = l match {
+  private def list2option[T](l : List[T]) : Option[T] = l match {
     case List() => None
     case List(x) => Some(x)
   }
@@ -491,49 +476,6 @@ object StatementPasses {
     (st1, ns1)
   }
 
-  def simplifyIf(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = s match {
-    case If(List((cond, yes)), Some(no), ann) => (IfSimple(cond, yes, no, ann.pos), ns)
-    case If(List((cond, yes)), None, ann) => (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
-    case If((cond, yes) :: t, eelse, ann) =>
-      val (newElse, ns1) = simplifyIf(If(
-        t, eelse,
-        GeneralAnnotation(
-          t.head._2.ann.start,
-          eelse match {
-            case Some(eelse) => eelse.ann.stop
-            case None => t.last._2.ann.stop
-          }
-        )
-      ), ns)
-      (IfSimple(cond, yes, newElse, ann.pos), ns1)
-    case _ => (s, ns)
-  }
-
-  def mkUnsupported(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
-    def mkUnsupportedInner(original: Statement.T, declareVars: List[String], ann: GeneralAnnotation): Unsupported = {
-      new Unsupported(original, declareVars, SimpleAnalysis.childrenS(original)._2, SimpleAnalysis.childrenS(original)._1, ann)
-    }
-    (s match {
-    case Assign(List(_), _) => s
-    case Assign(List(Ident(_, _), _), _) => s
-    case Assign(l, ann) => mkUnsupportedInner(s, l.init.flatMap { case Ident(s, _) => List(s) case _ => List() }, ann.pos)
-    case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, accessibleIdents, isAsync, ann)
-      if decorators.l.nonEmpty || otherKeyword.nonEmpty || otherPositional.nonEmpty || isAsync || returnAnnotation.nonEmpty ||
-        args.exists(x => x.default.nonEmpty || x.paramAnn.nonEmpty || x.kind == ArgKind.Keyword) =>
-      val body1 = mkUnsupportedInner(body, List(), body.ann.pos)
-      FuncDef(name, args.map(a => Parameter(a.name, ArgKind.Positional, None, None, a.ann.pos)), None, None, None, body1,
-        Decorators(List()), accessibleIdents, false, ann.pos)
-    case While(_, _, None, _) => s
-    case While(_, _, Some(Pass(_)), _) => s
-    case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | Break(_) | _: ClassDef | _: AnnAssign |
-      Assert(_, _, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | NonLocal(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
-      ImportAllSymbols(_, _) | Return(_, _) | While(_, _, _, _) => mkUnsupportedInner(s, List(), s.ann.pos)
-    case ImportModule(what, as, _) => mkUnsupportedInner(s, as.toList, s.ann.pos)
-    case ImportSymbol(from, what, as, _) => mkUnsupportedInner(s, as.toList, s.ann.pos)
-    case _ => s
-  }, ns)
-  }
-
   def unSuite(s : Statement.T) : (Statement.T) = {
     @tailrec
     def inner(s : Statement.T) : Statement.T = s match {
@@ -549,320 +491,6 @@ object StatementPasses {
 //    println(s"$s \n -> $s1")
     (inner(s))
   }
-
-  def xPrefixInStatement(x : Statement.T, ns : NamesU) : (Statement.T, NamesU) = {
-    def pref(s : String) = s"x$s"
-    (
-      x match {
-        case CreateConst(name, value, ann) => CreateConst(pref(name), value, ann)
-        case FuncDef(name, args, otherPositional, otherKeyword, returnAnnotation, body, decorators, accessibleIdents, isAsync, ann) =>
-          FuncDef(
-            pref(name),
-            args.map(p => Parameter(pref(p.name), p.kind, p.paramAnn, p.default, p.ann)),
-            otherPositional.map(x => (pref(x._1), x._2)),
-            otherKeyword.map(x => (pref(x._1), x._2)),
-            returnAnnotation, body, decorators, accessibleIdents, isAsync, ann
-          )
-        case ClassDef(name, bases, body, decorators, ann) =>
-          ClassDef(pref(name), bases.map(x => (x._1.map(pref), x._2)), body, decorators, ann)
-        case SimpleObject(name, decorates, fields, ann) =>
-          SimpleObject(pref(name), decorates, fields.map(x => (pref(x._1), x._2)), ann)
-        case NonLocal(l, ann) => NonLocal(l.map(pref), ann)
-        case Global(l, ann) => Global(l.map(pref), ann)
-        case ImportModule(what, as, ann) => ImportModule(what.map(pref), as.map(pref), ann)
-        case ImportAllSymbols(from, ann) => ImportAllSymbols(from.map(pref), ann)
-        case ImportSymbol(from, what, as, ann) => ImportSymbol(from.map(pref), pref(what), as.map(pref), ann)
-        case Try(ttry, excepts, eelse, ffinally, ann) =>
-          Try(ttry, excepts.map(x => (x._1.map(x => (x._1, x._2.map(pref))), x._2)), eelse, ffinally, ann)
-        case u : Unsupported =>
-          new Unsupported(u.original, u.declareVars.map(pref), u.es, u.sts, u.ann)
-        case _ => x
-      }
-      , ns
-    )
-  }
-
-  // change a list of different except clauses to just one parameterless except with clauses implemented as ifelseif
-  // todo: exception object compatibility is not fully implemented ("or a tuple containing an item that is the class
-  //  or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
-  // todo: also must implement named exceptions and del of those a the end of an except clause
-  // todo: also must rethrow an exception if it is not catched
-  def preSimplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case Try(ttry, List((None, x)), eelse, ffinally, ann) =>
-      print("empty except\n")
-      (
-        Try(ttry, List((None, Suite(List(
-          Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos),
-          x
-        ), ann.pos))), eelse, ffinally, ann),
-        ns
-      )
-    case _ => (s, ns)
-  }
-
-  def simplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case Try(ttry, List((None, x)), eelse, ffinally, ann) => (s, ns)
-    case Try(ttry, excepts, eelse, ffinally, ann) =>
-      val ex1 = excepts.map(
-        x => {
-          val body = x._2
-          (
-            LazyLOr(
-              SimpleComparison(Compops.Eq,
-                Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
-                x._1 match {
-                  case Some((e, _)) => Field(e, "__id__", ann.pos)
-                  case None => IntLiteral(1, ann.pos)
-                },
-                ann.pos
-              ),
-              LazyLAnd(
-                SimpleComparison(Compops.Eq,
-                  Field(Field(Ident("current-exception", ann.pos), "__class__", ann.pos), "__id__", ann.pos),
-                  Field(Field(Ident("fakeclasses", ann.pos), "pyTypeClass", ann.pos), "__id__", ann.pos),
-                  ann.pos
-                ),
-                SimpleComparison(Compops.Eq,
-                  Field(Ident("current-exception", ann.pos), "__id__", ann.pos),
-                  x._1 match {
-                    case Some((e, _)) => Field(e, "__id__", ann.pos)
-                    case None => IntLiteral(1, ann.pos)
-                  },
-                  ann.pos
-                ),
-                ann.pos
-              ),
-              ann.pos
-            ),
-            Suite(
-              (x._1.toList.flatMap(x => x._2.toList.map (
-                name => (Assign(List(Ident(name, ann.pos), Ident("current-exception", ann.pos)), ann.pos))
-              ))) ++
-              List(Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos), body),
-              ann.pos
-            )
-          )
-        }
-      )
-      val asIf = if (ex1.isEmpty) Pass(ann.pos) else If(ex1, Some(Pass(ann.pos)), ann.pos)
-      (Try(ttry, List((None, asIf)), eelse, ffinally, ann.pos), ns)
-    case _ => (s, ns)
-  }
-
-  def simplifyWith(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case With(List((cms, target)), body, isAsync, ann) =>
-      assert(!isAsync)
-      val (List(manager, value, hit_except), ns1) =
-        ns(List("manager", "value", "hit_except"))
-      val managerId = Ident(manager, ann.pos)
-      val enter = Field(managerId, "__enter__", ann.pos)
-      val exit = Field(managerId, "__exit__", ann.pos)
-      val code = Suite(
-        List(
-          Assign(List(Ident(manager, ann.pos), cms), ann.pos),
-          Assign(List(
-              Ident(value, ann.pos),
-              CallIndex(
-                true,
-                enter,
-                List(),
-                ann.pos
-              )
-            ),
-            ann.pos
-          ),
-          Assign(List(
-              Ident(hit_except, ann.pos),
-              BoolLiteral(false, ann.pos)
-            ),
-            ann.pos
-          ),
-          Try(
-            target match {
-              case Some(v) =>
-                Suite(List(
-                    Assign(List(v, Ident(value, ann.pos)), ann.pos),
-                    body
-                  ),
-                  ann.pos
-                )
-              case None => body
-            },
-            List(
-              (
-                None,
-                Suite(
-                  List(
-                    Assign(List(
-                        Ident(hit_except, ann.pos),
-                        BoolLiteral(true, ann.pos)
-                      ),
-                      ann.pos
-                    ),
-                    IfSimple(
-                      Unop(
-                        Unops.LNot,
-                        CallIndex(
-                          true,
-                          exit,
-                          List(
-                            (None, Field(Ident("current-exception", ann.pos), "__class__", ann.pos)),
-                            (None, Ident("current-exception", ann.pos)),
-                            (None, NoneLiteral(ann.pos))
-                          ),
-                          ann.pos
-                        ),
-                        ann.pos
-                      ),
-                      Raise(None, None, ann.pos),
-                      Pass(ann.pos),
-                      ann.pos
-                    )
-                  ),
-                  ann.pos
-                )
-              )
-            ),
-            None,
-            Some(
-              IfSimple(
-                Unop(Unops.LNot, Ident(hit_except, ann.pos), ann.pos),
-                Assign(
-                  List(
-                    CallIndex(
-                      true,
-                      exit,
-                      List(
-                        (None, NoneLiteral(ann.pos)),
-                        (None, NoneLiteral(ann.pos)),
-                        (None, NoneLiteral(ann.pos))
-                      ),
-                      ann.pos
-                    )
-                  ),
-                  ann.pos
-                ),
-                Pass(ann.pos),
-                ann.pos
-              )
-            ),
-            ann.pos
-          )
-        ),
-        ann.pos
-      )
-      (code, ns1)
-    case _ => (s, ns)
-  }
-
-  def simplifyAssert(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case Assert(what, param, ann) => (
-      IfSimple(
-        Unop(Unops.LNot, what, ann.pos),
-        Raise(
-          Some(CallIndex(true, Ident("AssertionError", ann.pos), param.toList.map((None, _)), ann.pos)),
-          None,
-          ann.pos
-        ),
-        Pass(ann.pos),
-        ann.pos
-      ),
-      ns
-    )
-    case _ => (s, ns)
-  }
-
-  def simplifyFor(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
-    case For(what, in, body, eelse, false, ann) =>
-      val (List(it, inn), ns1) = ns(List("it", "inn"))
-      (Suite(List(
-        Assign(List(Ident(inn, in.ann.pos), in), in.ann.pos),
-        Assign(List(
-          Ident(it, in.ann.pos),
-          CallIndex(true, Field(Ident(inn, in.ann.pos), "__iter__", in.ann.pos), List(), in.ann.pos)
-        ), in.ann.pos),
-        Try(
-          While(
-            BoolLiteral(true, ann.pos),
-            Suite(
-              List(
-                Assign(
-                  List(
-                    what,
-                    CallIndex(true, Field(Ident(it, in.ann.pos), "__next__", in.ann.pos), List(), in.ann.pos)
-                  ),
-                  what.ann.pos
-                ),
-                body
-              ),
-              body.ann.pos
-            ),
-            None,
-            ann.pos
-          ),
-          List(
-            (Some(Ident("StopIteration", ann.pos), None), eelse.getOrElse(Pass(ann.pos)))
-          ),
-          None,
-          None,
-          ann.pos
-        )
-      ), ann.pos), ns1)
-    case _ => (s, ns)
-  }
-
-
-  def simplifyInheritance(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
-
-    def simplifyInheritance: (Boolean, T, NamesU) => (EAfterPass, NamesU) = ExpressionPasses.procExpr({
-      case (false, Field(obj, name, ann), ns) =>
-        (Left(CallIndex(isCall = true, Ident("eo_getattr", ann.pos), List((None, obj),
-          (None, StringLiteral(List("\"" + name + "\""), ann.pos))), ann.pos)), ns)
-      case (false, CallIndex(_, Ident("getattr", anni), args, annc), ns) =>
-        (Left(CallIndex(isCall = true, Ident("eo_getattr", anni.pos), args, annc.pos)), ns)
-      case (false, CallIndex(_, Ident("setattr", anni), args, annc), ns) =>
-        (Left(CallIndex(isCall = true, Ident("eo_setattr", anni.pos), args, annc.pos)), ns)
-      case (_, e, ns) => (Left(e), ns)
-    })
-
-    def explicitBases(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = s match {
-      case ClassDef(name, bases0, body, decorators, ann) =>
-        val (newBody, ns1) = explicitBases(body, ns)
-        val basesPos = if (bases0.isEmpty) ann.pos else GeneralAnnotation(bases0.head._2.ann.start, bases0.last._2.ann.stop)
-        (ClassDef(name, List(), Suite(List(
-          Assign(List(Ident("eo_bases", basesPos),
-            CollectionCons(CollectionKind.List, bases0.map { case (None, x) => x }, basesPos)), basesPos),
-          newBody),
-          body.ann.pos),
-          decorators, ann.pos), ns1)
-      case _ => (s, ns)
-
-    }
-
-    val texplicitBases = StatementPasses.procStatement(explicitBases)(s, ns)
-    val (s1, ns1) = StatementPasses.procExprInStatement(simplifyInheritance)(texplicitBases._1, texplicitBases._2)
-    (Suite(List(
-      ImportSymbol(List("C3"), "eo_getattr", Some("eo_getattr"), s1.ann.pos),
-      ImportSymbol(List("C3"), "eo_setattr", Some("eo_setattr"), s1.ann.pos),
-      s1
-    ), s1.ann.pos),
-    ns1)
-
-  }
-
-  def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
-    val t1 = StatementPasses.procStatement((a, b) => (a, b))(s, ns)
-    debugPrinter(t1._1, "afterEmptyProcStatement")
-
-    val tsimplifyIf = StatementPasses.procStatement(StatementPasses.simplifyIf)(t1._1, t1._2)
-    debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
-
-    //    val tsimplifyInheritance = simplifyInheritance(tsimplifyIf._1, tsimplifyIf._2)
-    //    debugPrinter(tsimplifyInheritance._1, "afterSimplifyInheritance")
-
-    tsimplifyIf
-  }
-
 
 
 }

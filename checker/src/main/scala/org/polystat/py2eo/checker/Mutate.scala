@@ -2,7 +2,7 @@ package org.polystat.py2eo.checker
 
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
 import org.polystat.py2eo.parser.{Expression, Parse, PrintPython, Statement}
-import org.polystat.py2eo.transpiler.StatementPasses
+import org.polystat.py2eo.transpiler.GenericStatementPasses
 
 object Mutate {
 
@@ -41,7 +41,7 @@ object Mutate {
       case _ => (acc, expr)
     }
 
-    StatementPasses.simpleProcExprInStatementAcc[Int](mutateLiteralHelper)(acc, s)._2
+    GenericStatementPasses.simpleProcExprInStatementAcc[Int](mutateLiteralHelper)(acc, s)._2
   }
 
 
@@ -52,7 +52,7 @@ object Mutate {
       case _ => (acc, expr)
     }
 
-    StatementPasses.simpleProcExprInStatementAcc[Int](mutateNamesHelper)(acc, s)._2
+    GenericStatementPasses.simpleProcExprInStatementAcc[Int](mutateNamesHelper)(acc, s)._2
   }
 
   private def swapParam(s: Statement.T, acc: Int): Statement.T = {
@@ -64,7 +64,7 @@ object Mutate {
       case _ => (acc, expr)
     }
 
-    StatementPasses.simpleProcExprInStatementAcc[Int](swapParamHelper)(acc, s)._2
+    GenericStatementPasses.simpleProcExprInStatementAcc[Int](swapParamHelper)(acc, s)._2
   }
 
 }
