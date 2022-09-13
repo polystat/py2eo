@@ -9,7 +9,7 @@ import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object PrefixIdentsWithX {
   // need this because EO only allows first letters of idents to be small
-  def xPrefixInExpr(e : T) : T = {
+  def apply(e : T) : T = {
     def pref(s : String) = s"x$s"
     e match {
       case Assignment(ident, rhs, ann) => Assignment(pref(ident), rhs, ann)

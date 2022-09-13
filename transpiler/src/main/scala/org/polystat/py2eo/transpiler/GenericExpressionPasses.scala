@@ -9,7 +9,7 @@ import org.polystat.py2eo.parser.Expression.{
 }
 import org.polystat.py2eo.parser.{Expression, GeneralAnnotation, Statement}
 import org.polystat.py2eo.parser.Statement.{Assign, Decorators, For, FuncDef, IfSimple, Pass, Return, Suite}
-import org.polystat.py2eo.transpiler.GenericStatementPasses.{EAfterPass, Names, NamesU, forceAllIfNecessary, forceSt, forceSt2}
+import org.polystat.py2eo.transpiler.GenericStatementPasses.{EAfterPass, Names, NamesU, forceAllIfNecessary, forceSt}
 
 import scala.collection.immutable.HashMap
 
@@ -151,15 +151,20 @@ object GenericExpressionPasses {
     }
   }
 
-  def call2comprehensions(l : List[(Comprehension, T)]): List[Comprehension] = l.map {
+  private def call2comprehensions(l : List[(Comprehension, T)]): List[Comprehension] = l.map {
     case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
     case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
       ForComprehension(a, b, isAsync)
   }
 
-  def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation): List[CallIndex] = l.map{
+  private def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation): List[CallIndex] = l.map{
     case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
     case ForComprehension(what, in, _) =>
       CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
+  }
+
+  private def forceSt2[Acc](e: EAfterPass, ns: Names[Acc]): ((Statement.T, Ident), Names[Acc]) = e match {
+    case Left(e) => forceSt(e, ns)
+    case Right(value) => (value, ns)
   }
 }

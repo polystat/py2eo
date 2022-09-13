@@ -123,11 +123,6 @@ object GenericStatementPasses {
     ((Assign(List(l, e), e.ann.pos), l), ns1)
   }
 
-  def forceSt2[Acc](e: EAfterPass, ns: Names[Acc]): ((Statement.T, Ident), Names[Acc]) = e match {
-    case Left(e) => forceSt(e, ns)
-    case Right(value) => (value, ns)
-  }
-
   def forceAllIfNecessary[Acc](f: (Boolean, T, Names[Acc]) => (EAfterPass, Names[Acc]))
                          (l: List[(Boolean, T)], ns: Names[Acc]): Either[(List[T], Names[Acc]), (List[(Statement.T, Ident)], Names[Acc])] = {
     val (l1, ns1) = l.foldLeft((List[EAfterPass](), ns))((acc, e) => {
@@ -306,7 +301,7 @@ object GenericStatementPasses {
     }
   }
 
-  def list2option[T](l : List[T]) : Option[T] = l match {
+  private def list2option[T](l : List[T]) : Option[T] = l match {
     case List() => None
     case List(x) => Some(x)
   }
@@ -496,18 +491,6 @@ object GenericStatementPasses {
 //    println(s"$s \n -> $s1")
     (inner(s))
   }
-
-
-  def allTheGeneralPasses(debugPrinter: (Statement.T, String) => Unit, s: Statement.T, ns: NamesU): (Statement.T, NamesU) = {
-    val t1 = GenericStatementPasses.procStatement((a, b) => (a, b))(s, ns)
-    debugPrinter(t1._1, "afterEmptyProcStatement")
-
-    val tsimplifyIf = GenericStatementPasses.procStatement(SimplifyIf.simplifyIf)(t1._1, t1._2)
-    debugPrinter(tsimplifyIf._1, "afterSimplifyIf")
-
-    tsimplifyIf
-  }
-
 
 
 }

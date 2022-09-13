@@ -3,7 +3,7 @@ package org.polystat.py2eo.transpiler
 import org.polystat.py2eo.parser.Expression.{StringLiteral, T}
 
 object ConcatStringLiteral {
-  def concatStringLiteral(e : T) : T = {
+  def apply(e : T) : T = {
     def reescape(s : String) : String = {
       val v = s.foldLeft(("", false))(
         (acc, char) =>

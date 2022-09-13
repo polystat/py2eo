@@ -6,7 +6,7 @@ import org.polystat.py2eo.parser.Statement.{Assert, IfSimple, Pass, Raise}
 import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyAssert {
-  def simplifyAssert(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+  def apply(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case Assert(what, param, ann) => (
       IfSimple(
         Unop(Unops.LNot, what, ann.pos),

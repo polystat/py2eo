@@ -3,7 +3,7 @@ package org.polystat.py2eo.transpiler
 import org.polystat.py2eo.parser.Expression.{CallIndex, CollectionCons, CollectionKind, DictCons, Ident, T}
 
 object AddExplicitConstructionOfCollection {
-  def addExplicitConstructorOfCollection(e : T) : T = {
+  def apply(e : T) : T = {
     e match {
       case CollectionCons(kind, l, ann)
         if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
