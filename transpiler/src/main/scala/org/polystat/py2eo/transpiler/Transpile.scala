@@ -51,12 +51,13 @@ object Transpile {
         val y = GenericStatementPasses.procStatement(SimplifyFor.simplifyFor)(y0._1, y0._2)
         debugPrinter(y._1, "afterSimplifyFor")
 
-        try {
+//        try {
           val rmWith = GenericStatementPasses.procStatement(SimplifyWith.simplifyWith)(y._1, y._2)
           debugPrinter(rmWith._1, "afterRmWith")
           val rmAssert = GenericStatementPasses.procStatement(SimplifyAssert.simplifyAssert)(rmWith._1, rmWith._2)
-          debugPrinter(rmAssert._1, "afterRmAssert")
-          val preRmExcepts = GenericStatementPasses.procStatement(SimplifyExceptions.preSimplifyExcepts)(rmAssert._1, rmAssert._2)
+          val rmAnnot = GenericStatementPasses.procStatement(SimplifyAnnotation.simplify)(rmAssert._1, rmAssert._2)
+          debugPrinter(rmAnnot._1, "afterRmAssertAnnot")
+          val preRmExcepts = GenericStatementPasses.procStatement(SimplifyExceptions.preSimplifyExcepts)(rmAnnot._1, rmAnnot._2)
           debugPrinter(preRmExcepts._1, "afterRmExcepts")
           val rmExcepts = GenericStatementPasses.procStatement(SimplifyExceptions.simplifyExcepts)(preRmExcepts._1, preRmExcepts._2)
           debugPrinter(rmExcepts._1, "afterRmExcepts")
@@ -64,7 +65,9 @@ object Transpile {
           debugPrinter(simIf._1, "simplifyIf")
           val simAssList = GenericStatementPasses.procStatement(SimplifyAssignmentList.simplifyAssignmentList)(simIf._1, simIf._2)
           debugPrinter(simAssList._1, "simplifyAssList")
-          val simCompr = GenericStatementPasses.procExprInStatement((SimplifyComprehension.simplifyComprehension))(simAssList._1, simAssList._2)
+          val simAss2Index = GenericStatementPasses.procStatement(SimplifyAssignmentList.simplifyAssignmentList)(simAssList._1, simAssList._2)
+          debugPrinter(simAssList._1, "simplifyAss2Index")
+          val simCompr = GenericStatementPasses.procExprInStatement((SimplifyComprehension.simplifyComprehension))(simAss2Index._1, simAss2Index._2)
           debugPrinter(simCompr._1, "afterSimplifyCollectionComprehension")
           val simForAgain = GenericStatementPasses.procStatement(SimplifyFor.simplifyFor)(simCompr._1, simCompr._2)
           debugPrinter(simForAgain._1, "afterSimForAgain")
@@ -100,7 +103,7 @@ object Transpile {
           ), ann.pos)
           val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
           (eoText.init :+ "  (goto (ap.@)).result > @").mkString("\n")
-        }
+      /*  }
         catch {
           case e: Throwable => {
     //        println(s"Cannot generate executable EO for this python, so generating a EO with the Unsupported object: $e")
@@ -156,7 +159,7 @@ object Transpile {
               .mkString("\n")
 
           }
-        }
+        }*/
       }
     )
   }
