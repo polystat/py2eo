@@ -20,7 +20,7 @@ object SimplifyComprehension {
     })
   }
 
-  def simplifyComprehension(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
+  def apply(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
     if (!lhs) {
       e match {
         case CollectionComprehension(kind, base, l, ann) => {
@@ -35,7 +35,7 @@ object SimplifyComprehension {
           val st = Suite(
             List(
               Assign(List(Ident("collectionAccum", ann.pos), CollectionCons(kind, List(), ann.pos)), ann.pos),
-              SimplifyComprehension.simplifyComprehensionList(inner, l, ann)
+              simplifyComprehensionList(inner, l, ann)
             ),
             ann.pos
           )
@@ -53,7 +53,7 @@ object SimplifyComprehension {
           val st = Suite(
             List(
               Assign(List(Ident("collectionAccum", ann.pos), DictCons(List(), ann.pos)), ann.pos),
-              SimplifyComprehension.simplifyComprehensionList(inner, l, ann)
+              simplifyComprehensionList(inner, l, ann)
             ),
             ann.pos
           )

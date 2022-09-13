@@ -12,7 +12,7 @@ object ExtractAllCalls {
   // possible side effects to a separate statement, i.e., a set of locals assignments, where op with side effects
   // may happen only in a root node of an rhs syntax tree
   // note that, say, binops and almost anything else may also be function calls, because they may be overriden
-  def extractAllCalls(lhs: Boolean, e: T, ns: NamesU): (EAfterPass, NamesU) = {
+  def apply(lhs: Boolean, e: T, ns: NamesU): (EAfterPass, NamesU) = {
     if (lhs) (Left(e), ns) else {
       e match {
         case IntLiteral(_, _) | FloatLiteral(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | DictCons(_, _)

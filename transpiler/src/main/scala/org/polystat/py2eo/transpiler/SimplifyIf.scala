@@ -5,11 +5,11 @@ import org.polystat.py2eo.parser.Statement.{If, IfSimple, Pass}
 import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyIf {
-  def simplifyIf(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = s match {
+  def apply(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = s match {
     case If(List((cond, yes)), Some(no), ann) => (IfSimple(cond, yes, no, ann.pos), ns)
     case If(List((cond, yes)), None, ann) => (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
     case If((cond, yes) :: t, eelse, ann) =>
-      val (newElse, ns1) = SimplifyIf.simplifyIf(If(
+      val (newElse, ns1) = SimplifyIf.apply(If(
         t, eelse,
         GeneralAnnotation(
           t.head._2.ann.start,

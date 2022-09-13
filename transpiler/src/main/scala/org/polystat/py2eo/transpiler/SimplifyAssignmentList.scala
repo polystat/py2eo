@@ -6,7 +6,7 @@ import org.polystat.py2eo.parser.Statement.{Assign, Suite}
 import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyAssignmentList {
-  def simplifyAssignmentList(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+  def apply(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case Assign(l, ann) if l.size > 2 =>
       val lhs = l.init
       val rhs = l.last

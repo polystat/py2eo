@@ -6,7 +6,7 @@ import org.polystat.py2eo.parser.Statement.{Assign, IfSimple, Pass, Raise, Suite
 import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyWith {
-  def simplifyWith(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+  def apply(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case With(List((cms, target)), body, isAsync, ann) =>
       assert(!isAsync)
       val (List(manager, value, hit_except), ns1) =

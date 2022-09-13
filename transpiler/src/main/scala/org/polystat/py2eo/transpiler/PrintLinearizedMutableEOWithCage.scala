@@ -69,7 +69,7 @@ object PrintLinearizedMutableEOWithCage {
     }
   }
 
-  def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
+  private def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
     case Field(whose, name, _) => seqOfFields(whose).map(_ :+ name)
 //    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
     case Ident(name, _) => Some(List(name))

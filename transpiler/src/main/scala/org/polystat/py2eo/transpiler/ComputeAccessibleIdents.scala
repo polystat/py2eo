@@ -12,7 +12,7 @@ import AnalysisSupport.foldSS
 import scala.collection.immutable.HashMap
 
 object ComputeAccessibleIdents {
-  def classifyVariablesAssignedInFunctionBody(args : List[Parameter], body : Statement.T)
+  private def classifyVariablesAssignedInFunctionBody(args : List[Parameter], body : Statement.T)
   : HashMap[String, (VarScope.T, GeneralAnnotation)] = {
     type H = HashMap[String, (VarScope.T, GeneralAnnotation)]
     def dontVisitOtherBlocks(s : Statement.T) : Boolean = s match {
@@ -57,7 +57,7 @@ object ComputeAccessibleIdents {
     args.foldLeft(allNonLocalAndGlobalAndLocalNames)((h, name) => h.+((name.name, (VarScope.Arg, name.ann))))
   }
 
-  def computeAccessibleIdentsF(upperVars : HashMap[String, (VarScope.T, GeneralAnnotation)], f : FuncDef) : FuncDef = {
+  private def computeAccessibleIdentsF(upperVars : HashMap[String, (VarScope.T, GeneralAnnotation)], f : FuncDef) : FuncDef = {
     val v = ComputeAccessibleIdents.classifyVariablesAssignedInFunctionBody(f.args, f.body)
     val vUpper = upperVars.map(
       x => if (x._2._1 == VarScope.Local || x._2._1 == VarScope.Arg) (x._1, (VarScope.ImplicitNonLocal, x._2._2)) else x

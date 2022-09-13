@@ -6,7 +6,7 @@ import org.polystat.py2eo.parser.Statement.{Assign, For, Pass, Suite, Try, While
 import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyFor {
-  def simplifyFor(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
+  def apply(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case For(what, in, body, eelse, false, ann) =>
       val (List(it, inn), ns1) = ns(List("it", "inn"))
       (Suite(List(
