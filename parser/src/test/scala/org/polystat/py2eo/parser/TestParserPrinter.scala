@@ -30,9 +30,8 @@ final class TestParserPrinter {
 
     val testsDirectory = Directory(cpython / "Lib" / "test")
     val tests = testsDirectory.deepFiles.filter(_.extension == "py")
-    val whitelisted = tests.filter(test => blacklisted(test.name))
 
-    val futures = for {test <- whitelisted} yield Future {
+    val futures = for {test <- tests if !blacklisted(test.name)} yield Future {
       Parse(test).map(PrintPython.print).fold(fail())(test writeAll _)
     }
 
