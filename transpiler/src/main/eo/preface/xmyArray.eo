@@ -9,6 +9,7 @@
 +alias xfakeclasses preface.xfakeclasses
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
++alias xAssertionError preface.xAssertionError
 
 [] > xmyArray
   [initValue] > ap
@@ -130,6 +131,13 @@
                     stackUp.forward ((goto (xStopIteration.ap.@)).result)
                     stackUp.forward (return (value.get (pos)))
                   123
+        [] > xsetAtIndex
+          [self key val] > ap
+            [stackUp] > @
+              seq > @
+                stdout "xsetAtIndex not supported for array\n"
+                stackUp.forward (goto (xAssertionError.ap.@))
+                0
         [] > x__iter__
           [self] > ap
             [stackUp] > @

@@ -8,6 +8,7 @@
 +alias mkCopy preface.mkCopy
 +alias pair preface.pair
 +alias xmyArray preface.xmyArray
++alias xAssertionError preface.xAssertionError
 
 [] > xmyMap
   [value] > wrapper
@@ -38,6 +39,20 @@
                         i.write (i.plus 1)
                 stdout "get left the loop\n"
                 0
+        [key] > get
+          memory 0 > i
+          cage 0 > result
+          seq > @
+            (i.lt (value.length)).while
+              [unused]
+                seq > @
+                  if.
+                    (value.get i).value.fst.eq key
+                    result.write ((value.get i).value.snd)
+                    0
+                  i.write (i.plus 1)
+                  0
+            result
         [] > xget-internal
           [key] > ap
             [stackUp] > @
@@ -90,6 +105,14 @@
                 self.value.write (tmp.copy.with (wrapper (pair ((kv.copy)) ((vv.copy)))))
                 stackUp.forward (return 0)
                 123
+        [] > xsetAtIndex
+          [self key val] > ap
+            [stackUp] > @
+              (goto ((x__contains__.ap self key).@)).result.if > @
+                seq
+                  stdout "NOT IMPLEMENTED\n"
+                  stackUp.forward (goto (xAssertionError.ap.@))
+                stackUp.forward (goto ((xadd.ap self key val).@))
         [] > xappend
           [self key] > ap
             [stackUp] > @

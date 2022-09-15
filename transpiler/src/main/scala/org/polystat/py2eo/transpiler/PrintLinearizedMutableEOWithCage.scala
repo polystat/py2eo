@@ -139,8 +139,6 @@ object PrintLinearizedMutableEOWithCage {
           )
       case NonLocal(_, _) => List()
       case f: FuncDef => "write." :: indent(f.name :: printFun(List(), f))
-      case AnnAssign(lhs, rhsAnn, Some(rhs), ann) =>
-        printSt(Assign(List(lhs, rhs), ann.pos))
       case AugAssign(op, lhs, rhs, ann) =>
         List(s"(${pe(lhs)}).${augop(op)} (${pe(rhs)})")
       case Assign(List(lhs, rhs@Expression.Binop(op, _, _, _)), ann) if
