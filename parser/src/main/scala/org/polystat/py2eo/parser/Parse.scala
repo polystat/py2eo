@@ -29,7 +29,7 @@ object Parse {
    * and print debug output with the given debug printer
    */
   def apply(file: File, debugPrinter: DebugPrinter): Option[Stmt] = {
-    Try(file.slurp).map(apply(_, debugPrinter)).toOption.flatten
+    Try(file.slurp).toOption.flatMap(apply(_, debugPrinter))
   }
 
   /**
