@@ -61,6 +61,6 @@ final class CPythonTests extends Commons {
   }
 
   @Test def bCheckEOSyntax(): Unit = {
-    checkEOSyntaxInDirectory(dirPath.toString)
+    checkEOSyntaxInDirectory(Directory(dirPath / "afterParser").toString)
   }
 }
