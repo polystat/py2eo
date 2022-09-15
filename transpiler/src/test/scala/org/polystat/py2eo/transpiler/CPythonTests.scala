@@ -17,6 +17,11 @@ final class CPythonTests extends Commons {
 
   private val dirPath: Path = s"$testsPrefix/testParserPrinter"
   private val cpythonLink = "https://github.com/python/cpython"
+  private val blacklisted = Set(
+    "test_unicode_identifiers.py", "test_source_encoding.py",
+    "badsyntax_3131.py", "badsyntax_pep3120.py",
+    "module_koi8_r.py", "module_iso_8859_1.py"
+  )
 
   @Test def aParserPrinterOnCPython(): Unit = {
     val dir = Directory(dirPath)
@@ -37,12 +42,12 @@ final class CPythonTests extends Commons {
     val testsDir = Directory(cpython / "Lib" / "test")
     val tests = testsDir.deepFiles.filter(_.extension == "py")
 
-    val futures = for {test <- tests} yield {
+    val futures = for {test <- tests if !blacklisted(test.name)} yield {
       Future {
         val module = test.stripExtension
         println(s"transpiling $module")
 
-        Try(test.slurp).map(Transpile(module, _)).get match {
+        Try(test.slurp).toOption.flatMap(Transpile(module, _)) match {
           case None => fail()
           case Some(transpiled) =>
             val result = File(eoFiles / s"$module.eo")
