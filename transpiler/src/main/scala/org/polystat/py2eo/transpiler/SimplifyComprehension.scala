@@ -24,6 +24,7 @@ object SimplifyComprehension {
     if (!lhs) {
       e match {
         case CollectionComprehension(kind, base, l, ann) => {
+          println(s"simplify comprehension $e")
           val inner = Assign(List(CallIndex(
             true,
             Field(Ident("collectionAccum", ann.pos), "append", ann.pos),

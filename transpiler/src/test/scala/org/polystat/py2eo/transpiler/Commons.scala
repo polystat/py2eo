@@ -52,7 +52,7 @@ trait Commons {
     }
 
     val name = test.getName.replace(".yaml", "")
-    Transpile(name, Transpile.Parameters(wrapInAFunction = false), yaml2python(test)) match {
+    Transpile.transpileOption(debugPrinter(test))(name, Transpile.Parameters(wrapInAFunction = false), yaml2python(test)) match {
       case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) =>
         val output = new FileWriter(results + File.separator + name + ".eo")

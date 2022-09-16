@@ -152,15 +152,15 @@ object GenericExpressionPasses {
   }
 
   private def call2comprehensions(l : List[(Comprehension, T)]): List[Comprehension] = l.map {
-    case (IfComprehension(_), CallIndex(_, _, List((_, x)), _)) => IfComprehension(x)
-    case (ForComprehension(_, _, isAsync), CallIndex(_, _, List((_, a), (_, b)), _)) =>
+    case (IfComprehension(_), CollectionCons(_, List(x), _)) => IfComprehension(x)
+    case (ForComprehension(_, _, isAsync), CollectionCons(_, List(a, b), _)) =>
       ForComprehension(a, b, isAsync)
   }
 
-  private def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation): List[CallIndex] = l.map{
-    case IfComprehension(cond) => CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, cond)), ann.pos)
+  private def comprehensions2calls(l : List[Comprehension], ann : GeneralAnnotation): List[T] = l.map{
+    case IfComprehension(cond) => CollectionCons(CollectionKind.Tuple, List(cond), ann.pos)
     case ForComprehension(what, in, _) =>
-      CallIndex(isCall = true, NoneLiteral(ann.pos), List((None, what), (None, in)), ann.pos)
+      CollectionCons(CollectionKind.Tuple, List(what, in), ann.pos)
   }
 
   private def forceSt2[Acc](e: EAfterPass, ns: Names[Acc]): ((Statement.T, Ident), Names[Acc]) = e match {
