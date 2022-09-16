@@ -319,7 +319,10 @@ object MapStatements {
 
   def mapImportFrom(c: PythonParser.Import_fromContext): Statement.T = {
     val nprefixDots = c.ELLIPSIS().size() * 3 + c.DOT().size()
-    val from = List.fill(nprefixDots)(".") ++ mapDottedName(c.dotted_name())
+
+    val dottedName = mapDottedName(c.dotted_name())
+    val from = if (dottedName == Nil) List(".") else List.fill(nprefixDots)("") ++ dottedName
+
     if (c.import_from_targets().STAR() != null) {
       ImportAllSymbols(from, ga(c))
     } else {
