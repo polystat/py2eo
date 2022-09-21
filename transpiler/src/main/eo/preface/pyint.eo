@@ -1,0 +1,241 @@
++package preface
++alias pybool preface.pybool
++alias pyfloat preface.pyfloat
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias xfakeclasses preface.xfakeclasses
++alias return preface.return
++alias xZeroDivisionError preface.xZeroDivisionError
+
+[val] > pyint
+
+  memory val > value
+
+  xfakeclasses.pyIntClass > x__class__
+
+  [x] > with-value
+    pyint x > @
+
+  [x] > eq
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        ((xfakeclasses.has-type x (xfakeclasses.pyIntClass)).not).and
+          ((xfakeclasses.has-type x (xfakeclasses.pyFloatClass)).not).and ((xfakeclasses.has-type x (xfakeclasses.pyComplexClass)).not)
+        pybool FALSE
+        if.
+          (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+          pybool (value.eq (x.value))
+          p.fst.eq (p.snd)
+
+  [x] > neq
+    (eq x).not > @
+
+  [x] > less
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pybool (value.lt (x.value))
+        p.fst.less (p.snd)
+
+  [x] > leq
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pybool (value.lte (x.value))
+        p.fst.leq (p.snd)
+
+  [x] > greater
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pybool (value.gt (x.value))
+        p.fst.greater (p.snd)
+
+  [x] > geq
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pybool (value.gte (x.value))
+        p.fst.geq (p.snd)
+
+  [x] > pow
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.pow (x.value))
+        p.fst.pow (p.snd)
+
+  [] > bitwise-not
+    pyint ((value.as-bytes.not).as-int) > @
+
+  [x] > and
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.and (x.value))
+        p.fst.and (p.snd)
+
+  [x] > or
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.or (x.value))
+        p.fst.or (p.snd)
+
+  [x] > xor
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.xor (x.value))
+        p.fst.xor (p.snd)
+
+  [x] > add
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.plus (x.value))
+        p.fst.add (p.snd)
+
+  [x] > mul
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.times (x.value))
+        p.fst.mul (p.snd)
+
+  [x] > div
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        (x.value.eq 0).if
+          seq
+            stdout "division by zero\n"
+            (goto (xZeroDivisionError.ap.@)).result
+          (return (pyint (value.div (x.value))))
+        p.fst.div (p.snd)
+
+  [x] > float-div
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        (x.value.eq 0).if
+          seq
+            stdout "division by zero\n"
+            (goto (xZeroDivisionError.ap.@)).result
+          (return (pyfloat (value.as-float.div (x.value.as-float))))
+        p.fst.float-div (p.snd)
+
+  [x] > mod
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.mod (x.value))
+        p.fst.mod (p.snd)
+
+  [x] > sub
+    xfakeclasses.convert (pyint value) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
+        pyint (value.minus (x.value))
+        p.fst.sub (p.snd)
+
+  [x] > left
+    pyint (value.left (x.value)) > @
+
+  [x] > right
+    pyint (value.right (x.value)) > @
+
+  # Negation of $
+  [] > neg
+    pyint (value.neg) > @
+
+  [x] > aug-add
+    seq > @
+      value.write (value.plus (x.value))
+      value
+
+  [x] > aug-sub
+    seq > @
+      value.write (value.minus (x.value))
+      value
+
+  [x] > aug-mul
+    seq > @
+      value.write (value.times (x.value))
+      value
+
+  [x] > aug-div
+    seq > @
+      value.write (value.div (x.value))
+      value
+
+  [x] > aug-mod
+    seq > @
+      value.write (value.mod (x.value))
+      value
+
+  [x] > aug-left
+    seq > @
+      value.write (value.left (x.value))
+      value
+
+  [x] > aug-right
+    seq > @
+      value.write (value.right (x.value))
+      value
+
+  [x] > aug-and
+    seq > @
+      value.write (value.and (x.value))
+      value
+
+  [x] > aug-or
+    seq > @
+      value.write (value.or (x.value))
+      value
+
+  [x] > aug-xor
+    seq > @
+      value.write (value.xor (x.value))
+      value
+
+  [x] > aug-pow
+    seq > @
+      value.write (value.pow (x.value))
+      value
+
+  [] > as-string
+    value.as-string > @
+
+  [] > as-float
+    pyfloat (value.as-float) > @
+
+  [] > force
+    value.write val > @
+
+  [] > xto-int
+    [] > ap
+      [stackUp] > @
+        seq > @
+          stackUp.forward (return (pyint value))
+          123
+
+  seq > @
+    stdout (sprintf "dataizing value %d\n" value)
+    value
+

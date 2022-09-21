@@ -1,0 +1,82 @@
++package preface
++alias xfakeclasses preface.xfakeclasses
++alias pybool preface.pybool
++alias pyfloat preface.pyfloat
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias return preface.return
+
+[xreal ximag] > pycomplex
+
+  xfakeclasses.pyComplexClass > x__class__
+
+  [x] > eq
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
+        pybool ((xreal.eq (x.xreal)).and (ximag.eq (x.ximag)))
+        p.fst.eq (p.snd)
+
+  [x] > neq
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
+        pybool ((eq x).not)
+        p.fst.neq (p.snd)
+
+  [x] > pow
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
+        pycomplex (pyfloat 0.0) (pyfloat 0.0)
+        p.fst.pow (p.snd)
+
+  [x] > float-div
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
+        []
+          p.fst.mul (pycomplex (x.xreal) (x.ximag.neg)) > num
+          ((x.xreal.mul (x.xreal)).add (x.ximag.mul (x.ximag))) > denom
+          return (pycomplex ((num.xreal.float-div denom).result) ((num.ximag.float-div denom).result)) > @
+        p.fst.float-div (p.snd)
+
+  [x] > add
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
+        pycomplex (xreal.add (x.xreal)) (ximag.add (x.ximag))
+        p.fst.add (p.snd)
+
+  [x] > mul
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
+        pycomplex
+          ((xreal.mul (x.xreal)).sub (ximag.mul (x.ximag)))
+          ((xreal.mul (x.ximag)).add (ximag.mul (x.xreal)))
+        p.fst.mul (p.snd)
+
+  [x] > sub
+    xfakeclasses.convert (pycomplex xreal ximag) x > p
+    seq > @
+      if.
+        (xfakeclasses.has-type x (xfakeclasses.pyComplexClass))
+        pycomplex (xreal.sub (x.xreal)) (ximag.sub (x.ximag))
+        p.fst.sub (p.snd)
+
+  [] > force
+    seq > @
+      xreal
+      ximag
+      TRUE
+
+  seq > @
+    stdout (sprintf "dataizing complex %f + j%f\n" xreal ximag)
+    TRUE

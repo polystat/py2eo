@@ -51,9 +51,23 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src/main/scala</sourceDirectory>
-        <testSourceDirectory>src/test/scala</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <skip>false</skip>
+                    <resources>
+                        <resource>
+                            <directory>src/main/resources/</directory>
+                            <includes>
+                                <include>org/polystat/py2eo/checker/head.html</include>
+                            </includes>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
@@ -111,7 +125,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.polystat.py2eo.checker.Checker</mainClass>
+                            <mainClass>org.polystat.py2eo.checker.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

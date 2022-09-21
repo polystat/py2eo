@@ -1,0 +1,20 @@
++package preface
++alias return preface.return
++alias xmyArray preface.xmyArray
+
+[] > xmap
+  [f l] > ap
+    [stackUp] > @
+      (goto ((xmyArray.ap (*)).@)).result > ans
+      memory 0 > i
+      seq > @
+        (i.lt (l.value.length)).while
+          [unused]
+            (goto ((f.ap (l.value.get i)).@)).result > to-append
+            seq > @
+              (goto ((ans.xappend.ap ans to-append).@)).result
+              i.write (i.plus 1)
+              123
+        stackUp.forward (return ans)
+        123
+

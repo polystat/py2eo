@@ -1,0 +1,21 @@
+enabled: True
+python: |
+  def for_try_continue_else_finally():
+    res = []
+    for num in [1, 2, 3]:
+      try:
+        result = num // 0
+      except ZeroDivisionError:
+        print("Sorry ! You are dividing by zero ")
+        res.append(10)
+        continue
+      else:
+        pass
+        res.append(11)
+      finally:
+        res.append(num)
+        if len(res) == 2:
+          break
+        res.append(13)
+    
+    return res == [10, 1]

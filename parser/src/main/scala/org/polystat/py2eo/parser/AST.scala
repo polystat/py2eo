@@ -285,7 +285,7 @@ object AugOps extends Enumeration {
 
 object VarScope extends Enumeration {
   type T = Value
-  val Local, NonLocal, ImplicitNonLocal, Arg, Global = Value
+  val Local, NonLocal, ImplicitNonLocal, Arg, Global, ExceptName = Value
 }
 
 object ArgKind extends Enumeration {

@@ -1,11 +1,12 @@
 package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{
-  Binop, Binops, BoolLiteral, CallIndex, CollectionCons, Compops, Cond, Field, FloatLiteral, FreakingComparison,
-  IntLiteral, LazyLAnd, LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
+  Binop, Binops, BoolLiteral, CallIndex, CollectionCons, CollectionKind, Compops, Cond,
+  DictCons, Field, FloatLiteral, FreakingComparison, IntLiteral, LazyLAnd,
+  LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
   UnsupportedExpr
 }
-import org.polystat.py2eo.parser.{Expression, GeneralAnnotation, Statement, VarScope}
+import org.polystat.py2eo.parser.{AugOps, Expression, GeneralAnnotation, Statement, VarScope}
 import org.polystat.py2eo.parser.Statement.{
   Assign, Decorators, FuncDef, IfSimple, ImportAllSymbols, ImportModule, Pass, SimpleObject, Suite, Unsupported, While
 }
@@ -19,13 +20,19 @@ object PrintEO {
   type Text = List[String]
 
   def binop(op : Binops.T): String = op match {
+    case Binops.Pow => "pow"
     case Binops.Plus => "add"
     case Binops.Minus => "sub"
     case Binops.Mul => "mul"
-    case Binops.Div => "div"
+    case Binops.FloorDiv => "div"
+    case Binops.Div => "float-div"
     case Binops.And => "and"
     case Binops.Or => "or"
+    case Binops.Xor => "xor"
     case Binops.Mod => "mod"
+    case Binops.Shl => "left"
+    case Binops.Shr => "right"
+    case Binops.And => "and"
   }
 
   def compop(t: Compops.T): String = t match {
@@ -39,26 +46,62 @@ object PrintEO {
 
   def unop(t: Unops.T): String = t match {
     case Unops.Minus => ".neg"
-    case Unops.Neg => ".neg"
+    case Unops.Neg => ".bitwise-not"
     case Unops.LNot => ".not"
     case Unops.Plus => ""
+  }
+
+  def augop(t : AugOps.T) : String = t match {
+    case AugOps.Plus => "aug-add"
+    case AugOps.Minus => "aug-sub"
+    case AugOps.Mul => "aug-mul"
+    case AugOps.At => ???
+    case AugOps.Div => ???
+    case AugOps.Mod => "aug-mod"
+    case AugOps.And => "aug-and"
+    case AugOps.Or => "aug-or"
+    case AugOps.Xor => "aug-xor"
+    case AugOps.Shl => "aug-left"
+    case AugOps.Shr => "aug-right"
+    case AugOps.Pow => "aug-pow"
+    case AugOps.FloorDiv => "aug-div"
   }
 
   def printExpr(value : T) : String = {
     def e = printExpr _
     value match {
-      case CollectionCons(kind, l, _) => "(* " + l.map(e).mkString(space) + crb
-      case NoneLiteral(_) => "\"None: is there a None literal in the EO language?\"" // todo: see <<-- there
-      case IntLiteral(value, _) => value.toString()
-      case FloatLiteral(value, _) => value.toString
+      case CollectionCons(kind, l, _)
+        if kind == CollectionKind.List || kind == CollectionKind.Tuple =>
+          "(*" + l.map(x => " " + e(x)).mkString + crb
+      case CollectionCons(CollectionKind.Set, l, _) =>
+        val elts = l.map(k => s" (pair ${e(k)} (pyint 0))").mkString("")
+        (s"((*${elts}))")
+      case DictCons(l, ann) =>
+        val elts = l.map{
+          case Left((k, v)) => s" (pair ${e(k)} ${e(v)})"
+        }.mkString("")
+        (s"((*${elts}))")
+      case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")" // todo: see <<-- there
+      case IntLiteral(value, _) => s"(pyint $value)"
+      case FloatLiteral(value, _) => s"(pyfloat $value)"
       case StringLiteral(List(value), _) =>
-        if (value == "") "\"\"" else // todo: very dubious . Value must not be an empty string
+        if (value == "") "(pystring \"\")" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'') {
-          "\"" + value + "\""
-        } else { value }
-      case BoolLiteral(value, _) => if (value) "TRUE" else "FALSE"
+          "(pystring \"" + value + "\")"
+        } else { s"(pystring $value)" }
+      case BoolLiteral(value, _) =>
+        val v = if (value) "TRUE" else "FALSE"
+        s"(pybool $v)"
       //    case NoneLiteral(, _) =>
       case Binop(op, l, r, _) =>  orb + e(l) + "." + binop(op) + space + e(r) + crb
+      case SimpleComparison(op, l, r, ann) if (op == Compops.Is || op == Compops.IsNot) =>
+        val l1 = Field(l, "x__id__", ann.pos)
+        val r1 = Field(r, "x__id__", ann.pos)
+        printExpr(SimpleComparison(if (op == Compops.Is) Compops.Eq else Compops.Neq, l1, r1, ann.pos))
+      case SimpleComparison(op, l, r, _) if op == Compops.In =>
+        s"(${e(r)}.contains-hack ${e(l)})"
+      case SimpleComparison(op, l, r, _) if op == Compops.NotIn =>
+        s"((${e(r)}.contains-hack ${e(l)}).not)"
       case SimpleComparison(op, l, r, _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
       case FreakingComparison(List(op), List(l, r), _) => orb + e(l) + "." + compop(op) + space + e(r) + crb
       case LazyLAnd(l, r, _) =>  orb + e(l) + ".and " + e(r) + crb
@@ -74,11 +117,11 @@ object PrintEO {
       case CallIndex(isCall, whom, args, _) if !isCall && args.size == 1 =>
         orb + e(whom) + ".get " + e(args(0)._2) + crb
       case Field(whose, name, _) => orb + e(whose) + "." + name + crb
-      case Cond(cond, yes, no, _) => orb + e(cond) + ".if " + e(yes) + space + e(no) + crb
+      case Cond(cond, yes, no, _) => orb + e(cond) + ".as-bool.if " + e(yes) + space + e(no) + crb
       case CallIndex(true, whom, args, _)  =>
-        "((" + e(whom) + crb + ".apply" +
+        "((" + e(whom) + crb + ".ap" +
           // todo: empty arg list hack
-          ((" raiseme" :: args.map{case (None, ee) => " (" + e(ee) + crb}).mkString("")) +
+          ((args.map{case (None, ee) => " (" + e(ee) + crb}).mkString("")) +
         crb
     }
   }
@@ -94,7 +137,7 @@ object PrintEO {
           "write." ::
             indent(
               name :: "[]" :: indent(
-                l.map{ case (name, _) => "cage > " + name } ++ (
+                l.map{ case (name, _) => "cage 0 > " + name } ++ (
                   "seq > initFields" :: indent(l.map{case (name, value) => s"$name.write " + printExpr(value)})
                   ) ++
                   decorates.toList.map(e => s"${printExpr(e)} > @")
@@ -106,8 +149,6 @@ object PrintEO {
       case IfSimple(cond, yes, no, _) =>
         List(printExpr(cond) + ".if") ++ indent(s(yes)) ++ indent(s(no))
       // todo: a hackish printer for single integers only!
-      case Assign(List(CallIndex(true, Expression.Ident("print", _), List((None, n)), _)), _) =>
-        List("stdout (sprintf \"%d\\n\" %s)".format(printExpr(n)))
       case Assign(List(e@UnsupportedExpr(t, value)), _) => List(printExpr(e))
       case Assign(List(c@CallIndex(true, whom, args, _)), ann) =>
         s(Assign(List(Expression.Ident("bogusForceDataize", new GeneralAnnotation()), c), ann.pos))
@@ -130,7 +171,7 @@ object PrintEO {
         val body1 = printSt(body)
         List(s"$name.write") ++
           indent(s"[$args1]" ::
-            indent(locals.map(name => s"memory > $name").toList ++ List(decoratesSeq) ++ indent(body1)))
+            indent(locals.map(name => s"memory 0 > $name").toList ++ List(decoratesSeq) ++ indent(body1)))
       case u : Unsupported =>
         val e1 = CallIndex(true, Expression.Ident(unsupported, new GeneralAnnotation()), u.es.map(e => (None, e._2)), u.ann.pos)
         val head = printExpr(e1)
@@ -143,6 +184,7 @@ object PrintEO {
     "+package org.eolang",
     "+alias org.eolang.txt.sprintf",
     "+alias org.eolang.io.stdout",
+    "+alias pyint preface.pyint",
     "+junit",
     ""
   )
@@ -153,9 +195,9 @@ object PrintEO {
       "[] > " + moduleName,
       Ident + "[args...] > unsupported",
       Ident + "[args...] > xunsupported",
-      Ident + "memory > bogusForceDataize",
-      Ident + "memory > xbogusForceDataize",
-      Ident + "memory > xhack",
+      Ident + "memory 0 > bogusForceDataize",
+      Ident + "memory 0 > xbogusForceDataize",
+      Ident + "memory 0 > xhack",
       Ident + decoratesSeq
     ) ++
     indent(indent(printSt(st)))

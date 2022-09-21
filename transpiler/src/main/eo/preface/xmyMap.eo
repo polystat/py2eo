@@ -1,0 +1,195 @@
++package preface
++alias cage org.eolang.cage
++alias pyint preface.pyint
++alias pybool preface.pybool
++alias return preface.return
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias mkCopy preface.mkCopy
++alias pair preface.pair
++alias xmyArray preface.xmyArray
++alias xAssertionError preface.xAssertionError
+
+[] > xmyMap
+  [value] > wrapper
+  pyint 16 > x__id__
+  [initValue] > ap
+    [stackUp] > @
+      cage result > pResult
+      [] > result
+        cage (*) > value
+        xmyMap > x__class__
+        [] > xlength
+          [self] > ap
+            [stackUp] > @
+              seq > @
+                stackUp.forward (return (pyint (self.value.length)))
+                123
+        [] > xget
+          [self key] > ap
+            [stackUp] > @
+              memory 0 > i
+              seq > @
+                (i.lt (self.value.length)).while
+                  [unused]
+                    seq > @
+                      if.
+                        (self.value.get i).value.fst.eq key
+                        stackUp.forward (return ((self.value.get i).value.snd))
+                        i.write (i.plus 1)
+                stdout "get left the loop\n"
+                0
+        [key] > get
+          memory 0 > i
+          cage 0 > result
+          seq > @
+            (i.lt (value.length)).while
+              [unused]
+                seq > @
+                  if.
+                    (value.get i).value.fst.eq key
+                    result.write ((value.get i).value.snd)
+                    0
+                  i.write (i.plus 1)
+                  0
+            result
+        [] > xget-internal
+          [key] > ap
+            [stackUp] > @
+              memory 0 > i
+              seq > @
+                (i.lt (value.length)).while
+                  [unused]
+                    seq > @
+                      if.
+                        (value.get i).value.fst.eq key
+                        stackUp.forward (return ((value.get i).value.snd))
+                        i.write (i.plus 1)
+                stdout "get left the loop\n"
+                0
+        [] > x__contains__
+          [self key] > ap
+            [stackUp] > @
+              memory 0 > i
+              seq > @
+                (i.lt (self.value.length)).while
+                  [unused]
+                    seq > @
+                      if.
+                        (self.value.get i).value.fst.eq key
+                        stackUp.forward (return (pybool TRUE))
+                        i.write (i.plus 1)
+                stdout "c1\n"
+                stackUp.forward (return (pybool FALSE))
+        [elt] > contains-hack
+          seq > result
+            stdout (sprintf "len = %d\n" (value.length))
+            value.reduce
+              FALSE
+              [acc item]
+                seq > @
+                  acc.or ((elt.eq (item.value.fst)).value)
+          seq > @
+            stdout (sprintf "len = %d\n" (value.length))
+            pybool result
+        [] > xadd
+          [self key val] > ap
+            [stackUp] > @
+              seq > @
+                (goto ((x__contains__.ap self key).@)).result.if
+                  stackUp.forward (return 0)
+                  0
+                mkCopy (self.value) > tmp
+                mkCopy (key) > kv
+                mkCopy (val) > vv
+                self.value.write (tmp.copy.with (wrapper (pair ((kv.copy)) ((vv.copy)))))
+                stackUp.forward (return 0)
+                123
+        [] > xsetAtIndex
+          [self key val] > ap
+            [stackUp] > @
+              (goto ((x__contains__.ap self key).@)).result.if > @
+                seq
+                  stdout "NOT IMPLEMENTED\n"
+                  stackUp.forward (goto (xAssertionError.ap.@))
+                stackUp.forward (goto ((xadd.ap self key val).@))
+        [] > xappend
+          [self key] > ap
+            [stackUp] > @
+              stackUp.forward (goto ((xadd.ap self key (pyint 0)).@)) > @
+        [] > xclear
+          [self] > ap
+            [stackUp] > @
+              seq > @
+                self.value.write (*)
+                stackUp.forward (return 0)
+                123
+        [] > xkeys
+          [self] > ap
+            [stackUp] > @
+              (goto ((xmyArray.ap (*)).@)).result > accum
+              memory 0 > i
+              seq > @
+                (i.lt (value.length)).while
+                  [unused]
+                    (self.value.get i).value.fst > x
+                    seq > @
+                      (goto ((accum.xappend.ap accum x).@)).result
+                      i.write (i.plus 1)
+                      0
+                stdout (sprintf "keys len = %d\n" (accum.value.length))
+                stackUp.forward (return accum)
+                0
+        [] > xkeys-internal
+          [] > ap
+            [stackUp] > @
+              (goto ((xmyArray.ap (*)).@)).result > accum
+              memory 0 > i
+              seq > @
+                (i.lt (value.length)).while
+                  [unused]
+                    (value.get i).value.fst > x
+                    seq > @
+                      (goto ((accum.xappend.ap accum x).@)).result
+                      i.write (i.plus 1)
+                      0
+                stdout (sprintf "keys len = %d\n" (accum.value.length))
+                stackUp.forward (return accum)
+                0
+        [x] > eq
+          memory TRUE > acc
+          memory 0 > pos
+          (goto ((xkeys-internal.ap).@)).result > my-keys
+          (goto ((x.xkeys.ap x).@)).result > his-keys
+          if. > res
+            ((x.x__class__.x__id__.eq x__id__).value.and (value.length.eq (x.value.length)))
+            if.
+              my-keys.eq his-keys
+              seq
+                (acc.and (pos.lt (my-keys.value.length))).while
+                  [unused]
+                    my-keys.value.get i > key
+                    (goto ((xget-internal.ap key).@)).result > my-value
+                    (goto ((x.xget.ap x key).@)).result > his-value
+                    seq > @
+                      stdout (sprintf "i = %d\n" pos)
+                      acc.write (acc.and ((my-value.eq his-value).value))
+                      pos.write (pos.plus 1)
+                      123
+                pybool acc
+              pybool FALSE
+            pybool FALSE
+          seq > @
+            stdout "eq\n"
+            res
+            stdout "after\n"
+            res
+      seq > @
+        memory 0 > i
+        (i.lt (initValue.length)).while
+          [unused]
+            seq > @
+              (goto ((result.xadd.ap result ((initValue.get i).fst) ((initValue.get i).snd)).@)).result
+              i.write (i.plus 1)
+        pResult.write result
+        stackUp.forward (return pResult)

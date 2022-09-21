@@ -1,0 +1,114 @@
++package preface
++alias pybool preface.pybool
++alias pyint preface.pyint
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias return preface.return
++alias xfakeclasses preface.xfakeclasses
++alias xmyArray preface.xmyArray
++alias xStopIteration preface.xStopIteration
++alias xValueError preface.xValueError
+
+[value] > pystring
+
+  xfakeclasses.pyStringClass > x__class__
+
+  [x] > with-value
+    pystring x > @
+
+  # Tests that $ = x
+  [x] > eq
+    (x.x__class__.eq (xfakeclasses.pyStringClass)).if > @
+      pybool (value.eq (x.value))
+      pybool FALSE
+
+  [] > length
+    pyint (value.length) > @
+
+  [] > as-string
+    pystring value > @
+
+  [] > as-bool
+    pybool ((value.length.eq 0).not) > @
+
+  [] > force
+    value > @
+
+  [c] > contains-hack
+    memory 0 > i
+    memory FALSE > contains
+    seq > @
+      (i.lt (value.length)).while
+        [unused]
+          seq > @
+            contains.write (contains.or ((value.slice i 1).eq (c.value)))
+            i.write (i.plus 1)
+            0
+      pybool contains
+
+  [] > iter
+    memory 0 > curPos
+    [] > x__next__
+      [self] > ap
+        [stackUp] > @
+          memory (self.curPos) > pos
+          seq > @
+            stdout "next\n"
+            pos.write (self.curPos)
+            self.curPos.write (pos.plus 1)
+            if.
+              pos.eq (value.length)
+              stackUp.forward ((goto (xStopIteration.ap.@)).result)
+              stackUp.forward (return (pystring (value.slice pos 1)))
+            123
+
+  [] > to-my-array
+    (goto ((xmyArray.ap (*)).@)).result > a
+    memory 0 > index
+    seq > @
+      (index.lt (value.length)).while
+        [unused]
+          seq > @
+            (goto ((a.xappend.ap a (pystring (value.slice index 1))).@)).result
+            index.write (index.plus 1)
+      a
+
+  [] > x__iter__
+    [self] > ap
+      [stackUp] > @
+        stackUp.forward (return iter) > @
+
+  [] > xto-int
+    [] > ap
+      [stackUp] > @
+        (* "0" "1" "2" "3" "4" "5" "6" "7" "8" "9") > digits
+        [s] > to-digit
+          memory 0 > result
+          seq > @
+            while.
+              ((result.lt 10).and (((digits.get result).eq s).not))
+              [unused]
+                seq > @
+                  stdout (sprintf "result %d\n" result)
+                  result.write (result.plus 1)
+                  0
+            result
+        memory 0 > result
+        memory TRUE > input-is-correct
+        memory 0 > i
+        seq > @
+          (i.lt (value.length)).while
+            [unused]
+              value.slice i 1 > x
+              to-digit x > dig
+              seq > @
+                input-is-correct.write (input-is-correct.and (dig.lt 10))
+                result.write ((result.times 10).plus dig)
+                i.write (i.plus 1)
+                123
+          stackUp.forward (input-is-correct.if (return (pyint value)) ((goto (xValueError.ap.@)).result))
+          123
+
+  seq > @
+    stdout (sprintf "dataizing value %s\n" value)
+    value

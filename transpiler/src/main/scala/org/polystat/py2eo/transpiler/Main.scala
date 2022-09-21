@@ -1,80 +1,91 @@
 package org.polystat.py2eo.transpiler
 
-import org.polystat.py2eo.parser.{PrintPython, Statement}
-
-import java.io.{File, FileWriter}
-import java.nio.file.{Files, Paths}
-import scala.io.Source
+import scala.reflect.io.File
 
 object Main {
-  var debug: Boolean = false
 
+  /** Current transpiler version code */
+  private val versionCode = "0.0.11.3"
+
+  /** Version information */
+  private val version = s"Polystat Py2Eo version $versionCode"
+
+  /** Usage text */
+  private val usage =
+    s"""USAGE: java -jar transpiler-$versionCode-jar-with-dependencies.jar file [options]
+       |OPTIONS:
+       |  -h,--help         Display available options
+       |  -o <file>         Write output to <file>
+       |  -X,--debug        Produce execution debug output
+       |  -v,--version      Print version information
+       |""".stripMargin
+
+  /** Entry point */
   def main(args: Array[String]): Unit = {
-    if (!args.isEmpty) {
-      var pyFilePath = ""
-      var outputFolderPath = ""
-      debug = args.contains("--debug") || args.contains("-X")
-
-      for (arg <- args) {
-        if (Files.exists(Paths.get(arg)) && new File(arg).isFile && new File(arg).getName.contains(".py")) {
-          pyFilePath = arg
-        }
-
-        if (Files.exists(Paths.get(arg)) && new File(arg).isDirectory) {
-          outputFolderPath = arg
-        }
-      }
-
-      if (pyFilePath.nonEmpty) {
-        val pyFile = new File(pyFilePath)
-
-        if (pyFile.isFile && pyFile.getName.endsWith(".py")) {
-          println(s"Working with file ${pyFile.getAbsolutePath}")
-
-          def db = debugPrinter(pyFile)(_, _)
-
-          val moduleName = pyFile.getName.substring(0, pyFile.getName.lastIndexOf("."))
-          val eoText = Transpile.transpile(db)(moduleName, readFile(pyFile))
-          writeFile(pyFile, if (outputFolderPath.nonEmpty) outputFolderPath else "genCageEO",
-            ".eo", eoText, outputFolderPath.nonEmpty)
-        } else {
-          println("Provided path is not a file")
-        }
-      } else if (args.contains("--version") || args.contains("-V")) {
-        println("The current EOLang transpiler version is 0.0.5")
-      } else if (args.contains("--help") || args.contains("-h")) {
-        println("usage: java -jar .\\py2eo-${version_code}-SNAPSHOT-jar-with-dependencies.jar .\\sample_test.py [options] \n\nOptions: \n" +
-          "-h,--help \t\t\t Display help information\n" +
-          "-o     \t\t\t\t Path to output .eo file\n" +
-          "-X,--debug     \t\t Produce execution debug output\n" +
-          "-v,--version \t\t Display version information")
-      } else {
-        println("Please add the path to .py file")
-      }
-
+    if (args.isEmpty) {
+      println(usage)
+    } else if (args.contains("-v") || args.contains("--version") || args.contains("-h") || args.contains("--help")) {
+      printInfo(args)
+    } else if (args.count("-o".equals) > 1) {
+      error("duplicated '-o' argument")
     } else {
-      println("Please add the path to .py file")
+      launch(args)
     }
   }
 
-  def debugPrinter(module: File)(s: Statement.T, dirSuffix: String): Unit = {
-    writeFile(module, dirSuffix, ".py", PrintPython.print(s))
+  /** Print version and usage if needed */
+  private def printInfo(args: Array[String]): Unit = {
+    if (args.contains("-v") || args.contains("--version")) println(version)
+    if (args.contains("-h") || args.contains("--help")) println(usage)
   }
 
-  def readFile(f: File): String = {
-    val s = Source.fromFile(f)
-    s.mkString
+  /** Final checks and actual launch */
+  private def launch(args: Array[String]): Unit = {
+    // Retrieving output path information
+    val (filteredAllFlags, outputPath) = if (args.contains("-o")) {
+      val idx = args.indexOf("-o")
+      if (idx == args.length) {
+        error("-o flag doesn't have file parameter")
+      } else {
+        (args.take(idx) ++ args.drop(idx + 2), Some(args(idx + 1)))
+      }
+    } else {
+      (args, None)
+    }
+
+    // Actual launch
+    if (filteredAllFlags.nonEmpty) {
+      val input = File(filteredAllFlags.head)
+      if (input.exists) {
+        transpile(input, outputPath)
+      } else {
+        error("no such file:", input.name)
+      }
+    } else {
+      error("no input files")
+    }
   }
 
-  def writeFile(test: File, dirSuffix: String, fileSuffix: String, what: String, otherLocation: Boolean = false): String = {
-    val moduleName = test.getName.substring(0, test.getName.lastIndexOf("."))
-    val outPath = if (!otherLocation) test.getAbsoluteFile.getParentFile.getPath + "/" + dirSuffix else dirSuffix
-    val d = new File(outPath)
-    if (!d.exists()) d.mkdir()
-    val outName = outPath + "/" + moduleName + fileSuffix
-    val output = new FileWriter(outName)
-    output.write(what)
-    output.close()
-    outName
+  /** Transpiles the input file and (if successful) writes result to output file */
+  private def transpile(input: File, outputPath: Option[String]): Unit = {
+    val output = outputPath match {
+      case None => input.changeExtension("eo")
+      case Some(value) => File(value)
+    }
+
+    Transpile(input.stripExtension, input.slurp) match {
+      case None => println("\"Not Supported: input file syntax is not python 3.8\" > error")
+      case Some(transpiled) => output.createFile().writeAll(transpiled)
+    }
+  }
+
+  /**
+   * Prints the specified message and exits with code 1
+   *
+   * @return Nothing
+   */
+  private def error(message: String, args: String*): Nothing = {
+    println(s"Error: $message ${args.mkString(" ")}")
+    sys exit 1
   }
 }

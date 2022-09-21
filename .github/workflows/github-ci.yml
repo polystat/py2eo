@@ -41,18 +41,20 @@ jobs:
         with:
           name: artifacts
           path: |
-            transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests/*/genCageEO/*.eo
+            transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo
             scalastyle-output.xml
+      - name: Rename jar
+        run: cp transpiler/target/transpiler-*-jar-with-dependencies.jar transpiler.jar
       - name: archive jar
         uses: actions/upload-artifact@v2
         with:
           name: package
-          path: transpiler/target/transpiler-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+          path: transpiler.jar
 
   polystatIntegration:
     strategy:
-        matrix:
-            os: [ ubuntu-latest ]
+      matrix:
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     needs: test
     steps:
@@ -68,12 +70,12 @@ jobs:
         with:
           name: package
 
-      - name: download polystat 
+      - name: download polystat
         run: wget https://repo.maven.apache.org/maven2/org/polystat/polystat/0.4.0/polystat-0.4.0-jar-with-dependencies.jar
       - name: translate python
-        run: java -jar ./transpiler-0.0.1-SNAPSHOT-jar-with-dependencies.jar ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.py
+        run: java -jar ./transpiler.jar ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.py
       - name: analysis
-        run: cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/genCageEO/test.eo ./transpiler/src/test.eo && cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/goto.eo ./transpiler/src/goto.eo && java -jar ./polystat-0.4.0-jar-with-dependencies.jar ./transpiler/src ./temp --sarif
+        run: cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.eo ./transpiler/src/test.eo && cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/goto.eo ./transpiler/src/goto.eo && java -jar ./polystat-0.4.0-jar-with-dependencies.jar ./transpiler/src ./temp --sarif
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -83,8 +85,8 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-            name: py2eo output
-            path: ./transpiler/src/test.eo
+          name: py2eo output
+          path: ./transpiler/src/test.eo
 
 
   runEO:
@@ -107,7 +109,7 @@ jobs:
           name: artifacts
           path: ./
       - name: Build with Maven
-        run: cd ./runEO && mvn clean test && ls -la ./target/eo-test/04-pull/org/eolang/
+        run: cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO && cp -a transpiler/src/main/eo/preface ./runEO && cd ./runEO && mvn clean test
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:

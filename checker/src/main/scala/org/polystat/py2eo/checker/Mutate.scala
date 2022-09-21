@@ -1,37 +1,36 @@
 package org.polystat.py2eo.checker
 
-import org.polystat.py2eo.parser.{Expression, Parse, PrintPython, Statement}
-import org.polystat.py2eo.transpiler.SimplePass
 import org.polystat.py2eo.checker.Mutate.Mutation.Mutation
+import org.polystat.py2eo.parser.{Expression, Parse, PrintPython, Statement}
+import org.polystat.py2eo.transpiler.GenericStatementPasses
 
 object Mutate {
 
   object Mutation extends Enumeration {
     type Mutation = Value
-    val nameMutation, literalMutation, operatorMutation, reverseBoolMutation,
-      breakToContinue, breakSyntax, literalToIdentifier = Value
-
-    override def toString(): String = this match {
-      case Mutation.nameMutation => "Name mutation"
-      case Mutation.literalMutation => "Literal mutation"
-      case Mutation.operatorMutation => "Operator mutation"
-      case Mutation.reverseBoolMutation => "Reverse bool literal"
-      case Mutation.breakToContinue => "Break -> Continue"
-      case Mutation.breakSyntax => "def -> df"
-      case Mutation.literalToIdentifier => "False -> false"
-    }
+    val nameMutation: Mutation = Value("Name-mutation")
+    val literalMutation: Mutation = Value("Literal-mutation")
+    val operatorMutation: Mutation = Value("Operator-mutation")
+    val reverseBoolMutation: Mutation = Value("Reverse-bool-literal")
+    val breakToContinue: Mutation = Value("Break-to-Continue")
+    val literalToIdentifier: Mutation = Value("False-to-false")
+    val swapParam: Mutation = Value("Swap-param")
   }
 
   def apply(input: String, mutation: Mutation, occurrenceNumber: Int): String = {
-    mutation match {
-      case Mutation.nameMutation => PrintPython.print(mutateNames(Parse(input), occurrenceNumber))
-      case Mutation.literalMutation => PrintPython.print(mutateLiteral(Parse(input), occurrenceNumber))
-      case Mutation.operatorMutation => input.replace('+', '-')
-      case Mutation.reverseBoolMutation => input.replace("true", "false")
-      case Mutation.breakToContinue => input.replace("break", "continue")
-      case Mutation.breakSyntax => input.replace("def", "df")
-      case Mutation.literalToIdentifier => input.replace("False", "false")
-      case _ => throw new IllegalArgumentException
+    Parse(input) match {
+      case None => input
+      case Some(parsed) =>
+        mutation match {
+          case Mutation.nameMutation => PrintPython.print(mutateNames(parsed, occurrenceNumber))
+          case Mutation.literalMutation => PrintPython.print(mutateLiteral(parsed, occurrenceNumber))
+          case Mutation.operatorMutation => input.replace('+', '-')
+          case Mutation.reverseBoolMutation => input.replace("true", "false")
+          case Mutation.breakToContinue => input.replace("break", "continue")
+          case Mutation.literalToIdentifier => input.replace("False", "false")
+          case Mutation.swapParam => PrintPython.print(swapParam(parsed, occurrenceNumber))
+          case _ => throw new IllegalArgumentException
+        }
     }
   }
 
@@ -42,7 +41,7 @@ object Mutate {
       case _ => (acc, expr)
     }
 
-    SimplePass.simpleProcExprInStatementAcc[Int](mutateLiteralHelper)(acc, s)._2
+    GenericStatementPasses.simpleProcExprInStatementAcc[Int](mutateLiteralHelper)(acc, s)._2
   }
 
 
@@ -53,7 +52,19 @@ object Mutate {
       case _ => (acc, expr)
     }
 
-    SimplePass.simpleProcExprInStatementAcc[Int](mutateNamesHelper)(acc, s)._2
+    GenericStatementPasses.simpleProcExprInStatementAcc[Int](mutateNamesHelper)(acc, s)._2
+  }
+
+  private def swapParam(s: Statement.T, acc: Int): Statement.T = {
+    def swapParamHelper(acc: Int, expr: Expression.T): (Int, Expression.T) = expr match {
+      case Expression.CallIndex(flag, callee, args, ann) if acc == 0 && args.length > 1 => (
+        -1, Expression.CallIndex(flag, callee, args.reverse, ann)
+      )
+      case Expression.CallIndex(_, _, _, _) => (acc - 1, expr)
+      case _ => (acc, expr)
+    }
+
+    GenericStatementPasses.simpleProcExprInStatementAcc[Int](swapParamHelper)(acc, s)._2
   }
 
 }

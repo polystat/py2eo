@@ -7,57 +7,33 @@
     <version>0.0.1</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <eolang.version>0.21.7</eolang.version>
+        <eolang.version>0.23.11</eolang.version>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
     </properties>
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <!-- here the phase you need -->
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/eo-test/04-pull/org/eolang/</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/../transpiler/src/main/eo</directory>
-									<include>**.eo</include>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.eolang</groupId>
                 <artifactId>eo-maven-plugin</artifactId>
                 <version>${eolang.version}</version>
                 <executions>
-					<execution>
-						<id>compile</id>
+                    <execution>
+                        <id>compile</id>
                         <goals>
                             <goal>register</goal>
                             <goal>assemble</goal>
                             <goal>transpile</goal>
                         </goals>
-						<configuration>
-                            <sourcesDir>${project.baseDir}/../../</sourcesDir>
-                            <includeSources>
-                                <glob>transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests/*/genCageEO/*.eo</glob>
-                            </includeSources>
-						  <targetDir>${project.basedir}/target/eo-test</targetDir>
-						  <addSourcesRoot>false</addSourcesRoot>
-						  <addTestSourcesRoot>true</addTestSourcesRoot>
-						  <generatedDir>${project.basedir}/target/generated-test-sources</generatedDir>
-						</configuration>
+                        <configuration>
+		            	    <hash>38e152a</hash>
+                            <sourcesDir>${project.basedir}</sourcesDir>
+                            <targetDir>${project.basedir}/target/eo-test</targetDir>
+                            <addSourcesRoot>false</addSourcesRoot>
+                            <addTestSourcesRoot>true</addTestSourcesRoot>
+			                <generatedDir>${project.basedir}/target/generated-test-sources</generatedDir>
+			                <includeSources>**.eo</includeSources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

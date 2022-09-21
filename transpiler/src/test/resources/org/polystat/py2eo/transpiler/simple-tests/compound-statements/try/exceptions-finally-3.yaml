@@ -1,0 +1,15 @@
+enabled: True
+python: |
+  def te3():
+    class c(BaseException): pass
+    try:
+      try:
+        x = 1
+        raise StopIteration
+      except c: return False
+      else:  return False
+      finally:
+        x += 10
+        print(x)
+    except StopIteration: x += 100
+    return x == 111

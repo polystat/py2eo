@@ -1,0 +1,16 @@
+enabled: True
+python: |
+  def check():
+    def divide(x, y):
+      assert y != 0, 'Zero division'
+      return x / y
+
+    res = False
+    k = divide(21, 3)
+  
+    try:
+      divide(21, 0)
+    except AssertionError as e:
+      res = True
+    
+    return res
