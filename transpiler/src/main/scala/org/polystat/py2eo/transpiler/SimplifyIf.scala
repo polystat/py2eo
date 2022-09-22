@@ -6,8 +6,10 @@ import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
 object SimplifyIf {
   def apply(s: Statement.T, ns: NamesU): (Statement.T, NamesU) = s match {
-    case If(List((cond, yes)), Some(no), ann) => (IfSimple(cond, yes, no, ann.pos), ns)
-    case If(List((cond, yes)), None, ann) => (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
+    case If(List((cond, yes)), Some(no), ann) =>
+      (IfSimple(cond, yes, no, ann.pos), ns)
+    case If(List((cond, yes)), None, ann) =>
+      (IfSimple(cond, yes, Pass(ann), ann.pos), ns)
     case If((cond, yes) :: t, eelse, ann) =>
       val (newElse, ns1) = SimplifyIf.apply(If(
         t, eelse,
