@@ -12,9 +12,9 @@ class TestEnabledCounter extends Commons {
   @Test
   def test(): Unit = {
     val tests = testsPath.toDirectory.deepFiles.filter(_.extension == "yaml").toSet
-
-    /** Set of triplets: test name, category and run result */
-    val results = for {test <- tests} yield TestResult(test.name, test.parent.name, isEnabled(test))
+    val results = for {test <- tests if !test.name.startsWith("eo_blocked")} yield {
+      TestResult(test.name, test.parent.name, isEnabled(test))
+    }
 
     val total = results.size
     val enabled = results.count(_.enabled)
