@@ -1,38 +1,186 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
 +alias pyint preface.pyint
++alias pair preface.pair
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias xfakeclasses preface.xfakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xmyMap preface.xmyMap
++alias xlen preface.xlen
++alias xmap preface.xmap
++alias xfilter preface.xfilter
++alias xstr preface.xstr
++alias xsum preface.xsum
++alias xlist preface.xlist
++alias xint preface.xint
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xBaseException preface.xBaseException
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xAssertionError preface.xAssertionError
++alias xValueError preface.xValueError
++alias xrange preface.xrange
 +junit
-pyint 0 > dummy-int-usage
-pystring 0 > dummy-string-usage
-pyfloat 0 > dummy-float-usage
-pybool TRUE > dummy-bool-usage
-memory 0 > int
-memory 0 > Cls
-memory 0 > int2
-[] > yannotated1
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory 0 > bogusForceDataize
-  memory 0 > xbogusForceDataize
-  memory 0 > xhack
-  seq > @
-    xhack.write
-      []
-        memory 0 > test
-        seq > @
-          test.write
-            []
-              memory 0 > c
-              memory 0 > d
-              seq > @
-                seq
-                  (((unsupported)).ap)
-                  c.write (((Cls)).ap)
-                  (((unsupported)).ap (((c).x)) ((int2)) ((pyint 0)))
-                  (((unsupported)).ap (((c).y)) ((int)))
-                  d.write (((unsupported)).ap)
-                  (((unsupported)).ap ((((unsupported)).ap ((d)) ((pystring "'a'")))) ((int)) ((pyint 0)))
-                  (((unsupported)).ap ((((unsupported)).ap ((d)) ((pystring "'b'")))) ((int)))
-                  (((unsupported)).ap ((((((unsupported)).ap ((d)) ((pystring "'a'"))).eq (pyint 0)).and (((c).x).eq (pyint 0)))))
+
+[unused] > annotated-1
+  [] > ap
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > ap
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      xfakeclasses.pyFloatClass > xfloat
+      xfakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      xmyMap > dummy-xmyMap
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xmap > dummy-xmap
+      xfilter > dummy-xfilter
+      pair > dummy-pair
+      xstr > dummy-xstr
+      xsum > dummy-xsum
+      xlist > dummy-xlist
+      xint > dummy-xint
+      xStopIteration > dummy-stop-iteration
+      xBaseException > dummy-base-exception
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xAssertionError > dummy-xAssertionError
+      xValueError > dummy-xValueError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xtest
+      seq > @
+        stdout "annotated-1\n"
+        write.
+          xtest
+          []
+            [] > ap
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > xCls
+                cage 0 > xd
+                cage 0 > e1
+                cage 0 > e0
+                cage 0 > xc
+                cage 0 > e4
+                cage 0 > lhs2
+                cage 0 > e3
+                cage 0 > e2
+                cage 0 > e6
+                cage 0 > lhs0
+                cage 0 > lhs4
+                cage 0 > e5
+                seq > @
+                  stdout "xtest\n"
+                  write.
+                    xCls
+                    []
+                      newUID.ap 0 > x__id__
+                      [x] > eq
+                        x__id__.eq (x.x__id__) > @
+                      [] > ap
+                        [stackUp] > @
+                          cage result > pResult
+                          cage 0 > tmp
+                          [] > result
+                            cage 0 > xx
+                            cage 0 > xy2
+                            xCls > x__class__
+                            seq > initFields
+                              xx.write (pyint 111)
+                              xy2.write (pyint 11)
+                          seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
+                  tmp.write (goto ((((xCls)).ap).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e0).write (tmp.result)
+                  ((e0).<)
+                  mkCopy (e0) > tmp1
+                  (xc).write (tmp1.copy)
+                  ((xc).xx).write ((pyint 0))
+                  ((xc).xx).force
+                  tmp.write (goto ((((xmyMap)).ap (((*)))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e1).write (tmp.result)
+                  ((e1).<)
+                  mkCopy (e1) > tmp2
+                  (xd).write (tmp2.copy)
+                  tmp.write (goto (((((xd).xsetAtIndex)).ap ((xd)) ((pystring "a")) ((pyint 0))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e2).write (tmp.result)
+                  ((e2).<)
+                  (e3).write (((xd).get (pystring "a")))
+                  (e3).force
+                  ((e3).<)
+                  (lhs0).write ((pyint 0))
+                  (lhs0).force
+                  (e4).write (((e3).eq (lhs0)))
+                  (e4).force
+                  ((e4).<)
+                  (e4).as-bool.if
+                    seq
+                      mkCopy (xc.xx) > tmp3
+                      (e5).write (tmp3.copy)
+                      ((e5).<)
+                      (lhs2).write ((pyint 0))
+                      (lhs2).force
+                      (e6).write (((e5).eq (lhs2)))
+                      (e6).force
+                      ((e6).<)
+                      (pybool TRUE)
+                    seq
+                      (lhs4).write ((pybool FALSE))
+                      (lhs4).force
+                      mkCopy (lhs4) > tmp4
+                      (e6).write (tmp4.copy)
+                      (pybool TRUE)
+                  toReturn.write ((e6))
+                  stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
+                  123
+        tmp.write (goto ((((xtest)).ap).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
+  (goto (ap.@)).result > @
