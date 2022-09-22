@@ -1,20 +1,25 @@
 package org.polystat.py2eo.transpiler
 
 import org.junit.Assert.{assertTrue, fail}
-import org.polystat.py2eo.parser.{PrintPython, Statement}
+import org.polystat.py2eo.parser.{GeneralAnnotation, PrintPython, Statement}
 import org.polystat.py2eo.transpiler.Common.dfsFiles
+import org.polystat.py2eo.transpiler.GenericStatementPasses.Names
 import org.yaml.snakeyaml.Yaml
 import org.yaml.snakeyaml.error.YAMLException
 
 import java.io.{File, FileInputStream, FileWriter}
 import java.nio.file.{Files, Path, StandardCopyOption}
 import java.{lang => jl, util => ju}
+import scala.collection.immutable.HashMap
 import scala.io.Source
 import scala.sys.process.{Process, ProcessLogger}
 
 trait Commons {
   val testsPrefix: String = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
   val resultsPrefix: String = "src/test/resources/org/polystat/py2eo/transpiler/results"
+
+  val bogusAnnotation = GeneralAnnotation(None, None)
+  val bogusNamesU = Names[Unit](HashMap(), ())
 
   def yaml2python(f: File): String = {
     val map = new Yaml().load[java.util.Map[String, String]](new FileInputStream(f))
