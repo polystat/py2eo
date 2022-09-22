@@ -67,8 +67,8 @@ object GenericExpressionPasses {
       case CallIndex(isCall, whom, args, ann) if isCall =>
         reconstruct(
           false,
-          t => CallIndex(isCall, whom, args.map(_._1).zip(t), ann.pos),
-          args.map(_._2),
+          t => CallIndex(isCall, t.head, args.map(_._1).zip(t.tail), ann.pos),
+          ((None, whom) :: args).map(_._2),
           ns
         )
       case CallIndex(isCall, whom, args, ann) if !isCall =>
@@ -128,7 +128,8 @@ object GenericExpressionPasses {
         reconstruct(lhs = false, simple => DictCons(cons(l, simple), ann.pos), simple, ns)
       case IntLiteral(_, _) | Ident(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | NoneLiteral(_) | FloatLiteral(_, _) |
         EllipsisLiteral(_) | ImagLiteral(_, _) => f(lhs, e, ns)
-      case Field(whose, name, ann) => reconstruct(lhs, { case List(x) => Field(x, name, ann.pos) }, List(whose), ns)
+      case Field(whose, name, ann) =>
+        reconstruct(lhs, { case List(x) => Field(x, name, ann.pos) }, List(whose), ns)
       case CollectionComprehension(kind, base, l, ann) =>
         val l1 = base :: comprehensions2calls(l, ann)
         reconstruct(lhs, { case base :: l2 =>

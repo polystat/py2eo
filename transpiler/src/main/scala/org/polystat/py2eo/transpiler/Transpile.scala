@@ -9,10 +9,10 @@ import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef,
 
 object Transpile {
 
-  case class Parameters(wrapInAFunction : Boolean)
+  case class Parameters(wrapInAFunction : Boolean, isModule : Boolean)
 
   def apply(moduleName: String, pythonCode: String): Option[String] = {
-    apply(moduleName, Transpile.Parameters(wrapInAFunction = true), pythonCode)
+    apply(moduleName, Transpile.Parameters(wrapInAFunction = true, isModule = false), pythonCode)
   }
 
   def apply(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
@@ -52,7 +52,8 @@ object Transpile {
         debugPrinter(y._1, "afterSimplifyFor")
 
         try {
-          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(y._1, y._2)
+          val rmImport = SubstituteExternalIdent.apply(y._1, y._2)
+          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(rmImport._1, rmImport._2)
           debugPrinter(rmWith._1, "afterRmWith")
           val rmAssert = GenericStatementPasses.procStatement(SimplifyAssert.apply)(rmWith._1, rmWith._2)
           debugPrinter(rmAssert._1, "afterRmAssert")
@@ -90,19 +91,23 @@ object Transpile {
           debugPrinter(methodCall._1, "methodCall")
           val textractAllCalls = GenericStatementPasses.procExprInStatement((ExtractAllCalls.apply))(methodCall._1, methodCall._2)
           debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
-          val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
-          val hacked = Suite(List(
-            theFun,
-            Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-            Assert(Ident("assertMe", ann.pos), None, ann.pos)
-          ), ann.pos)
-          debugPrinter(hacked, "afterUseCage")
-          val eoHacked = Suite(List(
-            theFun,
-            Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-            Return(Some(Ident("assertMe", ann.pos)), ann.pos)
-          ), ann.pos)
-          val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
+          val eoText = if (!opt.isModule) {
+            val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
+            val hacked = Suite(List(
+              theFun,
+              Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+              Assert(Ident("assertMe", ann.pos), None, ann.pos)
+            ), ann.pos)
+            debugPrinter(hacked, "afterUseCage")
+            val eoHacked = Suite(List(
+              theFun,
+              Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+              Return(Some(Ident("assertMe", ann.pos)), ann.pos)
+            ), ann.pos)
+            PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
+          }
+          else
+            PrintLinearizedMutableEOWithCage.printModule(moduleName, textractAllCalls._1)
           (eoText.init :+ "  (goto (ap.@)).result > @").mkString("\n")
         }
         catch {

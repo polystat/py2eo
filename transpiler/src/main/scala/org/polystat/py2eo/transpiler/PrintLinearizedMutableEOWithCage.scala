@@ -56,8 +56,6 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xValueError preface.xValueError",
     "+alias xrange preface.xrange",
     //    "+alias sprintf org.eolang.txt.sprintf",
-    "+junit",
-    ""
   )
 
   // todo: imperative style suddenly
@@ -77,7 +75,6 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   private def pe: T => String = printExpr
-  private def isFun(f : Statement.T): Boolean = f match { case _: FuncDef => true case _ => false }
 
   private def printSt(st : Statement.T) : Text = {
     st match {
@@ -327,10 +324,7 @@ object PrintLinearizedMutableEOWithCage {
     )
   }
 
-  def printTest(testName : String, st : Statement.T) : Text = {
-    HackName.count = 0 // todo: imperative style suddenly
-    println(s"doing $testName")
-    val mkCopy = {
+  val preface = {
     List(
       "[id] > is-exception",
       "  id.greater (pyint 3) > @",
@@ -378,13 +372,26 @@ object PrintLinearizedMutableEOWithCage {
       "xiter > dummy-xiter",
       "xrange > dummy-xrange",
     )
-    }
+  }
+
+  def printTest(testName : String, st : Statement.T) : Text = {
+    HackName.count = 0 // todo: imperative style suddenly
+    println(s"doing $testName")
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
-    val hack = printFun(mkCopy, theTest)
-    headers ++ ((s"[unused] > ${theTest.name}" :: hack.tail))
+    val hack = printFun(preface, theTest)
+    headers ++ (("+junit" :: "" :: s"[unused] > ${theTest.name}" :: hack.tail))
   }
 
+  def printModule(moduleName : String, st : Statement.T) : Text = {
+    HackName.count = 0 // todo: imperative style suddenly
+    println(s"module $moduleName")
+    val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
+      ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(moduleName, List(), None, None, None, st, Decorators(List()),
+        HashMap(), isAsync = false, st.ann.pos))
+    val hack = printFun(preface, theTest)
+    headers ++ ("" :: s"[] > $moduleName" :: hack.tail)
+  }
 
 }
