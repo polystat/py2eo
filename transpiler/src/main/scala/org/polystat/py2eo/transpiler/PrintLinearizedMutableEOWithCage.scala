@@ -10,7 +10,7 @@ import org.polystat.py2eo.parser.Expression.{
 }
 import org.polystat.py2eo.parser.Statement.{
   AnnAssign, AugAssign, Assign, Break, ClassDef, Decorators,
-  FuncDef, IfSimple, NonLocal, Pass, Raise, Return, Suite, Try,
+  FuncDef, IfSimple, ImportModule, NonLocal, Pass, Raise, Return, Suite, Try,
   While, Continue
 }
 
@@ -19,8 +19,6 @@ object PrintLinearizedMutableEOWithCage {
   val returnLabel = "returnLabel"
 
   val headers = List(
-    "+package org.eolang",
-    "+alias goto org.eolang.goto",
     "+alias stdout org.eolang.io.stdout",
     "+alias sprintf org.eolang.txt.sprintf",
     "+alias cage org.eolang.cage",
@@ -78,6 +76,7 @@ object PrintLinearizedMutableEOWithCage {
 
   private def printSt(st : Statement.T) : Text = {
     st match {
+      case _ : ImportModule => List()
       case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
         val Suite(l0, _) = GenericStatementPasses.simpleProcStatement(GenericStatementPasses.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
@@ -286,7 +285,7 @@ object PrintLinearizedMutableEOWithCage {
     }
   }
 
-  private def printFun(preface : List[String], f : FuncDef) : Text = {
+  private def printFun(preface : List[String], f : FuncDef, isModule : Boolean = false) : Text = {
     //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     val funs = AnalysisSupport.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
@@ -305,19 +304,25 @@ object PrintLinearizedMutableEOWithCage {
 
     val args2 = (f.args.map{ case Parameter(argname, kind, None, None, _) if kind != ArgKind.Keyword =>
       argname + "NotCopied" }).mkString(" ")
+    val body =
+      preface ++ (
+        "cage 0 > tmp" ::
+          "cage 0 > toReturn" ::
+          argCopies ++ memories ++ (
+            "seq > @" :: indent(
+              ("stdout \"" + f.name + "\\n\"") ::
+                f.args.map(parm => s"${parm.name}.<") ++
+                  (printSt(f.body) :+ "stackUp.forward (return 0)" :+ "123")
+            )
+            )
+      )
     "[]" :: indent(
       s"[$args2] > ap" :: indent(
-        "[stackUp] > @" :: indent(
-          preface ++ (
-            "cage 0 > tmp" ::
-            "cage 0 > toReturn" ::
-            argCopies ++ memories ++ (
-              "seq > @" :: indent(
-                ("stdout \"" + f.name + "\\n\"") ::
-                f.args.map(parm => s"${parm.name}.<") ++
-                (printSt(f.body) :+ "stackUp.forward (return 0)" :+ "123")
-              )
-            )
+        if (isModule)
+          body
+        else (
+          "[stackUp] > @" :: indent(
+            body
           )
         )
       )
@@ -381,7 +386,21 @@ object PrintLinearizedMutableEOWithCage {
       ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
     val hack = printFun(preface, theTest)
-    headers ++ (("+junit" :: "" :: s"[unused] > ${theTest.name}" :: hack.tail))
+    val almost =
+      headers ++
+      (("+junit" :: "" :: s"[unused] > ${theTest.name}" :: hack.tail))
+    val externalIdents = AnalysisSupport.foldSS[List[String]]({
+      case (acc, ImportModule(what, _, _)) => (what.last :: acc, true)
+      case (acc, _) => (acc, true)
+    })(List(), st)
+    "+package org.eolang" ::
+    "+alias goto org.eolang.goto" ::
+    externalIdents.map(name => s"+alias $name xmodules.$name") ++
+    almost.init ++ (
+      "  seq > @" ::
+      (externalIdents.map("    " + _) :+
+      "    (goto (ap.@)).result")
+    )
   }
 
   def printModule(moduleName : String, st : Statement.T) : Text = {
@@ -390,8 +409,17 @@ object PrintLinearizedMutableEOWithCage {
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(moduleName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
-    val hack = printFun(preface, theTest)
-    headers ++ ("" :: s"[] > $moduleName" :: hack.tail)
+    val fakeStackUp = List(
+      "[] > stackUp",
+      "  [p] > forward",
+      "    p > @"
+    )
+    val hack = printFun(fakeStackUp ++ preface, theTest, true)
+    val almost =
+      "+package xmodules" ::
+      headers ++
+      ("" :: s"[] > x$moduleName" :: hack.tail)
+    almost.init :+ "  ((ap)).result > @"
   }
 
 }

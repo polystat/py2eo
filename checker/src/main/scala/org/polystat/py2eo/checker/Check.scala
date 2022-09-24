@@ -53,7 +53,7 @@ object Check {
     parseYaml(test) match {
       case None => TestResult(module, category, None)
       case Some(parsed) =>
-        Transpile(module, Transpile.Parameters(wrapInAFunction = false), parsed) match {
+        Transpile(module, Transpile.Parameters(wrapInAFunction = false, isModule = false), parsed) match {
           case None => TestResult(module, category, None)
           case Some(transpiled) =>
             val file = File(outputPath / test.changeExtension("eo").name)
@@ -83,7 +83,7 @@ object Check {
       diffFile writeAll "Diff between original (left) and mutated (right) python files\n"
       diffFile appendAll diffPyOutput.mkString("\n")
 
-      Transpile(module, Transpile.Parameters(wrapInAFunction = false), mutatedPyText) match {
+      Transpile(module, Transpile.Parameters(wrapInAFunction = false, isModule = false), mutatedPyText) match {
         case None =>
           diffFile appendAll "\n\nFailed to transpile mutated py file\n"
           CompilingResult.failed

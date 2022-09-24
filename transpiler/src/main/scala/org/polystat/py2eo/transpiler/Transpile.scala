@@ -108,7 +108,7 @@ object Transpile {
           }
           else
             PrintLinearizedMutableEOWithCage.printModule(moduleName, textractAllCalls._1)
-          (eoText.init :+ "  (goto (ap.@)).result > @").mkString("\n")
+          (eoText).mkString("\n")
         }
         catch {
           case e: Throwable => {
@@ -149,7 +149,7 @@ object Transpile {
 
             PrintEO.printSt(
               ("y" + moduleName).replaceAll("[^0-9a-zA-Z]", ""), hacked,
-              "+package org.eolang" ::
+              (if (!opt.isModule) "+package org.eolang" else "+package xmodules") ::
               "+alias pyint preface.pyint" ::
               "+alias pyfloat preface.pyfloat" ::
               "+alias pystring preface.pystring" ::
@@ -162,7 +162,7 @@ object Transpile {
               "pybool TRUE > dummy-bool-usage" ::
               globals.map(name => s"memory 0 > $name").toList
             )
-              .mkString("\n")
+            .mkString("\n")
 
           }
         }

@@ -13,14 +13,10 @@ object SubstituteExternalIdent {
     val externalIdents = AnalysisSupport.foldSS[HashMap[String, String]]({
       case (acc, ImportModule(what, as, ann)) =>
         val alias = as.getOrElse(what.last)
-        (acc.+((alias, (("modules" :: what) :+ "ap.@").mkString(".x"))), true)
+        (acc.+((alias, (what).mkString(".x") + ".ap")), true)
       case (acc, _) => (acc, true)
     })(HashMap[String, String](), s)
     println(s"externalIdents = $externalIdents")
-    val s0 = simpleProcStatement({
-      case ImportModule(what, as, ann) => Pass(ann)
-      case s => s
-    })(s)
     val s1 = simpleProcExprInStatementAcc[NamesU]((acc, e) => {
       val (Left(e1), acc1) = procExpr[Unit]({
         case (false, Field(Ident(moduleName, ann), name, acci), acc)
@@ -30,7 +26,7 @@ object SubstituteExternalIdent {
       }
       )(false, e, acc)
       (acc1, e1)
-    })(ns, s0)
+    })(ns, s)
     (s1._2, s1._1)
   }
 }
