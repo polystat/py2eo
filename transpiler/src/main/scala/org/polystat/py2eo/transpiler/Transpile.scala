@@ -106,8 +106,9 @@ object Transpile {
             ), ann.pos)
             PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
           }
-          else
+          else {
             PrintLinearizedMutableEOWithCage.printModule(moduleName, textractAllCalls._1)
+          }
           (eoText).mkString("\n")
         }
         catch {

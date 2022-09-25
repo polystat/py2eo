@@ -4,8 +4,14 @@ import scala.collection.immutable.HashMap
 import PrintEO.{Text, augop, indent, printExpr}
 import org.polystat.py2eo.parser.{ArgKind, Expression, Statement, VarScope}
 import org.polystat.py2eo.transpiler.Common.GeneratorException
-import org.polystat.py2eo.parser.Expression.{Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons, DoubleStar, Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral}
-import org.polystat.py2eo.parser.Statement.{AnnAssign, Assign, AugAssign, Break, ClassDef, Continue, Decorators, FuncDef, IfSimple, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, Suite, Try, While}
+import org.polystat.py2eo.parser.Expression.{
+  Await, CallIndex, CollectionComprehension, CollectionCons, DictComprehension, DictCons,
+  DoubleStar, Field, GeneratorComprehension, Ident, Parameter, Slice, Star, T, isLiteral
+}
+import org.polystat.py2eo.parser.Statement.{
+  AnnAssign, Assign, AugAssign, Break, ClassDef, Continue, Decorators, FuncDef, IfSimple,
+  ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, Suite, Try, While
+}
 
 object PrintLinearizedMutableEOWithCage {
 
@@ -310,19 +316,19 @@ object PrintLinearizedMutableEOWithCage {
             )
             )
       )
-    val namedef = s"(pystring \"${f.name}\") > x__name__"
+    val namedef = "(pystring \"" + f.name + "\") > x__name__"
     "[]" :: indent(
       namedef ::
       s"[$args2] > ap" ::
       indent(
         namedef :: (
-          if (isModule)
+          if (isModule) {
             body
-          else (
+          } else {
             "[stackUp] > @" :: indent(
               body
             )
-          )
+          }
         )
       )
     )
