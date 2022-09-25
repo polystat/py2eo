@@ -52,8 +52,7 @@ object Transpile {
         debugPrinter(y._1, "afterSimplifyFor")
 
         try {
-          val rmImport = SubstituteExternalIdent.apply(y._1, y._2)
-          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(rmImport._1, rmImport._2)
+          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(y._1, y._2)
           debugPrinter(rmWith._1, "afterRmWith")
           val rmAssert = GenericStatementPasses.procStatement(SimplifyAssert.apply)(rmWith._1, rmWith._2)
           debugPrinter(rmAssert._1, "afterRmAssert")
@@ -71,7 +70,8 @@ object Transpile {
           debugPrinter(simAss2Index._1, "simplifyAss2Index")
           val simCompr = GenericStatementPasses.procExprInStatement((SimplifyComprehension.apply))(simAss2Index._1, simAss2Index._2)
           debugPrinter(simCompr._1, "afterSimplifyCollectionComprehension")
-          val simForAgain = GenericStatementPasses.procStatement(SimplifyFor.apply)(simCompr._1, simCompr._2)
+          val rmImport = SubstituteExternalIdent(simCompr._1, simCompr._2)
+          val simForAgain = GenericStatementPasses.procStatement(SimplifyFor.apply)(rmImport._1, rmImport._2)
           debugPrinter(simForAgain._1, "afterSimForAgain")
           val rmExceptsAgain = GenericStatementPasses.procStatement(SimplifyExceptions.simplifyExcepts)(simForAgain._1, simForAgain._2)
           debugPrinter(rmExceptsAgain._1, "afterRmExceptsAgain")
