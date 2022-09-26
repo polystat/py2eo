@@ -73,6 +73,50 @@
             index.write (index.plus 1)
       a
 
+  [] > format
+    [args...] > ap
+      [stackUp] > @
+        memory "" > acc
+        memory "" > subst
+        memory 0 > i
+        memory 0 > args-index
+        seq > @
+          while.
+            (i.lt (value.length))
+            [unused]
+              seq > @
+                if.
+                  ((value.slice i 1).eq "{")
+                  seq
+                    subst.write ""
+                    i.write (i.plus 1)
+                    while.
+                      (((value.slice i 1).eq "}").not)
+                      [unused]
+                        seq > @
+                          subst.write
+                            sprintf
+                              "%s%s"
+                              subst
+                              if.
+                                (value.slice i 1).eq ":"
+                                "%"
+                                value.slice i 1
+                          i.write (i.plus 1)
+                          0
+                    i.write (i.plus 1)
+                    write.
+                      acc
+                      sprintf
+                        "%s%s"
+                        acc
+                        sprintf subst (args.get args-index)
+                    args-index.write (args-index.plus 1)
+                    0
+                  acc.write (sprintf "%s%s" acc (value.slice i 1))
+          stackUp.forward (return (pystring acc))
+          0
+
   [] > x__iter__
     [self] > ap
       [stackUp] > @
