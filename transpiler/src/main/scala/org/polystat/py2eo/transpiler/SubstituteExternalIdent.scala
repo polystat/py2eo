@@ -2,7 +2,7 @@ package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.Expression.{Field, Ident}
 import org.polystat.py2eo.parser.Statement
-import org.polystat.py2eo.parser.Statement.{ImportModule, ImportSymbol, Pass}
+import org.polystat.py2eo.parser.Statement.{ImportAllSymbols, ImportModule, ImportSymbol, Pass}
 import org.polystat.py2eo.transpiler.GenericExpressionPasses.procExpr
 import org.polystat.py2eo.transpiler.GenericStatementPasses.{NamesU, simpleProcExprInStatementAcc, simpleProcStatement}
 
@@ -17,6 +17,8 @@ object SubstituteExternalIdent {
       case (acc, ImportModule(what, as, ann)) =>
         val alias = as.getOrElse(what.last)
         (acc.+((alias, (what).mkString(".x") + ".ap")), true)
+      case (acc, ImportAllSymbols(what, ann)) =>
+        (acc.+((what.last, what.mkString(".x") + ".ap")), true)
       case (acc, _) => (acc, true)
     })(HashMap[String, String](), s)
     println(s"externalIdents = $externalIdents")

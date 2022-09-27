@@ -10,7 +10,7 @@ import org.polystat.py2eo.parser.Expression.{
 }
 import org.polystat.py2eo.parser.Statement.{
   AnnAssign, Assign, AugAssign, Break, ClassDef, Continue, Decorators, FuncDef, IfSimple,
-  ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, Suite, Try, While
+  ImportModule, ImportSymbol, ImportAllSymbols, NonLocal, Pass, Raise, Return, Suite, Try, While
 }
 
 object PrintLinearizedMutableEOWithCage {
@@ -78,6 +78,7 @@ object PrintLinearizedMutableEOWithCage {
     st match {
       case _ : ImportModule => List()
       case _ : ImportSymbol => List()
+      case _ : ImportAllSymbols => List()
       case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
         val Suite(l0, _) = GenericStatementPasses.simpleProcStatement(GenericStatementPasses.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
@@ -397,6 +398,7 @@ object PrintLinearizedMutableEOWithCage {
       (("+junit" :: "" :: s"[unused] > ${theTest.name}" :: hack.tail))
     val externalIdents = AnalysisSupport.foldSS[List[String]]({
       case (acc, ImportSymbol(from, what, as, ann)) => (from.last :: acc, true)
+      case (acc, ImportAllSymbols(from, _)) => (from.last :: acc, true)
       case (acc, ImportModule(what, _, _)) => (what.last :: acc, true)
       case (acc, _) => (acc, true)
     })(List(), st)
