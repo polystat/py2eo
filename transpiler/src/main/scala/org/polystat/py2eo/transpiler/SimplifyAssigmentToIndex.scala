@@ -8,7 +8,6 @@ import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 object SimplifyAssigmentToIndex {
   def simplify(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
       case Assign(List(CallIndex(false, whom, List(index), _), rhs), ann) =>
-        println("simplify ass[]!")
         (Assign(List(CallIndex(true, Field(whom, "setAtIndex", ann.pos), List(index, (None, rhs)), ann.pos)), ann.pos), ns)
       case _ => (s, ns)
   }

@@ -34,7 +34,7 @@ class DjangoTest extends Commons {
         val eoText = try {
           Transpile.transpile(db)(
             chopExtension(name),
-            Transpile.Parameters(wrapInAFunction = false),
+            Transpile.Parameters(wrapInAFunction = false, isModule = false),
             readFile(test)
           )
         } catch {

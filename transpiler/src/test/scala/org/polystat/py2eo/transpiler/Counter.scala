@@ -26,7 +26,11 @@ class Counter(path: jl.String) extends Commons {
     val test = new File(path)
     val yamlData = yaml2python(test)
 
-    Transpile(test.getName.replace(".yaml", ""), Transpile.Parameters(wrapInAFunction = false), yamlData) match {
+    Transpile(
+      test.getName.replace(".yaml", ""),
+      Transpile.Parameters(wrapInAFunction = false, isModule = false),
+      yamlData
+    ) match {
       case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) =>
         val path = writeFile(test, "genCageEO", ".eo", transpiled)

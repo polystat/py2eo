@@ -9,10 +9,10 @@ import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef,
 
 object Transpile {
 
-  case class Parameters(wrapInAFunction : Boolean)
+  case class Parameters(wrapInAFunction : Boolean, isModule : Boolean)
 
   def apply(moduleName: String, pythonCode: String): Option[String] = {
-    apply(moduleName, Transpile.Parameters(wrapInAFunction = true), pythonCode)
+    apply(moduleName, Transpile.Parameters(wrapInAFunction = true, isModule = false), pythonCode)
   }
 
   def apply(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
@@ -70,7 +70,8 @@ object Transpile {
           debugPrinter(simAss2Index._1, "simplifyAss2Index")
           val simCompr = GenericStatementPasses.procExprInStatement((SimplifyComprehension.apply))(simAss2Index._1, simAss2Index._2)
           debugPrinter(simCompr._1, "afterSimplifyCollectionComprehension")
-          val simForAgain = GenericStatementPasses.procStatement(SimplifyFor.apply)(simCompr._1, simCompr._2)
+          val rmImport = SubstituteExternalIdent(simCompr._1, simCompr._2)
+          val simForAgain = GenericStatementPasses.procStatement(SimplifyFor.apply)(rmImport._1, rmImport._2)
           debugPrinter(simForAgain._1, "afterSimForAgain")
           val rmExceptsAgain = GenericStatementPasses.procStatement(SimplifyExceptions.simplifyExcepts)(simForAgain._1, simForAgain._2)
           debugPrinter(rmExceptsAgain._1, "afterRmExceptsAgain")
@@ -90,20 +91,25 @@ object Transpile {
           debugPrinter(methodCall._1, "methodCall")
           val textractAllCalls = GenericStatementPasses.procExprInStatement((ExtractAllCalls.apply))(methodCall._1, methodCall._2)
           debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
-          val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
-          val hacked = Suite(List(
-            theFun,
-            Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-            Assert(Ident("assertMe", ann.pos), None, ann.pos)
-          ), ann.pos)
-          debugPrinter(hacked, "afterUseCage")
-          val eoHacked = Suite(List(
-            theFun,
-            Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-            Return(Some(Ident("assertMe", ann.pos)), ann.pos)
-          ), ann.pos)
-          val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
-          (eoText.init :+ "  (goto (ap.@)).result > @").mkString("\n")
+          val eoText = if (!opt.isModule) {
+            val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
+            val hacked = Suite(List(
+              theFun,
+              Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+              Assert(Ident("assertMe", ann.pos), None, ann.pos)
+            ), ann.pos)
+            debugPrinter(hacked, "afterUseCage")
+            val eoHacked = Suite(List(
+              theFun,
+              Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+              Return(Some(Ident("assertMe", ann.pos)), ann.pos)
+            ), ann.pos)
+            PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
+          }
+          else {
+            PrintLinearizedMutableEOWithCage.printModule(moduleName, textractAllCalls._1)
+          }
+          (eoText).mkString("\n")
         }
         catch {
           case e: Throwable => {
@@ -144,7 +150,7 @@ object Transpile {
 
             PrintEO.printSt(
               ("y" + moduleName).replaceAll("[^0-9a-zA-Z]", ""), hacked,
-              "+package org.eolang" ::
+              (if (!opt.isModule) "+package org.eolang" else "+package xmodules") ::
               "+alias pyint preface.pyint" ::
               "+alias pyfloat preface.pyfloat" ::
               "+alias pystring preface.pystring" ::
@@ -157,7 +163,7 @@ object Transpile {
               "pybool TRUE > dummy-bool-usage" ::
               globals.map(name => s"memory 0 > $name").toList
             )
-              .mkString("\n")
+            .mkString("\n")
 
           }
         }

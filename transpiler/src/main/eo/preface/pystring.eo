@@ -1,6 +1,7 @@
 +package preface
 +alias pybool preface.pybool
 +alias pyint preface.pyint
++alias pyfloat preface.pyfloat
 +alias stdout org.eolang.io.stdout
 +alias sprintf org.eolang.txt.sprintf
 +alias return preface.return
@@ -73,6 +74,50 @@
             index.write (index.plus 1)
       a
 
+  [] > xformat
+    [args...] > ap
+      [stackUp] > @
+        memory "" > acc
+        memory "" > subst
+        memory 0 > i
+        memory 1 > args-index
+        seq > @
+          while.
+            (i.lt (value.length))
+            [unused]
+              seq > @
+                if.
+                  ((value.slice i 1).eq "{")
+                  seq
+                    subst.write ""
+                    i.write (i.plus 1)
+                    while.
+                      (((value.slice i 1).eq "}").not)
+                      [unused]
+                        seq > @
+                          subst.write
+                            sprintf
+                              "%s%s"
+                              subst
+                              if.
+                                (value.slice i 1).eq ":"
+                                "%"
+                                value.slice i 1
+                          i.write (i.plus 1)
+                          0
+                    i.write (i.plus 1)
+                    write.
+                      acc
+                      sprintf
+                        "%s%s"
+                        acc
+                        sprintf subst (args.get args-index)
+                    args-index.write (args-index.plus 1)
+                    0
+                  acc.write (sprintf "%s%s" acc (value.slice i 1))
+          stackUp.forward (return (pystring acc))
+          0
+
   [] > x__iter__
     [self] > ap
       [stackUp] > @
@@ -108,6 +153,73 @@
                 123
           stackUp.forward (input-is-correct.if (return (pyint value)) ((goto (xValueError.ap.@)).result))
           123
+
+  [] > xto-int-returns-float
+    [] > ap
+      [stackUp] > @
+        (* "0" "1" "2" "3" "4" "5" "6" "7" "8" "9") > digits
+        (* (0.0) (1.0) (2.0) (3.0) (4.0) (5.0) (6.0) (7.0) (8.0) (9.0)) > float-digits
+        [s] > to-digit
+          memory 0 > result
+          seq > @
+            while.
+              ((result.lt 10).and (((digits.get result).eq s).not))
+              [unused]
+                seq > @
+                  stdout (sprintf "result %d\n" result)
+                  result.write (result.plus 1)
+                  0
+            float-digits.get result
+        memory (0.0) > result
+        memory TRUE > input-is-correct
+        memory 0 > i
+        seq > @
+          stdout (sprintf "xto-int-returns-float %s\n" value)
+          (i.lt (value.length)).while
+            [unused]
+              value.slice i 1 > x
+              to-digit x > dig
+              seq > @
+                stdout (sprintf "digit = %f\n" dig)
+                input-is-correct.write (input-is-correct.and (dig.lt (10.0)))
+                result.write ((result.times (10.0)).plus dig)
+                i.write (i.plus 1)
+                123
+          stdout (sprintf "result = %f\n" result)
+          stackUp.forward ((return (pyfloat result)))
+          123
+
+  [] > xto-float
+    [] > ap
+      [stackUp] > @
+        memory 0 > dot-pos
+        memory 0.0 > int-part
+        memory 0.0 > frac-part
+        memory 0 > i
+        memory 1.0 > pow10
+        memory 0.0 > result
+        seq > @
+          stdout "000\n"
+          while.
+            (((value.slice dot-pos 1).eq ".").not.and (dot-pos.lt (value.length)))
+            [unused]
+              dot-pos.write (dot-pos.plus 1) > @
+          stdout "111\n"
+          int-part.write (((goto (((pystring (value.slice 0 (dot-pos))).xto-int-returns-float.ap.@))).result).value)
+          stdout (sprintf "int-part = %f\n" (int-part))
+          stdout (sprintf "maybe frac-part = %s\n" (value.slice (dot-pos.plus 1) (value.length.minus (dot-pos.plus 1))))
+          frac-part.write (((goto ((pystring (value.slice (dot-pos.plus 1) (value.length.minus (dot-pos.plus 1)))).xto-int-returns-float.ap.@)).result).value)
+          stdout (sprintf "frac-part = %f\n" (frac-part))
+          while.
+            (i.lt (value.length.minus (dot-pos.plus 1)))
+            [unused]
+              seq > @
+                i.write (i.plus 1)
+                pow10.write (pow10.times 10.0)
+          result.write (int-part.plus (frac-part.div pow10))
+          stdout (sprintf "result = %f\n" result)
+          stackUp.forward (return (pyfloat (result)))
+          0
 
   seq > @
     stdout (sprintf "dataizing value %s\n" value)
