@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > nested_while_break2
+  (pystring "nested_while_break2") > x__name__
   [] > ap
+    (pystring "nested_while_break2") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,22 +96,30 @@
         write.
           xnested_while_break2
           []
+            (pystring "xnested_while_break2") > x__name__
             [] > ap
+              (pystring "xnested_while_break2") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
                 cage 0 > xj
                 cage 0 > e1
-                cage 0 > e5
-                cage 0 > e7
                 cage 0 > e0
                 cage 0 > e4
+                cage 0 > e8
                 cage 0 > xres
-                cage 0 > e3
                 cage 0 > xi
                 cage 0 > e2
                 cage 0 > e6
                 cage 0 > lhs0
+                cage 0 > lhs4
+                cage 0 > e5
+                cage 0 > lhs1
+                cage 0 > e7
+                cage 0 > e3
+                cage 0 > lhs6
+                cage 0 > lhs3
+                cage 0 > e9
                 seq > @
                   stdout "xnested_while_break2\n"
                   (xi).write ((pyint 1))
@@ -134,10 +145,10 @@
                                     [stackUp]
                                       cage 0 > tmp
                                       seq > @
-                                        (e5).write (((xi).leq (pyint 3)))
-                                        (e5).force
-                                        ((e5).<)
-                                        ((e5).not).as-bool.if
+                                        (e7).write (((xi).leq (pyint 3)))
+                                        (e7).force
+                                        ((e7).<)
+                                        ((e7).not).as-bool.if
                                           seq
                                             stackUp.forward break
                                             (pybool TRUE)
@@ -160,10 +171,10 @@
                                                           [stackUp]
                                                             cage 0 > tmp
                                                             seq > @
-                                                              (e3).write (((xj).leq (pyint 3)))
-                                                              (e3).force
-                                                              ((e3).<)
-                                                              ((e3).not).as-bool.if
+                                                              (e4).write (((xj).leq (pyint 3)))
+                                                              (e4).force
+                                                              ((e4).<)
+                                                              ((e4).not).as-bool.if
                                                                 seq
                                                                   stackUp.forward break
                                                                   (pybool TRUE)
@@ -178,10 +189,17 @@
                                                                   (pybool TRUE)
                                                                 seq
                                                                   (pybool TRUE)
-                                                              tmp.write (goto (((((xres).xappend)).ap ((xres)) ((xj))).@))
-                                                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                                              (e2).write (tmp.result)
+                                                              mkCopy (xres.xappend) > tmp2
+                                                              (e2).write (tmp2.copy)
                                                               ((e2).<)
+                                                              mkCopy (xres) > tmp3
+                                                              (lhs0).write (tmp3.copy)
+                                                              mkCopy (xj) > tmp4
+                                                              (lhs1).write (tmp4.copy)
+                                                              tmp.write (goto ((((e2)).ap ((lhs0)) ((lhs1))).@))
+                                                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                                              (e3).write (tmp.result)
+                                                              ((e3).<)
                                                               ((xj)).aug-sub ((pyint 1))
                                                               stackUp.forward continue
                                                               123
@@ -192,10 +210,17 @@
                                           tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
                                           stackUp.forward tmp
                                           0
-                                        tmp.write (goto (((((xres).xappend)).ap ((xres)) ((xi))).@))
+                                        mkCopy (xres.xappend) > tmp5
+                                        (e5).write (tmp5.copy)
+                                        ((e5).<)
+                                        mkCopy (xres) > tmp6
+                                        (lhs3).write (tmp6.copy)
+                                        mkCopy (xi) > tmp7
+                                        (lhs4).write (tmp7.copy)
+                                        tmp.write (goto ((((e5)).ap ((lhs3)) ((lhs4))).@))
                                         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                        (e4).write (tmp.result)
-                                        ((e4).<)
+                                        (e6).write (tmp.result)
+                                        ((e6).<)
                                         ((xi)).aug-sub ((pyint 1))
                                         stackUp.forward continue
                                         123
@@ -206,16 +231,16 @@
                     tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
                     stackUp.forward tmp
                     0
-                  mkCopy (xres) > tmp2
-                  (lhs0).write (tmp2.copy)
+                  mkCopy (xres) > tmp8
+                  (lhs6).write (tmp8.copy)
                   tmp.write (goto ((((xmyArray)).ap ((* (pyint 1) (pyint 1) (pyint 1) (pyint 2) (pyint 1) (pyint 3)))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e6).write (tmp.result)
-                  ((e6).<)
-                  (e7).write (((lhs0).eq (e6)))
-                  (e7).force
-                  ((e7).<)
-                  toReturn.write ((e7))
+                  (e8).write (tmp.result)
+                  ((e8).<)
+                  (e9).write (((lhs6).eq (e8)))
+                  (e9).force
+                  ((e9).<)
+                  toReturn.write ((e9))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
                   123
@@ -225,4 +250,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

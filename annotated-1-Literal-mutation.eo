@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > annotated-1
+  (pystring "annotated-1") > x__name__
   [] > ap
+    (pystring "annotated-1") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,7 +96,9 @@
         write.
           xtest
           []
+            (pystring "xtest") > x__name__
             [] > ap
+              (pystring "xtest") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -104,12 +109,16 @@
                 cage 0 > xc
                 cage 0 > e4
                 cage 0 > lhs2
-                cage 0 > e3
                 cage 0 > e2
                 cage 0 > e6
                 cage 0 > lhs0
                 cage 0 > lhs4
                 cage 0 > e5
+                cage 0 > lhs1
+                cage 0 > e7
+                cage 0 > lhs8
+                cage 0 > e3
+                cage 0 > lhs6
                 seq > @
                   stdout "xtest\n"
                   write.
@@ -144,36 +153,45 @@
                   ((e1).<)
                   mkCopy (e1) > tmp2
                   (xd).write (tmp2.copy)
-                  tmp.write (goto (((((xd).xsetAtIndex)).ap ((xd)) ((pystring "a")) ((pyint 1))).@))
-                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e2).write (tmp.result)
+                  mkCopy (xd.xsetAtIndex) > tmp3
+                  (e2).write (tmp3.copy)
                   ((e2).<)
-                  (e3).write (((xd).get (pystring "a")))
-                  (e3).force
+                  mkCopy (xd) > tmp4
+                  (lhs0).write (tmp4.copy)
+                  (lhs1).write ((pystring "a"))
+                  (lhs1).force
+                  (lhs2).write ((pyint 1))
+                  (lhs2).force
+                  tmp.write (goto ((((e2)).ap ((lhs0)) ((lhs1)) ((lhs2))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e3).write (tmp.result)
                   ((e3).<)
-                  (lhs0).write ((pyint 0))
-                  (lhs0).force
-                  (e4).write (((e3).eq (lhs0)))
+                  (e4).write (((xd).get (pystring "a")))
                   (e4).force
                   ((e4).<)
-                  (e4).as-bool.if
+                  (lhs4).write ((pyint 0))
+                  (lhs4).force
+                  (e5).write (((e4).eq (lhs4)))
+                  (e5).force
+                  ((e5).<)
+                  (e5).as-bool.if
                     seq
-                      mkCopy (xc.xx) > tmp3
-                      (e5).write (tmp3.copy)
-                      ((e5).<)
-                      (lhs2).write ((pyint 0))
-                      (lhs2).force
-                      (e6).write (((e5).eq (lhs2)))
-                      (e6).force
+                      mkCopy (xc.xx) > tmp5
+                      (e6).write (tmp5.copy)
                       ((e6).<)
+                      (lhs6).write ((pyint 0))
+                      (lhs6).force
+                      (e7).write (((e6).eq (lhs6)))
+                      (e7).force
+                      ((e7).<)
                       (pybool TRUE)
                     seq
-                      (lhs4).write ((pybool FALSE))
-                      (lhs4).force
-                      mkCopy (lhs4) > tmp4
-                      (e6).write (tmp4.copy)
+                      (lhs8).write ((pybool FALSE))
+                      (lhs8).force
+                      mkCopy (lhs8) > tmp6
+                      (e7).write (tmp6.copy)
                       (pybool TRUE)
-                  toReturn.write ((e6))
+                  toReturn.write ((e7))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
                   123
@@ -183,4 +201,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

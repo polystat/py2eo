@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > with-1
+  (pystring "with-1") > x__name__
   [] > ap
+    (pystring "with-1") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,28 +96,38 @@
         write.
           xt1
           []
+            (pystring "xt1") > x__name__
             [] > ap
+              (pystring "xt1") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
                 cage 0 > e1
-                cage 0 > e5
+                cage 0 > e7
                 cage 0 > xvalue
                 cage 0 > e0
+                cage 0 > lhs10
                 cage 0 > e4
-                cage 0 > lhs2
-                cage 0 > e3
+                cage 0 > lhs9
+                cage 0 > e10
                 cage 0 > xz
                 cage 0 > xvalue0
                 cage 0 > xcaught
-                cage 0 > e2
                 cage 0 > e6
                 cage 0 > xhit_except0
                 cage 0 > lhs0
-                cage 0 > lhs1
-                cage 0 > e7
+                cage 0 > lhs4
+                cage 0 > e5
+                cage 0 > e8
+                cage 0 > lhs2
+                cage 0 > lhs8
+                cage 0 > e3
+                cage 0 > lhs3
+                cage 0 > e9
                 cage 0 > xmanager0
                 cage 0 > xCM
+                cage 0 > e2
+                cage 0 > lhs7
                 seq > @
                   stdout "xt1\n"
                   (xvalue).write ((pyint 0))
@@ -137,7 +150,9 @@
                               write.
                                 x__enter__
                                 []
+                                  (pystring "x__enter__") > x__name__
                                   [xselfNotCopied] > ap
+                                    (pystring "x__enter__") > x__name__
                                     [stackUp] > @
                                       cage 0 > tmp
                                       cage 0 > toReturn
@@ -153,7 +168,9 @@
                               write.
                                 x__exit__
                                 []
+                                  (pystring "x__exit__") > x__name__
                                   [xselfNotCopied xaNotCopied xbNotCopied xcNotCopied] > ap
+                                    (pystring "x__exit__") > x__name__
                                     [stackUp] > @
                                       cage 0 > tmp
                                       cage 0 > toReturn
@@ -177,12 +194,17 @@
                   ((e0).<)
                   mkCopy (e0) > tmp1
                   (xmanager0).write (tmp1.copy)
-                  tmp.write (goto (((((xmanager0).x__enter__)).ap ((xmanager0))).@))
-                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e1).write (tmp.result)
+                  mkCopy (xmanager0.x__enter__) > tmp2
+                  (e1).write (tmp2.copy)
                   ((e1).<)
-                  mkCopy (e1) > tmp2
-                  (xvalue0).write (tmp2.copy)
+                  mkCopy (xmanager0) > tmp3
+                  (lhs0).write (tmp3.copy)
+                  tmp.write (goto ((((e1)).ap ((lhs0))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e2).write (tmp.result)
+                  ((e2).<)
+                  mkCopy (e2) > tmp4
+                  (xvalue0).write (tmp4.copy)
                   (xhit_except0).write ((pybool FALSE))
                   (xhit_except0).force
                   xcaught.write (pybool FALSE)
@@ -194,8 +216,8 @@
                         cage 0 > xexcinexc
                         cage 0 > tmp
                         seq > @
-                          mkCopy (xvalue0) > tmp3
-                          (xz).write (tmp3.copy)
+                          mkCopy (xvalue0) > tmp5
+                          (xz).write (tmp5.copy)
                           ((xvalue)).aug-add ((xz))
                           stackUp.forward raiseNothing
                   seq
@@ -210,23 +232,26 @@
                               (xcaught).force
                               (xhit_except0).write ((pybool TRUE))
                               (xhit_except0).force
-                              mkCopy (xmanager0) > tmp4
-                              (lhs0).write (tmp4.copy)
-                              mkCopy (xcurrent-exception.x__class__) > tmp5
-                              (e2).write (tmp5.copy)
-                              ((e2).<)
-                              mkCopy (xcurrent-exception) > tmp6
-                              (lhs1).write (tmp6.copy)
-                              (lhs2).write ((pystring "None: is there a None literal in the EO language?"))
-                              (lhs2).force
-                              tmp.write (goto (((((xmanager0).x__exit__)).ap ((lhs0)) ((e2)) ((lhs1)) ((lhs2))).@))
-                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                              (e3).write (tmp.result)
+                              mkCopy (xmanager0.x__exit__) > tmp6
+                              (e3).write (tmp6.copy)
                               ((e3).<)
-                              (e4).write (((e3).not))
-                              (e4).force
+                              mkCopy (xmanager0) > tmp7
+                              (lhs2).write (tmp7.copy)
+                              mkCopy (xcurrent-exception.x__class__) > tmp8
+                              (e4).write (tmp8.copy)
                               ((e4).<)
-                              (e4).as-bool.if
+                              mkCopy (xcurrent-exception) > tmp9
+                              (lhs3).write (tmp9.copy)
+                              (lhs4).write ((pystring "None: is there a None literal in the EO language?"))
+                              (lhs4).force
+                              tmp.write (goto ((((e3)).ap ((lhs2)) ((e4)) ((lhs3)) ((lhs4))).@))
+                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                              (e5).write (tmp.result)
+                              ((e5).<)
+                              (e6).write (((e5).not))
+                              (e6).force
+                              ((e6).<)
+                              (e6).as-bool.if
                                 seq
                                   stackUp.forward raiseEmpty
                                   (pybool TRUE)
@@ -243,24 +268,35 @@
                       seq
                         0
                       0
-                    (e6).write (((xhit_except0).not))
-                    (e6).force
-                    ((e6).<)
-                    (e6).as-bool.if
+                    (e9).write (((xhit_except0).not))
+                    (e9).force
+                    ((e9).<)
+                    (e9).as-bool.if
                       seq
-                        tmp.write (goto (((((xmanager0).x__exit__)).ap ((xmanager0)) ((pystring "None: is there a None literal in the EO language?")) ((pystring "None: is there a None literal in the EO language?")) ((pystring "None: is there a None literal in the EO language?"))).@))
+                        mkCopy (xmanager0.x__exit__) > tmp10
+                        (e7).write (tmp10.copy)
+                        ((e7).<)
+                        mkCopy (xmanager0) > tmp11
+                        (lhs7).write (tmp11.copy)
+                        (lhs8).write ((pystring "None: is there a None literal in the EO language?"))
+                        (lhs8).force
+                        (lhs9).write ((pystring "None: is there a None literal in the EO language?"))
+                        (lhs9).force
+                        (lhs10).write ((pystring "None: is there a None literal in the EO language?"))
+                        (lhs10).force
+                        tmp.write (goto ((((e7)).ap ((lhs7)) ((lhs8)) ((lhs9)) ((lhs10))).@))
                         (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                        (e5).write (tmp.result)
-                        ((e5).<)
+                        (e8).write (tmp.result)
+                        ((e8).<)
                         (pybool TRUE)
                       seq
                         (pybool TRUE)
                     ((is-break-continue-return (xcurrent-exception.x__class__.x__id__)).or ((is-exception (xcurrent-exception.x__class__.x__id__)).and (xcaught.not))).if (stackUp.forward xcurrent-exception) 0
                     ((is-break-continue-return (xexcinexc.x__class__.x__id__)).or ((is-exception (xexcinexc.x__class__.x__id__)))).if (stackUp.forward xexcinexc) 0
-                  (e7).write (((xvalue).eq (pyint 111)))
-                  (e7).force
-                  ((e7).<)
-                  toReturn.write ((e7))
+                  (e10).write (((xvalue).eq (pyint 111)))
+                  (e10).force
+                  ((e10).<)
+                  toReturn.write ((e10))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
                   123
@@ -270,4 +306,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

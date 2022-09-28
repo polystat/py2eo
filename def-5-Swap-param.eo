@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > def-5
+  (pystring "def-5") > x__name__
   [] > ap
+    (pystring "def-5") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,27 +96,32 @@
         write.
           xmy_decorator
           []
+            (pystring "xmy_decorator") > x__name__
             [] > ap
+              (pystring "xmy_decorator") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
-                cage 0 > e5
                 cage 0 > e4
-                cage 0 > lhs3
+                cage 0 > lhs4
+                cage 0 > e5
                 cage 0 > xfactorial
                 seq > @
                   stdout "xmy_decorator\n"
                   write.
                     xfactorial
                     []
+                      (pystring "xfactorial") > x__name__
                       [xnNotCopied] > ap
+                        (pystring "xfactorial") > x__name__
                         [stackUp] > @
                           cage 0 > tmp
                           cage 0 > toReturn
                           xnNotCopied' > xn
+                          cage 0 > lhs0
                           cage 0 > e1
-                          cage 0 > lhs1
                           cage 0 > e0
+                          cage 0 > lhs2
                           cage 0 > e3
                           cage 0 > e2
                           seq > @
@@ -129,15 +137,17 @@
                                 (pybool TRUE)
                               seq
                                 mkCopy (xn) > tmp1
-                                (lhs1).write (tmp1.copy)
+                                (lhs2).write (tmp1.copy)
+                                mkCopy (xfactorial) > tmp2
+                                (lhs0).write (tmp2.copy)
                                 (e0).write (((xn).sub (pyint 1)))
                                 (e0).force
                                 ((e0).<)
-                                tmp.write (goto ((((xfactorial)).ap ((e0))).@))
+                                tmp.write (goto ((((lhs0)).ap ((e0))).@))
                                 (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                                 (e1).write (tmp.result)
                                 ((e1).<)
-                                (e2).write (((lhs1).mul (e1)))
+                                (e2).write (((lhs2).mul (e1)))
                                 (e2).force
                                 ((e2).<)
                                 toReturn.write ((e2))
@@ -149,9 +159,9 @@
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e4).write (tmp.result)
                   ((e4).<)
-                  (lhs3).write ((pyint 120))
-                  (lhs3).force
-                  (e5).write (((e4).eq (lhs3)))
+                  (lhs4).write ((pyint 120))
+                  (lhs4).force
+                  (e5).write (((e4).eq (lhs4)))
                   (e5).force
                   ((e5).<)
                   toReturn.write ((e5))
@@ -164,4 +174,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

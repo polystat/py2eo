@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > while_try_except_else
+  (pystring "while_try_except_else") > x__name__
   [] > ap
+    (pystring "while_try_except_else") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,23 +96,28 @@
         write.
           xwhile_try_except_else
           []
+            (pystring "xwhile_try_except_else") > x__name__
             [] > ap
+              (pystring "xwhile_try_except_else") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
                 cage 0 > e12
+                cage 0 > lhs14
                 cage 0 > e5
                 cage 0 > e7
                 cage 0 > e17
                 cage 0 > e0
-                cage 0 > lhs10
+                cage 0 > lhs13
                 cage 0 > xres
+                cage 0 > lhs9
                 cage 0 > e10
                 cage 0 > lhs11
                 cage 0 > e14
                 cage 0 > xcaught
                 cage 0 > e9
                 cage 0 > e15
+                cage 0 > e19
                 cage 0 > e6
                 cage 0 > e18
                 cage 0 > xx
@@ -248,10 +256,17 @@
                                             seq
                                               (xres).write ((pybool TRUE))
                                               (xres).force
-                                              tmp.write (goto (((((xarr).xappend)).ap ((xarr)) ((pyint 1))).@))
-                                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                                              (e16).write (tmp.result)
+                                              mkCopy (xarr.xappend) > tmp14
+                                              (e16).write (tmp14.copy)
                                               ((e16).<)
+                                              mkCopy (xarr) > tmp15
+                                              (lhs8).write (tmp15.copy)
+                                              (lhs9).write ((pyint 1))
+                                              (lhs9).force
+                                              tmp.write (goto ((((e16)).ap ((lhs8)) ((lhs9))).@))
+                                              (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                                              (e17).write (tmp.result)
+                                              ((e17).<)
                                               stackUp.forward continue
                                               0
                                             0
@@ -266,27 +281,27 @@
                     tmp.x__class__.x__id__.neq (break.x__class__.x__id__)
                     stackUp.forward tmp
                     0
-                  mkCopy (xres) > tmp14
-                  (lhs10).write (tmp14.copy)
-                  (lhs10).as-bool.if
+                  mkCopy (xres) > tmp16
+                  (lhs13).write (tmp16.copy)
+                  (lhs13).as-bool.if
                     seq
-                      mkCopy (xarr) > tmp15
-                      (lhs8).write (tmp15.copy)
+                      mkCopy (xarr) > tmp17
+                      (lhs11).write (tmp17.copy)
                       tmp.write (goto ((((xmyArray)).ap ((* (pyint 1)))).@))
                       (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                      (e17).write (tmp.result)
-                      ((e17).<)
-                      (e18).write (((lhs8).eq (e17)))
-                      (e18).force
+                      (e18).write (tmp.result)
                       ((e18).<)
+                      (e19).write (((lhs11).eq (e18)))
+                      (e19).force
+                      ((e19).<)
                       (pybool TRUE)
                     seq
-                      (lhs11).write ((pybool FALSE))
-                      (lhs11).force
-                      mkCopy (lhs11) > tmp16
-                      (e18).write (tmp16.copy)
+                      (lhs14).write ((pybool FALSE))
+                      (lhs14).force
+                      mkCopy (lhs14) > tmp18
+                      (e19).write (tmp18.copy)
                       (pybool TRUE)
-                  toReturn.write ((e18))
+                  toReturn.write ((e19))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
                   123
@@ -296,4 +311,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

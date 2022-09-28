@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > exceptions-break-else-finally
+  (pystring "exceptions-break-else-finally") > x__name__
   [] > ap
+    (pystring "exceptions-break-else-finally") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,7 +96,9 @@
         write.
           xtebf
           []
+            (pystring "xtebf") > x__name__
             [] > ap
+              (pystring "xtebf") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -182,8 +187,8 @@
                     seq
                       (lhs1).write ((pybool FALSE))
                       (lhs1).force
-                      mkCopy (lhs1) > tmp5
-                      (e0).write (tmp5.copy)
+                      mkCopy (lhs1) > tmp4
+                      (e0).write (tmp4.copy)
                       (pybool TRUE)
                   toReturn.write ((e0))
                   stackUp.forward (return toReturn)
@@ -195,4 +200,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

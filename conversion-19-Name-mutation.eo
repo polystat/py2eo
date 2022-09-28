@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > conversion-19
+  (pystring "conversion-19") > x__name__
   [] > ap
+    (pystring "conversion-19") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,7 +96,9 @@
         write.
           xtest
           []
+            (pystring "xtest") > x__name__
             [] > ap
+              (pystring "xtest") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -118,36 +123,36 @@
                   (xx).force
                   (xy2).write ((pyfloat 3.14))
                   (xy2).force
-                  mkCopy (xy) > tmp1
-                  (lhs0).write (tmp1.copy)
+                  mkCopy (xy) > tmp4
+                  (lhs0).write (tmp4.copy)
                   (e0).write (pycomplex (((xx)).as-float) (((xy)).as-float))
                   ((e0).<)
                   (e1).write (((lhs0).pow (e0)))
                   (e1).force
                   ((e1).<)
-                  mkCopy (e1) > tmp2
-                  (xz).write (tmp2.copy)
-                  mkCopy (xz.x__class__) > tmp3
-                  (e2).write (tmp3.copy)
+                  mkCopy (e1) > tmp7
+                  (xz).write (tmp7.copy)
+                  mkCopy (xz.x__class__) > tmp9
+                  (e2).write (tmp9.copy)
                   ((e2).<)
-                  mkCopy (xcomplex) > tmp4
-                  (lhs2).write (tmp4.copy)
+                  mkCopy (xcomplex) > tmp11
+                  (lhs2).write (tmp11.copy)
                   (e3).write (((e2).eq (lhs2)))
                   (e3).force
                   ((e3).<)
                   (e3).as-bool.if
                     seq
-                      mkCopy (xz.ximag) > tmp5
-                      (e4).write (tmp5.copy)
+                      mkCopy (xz.ximag) > tmp13
+                      (e4).write (tmp13.copy)
                       ((e4).<)
-                      mkCopy (e4.x__class__) > tmp6
-                      (e5).write (tmp6.copy)
+                      mkCopy (e4.x__class__) > tmp15
+                      (e5).write (tmp15.copy)
                       ((e5).<)
-                      mkCopy (xz.xreal) > tmp7
-                      (e6).write (tmp7.copy)
+                      mkCopy (xz.xreal) > tmp16
+                      (e6).write (tmp16.copy)
                       ((e6).<)
-                      mkCopy (e6.x__class__) > tmp8
-                      (e7).write (tmp8.copy)
+                      mkCopy (e6.x__class__) > tmp17
+                      (e7).write (tmp17.copy)
                       ((e7).<)
                       (e8).write (((e5).eq (e7)))
                       (e8).force
@@ -156,8 +161,8 @@
                     seq
                       (lhs7).write ((pybool FALSE))
                       (lhs7).force
-                      mkCopy (lhs7) > tmp9
-                      (e8).write (tmp9.copy)
+                      mkCopy (lhs7) > tmp18
+                      (e8).write (tmp18.copy)
                       (pybool TRUE)
                   toReturn.write ((e8))
                   stackUp.forward (return toReturn)
@@ -169,4 +174,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

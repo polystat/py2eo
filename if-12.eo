@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > if-12
+  (pystring "if-12") > x__name__
   [] > ap
+    (pystring "if-12") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,7 +96,9 @@
         write.
           xconditionalCheck11
           []
+            (pystring "xconditionalCheck11") > x__name__
             [] > ap
+              (pystring "xconditionalCheck11") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -121,11 +126,11 @@
                     seq
                       (lhs1).write ((pyint 43))
                       (lhs1).force
-                      mkCopy (lhs1) > tmp2
-                      (lhs0).write (tmp2.copy)
+                      mkCopy (lhs1) > tmp1
+                      (lhs0).write (tmp1.copy)
                       (pybool TRUE)
-                  mkCopy (lhs0) > tmp3
-                  (xc).write (tmp3.copy)
+                  mkCopy (lhs0) > tmp2
+                  (xc).write (tmp2.copy)
                   (e1).write (((xc).eq (pyint 43)))
                   (e1).force
                   ((e1).<)
@@ -139,4 +144,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > constructor-arguments
+  (pystring "constructor-arguments") > x__name__
   [] > ap
+    (pystring "constructor-arguments") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,7 +96,9 @@
         write.
           xmyC
           []
+            (pystring "xmyC") > x__name__
             [] > ap
+              (pystring "xmyC") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -101,6 +106,8 @@
                 cage 0 > e1
                 cage 0 > xo
                 cage 0 > xc
+                cage 0 > e4
+                cage 0 > lhs2
                 cage 0 > e3
                 cage 0 > e2
                 seq > @
@@ -125,7 +132,9 @@
                               write.
                                 x__init__
                                 []
+                                  (pystring "x__init__") > x__name__
                                   [xselfNotCopied xa1NotCopied] > ap
+                                    (pystring "x__init__") > x__name__
                                     [stackUp] > @
                                       cage 0 > tmp
                                       cage 0 > toReturn
@@ -142,7 +151,9 @@
                               write.
                                 xsum
                                 []
+                                  (pystring "xsum") > x__name__
                                   [xselfNotCopied] > ap
+                                    (pystring "xsum") > x__name__
                                     [stackUp] > @
                                       cage 0 > tmp
                                       cage 0 > toReturn
@@ -165,16 +176,21 @@
                   ((e1).<)
                   mkCopy (e1) > tmp3
                   (xo).write (tmp3.copy)
-                  tmp.write (goto (((((xo).xsum)).ap ((xo))).@))
-                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e2).write (tmp.result)
+                  mkCopy (xo.xsum) > tmp4
+                  (e2).write (tmp4.copy)
                   ((e2).<)
-                  (lhs0).write ((pyint 5))
-                  (lhs0).force
-                  (e3).write (((e2).eq (lhs0)))
-                  (e3).force
+                  mkCopy (xo) > tmp5
+                  (lhs0).write (tmp5.copy)
+                  tmp.write (goto ((((e2)).ap ((lhs0))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e3).write (tmp.result)
                   ((e3).<)
-                  toReturn.write ((e3))
+                  (lhs2).write ((pyint 5))
+                  (lhs2).force
+                  (e4).write (((e3).eq (lhs2)))
+                  (e4).force
+                  ((e4).<)
+                  toReturn.write ((e4))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
                   123
@@ -184,4 +200,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

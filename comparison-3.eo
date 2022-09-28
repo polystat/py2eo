@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > comparison-3
+  (pystring "comparison-3") > x__name__
   [] > ap
+    (pystring "comparison-3") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,7 +96,9 @@
         write.
           xtest
           []
+            (pystring "xtest") > x__name__
             [] > ap
+              (pystring "xtest") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -102,17 +107,22 @@
                 cage 0 > lhs4
                 cage 0 > lhs1
                 cage 0 > e0
-                cage 0 > lhs5
                 cage 0 > lhs2
                 cage 0 > lhs3
+                cage 0 > lhs5
+                cage 0 > e4
+                cage 0 > lhs8
                 cage 0 > id0
                 cage 0 > e3
+                cage 0 > lhs6
                 cage 0 > e2
                 cage 0 > obj0
                 seq > @
                   stdout "xtest\n"
                   (lhs0).write ((pyint 1))
                   (lhs0).force
+                  mkCopy (xmyMap) > tmp1
+                  (lhs6).write (tmp1.copy)
                   (lhs2).write ((pystring "name"))
                   (lhs2).force
                   (lhs3).write ((pystring "John"))
@@ -124,23 +134,28 @@
                   (e0).write (tmp.result)
                   ((e0).<)
                   (lhs5).write (((* (pair (lhs2) (lhs3)) (pair (lhs4) (e0)))))
-                  tmp.write (goto ((((xmyMap)).ap ((lhs5))).@))
+                  tmp.write (goto ((((lhs6)).ap ((lhs5))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e1).write (tmp.result)
                   ((e1).<)
-                  mkCopy (e1) > tmp1
-                  (obj0).write (tmp1.copy)
-                  tmp.write (goto (((((obj0).xkeys)).ap ((obj0))).@))
-                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
-                  (e2).write (tmp.result)
+                  mkCopy (e1) > tmp2
+                  (obj0).write (tmp2.copy)
+                  mkCopy (obj0.xkeys) > tmp3
+                  (e2).write (tmp3.copy)
                   ((e2).<)
-                  mkCopy (e2) > tmp2
-                  (id0).write (tmp2.copy)
-                  (e3).write (((id0).contains-hack (lhs0)))
-                  (e3).force
+                  mkCopy (obj0) > tmp4
+                  (lhs8).write (tmp4.copy)
+                  tmp.write (goto ((((e2)).ap ((lhs8))).@))
+                  (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+                  (e3).write (tmp.result)
                   ((e3).<)
-                  mkCopy (e3) > tmp3
-                  (lhs1).write (tmp3.copy)
+                  mkCopy (e3) > tmp5
+                  (id0).write (tmp5.copy)
+                  (e4).write (((id0).contains-hack (lhs0)))
+                  (e4).force
+                  ((e4).<)
+                  mkCopy (e4) > tmp6
+                  (lhs1).write (tmp6.copy)
                   toReturn.write ((lhs1))
                   stackUp.forward (return toReturn)
                   stackUp.forward (return 0)
@@ -151,4 +166,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

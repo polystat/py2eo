@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > lambda2
+  (pystring "lambda2") > x__name__
   [] > ap
+    (pystring "lambda2") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,7 +96,9 @@
         write.
           xlambda1
           []
+            (pystring "xlambda1") > x__name__
             [] > ap
+              (pystring "xlambda1") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
@@ -102,12 +107,14 @@
                 cage 0 > e5
                 cage 0 > e0
                 cage 0 > xlhs0
+                cage 0 > e4
+                cage 0 > xlhs4
+                cage 0 > xlhs3
                 cage 0 > e3
                 cage 0 > xlhs2
+                cage 0 > lhs7
                 cage 0 > xnew_list
                 cage 0 > xmy_list
-                cage 0 > lhs5
-                cage 0 > e4
                 cage 0 > xanonFun0
                 seq > @
                   stdout "xlambda1\n"
@@ -117,16 +124,22 @@
                   ((e0).<)
                   mkCopy (e0) > tmp1
                   (xmy_list).write (tmp1.copy)
+                  mkCopy (xlist) > tmp2
+                  (xlhs3).write (tmp2.copy)
+                  mkCopy (xfilter) > tmp3
+                  (xlhs0).write (tmp3.copy)
                   write.
                     xanonFun0
                     []
+                      (pystring "xanonFun0") > x__name__
                       [xxNotCopied] > ap
+                        (pystring "xanonFun0") > x__name__
                         [stackUp] > @
                           cage 0 > tmp
                           cage 0 > toReturn
                           xxNotCopied' > xx
                           cage 0 > e1
-                          cage 0 > lhs3
+                          cage 0 > lhs5
                           cage 0 > e2
                           seq > @
                             stdout "xanonFun0\n"
@@ -134,38 +147,38 @@
                             (e1).write (((xx).mod (pyint 2)))
                             (e1).force
                             ((e1).<)
-                            (lhs3).write ((pyint 0))
-                            (lhs3).force
-                            (e2).write (((e1).eq (lhs3)))
+                            (lhs5).write ((pyint 0))
+                            (lhs5).force
+                            (e2).write (((e1).eq (lhs5)))
                             (e2).force
                             ((e2).<)
                             toReturn.write ((e2))
                             stackUp.forward (return toReturn)
                             stackUp.forward (return 0)
                             123
-                  mkCopy (xmy_list) > tmp2
-                  (xlhs0).write (tmp2.copy)
-                  tmp.write (goto ((((xfilter)).ap ((xanonFun0)) ((xlhs0))).@))
+                  mkCopy (xmy_list) > tmp4
+                  (xlhs1).write (tmp4.copy)
+                  tmp.write (goto ((((xlhs0)).ap ((xanonFun0)) ((xlhs1))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e3).write (tmp.result)
                   ((e3).<)
-                  mkCopy (e3) > tmp3
-                  (xlhs1).write (tmp3.copy)
-                  tmp.write (goto ((((xlist)).ap ((xlhs1))).@))
+                  mkCopy (e3) > tmp5
+                  (xlhs2).write (tmp5.copy)
+                  tmp.write (goto ((((xlhs3)).ap ((xlhs2))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e4).write (tmp.result)
                   ((e4).<)
-                  mkCopy (e4) > tmp4
-                  (xlhs2).write (tmp4.copy)
-                  mkCopy (xlhs2) > tmp5
-                  (xnew_list).write (tmp5.copy)
+                  mkCopy (e4) > tmp6
+                  (xlhs4).write (tmp6.copy)
+                  mkCopy (xlhs4) > tmp7
+                  (xnew_list).write (tmp7.copy)
                   tmp.write (goto ((((xlen)).ap ((xnew_list))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e5).write (tmp.result)
                   ((e5).<)
-                  (lhs5).write ((pyint 4))
-                  (lhs5).force
-                  (e6).write (((e5).eq (lhs5)))
+                  (lhs7).write ((pyint 4))
+                  (lhs7).force
+                  (e6).write (((e5).eq (lhs7)))
                   (e6).force
                   ((e6).<)
                   toReturn.write ((e6))
@@ -178,4 +191,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

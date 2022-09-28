@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > dict-1
+  (pystring "dict-1") > x__name__
   [] > ap
+    (pystring "dict-1") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,21 +96,29 @@
         write.
           xtest
           []
+            (pystring "xtest") > x__name__
             [] > ap
+              (pystring "xtest") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
                 cage 0 > lhs0
                 cage 0 > e1
+                cage 0 > lhs4
                 cage 0 > lhs1
                 cage 0 > e0
                 cage 0 > lhs2
                 cage 0 > lhs3
                 cage 0 > e2
+                cage 0 > lhs8
                 cage 0 > e3
                 cage 0 > lhs6
                 seq > @
                   stdout "xtest\n"
+                  mkCopy (xlen) > tmp1
+                  (lhs6).write (tmp1.copy)
+                  mkCopy (xmyMap) > tmp2
+                  (lhs4).write (tmp2.copy)
                   (lhs0).write ((pystring "name"))
                   (lhs0).force
                   (lhs1).write ((pystring "John"))
@@ -119,17 +130,17 @@
                   (e0).write (tmp.result)
                   ((e0).<)
                   (lhs3).write (((* (pair (lhs0) (lhs1)) (pair (lhs2) (e0)))))
-                  tmp.write (goto ((((xmyMap)).ap ((lhs3))).@))
+                  tmp.write (goto ((((lhs4)).ap ((lhs3))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e1).write (tmp.result)
                   ((e1).<)
-                  tmp.write (goto ((((xlen)).ap ((e1))).@))
+                  tmp.write (goto ((((lhs6)).ap ((e1))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e2).write (tmp.result)
                   ((e2).<)
-                  (lhs6).write ((pyint 2))
-                  (lhs6).force
-                  (e3).write (((e2).eq (lhs6)))
+                  (lhs8).write ((pyint 2))
+                  (lhs8).force
+                  (e3).write (((e2).eq (lhs8)))
                   (e3).force
                   ((e3).<)
                   toReturn.write ((e3))
@@ -142,4 +153,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

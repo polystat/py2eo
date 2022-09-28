@@ -26,6 +26,7 @@
 +alias xsum preface.xsum
 +alias xlist preface.xlist
 +alias xint preface.xint
++alias xfloat preface.xfloat
 +alias xiter preface.xiter
 +alias xStopIteration preface.xStopIteration
 +alias xBaseException preface.xBaseException
@@ -37,7 +38,9 @@
 +junit
 
 [unused] > eval_doc
+  (pystring "eval_doc") > x__name__
   [] > ap
+    (pystring "eval_doc") > x__name__
     [stackUp] > @
       [id] > is-exception
         id.greater (pyint 3) > @
@@ -58,7 +61,6 @@
       pycomplex 0 0 > dummy-pycomplex
       pystring (sprintf "") > dummy-bool-string
       newUID > dummy-newUID
-      xfakeclasses.pyFloatClass > xfloat
       xfakeclasses.pyComplexClass > xcomplex
       raiseNothing > dummy-rn
       continue > dummy-continue
@@ -76,6 +78,7 @@
       xsum > dummy-xsum
       xlist > dummy-xlist
       xint > dummy-xint
+      xfloat > dummy-xfloat
       xStopIteration > dummy-stop-iteration
       xBaseException > dummy-base-exception
       xZeroDivisionError > dummy-xZeroDivisionError
@@ -93,11 +96,14 @@
         write.
           xevalDoc
           []
+            (pystring "xevalDoc") > x__name__
             [] > ap
+              (pystring "xevalDoc") > x__name__
               [stackUp] > @
                 cage 0 > tmp
                 cage 0 > toReturn
                 cage 0 > e5
+                cage 0 > lhs1
                 cage 0 > e4
                 cage 0 > e3
                 cage 0 > e2
@@ -111,7 +117,9 @@
                   write.
                     xf
                     []
+                      (pystring "xf") > x__name__
                       [xaNotCopied xbNotCopied] > ap
+                        (pystring "xf") > x__name__
                         [stackUp] > @
                           cage 0 > tmp
                           cage 0 > toReturn
@@ -132,20 +140,22 @@
                   (e1).write (((pyint 1).sub (pyint 2)))
                   (e1).force
                   ((e1).<)
+                  mkCopy (xf) > tmp1
+                  (lhs0).write (tmp1.copy)
                   (e2).write (((pyint 3).sub (pyint 4)))
                   (e2).force
                   ((e2).<)
-                  (lhs0).write ((pyint 5))
-                  (lhs0).force
-                  tmp.write (goto ((((xf)).ap ((e2)) ((lhs0))).@))
+                  (lhs1).write ((pyint 5))
+                  (lhs1).force
+                  tmp.write (goto ((((lhs0)).ap ((e2)) ((lhs1))).@))
                   (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
                   (e3).write (tmp.result)
                   ((e3).<)
                   (e4).write (((e1).mul (e3)))
                   (e4).force
                   ((e4).<)
-                  mkCopy (e4) > tmp1
-                  (xx).write (tmp1.copy)
+                  mkCopy (e4) > tmp2
+                  (xx).write (tmp2.copy)
                   stdout (sprintf "%s\n" ((xx).as-string))
                   ((e5).<)
                   (e6).write (((xx).eq (pyint 36)))
@@ -161,4 +171,5 @@
         toReturn.write ((assertMe))
         stackUp.forward (return toReturn)
         stackUp.forward (return 0)
-  (goto (ap.@)).result > @
+  seq > @
+    (goto (ap.@)).result

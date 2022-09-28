@@ -8,13 +8,15 @@ pyint 0 > dummy-int-usage
 pystring 0 > dummy-string-usage
 pyfloat 0 > dummy-float-usage
 pybool TRUE > dummy-bool-usage
-memory 0 > hasattr
-memory 0 > Child
-memory 0 > Parent
-memory 0 > Friend3
-memory 0 > Friend
-memory 0 > Citizens
-memory 0 > Friend2
+memory 0 > xFriend3
+memory 0 > xtestCheck
+memory 0 > xFriend
+memory 0 > xhasattr
+memory 0 > xParent
+memory 0 > xCitizens
+memory 0 > xself
+memory 0 > xFriend2
+memory 0 > xChild
 [] > yinheritancetest
   [args...] > unsupported
   [args...] > xunsupported
@@ -28,75 +30,75 @@ memory 0 > Friend2
         seq > @
           inheritanceTesting.write
             []
-              memory 0 > chName
-              memory 0 > checkPeople
-              memory 0 > getPeople
-              memory 0 > count
               memory 0 > getParent
-              memory 0 > pName
+              memory 0 > xcount
+              memory 0 > checkPeople
+              memory 0 > xpName
               memory 0 > testCheck
-              memory 0 > name
+              memory 0 > xchName
+              memory 0 > xname
+              memory 0 > getPeople
               seq > @
                 seq
                   (((unsupported)).ap)
-                    pName.write (pystring "Bob")
+                    xpName.write (pystring "Bob")
                   (((unsupported)).ap)
                     seq
-                      chName.write (pystring "Steve")
+                      xchName.write (pystring "Steve")
                       getParent.write
                         []
                           seq > @
-                            (((unsupported)).ap (((((Parent)).ap).pName)))
-                  (((unsupported)).ap ((Parent)) ((Child)))
+                            (((unsupported)).ap (((((unsupported)).ap ((xParent))).xpName)))
+                  (((unsupported)).ap ((xParent)) ((xChild)))
                     seq
-                      name.write (pystring "Dan")
+                      xname.write (pystring "Dan")
                       getPeople.write
                         [self]
                           seq > @
                             seq
-                              bogusForceDataize.write ((((self).__setattr__)).ap ((pystring "age")) ((pyint 100)))
-                              (((unsupported)).ap (((((((((self).pName).__len__)).ap).greater (pyint 0)).and ((((((self).chName).__len__)).ap).greater (pyint 0))).and (((hasattr)).ap ((self)) ((pystring "age"))))))
-                  (((unsupported)).ap ((Parent)) ((Child)) ((Friend)))
+                              bogusForceDataize.write ((((((unsupported)).ap).x__setattr__)).ap ((pystring "age")) ((pyint 100)))
+                              (((unsupported)).ap ((((((((((unsupported)).ap ((((unsupported)).ap))).x__len__)).ap).greater (pyint 0)).and (((((((unsupported)).ap ((((unsupported)).ap))).x__len__)).ap).greater (pyint 0))).and (((xhasattr)).ap ((xself)) ((pystring "age"))))))
+                  (((unsupported)).ap ((xParent)) ((xChild)) ((xFriend)))
                     seq
-                      name.write (pystring "Dan")
+                      xname.write (pystring "Dan")
                       getPeople.write
                         [self]
                           seq > @
                             seq
-                              bogusForceDataize.write ((((self).__setattr__)).ap ((pyint 100)) ((pystring "age")))
-                              (((unsupported)).ap (((self).getPeople)))
-                  (((unsupported)).ap ((Friend)) ((Child)) ((Friend2)))
+                              bogusForceDataize.write ((((((unsupported)).ap).x__setattr__)).ap ((pyint 100)) ((pystring "age")))
+                              (((unsupported)).ap (((((unsupported)).ap).xgetPeople)))
+                  (((unsupported)).ap ((xFriend)) ((xChild)) ((xFriend2)))
                     seq
-                      name.write (pystring "Dan")
+                      xname.write (pystring "Dan")
                       getPeople.write
                         [self]
                           seq > @
                             seq
-                              bogusForceDataize.write ((((self).__setattr__)).ap ((pystring "age")) ((pyint 100)))
-                              (((unsupported)).ap (((self).getPeople)))
-                  (((unsupported)).ap ((Friend)) ((Friend3)) ((Friend2)))
+                              bogusForceDataize.write ((((((unsupported)).ap).x__setattr__)).ap ((pystring "age")) ((pyint 100)))
+                              (((unsupported)).ap (((((unsupported)).ap).xgetPeople)))
+                  (((unsupported)).ap ((xFriend)) ((xFriend3)) ((xFriend2)))
                     seq
-                      name.write (pystring "Dan")
+                      xname.write (pystring "Dan")
                       getPeople.write
                         [self]
                           seq > @
                             seq
-                              bogusForceDataize.write ((((self).__setattr__)).ap ((pystring "age")) ((pyint 100)))
-                              (((unsupported)).ap (((self).getPeople)))
-                  (((unsupported)).ap ((Friend)))
+                              bogusForceDataize.write ((((((unsupported)).ap).x__setattr__)).ap ((pystring "age")) ((pyint 100)))
+                              (((unsupported)).ap (((((unsupported)).ap).xgetPeople)))
+                  (((unsupported)).ap ((xFriend)))
                     seq
-                      count.write (pyint 100000)
+                      xcount.write (pyint 100000)
                       checkPeople.write
                         [self]
                           seq > @
-                            (((unsupported)).ap (((((self).count).greater (pyint 0)).and ((((self).getPeople)).ap))))
+                            (((unsupported)).ap (((((((unsupported)).ap).xcount).greater (pyint 0)).and ((((((unsupported)).ap).xgetPeople)).ap))))
                   testCheck.write
                     []
-                      memory 0 > c
+                      memory 0 > xc
                       seq > @
                         seq
-                          c.write (((Citizens)).ap)
-                          bogusForceDataize.write ((((c).__setattr__)).ap ((pystring "mid_age")) ((pyint 45)))
-                          bogusForceDataize.write ((((c).__delattr__)).ap ((pystring "mid_age")))
-                          (((unsupported)).ap ((((((c).getPeople)).ap).and (((hasattr)).ap ((c)) ((pystring "mid_age"))))))
-                  (((unsupported)).ap ((((testCheck)).ap)))
+                          xc.write (((xCitizens)).ap)
+                          bogusForceDataize.write ((((((unsupported)).ap).x__setattr__)).ap ((pystring "mid_age")) ((pyint 45)))
+                          bogusForceDataize.write ((((((unsupported)).ap).x__delattr__)).ap ((pystring "mid_age")))
+                          (((unsupported)).ap ((((((((unsupported)).ap).xgetPeople)).ap).and (((xhasattr)).ap ((xc)) ((pystring "mid_age"))))))
+                  (((unsupported)).ap ((((xtestCheck)).ap)))
