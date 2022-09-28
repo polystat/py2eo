@@ -36,16 +36,12 @@ final class CPythonTests extends Commons {
       Process("git checkout v3.8.10", cpython.jfile).!!
     }
 
-    println("Version of python is:")
-    Process(s"$python --version").!!
-
     val testsDir = Directory(cpython / "Lib" / "test")
     val tests = testsDir.deepFiles.filter(_.extension == "py")
 
     val futures = for {test <- tests if !blacklisted(test.name)} yield {
       Future {
         val module = test.stripExtension
-        println(s"transpiling $module")
 
         Try(test.slurp).toOption.flatMap(Transpile(module, _)) match {
           case None => fail()

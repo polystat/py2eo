@@ -56,7 +56,7 @@ object PrintLinearizedMutableEOWithCage {
     //    "+alias sprintf org.eolang.txt.sprintf",
   )
 
-  // todo: imperative style suddenly
+  // @todo: remove the remaining imperative code
   private object HackName {
     var count : Int = 0
     def apply(): String = {
@@ -387,7 +387,7 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printTest(testName : String, st : Statement.T) : Text = {
-    HackName.count = 0 // todo: imperative style suddenly
+    HackName.count = 0
     println(s"doing $testName")
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
@@ -413,7 +413,7 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   def printModule(moduleName : String, st : Statement.T) : Text = {
-    HackName.count = 0 // todo: imperative style suddenly
+    HackName.count = 0
     println(s"module $moduleName")
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(moduleName, List(), None, None, None, st, Decorators(List()),
