@@ -3,7 +3,7 @@ package org.polystat.py2eo.transpiler
 import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement}
 import org.polystat.py2eo.parser.Expression.{
   AnonFun, Assignment, Await, Binop, CallIndex, CollectionComprehension, CollectionCons, DictComprehension,
-  DictCons, DoubleStar, EllipsisLiteral, FloatLiteral, FreakingComparison, GeneratorComprehension, Ident,
+  DictCons, DoubleStar, EllipsisLiteral, Field, FloatLiteral, FreakingComparison, GeneratorComprehension, Ident,
   ImagLiteral, IntLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, UnsupportedExpr, Yield, YieldFrom
 }
 import org.polystat.py2eo.parser.Statement.{
@@ -24,6 +24,8 @@ object MarkUnsupportedConstructions {
         case _: Throwable => false
       }
     val e1 = e match {
+      case Ident(name, ann) => Ident("x" + name, ann)
+      case Field(whose, name, ann) => Field(inner(whose), "x" + name, ann)
       case CallIndex(isCall, _, args, _) if !isCall || args.exists(x => x._1.nonEmpty) =>
         inner(e)
       case StringLiteral(value, ann) if value.length > 1 || value.exists(
