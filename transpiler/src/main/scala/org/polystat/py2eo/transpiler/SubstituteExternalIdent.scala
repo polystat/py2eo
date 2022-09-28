@@ -13,7 +13,7 @@ object SubstituteExternalIdent {
     val externalIdents = AnalysisSupport.foldSS[HashMap[String, String]]({
       case (acc, ImportSymbol(from, what, as, ann)) =>
         val alias = as.getOrElse(what)
-        (acc.+((alias, (from).mkString(".x") + ".ap." + what)), true)
+        (acc.+((alias, (from).mkString(".x") + ".ap.x" + what)), true)
       case (acc, ImportModule(what, as, ann)) =>
         val alias = as.getOrElse(what.last)
         (acc.+((alias, (what).mkString(".x") + ".ap")), true)
