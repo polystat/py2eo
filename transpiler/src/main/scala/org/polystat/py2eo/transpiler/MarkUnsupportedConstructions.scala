@@ -77,8 +77,8 @@ object MarkUnsupportedConstructions {
     case For(_, _, _, _, _, _) | AugAssign(_, _, _, _) | Continue(_) | Break(_) | _: ClassDef | _: AnnAssign |
       Assert(_, _, _) | Raise(_, _, _) | Del(_, _) | Global(_, _) | NonLocal(_, _) | With(_, _, _, _) | Try(_, _, _, _, _) |
       ImportAllSymbols(_, _) | Return(_, _) | While(_, _, _, _) => inner(s, List(), s.ann.pos)
-    case ImportModule(what, as, _) => inner(s, as.toList, s.ann.pos)
-    case ImportSymbol(from, what, as, _) => inner(s, as.toList, s.ann.pos)
+    case ImportModule(what, as, _) => inner(s, as.toList.map("x" + _), s.ann.pos)
+    case ImportSymbol(from, what, as, _) => inner(s, as.toList.map("x" + _), s.ann.pos)
     case _ => s
   }, ns)
   }
