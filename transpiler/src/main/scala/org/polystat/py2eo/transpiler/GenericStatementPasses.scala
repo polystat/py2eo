@@ -160,14 +160,6 @@ object GenericStatementPasses {
       case Raise(None, None, _) | Pass(_) | Break(_) | Continue(_) | NonLocal(_, _) | Global(_, _) | ImportModule(_, _, _) |
            ImportSymbol(_, _, _, _) | ImportAllSymbols(_, _) | Return(None, _) => (s, ns)
       case Del(Ident(_, _), _) => (s, ns)
-//      case With(cm, target, body, isAsync, ann) =>
-//        val (body1, ns1) = pst(body, ns)
-//        forceAllIfNecessary(f)((false, cm) :: target.toList.map(x => (true, x)), ns1) match {
-//          case Left((l, ns)) => (With(l.head, l.tail.headOption, body1, isAsync, ann.pos), ns)
-//          case Right((l, ns)) =>
-//            val w = (With(l.head._2, l.map(_._2).tail.headOption, body1, isAsync, ann.pos))
-//            (Suite(l.map(_._1) :+ w, ann.pos), ns)
-//        }
       case IfSimple(cond, yes, no, ann) =>
         val (yes1, ns1) = pst(yes, ns)
         val (no1, ns2) = pst(no, ns1)
@@ -487,7 +479,6 @@ object GenericStatementPasses {
         }
       case _ => s
     }
-//    println(s"$s \n -> $s1")
     (inner(s))
   }
 

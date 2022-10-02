@@ -53,7 +53,6 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xAssertionError preface.xAssertionError",
     "+alias xValueError preface.xValueError",
     "+alias xrange preface.xrange",
-    //    "+alias sprintf org.eolang.txt.sprintf",
   )
 
   private object HackName {
@@ -66,7 +65,6 @@ object PrintLinearizedMutableEOWithCage {
 
   private def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
     case Field(whose, name, _) => seqOfFields(whose).map(_ :+ name)
-//    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
     case Ident(name, _) => Some(List(name))
     case _ => None
   }
@@ -287,7 +285,6 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   private def printFun(preface : List[String], f : FuncDef, isModule : Boolean = false) : Text = {
-    //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     val funs = AnalysisSupport.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
       case _ : ClassDef => (l, false)

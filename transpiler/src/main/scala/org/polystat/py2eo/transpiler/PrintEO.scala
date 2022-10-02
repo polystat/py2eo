@@ -94,7 +94,6 @@ object PrintEO {
       case BoolLiteral(value, _) =>
         val v = if (value) "TRUE" else "FALSE"
         s"(pybool $v)"
-      //    case NoneLiteral(, _) =>
       case Binop(op, l, r, _) =>  orb + e(l) + "." + binop(op) + space + e(r) + crb
       case SimpleComparison(op, l, r, ann) if (op == Compops.Is || op == Compops.IsNot) =>
         val l1 = Field(l, "x__id__", ann.pos)

@@ -21,12 +21,10 @@ class DjangoTest extends Commons {
     val root = new File(testsPrefix)
     val django = new File(testsPrefix + "/django")
     if (!django.exists()) {
-      //      assert(0 == Process("git clone file:///home/bogus/pythonProjects/django", root).!)
       assert(0 == Process("git clone -b 4.0 https://github.com/django/django", root).!)
     }
     val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
     val futures = test.map(test =>
-//      Future
       {
         def db(s : Statement.T, str : String) = () // debugPrinter(test)(_, _)
         val name = test.getName
@@ -45,7 +43,6 @@ class DjangoTest extends Commons {
         writeFile(test, "genUnsupportedEO", ".eo", eoText)
       }
     )
-//    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
   @Test def bCheckSyntaxForDjango() : Unit = {
