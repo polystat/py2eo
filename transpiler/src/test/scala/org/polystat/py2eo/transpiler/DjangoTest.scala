@@ -1,5 +1,6 @@
 package org.polystat.py2eo.transpiler
 
+import org.junit.Assert.assertTrue
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
@@ -21,7 +22,7 @@ class DjangoTest extends Commons {
     val root = new File(testsPrefix)
     val django = new File(testsPrefix + "/django")
     if (!django.exists()) {
-      assert(0 == Process("git clone -b 4.0 https://github.com/django/django", root).!)
+      assertTrue(0 == Process("git clone -b 4.0 https://github.com/django/django", root).!)
     }
     val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
     val futures = test.map(test =>
