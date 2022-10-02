@@ -16,7 +16,6 @@ class SimplifyIfTest {
       bogusAnnotation
     )
     val output = SimplifyIf(input, bogusNamesU)
-    println(output)
     assertTrue(
       output._1 ==
         (

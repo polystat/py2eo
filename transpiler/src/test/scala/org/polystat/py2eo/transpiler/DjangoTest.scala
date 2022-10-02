@@ -28,18 +28,12 @@ class DjangoTest extends Commons {
       {
         def db(s : Statement.T, str : String) = () // debugPrinter(test)(_, _)
         val name = test.getName
-        println(s"parsing $name")
-        val eoText = try {
+        val eoText =
           Transpile.transpile(db)(
             chopExtension(name),
             Transpile.Parameters(wrapInAFunction = false, isModule = false),
             readFile(test)
           )
-        } catch {
-          case e : Throwable =>
-            println(s"failed to transpile $name: ${e.toString}")
-            throw e
-        }
         writeFile(test, "genUnsupportedEO", ".eo", eoText)
       }
     )
