@@ -87,7 +87,9 @@ object PrintEO {
       case StringLiteral(List(value), _) =>
         if (value == "") "(pystring \"\")" else // todo: very dubious . Value must not be an empty string
         if (value.head == '\'' && value.last == '\'') {
-          "(pystring \"" + value + "\")"
+          "(pystring \"" +
+            value.substring(1, value.length - 1).replace("\"", "\\\"") +
+            "\")"
         } else { s"(pystring $value)" }
       case BoolLiteral(value, _) =>
         val v = if (value) "TRUE" else "FALSE"
