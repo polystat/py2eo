@@ -183,7 +183,6 @@ object GenericStatementPasses {
         val (ffinally1, ns4) = pst(ffinally, ns3)
         (Try(try1, List((None, catchBody1)), Some(eelse1), Some(ffinally1), ann.pos), ns4)
 
-        // todo: wow, this is a lot. Maybe we should just generate GOTOs instead of such rewriting
       case While(cond, body, Some(eelse), ann) =>
         val (body1, ns1) = pst(body, ns)
         val (else1, ns2) = pst(eelse, ns1)

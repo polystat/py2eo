@@ -56,7 +56,6 @@ object PrintLinearizedMutableEOWithCage {
     //    "+alias sprintf org.eolang.txt.sprintf",
   )
 
-  // @todo: remove the remaining imperative code
   private object HackName {
     var count : Int = 0
     def apply(): String = {

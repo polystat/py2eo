@@ -81,11 +81,11 @@ object PrintEO {
           case Left((k, v)) => s" (pair ${e(k)} ${e(v)})"
         }.mkString("")
         (s"((*${elts}))")
-      case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")" // todo: see <<-- there
+      case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")"
       case IntLiteral(value, _) => s"(pyint $value)"
       case FloatLiteral(value, _) => s"(pyfloat $value)"
       case StringLiteral(List(value), _) =>
-        if (value == "") "(pystring \"\")" else // todo: very dubious . Value must not be an empty string
+        if (value == "") "(pystring \"\")" else
         if (value.head == '\'' && value.last == '\'') {
           "(pystring \"" +
             value.substring(1, value.length - 1).replace("\"", "\\\"") +
@@ -122,7 +122,6 @@ object PrintEO {
       case Cond(cond, yes, no, _) => orb + e(cond) + ".as-bool.if " + e(yes) + space + e(no) + crb
       case CallIndex(true, whom, args, _)  =>
         "((" + e(whom) + crb + ".ap" +
-          // todo: empty arg list hack
           ((args.map{case (None, ee) => " (" + e(ee) + crb}).mkString("")) +
         crb
     }
@@ -146,11 +145,10 @@ object PrintEO {
               )
             )
           ) :+ s"($name.initFields)"
-      case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List() // todo: a quick hack
+      case ImportModule(_, _, _) | ImportAllSymbols(_, _) => List()
       case Pass(_) => List()
       case IfSimple(cond, yes, no, _) =>
         List(printExpr(cond) + ".if") ++ indent(s(yes)) ++ indent(s(no))
-      // todo: a hackish printer for single integers only!
       case Assign(List(e@UnsupportedExpr(t, value)), _) => List(printExpr(e))
       case Assign(List(c@CallIndex(true, whom, args, _)), ann) =>
         s(Assign(List(Expression.Ident("bogusForceDataize", new GeneralAnnotation()), c), ann.pos))

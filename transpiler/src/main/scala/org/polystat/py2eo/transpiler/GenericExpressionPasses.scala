@@ -62,8 +62,6 @@ object GenericExpressionPasses {
           Slice(from, to, by, ann.pos)
         }
         reconstruct(lhs = false, cons, l, ns)
-      // todo: this is a hack. We do not process the function to be called to make the
-      // output simpler for polystat
       case CallIndex(isCall, whom, args, ann) if isCall =>
         reconstruct(
           false,
@@ -102,7 +100,7 @@ object GenericExpressionPasses {
           case Right(value) =>
             Suite(List(value._1, Return(Some(value._2), value._2.ann.pos)), GeneralAnnotation(value._1.ann.start, value._2.ann.stop))
         }
-        // todo: all the keyword args must be supported in the "lambda" as well
+        // @todo #340: all the keyword args must be supported in the "lambda" as well
         val f = FuncDef(funname, args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None)), None,
           finalBody, Decorators(List()), HashMap(), isAsync = false, ann.pos)
         (Right((f, Ident(funname, ann.pos))), ns2)
