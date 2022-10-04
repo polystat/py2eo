@@ -86,11 +86,20 @@ object PrintEO {
       case FloatLiteral(value, _) => s"(pyfloat $value)"
       case StringLiteral(List(value), _) =>
         if (value == "") "(pystring \"\")" else
+        if (value.length >= 6 && (value.startsWith("\"\"\"") || value.startsWith("'''"))) {
+          "(pystring \"" +
+            value
+              .substring(3, value.length - 3)
+              .replace("\n", "\\n")
+              .replace("\"", "\\\"") +
+            "\")"
+        } else
         if (value.head == '\'' && value.last == '\'') {
           "(pystring \"" +
             value.substring(1, value.length - 1).replace("\"", "\\\"") +
             "\")"
-        } else { s"(pystring $value)" }
+        } else
+        { s"(pystring $value)" }
       case BoolLiteral(value, _) =>
         val v = if (value) "TRUE" else "FALSE"
         s"(pybool $v)"
