@@ -12,12 +12,12 @@
 +alias xAssertionError preface.xAssertionError
 
 [] > xmyArray
-  [initValue] > ap
+  [is-list initValue] > ap
     [stackUp] > @
       cage result > pResult
       [] > result
         cage initValue > value
-        xfakeclasses.pyListClass > x__class__
+        is-list.if (xfakeclasses.pyListClass) (xfakeclasses.pyTupleClass) > x__class__
         [] > to-my-array
           pResult > @
         [x] > with-value
@@ -77,7 +77,7 @@
           memory TRUE > acc
           memory 0 > pos
           if. > res
-            ((x.x__class__.eq (xfakeclasses.pyListClass)).value.and (value.length.eq (x.value.length)))
+            ((x.x__class__.eq (is-list.if (xfakeclasses.pyListClass) (xfakeclasses.pyTupleClass))).value.and (value.length.eq (x.value.length)))
             seq
               (acc.and (pos.lt (value.length))).while
                 [unused]
