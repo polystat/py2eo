@@ -108,10 +108,14 @@
 
   [x] > mul
     xfakeclasses.convert (pyint value) x > p
+    memory 0 > tmp
     seq > @
       if.
         (xfakeclasses.has-type x (xfakeclasses.pyIntClass))
-        pyint (value.times (x.value))
+        seq
+          tmp.write (value.times (x.value))
+          tmp
+          pyint (tmp)
         p.fst.mul (p.snd)
 
   [x] > div
@@ -226,7 +230,7 @@
     pyfloat (value.as-float) > @
 
   [] > force
-    value.write val > @
+    value > @
 
   [] > xto-int
     [] > ap
