@@ -2,14 +2,15 @@ package org.polystat.py2eo.transpiler
 
 import org.polystat.py2eo.parser.{ArgKind, Expression, GeneralAnnotation, Statement}
 import org.polystat.py2eo.parser.Expression.{
-  AnonFun, Assignment, Await, Binop, CallIndex, CollectionComprehension, CollectionCons, DictComprehension,
-  DictCons, DoubleStar, EllipsisLiteral, Field, FloatLiteral, FreakingComparison, GeneratorComprehension, Ident,
-  ImagLiteral, IntLiteral, Parameter, SimpleComparison, Slice, Star, StringLiteral, T, UnsupportedExpr, Yield, YieldFrom
+  AnonFun, Assignment, Await, Binop, CallIndex, CollectionComprehension, CollectionCons,
+  DictComprehension, DictCons, DoubleStar, EllipsisLiteral, Field, FloatLiteral, FreakingComparison,
+  GeneratorComprehension, Ident, ImagLiteral, IntLiteral, NoneLiteral, Parameter, SimpleComparison,
+  Slice, Star, StringLiteral, T, UnsupportedExpr, Yield, YieldFrom
 }
 import org.polystat.py2eo.parser.Statement.{
-  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, Decorators, Del, For, FuncDef, Global,
-  ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return, Try, Unsupported, While, With,
-  CreateConst, SimpleObject
+  AnnAssign, Assert, Assign, AugAssign, Break, ClassDef, Continue, CreateConst, Decorators, Del, For,
+  FuncDef, Global, ImportAllSymbols, ImportModule, ImportSymbol, NonLocal, Pass, Raise, Return,
+  SimpleObject, Try, Unsupported, While, With
 }
 import org.polystat.py2eo.transpiler.GenericStatementPasses.NamesU
 
@@ -30,8 +31,11 @@ object MarkUnsupportedConstructions {
       case CallIndex(isCall, _, args, _) if !isCall || args.exists(x => x._1.nonEmpty) =>
         inner(e)
       case StringLiteral(value, ann) if value.length > 1 || value.exists(
-        s => (s.head != '\'' && s.head != '"') || "\\\\[^\"'\\\\]".r.findFirstMatchIn(s).nonEmpty
-      ) => inner(e)
+        s =>
+          (s.head != '\'' && s.head != '"') ||
+            "\\\\[^\"'\\\\]".r.findFirstMatchIn(s).nonEmpty ||
+            s.startsWith("'") || s.startsWith("'''") || s.startsWith("\"\"\"")
+        ) => new UnsupportedExpr(StringLiteral(List("too complicated string"), ann.pos), List(), ann.pos)
       case ImagLiteral(_, _) => inner(e)
       case FloatLiteral(value, ann)
         if value.contains("e") || value.contains("E") || value.endsWith(".") || value.startsWith(".") =>
