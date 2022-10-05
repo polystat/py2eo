@@ -1,6 +1,6 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 import java.io.File
 

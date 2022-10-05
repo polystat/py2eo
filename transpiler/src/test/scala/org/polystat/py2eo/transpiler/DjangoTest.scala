@@ -1,8 +1,7 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.FixMethodOrder
-import org.junit.Test
-import org.junit.runners.MethodSorters
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
+import org.junit.jupiter.api.{Order, Test, TestMethodOrder}
 import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.transpiler.Common.dfsFiles
 
@@ -14,10 +13,12 @@ import scala.concurrent.{Await, Future}
 import scala.reflect.io.Directory
 import scala.sys.process.Process
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(classOf[OrderAnnotation])
 class DjangoTest extends Commons {
 
-  @Test def aGenUnsupportedDjango() : Unit = {
+  @Test
+  @Order(1)
+  def genUnsupportedDjango() : Unit = {
     val root = new File(testsPrefix)
     val django = new File(testsPrefix + "/django")
     if (!django.exists()) {
@@ -48,7 +49,9 @@ class DjangoTest extends Commons {
 //    for (f <- futures) Await.result(f, Duration.Inf)
   }
 
-  @Test def bCheckSyntaxForDjango() : Unit = {
+  @Test
+  @Order(2)
+  def checkSyntaxForDjango() : Unit = {
     checkEOSyntaxInDirectory(testsPrefix + "/django")
   }
 

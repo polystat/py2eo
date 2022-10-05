@@ -1,8 +1,8 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.fail
-import org.junit.runners.MethodSorters
-import org.junit.{FixMethodOrder, Test}
+import org.junit.jupiter.api.Assertions.fail
+import org.junit.jupiter.api.{Order, Test, TestMethodOrder}
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -12,7 +12,7 @@ import scala.reflect.io.{Directory, File, Path}
 import scala.sys.process.Process
 import scala.util.Try
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(classOf[OrderAnnotation])
 final class CPythonTests extends Commons {
 
   private val dirPath: Path = s"$testsPrefix/testParserPrinter"
@@ -23,7 +23,9 @@ final class CPythonTests extends Commons {
     "module_koi8_r.py", "module_iso_8859_1.py"
   )
 
-  @Test def aParserPrinterOnCPython(): Unit = {
+  @Test
+  @Order(1)
+  def parserPrinterOnCPython(): Unit = {
     val dir = Directory(dirPath)
     dir.createDirectory(failIfExists = false)
 
@@ -56,7 +58,9 @@ final class CPythonTests extends Commons {
     for (f <- futures) Await.result(f, Duration.Inf)
   }
 
-  @Test def bCheckEOSyntax(): Unit = {
+  @Test
+  @Order(2)
+  def checkEOSyntax(): Unit = {
     checkEOSyntaxInDirectory(Directory(dirPath / "afterParser").toString)
   }
 }

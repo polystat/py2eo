@@ -1,18 +1,18 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
-import java.io.File
-import java.{lang => jl, util => ju}
+import scala.reflect.io.{Directory, File}
 
 object TestsSimple extends Commons {
-  @Parameters def parameters: ju.Collection[Array[jl.String]] = collect("simple-tests", filterEnabled = true)
+  private val simpleTests = Directory(s"$testsPrefix/simple-tests")
+  def test: Array[File] = collect(simpleTests, filterEnabled = true)
 }
 
-@RunWith(value = classOf[Parameterized])
-class TestsSimple(path: jl.String) extends Commons {
-  @Test def testDef(): Unit = useCageHolder(new File(path))
+@ParameterizedTest
+@MethodSource
+class TestsSimple(test: File) extends Commons {
+  @Test def test(): Unit = useCageHolder(test.jfile)
 }

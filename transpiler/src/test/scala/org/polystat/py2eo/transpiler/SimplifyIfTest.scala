@@ -1,13 +1,12 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import org.polystat.py2eo.parser.Expression.Ident
 import org.polystat.py2eo.parser.Statement.{If, IfSimple, Pass}
-import org.polystat.py2eo.transpiler.Counter.{bogusAnnotation, bogusNamesU}
 
-class SimplifyIfTest {
-  @Test def ififelse() = {
+class SimplifyIfTest extends Commons {
+  @Test def ififelse(): Unit = {
     def mkId(name : String) = Ident(name, bogusAnnotation)
     val pass = Pass(bogusAnnotation)
     val input = If(

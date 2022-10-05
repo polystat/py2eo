@@ -1,14 +1,13 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import org.polystat.py2eo.parser.Expression.{CallIndex, Ident, Unop, Unops}
 import org.polystat.py2eo.parser.Statement.{Assert, IfSimple, Pass, Raise}
-import org.polystat.py2eo.transpiler.Counter.{bogusAnnotation, bogusNamesU}
 
-class SimplifyAssertTest {
+class SimplifyAssertTest extends Commons {
 
-  @Test def noParam() = {
+  @Test def noParam(): Unit = {
     val input = Assert(
       Ident("some name here", bogusAnnotation),
       None,
@@ -41,7 +40,7 @@ class SimplifyAssertTest {
     )
   }
 
-  @Test def someParam() = {
+  @Test def someParam(): Unit = {
     val input = Assert(
       Ident("some name here", bogusAnnotation),
       Some(Ident("other name here", bogusAnnotation)),
