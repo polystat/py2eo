@@ -77,7 +77,7 @@ object PrintLinearizedMutableEOWithCage {
       case _ : ImportModule => List()
       case _ : ImportSymbol => List()
       case _ : ImportAllSymbols => List()
-      case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
+      case ClassDef(name, bases, body, decorators, ann) if decorators.l.isEmpty =>
         val Suite(l0, _) = GenericStatementPasses.simpleProcStatement(GenericStatementPasses.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
         val init : Option[FuncDef] = l0
