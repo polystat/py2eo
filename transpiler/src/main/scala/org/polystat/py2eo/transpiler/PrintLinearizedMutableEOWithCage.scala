@@ -98,6 +98,7 @@ object PrintLinearizedMutableEOWithCage {
             name ::
             "[]" :: indent(
               "newUID.ap 0 > x__id__" ::
+              (init match { case None => "(goto (ap.@)).result > @" case Some(_) => "0 > nothing-here" }) ::
               "[x] > eq" ::
               "  x__id__.eq (x.x__id__) > @" ::
               s"[$consArgs] > ap" ::
