@@ -6,13 +6,13 @@ import org.junit.jupiter.params.provider.MethodSource
 
 import scala.reflect.io.{Directory, File}
 
-object TestsSimple extends Commons {
+object TestSimple extends Commons {
   private val simpleTests = Directory(s"$testsPrefix/simple-tests")
   def test: Array[File] = collect(simpleTests, filterEnabled = true)
 }
 
 @ParameterizedTest
 @MethodSource
-class TestsSimple(test: File) extends Commons {
+class TestSimple(test: File) extends Commons {
   @Test def test(): Unit = useCageHolder(test.jfile)
 }
