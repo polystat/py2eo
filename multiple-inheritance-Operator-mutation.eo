@@ -1,35 +1,196 @@
 +package org.eolang
++alias goto org.eolang.goto
++alias stdout org.eolang.io.stdout
++alias sprintf org.eolang.txt.sprintf
++alias cage org.eolang.cage
++alias pyslice preface.pyslice
 +alias pyint preface.pyint
++alias pair preface.pair
 +alias pyfloat preface.pyfloat
 +alias pystring preface.pystring
 +alias pybool preface.pybool
++alias pycomplex preface.pycomplex
++alias newUID preface.newUID
++alias xfakeclasses preface.xfakeclasses
++alias mkCopy preface.mkCopy
++alias raiseNothing preface.raiseNothing
++alias continue preface.continue
++alias break preface.break
++alias return preface.return
++alias raiseEmpty preface.raiseEmpty
++alias xmyArray preface.xmyArray
++alias xmyMap preface.xmyMap
++alias xlen preface.xlen
++alias xmap preface.xmap
++alias xfilter preface.xfilter
++alias xstr preface.xstr
++alias xsum preface.xsum
++alias xlist preface.xlist
++alias xtuple preface.xtuple
++alias xint preface.xint
++alias xfloat preface.xfloat
++alias xiter preface.xiter
++alias xStopIteration preface.xStopIteration
++alias xBaseException preface.xBaseException
++alias xTypeError preface.xTypeError
++alias xZeroDivisionError preface.xZeroDivisionError
++alias xAssertionError preface.xAssertionError
++alias xValueError preface.xValueError
++alias xrange preface.xrange
 +junit
-pyint 0 > dummy-int-usage
-pystring 0 > dummy-string-usage
-pyfloat 0 > dummy-float-usage
-pybool TRUE > dummy-bool-usage
-memory 0 > xd
-memory 0 > xc
-[] > ymultipleinheritance
-  [args...] > unsupported
-  [args...] > xunsupported
-  memory 0 > bogusForceDataize
-  memory 0 > xbogusForceDataize
-  memory 0 > xhack
+
+[unused] > multiple-inheritance
+  (pystring "multiple-inheritance") > x__name__
+  [] > ap
+    (pystring "multiple-inheritance") > x__name__
+    [stackUp] > @
+      [id] > is-exception
+        id.greater (pyint 3) > @
+      [id] > is-break-continue-return
+        (id.greater (pyint 0)).and (id.less (pyint 4)) > @
+      [] > xbool
+        [x] > ap
+          [stackUp] > @
+            seq > @
+              stackUp.forward (return x)
+              123
+      cage 0 > xcurrent-exception
+      cage 0 > xexcinexc
+      cage FALSE > xcaught
+      pyslice 0 0 0 > dummy-pyslice-usage
+      pyint 0 > dummy-int-usage
+      pyfloat 0 > dummy-float-usage
+      pybool TRUE > dummy-bool-usage
+      pycomplex 0 0 > dummy-pycomplex
+      pystring (sprintf "") > dummy-bool-string
+      newUID > dummy-newUID
+      xfakeclasses.pyComplexClass > xcomplex
+      raiseNothing > dummy-rn
+      continue > dummy-continue
+      break > dummy-break
+      return > dummy-return
+      raiseEmpty > dummy-raiseEmpty
+      xmyArray > dummy-xmyArray
+      xmyMap > dummy-xmyMap
+      mkCopy > dummy-mkCopy
+      xlen > dummy-xlen
+      xmap > dummy-xmap
+      xfilter > dummy-xfilter
+      pair > dummy-pair
+      xstr > dummy-xstr
+      xsum > dummy-xsum
+      xlist > dummy-xlist
+      xtuple > dummy-xtuple
+      xint > dummy-xint
+      xfloat > dummy-xfloat
+      xStopIteration > dummy-stop-iteration
+      xBaseException > dummy-base-exception
+      xZeroDivisionError > dummy-xZeroDivisionError
+      xAssertionError > dummy-xAssertionError
+      xValueError > dummy-xValueError
+      xTypeError > dummy-xTypeError
+      xiter > dummy-xiter
+      xrange > dummy-xrange
+      cage 0 > tmp
+      cage 0 > toReturn
+      cage 0 > assertMe
+      cage 0 > xmultiInh
+      seq > @
+        stdout "multiple-inheritance\n"
+        write.
+          xmultiInh
+          []
+            (pystring "xmultiInh") > x__name__
+            [] > ap
+              (pystring "xmultiInh") > x__name__
+              [stackUp] > @
+                cage 0 > tmp
+                cage 0 > toReturn
+                cage 0 > e1
+                cage 0 > lhs1
+                cage 0 > e0
+                cage 0 > xc
+                cage 0 > e3
+                cage 0 > e2
+                cage 0 > xd
+                cage 0 > xe
+                seq > @
+                  stdout "xmultiInh\n"
+                  write.
+                    xc
+                    []
+                      newUID.ap 0 > x__id__
+                      (goto (ap.@)).result > @
+                      [x] > eq
+                        x__id__.eq (x.x__id__) > @
+                      [] > ap
+                        [stackUp] > @
+                          cage result > pResult
+                          cage 0 > tmp
+                          [] > result
+                            cage 0 > xa
+                            xc > x__class__
+                            seq > initFields
+                              xa.write (pyint 1)
+                          seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
+                  write.
+                    xd
+                    []
+                      newUID.ap 0 > x__id__
+                      (goto (ap.@)).result > @
+                      [x] > eq
+                        x__id__.eq (x.x__id__) > @
+                      [] > ap
+                        [stackUp] > @
+                          cage result > pResult
+                          cage 0 > tmp
+                          [] > result
+                            cage 0 > xb
+                            xd > x__class__
+                            seq > initFields
+                              xb.write (pyint 10)
+                          seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
+                  write.
+                    xe
+                    []
+                      newUID.ap 0 > x__id__
+                      (goto (ap.@)).result > @
+                      [x] > eq
+                        x__id__.eq (x.x__id__) > @
+                      [] > ap
+                        [stackUp] > @
+                          cage result > pResult
+                          cage 0 > tmp
+                          [] > result
+                            goto (((xc).ap).@) > base
+                            xe > x__class__
+                            seq > initFields
+                              base.result.x__class__.x__id__
+                            base.result > @
+                          seq (result.initFields) (pResult.write result) (stackUp.forward (return pResult)) > @
+                  mkCopy (xc.xa) > tmp1
+                  (e0).write (tmp1.copy)
+                  ((e0).<)
+                  mkCopy (xd.xb) > tmp2
+                  (e1).write (tmp2.copy)
+                  ((e1).<)
+                  (e2).write (((e0).sub (e1)))
+                  (e2).force
+                  ((e2).<)
+                  (lhs1).write ((pyint 11))
+                  (lhs1).force
+                  (e3).write (((e2).eq (lhs1)))
+                  (e3).force
+                  ((e3).<)
+                  toReturn.write ((e3))
+                  stackUp.forward (return toReturn)
+                  stackUp.forward (return 0)
+                  123
+        tmp.write (goto ((((xmultiInh)).ap).@))
+        (tmp.x__class__.x__id__.neq (return.x__class__.x__id__)).if (stackUp.forward tmp) 0
+        (assertMe).write (tmp.result)
+        toReturn.write ((assertMe))
+        stackUp.forward (return toReturn)
+        stackUp.forward (return 0)
   seq > @
-    xhack.write
-      []
-        memory 0 > xmultiInh
-        seq > @
-          xmultiInh.write
-            []
-              memory 0 > xb
-              memory 0 > xa
-              seq > @
-                seq
-                  (((unsupported)).ap)
-                    xa.write (pyint 1)
-                  (((unsupported)).ap)
-                    xb.write (pyint 10)
-                  (((unsupported)).ap ((xc)) ((xd)))
-                  (((unsupported)).ap (((((((unsupported)).ap).xa).sub ((((unsupported)).ap).xb)).eq (pyint 11))))
+    (goto (ap.@)).result
