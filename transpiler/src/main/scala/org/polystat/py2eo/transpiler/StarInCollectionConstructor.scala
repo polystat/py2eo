@@ -7,9 +7,9 @@ object StarInCollectionConstructor {
     case CollectionCons(kind, l, ann) =>
       val l1 = l.flatMap({
         case Star(CollectionCons(kind1, l, _), _) => l
-        case x => List(x)
+        case x : Any => List(x)
       })
       CollectionCons(kind, l1, ann)
-    case x => x
+    case x : Any => x
   }
 }
