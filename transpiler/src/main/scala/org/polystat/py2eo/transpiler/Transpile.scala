@@ -52,7 +52,9 @@ object Transpile {
         debugPrinter(y._1, "afterSimplifyFor")
 
         try {
-          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(y._1, y._2)
+          val starInCollCons = GenericStatementPasses.simpleProcExprInStatement(StarInCollectionConstructor.apply)(y._1, y._2)
+          debugPrinter(starInCollCons._1, "afterStarInCollCons")
+          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(starInCollCons._1, starInCollCons._2)
           debugPrinter(rmWith._1, "afterRmWith")
           val rmAssert = GenericStatementPasses.procStatement(SimplifyAssert.apply)(rmWith._1, rmWith._2)
           debugPrinter(rmAssert._1, "afterRmAssert")

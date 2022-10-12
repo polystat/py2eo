@@ -3,7 +3,7 @@ package org.polystat.py2eo.transpiler
 import org.polystat.py2eo.parser.Expression.{
   Binop, Binops, BoolLiteral, CallIndex, CollectionCons, CollectionKind, Compops, Cond,
   DictCons, Field, FloatLiteral, FreakingComparison, IntLiteral, LazyLAnd,
-  LazyLOr, NoneLiteral, Parameter, SimpleComparison, StringLiteral, T, Unop, Unops,
+  LazyLOr, NoneLiteral, Parameter, SimpleComparison, Slice, StringLiteral, T, Unop, Unops,
   UnsupportedExpr
 }
 import org.polystat.py2eo.parser.{AugOps, Expression, GeneralAnnotation, Statement, VarScope}
@@ -81,6 +81,9 @@ object PrintEO {
           case Left((k, v)) => s" (pair ${e(k)} ${e(v)})"
         }.mkString("")
         (s"((*${elts}))")
+      case Slice(Some(from), Some(to), by0, ann) =>
+        val by = by0.getOrElse(IntLiteral(1, ann.pos))
+        s"(pyslice ${e(from)} ${e(to)} ${e(by)})"
       case NoneLiteral(_) => "(pystring \"None: is there a None literal in the EO language?\")"
       case IntLiteral(value, _) => s"(pyint $value)"
       case FloatLiteral(value, _) => s"(pyfloat $value)"
