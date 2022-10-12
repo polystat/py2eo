@@ -43,6 +43,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xstr preface.xstr",
     "+alias xsum preface.xsum",
     "+alias xlist preface.xlist",
+    "+alias xtuple preface.xtuple",
     "+alias xint preface.xint",
     "+alias xfloat preface.xfloat",
     "+alias xiter preface.xiter",
@@ -53,10 +54,8 @@ object PrintLinearizedMutableEOWithCage {
     "+alias xAssertionError preface.xAssertionError",
     "+alias xValueError preface.xValueError",
     "+alias xrange preface.xrange",
-    //    "+alias sprintf org.eolang.txt.sprintf",
   )
 
-  // @todo: remove the remaining imperative code
   private object HackName {
     var count : Int = 0
     def apply(): String = {
@@ -67,7 +66,6 @@ object PrintLinearizedMutableEOWithCage {
 
   private def seqOfFields(x : Expression.T) : Option[List[String]] = x match {
     case Field(whose, name, _) => seqOfFields(whose).map(_ :+ name)
-//    case CallIndex(false, whom, List((_, StringLiteral(_, _))), _) => isSeqOfFields(whom)
     case Ident(name, _) => Some(List(name))
     case _ => None
   }
@@ -79,7 +77,7 @@ object PrintLinearizedMutableEOWithCage {
       case _ : ImportModule => List()
       case _ : ImportSymbol => List()
       case _ : ImportAllSymbols => List()
-      case ClassDef(name, bases, body, decorators, ann) if bases.length <= 1 && decorators.l.isEmpty =>
+      case ClassDef(name, bases, body, decorators, ann) if decorators.l.isEmpty =>
         val Suite(l0, _) = GenericStatementPasses.simpleProcStatement(GenericStatementPasses.unSuite)(body)
         val l = l0.filter{ case Pass(_) => false case _ => true }
         val init : Option[FuncDef] = l0
@@ -100,6 +98,7 @@ object PrintLinearizedMutableEOWithCage {
             name ::
             "[]" :: indent(
               "newUID.ap 0 > x__id__" ::
+              (init match { case None => "(goto (ap.@)).result > @" case Some(_) => "0 > nothing-here" }) ::
               "[x] > eq" ::
               "  x__id__.eq (x.x__id__) > @" ::
               s"[$consArgs] > ap" ::
@@ -288,7 +287,6 @@ object PrintLinearizedMutableEOWithCage {
   }
 
   private def printFun(preface : List[String], f : FuncDef, isModule : Boolean = false) : Text = {
-    //    println(s"l = \n${PrintPython.printSt(Suite(l), "-->>")}")
     val funs = AnalysisSupport.foldSS[List[FuncDef]]((l, st) => st match {
       case f : FuncDef => (l :+ f, false)
       case _ : ClassDef => (l, false)
@@ -373,6 +371,7 @@ object PrintLinearizedMutableEOWithCage {
       "xstr > dummy-xstr",
       "xsum > dummy-xsum",
       "xlist > dummy-xlist",
+      "xtuple > dummy-xtuple",
       "xint > dummy-xint",
       "xfloat > dummy-xfloat",
       "xStopIteration > dummy-stop-iteration",

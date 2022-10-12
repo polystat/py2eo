@@ -15,7 +15,6 @@ class SimplifyIfTest extends Commons {
       bogusAnnotation
     )
     val output = SimplifyIf(input, bogusNamesU)
-    println(output)
     assertTrue(
       output._1 ==
         (
