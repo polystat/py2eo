@@ -1,9 +1,7 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.Assert.assertTrue
-import org.junit.FixMethodOrder
-import org.junit.Test
-import org.junit.runners.MethodSorters
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
+import org.junit.jupiter.api.{Order, Test, TestMethodOrder}
 import org.polystat.py2eo.parser.Statement
 import org.polystat.py2eo.transpiler.Common.dfsFiles
 
@@ -15,17 +13,20 @@ import scala.concurrent.{Await, Future}
 import scala.reflect.io.Directory
 import scala.sys.process.Process
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(classOf[OrderAnnotation])
 class DjangoTest extends Commons {
 
-  @Test def aGenUnsupportedDjango() : Unit = {
+  @Test
+  @Order(1)
+  def genUnsupportedDjango() : Unit = {
     val root = new File(testsPrefix)
     val django = new File(testsPrefix + "/django")
     if (!django.exists()) {
-      assertTrue(0 == Process("git clone -b 4.0 https://github.com/django/django", root).!)
+      Process("git clone -b 4.0 https://github.com/django/django", root).!!
     }
     val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
-    val futures = test.map(test =>
+
+    test.map(test =>
       {
         def db(s : Statement.T, str : String) = () // debugPrinter(test)(_, _)
         val name = test.getName
@@ -40,7 +41,9 @@ class DjangoTest extends Commons {
     )
   }
 
-  @Test def bCheckSyntaxForDjango() : Unit = {
+  @Test
+  @Order(2)
+  def checkSyntaxForDjango() : Unit = {
     checkEOSyntaxInDirectory(testsPrefix + "/django")
   }
 
