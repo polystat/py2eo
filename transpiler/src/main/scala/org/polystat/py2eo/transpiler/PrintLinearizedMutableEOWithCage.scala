@@ -21,6 +21,7 @@ object PrintLinearizedMutableEOWithCage {
     "+alias stdout org.eolang.io.stdout",
     "+alias sprintf org.eolang.txt.sprintf",
     "+alias cage org.eolang.cage",
+    "+alias pyslice preface.pyslice",
     "+alias pyint preface.pyint",
     "+alias pair preface.pair",
     "+alias pyfloat preface.pyfloat",
@@ -163,9 +164,9 @@ object PrintLinearizedMutableEOWithCage {
       case Assign(List(lhs, rhs), _) if seqOfFields(lhs).isDefined =>
         val collectionCons = rhs match {
           case _ : Await | _ : Star | _ : DoubleStar |
-               _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension | _ : Slice =>
+               _ : CollectionComprehension | _ : DictComprehension | _ : GeneratorComprehension =>
             throw new GeneratorException("these expressions must be wrapped in a function call " +
-              "because a copy creation is needed and dataization is impossible")
+              "because a copy creation is needed and dataization is impossible: " + rhs)
           case _ : CollectionCons | _ : DictCons => true
           case _ => false
         }
@@ -349,6 +350,7 @@ object PrintLinearizedMutableEOWithCage {
       "cage 0 > xcurrent-exception",
       "cage 0 > xexcinexc",
       "cage FALSE > xcaught",
+      "pyslice 0 0 0 > dummy-pyslice-usage",
       "pyint 0 > dummy-int-usage",
       "pyfloat 0 > dummy-float-usage",
       "pybool TRUE > dummy-bool-usage",
