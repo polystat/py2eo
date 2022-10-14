@@ -1,7 +1,7 @@
 package org.polystat.py2eo.parser
 
-import org.junit.Assert.fail
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.fail
+import org.junit.jupiter.api.Test
 import org.polystat.py2eo.parser.Expression.Ident
 import org.polystat.py2eo.parser.Statement.{Assign, Suite}
 
