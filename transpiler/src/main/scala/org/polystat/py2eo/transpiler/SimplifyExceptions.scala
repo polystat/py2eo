@@ -62,7 +62,6 @@ object SimplifyExceptions {
   // @todo #331: also must rethrow an exception if it is not catched
   def preSimplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case Try(ttry, List((None, x)), eelse, ffinally, ann) =>
-      print("empty except\n")
       (
         Try(ttry, List((None, Suite(List(
           Assign(List(Ident("caught", ann.pos), BoolLiteral(true, ann.pos)), ann.pos),

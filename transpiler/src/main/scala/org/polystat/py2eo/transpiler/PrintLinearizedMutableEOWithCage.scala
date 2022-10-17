@@ -389,7 +389,6 @@ object PrintLinearizedMutableEOWithCage {
 
   def printTest(testName : String, st : Statement.T) : Text = {
     HackName.count = 0
-    println(s"doing $testName")
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(testName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
@@ -415,7 +414,6 @@ object PrintLinearizedMutableEOWithCage {
 
   def printModule(moduleName : String, st : Statement.T) : Text = {
     HackName.count = 0
-    println(s"module $moduleName")
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
       ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(moduleName, List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
