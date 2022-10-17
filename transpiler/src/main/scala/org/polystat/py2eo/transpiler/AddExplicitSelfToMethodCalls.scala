@@ -6,7 +6,7 @@ import org.polystat.py2eo.transpiler.GenericStatementPasses.{EAfterPass, NamesU}
 
 object AddExplicitSelfToMethodCalls {
   // explicitly substitute the self to each method call
-  // todo: does not work if a class method is returned as a function and then called
+  // @todo #47: This implementation does not work if a class method is returned as a function and then called
   def apply(lhs : Boolean, e : T, ns : NamesU) : (EAfterPass, NamesU) = {
     if (!lhs) {
       e match {
@@ -35,7 +35,7 @@ object AddExplicitSelfToMethodCalls {
             )),
             ns1
           )
-        case CallIndex(isCall, Field(_, _, _), args, ann) => ??? // todo: must be implemented as above, but a bit more complicated
+        case CallIndex(isCall, Field(_, _, _), args, ann) => ???
         case x : Any => (Left(x), ns)
       }
     } else {

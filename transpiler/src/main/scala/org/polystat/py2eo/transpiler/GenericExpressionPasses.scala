@@ -62,13 +62,11 @@ object GenericExpressionPasses {
           Slice(from, to, by, ann.pos)
         }
         reconstruct(lhs = false, cons, l, ns)
-      // todo: this is a hack. We do not process the function to be called to make the
-      // output simpler for polystat
       case CallIndex(isCall, whom, args, ann) if isCall =>
         reconstruct(
           false,
-          t => CallIndex(isCall, whom, args.map(_._1).zip(t), ann.pos),
-          args.map(_._2),
+          t => CallIndex(isCall, t.head, args.map(_._1).zip(t.tail), ann.pos),
+          ((None, whom) :: args).map(_._2),
           ns
         )
       case CallIndex(isCall, whom, args, ann) if !isCall =>
@@ -102,7 +100,7 @@ object GenericExpressionPasses {
           case Right(value) =>
             Suite(List(value._1, Return(Some(value._2), value._2.ann.pos)), GeneralAnnotation(value._1.ann.start, value._2.ann.stop))
         }
-        // todo: all the keyword args must be supported in the "lambda" as well
+        // @todo #340: all the keyword args must be supported in the "lambda" as well
         val f = FuncDef(funname, args, otherPositional.map(x => (x, None)), otherKeyword.map(x => (x, None)), None,
           finalBody, Decorators(List()), HashMap(), isAsync = false, ann.pos)
         (Right((f, Ident(funname, ann.pos))), ns2)
@@ -128,7 +126,8 @@ object GenericExpressionPasses {
         reconstruct(lhs = false, simple => DictCons(cons(l, simple), ann.pos), simple, ns)
       case IntLiteral(_, _) | Ident(_, _) | StringLiteral(_, _) | BoolLiteral(_, _) | NoneLiteral(_) | FloatLiteral(_, _) |
         EllipsisLiteral(_) | ImagLiteral(_, _) => f(lhs, e, ns)
-      case Field(whose, name, ann) => reconstruct(lhs, { case List(x) => Field(x, name, ann.pos) }, List(whose), ns)
+      case Field(whose, name, ann) =>
+        reconstruct(lhs, { case List(x) => Field(x, name, ann.pos) }, List(whose), ns)
       case CollectionComprehension(kind, base, l, ann) =>
         val l1 = base :: comprehensions2calls(l, ann)
         reconstruct(lhs, { case base :: l2 =>

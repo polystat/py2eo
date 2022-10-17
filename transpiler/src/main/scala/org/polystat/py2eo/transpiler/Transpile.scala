@@ -9,10 +9,10 @@ import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef,
 
 object Transpile {
 
-  case class Parameters(wrapInAFunction : Boolean)
+  case class Parameters(wrapInAFunction : Boolean, isModule : Boolean)
 
   def apply(moduleName: String, pythonCode: String): Option[String] = {
-    apply(moduleName, Transpile.Parameters(wrapInAFunction = true), pythonCode)
+    apply(moduleName, Transpile.Parameters(wrapInAFunction = true, isModule = false), pythonCode)
   }
 
   def apply(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
@@ -52,11 +52,15 @@ object Transpile {
         debugPrinter(y._1, "afterSimplifyFor")
 
         try {
-          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(y._1, y._2)
+          val starInCollCons = GenericStatementPasses.simpleProcExprInStatement(StarInCollectionConstructor.apply)(y._1, y._2)
+          debugPrinter(starInCollCons._1, "afterStarInCollCons")
+          val rmWith = GenericStatementPasses.procStatement(SimplifyWith.apply)(starInCollCons._1, starInCollCons._2)
           debugPrinter(rmWith._1, "afterRmWith")
           val rmAssert = GenericStatementPasses.procStatement(SimplifyAssert.apply)(rmWith._1, rmWith._2)
           debugPrinter(rmAssert._1, "afterRmAssert")
-          val preRmExcepts = GenericStatementPasses.procStatement(SimplifyExceptions.preSimplifyExcepts)(rmAssert._1, rmAssert._2)
+          val rmAnnot = GenericStatementPasses.procStatement(SimplifyAnnotation.simplify)(rmAssert._1, rmAssert._2)
+          debugPrinter(rmAnnot._1, "afterRmAnnot")
+          val preRmExcepts = GenericStatementPasses.procStatement(SimplifyExceptions.preSimplifyExcepts)(rmAnnot._1, rmAnnot._2)
           debugPrinter(preRmExcepts._1, "afterRmExcepts")
           val rmExcepts = GenericStatementPasses.procStatement(SimplifyExceptions.simplifyExcepts)(preRmExcepts._1, preRmExcepts._2)
           debugPrinter(rmExcepts._1, "afterRmExcepts")
@@ -64,9 +68,14 @@ object Transpile {
           debugPrinter(simIf._1, "afterSimplifyIf")
           val simAssList = GenericStatementPasses.procStatement(SimplifyAssignmentList.apply)(simIf._1, simIf._2)
           debugPrinter(simAssList._1, "simplifyAssList")
-          val simCompr = GenericStatementPasses.procExprInStatement((SimplifyComprehension.apply))(simAssList._1, simAssList._2)
+          val simAss2Index = GenericStatementPasses.procStatement(SimplifyAssigmentToIndex.simplify)(simAssList._1, simAssList._2)
+          debugPrinter(simAss2Index._1, "simplifyAss2Index")
+          val simAss2Coll = GenericStatementPasses.procStatement(SimplifyAssignmentToCollectionCons.apply)(simAss2Index._1, simAss2Index._2)
+          debugPrinter(simAss2Coll._1, "simplifyAss2Collection")
+          val simCompr = GenericStatementPasses.procExprInStatement((SimplifyComprehension.apply))(simAss2Coll._1, simAss2Coll._2)
           debugPrinter(simCompr._1, "afterSimplifyCollectionComprehension")
-          val simForAgain = GenericStatementPasses.procStatement(SimplifyFor.apply)(simCompr._1, simCompr._2)
+          val rmImport = SubstituteExternalIdent(simCompr._1, simCompr._2)
+          val simForAgain = GenericStatementPasses.procStatement(SimplifyFor.apply)(rmImport._1, rmImport._2)
           debugPrinter(simForAgain._1, "afterSimForAgain")
           val rmExceptsAgain = GenericStatementPasses.procStatement(SimplifyExceptions.simplifyExcepts)(simForAgain._1, simForAgain._2)
           debugPrinter(rmExceptsAgain._1, "afterRmExceptsAgain")
@@ -86,20 +95,25 @@ object Transpile {
           debugPrinter(methodCall._1, "methodCall")
           val textractAllCalls = GenericStatementPasses.procExprInStatement((ExtractAllCalls.apply))(methodCall._1, methodCall._2)
           debugPrinter(textractAllCalls._1, "afterExtractAllCalls")
-          val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
-          val hacked = Suite(List(
-            theFun,
-            Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-            Assert(Ident("assertMe", ann.pos), None, ann.pos)
-          ), ann.pos)
-          debugPrinter(hacked, "afterUseCage")
-          val eoHacked = Suite(List(
-            theFun,
-            Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
-            Return(Some(Ident("assertMe", ann.pos)), ann.pos)
-          ), ann.pos)
-          val eoText = PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
-          (eoText.init :+ "  (goto (ap.@)).result > @").mkString("\n")
+          val eoText = if (!opt.isModule) {
+            val Suite(List(theFun@FuncDef(mainName, _, _, _, _, _, _, _, _, ann)), _) = textractAllCalls._1
+            val hacked = Suite(List(
+              theFun,
+              Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+              Assert(Ident("assertMe", ann.pos), None, ann.pos)
+            ), ann.pos)
+            debugPrinter(hacked, "afterUseCage")
+            val eoHacked = Suite(List(
+              theFun,
+              Assign(List(Ident("assertMe", ann.pos), CallIndex(isCall = true, Ident(mainName, ann.pos), List(), ann.pos)), ann.pos),
+              Return(Some(Ident("assertMe", ann.pos)), ann.pos)
+            ), ann.pos)
+            PrintLinearizedMutableEOWithCage.printTest(moduleName, eoHacked)
+          }
+          else {
+            PrintLinearizedMutableEOWithCage.printModule(moduleName, textractAllCalls._1)
+          }
+          (eoText).mkString("\n")
         }
         catch {
           case e: Throwable => {
@@ -140,7 +154,7 @@ object Transpile {
 
             PrintEO.printSt(
               ("y" + moduleName).replaceAll("[^0-9a-zA-Z]", ""), hacked,
-              "+package org.eolang" ::
+              (if (!opt.isModule) "+package org.eolang" else "+package xmodules") ::
               "+alias pyint preface.pyint" ::
               "+alias pyfloat preface.pyfloat" ::
               "+alias pystring preface.pystring" ::
@@ -153,7 +167,7 @@ object Transpile {
               "pybool TRUE > dummy-bool-usage" ::
               globals.map(name => s"memory 0 > $name").toList
             )
-              .mkString("\n")
+            .mkString("\n")
 
           }
         }

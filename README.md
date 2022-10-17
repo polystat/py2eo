@@ -325,6 +325,8 @@ Py2EO architecture can be described as the following workflow:
   * Extract all function calls to the statement level to make the execution order explicit (i.e., translate `a = f(1) + g(2)` to `tmp1 = f(1); tmp2 = g(2); a = tmp1 + tmp2`
 * The resulting simplified AST is then translated to the eolang code and printed to the provided output path or to the file next to the input file
 
+Py2EO project consists of 3 modules: parser, checker, transpiler. All the modules have sample unit tests in them.
+
 ## How we translate Python to EOLang
 
 We analyzed [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) to determine the subset of Python features, corresponding restriction, design decisions that are explained within translation projections examples in this section.

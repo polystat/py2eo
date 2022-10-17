@@ -11,16 +11,18 @@
 +alias sprintf org.eolang.txt.sprintf
 
 [] > xmyArray
-  [initValue] > ap
+  [is-list initValue] > ap
     [stackUp] > @
       cage result > pResult
       [] > result
+        0 > @
+        0 > force
         cage initValue > value
-        xfakeclasses.pyListClass > x__class__
+        is-list.if (xfakeclasses.pyListClass) (xfakeclasses.pyTupleClass) > x__class__
         [] > to-my-array
           pResult > @
         [x] > with-value
-          (goto ((xmyArray.ap x).@)).result > @
+          (goto ((xmyArray.ap is-list x).@)).result > @
         [] > xlength
           [self] > ap
             [stackUp] > @
@@ -51,7 +53,7 @@
           [self what] > ap
             [stackUp] > @
               memory FALSE > removed
-              (goto ((xmyArray.ap (*)).@)).result > accum
+              (goto ((xmyArray.ap is-list (*)).@)).result > accum
               memory 0 > i
               seq > @
                 (i.lt (self.value.length)).while
@@ -76,7 +78,7 @@
           memory TRUE > acc
           memory 0 > pos
           if. > res
-            ((x.x__class__.eq (xfakeclasses.pyListClass)).value.and (value.length.eq (x.value.length)))
+            ((x.x__class__.eq (is-list.if (xfakeclasses.pyListClass) (xfakeclasses.pyTupleClass))).value.and (value.length.eq (x.value.length)))
             seq
               (acc.and (pos.lt (value.length))).while
                 [unused]
@@ -130,6 +132,60 @@
                     stackUp.forward ((goto (xStopIteration.ap.@)).result)
                     stackUp.forward (return (value.get (pos)))
                   123
+        [] > xsetAtIndex
+          [self key val] > ap
+            [stackUp] > @
+              (goto ((xmyArray.ap is-list *).@)).result > acc
+              memory 0 > i
+              val.iter 0 > it
+              seq > @
+                if.
+                  (key.x__class__.eq (xfakeclasses.pySliceClass))
+                  seq
+                    while.
+                      (i.lt (key.from))
+                      [unused]
+                        seq > @
+                          stdout (sprintf "i = %d\n" i)
+                          (goto ((acc.xappend.ap acc (value.get i)).@)).result
+                          i.write (i.plus 1)
+                          0
+                    stdout (sprintf "from = %d, to = %d\n" (key.from) (key.to))
+                    goto
+                      [exitLoop]
+                        while. > @
+                          (TRUE)
+                          [unused]
+                            (goto ((it.x__next__.ap it).@)) > to-append
+                            if. > @
+                              (to-append.x__class__.x__id__.eq (pyint 3))
+                              seq
+                                (goto ((acc.xappend.ap acc (to-append.result)).@)).result
+                                0
+                              exitLoop.forward 0
+                    stdout "after 2nd while\n"
+                    while.
+                      (i.lt (value.length))
+                      [unused]
+                        seq > @
+                          stdout (sprintf "i = %d\n" i)
+                          (goto ((acc.xappend.ap acc (value.get i)).@)).result
+                          i.write (i.plus 1)
+                          0
+                    value.write (acc.value)
+                    stackUp.forward (return 0)
+                    0
+                  seq
+                    while.
+                      (i.lt (value.length))
+                      [unused]
+                        seq > @
+                          (goto ((acc.xappend.ap acc ((key.value.eq i).if val (value.get i))).@)).result
+                          i.write (i.plus 1)
+                          0
+                    value.write (acc.value)
+                    stackUp.forward (return 0)
+                    0
         [] > x__iter__
           [self] > ap
             [stackUp] > @
