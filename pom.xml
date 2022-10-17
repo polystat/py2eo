@@ -96,11 +96,29 @@ SOFTWARE.
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
+        <artifactId>wagon-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <phase>test</phase>
+            <goals>
+              <goal>download-single</goal>
+            </goals>
+            <configuration>
+              <url>https://repo1.maven.org/maven2/com/beautiful-scala/scalastyle_2.13/1.5.1/</url>
+              <fromFile>scalastyle_2.13-1.5.1-assembly.jar</fromFile>
+              <toFile>${project.build.directory}/scalastyle_2.13-1.5.1-assembly.jar</toFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
         <executions>
           <execution>
-            <phase>verify</phase>
+            <phase>test</phase>
             <goals>
               <goal>exec</goal>
             </goals>
@@ -115,24 +133,6 @@ SOFTWARE.
                 <argument>${project.basedir}/transpiler/src/main</argument>
                 <argument>${project.basedir}/parser</argument>
               </arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>wagon-maven-plugin</artifactId>
-        <version>1.0</version>
-        <executions>
-          <execution>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>download-single</goal>
-            </goals>
-            <configuration>
-              <url>https://repo1.maven.org/maven2/com/beautiful-scala/scalastyle_2.13/1.5.1/</url>
-              <fromFile>scalastyle_2.13-1.5.1-assembly.jar</fromFile>
-              <toFile>${project.build.directory}/scalastyle_2.13-1.5.1-assembly.jar</toFile>
             </configuration>
           </execution>
         </executions>
