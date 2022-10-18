@@ -2,38 +2,57 @@ package org.polystat.py2eo.parser
 
 import org.antlr.v4.runtime.{ANTLRInputStream, CommonTokenStream}
 
-import java.io.File
-import scala.io.Source
+import java.io.{File => JFile}
+import scala.reflect.io.File
+import org.polystat.py2eo.parser.Statement.{T => Stmt}
 import scala.util.Try
 
 object Parse {
 
+  /** Type for debug printer function */
+  type DebugPrinter = (Stmt, String) => Unit
+
   /** Debug printer that does nothing */
-  private val nullDebugPrinter = (_: Statement.T, _: String) => ()
+  val nullDebugPrinter: DebugPrinter = (_, _) => ()
 
-  /** Parses the given .py file */
-  def apply(file: File): Option[Statement.T] = apply(file, nullDebugPrinter)
+  /** Parse the given [[scala.reflect.io.File]] */
+  def apply(file: File): Option[Stmt] = apply(file, nullDebugPrinter)
 
-  /** Parses the given input string */
-  def apply(input: String): Option[Statement.T] = apply(input, nullDebugPrinter)
+  /** Parse the given [[java.io.File]] */
+  def apply(file: JFile): Option[Stmt] = apply(file, nullDebugPrinter)
 
-  /** Parses the given .py file and prints debug output with the given debug printer */
-  def apply(file: File, debugPrinter: (Statement.T, String) => Unit): Option[Statement.T] = {
-    assert(file.getName.endsWith(".py"))
-    val input = Source.fromFile(file)
-    apply(input.mkString, debugPrinter)
+  /** Parse the given input string */
+  def apply(input: String): Option[Stmt] = apply(input, nullDebugPrinter)
+
+  /**
+   * Parse the given [[scala.reflect.io.File]]
+   * and print debug output with the given debug printer
+   */
+  def apply(file: File, debugPrinter: DebugPrinter): Option[Stmt] = {
+    Try(file.slurp).toOption.flatMap(apply(_, debugPrinter))
   }
 
-  /** Parses the given input string and prints debug output with the given debug printer */
-  def apply(input: String, debugPrinter: (Statement.T, String) => Unit): Option[Statement.T] = {
+  /**
+   * Parse the given [[java.io.File]]
+   * and print debug output with the given debug printer
+   */
+  def apply(file: JFile, debugPrinter: DebugPrinter): Option[Stmt] = {
+    apply(File(file), debugPrinter)
+  }
+
+  /**
+   * Parse the given input string
+   * and print debug output with the given debug printer
+   */
+  def apply(input: String, debugPrinter: DebugPrinter): Option[Stmt] = {
     val parsed = parseToOption(input)
     parsed.foreach(stmt => debugPrinter(stmt, "afterParser"))
 
     parsed
   }
 
-  /** Calls antlr parser and maps the result to the custom AST */
-  private def parseToOption(input: String): Option[Statement.T] = {
+  /** Call antlr parser and map the result to the custom AST */
+  private def parseToOption(input: String): Option[Stmt] = {
     Try {
       val inputStream = new ANTLRInputStream(input)
       val lexer = new PythonLexer(inputStream)
