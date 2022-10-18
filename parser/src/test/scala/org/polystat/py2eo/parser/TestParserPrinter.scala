@@ -44,7 +44,7 @@ final class TestParserPrinter {
     Process("git checkout v3.8.10", cpython.jfile).!!
 
     val testsDirectory = Directory(cpython / "Lib" / "test")
-    val tests = testsDirectory.deepFiles.filter(_.extension == "py")
+    val tests = testsDirectory.deepFiles.filter(file => (file.extension == "py") && (file.name.startsWith("test")))
 
     val futures = for {test <- tests if !blacklisted(test.name)} yield Future {
       Parse(test).map(PrintPython.print).fold(fail())(test writeAll _)
