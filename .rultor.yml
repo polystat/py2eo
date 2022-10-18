@@ -18,7 +18,7 @@ release:
     mvn versions:set "-DnewVersion=${tag}" -Dstyle.color=never
     git commit -am "${tag}"
     mvn clean install -Dinvoker.skip -DskipTests=true
-    mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never -DskipTests=true
+    mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never
     
     mv "transpiler/target/transpiler-${tag}-jar-with-dependencies.jar" py2eo.jar
     image=yegor256/py2eo
