@@ -149,6 +149,8 @@ We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transp
 
 [Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Functional tests are grouped by folders corresponding to python syntax constructs we support or are going to support, so we have easy way to calculate overall coverage and `test passes successefully` state. Progress is shown in each release description.
 
+Functional tests prefixed with `eo_blocked_` are known to be blocked by bugs in EO. In particular, the test `eo_blocked_nfbce` is blocked by https://github.com/objectionary/eo/issues/1249 , all others are blocked by  https://github.com/objectionary/eo/issues/1127 .
+
 ### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ###
   
 To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
