@@ -21,7 +21,6 @@ object SubstituteExternalIdent {
         (acc.+((what.last, what.mkString(".x") + ".ap")), true)
       case (acc, _) => (acc, true)
     })(HashMap[String, String](), s)
-    println(s"externalIdents = $externalIdents")
     val s1 = simpleProcExprInStatementAcc[NamesU]((acc, e) => {
       val (Left(e1), acc1) = procExpr[Unit]({
         case (false, Field(Ident(moduleName, ann), name, acci), acc)
