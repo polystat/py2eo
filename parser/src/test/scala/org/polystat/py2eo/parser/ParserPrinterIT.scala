@@ -1,7 +1,7 @@
 package org.polystat.py2eo.parser
 
 import org.junit.jupiter.api.Assertions.fail
-import org.junit.jupiter.api.{Test, AfterAll}
+import org.junit.jupiter.api.{AfterEach, Test}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -11,7 +11,7 @@ import scala.sys.process.Process
 import scala.util.Properties
 
 /** Parse and re-print tests from cpython repo and test them out */
-final class TestParserPrinter {
+final class ParserPrinterIT {
 
   private val cpythonLink = "https://github.com/python/cpython"
   private val directory = Directory.makeTemp(prefix = "org.polystat.py2eo.")
@@ -58,7 +58,7 @@ final class TestParserPrinter {
     Process("make test", cpython.jfile).!!
   }
 
-  @AfterAll def cleanup(): Unit = {
+  @AfterEach def cleanup(): Unit = {
     directory.deleteRecursively
   }
 

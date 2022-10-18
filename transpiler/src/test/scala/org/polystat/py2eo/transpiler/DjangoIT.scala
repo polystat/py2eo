@@ -14,7 +14,7 @@ import scala.reflect.io.Directory
 import scala.sys.process.Process
 
 @TestMethodOrder(classOf[OrderAnnotation])
-class DjangoTest extends Commons {
+class DjangoIT extends Commons {
 
   @Test
   @Order(1)
