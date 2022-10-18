@@ -1,7 +1,7 @@
 package org.polystat.py2eo.parser
 
-import org.junit.Assert.fail
-import org.junit.{After, Test}
+import org.junit.jupiter.api.Assertions.fail
+import org.junit.jupiter.api.{Test, AfterAll}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -58,7 +58,7 @@ final class TestParserPrinter {
     Process("make test", cpython.jfile).!!
   }
 
-  @After def cleanup(): Unit = {
+  @AfterAll def cleanup(): Unit = {
     directory.deleteRecursively
   }
 
