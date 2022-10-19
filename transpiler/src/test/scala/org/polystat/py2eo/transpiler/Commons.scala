@@ -25,12 +25,17 @@ trait Commons {
     map.get("python")
   }
 
-  case class YamlTest(python: String, enabled: Boolean)
+  case class YamlTest(python: String, isModule: Boolean, enabled: Boolean)
 
   def yaml2pythonModel(f: JFile): YamlTest = {
     val yaml = new Yaml()
     val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f))
-    YamlTest(map.get("python"), map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean])
+
+    val sourceCode = map get "python"
+    val enabled = map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean]
+    val module = map.containsKey("module") && map.getOrDefault("module", "false").asInstanceOf[Boolean]
+
+    YamlTest(sourceCode, module, enabled)
   }
 
   def python: String = {
@@ -70,6 +75,7 @@ trait Commons {
   }
 
   def isEnabled(file: File): Boolean = yaml2pythonModel(file.jfile).enabled
+  def isModule(file: File): Boolean = yaml2pythonModel(file.jfile).isModule
 
   def collect(dir: Directory, filterEnabled: Boolean = false): Array[File] = {
     val allYamlFiles = dir.deepFiles.filter(_.extension == "yaml").toArray
