@@ -181,29 +181,25 @@ export JAVA_HOME="$PWD/jdk-14.0.1/"
 
 > Check (e. g. via `java -version`) that version `14.*` is used
 
-Go to Py2EO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables
-```
-mvn clean package -DskipTests=true
-```
-if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+Go to Py2EO root and run in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables:
        
 Run transpilation
 ```
-mvn clean verify
+mvn clean test -q
 ```
 Resulting eo-files are located in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/results`.
 
 Copy it to the runEO directory 
 ```
-cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO
+cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO
 ```
 Then copy the preface lib
 ```
-cp -a transpiler/src/main/eo/preface ./runEO
+cp -a transpiler/src/main/eo/preface ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO
 ```
 And run EO compiler
 ```
-cd ./runEO
+cd ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO
 ```
 ```
 mvn clean test
@@ -252,7 +248,7 @@ if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT
 
 To generate EO files and verify EO syntax afterwards run
 ```
-mvn clean verify -B -Pdjango
+mvn clean -Dit.test=DjangoIT verify -B
 ```
 You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/django` and verification (provided with EO) results in output.
     
@@ -297,7 +293,7 @@ If succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT
        
 To generate EO files and verify EO syntax afterwards run 
 ```
-mvn clean verify -B -Pcpython
+mvn clean -Dit.test=CPythonIT verify -B
 ```
 You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat/py2eo/transpiler/testParserPrinter/afterParser/cpython` and verification (provided with EO) results in output.
 
