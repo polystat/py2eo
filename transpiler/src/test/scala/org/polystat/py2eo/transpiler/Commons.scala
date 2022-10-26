@@ -56,10 +56,11 @@ trait Commons {
     }
 
     val name = test.getName.replace(".yaml", "")
-    Transpile(
+    Transpile.transpileOption(debugPrinter(test))(
       name,
       Transpile.Parameters(wrapInAFunction = false, isModule = isModule),
-      yaml2python(test)
+      yaml2python(test),
+      test.getParent
     ) match {
       case None => fail(s"could not transpile ${test.getName}");
       case Some(transpiled) =>

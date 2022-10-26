@@ -45,7 +45,7 @@ final class CPythonTests extends Commons {
       Future {
         val module = test.stripExtension
 
-        Try(test.slurp).toOption.flatMap(Transpile(module, _)) match {
+        Try(test.slurp).toOption.flatMap(Transpile(module, Transpile.Parameters(wrapInAFunction = true, isModule = false), _)) match {
           case None => fail()
           case Some(transpiled) =>
             val result = File(eoFiles / s"$module.eo")

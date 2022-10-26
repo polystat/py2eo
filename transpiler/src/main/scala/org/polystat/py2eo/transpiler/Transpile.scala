@@ -5,22 +5,19 @@ import org.polystat.py2eo.parser.{Expression, Parse, PrintPython, Statement}
 import scala.collection.immutable
 import scala.collection.immutable.HashMap
 import org.polystat.py2eo.parser.Expression.{CallIndex, Ident}
-import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef, Return, Suite}
+import org.polystat.py2eo.parser.Statement.{Assert, Assign, Decorators, FuncDef, ImportAllSymbols, ImportModule, ImportSymbol, Return, Suite}
+import scala.reflect.io.File
 
 object Transpile {
 
   case class Parameters(wrapInAFunction : Boolean, isModule : Boolean)
 
-  def apply(moduleName: String, pythonCode: String): Option[String] = {
-    apply(moduleName, Transpile.Parameters(wrapInAFunction = true, isModule = false), pythonCode)
+  def apply(moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): Option[String] = {
+    transpileOption((_, _) => ())(moduleName, opt, pythonCode, currentDir)
   }
 
-  def apply(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
-    transpileOption((_, _) => ())(moduleName, opt, pythonCode)
-  }
-
-  def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String): String = {
-    transpileOption(debugPrinter)(moduleName, opt, pythonCode).getOrElse("\"Not Supported: input file syntax is not python 3.8\" > error")
+  def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): String = {
+    transpileOption(debugPrinter)(moduleName, opt, pythonCode, currentDir).getOrElse("\"Not Supported: input file syntax is not python 3.8\" > error")
   }
 
   def applyStyle(pythonCode: String): Option[String] = {
@@ -30,7 +27,7 @@ object Transpile {
   /// [debugPrinter(statement, stageName)]
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
-  def transpileOption(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String): Option[String] = {
+  def transpileOption(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): Option[String] = {
     val parsed = Parse(pythonCode, debugPrinter)
     parsed.map(
       parsed => {
@@ -47,6 +44,22 @@ object Transpile {
           )
         } else
           { parsed }
+        val toImport = AnalysisSupport.foldSS((files : List[String], st : Statement.T) => (st match {
+          case (ImportModule(what, as, ann)) => (what.last :: files, false)
+          case (ImportSymbol(from, what, as, ann)) => (from.last :: files, false)
+          case (ImportAllSymbols(from, ann)) => (from.last :: files, false)
+          case s : Any => (files, true)
+        }))(List[String](), ym1)
+        toImport.foreach(name => {
+          val fname = s"$currentDir/$name.py"
+          val f = File(fname)
+          println(s"fname = $fname")
+          if (f.exists) {
+            println("exists")
+            File(s"$currentDir/xmodules").toDirectory.createDirectory(false, false)
+            Main.transpile(f, Some(s"$currentDir/xmodules/x$name.eo"), Parameters(wrapInAFunction = false, isModule = true))
+          }
+        })
         val y0 = GenericStatementPasses.procStatement(SimplifyIf.apply)(ym1, new GenericStatementPasses.Names())
         val y = GenericStatementPasses.procStatement(SimplifyFor.apply)(y0._1, y0._2)
         debugPrinter(y._1, "afterSimplifyFor")
