@@ -11,6 +11,9 @@ release:
   script: |-
     [[ "${tag}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit -1
 
+    echo "Amount of free memory:"
+    free
+    ulimit -a
     wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
     tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
     PATH="$PWD/jdk-14.0.1/bin/:$PATH"
@@ -18,7 +21,7 @@ release:
     mvn versions:set "-DnewVersion=${tag}" -Dstyle.color=never
     git commit -am "${tag}"
     mvn clean install -Dinvoker.skip -DskipTests=true
-    mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never -DskipTests=true
+    mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never
     
     mv "transpiler/target/transpiler-${tag}-jar-with-dependencies.jar" py2eo.jar
     image=yegor256/py2eo

@@ -13,7 +13,7 @@ import scala.sys.process.Process
 import scala.util.Try
 
 @TestMethodOrder(classOf[OrderAnnotation])
-final class CPythonTests extends Commons {
+final class CPythonIT extends Commons {
 
   private val dirPath: Path = s"$testsPrefix/testParserPrinter"
   private val cpythonLink = "https://github.com/python/cpython"
