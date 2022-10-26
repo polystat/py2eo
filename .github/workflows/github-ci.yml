@@ -109,7 +109,7 @@ jobs:
           name: artifacts
           path: ./
       - name: Build with Maven
-        run: cp -a transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO . && cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO && cp -a transpiler/src/main/eo/preface ./runEO && cp -a transpiler/src/main/eo/xmodules ./runEO && mv ./runEO/own_module.eo ./runEO/xmodules/xown_module.eo && cd ./runEO && mvn clean test
+        run: cp -a transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO . && cp transpiler/src/test/resources/org/polystat/py2eo/transpiler/results/*.eo ./runEO && cp -a transpiler/src/main/eo/preface ./runEO && cp -a transpiler/src/main/eo/xmodules ./runEO && cp -a transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests/simple-statements/import/xmodules ./runEO && cd ./runEO && mvn clean test
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
