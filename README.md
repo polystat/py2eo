@@ -143,6 +143,16 @@ $ docker run -v $(pwd):/eo yegor256/py2eo hello.py -o hello.eo
 
 This command will translate `hello.py` in the current directory, saving the output to the `hello.eo` file.
 
+## A list of not supported language features ##
+1. Any kind of yield, also coroutines and generators (incl generator expressions) -- no support in EO
+1. Threads, async, futures, await -- no support in EO
+1. Dynamic features of python (dynamic creation/change/lookup/deletion of variables, creation of classes with metaclasses etc., dynamic features of import) -- using completely dynamic features would make the output EO not statically analyzable
+1. Multiple inheritance -- not obvious how to do that for a general case, but with the EO delegation principle in mind
+1. The majority of standard library -- it is mostly written in C, so even if we support all of the python syntax, it is still a problem to support the library without rewriting it manually.
+1. Star expressions are mostly not supported -- possible, but not yet finished
+1. Array slicing is partially supported -- possible, but not yet finished
+1. The import system is partially supported -- possible, but not yet finished
+
 ## Python syntax and tests coverage
     
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
