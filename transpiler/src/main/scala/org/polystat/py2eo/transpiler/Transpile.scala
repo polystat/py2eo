@@ -27,7 +27,8 @@ object Transpile {
   /// [debugPrinter(statement, stageName)]
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
-  def transpileOption(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): Option[String] = {
+  def transpileOption(debugPrinter: (Statement.T, String) => Unit)(
+      moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): Option[String] = {
     val parsed = Parse(pythonCode, debugPrinter)
     parsed.map(
       parsed => {
