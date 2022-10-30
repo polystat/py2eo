@@ -59,7 +59,13 @@ object Main {
     if (filteredAllFlags.nonEmpty) {
       val input = File(filteredAllFlags.head)
       if (input.exists) {
-        transpile(input.stripExtension, input.slurp(), input.path, outputPath.getOrElse(input.parent.path), Transpile.Parameters(wrapInAFunction = true, isModule = false))
+        transpile(
+          input.stripExtension,
+          input.slurp(),
+          input.path,
+          outputPath.getOrElse(input.parent.path),
+          Transpile.Parameters(wrapInAFunction = true, isModule = false)
+        )
       } else {
         error("no such file:", input.name)
       }
