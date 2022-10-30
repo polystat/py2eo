@@ -61,17 +61,15 @@ trait Commons {
     }
 
     val name = test.getName.replace(".yaml", "")
-    Transpile.transpileOption(debugPrinter(test))(
+    Main.transpile(
       name,
-      Transpile.Parameters(wrapInAFunction = false, isModule = isModule),
       yaml2python(test),
-      test.getParent
+      test.getParent.toString,
+      results.getAbsolutePath.toString,
+      Transpile.Parameters(wrapInAFunction = false, isModule = isModule),
     ) match {
-      case None => fail(s"could not transpile ${test.getName}");
-      case Some(transpiled) =>
-        val output = new FileWriter(results + File.separator + name + ".eo")
-        output.write(transpiled)
-        output.close()
+      case false => fail(s"could not transpile ${test.getName}");
+      case true  => ()
     }
   }
 

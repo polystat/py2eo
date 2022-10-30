@@ -12,8 +12,8 @@ object Transpile {
 
   case class Parameters(wrapInAFunction : Boolean, isModule : Boolean)
 
-  def apply(moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): Option[String] = {
-    transpileOption((_, _) => ())(moduleName, opt, pythonCode, currentDir)
+  def apply(moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = ".", outputPath : String = "."): Option[String] = {
+    transpileOption((_, _) => ())(moduleName, opt, pythonCode, currentDir, outputPath)
   }
 
   def transpile(debugPrinter: (Statement.T, String) => Unit)(moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): String = {
@@ -28,7 +28,7 @@ object Transpile {
   /// is used to save the code after different stages of compilation for debug purposes,
   /// it may do nothing if debugging is not needed
   def transpileOption(debugPrinter: (Statement.T, String) => Unit)(
-      moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = "."): Option[String] = {
+      moduleName: String, opt : Parameters, pythonCode: String, currentDir : String = ".", outputPath : String = "."): Option[String] = {
     val parsed = Parse(pythonCode, debugPrinter)
     parsed.map(
       parsed => {
@@ -56,9 +56,8 @@ object Transpile {
           val f = File(fname)
           println(s"fname = $fname")
           if (f.exists) {
-            println("exists")
-            File(s"$currentDir/xmodules").toDirectory.createDirectory(false, false)
-            Main.transpile(f, Some(s"$currentDir/xmodules/x$name.eo"), Parameters(wrapInAFunction = false, isModule = true))
+            File(s"$outputPath/xmodules").toDirectory.createDirectory(false, false)
+            Main.transpile("x" + name, f.slurp(), f.path, (s"$outputPath/xmodules"), Parameters(wrapInAFunction = false, isModule = true))
           }
         })
         val y0 = GenericStatementPasses.procStatement(SimplifyIf.apply)(ym1, new GenericStatementPasses.Names())
