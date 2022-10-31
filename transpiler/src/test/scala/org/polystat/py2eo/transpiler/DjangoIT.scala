@@ -16,35 +16,34 @@ import scala.sys.process.Process
 @TestMethodOrder(classOf[OrderAnnotation])
 class DjangoIT extends Commons {
 
+  private val djangoLink = "https://github.com/django/django"
+  private val directory = Directory.makeTemp(prefix = "org.polystat.py2eo.")
+
   @Test
   @Order(1)
   def genUnsupportedDjango() : Unit = {
-    val root = new File(testsPrefix)
-    val django = new File(testsPrefix + "/django")
-    if (!django.exists()) {
-      Process("git clone -b 4.0 https://github.com/django/django", root).!!
-    }
-    val test = dfsFiles(django).filter(f => f.getName.endsWith(".py"))
+    val django = Directory(directory + "/django")
 
-    test.map(test =>
-      {
+    Process(s"git clone -b 4.0 $djangoLink ${django.name}", directory.jfile).!!
+
+    val tests = django.deepFiles.filter(_.extension == "py")
+    for {test <- tests} yield {
         def db(s : Statement.T, str : String) = () // debugPrinter(test)(_, _)
-        val name = test.getName
+        val name = test.name
         val eoText =
           Transpile.transpile(db)(
             chopExtension(name),
             Transpile.Parameters(wrapInAFunction = false, isModule = false),
-            readFile(test)
+            readFile(test.jfile)
           )
-        writeFile(test, "genUnsupportedEO", ".eo", eoText)
+        writeFile(test.jfile, "genUnsupportedEO", ".eo", eoText)
       }
-    )
   }
 
   @Test
   @Order(2)
   def checkSyntaxForDjango() : Unit = {
-    checkEOSyntaxInDirectory(testsPrefix + "/django")
+    checkEOSyntaxInDirectory(Directory(directory + "/django").toString)
   }
 
 }
