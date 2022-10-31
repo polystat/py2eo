@@ -415,7 +415,7 @@ object PrintLinearizedMutableEOWithCage {
   def printModule(moduleName : String, st : Statement.T) : Text = {
     HackName.count = 0
     val theTest@FuncDef(_, _, _, _, _, _, _, _, _, _) =
-      ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(moduleName, List(), None, None, None, st, Decorators(List()),
+      ComputeAccessibleIdents.computeAccessibleIdents(FuncDef(moduleName.substring(1), List(), None, None, None, st, Decorators(List()),
         HashMap(), isAsync = false, st.ann.pos))
     val fakeStackUp = List(
       "[] > stackUp",
@@ -426,8 +426,8 @@ object PrintLinearizedMutableEOWithCage {
     val almost =
       "+package xmodules" ::
       headers ++
-      ("" :: s"[] > x$moduleName" :: hack.tail)
-    almost.init :+ "  ((ap)).result > @"
+      ("" :: s"[] > $moduleName" :: hack.tail)
+    almost.init.init :+ "      (return 0)" :+ "  ((ap)).result > @"
   }
 
 }
