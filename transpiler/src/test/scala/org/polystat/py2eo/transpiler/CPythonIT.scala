@@ -1,7 +1,7 @@
 package org.polystat.py2eo.transpiler
 
 import org.junit.jupiter.api.Assertions.fail
-import org.junit.jupiter.api.{Order, Test, TestMethodOrder}
+import org.junit.jupiter.api.{AfterEach, Order, Test, TestMethodOrder}
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -68,6 +68,10 @@ final class CPythonIT extends Commons {
     }
 
     for (f <- futures) Await.result(f, Duration.Inf)
+  }
+
+  @AfterEach def cleanup(): Unit = {
+    directory.deleteRecursively
   }
 
   @Test
