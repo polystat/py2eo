@@ -54,11 +54,8 @@ object Transpile {
         toImport.foreach(name => {
           val fname = s"$currentDir/$name.py"
           val f = File(fname)
-          println(s"fname = $fname")
           if (f.exists) {
             val dir = File(s"$outputPath/xmodules").toDirectory.createDirectory(false, false)
-            assert(File(s"$outputPath/xmodules").toDirectory.exists)
-            println(s"created dir ${dir.path}")
             Main.transpile("x" + name, f.slurp(), f.path, (s"$outputPath/xmodules"), Parameters(wrapInAFunction = false, isModule = true))
           }
         })
