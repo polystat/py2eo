@@ -15,7 +15,7 @@ import scala.sys.process.{Process, ProcessLogger}
 
 trait Commons {
   val testsPrefix: String = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
-  val resultsPrefix: String = "src/test/resources/org/polystat/py2eo/transpiler/results"
+  val resultsPrefix: String = "target/results"
 
   val bogusAnnotation = GeneralAnnotation(None, None)
   val bogusNamesU = Names[Unit](HashMap(), ())
