@@ -13,13 +13,14 @@
 2. [Quick Start](#quick-start)
 3. [How to contribute](#how-to-contribute)
 4. [How to transpile Py to EO](#how-to-transpile-py-to-eo)
-5. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
-6. [Syntax support and passed tests info](#for-now-we-support-529-of-python-syntax-and-572-are-passed-successefully)
-7. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
+5. [A list of not supported language features](#a-list-of-not-supported-language-features)
+6. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
+7. [Syntax support and passed tests info](#for-now-we-support-529-of-python-syntax-and-572-are-passed-successefully)
+8. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
    - [Django](#django)
    - [CPython](#cpython)
-8. [Architecture and design](#architecture-and-design)
-9. [How we translate Python to EOLang](#how-do-we-project-python-to-eolang)
+9. [Architecture and design](#architecture-and-design)
+10. [How we translate Python to EOLang](#how-do-we-project-python-to-eolang)
    - [while](#while)
    - [while-try-break](#while-try-break)
    - [function definition](#function-definition)
@@ -142,6 +143,16 @@ $ docker run -v $(pwd):/eo yegor256/py2eo hello.py -o hello.eo
 ```
 
 This command will translate `hello.py` in the current directory, saving the output to the `hello.eo` file.
+
+## A list of not supported language features ##
+1. Any kind of yield, also coroutines and generators (incl generator expressions) -- no support in EO
+1. Threads, async, futures, await -- no support in EO
+1. Dynamic features of python (dynamic creation/change/lookup/deletion of variables, creation of classes with metaclasses etc., dynamic features of import) -- using completely dynamic features would make the output EO not statically analyzable
+1. Multiple inheritance -- not obvious how to do that for a general case, but with the EO delegation principle in mind
+1. The majority of standard library -- it is mostly written in C, so even if we support all of the python syntax, it is still a problem to support the library without rewriting it manually.
+1. Star expressions are mostly not supported -- possible, but not yet finished
+1. Array slicing is partially supported -- possible, but not yet finished
+1. The import system is partially supported -- possible, but not yet finished
 
 ## Python syntax and tests coverage
     
