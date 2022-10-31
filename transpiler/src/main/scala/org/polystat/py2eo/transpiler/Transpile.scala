@@ -58,6 +58,7 @@ object Transpile {
           if (f.exists) {
             val dir = File(s"$outputPath/xmodules").toDirectory.createDirectory(false, false)
             assert(File(s"$outputPath/xmodules").toDirectory.exists)
+            println(s"created dir ${dir.path}")
             Main.transpile("x" + name, f.slurp(), f.path, (s"$outputPath/xmodules"), Parameters(wrapInAFunction = false, isModule = true))
           }
         })
