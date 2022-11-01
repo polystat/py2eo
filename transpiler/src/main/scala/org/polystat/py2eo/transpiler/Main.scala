@@ -1,5 +1,7 @@
 package org.polystat.py2eo.transpiler
 
+import org.polystat.py2eo.transpiler.Transpile.Parameters
+
 import scala.reflect.io.File
 
 object Main {
@@ -57,7 +59,13 @@ object Main {
     if (filteredAllFlags.nonEmpty) {
       val input = File(filteredAllFlags.head)
       if (input.exists) {
-        transpile(input, outputPath)
+        transpile(
+          input.stripExtension,
+          input.slurp(),
+          input.path,
+          outputPath.getOrElse(input.parent.path),
+          Transpile.Parameters(wrapInAFunction = true, isModule = false)
+        )
       } else {
         error("no such file:", input.name)
       }
@@ -67,15 +75,10 @@ object Main {
   }
 
   /** Transpiles the input file and (if successful) writes result to output file */
-  private def transpile(input: File, outputPath: Option[String]): Unit = {
-    val output = outputPath match {
-      case None => input.changeExtension("eo")
-      case Some(value) => File(value)
-    }
-
-    Transpile(input.stripExtension, input.slurp) match {
-      case None => println("\"Not Supported: input file syntax is not python 3.8\" > error")
-      case Some(transpiled) => output.createFile().writeAll(transpiled)
+  def transpile(moduleName : String, input: String, currentDir : String, output: String, opt : Parameters): Boolean = {
+    Transpile(moduleName, opt, input, currentDir, output) match {
+      case None => println("\"Not Supported: input file syntax is not python 3.8\" > error"); false
+      case Some(transpiled) => File(output + s"/$moduleName.eo").createFile().writeAll(transpiled); true
     }
   }
 

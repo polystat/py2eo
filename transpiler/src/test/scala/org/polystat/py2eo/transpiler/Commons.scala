@@ -15,7 +15,7 @@ import scala.sys.process.{Process, ProcessLogger}
 
 trait Commons {
   val testsPrefix: String = System.getProperty("user.dir") + "/src/test/resources/org/polystat/py2eo/transpiler"
-  val resultsPrefix: String = "src/test/resources/org/polystat/py2eo/transpiler/results"
+  val resultsPrefix: String = "target/results"
 
   val bogusAnnotation = GeneralAnnotation(None, None)
   val bogusNamesU = Names[Unit](HashMap(), ())
@@ -61,16 +61,15 @@ trait Commons {
     }
 
     val name = test.getName.replace(".yaml", "")
-    Transpile(
+    Main.transpile(
       name,
+      yaml2python(test),
+      test.getParent.toString,
+      results.getAbsolutePath.toString,
       Transpile.Parameters(wrapInAFunction = false, isModule = isModule),
-      yaml2python(test)
     ) match {
-      case None => fail(s"could not transpile ${test.getName}");
-      case Some(transpiled) =>
-        val output = new FileWriter(results + File.separator + name + ".eo")
-        output.write(transpiled)
-        output.close()
+      case false => fail(s"could not transpile ${test.getName}");
+      case true  => ()
     }
   }
 

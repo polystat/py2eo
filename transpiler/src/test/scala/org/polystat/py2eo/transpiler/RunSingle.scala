@@ -8,9 +8,7 @@ class RunSingle extends Commons {
   val simpleTestsFolder = new File(testsPrefix + File.separator + "simple-tests" + File.separator)
 
   @Test def singleTest(): Unit = {
-    val modulePath = simpleTestsFolder + "/simple-statements/import/own_module.yaml"
-    useCageHolder(new File(modulePath), isModule = true)
-    val testPath = simpleTestsFolder + "/simple-statements/import/import-3.yaml"
+    val testPath = simpleTestsFolder + "/simple-statements/import/import-5.yaml"
     useCageHolder(new File(testPath))
   }
 }
