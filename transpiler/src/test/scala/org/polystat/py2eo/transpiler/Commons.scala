@@ -74,7 +74,6 @@ trait Commons {
   }
 
   def isEnabled(file: File): Boolean = yaml2pythonModel(file.jfile).enabled
-  def isModule(file: File): Boolean = yaml2pythonModel(file.jfile).isModule
 
   def collect(dir: Directory, filterEnabled: Boolean = false): Array[File] = {
     val allYamlFiles = dir.deepFiles.filter(_.extension == "yaml").toArray
