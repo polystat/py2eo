@@ -1,7 +1,7 @@
 package org.polystat.py2eo.transpiler
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
-import org.junit.jupiter.api.{AfterEach, Order, Test, TestMethodOrder}
+import org.junit.jupiter.api.{AfterAll, Order, Test, TestMethodOrder}
 import org.polystat.py2eo.parser.Statement
 
 import scala.reflect.io.Directory
@@ -31,11 +31,13 @@ class DjangoIT extends Commons {
           Transpile.Parameters(wrapInAFunction = false, isModule = false),
           readFile(test.jfile)
         )
+      println(s"transpiled $name")
       writeFile(test.jfile, "genUnsupportedEO", ".eo", eoText)
     }
+    println(s"Total of ${tests.length} files transpiled")
   }
 
-  @AfterEach def cleanup(): Unit = {
+  @AfterAll def cleanup(): Unit = {
     directory.deleteRecursively
   }
 

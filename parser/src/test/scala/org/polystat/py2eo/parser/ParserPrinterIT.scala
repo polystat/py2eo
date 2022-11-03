@@ -47,10 +47,13 @@ final class ParserPrinterIT {
     val tests = testsDirectory.deepFiles.filter(file => (file.extension == "py") && (file.name.startsWith("test")))
 
     val futures = for {test <- tests if !blacklisted(test.name)} yield Future {
+      println(s"transpiled ${test.name}")
       Parse(test).map(PrintPython.print).fold(fail())(test writeAll _)
     }
 
     futures foreach await
+
+    println(s"Total of ${futures.length} files transpiled")
 
     assume(Properties.isMac || Properties.isLinux)
     Process("./configure", cpython.jfile).!!
@@ -58,9 +61,9 @@ final class ParserPrinterIT {
     Process("make test", cpython.jfile).!!
   }
 
-  @AfterEach def cleanup(): Unit = {
-    directory.deleteRecursively
-  }
+//  @AfterEach def cleanup(): Unit = {
+//    directory.deleteRecursively
+//  }
 
   /**
    * Await and return the result (of type `T`) of an [[Awaitable]]
