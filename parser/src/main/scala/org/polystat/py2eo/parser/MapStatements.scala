@@ -284,10 +284,10 @@ object MapStatements {
   }
 
   def mapGlobalStmt(context: PythonParser.Global_stmtContext): Global =
-    Global(toList(context.NAME()).map(_.getText), ga(context))
+    Global(toList(context.namelist().NAME()).map(_.getText), ga(context))
 
   def mapNonlocalStmt(context: PythonParser.Nonlocal_stmtContext): NonLocal =
-    NonLocal(toList(context.NAME()).map(_.getText), ga(context))
+    NonLocal(toList(context.namelist().NAME()).map(_.getText), ga(context))
 
   def mapRaiseStmt(context: PythonParser.Raise_stmtContext): Raise = {
     val l = toListNullable(context.expression()).map(mapExpression)
