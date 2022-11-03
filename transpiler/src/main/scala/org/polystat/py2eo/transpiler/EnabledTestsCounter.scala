@@ -1,22 +1,20 @@
 package org.polystat.py2eo.transpiler
 
-import org.junit.jupiter.api.Test
+import java.io.FileInputStream
+import scala.reflect.io.{File, Path}
+import org.yaml.snakeyaml.Yaml
 
-import scala.reflect.io.Path
-
-class TestEnabledCounter extends Commons {
-  private val testsPath: Path = "src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
+object EnabledTestsCounter {
+  private val testsPath: Path = "transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests"
 
   case class TestResult(name: String, category: String, enabled: Boolean)
 
-  @Test
-  def apply(): Unit = {
+  def main(args: Array[String]): Unit = {
     val tests = testsPath.toDirectory.deepFiles.toSet
     val results = for {
       test <- tests
       if !test.name.startsWith("eo_blocked")
       if test.extension == "yaml"
-      if !isModule(test)
     } yield TestResult(test.name, test.parent.name, isEnabled(test))
 
     val total = results.size
@@ -36,4 +34,12 @@ class TestEnabledCounter extends Commons {
     val percentage = constructionsResults.sum / constructionsResults.size
     println(s"total constructions passed: $percentage%")
   }
+
+  private def isEnabled(f: File): Boolean = {
+    val yaml = new Yaml()
+    val map = yaml.load[java.util.Map[String, String]](new FileInputStream(f.jfile))
+
+    map.containsKey("enabled") && map.getOrDefault("enabled", "false").asInstanceOf[Boolean]
+  }
+
 }
