@@ -1,8 +1,9 @@
 package org.polystat.py2eo.transpiler
 
 import org.junit.jupiter.api.Assertions.fail
-import org.junit.jupiter.api.{AfterEach, Order, Test, TestMethodOrder}
+import org.junit.jupiter.api.{AfterAll, Order, Test, TestMethodOrder}
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
+import org.polystat.py2eo.transpiler.CPythonIT.directory
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
@@ -16,7 +17,6 @@ import scala.util.Try
 final class CPythonIT extends Commons {
 
   private val cpythonLink = "https://github.com/python/cpython"
-  private val directory = Directory.makeTemp(prefix = "org.polystat.py2eo.")
   private val blacklisted = Set(
     // these are excluded because of some encoding problems in the lexer
     "test_unicode_identifiers.py", "test_source_encoding.py",
@@ -70,13 +70,16 @@ final class CPythonIT extends Commons {
     for (f <- futures) Await.result(f, Duration.Inf)
   }
 
-  @AfterEach def cleanup(): Unit = {
-    directory.deleteRecursively
-  }
-
   @Test
   @Order(2)
   def checkEOSyntax(): Unit = {
     checkEOSyntaxInDirectory(Directory(directory / "afterParser").toString)
+  }
+}
+
+object CPythonIT {
+  private val directory = Directory.makeTemp(prefix = "org.polystat.py2eo.")
+  @AfterAll def cleanup(): Unit = {
+    directory.deleteRecursively
   }
 }
