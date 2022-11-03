@@ -57,39 +57,22 @@ object MapExpressions {
     }
 
   def mapComparison(context: PythonParser.ComparisonContext): T = {
-    if (context.compare_op_bitwise_or_pair().size() == 0) {
-      mapBitwiseOr(context.bitwise_or())
-    } else {
-      val l = toList(context.compare_op_bitwise_or_pair())
-      val l1 = l.map(
-        c => {
-          if (c.eq_bitwise_or() != null) {
-            (Compops.Eq, mapBitwiseOr(c.eq_bitwise_or().bitwise_or()))
-          } else if (c.noteq_bitwise_or() != null) {
-            (Compops.Neq, mapBitwiseOr(c.noteq_bitwise_or().bitwise_or()))
-          } else if (c.lte_bitwise_or() != null) {
-            (Compops.Le, mapBitwiseOr(c.lte_bitwise_or().bitwise_or()))
-          } else if (c.lt_bitwise_or() != null) {
-            (Compops.Lt, mapBitwiseOr(c.lt_bitwise_or().bitwise_or()))
-          } else if (c.gte_bitwise_or() != null) {
-            (Compops.Ge, mapBitwiseOr(c.gte_bitwise_or().bitwise_or()))
-          } else if (c.gt_bitwise_or() != null) {
-            (Compops.Gt, mapBitwiseOr(c.gt_bitwise_or().bitwise_or()))
-          } else if (c.notin_bitwise_or() != null) {
-            (Compops.NotIn, mapBitwiseOr(c.notin_bitwise_or().bitwise_or()))
-          } else if (c.in_bitwise_or() != null) {
-            (Compops.In, mapBitwiseOr(c.in_bitwise_or().bitwise_or()))
-          } else if (c.isnot_bitwise_or() != null) {
-            (Compops.IsNot, mapBitwiseOr(c.isnot_bitwise_or().bitwise_or()))
-          } else if (c.is_bitwise_or() != null) {
-            (Compops.Is, mapBitwiseOr(c.is_bitwise_or().bitwise_or()))
-          } else {
-            throw new ASTMapperException("Unsupported comparison operation?")
-          }
-        }
-      )
-      FreakingComparison(l1.map(_._1), mapBitwiseOr(context.bitwise_or()) :: l1.map(_._2), ga(context))
-    }
+    val args = asScala(context.arggs).toList.map(mapBitwiseOr)
+    val ops = asScala(context.ops).toList.map(c => {
+      if (c.LESS() != null) Compops.Lt else
+      if (c.GREATER() != null) Compops.Gt else
+      if (c.EQEQUAL() != null) Compops.Eq else
+      if (c.GREATEREQUAL() != null) Compops.Ge else
+      if (c.LESSEQUAL() != null) Compops.Le else
+      if (c.NOTEQUAL() != null) Compops.Neq else
+      if (c.NOT() != null && c.IN() != null) Compops.NotIn else
+      if (c.IN() != null) {Compops.In} else
+      if (c.NOT() != null && c.IS() != null) {Compops.IsNot} else
+      {
+        if (c.IS() != null) {Compops.Is} else {???}
+      }
+    })
+    if (ops.isEmpty) args.head else FreakingComparison(ops, args, ga(context))
   }
 
   def mapBitwiseOr(c: PythonParser.Bitwise_orContext): T = {

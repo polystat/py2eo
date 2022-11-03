@@ -12,7 +12,9 @@ class MapStatementsTest {
       case Some(Suite(List(Suite(List(
           Assign(List(Ident("a", _), Ident("b", _)), _)
         ), _)), _)) => ()
-      case _ => fail()
+      case x : Any =>
+        println(x)
+        fail()
     }
   }
 

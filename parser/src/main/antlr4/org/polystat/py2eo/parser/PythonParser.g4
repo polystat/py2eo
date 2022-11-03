@@ -109,8 +109,9 @@ augassign
     | '**='
     | '//=';
 
-global_stmt: 'global' NAME (',' NAME)*;
-nonlocal_stmt: 'nonlocal' NAME (',' NAME)*;
+namelist: NAME (',' NAME)*;
+global_stmt: 'global' namelist;
+nonlocal_stmt: 'nonlocal' namelist;
 
 yield_stmt: yield_expr;
 
@@ -154,14 +155,11 @@ while_stmt
     : 'while' named_expression ':' block else_block?;
 
 for_stmt
-    : 'for' star_targets 'in' star_expressions ':' TYPE_COMMENT? block else_block?
-    | ASYNC 'for' star_targets 'in' star_expressions ':' TYPE_COMMENT? block else_block?;
+    : ASYNC? 'for' star_targets 'in' star_expressions ':' TYPE_COMMENT? block else_block?;
 
 with_stmt
-    : 'with' '(' with_item (',' with_item)* ','? ')' ':' block
-    | 'with' with_item (',' with_item)* ':' TYPE_COMMENT? block
-    | ASYNC 'with' '(' with_item (',' with_item)* ','? ')' ':' block
-    | ASYNC 'with' with_item (',' with_item)* ':' TYPE_COMMENT? block;
+    : ASYNC? 'with' '(' with_item (',' with_item)* ','? ')' ':' block
+    | ASYNC? 'with' with_item (',' with_item)* ':' TYPE_COMMENT? block;
 
 with_item
     : expression 'as' star_target {isNextToken(',', ')', ':')}?
@@ -171,8 +169,7 @@ try_stmt
     : 'try' ':' block finally_block
     | 'try' ':' block except_block+ else_block? finally_block?;
 except_block
-    : 'except' expression ('as' NAME )? ':' block
-    | 'except' ':' block;
+    : 'except' (expression ('as' NAME )?)? ':' block;
 finally_block
     : 'finally' ':' block;
 
@@ -228,12 +225,10 @@ complex_number
     | signed_real_number '-' imaginary_number;
 
 signed_number
-    : NUMBER
-    | '-' NUMBER;
+    : '-'? NUMBER;
 
 signed_real_number
-    : real_number
-    | '-' real_number;
+    : '-'? real_number;
 
 real_number
     : NUMBER;
@@ -303,16 +298,14 @@ return_stmt
     : 'return' star_expressions?;
 
 raise_stmt
-    : 'raise' expression ('from' expression )?
-    | 'raise';
+    : 'raise' (expression ('from' expression )?)?;
 
 function_def
     : decorators function_def_raw
     | function_def_raw;
 
 function_def_raw
-    : 'def' NAME '(' params? ')' ('->' expression )? ':' func_type_comment? block
-    | ASYNC 'def' NAME '(' params? ')' ('->' expression )? ':' func_type_comment? block;
+    : ASYNC? 'def' NAME '(' params? ')' ('->' expression )? ':' func_type_comment? block;
 func_type_comment
     : NEWLINE TYPE_COMMENT {areNextTokens(NEWLINE, INDENT)}?   // Must be followed by indented block
     | TYPE_COMMENT;
@@ -383,9 +376,7 @@ block
     | simple_stmts;
 
 star_expressions
-    : l+=star_expression (',' l+=star_expression )+ ','?
-    | l+=star_expression ','
-    | l+=star_expression;
+    : l+=star_expression (',' l+=star_expression )* ','?;
 star_expression
     : '*' bitwise_or
     | expression;
@@ -406,9 +397,7 @@ named_expression
 annotated_rhs: yield_expr | star_expressions;
 
 expressions
-    : expression (',' expression )+ ','?
-    | expression ','
-    | expression;
+    : expression (',' expression )* ','?;
 expression
     : disjunction 'if' disjunction 'else' expression
     | disjunction
@@ -466,30 +455,8 @@ inversion
     : 'not' inversion
     | comparison;
 comparison
-    : bitwise_or compare_op_bitwise_or_pair+
-    | bitwise_or;
-compare_op_bitwise_or_pair
-    : eq_bitwise_or
-    | noteq_bitwise_or
-    | lte_bitwise_or
-    | lt_bitwise_or
-    | gte_bitwise_or
-    | gt_bitwise_or
-    | notin_bitwise_or
-    | in_bitwise_or
-    | isnot_bitwise_or
-    | is_bitwise_or;
-eq_bitwise_or: '==' bitwise_or;
-noteq_bitwise_or
-    : ('!=' ) bitwise_or;
-lte_bitwise_or: '<=' bitwise_or;
-lt_bitwise_or: '<' bitwise_or;
-gte_bitwise_or: '>=' bitwise_or;
-gt_bitwise_or: '>' bitwise_or;
-notin_bitwise_or: 'not' 'in' bitwise_or;
-in_bitwise_or: 'in' bitwise_or;
-isnot_bitwise_or: 'is' 'not' bitwise_or;
-is_bitwise_or: 'is' bitwise_or;
+    : arggs+=bitwise_or (ops+=comp_op arggs+=bitwise_or)*;
+comp_op: '<'|'>'|'=='|'>='|'<='|'!='|'in'|'not' 'in'|'is'|'is' 'not'; // |'<>';
 
 bitwise_or
     : bitwise_or '|' bitwise_xor
@@ -506,20 +473,13 @@ shift_expr
     | sum;
 
 sum
-    : sum '+' term
-    | sum '-' term
+    : sum ('+' | '-') term
     | term;
 term
-    : term '*' factor
-    | term '/' factor
-    | term '//' factor
-    | term '%' factor
-    | term '@' factor
+    : term ('*' | '/' | '//' | '%' | '@') factor
     | factor;
 factor
-    : '+' factor
-    | '-' factor
-    | '~' factor
+    : ('+' |  '-' | '~') factor
     | power;
 power
     : await_primary '**' factor
@@ -613,8 +573,7 @@ star_targets
     | l+=star_target (',' l+=star_target )* ','?;
 star_targets_list_seq: star_target (',' star_target)* ','?;
 star_targets_tuple_seq
-    : l+=star_target (',' l+=star_target )+ ','?
-    | l+=star_target ',';
+    : l+=star_target (',' l+=star_target )* ','?;
 star_target
     : '*' ({is_notNextToken('*')}? star_target)
     | target_with_star_atom;
