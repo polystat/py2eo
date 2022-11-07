@@ -60,6 +60,7 @@ final class CPythonIT extends Commons {
         Try(test.slurp).toOption.flatMap(Transpile(module, Transpile.Parameters(wrapInAFunction = true, isModule = false), _)) match {
           case None => fail()
           case Some(transpiled) =>
+            println(s"transpiled ${test.name}")
             val result = File(eoFiles / s"$module.eo")
             result.createFile(failIfExists = false)
             result.writeAll(transpiled)
