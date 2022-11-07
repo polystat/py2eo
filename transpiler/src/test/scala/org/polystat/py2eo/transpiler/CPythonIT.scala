@@ -69,6 +69,7 @@ final class CPythonIT extends Commons {
     }
 
     for (f <- futures) Await.result(f, Duration.Inf)
+    println(s"Total of ${tests.length} files transpiled")
   }
 
   @Test
