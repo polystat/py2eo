@@ -158,11 +158,13 @@ This command will translate `hello.py` in the current directory, saving the outp
     
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
 
-[Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Functional tests are grouped by folders corresponding to python syntax constructs we support or are going to support, so we have easy way to calculate overall coverage and `test passes successefully` state. Progress is shown in each release description.
+[Functional tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler/simple-tests), 1600+ lines of code. A detailed description of the particular tests is given [on a separate wiki page](https://github.com/polystat/py2eo/wiki/Tests-Structure). All these tests go through a full cycle of stages: from generating EO to executing Java. Functional tests are grouped by folders corresponding to python syntax constructs we support or are going to support, so we have easy way to calculate overall coverage and `test passes successfully` state. Progress is shown in each release description.
 
 Functional tests prefixed with `eo_blocked_` are known to be blocked by bugs in EO. In particular, the test `eo_blocked_nfbce` is blocked by https://github.com/objectionary/eo/issues/1249 , all others are blocked by  https://github.com/objectionary/eo/issues/1127 .
 
-### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ###
+### For now we support `100%` of python syntax and `100%` are passed successfully ###
+
+> You can see this in the enabled tests counter CI. Go to Actions → Enabled tests counter. Select any workflow run and checkout the Run counter step.
   
 To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
        
@@ -219,9 +221,57 @@ You will get detailed statistics in output.
 
 ### Py2EO is capable of transpiling more than hundreds of thousands lines of python code ###
 
+### Parser tests ###
+
+We tested the py2eo parser on [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), python language implementation tests, version `3.8`. For all tests (250,000+ lines of Python code), python source code is parsed and printed again, replacing the original one. Then we run CPython's integration test to verify that printed tests are still valid.
+
+> You can see this in the Integration Tests CI. Go to Actions → Integration Tests. Go to the ParserPrinter job, select any workflow run and checkout the Run integration tests step.
+
+To proof this (parse all tests from CPython and launch `make test` on CPython) on clean `Ubuntu` (20.04+):
+
+Install maven (`sudo apt install maven`) - it also installs default JDK (version 11 for now).
+
+Install `Java` (JDK or JRE) version 14 (yes, exactly 14). For example you can [download it here](https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz) and unpack it:
+
+```
+cd ~
+```
+```
+wget https://download.java.net/java/GA/jdk14.0.1/664493ef4a6946b186ff29eb326336a2/7/GPL/openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+```
+tar x -z < openjdk-14.0.1_linux-x64_bin.tar.gz
+```
+
+Obtain [Py2EO master branch sources](https://github.com/polystat/py2eo) via `git clone https://github.com/polystat/py2eo.git` (install git via `sudo apt install git`).
+
+Setup the `PATH` and `JAVA_HOME` variables, for example:
+```
+PATH="$PWD/jdk-14.0.1/bin/:$PATH"
+```
+```
+export JAVA_HOME="$PWD/jdk-14.0.1/"
+```
+
+> Check (e. g. via `java -version`) that version `14.*` is used
+
+Go to Py2EO root in the same command line runtime were you have set `PATH` and `JAVA_HOME` variables and run Py2EO build
+```
+mvn clean package -DskipTests=true
+```
+if succeeded you will get `transpiler/target/transpiler-${version_code}-SNAPSHOT-jar-with-dependencies.jar`.
+
+To reprint python input tests and verify them afterwards run
+```
+mvn clean -Dit.test=ParserPrinterIT verify -B
+```
+You will get verification results in output.
+
 #### Django ####
 
 We tested it on [Django](https://github.com/django/django), a popular `Python` web framework. For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java for this, since сompiling and execution of Java code obtained this way seems to be pointless.
+
+> You can see this in the Integration Tests CI. Go to Actions → Integration Tests. Go to the Django job, select any workflow run and checkout the Run integration tests step.
 
 To proof this (transpile Django python source code and perform EO syntax verification) on clean `Ubuntu` (20.04+):
 
@@ -266,6 +316,8 @@ You will get EO source code in `py2eo/transpiler/src/test/resources/org/polystat
 #### CPython ####   
  
 Also, we tested Py2EO on [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), python language implementation tests, version `3.8`. For all tests (250,000+ lines of Python code), `EO` is generated and passes `EO` syntax check stage. Subsequent `Java` generation (and, therefore, `Java` compilation and execution), comes to `Python` runtime transpilation issue. Got plans to come back to issue after majority of functional "simple" tests will pass.
+
+> You can see this in the Integration Tests CI. Go to Actions → Integration Tests. Go to the CPython job, select any workflow run and checkout the Run integration tests step.
 
 To proof this (transpile CPython tests source code and perform EO syntax verification) on clean `Ubuntu` (20.04+):
 
