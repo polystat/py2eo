@@ -156,6 +156,10 @@ This command will translate `hello.py` in the current directory, saving the outp
 1. The import system is partially supported -- possible, but not yet finished
 
 ## Python syntax and tests coverage
+
+For the parser and transpiler modules there are unit tests, located in `parser/src/test/scala/org/polystat/py2eo/parser/` and `transpiler/src/test/scala/org/polystat/py2eo/transpiler/` respectively. 
+
+> You can see this in the CI. Go to Actions → Java CI. Select any workflow run, go to test job and checkout the Build with Maven step.
     
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
 
@@ -226,7 +230,7 @@ You will get detailed statistics in output.
 
 We tested the py2eo parser on [CPython](https://github.com/python/cpython/tree/3.8/Lib/test), python language implementation tests, version `3.8`. For all tests (250,000+ lines of Python code), python source code is parsed and printed again, replacing the original one. Then we run CPython's integration test to verify that printed tests are still valid.
 
-> You can see this in the Integration Tests CI. Go to Actions → Integration Tests. Go to the ParserPrinter job, select any workflow run and checkout the Run integration tests step.
+> You can see this in the Integration Tests CI. Go to Actions → Integration Tests. Select any workflow run, go to the ParserPrinter job and checkout the Run integration tests step.
 
 To proof this (parse all tests from CPython and launch `make test` on CPython) on clean `Ubuntu` (20.04+):
 
@@ -272,7 +276,7 @@ You will get verification results in output.
 
 We tested it on [Django](https://github.com/django/django), a popular `Python` web framework. For all `.py` files (every `.py` is considered as particular test) from Django repository (440,000+ lines of Python code) `EO` is generated and passes `EO` syntax check stage. Yet not tried to generate Java for this, since сompiling and execution of Java code obtained this way seems to be pointless.
 
-> You can see this in the Integration Tests CI. Go to Actions → Integration Tests. Go to the Django job, select any workflow run and checkout the Run integration tests step.
+> You can see this in the Integration Tests CI. Go to Actions → Integration Tests. Select any workflow run, go to the Django job and checkout the Run integration tests step.
 
 To proof this (transpile Django python source code and perform EO syntax verification) on clean `Ubuntu` (20.04+):
 
