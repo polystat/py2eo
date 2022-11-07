@@ -47,7 +47,7 @@ final class ParserPrinterIT {
     val tests = testsDirectory.deepFiles.filter(file => (file.extension == "py") && (file.name.startsWith("test")))
 
     val futures = for {test <- tests if !blacklisted(test.name)} yield Future {
-      println(s"transpiled ${test.name}")
+      println(s"parsed ${test.name}")
       Parse(test).map(PrintPython.print).fold(fail())(test writeAll _)
     }
 

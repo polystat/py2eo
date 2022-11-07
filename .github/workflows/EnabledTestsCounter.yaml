@@ -13,8 +13,9 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt'
+          cache: 'maven'
       - name: Build counter
-        run: mvn clean package -PEnabledTestsCounter -DskipTests
+        run: mvn clean package -PEnabledTestsCounter -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: Rename counter
         run: cp transpiler/target/transpiler-*-jar-with-dependencies.jar counter.jar
       - name: Run counter
