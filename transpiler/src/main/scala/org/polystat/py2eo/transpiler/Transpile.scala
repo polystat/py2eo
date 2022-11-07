@@ -96,6 +96,16 @@ object Transpile {
           val simConcatStringLit = GenericStatementPasses.simpleProcExprInStatement(
             Expression.map(ConcatStringLiteral.apply))(simIfAgain._1, simIfAgain._2)
           debugPrinter(simConcatStringLit._1, "afterConcatStringLit")
+          // we don't support ints over 32bits, so throw an exception here to force generation of the unsupported code
+          AnalysisSupport.foldSE((_ : Unit, e) => {
+            e match {
+              case Expression.IntLiteral(value, ann) if value < -(BigInt(1) << 31) || value > (BigInt(1) << 31) - 1 => ()
+              case Expression.IntLiteral(value, ann) => ???
+              case _ => ()
+            }
+          },
+            s => true
+          )((), simConcatStringLit._1)
           val simxPrefixSt = GenericStatementPasses.procStatement(PrefixIdentsWithX.xPrefixInStatement)(simConcatStringLit._1, simConcatStringLit._2)
           debugPrinter(simxPrefixSt._1, "afterXPrefixSt")
           val simXPrefixExpr = GenericStatementPasses.simpleProcExprInStatement(Expression.map(

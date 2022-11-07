@@ -86,13 +86,13 @@ object PrintLinearizedMutableEOWithCage {
           .map{ case f : FuncDef => f }
         val consArgs = init match {
           case Some(value) =>
-            val argnames = value.args.tail.map(_.name).mkString(" ")
+            val argnames = value.args.tail.map(" " + _.name).mkString("")
             s"$argnames"
           case None => ""
         }
         val callInit = init match {
           case None => ""
-          case Some(_) => s" ((goto ((result.x__init__.ap pResult $consArgs).@)).result)"
+          case Some(_) => s" ((goto ((result.x__init__.ap pResult$consArgs).@)).result)"
         }
         val decorates = bases.headOption.map(_._2)
           "write." :: indent(
