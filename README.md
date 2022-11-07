@@ -10,25 +10,29 @@
 [![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)](https://www.jetbrains.com/idea/)
 ## Table of contents
 1. [What is Py2EO?](#what-is-py2eo)
-2. [Quick Start](#quick-start)
-3. [How to contribute](#how-to-contribute)
-4. [How to transpile Py to EO](#how-to-transpile-py-to-eo)
-5. [A list of not supported language features](#a-list-of-not-supported-language-features)
-6. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
-7. [Syntax support and passed tests info](#for-now-we-support-529-of-python-syntax-and-572-are-passed-successefully)
-8. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
+1. [Quick Start](#quick-start)
+1. [How to contribute](#how-to-contribute)
+1. [How to transpile Py to EO](#how-to-transpile-py-to-eo)
+1. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
+1. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
    - [Django](#django)
    - [CPython](#cpython)
-9. [Architecture and design](#architecture-and-design)
-10. [How we translate Python to EOLang](#how-do-we-project-python-to-eolang)
-   - [while](#while)
-   - [while-try-break](#while-try-break)
-   - [function definition](#function-definition)
-   - [conditional-1](#conditionals-with-if-elif-else) and [conditional-2](#conditionals-with-if)
-   - [assignment](#assignment)
+1. [Architecture and design](#architecture-and-design)
+1. [How do we project Python to EOLang](#how-do-we-project-python-to-eolang)
+   - [print](#print)
+   - [while](#while) and [while-try-break](#while)
+   - [lambda](#lambda)
    - [evaluation order](#evaluation-order)
    - [simple evaluation](#simple-evaluation)
-   - [lambda](#lambda)
+   - [assignment](#assignment)
+   - [evaluation](#evaluation)
+   - [conditionals with if](#conditionals-with-if)
+   - [conditionals with if-elif-else](#conditionals-with-if-elif-else)   
+   - [while](#while-1)
+   - [for](#for)
+   - [function definition](#function-definition-1)
+   - [not supported Python features](#not-supported-python-features)
+   
 
 
 ## What is Py2EO?
@@ -144,16 +148,6 @@ $ docker run -v $(pwd):/eo yegor256/py2eo hello.py -o hello.eo
 
 This command will translate `hello.py` in the current directory, saving the output to the `hello.eo` file.
 
-## A list of not supported language features ##
-1. Any kind of yield, also coroutines and generators (incl generator expressions) -- no support in EO
-1. Threads, async, futures, await -- no support in EO
-1. Dynamic features of python (dynamic creation/change/lookup/deletion of variables, creation of classes with metaclasses etc., dynamic features of import) -- using completely dynamic features would make the output EO not statically analyzable
-1. Multiple inheritance -- not obvious how to do that for a general case, but with the EO delegation principle in mind
-1. The majority of standard library -- it is mostly written in C, so even if we support all of the python syntax, it is still a problem to support the library without rewriting it manually.
-1. Star expressions are mostly not supported -- possible, but not yet finished
-1. Array slicing is partially supported -- possible, but not yet finished
-1. The import system is partially supported -- possible, but not yet finished
-
 ## Python syntax and tests coverage
     
 We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transpiler/src/test/resources/org/polystat/py2eo/transpiler) that are divided into groups by type: functional (also divided into groups by constructs in accordance with the language specification), integration tests (tests for the polystat analyzer), "negative" tests, etc.
@@ -162,7 +156,7 @@ We have [handwritten tests](https://github.com/polystat/py2eo/tree/master/transp
 
 Functional tests prefixed with `eo_blocked_` are known to be blocked by bugs in EO. In particular, the test `eo_blocked_nfbce` is blocked by https://github.com/objectionary/eo/issues/1249 , all others are blocked by  https://github.com/objectionary/eo/issues/1127 .
 
-### For now we support `52.9%` of python syntax and `57.2%` are passed successefully ###
+For now we support `100.00%` of [the determined python syntax subset](#how-do-we-project-python-to-eolang) and `100.00%` are passed successefully
   
 To proof this (run all test and get statistics) on clean `Ubuntu` (20.04+):
        
@@ -336,7 +330,7 @@ Py2EO architecture can be described as the following workflow:
 
 Py2EO project consists of 3 modules: parser, checker, transpiler. All the modules have sample unit tests in them.
 
-## How we translate Python to EOLang
+## How do we project Python to EOLang
 
 We analyzed [python language](https://docs.python.org/3.8/reference/) and [EOlang](https://github.com/objectionary/eo) to determine the subset of Python features, corresponding restriction, design decisions that are explained within translation projections examples in this section.
 
@@ -894,3 +888,13 @@ print(x)
 ```
         
 No plans to support coroutines ([see sec 8](https://docs.python.org/3.8/reference/compound_stmts.html)).
+
+### Not supported Python features ###
+1. Any kind of yield, also coroutines and generators (incl generator expressions) -- no support in EO
+1. Threads, async, futures, await -- no support in EO
+1. Dynamic features of python (dynamic creation/change/lookup/deletion of variables, creation of classes with metaclasses etc., dynamic features of import) -- using completely dynamic features would make the output EO not statically analyzable
+1. Multiple inheritance -- not obvious how to do that for a general case, but with the EO delegation principle in mind
+1. The majority of standard library -- it is mostly written in C, so even if we support all of the python syntax, it is still a problem to support the library without rewriting it manually.
+1. Star expressions are mostly not supported -- possible, but not yet finished
+1. Array slicing is partially supported -- possible, but not yet finished
+1. The import system is partially supported -- possible, but not yet finished
