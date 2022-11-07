@@ -99,7 +99,7 @@ object Transpile {
           // we don't support ints over 32bits, so throw an exception here to force generation of the unsupported code
           AnalysisSupport.foldSE((_ : Unit, e) => {
             e match {
-              case Expression.IntLiteral(value, ann) if value < -(BigInt(1) << 31) || value > (BigInt(1) << 31) - 1 => ()
+              case Expression.IntLiteral(value, ann) if value >= -(BigInt(1) << 31) && value <= (BigInt(1) << 31) - 1 => ()
               case Expression.IntLiteral(value, ann) => ???
               case _ => ()
             }
