@@ -17,6 +17,7 @@
 6. [Python syntax and tests coverage](#python-syntax-and-tests-coverage)
 7. [Syntax support and passed tests info](#for-now-we-support-529-of-python-syntax-and-572-are-passed-successefully)
 8. [Big project transpilation results](#py2eo-is-capable-of-transpiling-more-than-hundreds-of-thousands-lines-of-python-code)
+   - [Parser tests](#parser-tests)
    - [Django](#django)
    - [CPython](#cpython)
 9. [Architecture and design](#architecture-and-design)
