@@ -104,5 +104,7 @@ jobs:
           path: /Users/runner/work/py2eo/py2eo/python/python3/test/target/generated-sources/
       - name: Build counter
         run: mvn clean package -PEnabledTestsCounter -DskipTests -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+      - name: Rename counter
+        run: cp transpiler/target/transpiler-*-jar-with-dependencies.jar counter.jar
       - name: Run counter
-        run: java -jar transpiler/target/transpiler-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+        run: java -jar counter.jar
