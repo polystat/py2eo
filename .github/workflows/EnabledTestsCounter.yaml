@@ -15,5 +15,7 @@ jobs:
           distribution: 'adopt'
       - name: Build counter
         run: mvn clean package -PEnabledTestsCounter -DskipTests
+      - name: Rename counter
+        run: cp transpiler/target/transpiler-*-jar-with-dependencies.jar counter.jar
       - name: Run counter
-        run: java -jar transpiler/target/transpiler-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+        run: java -jar counter.jar
