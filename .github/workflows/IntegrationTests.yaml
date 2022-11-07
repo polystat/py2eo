@@ -2,7 +2,7 @@ name: Integration Tests
 
 on:
   schedule:
-    - cron: '05 09 * * *'
+    - cron: '55 16 * * *'
 
 jobs:
   ParserPrinter:
@@ -14,12 +14,13 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt'
+          cache: 'maven'
       - name: Set up Python 3.8.10
         uses: actions/setup-python@v2
         with:
           python-version: '3.8.10'
-      - name: Run integration tests
-        run: mvn clean verify -B -Dit.test=ParserPrinterIT
+      - name: Run integration test
+        run: mvn clean verify -B -Dit.test=ParserPrinterIT -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
   CPython:
     runs-on: ubuntu-20.04
@@ -30,12 +31,13 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt'
+          cache: 'maven'
       - name: Set up Python 3.8.10
         uses: actions/setup-python@v2
         with:
           python-version: '3.8.10'
-      - name: Run integration tests
-        run: mvn clean verify -B -Dit.test=CPythonIT
+      - name: Run integration test
+        run: mvn clean verify -B -Dit.test=CPythonIT -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
   Django:
     runs-on: ubuntu-20.04
@@ -46,9 +48,10 @@ jobs:
         with:
           java-version: '14'
           distribution: 'adopt'
+          cache: 'maven'
       - name: Set up Python 3.8.10
         uses: actions/setup-python@v2
         with:
           python-version: '3.8.10'
-      - name: Run integration tests
-        run: mvn clean verify -B -Dit.test=DjangoIT
+      - name: Run integration test
+        run: mvn clean verify -B -Dit.test=DjangoIT -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
