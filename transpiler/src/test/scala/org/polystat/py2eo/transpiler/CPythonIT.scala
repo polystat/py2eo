@@ -41,25 +41,26 @@ final class CPythonIT extends Commons {
   @Test
   def parserPrinterOnCPython(): Unit = {
     val directory = Directory.makeTemp(prefix = "org.polystat.py2eo.")
-    val eoFiles = Directory(directory / "genUnsupportedEO")
-    eoFiles.createDirectory(failIfExists = false)
-
     val cpython = Directory(directory / "cpython")
 
     Process(s"git clone $cpythonLink ${cpython.name}", directory.jfile).!!
     Process("git checkout v3.8.10", cpython.jfile).!!
 
     val testsDir = Directory(cpython / "Lib" / "test")
-    val tests = (testsDir.deepFiles.filter(f => f.extension == "py" && f.name.startsWith("test")))
+    val tests = (testsDir.deepFiles.filter(f => f.extension == "py" && f.name.startsWith("test"))).toList
+    var i = 0
 
     val futures = for {test <- tests if !blacklisted(test.name)} yield {
+      val dirno = i / 10
+      i = i + 1
       Future {
         val module = test.stripExtension
-
         Try(test.slurp).toOption.flatMap(Transpile(module, Transpile.Parameters(wrapInAFunction = true, isModule = false), _)) match {
           case None => fail()
           case Some(transpiled) =>
-            val result = File(eoFiles / s"$module.eo")
+            val dir = File(directory / s"$dirno" / "genUnsupportedEO")
+            dir.createDirectory(failIfExists = false)
+            val result = File(dir / s"$module.eo")
             println(s"transpiled $module")
             result.createFile(failIfExists = false)
             result.writeAll(transpiled)
@@ -69,6 +70,6 @@ final class CPythonIT extends Commons {
 
     for (f <- futures) Await.result(f, Duration.Inf)
     println(s"Total of ${futures.length} transpiled")
-    checkEOSyntaxInDirectory(Directory(directory / "genUnsupportedEO").toString)
+    checkEOSyntaxInDirectory(Directory(directory).toString)
   }
 }
