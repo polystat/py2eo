@@ -120,7 +120,10 @@ trait Commons {
       val from = new JFile(testsPrefix + "/django-pom.xml").toPath
       val to = new JFile(path.toString + "/pom.xml").toPath
       Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING)
-      Process("mvn clean test", path/*, ("JAVA_HOME", "/home/bogus/.jdks/jdk-14.0.1/")*/).!!
+      val b = new StringBuffer()
+      val ecode = Process("mvn clean test", path/*, ("JAVA_HOME", "/home/bogus/.jdks/jdk-14.0.1/")*/) ! ProcessLogger(s => b.append(s + "\n"))
+      println(b)
+      assert(ecode == 0)
       Process(s"rm -rf \"${path.toString}/target\"").!!
     })
   }
