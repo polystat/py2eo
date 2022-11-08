@@ -580,9 +580,9 @@ object MapExpressions {
 
   def string2num(x: String, c: ParserRuleContext): T = {
     if (x.last == 'j') {
-      Expression.ImagLiteral(x.init, new GeneralAnnotation(c))
+      Expression.ImagLiteral(x.init.replace("_", ""), new GeneralAnnotation(c))
     } else if (x.exists(c => ((c == 'e' || c == 'E') && !x.startsWith("0x") && !x.startsWith("0X")) || c == '.' || c == '+' || c == '-')) {
-      Expression.FloatLiteral(x, new GeneralAnnotation(c))
+      Expression.FloatLiteral(x.replace("_", ""), new GeneralAnnotation(c))
     } else {
       val int =
         if (x.startsWith("0x") || x.startsWith("0X")) {
