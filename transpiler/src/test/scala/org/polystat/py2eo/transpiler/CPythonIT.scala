@@ -50,7 +50,7 @@ final class CPythonIT extends Commons {
     Process("git checkout v3.8.10", cpython.jfile).!!
 
     val testsDir = Directory(cpython / "Lib" / "test")
-    val tests = testsDir.deepFiles.filter(f => f.extension == "py" && f.name.startsWith("test"))
+    val tests = List(testsDir.deepFiles.filter(f => f.extension == "py" && f.name.startsWith("test")).toList.head)
 
     val futures = for {test <- tests if !blacklisted(test.name)} yield {
       Future {
