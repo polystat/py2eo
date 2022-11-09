@@ -22,7 +22,7 @@ jobs:
       - name: Build with Maven
         run:  mvn clean verify -B -DskipITs -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: |
@@ -31,7 +31,7 @@ jobs:
       - name: Rename jar
         run: cp transpiler/target/transpiler-*-jar-with-dependencies.jar transpiler.jar
       - name: archive jar
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: package
           path: transpiler.jar
@@ -63,12 +63,12 @@ jobs:
       - name: analysis
         run: cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/test.eo ./transpiler/src/test.eo && cp ./transpiler/src/test/resources/org/polystat/py2eo/transpiler/integrationTests/goto.eo ./transpiler/src/goto.eo && java -jar ./polystat-0.4.0-jar-with-dependencies.jar ./transpiler/src ./temp --sarif
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: polystatResults
           path: /Users/runner/work/py2eo/py2eo/temp
       - name: failure artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: always()
         with:
           name: py2eo output
@@ -98,7 +98,7 @@ jobs:
       - name: Build with Maven
         run: cp -a transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO . && cp -a transpiler/target/results/* ./runEO && cp transpiler/src/main/eo/xmodules/*.eo ./runEO/xmodules/ && cp -a transpiler/src/main/eo/preface ./runEO && cd ./runEO && rm exceptions-finally-3.eo && mvn clean test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn && rm *.eo && cp ../transpiler/target/results/exceptions-finally-3.eo . && mvn clean test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: generatedJava
           path: /Users/runner/work/py2eo/py2eo/python/python3/test/target/generated-sources/
