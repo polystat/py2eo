@@ -4,7 +4,7 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.junit.jupiter.api.{AfterAll, Order, Test, TestMethodOrder}
 import org.polystat.py2eo.parser.Statement
 
-import scala.reflect.io.Directory
+import scala.reflect.io.{Directory, File}
 import scala.sys.process.Process
 
 @TestMethodOrder(classOf[OrderAnnotation])
@@ -24,19 +24,23 @@ class DjangoIT extends Commons {
     for (test <- tests) {
       def db(s: Statement.T, str: String) = () // debugPrinter(test)(_, _)
 
-      val name = test.name
+      val name = chopExtension(test.name)
       val eoText =
         Transpile.transpile(db)(
-          chopExtension(name),
+          name,
           Transpile.Parameters(wrapInAFunction = false, isModule = false),
           readFile(test.jfile)
         )
       println(s"transpiled $name")
-      writeFile(test.jfile, "genUnsupportedEO", ".eo", eoText)
+      val dir = test.parent / test.name.stripSuffix(".py") / "genUnsupportedEO"
+      dir.createDirectory(failIfExists = false)
+      val result = File(dir / s"$name.eo")
+      result.createFile(failIfExists = false)
+      result.writeAll(eoText)
     }
     println(s"Total of ${tests.length} files transpiled")
     checkEOSyntaxInDirectory(Directory(directory + "/django").toString)
-    directory.deleteRecursively()
+//    directory.deleteRecursively()
   }
 
 }
