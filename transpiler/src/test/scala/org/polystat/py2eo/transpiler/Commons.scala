@@ -117,6 +117,7 @@ trait Commons {
     val eopaths = dfsFiles(root).filter(f => f.getName.endsWith("genUnsupportedEO"))
     println(eopaths)
     eopaths.foreach(path => {
+      println(s"checking syntax in $path")
       val from = new JFile(testsPrefix + "/django-pom.xml").toPath
       val to = new JFile(path.toString + "/pom.xml").toPath
       Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING)
