@@ -24,7 +24,8 @@ class DjangoIT extends Commons {
     for (test <- tests) {
       def db(s: Statement.T, str: String) = () // debugPrinter(test)(_, _)
 
-      val name = chopExtension(test.name)
+      val name0 = chopExtension(test.name)
+      val name = if (name0.startsWith(".")) name0.substring(1) else name0
       val eoText =
         Transpile.transpile(db)(
           name,
