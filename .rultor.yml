@@ -1,8 +1,13 @@
+docker:
+  image: yegor256/rultor-image:1.21.0
 assets:
   settings.xml: yegor256/polystat-secrets#settings.xml
   pubring.gpg: yegor256/polystat-secrets#pubring.gpg
   secring.gpg: yegor256/polystat-secrets#secring.gpg
   docker-password: yegor256/polystat-secrets#docker-password
+install: |-
+  update-java-alternatives --set /usr/lib/jvm/java-17
+  export JAVA_HOME=/usr/lib/jvm/java-17
 merge:
   script: mvn clean install
 deploy:
@@ -22,7 +27,7 @@ release:
     git commit -am "${tag}"
     mvn clean install -Dinvoker.skip -DskipTests=true
     mvn clean deploy -Ppolystat -Psonatype --errors --settings ../settings.xml -Dstyle.color=never -Dit.test=DjangoIT
-    
+
     mv "transpiler/target/transpiler-${tag}-jar-with-dependencies.jar" py2eo.jar
     image=yegor256/py2eo
     sudo docker build "$(pwd)" --tag "${image}:${tag}"
