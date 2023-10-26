@@ -50,6 +50,9 @@ final class PyParserIT {
     val cpython = Directory(PyParserIT.directory / "cpython")
     Process(s"git clone --depth=1 --branch v3.8.10 ${PyParserIT.repo} $cpython").!!
 
+    // Bypass some weird issue with the openssl version
+    File(cpython / "Lib" / "test" / "test_ssl.py").delete()
+
     val tests = Directory(cpython / "Lib" / "test")
       .deepFiles
       .toList
