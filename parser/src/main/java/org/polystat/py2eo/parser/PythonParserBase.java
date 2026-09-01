@@ -36,6 +36,7 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.TokenStream;
 
 public abstract class PythonParserBase extends Parser {
+    @SuppressWarnings("this-escape")
     protected PythonParserBase(TokenStream input) {
         super(input);
         //this.removeErrorListeners();
