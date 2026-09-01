@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2020-2022 Polystat.org
+// SPDX-License-Identifier: MIT
+
 package org.polystat.py2eo.transpiler
 
 import org.junit.jupiter.params.ParameterizedTest
@@ -16,4 +19,3 @@ class DummyTests extends Commons {
   @MethodSource(Array("parameters"))
   def test(test: File): Unit = useCageHolder(test.jfile)
 }
-

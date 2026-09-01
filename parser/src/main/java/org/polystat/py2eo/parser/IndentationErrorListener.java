@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2020-2022 Polystat.org
+// SPDX-License-Identifier: MIT
+
 /*
  * Project      : an ErrorListener class to collect and display indentation warnings and errors
  */

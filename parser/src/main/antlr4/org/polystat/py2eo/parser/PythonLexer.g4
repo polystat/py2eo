@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2021 Robert Einhorn
+// SPDX-License-Identifier: MIT
+
 /*
 Python grammar
 The MIT License (MIT)

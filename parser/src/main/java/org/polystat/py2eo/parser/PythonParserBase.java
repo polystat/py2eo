@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) 2021 Robert Einhorn
+// SPDX-License-Identifier: MIT
+
 package org.polystat.py2eo.parser;/*
 The MIT License (MIT)
 Copyright (c) 2021 Robert Einhorn
