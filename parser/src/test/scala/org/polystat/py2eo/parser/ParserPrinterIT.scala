@@ -19,6 +19,10 @@ final class ParserPrinterIT {
   private val cpythonLink = "https://github.com/python/cpython"
   private val directory = Directory.makeTemp(prefix = "org.polystat.py2eo.")
   private val availableProcessors = sys.runtime.availableProcessors
+  // cpython 3.8 cannot pass these in a modern environment: test_ssl matches the
+  // version string against an OpenSSL 1.x layout, while the network tests reach
+  // remote hosts that have changed their answers since the tag was cut
+  private val testOptions = "-u all,-largefile,-audio,-gui,-network -x test_ssl"
   private val blacklisted = Set(
     // these are excluded because of some encoding problems in the lexer
     "test_unicode_identifiers.py", "test_source_encoding.py",
@@ -61,7 +65,7 @@ final class ParserPrinterIT {
     assume(Properties.isMac || Properties.isLinux)
     Process("./configure", cpython.jfile).!!
     Process(s"make -j ${availableProcessors + 2}", cpython.jfile).!!
-    Process("make test", cpython.jfile).!!
+    Process(Seq("make", "test", s"EXTRATESTOPTS=$testOptions"), cpython.jfile).!!
   }
 
 //  @AfterEach def cleanup(): Unit = {
