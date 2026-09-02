@@ -4,7 +4,7 @@
      height="100px"
      alt="Elegant Objects Cactus"/>
 
-[![Java CI](https://github.com/polystat/py2eo/actions/workflows/github-ci.yml/badge.svg)](https://github.com/polystat/py2eo/actions/workflows/github-ci.yml)
+[![mvn](https://github.com/polystat/py2eo/actions/workflows/mvn.yml/badge.svg)](https://github.com/polystat/py2eo/actions/workflows/mvn.yml)
 [![Hits-of-Code](https://hitsofcode.com/github/polystat/py2eo)](https://hitsofcode.com/view/github/polystat/py2eo)
 ![Lines of code](https://img.shields.io/tokei/lines/github/polystat/py2eo)
 
