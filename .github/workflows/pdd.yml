@@ -1,9 +1,9 @@
 # SPDX-FileCopyrightText: Copyright (c) 2020-2022 Polystat.org
 # SPDX-License-Identifier: MIT
-
 ---
+# yamllint disable rule:line-length
 name: pdd
-on:
+'on':
   push:
     branches:
       - master
@@ -12,12 +12,8 @@ on:
       - master
 jobs:
   pdd:
-    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 4.0.6
-      - run: sudo apt-get update && sudo apt-get install -y libmagic-dev
-      - run: gem install pdd -v 0.24.2
-      - run: pdd --file=/dev/null
+      - uses: volodya-lombrozo/pdd-action@master
