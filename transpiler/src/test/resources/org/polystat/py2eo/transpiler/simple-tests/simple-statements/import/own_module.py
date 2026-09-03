@@ -3,4 +3,3 @@ def add(a, b):
   numbers and return the result"""
   result = a + b
   return result
-
