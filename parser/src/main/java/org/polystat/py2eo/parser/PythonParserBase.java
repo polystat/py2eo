@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2020-2022 Polystat.org
+ * SPDX-License-Identifier: MIT
+ */
 // SPDX-FileCopyrightText: Copyright (c) 2021 Robert Einhorn
 // SPDX-License-Identifier: MIT
 

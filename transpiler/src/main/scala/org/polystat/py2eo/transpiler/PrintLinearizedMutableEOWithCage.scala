@@ -300,7 +300,7 @@ object PrintLinearizedMutableEOWithCage {
       case _ => (l, true)
     })(List(), f.body)
     val funNames = funs.map { f: FuncDef => f.name }.toSet
-    val argCopies = f.args.map(parm => s"${parm.name}NotCopied' > ${parm.name}")
+    val argCopies = f.args.map(param => s"${param.name}NotCopied' > ${param.name}")
     val memories =
       f.accessibleIdents.filter(x =>
         (x._2._1 == VarScope.Local || x._2._1 == VarScope.ExceptName)
@@ -318,7 +318,7 @@ object PrintLinearizedMutableEOWithCage {
           argCopies ++ memories ++ (
             "seq > @" :: indent(
               ("stdout \"" + f.name + "\\n\"") ::
-                f.args.map(parm => s"${parm.name}.<") ++
+                f.args.map(param => s"${param.name}.<") ++
                   (printSt(f.body) :+ "stackUp.forward (return 0)" :+ "123")
             )
             )

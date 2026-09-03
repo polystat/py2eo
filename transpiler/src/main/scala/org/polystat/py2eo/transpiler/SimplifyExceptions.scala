@@ -62,7 +62,7 @@ object SimplifyExceptions {
   // @todo #331: exception object compatibility is not fully implemented ("or a tuple containing an item that is the class
   //  or a base class of the exception object"), see  https://docs.python.org/3/reference/compound_stmts.html#the-try-statement
   // @todo #331: also must implement named exceptions and del of those a the end of an except clause
-  // @todo #331: also must rethrow an exception if it is not catched
+  // @todo #331: also must rethrow an exception if it is not caught
   def preSimplifyExcepts(s : Statement.T, ns : NamesU) : (Statement.T, NamesU) = s match {
     case Try(ttry, List((None, x)), eelse, ffinally, ann) =>
       (

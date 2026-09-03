@@ -83,7 +83,7 @@ object Transpile {
           debugPrinter(simIf._1, "afterSimplifyIf")
           val simAssList = GenericStatementPasses.procStatement(SimplifyAssignmentList.apply)(simIf._1, simIf._2)
           debugPrinter(simAssList._1, "simplifyAssList")
-          val simAss2Index = GenericStatementPasses.procStatement(SimplifyAssigmentToIndex.simplify)(simAssList._1, simAssList._2)
+          val simAss2Index = GenericStatementPasses.procStatement(SimplifyAssignmentToIndex.simplify)(simAssList._1, simAssList._2)
           debugPrinter(simAss2Index._1, "simplifyAss2Index")
           val simAss2Coll = GenericStatementPasses.procStatement(SimplifyAssignmentToCollectionCons.apply)(simAss2Index._1, simAss2Index._2)
           debugPrinter(simAss2Coll._1, "simplifyAss2Collection")

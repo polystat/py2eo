@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2020-2022 Polystat.org
+ * SPDX-License-Identifier: MIT
+ */
 // SPDX-FileCopyrightText: Copyright (c) 2021 Robert Einhorn
 // SPDX-License-Identifier: MIT
 
@@ -165,7 +169,7 @@ fragment SHORT_STRING_ITEM_FOR_DOUBLE_QUOTE : SHORT_STRING_CHAR_NO_DOUBLE_QUOTE 
 
 fragment LONG_STRING_ITEM : LONG_STRING_CHAR | STRING_ESCAPE_SEQ;
 
-fragment SHORT_STRING_CHAR_NO_SINGLE_QUOTE : ~[\\\r\n'];       // <any source character except "\" or newline or singel quote>
+fragment SHORT_STRING_CHAR_NO_SINGLE_QUOTE : ~[\\\r\n'];       // <any source character except "\" or newline or single quote>
 fragment SHORT_STRING_CHAR_NO_DOUBLE_QUOTE : ~[\\\r\n"];       // <any source character except "\" or newline or double quote>
 
 fragment LONG_STRING_CHAR  : ~'\\';                            // <any source character except "\">

@@ -33,7 +33,7 @@ It translates `Python` code to `EOLANG` programming language.
 
 This transpiler receives python code as input data.
 Then received code is simplified with several AST->AST passes.
-After successfull simplification `EOLANG` output is generated.
+After successful simplification `EOLANG` output is generated.
 
 `EOLANG` code [can be translated to java and executed][eo-quick-start]
   or analyzed statically via [Polystat analyzer][polystat].
@@ -86,9 +86,9 @@ mvn clean package
 Test it now on your own examples
   [following detailed instructions](#how-to-transpile-py-to-eo)
 
-Examine our ways to test it [here](#python-syntax-and-tests-coverage)
+Examine our [ways to test it](#python-syntax-and-tests-coverage)
 
-Explore requirements and architecture design [here](#architecture-and-design)
+Explore [requirements and architecture design](#architecture-and-design)
 
 Also note that you should use `Maven 3.6.3` with `Java 14` or `Maven 3.8.4`
   with `Java 17` (but there is no `Maven 3.8` package in `Ubuntu` and no
@@ -216,7 +216,7 @@ In particular, the test `eo_blocked_nfbce` is blocked by
   [objectionary/eo#1127][eo-1127].
 
 For now we support `100.00%` of the determined python syntax subset and
-  `100.00%` are passed successefully
+  `100.00%` are passed successfully
 
 > You can see this in the enabled tests counter CI.
 > Go to Actions → Enabled tests counter.
@@ -517,7 +517,7 @@ You will get EO source code in
 Also, we use **Checker** - a tool that reduces project testing time using
   input test mutations, as a part of test procedure.
 It's included in CI.
-Checkout more [here][checker].
+Checkout more about [the checker][checker].
 
 ## Architecture and design
 

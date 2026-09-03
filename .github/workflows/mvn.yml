@@ -1,9 +1,11 @@
 # SPDX-FileCopyrightText: Copyright (c) 2020-2022 Polystat.org
 # SPDX-License-Identifier: MIT
+# yamllint disable rule:line-length
+---
 
 name: mvn
 
-on: [push]
+'on': [push]
 
 jobs:
   test:
@@ -20,7 +22,7 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: Build with Maven
-        run:  mvn clean verify -B -DskipITs -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn clean verify -B -DskipITs -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: archive artifacts
         uses: actions/upload-artifact@v7
         with:
@@ -39,7 +41,7 @@ jobs:
   polystatIntegration:
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     needs: test
     steps:
@@ -73,11 +75,10 @@ jobs:
           name: py2eo output
           path: ./transpiler/src/test.eo
 
-
   runEO:
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     needs: test
     steps:
@@ -94,7 +95,7 @@ jobs:
           name: artifacts
           path: ./
       - name: Build with Maven
-        run: cp -a transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO . && cp -a transpiler/target/results/* ./runEO && cp transpiler/src/main/eo/xmodules/*.eo ./runEO/xmodules/ && cp -a transpiler/src/main/eo/preface ./runEO && cd ./runEO && rm exceptions-finally-3.eo && mvn clean test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn && rm *.eo && cp ../transpiler/target/results/exceptions-finally-3.eo . && mvn clean test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: cp -a transpiler/src/test/resources/org/polystat/py2eo/transpiler/runEO . && cp -a transpiler/target/results/* ./runEO && cp transpiler/src/main/eo/xmodules/*.eo ./runEO/xmodules/ && cp -a transpiler/src/main/eo/preface ./runEO && cd ./runEO && rm exceptions-finally-3.eo && mvn clean test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn && rm ./*.eo && cp ../transpiler/target/results/exceptions-finally-3.eo . && mvn clean test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
       - name: upload artifacts
         uses: actions/upload-artifact@v7
         with:

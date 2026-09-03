@@ -14,7 +14,7 @@ object ExtractAllCalls {
   // translate an expression to something like a three register code in order to extract each function call with
   // possible side effects to a separate statement, i.e., a set of locals assignments, where op with side effects
   // may happen only in a root node of an rhs syntax tree
-  // note that, say, binops and almost anything else may also be function calls, because they may be overriden
+  // note that, say, binops and almost anything else may also be function calls, because they may be overridden
   def apply(lhs: Boolean, e: T, ns: NamesU): (EAfterPass, NamesU) = {
     if (lhs) (Left(e), ns) else {
       e match {
